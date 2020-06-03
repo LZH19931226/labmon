@@ -25,6 +25,7 @@
         <module>HC-MSCT-ms</module>
         <module>HC-MON-ms</module>
         <module>HC-HTGL-ms</module>
+        <module>HC-EUREKA-ms</module>
     </modules>
     <dependencyManagement>
         <dependencies>

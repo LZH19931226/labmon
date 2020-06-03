@@ -8,7 +8,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8086/eureka/
 server:
-  port: 8086
+  port: '8086'
 spring:
   application:
     name: HC-EUREKA-ms

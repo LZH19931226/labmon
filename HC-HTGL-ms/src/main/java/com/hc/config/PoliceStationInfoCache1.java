@@ -99,8 +99,6 @@ public class PoliceStationInfoCache1 implements CommandLineRunner {
                 }
             }
         }
-        log.info("慢慢解决");
-
     }
 
 }
