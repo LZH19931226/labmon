@@ -24,6 +24,7 @@
         <module>HC-MSWK-ms</module>
         <module>HC-MSCT-ms</module>
         <module>HC-MON-ms</module>
+        <module>HC-HTGL-ms</module>
     </modules>
     <dependencyManagement>
         <dependencies>
