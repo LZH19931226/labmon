@@ -10,6 +10,23 @@
 	<artifactId>HC-MON-ms</artifactId>
 	<packaging>jar</packaging>
 	<dependencies>
+
+		<dependency>
+			<groupId>com.hc</groupId>
+			<artifactId>hc-common-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hc</groupId>
+			<artifactId>hc-common-web</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hc</groupId>
+			<artifactId>hc-common-data</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -23,11 +40,7 @@
 			<artifactId>aliyun-java-sdk-dm</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>2.9.0</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-dyvmsapi</artifactId>
@@ -51,12 +64,7 @@
 			<version>1.2.3</version>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
@@ -128,11 +136,7 @@
 			<artifactId>easypoi-annotation</artifactId>
 			<version>3.0.3</version>
 		</dependency>
-		<!-- redis缓存服务器 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
+
 	<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
@@ -144,10 +148,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
 		</dependency>
-		<dependency>
-            <groupId>org.springframework.boot</groupId>  
-            <artifactId>spring-boot-starter-web</artifactId>  
-        </dependency>
+
 	</dependencies>
 
 
