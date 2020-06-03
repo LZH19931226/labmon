@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.InstrumentParamConfigInfoMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="ShowInsParamConfigInfos" parameterType="com.hc.model.ResponseModel.EquipmentConfigInfoModel" resultType="com.hc.model.ResponseModel.InstrumentParamConfigInfos">
+    select
+    b.equipmentname,
+    b.equipmentno,
+    ifnull(b.clientvisible,'0') clientvisible
+    from hospitalequiment a left join monitorequipment b on a.equipmenttypeid = b.equipmenttypeid and a.hospitalcode=b.hospitalcode
+    where ifnull(a.isvisible,'0') = '1'  and a.hospitalcode = #{hospitalcode} and a.equipmenttypeid = #{equipmenttypeid}  order by  b.equipmentname,b.clientvisible desc
+</select>
+    <select id="ShowInsParamConfigInfo" parameterType="java.lang.String" resultType="com.hc.model.ResponseModel.InstrumentParamConfigInfo">
+    select
+b.equipmentname,
+e.instrumentconfigname,
+d.instrumentparamconfigNO,
+d.warningphone,
+c.sn
+from  monitorequipment b
+                        left join monitorinstrument c on b.equipmentno = c.equipmentno
+					    left join instrumentparamconfig d on c.instrumentno = d.instrumentno
+						left join instrumentconfig e on d.instrumentconfigid = e.instrumentconfigid
+                        where b.equipmentno = #{equipmentno}
+    </select>
+
+
+
+</mapper>

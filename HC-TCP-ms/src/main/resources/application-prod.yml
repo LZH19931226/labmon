@@ -1,0 +1,32 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: HC-TCP-ms
+  #redis配置信息
+  redis:
+       host: 127.0.0.1
+       port: 6379
+       pool:
+         max-active: 200
+         max-idle: 100
+       timeout: 10000
+  rabbitmq:
+    host: 119.3.93.146
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        default-requeue-rejected: true
+#socket配置信息
+netty:
+  ip: 127.0.0.1
+  port: 8080
+  bossGroupCount: 4
+  wokerGroupCount: 8
+  keepAlive: true
+  backlog: 1024
+##delphi 无线数据接收服务地址off:1 开 2关
+#delphi:
+#  offKey: 1

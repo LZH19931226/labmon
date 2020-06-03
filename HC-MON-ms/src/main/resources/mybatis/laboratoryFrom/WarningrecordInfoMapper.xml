@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.WarningrecordInfoMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="getNewWarnRecord" parameterType="com.hc.model.PageUserModel" resultType="com.hc.model.NewWarningRecord">
+SELECT
+	distinct(e.inputdatetime) inputdatetime,
+	a.equipmenttypeid,
+	a.equipmentno,
+	a.equipmentname,
+	b.instrumentno,
+	c.instrumentconfigid,
+	c.instrumentparamconfigNO,
+	d.instrumentconfigname,
+	a.hospitalcode,
+	e.warningremark
+FROM
+	monitorequipment a
+LEFT JOIN monitorinstrument b ON a.equipmentno = b.equipmentno
+LEFT JOIN instrumentparamconfig c ON b.instrumentno = c.instrumentno
+LEFT JOIN instrumentconfig d ON c.instrumentconfigid = d.instrumentconfigid
+RIGHT JOIN warningrecord e ON c.instrumentparamconfigNO = e.instrumentparamconfigNO
+INNER JOIN (
+	SELECT
+		instrumentparamconfigNO,
+		max(inputdatetime) inputdatetime
+	FROM
+		warningrecord
+	GROUP BY
+		instrumentparamconfigNO
+	ORDER BY
+		inputdatetime DESC
+) f ON (
+	c.instrumentparamconfigNO = f.instrumentparamconfigNO
+	AND e.inputdatetime = f.inputdatetime
+
+)
+
+WHERE
+	a.hospitalcode = #{hospitalcode}
+AND ifnull(a.clientvisible, '0') = '1'
+and ifnull(c.warningphone,'0') = '1'
+ -- and e.isPhone = '1'
+ORDER BY
+	inputdatetime DESC
+</select>
+</mapper>

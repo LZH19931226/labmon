@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.OperationlogdetaiMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="getAllOperationLogInfo" parameterType="com.hc.entity.Operationlog" resultMap="log">
+  SELECT
+	t1.*
+FROM
+	operationlog t1
+
+<where>
+    '1' = '1'
+    <if test="hospitalname !=null">
+    and t1.hospitalname = #{hospitalname}
+    </if>
+    <if test = "opeartiontype !=null">
+    and t1.opeartiontype = #{opeartiontype}
+    </if>
+    <if test = "functionname !=null">
+    and t1.functionname = #{functionname}
+    </if>
+    <if test = "username !=null">
+    and t1.username = #{username}
+    </if>
+
+
+    and str_to_date(t1.operationtime,'%Y-%m-%d') between #{begintime} and #{endtime}
+
+    order by t1.operationtime desc
+</where>
+
+</select>
+<resultMap id="log" type="com.hc.entity.Operationlog">
+    <result column="hospitalname" property="hospitalname"/>
+    <result column="opeartiontype" property="opeartiontype"/>
+    <result column="functionname" property="functionname"/>
+    <result column="username" property="username"/>
+    <result column="operationtime" property="operationtime"/>
+    <result column="equipmentname" property="equipmentname"/>
+    <result column="logid" property="logid"/>
+</resultMap>
+
+
+</mapper>

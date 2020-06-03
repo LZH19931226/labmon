@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.HospitalInfoMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="selectHospitalInfoPage"  parameterType= "java.util.Map" resultType="com.hc.entity.Hospitalofreginfo" >
+    select * from Hospitalofreginfo
+    <where>
+        '1'='1'
+        <if test="fuzzy!=null">
+         and   hospitalname like #{fuzzy}
+        </if>
+
+    </where>
+    order by hospitalname desc
+</select>
+
+
+
+</mapper>

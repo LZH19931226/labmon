@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.RepairinfoMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="getPageInfo" parameterType="com.hc.entity.Repairinfo" resultType="com.hc.entity.Repairinfo">
+  SELECT
+	t1.*
+FROM
+    repairinfo t1
+
+<where>
+    '1' = '1'
+    <if test="hospitalname !=null">
+    and t1.hospitalname = #{hospitalname}
+    </if>
+    <if test = "repairtype !=null">
+and t1.repairtype = #{repairtype}
+    </if>
+    <if test = "equipmentname !=null">
+    and t1.equipmentname = #{equipmentname}
+    </if>
+    <if test = "equipmenttype !=null">
+    and t1.equipmenttype = #{equipmenttype}
+    </if>
+    and str_to_date(t1.repairdate,'%Y-%m-%d') between #{beginDate} and #{endDate}
+
+    order by t1.repairdate desc
+</where>
+
+</select>
+
+
+
+</mapper>

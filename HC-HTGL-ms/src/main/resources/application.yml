@@ -1,0 +1,104 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://39.104.178.216:8086/eureka/
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8097
+spring:
+  application:
+    name: HC-HTGL-ms
+  datasource:
+           primary:
+               url: jdbc:mysql://39.104.102.191:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               driver-class-name: com.mysql.jdbc.Driver
+               username: hclh
+               password: 123456
+               initial-size: 1
+               max-idle: 20
+               max-active: 20
+               test-on-borrow: true
+               max-wait: 60000
+               time-between-eviction-runs-millis: 60000
+               min-evictable-idle-time-millis: 300000
+               validation-query: SELECT 1 FROM DUAL
+               test-While-Idle: true
+               test-on-return: false
+               pool-prepared-statements: false
+               max-pool-prepared-statement-per-connection-size: 20
+               filters: stat,wall,log4j,config
+           secondary:
+               url: jdbc:mysql://39.104.102.191:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               driver-class-name: com.mysql.jdbc.Driver
+               username: hclh
+               password: 123456
+               initial-size: 1
+               max-idle: 20
+               max-active: 20
+               test-on-borrow: true
+               max-wait: 60000
+               time-between-eviction-runs-millis: 60000
+               min-evictable-idle-time-millis: 300000
+               validation-query: SELECT 1 FROM DUAL
+               test-While-Idle: true
+               test-on-return: false
+               pool-prepared-statements: false
+               max-pool-prepared-statement-per-connection-size: 20
+               filters: stat,wall,log4j,config
+           thirdly:
+               url: jdbc:mysql://39.104.102.191:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               driver-class-name: com.mysql.jdbc.Driver
+               username: hclh
+               password: 123456
+               initial-size: 1
+               max-idle: 20    #最大空闲连接数
+               max-active: 20   #最大连接数
+               test-on-borrow: true
+               max-wait: 60000   #等待时间
+               time-between-eviction-runs-millis: 60000
+               min-evictable-idle-time-millis: 300000
+               validation-query: SELECT 1 FROM DUAL
+               test-While-Idle: true
+               test-on-return: false
+               pool-prepared-statements: false
+               max-pool-prepared-statement-per-connection-size: 20
+               filters: stat,wall,log4j,config
+  jpa:
+               show-sql: true
+               hibernate:
+                 naming:
+                   physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#  redis:
+#        host: 39.104.178.216
+#        port: 6379
+#        pool:
+#          max-active: 200
+#          max-idle: 100
+#        timeout: 10000
+  redis:
+    cluster:
+      nodes: 172.24.58.144:6380,172.24.58.145:6380,172.24.58.146:6380
+      max-redirects: 3
+    timeout: 60000
+    pool:
+      max-active: 300
+      maxIdle: 100 #最大空闲连接数
+      minIdle: 20 #最小空闲连接数
+      maxWait: -1
+mybatis:   ## 可指定多个，用逗号或者分号隔开
+    config-location: classpath:mybatis/MapperConfig.xml
+    typeAliasesPackage: com.hc.entity
+    mapperLocations: classpath:mybatis/sql/*.xml
+logging:
+    config: classpath:logback-spring.xml
+
+system:
+    publicPath: api/userBackInfo/userLogin
+    tempFilePath: d:\file\temp
+  # pageHelp 分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+

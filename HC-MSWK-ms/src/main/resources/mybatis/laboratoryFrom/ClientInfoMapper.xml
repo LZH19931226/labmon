@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.ClientInfoMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="selectUserInfoPage" parameterType="com.hc.model.MapperModel.PageUserModel" resultType="com.hc.model.ResponseModel.ClientInfoModel">
+select
+a.hospitalname,
+a.hospitalcode,
+b.isuse,
+b.phonenum,
+b.pwd,
+b.username,
+b.userid
+from hospitalofreginfo a left join userright b on a.hospitalcode=b.hospitalcode
+    <where>
+        '1'='1'
+        <if test="hospitalcode!=null">
+            and a.hospitalcode = #{hospitalcode}
+        </if>
+        <if test="fuzzy!=null">
+            and b.username like #{fuzzy} or b.userid  like #{fuzzy}
+        </if>
+
+    </where>
+
+</select>
+
+
+
+</mapper>

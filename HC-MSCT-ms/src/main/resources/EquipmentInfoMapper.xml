@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.EquipmentInfoMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+
+
+
+    <select id="getHJExcleInfo" parameterType="com.hc.model.Params" resultMap="singleHj">
+
+        select
+        t2.equipmentname,
+        DATE_FORMAT(t1.inputdatetime, '%Y-%m-%d %H:%i') inputdatetime ,
+        t1.currenttemperature,  -- 温度
+        t1.currentcarbondioxide, -- co2
+        t1.currento2,  -- o2
+        t1.currentairflow,  -- 气流  压力
+        --      b.currentdoorstate, 开关门记录暂时不做记录
+        t1.currenthumidity,  -- 湿度
+        t1.currentvoc,  -- 空气质量  voc
+        t1.currentformaldehyde, -- 甲醛
+        t1.currentpm25,  -- pm2.5
+        t1.currentpm10,   -- pm10
+        t1.currentpm05,
+        t1.currentpm5
+        from ${search} t1 left join monitorequipment t2 on t1.equipmentno = t2.equipmentno   where
+        t1.equipmentno = #{equipmentno} and str_to_date(inputdatetime,'%Y-%m-%d') BETWEEN #{startdate}
+        AND #{enddate} order by inputdatetime
+
+    </select>
+    <resultMap id="singleHj" type="com.hc.model.ExcleInfoModel.EnvironmentListModel">
+        <result column="equipmentname" property="equipmentname" />
+        <collection property="environmentModelList" ofType="com.hc.model.ExcleInfoModel.EnvironmentModel">
+            <result column="inputdatetime" property="inputdatetime" />
+            <result column="currenttemperature" property="currenttemperature" />
+            <result column="currentcarbondioxide" property="currentcarbondioxide"/>
+            <result column="currento2" property="currento2"/>
+            <result column="currentairflow" property="currentairflow"/>
+            <result column="currenthumidity" property="currenthumidity"/>
+            <result column="currentvoc" property="currentvoc"/>
+            <result column="currentformaldehyde" property="currentformaldehyde"/>
+            <result column="currentpm25" property="currentpm25"/>
+            <result column="currentpm10" property="currentpm10"/>
+            <result column="currentpm5" property="currentpm5"/>
+            <result column="currentpm05" property="currentpm05"/>
+        </collection>
+    </resultMap>
+    <select id="getHJExcleInfoById" parameterType="com.hc.model.CurvelReqeustModel" resultMap="hj">
+
+        select
+		t1.equipmentname,
+        DATE_FORMAT(t2.inputdatetime, '%Y-%m-%d %H:%i') inputdatetime ,
+        t2.currenttemperature,  -- 温度
+        t2.currentcarbondioxide, -- co2
+        t2.currento2,  -- o2
+        t2.currentairflow,  -- 气流  压力
+        --      b.currentdoorstate, 开关门记录暂时不做记录
+        t2.currenthumidity,  -- 湿度
+        t2.currentvoc,  -- 空气质量  voc
+        t2.currentformaldehyde, -- 甲醛
+        t2.currentpm25,  -- pm2.5
+        t2.currentpm10,   -- pm10
+        t2.currentpm05,
+        t2.currentpm5
+        from  monitorequipment t1 left join ${search} t2 on t1.equipmentno = t2.equipmentno
+        where t1.equipmenttypeid = #{equipmenttypeid} and t1.hospitalcode = #{hospitalcode}
+         and  str_to_date(t2.inputdatetime,'%Y-%m-%d') BETWEEN #{startdate}
+        AND #{enddate}
+
+    </select>
+    <resultMap id="hj" type="com.hc.model.ExcleInfoModel.EnvironmentListModel">
+        <result column="equipmentname" property="equipmentname" />
+        <collection property="environmentModelList" ofType="com.hc.model.ExcleInfoModel.EnvironmentModel">
+            <result column="inputdatetime" property="inputdatetime" />
+            <result column="currenttemperature" property="currenttemperature" />
+            <result column="currentcarbondioxide" property="currentcarbondioxide"/>
+            <result column="currento2" property="currento2"/>
+            <result column="currentairflow" property="currentairflow"/>
+            <result column="currenthumidity" property="currenthumidity"/>
+            <result column="currentvoc" property="currentvoc"/>
+            <result column="currentformaldehyde" property="currentformaldehyde"/>
+            <result column="currentpm25" property="currentpm25"/>
+            <result column="currentpm10" property="currentpm10"/>
+            <result column="currentpm5" property="currentpm5"/>
+            <result column="currentpm05" property="currentpm05"/>
+        </collection>
+    </resultMap>
+    <select id="getPyxExcleInfo" parameterType="com.hc.model.Params" resultMap="singlePyx">
+
+        select
+        t2.equipmentname,
+        DATE_FORMAT(t1.inputdatetime, '%Y-%m-%d %H:%i') inputdatetime ,
+        t1.currenttemperature,  -- 温度
+        t1.currentcarbondioxide, -- co2
+        t1.currento2,  -- o2
+        t1.currentairflow1,  -- 培养箱气流  压力
+        --      b.currentdoorstate, 开关门记录暂时不做记录
+        t1.currenthumidity,  -- 湿度
+        t1.currentlefttemperature,  -- 左舱室温度
+        t1.currentrigthtemperature, -- 右舱室温度
+        t1.currenttemperature1,
+        t1.currenttemperature2,
+        t1.currenttemperature3,
+        t1.currenttemperature4,
+        t1.currenttemperature5
+
+
+        from ${search} t1 left join monitorequipment t2 on t1.equipmentno = t2.equipmentno   where
+        t1.equipmentno = #{equipmentno} and str_to_date(inputdatetime,'%Y-%m-%d') BETWEEN #{startdate}
+        AND #{enddate} order by inputdatetime
+
+    </select>
+    <resultMap id="singlePyx" type="com.hc.model.ExcleInfoModel.IncubatorListModel">
+        <result column="equipmentname" property="equipmentname" />
+        <collection property="incubatorModelList" ofType="com.hc.model.ExcleInfoModel.IncubatorModel">
+            <result column="inputdatetime" property="inputdatetime" />
+            <result column="currenttemperature" property="currenttemperature" />
+            <result column="currentcarbondioxide" property="currentcarbondioxide"/>
+            <result column="currento2" property="currento2"/>
+            <result column="currentairflow1" property="currentairflow1"/>
+            <result column="currenthumidity" property="currenthumidity"/>
+            <result column="currentlefttemperature" property="currentlefttemperature"/>
+            <result column="currentrigthtemperature" property="currentrigthtemperature"/>
+            <result column="currenttemperature1" property="currenttemperature1"/>
+            <result column="currenttemperature2" property="currenttemperature2"/>
+            <result column="currenttemperature3" property="currenttemperature3"/>
+            <result column="currenttemperature4" property="currenttemperature4"/>
+            <result column="currenttemperature5" property="currenttemperature5"/>
+        </collection>
+    </resultMap>
+    <select id="getPyxExcleInfoById" parameterType="com.hc.model.Params" resultMap="pyx">
+
+        select
+        t2.equipmentname,
+        DATE_FORMAT(t1.inputdatetime, '%Y-%m-%d %H:%i') inputdatetime ,
+        t1.currenttemperature,  -- 温度
+        t1.currentcarbondioxide, -- co2
+        t1.currento2,  -- o2
+        t1.currentairflow1,  -- 培养箱气流  压力
+        --      b.currentdoorstate, 开关门记录暂时不做记录
+        t1.currenthumidity,  -- 湿度
+        t1.currentlefttemperature,  -- 左舱室温度
+        t1.currentrigthtemperature, -- 右舱室温度
+        t1.currenttemperature1,
+        t1.currenttemperature2,
+        t1.currenttemperature3,
+        t1.currenttemperature4,
+        t1.currenttemperature5
+
+
+        from ${search} t1 left join monitorequipment t2 on t1.equipmentno = t2.equipmentno   where
+        t2.equipmenttypeid = #{equipmenttypeid} and t2.hospitalcode = #{hospitalcode} and str_to_date(inputdatetime,'%Y-%m-%d') BETWEEN #{startdate}
+        AND #{enddate} order by inputdatetime
+
+    </select>
+    <resultMap id="pyx" type="com.hc.model.ExcleInfoModel.IncubatorListModel">
+        <result column="equipmentname" property="equipmentname" />
+        <collection property="incubatorModelList" ofType="com.hc.model.ExcleInfoModel.IncubatorModel">
+            <result column="inputdatetime" property="inputdatetime" />
+            <result column="currenttemperature" property="currenttemperature" />
+            <result column="currentcarbondioxide" property="currentcarbondioxide"/>
+            <result column="currento2" property="currento2"/>
+            <result column="currentairflow1" property="currentairflow1"/>
+            <result column="currenthumidity" property="currenthumidity"/>
+            <result column="currentlefttemperature" property="currentlefttemperature"/>
+            <result column="currentrigthtemperature" property="currentrigthtemperature"/>
+            <result column="currenttemperature1" property="currenttemperature1"/>
+            <result column="currenttemperature2" property="currenttemperature2"/>
+            <result column="currenttemperature3" property="currenttemperature3"/>
+            <result column="currenttemperature4" property="currenttemperature4"/>
+            <result column="currenttemperature5" property="currenttemperature5"/>
+        </collection>
+    </resultMap>
+    <select id="getOtherExcleInfo" parameterType="com.hc.model.Params" resultMap="singleOther">
+
+            select
+        t2.equipmentname,
+        DATE_FORMAT(t1.inputdatetime, '%Y-%m-%d %H:%i') inputdatetime ,
+        t1.currenttemperature  -- 温度
+
+
+        from ${search} t1 left join monitorequipment t2 on t1.equipmentno = t2.equipmentno   where
+        t1.equipmentno = #{equipmentno} and str_to_date(inputdatetime,'%Y-%m-%d') BETWEEN #{startdate}
+        AND #{enddate} order by inputdatetime
+
+    </select>
+    <resultMap id="singleOther" type="com.hc.model.ExcleInfoModel.OtherListModel">
+        <result column="equipmentname" property="equipmentname" />
+        <collection property="otherModels" ofType="com.hc.model.ExcleInfoModel.OtherModel">
+            <result column="inputdatetime" property="inputdatetime" />
+            <result column="currenttemperature" property="currenttemperature" />
+        </collection>
+    </resultMap>
+    <select id="getOtherExcleInfoById" parameterType="com.hc.model.Params" resultMap="other">
+
+        select
+        t2.equipmentname,
+        DATE_FORMAT(t1.inputdatetime, '%Y-%m-%d %H:%i') inputdatetime ,
+        t1.currenttemperature  -- 温度
+
+
+        from ${search} t1 left join monitorequipment t2 on t1.equipmentno = t2.equipmentno   where
+        t2.equipmenttypeid = #{equipmenttypeid} and t2.hospitalcode = #{hospitalcode} and str_to_date(inputdatetime,'%Y-%m-%d') BETWEEN #{startdate}
+        AND #{enddate} order by inputdatetime
+
+    </select>
+    <resultMap id="other" type="com.hc.model.ExcleInfoModel.OtherListModel">
+        <result column="equipmentname" property="equipmentname" />
+        <collection property="otherModels" ofType="com.hc.model.ExcleInfoModel.OtherModel">
+            <result column="inputdatetime" property="inputdatetime" />
+            <result column="currenttemperature" property="currenttemperature" />
+        </collection>
+    </resultMap>
+
+</mapper>
