@@ -288,6 +288,8 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentparamconfig.setInstrumentparamconfigno(instrumentparamconfigNO);
             instrumentparamconfig.setAlarmtime(alarmtime);
             instrumentparamconfig.setCalibration(calibration);
+            Instrumentparamconfig one2 = instrumentParamConfigDao.getOne(instrumentparamconfigNO);
+            instrumentparamconfig.setFirsttime(one2.getFirsttime());
             instrumentparamconfig = instrumentParamConfigDao.save(instrumentparamconfig);
             InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
             objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
