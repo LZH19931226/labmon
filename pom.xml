@@ -22,6 +22,7 @@
         <module>HC-ZULL-ms</module>
         <module>HC-TCP-ms</module>
         <module>HC-MSWK-ms</module>
+        <module>HC-MSCT-ms</module>
     </modules>
     <dependencyManagement>
         <dependencies>

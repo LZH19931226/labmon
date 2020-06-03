@@ -7,14 +7,15 @@ spring:
         serviceId: HC-MSCT-ms
         enabled: true
   rabbitmq:
-    host: 119.3.93.146
+    host: 39.104.102.191
     port: 5672
-    username: guest
-    password: guest
+    username: hc
+    password: 123456
+    virtual-host: HCMQ
   datasource:
-      url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://39.104.102.191:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
       driver-class-name: com.mysql.jdbc.Driver
-      username: hc
+      username: hclh
       password: 123456
       initialSize: 5
       minIdle: 5
@@ -39,13 +40,23 @@ spring:
         enabled: detect
 
 
+#  redis:
+#      host: 39.104.53.171
+#      port: 6379
+#      pool:
+#        max-active: 1200
+#        max-idle: 100
+#      timeout: 10000
   redis:
-      host: 127.0.01
-      port: 6379
-      pool:
-        max-active: 1200
-        max-idle: 100
-      timeout: 10000
+    cluster:
+      nodes: 172.24.58.144:6380,172.24.58.145:6380,172.24.58.146:6380
+      max-redirects: 3
+    timeout: 60000
+    pool:
+      max-active: 300
+      maxIdle: 100 #最大空闲连接数
+      minIdle: 20 #最小空闲连接数
+      maxWait: -1
 server:
   port: 8093
 #  ssl:
@@ -64,7 +75,7 @@ eureka:
 #    lease-expiration-duration-in-seconds: 30
   client:
     serviceUrl:
-      defaultZone: http://localhost:8086/eureka/
+      defaultZone: http://39.104.178.216:8086/eureka/
 sms:
    product: Dysmsapi                                            ##产品名称:云通信短信API产品,开发者无需替换
    domain: dysmsapi.aliyuncs.com                                ##产品域名,开发者无需替换
