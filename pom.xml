@@ -23,6 +23,7 @@
         <module>HC-TCP-ms</module>
         <module>HC-MSWK-ms</module>
         <module>HC-MSCT-ms</module>
+        <module>HC-MON-ms</module>
     </modules>
     <dependencyManagement>
         <dependencies>

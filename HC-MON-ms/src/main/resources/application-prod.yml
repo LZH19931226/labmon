@@ -1,3 +1,4 @@
+
 spring:
 #  jackson:
 #    time-zone: GMT+8
@@ -9,18 +10,29 @@ spring:
       max-request-size: 1000MB
   application:
     name: HC-MON-ms
+
+#  redis:
+#    host: 39.104.178.216
+#    port: 6379
+#    pool:
+#      max-active: 200
+#      max-idle: 100
+#    timeout: 10000
   redis:
-    host: 127.0.0.1
-    port: 6379
+    cluster:
+      nodes: 172.24.58.144:6380,172.24.58.145:6380,172.24.58.146:6380
+      max-redirects: 3
+    timeout: 60000
     pool:
-      max-active: 200
-      max-idle: 100
-    timeout: 10000
+      max-active: 300
+      maxIdle: 100 #最大空闲连接数
+      minIdle: 20 #最小空闲连接数
+      maxWait: -1
   datasource:
         primary:
-            url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://39.104.102.191:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
             driver-class-name: com.mysql.jdbc.Driver
-            username: hc
+            username: hclh
             password: 123456
             initialSize: 5
             minIdle: 5
@@ -36,7 +48,7 @@ spring:
             maxPoolPreparedStatementPerConnectionSize: 20
             cachePrepStmts: true
         secondary:
-            url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://39.104.178.216:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
             driver-class-name: com.mysql.jdbc.Driver
             username: hc
             password: 123456
@@ -54,9 +66,9 @@ spring:
             maxPoolPreparedStatementPerConnectionSize: 20
             cachePrepStmts: true
         thirdly:
-            url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://39.104.102.191:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
             driver-class-name: com.mysql.jdbc.Driver
-            username: hc
+            username: hclh
             password: 123456
             initialSize: 5
             minIdle: 5
@@ -80,7 +92,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8086/eureka/
+      defaultZone: http://39.104.178.216:8086/eureka/
 server:
   port: 8094
 # mybatis
