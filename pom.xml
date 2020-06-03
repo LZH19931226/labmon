@@ -21,6 +21,7 @@
     <modules>
         <module>HC-ZULL-ms</module>
         <module>HC-TCP-ms</module>
+        <module>HC-MSWK-ms</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -38,11 +39,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
