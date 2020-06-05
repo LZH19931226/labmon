@@ -87,8 +87,12 @@ public class LastDataServiceImpl implements LastDataService {
                 List<Instrumentparamconfig> collect = instrumentparamconfigByEquipmentno.stream().filter(s -> s.getInstrumentconfigid() == 2).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(collect)) {
                     collect.forEach(s -> {
+                                // 氧气探头
+
                                 Date firsttime1 = s.getFirsttime();
+                        log.info("氧气探头上传时间:"+JsonUtil.toJson(firsttime1));
                                 if (null == firsttime1) {
+                                    log.info("插入氧气探头上传时间:"+JsonUtil.toJson(new Date()));
                                     s.setFirsttime(new Date());
                                     instrumentParamConfigDao.saveAndFlush(s);
                                 }
@@ -373,7 +377,7 @@ public class LastDataServiceImpl implements LastDataService {
     }
 
     public boolean tempMax(String temp, String temp1, String equipmentTypeid, String pc) {
-        if (!StringUtils.endsWithAny(equipmentTypeid, "2", "3")) {
+        if (!StringUtils.equalsAny(equipmentTypeid, "2", "3")) {
             return true;
         }
 
