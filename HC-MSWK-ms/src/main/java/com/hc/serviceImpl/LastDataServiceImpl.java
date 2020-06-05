@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -150,6 +147,14 @@ public class LastDataServiceImpl implements LastDataService {
 //            }
 
         }
+
+    }
+    public static void main(String [] args){
+        List<String> list = new ArrayList<>();
+        list.add("2");
+        list.add("3");
+        List<String> collect = list.stream().filter(s -> s.matches("2") ).collect(Collectors.toList());
+        System.out.println(collect);
 
     }
 
@@ -368,7 +373,7 @@ public class LastDataServiceImpl implements LastDataService {
     }
 
     public boolean tempMax(String temp, String temp1, String equipmentTypeid, String pc) {
-        if (!StringUtils.equalsAny(equipmentTypeid, "2", "3")) {
+        if (!StringUtils.endsWithAny(equipmentTypeid, "2", "3")) {
             return true;
         }
 
