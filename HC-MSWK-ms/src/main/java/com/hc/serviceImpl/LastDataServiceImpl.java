@@ -134,8 +134,8 @@ public class LastDataServiceImpl implements LastDataService {
                     log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
                     //   Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdds(monitorequipmentlastdata1, monitorequipmentlastdata);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
-                    monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
-                    service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
+              //      monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
+                    service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata));
                     objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
                 } else {
                     //数据更新
