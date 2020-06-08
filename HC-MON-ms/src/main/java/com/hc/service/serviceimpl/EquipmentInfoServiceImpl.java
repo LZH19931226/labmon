@@ -250,7 +250,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         LOGGER.info("当前值：" + o);
         boolean flags = false;
         if (StringUtils.isNotEmpty(o)) {
-            flags = true;
+            flags = false;
         }
         ApiResponse<CurveInfoModel> apiResponse = new ApiResponse<CurveInfoModel>();
         CurveInfoModel curveInfoModel = new CurveInfoModel();
