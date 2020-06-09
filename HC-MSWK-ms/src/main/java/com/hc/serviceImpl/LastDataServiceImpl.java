@@ -129,6 +129,20 @@ public class LastDataServiceImpl implements LastDataService {
                 }
             } else {
                 //其余医院十分钟
+                String equipmentlastdata = monitorequipmentlastdata1.getEquipmentlastdata();
+                if (StringUtils.isNotEmpty(equipmentlastdata)){
+                    //非空  直接 新增一条数据
+                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
+                    if (StringUtils.equals(equipmentTypeId, "1")) {
+                        Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
+                        monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
+                        monitorequipmentlastdata2.setEquipmentlastdata(null);
+                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
+                    } else {
+                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
+                    }
+                    return;
+                }
                 if (datePoor > 9.7) {
                     //数据插入
                     log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
