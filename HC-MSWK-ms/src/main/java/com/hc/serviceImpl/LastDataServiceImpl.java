@@ -22,7 +22,10 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -87,12 +90,8 @@ public class LastDataServiceImpl implements LastDataService {
                 List<Instrumentparamconfig> collect = instrumentparamconfigByEquipmentno.stream().filter(s -> s.getInstrumentconfigid() == 2).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(collect)) {
                     collect.forEach(s -> {
-                                // 氧气探头
-
                                 Date firsttime1 = s.getFirsttime();
-                        log.info("氧气探头上传时间:"+JsonUtil.toJson(firsttime1));
                                 if (null == firsttime1) {
-                                    log.info("插入氧气探头上传时间:"+JsonUtil.toJson(new Date()));
                                     s.setFirsttime(new Date());
                                     instrumentParamConfigDao.saveAndFlush(s);
                                 }
@@ -101,6 +100,7 @@ public class LastDataServiceImpl implements LastDataService {
                 }
 
             }
+
             monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
             objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
 
@@ -129,14 +129,26 @@ public class LastDataServiceImpl implements LastDataService {
                 }
             } else {
                 //其余医院十分钟
-                if (datePoor > 10.5) {
+                if (datePoor > 9.7) {
                     //数据插入
                     log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
                     //   Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdds(monitorequipmentlastdata1, monitorequipmentlastdata);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
                     monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
-                    service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
-                    objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
+                    //咸宁医学院判断
+                    if (StringUtils.equals(hospitalcode, "166ce81489f84901bdae7a470874df58")) {
+                        service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata));
+                    } else {
+                        service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
+                    }
+                    if (StringUtils.equals(equipmentTypeId, "1")) {
+                        Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
+                        monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
+                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
+                    } else {
+                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
+                    }
+
                 } else {
                     //数据更新
                     log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
@@ -145,20 +157,9 @@ public class LastDataServiceImpl implements LastDataService {
                     objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
                 }
             }
-//            }catch (Exception e){
-//                log.error("插入历史数据失败：当前值："+JsonUtil.toJson(monitorequipmentlastdata)+"原因："+e.getMessage());
-//                return;
-//            }
+
 
         }
-
-    }
-    public static void main(String [] args){
-        List<String> list = new ArrayList<>();
-        list.add("2");
-        list.add("3");
-        List<String> collect = list.stream().filter(s -> s.matches("2") ).collect(Collectors.toList());
-        System.out.println(collect);
 
     }
 
