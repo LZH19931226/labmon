@@ -1,6 +1,6 @@
 package com.hc.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,7 +28,6 @@ public class Monitorequipmentlastdata implements Serializable {
     /**
      * 记录时间
      */
-    //@JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date inputdatetime;
     /**
      * 医院编号
@@ -84,11 +83,23 @@ public class Monitorequipmentlastdata implements Serializable {
      * 当前PM2_5
      */
     private String currentpm25;
+    /**
+     * 培养箱气流
+     */
+    private String currentairflow1;
 
     /**
      * 当前PM10
      */
     private String currentpm10;
+    /**
+     * 当前PM0.5
+     */
+    private String currentpm05;
+    /**
+     * 当前PM5
+     */
+    private String currentpm5;
 
     /**
      * 当前市电是否异常
@@ -99,6 +110,45 @@ public class Monitorequipmentlastdata implements Serializable {
      * 当前电量
      */
     private String currentqc;
+
+    private String currenttemperature1;
+    private String currenttemperature2;
+
+    private String currenttemperature3;
+
+    private String currenttemperature4;
+
+    private String currenttemperature5;
+
+    private String currenttemperature6;
+
+    private String currenttemperature7;
+
+    private String currenttemperature8;
+
+    private String currenttemperature9;
+
+    private String currenttemperature10;
+
+    private String currentlefttemperature;
+
+    private String currentrigthtemperature;
+
+    private String currenttemperaturediff;
+    @ApiModelProperty("左盖板温度")
+    private String currentleftcovertemperature;
+    @ApiModelProperty("左底板温度")
+    private String currentleftendtemperature;
+    @ApiModelProperty("左气流")
+    private String currentleftairflow;
+    @ApiModelProperty("右盖板温度")
+    private String currentrightcovertemperature;
+    @ApiModelProperty("右底板温度")
+    private String currentrightendtemperature;
+    @ApiModelProperty("右气流")
+    private String currentrightairflow;
+
+    private String currentn2;
 
     private static final long serialVersionUID = 1L;
 

@@ -2,14 +2,16 @@ package com.hc.listenter;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.dyvmsapi.model.v20170525.SingleCallByTtsResponse;
-import com.hc.bean.Monitorequipmentlastdata;
+import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.bean.Userright;
 import com.hc.bean.WarningModel;
 import com.hc.bean.WarningMqModel;
 import com.hc.config.RedisTemplateUtil;
+import com.hc.dao.MonitorequipmentlastdataDao;
 import com.hc.dao.SendrecordDao;
 import com.hc.dao.UserrightDao;
 import com.hc.dao.WarningrecordDao;
+import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Sendrecord;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.model.TimeoutEquipment;
@@ -52,10 +54,15 @@ public class SocketMessageListener {
     @Autowired
     private SendrecordDao sendrecordDao;
 
+    @Autowired
+    private MonitorequipmentlastdataDao monitorequipmentlastdataDao;
+
     //监听报警信息
     @StreamListener(BaoJinMsg.EXCHANGE_NAME)
     public void onMessage1(String messageContent) {
         WarningMqModel mQmodel = JsonUtil.toBean(messageContent, WarningMqModel.class);
+        Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
+
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME + "获取到的数据" + JsonUtil.toJson(mQmodel));
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
@@ -86,9 +93,11 @@ public class SocketMessageListener {
             LOGGER.error("更新报警信息失败：" + e.getMessage());
         }
         //获取电话
+        boolean flag = false;
         for (Userright userright : list) {
             // 发送短信
             if (StringUtils.isNotEmpty(userright.getPhonenum()) && !" ".equals(userright.getPhonenum())) {
+                flag = true;
                 LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
                 sendMesService.callPhone(userright.getPhonenum(), equipmentname);
                 Sendrecord sendrecord = new Sendrecord();
@@ -105,6 +114,22 @@ public class SocketMessageListener {
                 sendrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                 sendrecord.setSendtype("0");
                 sendrecordDao.save(sendrecord);
+            }
+            if (flag) {
+                //拨打电话
+                HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+
+                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorinstrument.getEquipmentno());
+                if (StringUtils.isNotEmpty(lastdata)) {
+                    //报警电话信息处理
+                    Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+                    monitorequipmentlastdata1.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                    monitorequipmentlastdata1.setInputdatetime(new Date());
+                    monitorequipmentlastdata1.setEquipmentlastdata("1");
+                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
+                    objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
+                }
+
             }
 
         }
@@ -129,6 +154,7 @@ public class SocketMessageListener {
     @StreamListener(BaoJinMsg.EXCHANGE_NAME1)
     public void onMessage2(String messageContent) {
         WarningMqModel mQmodel = JsonUtil.toBean(messageContent, WarningMqModel.class);
+        Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME1 + "获取到的数据" + JsonUtil.toJson(mQmodel));
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
@@ -156,9 +182,11 @@ public class SocketMessageListener {
             LOGGER.error("更新报警信息失败：" + e.getMessage());
         }
         //获取电话
+        boolean flag =false;
         for (Userright userright : list) {
             // 发送短信
             if (StringUtils.isNotEmpty(userright.getPhonenum())) {
+                flag = true;
                 LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
                 sendMesService.callPhone(userright.getPhonenum(), equipmentname);
                 Sendrecord sendrecord = new Sendrecord();
@@ -176,6 +204,22 @@ public class SocketMessageListener {
                 sendrecordDao.save(sendrecord);
                 LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
             }
+        }
+        if (flag) {
+            //拨打电话
+            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorinstrument.getEquipmentno());
+            if (StringUtils.isNotEmpty(lastdata)) {
+                //报警电话信息处理
+                Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+                monitorequipmentlastdata1.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                monitorequipmentlastdata1.setInputdatetime(new Date());
+                monitorequipmentlastdata1.setEquipmentlastdata("1");
+                monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
+                objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
+            }
+
         }
         // 推送APP
         try {
@@ -199,6 +243,7 @@ public class SocketMessageListener {
     @StreamListener(BaoJinMsg.EXCHANGE_NAME2)
     public void onMessage3(String messageContent) {
         WarningMqModel mQmodel = JsonUtil.toBean(messageContent, WarningMqModel.class);
+        Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + "获取到的数据" + JsonUtil.toJson(mQmodel));
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
@@ -227,9 +272,11 @@ public class SocketMessageListener {
             LOGGER.error("更新报警信息失败：" + e.getMessage());
         }
         //获取电话
+        boolean flag = false;
         for (Userright userright : list) {
             // 发送短信
             if (StringUtils.isNotEmpty(userright.getPhonenum())) {
+                flag = true;
                 LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
                 sendMesService.callPhone(userright.getPhonenum(), equipmentname);
                 Sendrecord sendrecord = new Sendrecord();
@@ -247,6 +294,22 @@ public class SocketMessageListener {
                 sendrecordDao.save(sendrecord);
                 LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
             }
+        }
+        if (flag) {
+            //拨打电话
+            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorinstrument.getEquipmentno());
+            if (StringUtils.isNotEmpty(lastdata)) {
+                //报警电话信息处理
+                Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+                monitorequipmentlastdata1.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                monitorequipmentlastdata1.setInputdatetime(new Date());
+                monitorequipmentlastdata1.setEquipmentlastdata("1");
+                monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
+                objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
+            }
+
         }
         try {
             if (StringUtils.isNotEmpty(model.getPkid())) {
