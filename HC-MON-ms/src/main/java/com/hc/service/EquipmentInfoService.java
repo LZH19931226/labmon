@@ -82,4 +82,9 @@ public interface EquipmentInfoService {
      * 获取当前医院当前时间节点所有设备数据 -- excle导出
      */
     ApiResponse<String> exportExcleOne(HttpServletResponse response,String hospitalcode,String operationdate,String type);
+
+    /**
+     * 获取当前医院该设备所有探头该月份时间点位数据
+     */
+    ApiResponse<CurveInfoModel> getCurveInfoByMonthTime(String equipmentno, String time);
 }

@@ -18,10 +18,10 @@ zuul:
   routes:
     api-mon:
       path: /api-mon/**
-      serviceId: http://39.104.178.216:8094/
+      serviceId: http://localhost:8094/
     api-htgl:
       path: /api-htgl/**
-      serviceId: http://39.104.178.216:8097/
+      serviceId: http://localhost:8097/
     api-msct:
       path: /api-msct/**
       serviceId: HC-MSCT-ms

@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hc.mapper.laboratoryFrom.EquipmentInfoMapper">
-<!-- 通用查询结果列-->
-<!--<sql id="Base_Column_List">
-    id, name, age
-</sql>-->
+    <!-- 通用查询结果列-->
+    <!--<sql id="Base_Column_List">
+        id, name, age
+    </sql>-->
 
 
-<select id="getEquipmentByTypePageInfo" parameterType="com.hc.model.PageUserModel" resultType="com.hc.entity.Monitorequipment">
-    select
-    *
-    FROM monitorequipment
-    <where>
-        hospitalcode =#{hospitalcode}
-        and  equipmenttypeid = #{equipmenttypeid}
-         <if test="equipmentname!=null">
-        and equipmentname like #{equipmentname}
-    </if>
-        and  clientvisible='1'
+    <select id="getEquipmentByTypePageInfo" parameterType="com.hc.model.PageUserModel"
+            resultType="com.hc.entity.Monitorequipment">
+        select
+        *
+        FROM monitorequipment
+        <where>
+            hospitalcode =#{hospitalcode}
+            and equipmenttypeid = #{equipmenttypeid}
+            <if test="equipmentname!=null">
+                and equipmentname like #{equipmentname}
+            </if>
+            and clientvisible='1'
 
 
-    </where>
-    order by equipmentname
+        </where>
+        order by equipmentname
 
-</select>
-<select id="getCurveInfo" parameterType="com.hc.model.CurvelReqeustModel" resultType="com.hc.entity.Monitorequipmentlastdata">
+    </select>
+    <select id="getCurveInfo" parameterType="com.hc.model.CurvelReqeustModel"
+            resultType="com.hc.entity.Monitorequipmentlastdata">
      select
      b.inputdatetime,
      a.equipmentname, -- 设备名称
@@ -66,7 +68,8 @@
         and a.equipmentno = #{equipmentno} order by b.inputdatetime
 
 </select>
-    <select id="getSearchInfo" parameterType="com.hc.model.CurvelReqeustModel" resultType="com.hc.entity.Monitorequipmentlastdata1">
+    <select id="getSearchInfo" parameterType="com.hc.model.CurvelReqeustModel"
+            resultType="com.hc.entity.Monitorequipmentlastdata1">
 
         select
         DATE_FORMAT(inputdatetime, '%Y-%m-%d %H:%i') inputdatetime ,
@@ -131,10 +134,10 @@
 
     </select>
     <resultMap id="singleHj" type="com.hc.model.ExcleInfoModel.EnvironmentListModel">
-        <result column="equipmentname" property="equipmentname" />
+        <result column="equipmentname" property="equipmentname"/>
         <collection property="environmentModelList" ofType="com.hc.model.ExcleInfoModel.EnvironmentModel">
-            <result column="inputdatetime" property="inputdatetime" />
-            <result column="currenttemperature" property="currenttemperature" />
+            <result column="inputdatetime" property="inputdatetime"/>
+            <result column="currenttemperature" property="currenttemperature"/>
             <result column="currentcarbondioxide" property="currentcarbondioxide"/>
             <result column="currento2" property="currento2"/>
             <result column="currentairflow" property="currentairflow"/>
@@ -171,10 +174,10 @@
 
     </select>
     <resultMap id="hj" type="com.hc.model.ExcleInfoModel.EnvironmentListModel">
-        <result column="equipmentname" property="equipmentname" />
+        <result column="equipmentname" property="equipmentname"/>
         <collection property="environmentModelList" ofType="com.hc.model.ExcleInfoModel.EnvironmentModel">
-            <result column="inputdatetime" property="inputdatetime" />
-            <result column="currenttemperature" property="currenttemperature" />
+            <result column="inputdatetime" property="inputdatetime"/>
+            <result column="currenttemperature" property="currenttemperature"/>
             <result column="currentcarbondioxide" property="currentcarbondioxide"/>
             <result column="currento2" property="currento2"/>
             <result column="currentairflow" property="currentairflow"/>
@@ -222,10 +225,10 @@
 
     </select>
     <resultMap id="singlePyx" type="com.hc.model.ExcleInfoModel.IncubatorListModel">
-        <result column="equipmentname" property="equipmentname" />
+        <result column="equipmentname" property="equipmentname"/>
         <collection property="incubatorModelList" ofType="com.hc.model.ExcleInfoModel.IncubatorModel">
-            <result column="inputdatetime" property="inputdatetime" />
-            <result column="currenttemperature" property="currenttemperature" />
+            <result column="inputdatetime" property="inputdatetime"/>
+            <result column="currenttemperature" property="currenttemperature"/>
             <result column="currentcarbondioxide" property="currentcarbondioxide"/>
             <result column="currento2" property="currento2"/>
             <result column="currentairflow1" property="currentairflow1"/>
@@ -286,10 +289,10 @@
 
     </select>
     <resultMap id="pyx" type="com.hc.model.ExcleInfoModel.IncubatorListModel">
-        <result column="equipmentname" property="equipmentname" />
+        <result column="equipmentname" property="equipmentname"/>
         <collection property="incubatorModelList" ofType="com.hc.model.ExcleInfoModel.IncubatorModel">
-            <result column="inputdatetime" property="inputdatetime" />
-            <result column="currenttemperature" property="currenttemperature" />
+            <result column="inputdatetime" property="inputdatetime"/>
+            <result column="currenttemperature" property="currenttemperature"/>
             <result column="currentcarbondioxide" property="currentcarbondioxide"/>
             <result column="currento2" property="currento2"/>
             <result column="currentairflow1" property="currentairflow1"/>
@@ -328,10 +331,10 @@
 
     </select>
     <resultMap id="singleOther" type="com.hc.model.ExcleInfoModel.OtherListModel">
-        <result column="equipmentname" property="equipmentname" />
+        <result column="equipmentname" property="equipmentname"/>
         <collection property="otherModels" ofType="com.hc.model.ExcleInfoModel.OtherModel">
-            <result column="inputdatetime" property="inputdatetime" />
-            <result column="currenttemperature" property="currenttemperature" />
+            <result column="inputdatetime" property="inputdatetime"/>
+            <result column="currenttemperature" property="currenttemperature"/>
         </collection>
     </resultMap>
     <select id="getOtherExcleInfoById" parameterType="com.hc.model.Params" resultMap="other">
@@ -348,13 +351,14 @@
 
     </select>
     <resultMap id="other" type="com.hc.model.ExcleInfoModel.OtherListModel">
-        <result column="equipmentname" property="equipmentname" />
+        <result column="equipmentname" property="equipmentname"/>
         <collection property="otherModels" ofType="com.hc.model.ExcleInfoModel.OtherModel">
-            <result column="inputdatetime" property="inputdatetime" />
-            <result column="currenttemperature" property="currenttemperature" />
+            <result column="inputdatetime" property="inputdatetime"/>
+            <result column="currenttemperature" property="currenttemperature"/>
         </collection>
     </resultMap>
-    <select id="showEquipmentConfigInfo" parameterType="java.lang.String" resultType="com.hc.model.ResponseModel.EquipmentConfigInfoModel">
+    <select id="showEquipmentConfigInfo" parameterType="java.lang.String"
+            resultType="com.hc.model.ResponseModel.EquipmentConfigInfoModel">
         select
         a.hospitalcode,
         a.equipmenttypeid,
@@ -364,13 +368,14 @@
          from hospitalequiment a left join monitorequipmenttype c on a.equipmenttypeid = c.equipmenttypeid
                                  where a.isvisible = '1'  and a.hospitalcode =#{hospitalcode} order by a.orderno
     </select>
-    <select id="getSingleEquipmentInfoByHospitalCode" parameterType="com.hc.model.Params" resultType="com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel">
+    <select id="getSingleEquipmentInfoByHospitalCode" parameterType="com.hc.model.Params"
+            resultType="com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel">
     SELECT
     t2.equipmentname,
     t2.equipmenttypeid,
     DATE_FORMAT(
     t1.inputdatetime,
-    '%Y-%m-%d %H:%i'
+    '%Y-%m-%d'
     ) inputdatetime,
     t1.*
     FROM
@@ -402,7 +407,51 @@
     t2.equipmentname,
     inputdatetime
 </select>
-    <select id="getSingleEquipmentInfoByHospitalCodeByDay" parameterType="com.hc.model.Params" resultType="com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel">
+
+
+    <select id="getSingleEquipmentInfoByEquipmentNo" parameterType="com.hc.model.Params"
+            resultType="com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel">
+    SELECT
+    t2.equipmentname,
+    t2.equipmenttypeid,
+    DATE_FORMAT(
+    t1.inputdatetime,
+    '%Y-%m-%d'
+    ) inputdatetime,
+    t1.*
+    FROM
+    (
+    SELECT
+    V2.*
+    FROM
+    ${search} V2
+    inner JOIN
+    (
+    SELECT
+    max(inputdatetime) inputdatetime
+    FROM
+    ${search}
+    WHERE
+    equipmentno = #{equipmentno}
+    and DATE_FORMAT( inputdatetime, '%H:%i' ) BETWEEN #{startdate} and #{enddate}
+
+    GROUP BY
+    DATE_FORMAT( inputdatetime, '%Y-%m-%d' ),equipmentno
+    ) V1 ON V1.inputdatetime = V2.inputdatetime WHERE V2.equipmentno = #{equipmentno}
+
+    ) t1
+    LEFT JOIN monitorequipment t2 ON t1.equipmentno = t2.equipmentno
+    WHERE
+    equipmenttypeid != 6
+    ORDER BY
+    t2.equipmenttypeid,
+    t2.equipmentname,
+    inputdatetime
+</select>
+
+
+    <select id="getSingleEquipmentInfoByHospitalCodeByDay" parameterType="com.hc.model.Params"
+            resultType="com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel">
               select t2.equipmentname,t2.equipmenttypeid,DATE_FORMAT(t1.inputdatetime, '%Y-%m-%d %H:%i') inputdatetime,t1.* from (
 	SELECT
 		*

@@ -1,5 +1,6 @@
 package com.hc.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,8 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by xxf on 2018-12-26.
  */
-@Getter
-@Setter
+@Data
 @ToString
 public class Params {
 
@@ -39,4 +39,5 @@ public class Params {
         this.enddate = enddate;
         this.search = search;
     }
+
 }

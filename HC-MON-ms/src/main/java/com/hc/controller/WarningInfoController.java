@@ -1,11 +1,14 @@
 package com.hc.controller;
 
 import com.github.pagehelper.Page;
+import com.hc.entity.WarningRecordInfo;
 import com.hc.entity.Warningrecord;
+import com.hc.model.CurveInfoModel;
 import com.hc.model.NewWarningRecord;
 import com.hc.model.PushSetModel;
 import com.hc.model.ShowData;
 import com.hc.service.WarningInfoService;
+import com.hc.service.WarningRecordInfoService;
 import com.hc.utils.ApiResponse;
 
 import io.swagger.annotations.Api;
@@ -27,6 +30,8 @@ import java.util.List;
 public class WarningInfoController {
     @Autowired
     private WarningInfoService warningInfoService;
+    @Autowired
+    private WarningRecordInfoService warningRecordInfoService;
 
     @GetMapping("/getWarningRecord")
     @ApiOperation(value = "获取当前医院最新二十条报警信息")
@@ -75,5 +80,19 @@ public class WarningInfoController {
     public ApiResponse<List<ShowData>> showData() {
         return warningInfoService.showData();
     }
+
+
+    @PostMapping
+    @ApiOperation("插入报警备注信息")
+    public ApiResponse<String> insertwarningRecordInfo(@RequestBody WarningRecordInfo warningRecordInfo){
+        return warningRecordInfoService.instwarningrecordinfo(warningRecordInfo);
+    }
+
+//    @GetMapping("/getWarningCurveData")
+//    @ApiOperation("获取报警设备时间段曲线数据")
+//    public ApiResponse<CurveInfoModel> getWarningCurveData(){
+//        return warningRecordInfoService.getWarningCurveData();
+//    }
+
 
 }

@@ -28,6 +28,7 @@ public class SingleTimeEquipmentModel {
     private String equipmentname;
 
     private String equipmenttypeid;
+
     @Excel(name = "时间",orderNum = "1")
     private String inputdatetime;
     @Excel(name = "温度",orderNum = "2")

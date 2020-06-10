@@ -36,7 +36,7 @@ public class WarningInfoServiceImpl implements WarningInfoService {
     @Override
     public ApiResponse<List<Warningrecord>> getWarningRecord(String hospitalcode) {
         ApiResponse<List<Warningrecord>> apiResponse = new ApiResponse<List<Warningrecord>>();
-        List<Warningrecord> warningrecordList = new ArrayList<Warningrecord>();
+        List<Warningrecord> warningrecordList;
         try{
             warningrecordList = warningrecordInfoMapper.getWarningRecord(hospitalcode);
             if (StringUtils.isEmpty(warningrecordList)) {

@@ -11,7 +11,6 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by 16956 on 2018-08-01.
@@ -22,7 +21,8 @@ public interface WarningrecordInfoMapper {
     /**
      * 取前二十条报警
      */
-    @Select("select * from warningrecord where hospitalcode = #{hospitalcode} and isPhone = '1' order by inputdatetime desc limit 30 ")
+    @Select("SELECT t1.*,t2.id,t2.info FROM warningrecord t1 LEFT JOIN warningrecordinfo t2 on t1.pkid =t2.warningrecordid\n" +
+            "WHERE t1.hospitalcode = #{hospitalcode} AND t1.isPhone = '1' ORDER BY t1.inputdatetime DESC LIMIT 30")
     List<Warningrecord> getWarningRecord(@Param("hospitalcode") String hospitalcode);
 
     /**

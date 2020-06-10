@@ -136,6 +136,13 @@ public interface EquipmentInfoMapper {
      */
     List<SingleTimeEquipmentModel> getSingleEquipmentInfoByHospitalCode(Params params);
 
+
+    /**
+     * 当前医院当前设备当前时间点当前值查询(月查询)
+     */
+    List<SingleTimeEquipmentModel> getSingleEquipmentInfoByEquipmentNo(Params params);
+
+
     /**
      * 天查询
      */

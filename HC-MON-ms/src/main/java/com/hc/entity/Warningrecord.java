@@ -57,6 +57,18 @@ public class Warningrecord implements Serializable {
      */
     private String msgflag;
 
+
+
+    /**
+     * 报警备注信息主键
+     */
+    private int id;
+
+    /**
+     * 报警备注信息
+     */
+    private int info;
+
     private static final long serialVersionUID = 1L;
 
 

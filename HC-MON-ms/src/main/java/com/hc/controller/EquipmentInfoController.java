@@ -41,7 +41,7 @@ public class EquipmentInfoController {
     private EquipmentInfoMapper equipmentInfoMapper;
 
     @GetMapping("/getEquipmentInfoByHospitalcode")
-    public ApiResponse<List<Monitorequipment>> getEquipmentInfoByHospitalcode(){
+    public ApiResponse<List<Monitorequipment>> getEquipmentInfoByHospitalcode() {
         List<Monitorequipment> equipmentInfoByHospitalcode = equipmentInfoMapper.getEquipmentInfoByHospitalcode();
         ApiResponse<List<Monitorequipment>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(equipmentInfoByHospitalcode);
@@ -85,7 +85,7 @@ public class EquipmentInfoController {
                                                                            @ApiParam(name = "pagenum", value = "设备类型编号", required = true)
                                                                            @RequestParam(value = "pagenum", required = true) Integer pagenum,
                                                                            @ApiParam(name = "equipmentname", value = "设备名称", required = false)
-                                                                               @RequestParam(value = "equipmentname", required = false) String equipmentname) {
+                                                                           @RequestParam(value = "equipmentname", required = false) String equipmentname) {
         return equipmentInfoService.getEquipmentCurrentDataPage(hospitalcode, equipmenttypeid, pagesize, pagenum, equipmentname);
     }
 
@@ -192,8 +192,21 @@ public class EquipmentInfoController {
                                             @ApiParam(name = "operationdate", value = "开始时间", required = true)
                                             @RequestParam(value = "operationdate", required = true) String operationdate,
                                             @ApiParam(name = "type", value = "开始时间", required = true)
-                                                @RequestParam(value = "type", required = true) String type,
-                                            HttpServletResponse response){
-        return equipmentInfoService.exportExcleOne(response,hospitalcode, operationdate,type);
+                                            @RequestParam(value = "type", required = true) String type,
+                                            HttpServletResponse response) {
+        return equipmentInfoService.exportExcleOne(response, hospitalcode, operationdate, type);
     }
+
+
+    @GetMapping("/getCurveInfoByMonthTime")
+    @ApiOperation(value = "设备通过月份获取每个时间点数据")
+    public ApiResponse<CurveInfoModel> getCurveInfoByMonthTime(@ApiParam(name = "equipmentno", value = "设备编号", required = true)
+                                                    @RequestParam(value = "equipmentno") String equipmentno,
+                                                    @ApiParam(name = "time", value = "时间点", required = true)
+                                                    @RequestParam(value = "time") String time)
+    {
+        return equipmentInfoService.getCurveInfoByMonthTime(equipmentno, time);
+    }
+
+
 }
