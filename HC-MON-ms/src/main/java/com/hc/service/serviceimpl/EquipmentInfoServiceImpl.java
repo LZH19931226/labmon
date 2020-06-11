@@ -1612,9 +1612,15 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
 
     @Override
     public ApiResponse<CurveInfoModel> getCurveInfoByMonthTime(String equipmentno, String operationdate) {
-        String year = operationdate.substring(0, 4);
-        String month = operationdate.substring(5, 7);
-        String search = "monitorequipmentlastdata" + "_" + year + month;
+        String search = "monitorequipmentlastdata";
+        // 判断当前日期是否为当前月份
+        boolean flag = TimeHelper.isCurrentMonth(operationdate);
+        if (!flag) {
+            // 当前月份是几月就是几月
+            String year = operationdate.substring(0, 4);
+            String month = operationdate.substring(5, 7);
+            search = "monitorequipmentlastdata" + "_" + year + month;
+        }
         //获取上一小时时间：
         String s = TimeHelper.dateReduce(operationdate);
         String s1 = TimeHelper.dateReduceHHmm(operationdate);

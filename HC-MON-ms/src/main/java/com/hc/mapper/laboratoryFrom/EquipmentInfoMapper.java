@@ -157,4 +157,9 @@ public interface EquipmentInfoMapper {
      */
     @Select("select equipmenttypeid from monitorequipment where equipmentno = #{equipmentno}")
     String getTypeIdByNo(@Param("equipmentno") String equipmentno);
+
+
+    List<Monitorequipmentlastdata> getMonitorequipmentlastdataByType(@Param("monitortlastdataTypeModel") MonitortlastdataTypeModel monitortlastdataTypeModel);
+
+
 }

@@ -1,15 +1,15 @@
 package com.hc.service.serviceimpl;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-import com.hc.model.PageUserModel;
-import com.hc.model.PushSetModel;
-import com.hc.model.ShowData;
+import com.hc.model.*;
+import com.hc.utils.TimeHelper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.github.pagehelper.Page;
@@ -18,7 +18,6 @@ import com.github.pagehelper.PageRowBounds;
 import com.hc.dao.WarningRecordDao;
 import com.hc.entity.Warningrecord;
 import com.hc.mapper.laboratoryFrom.WarningrecordInfoMapper;
-import com.hc.model.NewWarningRecord;
 import com.hc.service.WarningInfoService;
 import com.hc.utils.ApiResponse;
 
@@ -60,7 +59,7 @@ public class WarningInfoServiceImpl implements WarningInfoService {
     @Override
     public ApiResponse<Page<NewWarningRecord>> getNewWarnRecord(String hospitalcode,Integer pagesize,Integer pagenum) {
         ApiResponse<Page<NewWarningRecord>> apiResponse = new ApiResponse<Page<NewWarningRecord>>();
-        List<NewWarningRecord> newWarningRecordList = new ArrayList<NewWarningRecord>();
+        List<NewWarningRecord> newWarningRecordList;
         try{
             //pagehelp 分页
             Integer start = (pagenum-1) * pagesize;
@@ -73,6 +72,38 @@ public class WarningInfoServiceImpl implements WarningInfoService {
                 apiResponse.setMessage("无最新报警信息");
                 apiResponse.setCode(ApiResponse.FAILED);
                 return apiResponse;
+            }
+            List<String> collect = newWarningRecordList.stream().map(NewWarningRecord::getInstrumentparamconfigNO).collect(Collectors.toList());
+            //获取当前时间到1个月之前这中间的报警数据统和已备注数据统计
+            String currentDateTime = TimeHelper.getCurrentDateTime();
+            String currentDateTimeBeforOneMonth = TimeHelper.getCurrentDateTimeBeforOneMonth();
+            MonitortlastdataTypeModel monitortlastdataTypeModel = new MonitortlastdataTypeModel();
+            monitortlastdataTypeModel.setStartTime(currentDateTimeBeforOneMonth);
+            monitortlastdataTypeModel.setEndTime(currentDateTime);
+            monitortlastdataTypeModel.setInstruMentParamConfigNos(collect);
+            List<NewWarningRecord> warNingRecordMonthCount = warningrecordInfoMapper.getWarNingRecordMonthCount(monitortlastdataTypeModel);
+            if (CollectionUtils.isNotEmpty(warNingRecordMonthCount)){
+                Map<String, List<NewWarningRecord>> collect1 = warNingRecordMonthCount.stream().collect(Collectors.groupingBy(NewWarningRecord::getInstrumentparamconfigNO));
+                newWarningRecordList.forEach(s->{
+                    String instrumentparamconfigNO = s.getInstrumentparamconfigNO();
+                    List<NewWarningRecord> newWarningRecords = collect1.get(instrumentparamconfigNO);
+                    if (CollectionUtils.isNotEmpty(newWarningRecords)){
+                        NewWarningRecord newWarningRecord = newWarningRecords.get(0);
+                        s.setWarningTotal(newWarningRecord.getCount1());
+                    }
+                });
+            }
+            List<NewWarningRecord> warNingRecordInfoMonthCount = warningrecordInfoMapper.getWarNingRecordInfoMonthCount(monitortlastdataTypeModel);
+            if (CollectionUtils.isNotEmpty(warNingRecordInfoMonthCount)){
+                Map<String, List<NewWarningRecord>> collect1 = warNingRecordInfoMonthCount.stream().collect(Collectors.groupingBy(NewWarningRecord::getInstrumentparamconfigNO));
+                newWarningRecordList.forEach(s->{
+                    String instrumentparamconfigNO = s.getInstrumentparamconfigNO();
+                    List<NewWarningRecord> newWarningRecords = collect1.get(instrumentparamconfigNO);
+                    if (CollectionUtils.isNotEmpty(newWarningRecords)){
+                        NewWarningRecord newWarningRecord = newWarningRecords.get(0);
+                        s.setWarningInfoTotal(newWarningRecord.getCount1());
+                    }
+                });
             }
             PageInfo<NewWarningRecord> pageInfo = new PageInfo<NewWarningRecord>(newWarningRecordList);
             apiResponse.setPage(pageInfo);

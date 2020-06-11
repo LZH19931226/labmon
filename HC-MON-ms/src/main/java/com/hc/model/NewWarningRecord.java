@@ -20,7 +20,10 @@ public class NewWarningRecord {
     private String inputdatetime;
     private String warningremark;
     private String count;
-
+    private int warningTotal;
+    private int count1;
+    private int warningInfoTotal;
+    private String pkid;
 
 
 }

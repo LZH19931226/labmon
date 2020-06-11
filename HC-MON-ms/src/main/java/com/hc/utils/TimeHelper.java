@@ -16,29 +16,46 @@ public class TimeHelper {
     protected static SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     protected static SimpleDateFormat dateFormats = new SimpleDateFormat("HH:mm");
 
-    public static String formats(Date date){
+    public static String formats(Date date) {
         String format = dateFormats.format(date);
 
-            return format;
+        return format;
 
     }
 
     /**
      * 获取当前日期
+     *
      * @return
      */
-    public static String getCurrentDate(){
+    public static String getCurrentDate() {
         return dateformat.format(new Date());
     }
 
     /**
      * 获取当前时间
+     *
      * @return
      */
-    public static String getCurrentDateTime(){
+    public static String getCurrentDateTime() {
         return datetimeformat.format(new Date());
     }
-    public static Date getCurrentTime(){
+
+    /**
+     * 获取当前时间
+     *
+     * @return
+     */
+    public static String getCurrentDateTimeBeforOneMonth() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -1);
+        Date m = c.getTime();
+        return datetimeformat.format(m);
+
+    }
+
+    public static Date getCurrentTime() {
         Date parse = null;
         try {
             parse = datetimeformat.parse(getCurrentDateTime());
@@ -47,15 +64,17 @@ public class TimeHelper {
         }
         return parse;
     }
-   public static Date getDateTime(String date){
-       try {
-           return dateformat.parse(date);
-       } catch (ParseException e) {
-           e.printStackTrace();
-           return null;
-       }
-   }
-    public static String dateReduce(String date){
+
+    public static Date getDateTime(String date) {
+        try {
+            return dateformat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String dateReduce(String date) {
         try {
             Date parse = datetimeformat.parse(date);
             Calendar calendar = Calendar.getInstance();
@@ -72,10 +91,11 @@ public class TimeHelper {
 
     /**
      * 将时间转化为时分
+     *
      * @param date
      * @return
      */
-    public static String dateReduceHHmm(String date){
+    public static String dateReduceHHmm(String date) {
         try {
             Date parse = datetimeformat.parse(date);
             Calendar calendar = Calendar.getInstance();
@@ -89,17 +109,17 @@ public class TimeHelper {
             return null;
         }
     }
+
     /**
      * 时间增加方法
      */
-    public static String getCurrentDateAdd(Integer time){
-        Calendar now=Calendar.getInstance();
+    public static String getCurrentDateAdd(Integer time) {
+        Calendar now = Calendar.getInstance();
 
-        now.add(Calendar.MINUTE,time);
+        now.add(Calendar.MINUTE, time);
 
 
-
-        String dateStr=datetimeformat.format(now.getTimeInMillis());
+        String dateStr = datetimeformat.format(now.getTimeInMillis());
         return dateStr;
     }
 
@@ -109,14 +129,15 @@ public class TimeHelper {
 
     public static boolean isCurrentMonth(String date) {
         String format = dateformat.format(new Date());
-        if (StringUtils.equals(format.substring(0,7),date.substring(0,7))) {
+        if (StringUtils.equals(format.substring(0, 7), date.substring(0, 7))) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
     }
-    public static void main(String args []) {
+
+    public static void main(String args[]) {
         String format = dateFormats.format(new Date());
         System.out.println(format);
         System.out.println();
@@ -124,10 +145,10 @@ public class TimeHelper {
         try {
             Date parse = dateFormats.parse(format);
             System.out.println(parse);
-           // return parse;
+            // return parse;
         } catch (ParseException e) {
             e.printStackTrace();
-          //  return null;
+            //  return null;
         }
     }
 

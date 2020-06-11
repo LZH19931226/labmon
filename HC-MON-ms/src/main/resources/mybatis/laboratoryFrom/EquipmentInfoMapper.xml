@@ -473,4 +473,17 @@ where equipmenttypeid != 6
 
 order by t2.equipmenttypeid ,t2.equipmentname
     </select>
+    <select id="getMonitorequipmentlastdataByType" resultType="com.hc.entity.Monitorequipmentlastdata"
+            parameterType="com.hc.model.MonitortlastdataTypeModel">
+SELECT
+	v1.inputdatetime,v1.${monitortlastdataTypeModel.type}
+FROM
+	${monitortlastdataTypeModel.tableName} v1
+WHERE
+1=1
+	and v1.equipmentno = #{monitortlastdataTypeModel.equipmentno}
+	AND DATE_FORMAT(v1.inputdatetime, '%Y-%m-%d %H:%i:%s' ) BETWEEN #{monitortlastdataTypeModel.startTime} AND #{monitortlastdataTypeModel.endTime}
+ORDER BY
+	v1.inputdatetime ASC
+    </select>
 </mapper>

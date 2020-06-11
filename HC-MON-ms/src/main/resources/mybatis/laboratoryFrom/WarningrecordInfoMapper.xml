@@ -16,7 +16,8 @@ SELECT
 	c.instrumentparamconfigNO,
 	d.instrumentconfigname,
 	a.hospitalcode,
-	e.warningremark
+	e.warningremark,
+	e.pkid
 FROM
 	monitorequipment a
 LEFT JOIN monitorinstrument b ON a.equipmentno = b.equipmentno
@@ -47,4 +48,39 @@ and ifnull(c.warningphone,'0') = '1'
 ORDER BY
 	inputdatetime DESC
 </select>
+	<select id="getWarNingRecordMonthCount" resultType="com.hc.model.NewWarningRecord" parameterType="com.hc.model.MonitortlastdataTypeModel">
+SELECT
+	instrumentparamconfigNO,
+	COUNT( * ) AS count1
+FROM
+	warningrecord
+WHERE
+	DATE_FORMAT( inputdatetime, '%Y-%m-%d %H:%i:%s') BETWEEN #{monitortlastdataTypeModel.startTime} AND #{monitortlastdataTypeModel.endTime}
+	AND instrumentparamconfigNO IN
+		<foreach collection="monitortlastdataTypeModel.instruMentParamConfigNos" item="id" open="(" close=")" separator="," index="index">
+			#{id}
+		</foreach>
+GROUP BY
+	instrumentparamconfigNO
+	</select>
+
+	<select id="getWarNingRecordInfoMonthCount" resultType="com.hc.model.NewWarningRecord" parameterType="com.hc.model.MonitortlastdataTypeModel">
+SELECT
+	t2.instrumentparamconfigNO,
+	COUNT( * ) AS count1
+FROM
+	warningrecordinfo t1, warningrecord t2
+WHERE
+t1.warningrecordid=t2.pkid and
+	DATE_FORMAT( t1.createtime, '%Y-%m-%d %H:%i:%s') BETWEEN  #{monitortlastdataTypeModel.startTime} AND #{monitortlastdataTypeModel.endTime}
+	AND t2.instrumentparamconfigNO IN
+		<foreach collection="monitortlastdataTypeModel.instruMentParamConfigNos" item="id" open="(" close=")" separator="," index="index">
+			#{id}
+		</foreach>
+GROUP BY
+	t2.instrumentparamconfigNO
+	</select>
+
+
+
 </mapper>

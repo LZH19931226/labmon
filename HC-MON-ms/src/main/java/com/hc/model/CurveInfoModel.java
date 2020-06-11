@@ -79,6 +79,4 @@ public class CurveInfoModel {
     private CurveDataModel rightair;
     @ApiModelProperty("N2")
     private CurveDataModel n2;
-
-
 }

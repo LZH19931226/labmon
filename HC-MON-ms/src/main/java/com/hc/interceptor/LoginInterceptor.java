@@ -69,37 +69,36 @@ public class LoginInterceptor implements HandlerInterceptor {
                 return true;*/
             } else {
                 logger.info("未匹配 NO_INTERCEPTOR_PATH path : " + path);
-//
-//                if (StringUtils.isEmpty(token)) {//数据是空
-//                    logger.info("token为空");
-//                    res.put("code", HttpServletResponse.SC_PAYMENT_REQUIRED);  //402 :当前账户未登录，请重新登录
-//                    res.put("message", "Unauthorized");
-//                    response.setContentType("application/json;charset=UTF-8");
-//                    response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
-//                    response.getWriter().write(res.toJSONString());
-//                    return false;
-//                }else{//有 Token，解析
-//                    //Map<String, Object> newUser = userRightrServcie.findUserByToken(tokenValue);
-//                    /*String id = TokenHelper.getUserID(token);
-//                    if(id == null) throw new Exception("用户账号异常！");
-//                    Map<String, Object> newUser = userRightrServcie.findUserByUserId(id);*/
-//                    String userId = TokenHelper.getUserID(token);
-//                    //根据userId在缓存中获取token
-//                    String redisToken = (String)redisTemplateUtil.boundValueOps(userId).get();
-//                    if(StringUtils.isEmpty(redisToken) || !token.equals(redisToken)){
-//                        //同一用户同一token
-//                        // 401 当前账户已在其他位置登录，请重新登录
-//                        logger.info("redisToken:"+redisToken+"  传递token:"+token);
-//                        res.put("code", HttpServletResponse.SC_UNAUTHORIZED);
-//                        res.put("message", "Unauthorized");
-//
-//                        response.setContentType("application/json;charset=UTF-8");
-//                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                        response.getWriter().write(res.toJSONString());
-//                        return false;
-//                    }
-//                }
-                return  true;
+
+                if (StringUtils.isEmpty(token)) {//数据是空
+                    logger.info("token为空");
+                    res.put("code", HttpServletResponse.SC_PAYMENT_REQUIRED);  //402 :当前账户未登录，请重新登录
+                    res.put("message", "Unauthorized");
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
+                    response.getWriter().write(res.toJSONString());
+                    return false;
+                }else{//有 Token，解析
+                    //Map<String, Object> newUser = userRightrServcie.findUserByToken(tokenValue);
+                    /*String id = TokenHelper.getUserID(token);
+                    if(id == null) throw new Exception("用户账号异常！");
+                    Map<String, Object> newUser = userRightrServcie.findUserByUserId(id);*/
+                    String userId = TokenHelper.getUserID(token);
+                    //根据userId在缓存中获取token
+                    String redisToken = (String)redisTemplateUtil.boundValueOps(userId).get();
+                    if(StringUtils.isEmpty(redisToken) || !token.equals(redisToken)){
+                        //同一用户同一token
+                        // 401 当前账户已在其他位置登录，请重新登录
+                        logger.info("redisToken:"+redisToken+"  传递token:"+token);
+                        res.put("code", HttpServletResponse.SC_UNAUTHORIZED);
+                        res.put("message", "Unauthorized");
+
+                        response.setContentType("application/json;charset=UTF-8");
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.getWriter().write(res.toJSONString());
+                        return false;
+                    }
+                }
             }
 
             response.setHeader("token", token);

@@ -62,12 +62,12 @@ public class Warningrecord implements Serializable {
     /**
      * 报警备注信息主键
      */
-    private int id;
+    private Integer id;
 
     /**
      * 报警备注信息
      */
-    private int info;
+    private String info;
 
     private static final long serialVersionUID = 1L;
 

@@ -1,9 +1,7 @@
 package com.hc.mapper.laboratoryFrom;
 
 import com.hc.entity.Warningrecord;
-import com.hc.model.NewWarningRecord;
-import com.hc.model.PageUserModel;
-import com.hc.model.ShowData;
+import com.hc.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -49,6 +47,20 @@ public interface WarningrecordInfoMapper {
             "LIMIT 100 ")
     List<ShowData> showData();
 
+
+    @Select("SELECT t3.equipmentno,t4.instrumentconfigname,t1.instrumentparamconfigNO FROM warningrecord t1 LEFT JOIN instrumentparamconfig t2 ON t1.instrumentparamconfigNO = t2.instrumentparamconfigNO LEFT JOIN instrumentconfig t4 ON t2.instrumentconfigid = t4.instrumentconfigid LEFT JOIN monitorinstrument t3 ON t2.instrumentno = t3.instrumentno \n" +
+            "WHERE t1.pkid = #{pkid}")
+    WarningCurveDatamModel getWarningCurveData(@Param("pkid") String pkid);
+
+    /**
+     * 获取探头一个月的报警数量
+     */
+    List<NewWarningRecord> getWarNingRecordMonthCount(@Param("monitortlastdataTypeModel") MonitortlastdataTypeModel monitortlastdataTypeModel);
+
+    /**
+     * 获取探头一个月的报警备注信息数量
+     */
+    List<NewWarningRecord> getWarNingRecordInfoMonthCount(@Param("monitortlastdataTypeModel") MonitortlastdataTypeModel monitortlastdataTypeModel);
 
 
 }

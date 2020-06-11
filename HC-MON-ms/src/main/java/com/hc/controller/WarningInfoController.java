@@ -44,9 +44,9 @@ public class WarningInfoController {
     @ApiOperation(value = "获取当前医院所有设备最新报警信息")
     public ApiResponse<Page<NewWarningRecord>> getNewWarningRecord(@ApiParam(name = "hospitalcode", value = "医院编号", required = true)
                                                                    @RequestParam(value = "hospitalcode", required = true) String hospitalcode,
-                                                                   @ApiParam(name = "pagesize", value = "医院编号", required = true)
+                                                                   @ApiParam(name = "pagesize", value = "页码", required = true)
                                                                    @RequestParam(value = "pagesize", required = true) Integer pagesize,
-                                                                   @ApiParam(name = "pagenum", value = "设备类型编号", required = true)
+                                                                   @ApiParam(name = "pagenum", value = "页数", required = true)
                                                                    @RequestParam(value = "pagenum", required = true) Integer pagenum) {
         return warningInfoService.getNewWarnRecord(hospitalcode, pagesize, pagenum);
     }
@@ -88,11 +88,16 @@ public class WarningInfoController {
         return warningRecordInfoService.instwarningrecordinfo(warningRecordInfo);
     }
 
-//    @GetMapping("/getWarningCurveData")
-//    @ApiOperation("获取报警设备时间段曲线数据")
-//    public ApiResponse<CurveInfoModel> getWarningCurveData(){
-//        return warningRecordInfoService.getWarningCurveData();
-//    }
+    @GetMapping("/getWarningCurveData")
+    @ApiOperation("获取报警设备时间段曲线数据")
+    public ApiResponse<CurveInfoModel> getWarningCurveData(@ApiParam(name = "warningRecordId", value = "报警记录id", required = true)
+                                                               @RequestParam(value = "warningRecordId") String warningRecordId,
+                                                           @ApiParam(name = "startTime", value = "开始时间", required = true)
+                                                           @RequestParam(value = "startTime") String startTime,
+                                                           @ApiParam(name = "endTime", value = "结束时间", required = true)
+                                                               @RequestParam(value = "endTime") String endTime){
+        return warningRecordInfoService.getWarningCurveData(warningRecordId,startTime,endTime);
+    }
 
 
 }
