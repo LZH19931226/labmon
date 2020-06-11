@@ -201,21 +201,23 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     } else {
                         if (StringUtils.isNotEmpty(model.getTEMP()) && StringUtils.isNotEmpty(o)) {
                             String calibration = calibration(o, model.getTEMP());
-                            showModel.setEquipmentno(equipmentno);
-                            showModel.setData(calibration);
-                            showModel.setUnit("温度");
-                            showModel.setInputdatetime(time);
-                            objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
-                            monitorequipmentlastdata.setCurrenttemperature(calibration);
-                            try {
-                                // monitorTempDao.saveAndFlush(monitortemperaturerecord);
-                            } catch (Exception e) {
-                                log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "温度插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
+                            if (!StringUtils.equalsAny(calibration, "0", "0.00", "0.0")) {
+                                showModel.setEquipmentno(equipmentno);
+                                showModel.setData(calibration);
+                                showModel.setUnit("温度");
+                                showModel.setInputdatetime(time);
+                                objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
+                                monitorequipmentlastdata.setCurrenttemperature(calibration);
+                                try {
+                                    // monitorTempDao.saveAndFlush(monitortemperaturerecord);
+                                } catch (Exception e) {
+                                    log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "温度插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
+                                }
+                                //   log.info("执行插入temp:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
+                                //执行报警服务
+                                WarningMqModel warningMqModel = procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
+                                list.add(warningMqModel);
                             }
-                            //   log.info("执行插入temp:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
-                            //执行报警服务
-                            WarningMqModel warningMqModel = procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
-                            list.add(warningMqModel);
                         }
                     }
                     if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
@@ -388,30 +390,34 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         list.add(warningMqModel);
                     }
                     if (StringUtils.isNotEmpty(model.getPRESS()) && StringUtils.isNotEmpty(yl)) {
+
                         String calibration = calibration(yl, model.getPRESS());
-                        showModel.setEquipmentno(equipmentno);
-                        showModel.setData(calibration);
-                        showModel.setUnit("压力");
-                        showModel.setInputdatetime(time);
-                        objectObjectObjectHashOperations.put("PRESS", equipmentno, JsonUtil.toJson(showModel));
-                        monitorequipmentlastdata.setCurrentairflow(calibration);
-                        //         log.info("执行插入环境压力:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(pressrecord));
-                        WarningMqModel warningMqModel = procWarnModel(calibration, monitorinstrument, model.getNowTime(), 6, "压力");
-                        list.add(warningMqModel);
+                        if (!StringUtils.equalsAny(calibration,"0.0","0.00","0")) {
+                            showModel.setEquipmentno(equipmentno);
+                            showModel.setData(calibration);
+                            showModel.setUnit("压力");
+                            showModel.setInputdatetime(time);
+                            objectObjectObjectHashOperations.put("PRESS", equipmentno, JsonUtil.toJson(showModel));
+                            monitorequipmentlastdata.setCurrentairflow(calibration);
+                            //         log.info("执行插入环境压力:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(pressrecord));
+                            WarningMqModel warningMqModel = procWarnModel(calibration, monitorinstrument, model.getNowTime(), 6, "压力");
+                            list.add(warningMqModel);
+                        }
                     }
                     if (StringUtils.isNotEmpty(model.getRH()) && StringUtils.isNotEmpty(sd)) {
                         String calibration = calibration(sd, model.getRH());
+                        if (!StringUtils.equalsAny(calibration,"0","0.0","0.00")) {
+                            showModel.setEquipmentno(equipmentno);
+                            showModel.setData(calibration);
+                            showModel.setUnit("湿度");
+                            showModel.setInputdatetime(time);
+                            objectObjectObjectHashOperations.put("RH", equipmentno, JsonUtil.toJson(showModel));
 
-                        showModel.setEquipmentno(equipmentno);
-                        showModel.setData(calibration);
-                        showModel.setUnit("湿度");
-                        showModel.setInputdatetime(time);
-                        objectObjectObjectHashOperations.put("RH", equipmentno, JsonUtil.toJson(showModel));
-
-                        monitorequipmentlastdata.setCurrenthumidity(calibration);
-                        //    log.info("执行插入环境湿度:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorhumidityrecord));
-                        WarningMqModel warningMqModel = procWarnModel(calibration, monitorinstrument, model.getNowTime(), 5, "湿度");
-                        list.add(warningMqModel);
+                            monitorequipmentlastdata.setCurrenthumidity(calibration);
+                            //    log.info("执行插入环境湿度:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorhumidityrecord));
+                            WarningMqModel warningMqModel = procWarnModel(calibration, monitorinstrument, model.getNowTime(), 5, "湿度");
+                            list.add(warningMqModel);
+                        }
                     }
                     break;
                 case "91":
