@@ -27,7 +27,7 @@ public interface WarningInfoService {
     /**
      * 获取当前探头监控类型历史报警（一个探头有多个监控参数：co2  o2  甲醛  这些几把玩意）
      */
-    ApiResponse<Page<Warningrecord>> getInstrumentTypeHistoryWarn(String instrumentparamconfigNO,Integer pagesize,Integer pagenum);
+    ApiResponse<Page<Warningrecord>> getInstrumentTypeHistoryWarn(String instrumentparamconfigNO,Integer pagesize,Integer pagenum,String isphone);
 
     /**
      * 当前探头监控类型报警已读

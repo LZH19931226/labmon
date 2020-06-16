@@ -118,14 +118,18 @@ public class WarningInfoServiceImpl implements WarningInfoService {
     }
 
     @Override
-    public ApiResponse<Page<Warningrecord>> getInstrumentTypeHistoryWarn(String instrumentparamconfigNO,Integer pagesize,Integer pagenum) {
+    public ApiResponse<Page<Warningrecord>> getInstrumentTypeHistoryWarn(String instrumentparamconfigNO,Integer pagesize,Integer pagenum,String isphone) {
             ApiResponse<Page<Warningrecord>> apiResponse = new ApiResponse<Page<Warningrecord>>();
-            List<Warningrecord> warningrecordList  = new ArrayList<Warningrecord>();
+            List<Warningrecord> warningrecordList = null;
             try{
                 Integer start = (pagenum-1) * pagesize;
                 Integer end = pagesize;
                 PageRowBounds page = new PageRowBounds(start,end);
-                warningrecordList = warningrecordInfoMapper.getInstrumentTypeHistoryWarn(instrumentparamconfigNO,page);
+                if ("0".equals(isphone)){
+                    warningrecordList = warningrecordInfoMapper.getInstrumentTypeHistoryWarnAll(instrumentparamconfigNO,page);
+                }else {
+                    warningrecordList = warningrecordInfoMapper.getInstrumentTypeHistoryWarn(instrumentparamconfigNO,page);
+                }
                 if (CollectionUtils.isEmpty(warningrecordList)) {
                     apiResponse.setMessage("无历史报警信息");
                     apiResponse.setCode(ApiResponse.FAILED);

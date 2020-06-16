@@ -55,11 +55,13 @@ public class WarningInfoController {
     @ApiOperation(value = "获取探头监控类型历史报警信息")
     public ApiResponse<Page<Warningrecord>> getInsTypeRecord(@ApiParam(name = "instrumentparamconfigNO", value = "探头类型编号", required = true)
                                                              @RequestParam(value = "instrumentparamconfigNO", required = true) String instrumentparamconfigNO,
-                                                             @ApiParam(name = "pagesize", value = "医院编号", required = true)
+                                                             @ApiParam(name = "pagesize", value = "页码", required = true)
                                                              @RequestParam(value = "pagesize", required = true) Integer pagesize,
-                                                             @ApiParam(name = "pagenum", value = "设备类型编号", required = true)
-                                                             @RequestParam(value = "pagenum", required = true) Integer pagenum) {
-        return warningInfoService.getInstrumentTypeHistoryWarn(instrumentparamconfigNO, pagesize, pagenum);
+                                                             @ApiParam(name = "pagenum", value = "页数", required = true)
+                                                             @RequestParam(value = "pagenum", required = true) Integer pagenum,
+                                                             @ApiParam(name = "isphone", value = "是否短信报警", required = true)
+                                                                 @RequestParam(value = "isphone",required = true) String isphone) {
+        return warningInfoService.getInstrumentTypeHistoryWarn(instrumentparamconfigNO, pagesize, pagenum,isphone);
     }
 
     @PostMapping("/isRead")

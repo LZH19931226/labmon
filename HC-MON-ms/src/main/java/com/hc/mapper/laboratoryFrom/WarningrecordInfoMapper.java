@@ -31,9 +31,40 @@ public interface WarningrecordInfoMapper {
     /**
      * 获取当前探头监控类型历史报警（一个探头有多个监控参数：co2  o2  甲醛  这些几把玩意）
      */
-    @Select("select instrumentparamconfigNO,inputdatetime,warningremark,ifnull(msgflag,'0') msgflag from warningrecord where instrumentparamconfigNO = #{instrumentparamconfigNO}" +
-            " and isPhone = '1' order by inputdatetime desc")
+    @Select("SELECT\n" +
+            "\tinstrumentparamconfigNO,\n" +
+            "\tinputdatetime,\n" +
+            "\twarningremark,\n" +
+            "\tifnull( msgflag, '0' ) msgflag,\n" +
+            "\tt2.id,\n" +
+            "\tt2.info\n" +
+            "FROM\n" +
+            "\twarningrecord  LEFT JOIN warningrecordinfo t2 on pkid =t2.warningrecordid\n" +
+            "WHERE\n" +
+            "\tinstrumentparamconfigNO = #{instrumentparamconfigNO} \n" +
+            "\tAND isPhone = '1' \n" +
+            "ORDER BY\n" +
+            "\tinputdatetime DESC")
     List<Warningrecord> getInstrumentTypeHistoryWarn(String instrumentparamconfigNO,RowBounds rowBounds);
+
+
+    @Select("SELECT\n" +
+            "\tinstrumentparamconfigNO,\n" +
+            "\tinputdatetime,\n" +
+            "\twarningremark,\n" +
+            "\tifnull( msgflag, '0' ) msgflag,\n" +
+            "\tt2.id,\n" +
+            "\tt2.info\n" +
+            "FROM\n" +
+            "\twarningrecord  LEFT JOIN warningrecordinfo t2 on pkid =t2.warningrecordid\n" +
+            "WHERE\n" +
+            "\tinstrumentparamconfigNO = #{instrumentparamconfigNO} \n" +
+            "ORDER BY\n" +
+            "\tinputdatetime DESC")
+    List<Warningrecord> getInstrumentTypeHistoryWarnAll(String instrumentparamconfigNO,RowBounds rowBounds);
+
+
+
 
     @Select(" SELECT " +
             "a.inputdatetime, " +
