@@ -71,7 +71,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             alarmData.setMonitorequipmentlastdata(null);
             alarmData.setEquipmentname(equipmentname);
             redisTemplateUtil.boundListOps(hospitalcode + "+" + "1").rightPush(JsonUtil.toJson(alarmData));
-            nodata(sn, hospitalname, equipmentname, listModel, mtName);
+            nodata(sn, hospitalname, equipmentname, listModel, mtName,"环境");
 
 
         } else {
@@ -87,7 +87,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                 alarmData.setEquipmentname(equipmentname);
                 redisTemplateUtil.boundListOps(hospitalcode + "+" + "1").rightPush(JsonUtil.toJson(alarmData));
                 //objectObjectObjectHashOperations.put(hospitalcode + "+" + "1", equipmentno, JsonUtil.toJson(map));\
-                timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"环境");
             }
 
         }
@@ -195,7 +195,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             alarmData.setMonitorequipmentlastdata(null);
             alarmData.setEquipmentname(equipmentname);
             redisTemplateUtil.boundListOps(hospitalcode + "+" + "2").rightPush(JsonUtil.toJson(alarmData));
-            nodata(sn, hospitalname, equipmentname, listModel, mtName);
+            nodata(sn, hospitalname, equipmentname, listModel, mtName,"培养箱");
             //objectObjectObjectHashOperations.put(hospitalcode + "+" + "2", equipmentno, JsonUtil.toJson(map));
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
@@ -209,7 +209,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     int i = new BigDecimal(currentqc).compareTo(new BigDecimal("30"));
                     if (i == -1) {
                         //此时电量少于百分之三十
-                        lowqc(hospitalcode, sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                        lowqc(hospitalcode, sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"培养箱");
 
                     }
                 }
@@ -221,7 +221,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                 alarmData.setHospitalname(hospitalname);
                 alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 alarmData.setEquipmentname(equipmentname);
-                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"培养箱");
             } else {
                 if (datePoor > 90) {
                     //超时
@@ -232,7 +232,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     alarmData.setEquipmentname(equipmentname);
                     redisTemplateUtil.boundListOps(hospitalcode + "+" + "2").rightPush(JsonUtil.toJson(alarmData));
                     //objectObjectObjectHashOperations.put(hospitalcode + "+" + "2", equipmentno, JsonUtil.toJson(map));
-                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"培养箱");
                 }
             }
 
@@ -245,7 +245,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
     }
 
     //超时
-    public void timeout(String sn, String hospitalName, String equipmentname, Monitorequipmentlastdata monitorequipmentlastdata, List<AbnormalDataModel> listModel, String mtName) {
+    public void timeout(String sn, String hospitalName, String equipmentname, Monitorequipmentlastdata monitorequipmentlastdata, List<AbnormalDataModel> listModel, String mtName,String equipmenttypeid) {
 
 
         AbnormalDataModel abnormalDataModel = new AbnormalDataModel();
@@ -254,6 +254,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         abnormalDataModel.setSn(sn);
         abnormalDataModel.setHospitalname(hospitalName);
         abnormalDataModel.setMtName(mtName);
+        abnormalDataModel.setEquipmenttypeid(equipmenttypeid);
         abnormalDataModel.setInputdatetime(TimeHelper.getCurrentDateTimes(monitorequipmentlastdata.getInputdatetime()));
         abnormalDataModel.setAbnormaldetails("当前设备上传数据超时");
 
@@ -265,7 +266,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         redisTemplateUtil.boundValueOps("abnormal").set(JsonUtil.toJson(listModel));
     }
 
-    public void lowqc(String hospitalcode, String sn, String hospitalName, String equipmentname, Monitorequipmentlastdata monitorequipmentlastdata, List<AbnormalDataModel> listModel, String mtName) {
+    public void lowqc(String hospitalcode, String sn, String hospitalName, String equipmentname, Monitorequipmentlastdata monitorequipmentlastdata, List<AbnormalDataModel> listModel, String mtName,String equipmenttypeid) {
 
 
         AbnormalDataModel abnormalDataModel = new AbnormalDataModel();
@@ -274,6 +275,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         abnormalDataModel.setSn(sn);
         abnormalDataModel.setHospitalname(hospitalName);
         abnormalDataModel.setMtName(mtName);
+        abnormalDataModel.setEquipmenttypeid(equipmenttypeid);
         abnormalDataModel.setInputdatetime(TimeHelper.getCurrentDateTimes(monitorequipmentlastdata.getInputdatetime()));
         abnormalDataModel.setAbnormaldetails("当前设备电量过低");
 
@@ -287,13 +289,14 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
     }
 
     //无数据上传
-    public void nodata(String sn, String hospitalName, String equipmentname, List<AbnormalDataModel> listModel, String mtName) {
+    public void nodata(String sn, String hospitalName, String equipmentname, List<AbnormalDataModel> listModel, String mtName,String equipmenttypeid) {
         AbnormalDataModel abnormalDataModel = new AbnormalDataModel();
         abnormalDataModel.setAbnormaltype("未上传数据");
         abnormalDataModel.setEquipmentname(equipmentname);
         abnormalDataModel.setSn(sn);
         abnormalDataModel.setHospitalname(hospitalName);
         abnormalDataModel.setMtName(mtName);
+        abnormalDataModel.setEquipmenttypeid(equipmenttypeid);
         // abnormalDataModel.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
         abnormalDataModel.setAbnormaldetails("当前设备未上传数据");
 
@@ -306,13 +309,14 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
     }
 
     //数据异常
-    public void dataan(String sn, String hospitalName, String equipmentname, Monitorequipmentlastdata monitorequipmentlastdata, List<AbnormalDataModel> listModel, String mtName) {
+    public void dataan(String sn, String hospitalName, String equipmentname, Monitorequipmentlastdata monitorequipmentlastdata, List<AbnormalDataModel> listModel, String mtName,String equipmenttypeid) {
         AbnormalDataModel abnormalDataModel = new AbnormalDataModel();
         abnormalDataModel.setAbnormaltype("数据异常");
         abnormalDataModel.setEquipmentname(equipmentname);
         abnormalDataModel.setSn(sn);
         abnormalDataModel.setHospitalname(hospitalName);
         abnormalDataModel.setMtName(mtName);
+        abnormalDataModel.setEquipmenttypeid(equipmenttypeid);
         abnormalDataModel.setInputdatetime(TimeHelper.getCurrentDateTimes(monitorequipmentlastdata.getInputdatetime()));
         abnormalDataModel.setAbnormaldetails("当前设备上传数据数据异常");
 
@@ -348,7 +352,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             alarmData.setMonitorequipmentlastdata(null);
             alarmData.setEquipmentname(equipmentname);
             redisTemplateUtil.boundListOps(hospitalcode + "+" + "3").rightPush(JsonUtil.toJson(alarmData));
-            nodata(sn, hospitalname, equipmentname, listModel, mtName);
+            nodata(sn, hospitalname, equipmentname, listModel, mtName,"液氮罐");
 
             //objectObjectObjectHashOperations.put(hospitalcode + "+" + "3", equipmentno, JsonUtil.toJson(map));
         } else {
@@ -365,7 +369,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                 alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 alarmData.setEquipmentname(equipmentname);
                 redisTemplateUtil.boundListOps(hospitalcode + "+" + "3").rightPush(JsonUtil.toJson(alarmData));
-                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"液氮罐");
                 //objectObjectObjectHashOperations.put(hospitalcode + "+" + "3", equipmentno, JsonUtil.toJson(map));
             } else {
 
@@ -377,7 +381,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                     alarmData.setEquipmentname(equipmentname);
                     redisTemplateUtil.boundListOps(hospitalcode + "+" + "3").rightPush(JsonUtil.toJson(alarmData));
-                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"液氮罐");
                     return;
                 }
                 if (datePoor > 90 && !StringUtils.equals("H0006", hospitalcode)) {
@@ -387,7 +391,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                     alarmData.setEquipmentname(equipmentname);
                     redisTemplateUtil.boundListOps(hospitalcode + "+" + "3").rightPush(JsonUtil.toJson(alarmData));
-                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"液氮罐");
                 }
             }
 
@@ -422,7 +426,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             alarmData.setMonitorequipmentlastdata(null);
             alarmData.setEquipmentname(equipmentname);
             redisTemplateUtil.boundListOps(hospitalcode + "+" + "4").rightPush(JsonUtil.toJson(alarmData));
-            nodata(sn, hospitalname, equipmentname, listModel, mtName);
+            nodata(sn, hospitalname, equipmentname, listModel, mtName,"冰箱");
 
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
@@ -435,7 +439,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     int i = new BigDecimal(currentqc).compareTo(new BigDecimal("30"));
                     if (i == -1) {
                         //此时电量少于百分之三十
-                        lowqc(hospitalcode, sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                        lowqc(hospitalcode, sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"冰箱");
 
                     }
                 }
@@ -448,7 +452,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                 alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 alarmData.setEquipmentname(equipmentname);
                 redisTemplateUtil.boundListOps(hospitalcode + "+" + "4").rightPush(JsonUtil.toJson(alarmData));
-                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"冰箱");
             } else {
                 if (datePoor > 90) {
                     //超时
@@ -458,7 +462,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                     alarmData.setEquipmentname(equipmentname);
                     redisTemplateUtil.boundListOps(hospitalcode + "+" + "4").rightPush(JsonUtil.toJson(alarmData));
-                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"冰箱");
                 }
             }
             // 判断数据是否异常
@@ -489,7 +493,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             alarmData.setMonitorequipmentlastdata(null);
             alarmData.setEquipmentname(equipmentname);
             redisTemplateUtil.boundListOps(hospitalcode + "+" + "5").rightPush(JsonUtil.toJson(alarmData));
-            nodata(sn, hospitalname, equipmentname, listModel, mtName);
+            nodata(sn, hospitalname, equipmentname, listModel, mtName,"操作台");
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
             //判断时间是否超时
@@ -501,7 +505,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     int i = new BigDecimal(currentqc).compareTo(new BigDecimal("30"));
                     if (i == -1) {
                         //此时电量少于百分之三十
-                        lowqc(hospitalcode, sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                        lowqc(hospitalcode, sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"操作台");
 
                     }
                 }
@@ -514,7 +518,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                 alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 alarmData.setEquipmentname(equipmentname);
                 redisTemplateUtil.boundListOps(hospitalcode + "+" + "5").rightPush(JsonUtil.toJson(alarmData));
-                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                dataan(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"操作台");
             } else {
                 if (datePoor > 90) {
                     //超时
@@ -524,7 +528,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
                     alarmData.setMonitorequipmentlastdata(monitorequipmentlastdata);
                     alarmData.setEquipmentname(equipmentname);
                     redisTemplateUtil.boundListOps(hospitalcode + "+" + "5").rightPush(JsonUtil.toJson(alarmData));
-                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName);
+                    timeout(sn, hospitalname, equipmentname, monitorequipmentlastdata, listModel, mtName,"操作台");
                 }
             }
 
