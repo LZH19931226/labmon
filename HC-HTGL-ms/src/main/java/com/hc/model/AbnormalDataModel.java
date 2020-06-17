@@ -17,6 +17,9 @@ public class AbnormalDataModel {
     @Excel(name = "医院名称", orderNum = "0")
     @ApiModelProperty("医院名称")
     private String hospitalname;
+    @Excel(name = "设备类型", orderNum = "1")
+    @ApiModelProperty("设备类型")
+    private String equipmenttypeid;
     @Excel(name = "设备名称", orderNum = "1")
     @ApiModelProperty("设备名称")
     private String equipmentname;
