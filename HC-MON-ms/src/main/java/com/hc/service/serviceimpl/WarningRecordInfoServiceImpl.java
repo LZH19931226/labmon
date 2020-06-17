@@ -100,8 +100,8 @@ N2	currentn2
         boolean flag = TimeHelper.isCurrentMonth(startTime);
         if (!flag) {
             // 当前月份是几月就是几月
-            String year = startTime.substring(0, 4);
-            String month = startTime.substring(5, 7);
+            String year = endTime.substring(0, 4);
+            String month = endTime.substring(5, 7);
             search = "monitorequipmentlastdata" + "_" + year + month;
         }
         WarningCurveDatamModel warningCurveData = warningrecordInfoMapper.getWarningCurveData(warningRecordId);
@@ -115,7 +115,8 @@ N2	currentn2
         List<Monitorequipmentlastdata> monitorequipmentlastdataByType = equipmentInfoMapper.getMonitorequipmentlastdataByType(monitortlastdataTypeModel);
         ApiResponse<CurveInfoModel> apiResponse = new ApiResponse<>();
         if (CollectionUtils.isEmpty(monitorequipmentlastdataByType)){
-            apiResponse.setCode(ApiResponse.FAILED);
+            apiResponse.setCode(ApiResponse.NOT_FOUND);
+            apiResponse.setMessage("暂无数据");
             return apiResponse;
         }
         CurveInfoModel curveInfoModel = produceCurveInfo(monitorequipmentlastdataByType);
