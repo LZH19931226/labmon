@@ -150,7 +150,6 @@ public class Monitorequipmentlastdata implements Serializable {
 
     private String currentn2;
 
-    private static final long serialVersionUID = 1L;
 
 
 }
