@@ -115,21 +115,22 @@ public class SocketMessageListener {
                 sendrecord.setSendtype("0");
                 sendrecordDao.save(sendrecord);
             }
-            if (flag) {
-                //拨打电话
-                HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
 
-                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorinstrument.getEquipmentno());
-                if (StringUtils.isNotEmpty(lastdata)) {
-                    //报警电话信息处理
-                    Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
-                    monitorequipmentlastdata1.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                    monitorequipmentlastdata1.setInputdatetime(new Date());
-                    monitorequipmentlastdata1.setEquipmentlastdata("1");
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
-                    objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
-                }
 
+        }
+        if (flag) {
+            //拨打电话
+            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorinstrument.getEquipmentno());
+            if (StringUtils.isNotEmpty(lastdata)) {
+                //报警电话信息处理
+                Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+                monitorequipmentlastdata1.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                monitorequipmentlastdata1.setInputdatetime(new Date());
+                monitorequipmentlastdata1.setEquipmentlastdata("1");
+                monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
+                objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
             }
 
         }
