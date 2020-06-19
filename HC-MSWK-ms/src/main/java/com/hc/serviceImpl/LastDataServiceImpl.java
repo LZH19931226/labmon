@@ -132,16 +132,16 @@ public class LastDataServiceImpl implements LastDataService {
                 String equipmentlastdata = monitorequipmentlastdata1.getEquipmentlastdata();
                 if (StringUtils.isNotEmpty(equipmentlastdata)){
                     //非空  直接 新增一条数据
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
+                   // monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
-                    if (StringUtils.equals(equipmentTypeId, "1")) {
-                        Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                        monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
-                        monitorequipmentlastdata2.setEquipmentlastdata(null);
-                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
-                    } else {
+//                    if (StringUtils.equals(equipmentTypeId, "1")) {
+//                        Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
+//                        monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
+//                        monitorequipmentlastdata2.setEquipmentlastdata(null);
+//                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
+//                    } else {
                         objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
-                    }
+
                     return;
                 }
                 if (datePoor > 9.7) {
