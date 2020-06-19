@@ -2,8 +2,8 @@ package com.hc.service.serviceImpl;
 
 import com.hc.bean.ApiResponse;
 import com.hc.bean.MTOnlineBean;
-import com.hc.bean.ParamaterModel;
 import com.hc.config.RedisTemplateUtil;
+import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.socketServer.IotServer;
 import com.hc.util.*;
@@ -82,7 +82,6 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
             String cmdid = cmd.substring(4, 6);
             paramaterModel.setSN(sn);
             paramaterModel.setCmdid(cmdid);
-            log.info("SN:" + sn+"  cmdid:"+cmdid);
             switch (cmdid) {
                 // 心跳包
                 case "88":
@@ -334,6 +333,20 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     ParamaterModel paramaterModel14 = cmdidParseUtils.paseA2(cmd, sn, cmdid);
                     list.add(paramaterModel14);
                     continue;
+                case "a3":
+                    ParamaterModel paramaterModel15 = cmdidParseUtils.paseA3(cmd, sn, cmdid);
+                    list.add(paramaterModel15);
+                    continue;
+                case "a4":
+                    ParamaterModel paramaterModel16 = cmdidParseUtils.paseA4(cmd, sn, cmdid);
+                    list.add(paramaterModel16);
+                    continue;
+                case "a5":
+                    ParamaterModel  paramaterModel17 = cmdidParseUtils.paseA5(cmd, sn, cmdid);
+                    list.add(paramaterModel17);
+                    continue;
+                 default:
+                     return null;
             }
 
         }

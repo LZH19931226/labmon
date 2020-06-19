@@ -97,7 +97,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<List<Monitorequipment>> getEquipmentByType(String hospitalcode, String equipmenttypeid) {
         ApiResponse<List<Monitorequipment>> apiResponse = new ApiResponse<List<Monitorequipment>>();
-        List<Monitorequipment> monitorequipmentList = new ArrayList<Monitorequipment>();
+        List<Monitorequipment> monitorequipmentList;
         try {
             monitorequipmentList = equipmentInfoMapper.getEquipmentByType(hospitalcode, equipmenttypeid);
             if (CollectionUtils.isEmpty(monitorequipmentList)) {
@@ -121,8 +121,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<List<Monitorequipment>> getEquipmentCurrentData(String hospitalcode, String equipmenttypeid) {
         ApiResponse<List<Monitorequipment>> apiResponse = new ApiResponse<List<Monitorequipment>>();
-        List<Monitorequipment> monitorequipmentList = new ArrayList<Monitorequipment>();
-        List<Monitorinstrument> monitorinstrumentList = new ArrayList<Monitorinstrument>();
+        List<Monitorequipment> monitorequipmentList;
         try {
             // 获取设备编号
             monitorequipmentList = equipmentInfoMapper.getEquipmentByType(hospitalcode, equipmenttypeid);
@@ -133,8 +132,8 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             }
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             for (Monitorequipment monitorequipment : monitorequipmentList) {
-                String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
-                monitorequipment.setSn(sn);
+//                String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
+//                monitorequipment.setSn(sn);
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
@@ -146,7 +145,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                     monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 }
             }
-
             apiResponse.setMessage("查询成功");
             apiResponse.setCode(ApiResponse.SUCCESS);
             apiResponse.setResult(monitorequipmentList);
@@ -162,8 +160,8 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<Page<Monitorequipment>> getEquipmentCurrentDataPage(String hospitalcode, String equipmenttypeid, Integer pagesize, Integer pagenum,String equipmentname) {
 
-        ApiResponse<Page<Monitorequipment>> apiResponse = new ApiResponse<Page<Monitorequipment>>();
-        List<Monitorequipment> monitorequipmentList = new ArrayList<Monitorequipment>();
+        ApiResponse<Page<Monitorequipment>> apiResponse = new ApiResponse<>();
+        List<Monitorequipment> monitorequipmentList;
 
         PageUserModel pageUserModel = new PageUserModel();
         try {
@@ -173,10 +171,8 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             pageUserModel.setHospitalcode(hospitalcode);
             pageUserModel.setEquipmenttypeid(equipmenttypeid);
             if (StringUtils.isNotEmpty(equipmentname)) {
-                equipmentname = "%"+equipmentname+"%";
                 pageUserModel.setEquipmentname(equipmentname);
             }
-
             // 获取设备编号
             monitorequipmentList = equipmentInfoMapper.getEquipmentByTypePageInfo(page, pageUserModel);
             if (CollectionUtils.isEmpty(monitorequipmentList)) {
@@ -185,10 +181,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 return apiResponse;
             }
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-
             for (Monitorequipment monitorequipment : monitorequipmentList) {
-                String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
-                monitorequipment.setSn(sn);
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
@@ -214,8 +207,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<Monitorupsrecord> getCurrentUps(String hospitalcode, String equipmenttypeid) {
         ApiResponse<Monitorupsrecord> apiResponse = new ApiResponse<Monitorupsrecord>();
-        EquipmentCurrentDateModel equipmentCurrentDateModel = new EquipmentCurrentDateModel();
-        List<Monitorequipment> monitorequipmentList = new ArrayList<Monitorequipment>();
+        List<Monitorequipment> monitorequipmentList;
         try {
             monitorequipmentList = equipmentInfoMapper.getEquipmentByType(hospitalcode, equipmenttypeid);
             if (CollectionUtils.isEmpty(monitorequipmentList)) {
@@ -231,7 +223,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setCode(ApiResponse.FAILED);
                 return apiResponse;
             }
-
             apiResponse.setResult(monitorupsrecord);
             return apiResponse;
         } catch (Exception e) {
