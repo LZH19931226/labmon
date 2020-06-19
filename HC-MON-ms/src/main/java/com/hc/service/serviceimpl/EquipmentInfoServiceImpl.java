@@ -34,10 +34,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -202,6 +200,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
         }
+
     }
 
     @Override

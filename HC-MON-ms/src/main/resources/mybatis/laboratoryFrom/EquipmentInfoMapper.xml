@@ -485,4 +485,22 @@ WHERE
 ORDER BY
 	v1.inputdatetime ASC
     </select>
+    <select id="getLowlimitByEqNos" resultType="com.hc.model.WarningCurveDatamModel" parameterType="java.util.List">
+        SELECT
+  a.equipmentno,
+	c.lowlimit
+FROM
+	monitorequipment a
+	LEFT JOIN monitorinstrument b ON a.equipmentno = b.equipmentno
+	LEFT JOIN instrumentparamconfig c ON b.instrumentno = c.instrumentno
+WHERE
+	a.equipmentno in
+        <foreach collection="equipmentnos" item="id" open="(" close=")" separator="," index="index">
+            #{id}
+        </foreach>
+	AND ifnull( b.instrumentno, 'xxx' ) != 'xxx'
+	AND c.instrumentconfigid = 11
+	LIMIT 1
+
+    </select>
 </mapper>

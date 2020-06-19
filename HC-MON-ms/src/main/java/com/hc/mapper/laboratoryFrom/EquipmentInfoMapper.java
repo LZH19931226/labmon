@@ -97,6 +97,10 @@ public interface EquipmentInfoMapper {
             "where a.equipmentno = #{equipmentno} and ifnull(b.instrumentno,'xxx') !='xxx'  and c.instrumentconfigid = 11 limit 1")
     String getLowlimit(@Param("equipmentno") String equipmentno);
 
+
+    List<WarningCurveDatamModel> getLowlimitByEqNos(@Param("equipmentnos") List<String> equipmentnos);
+
+
     @Select("select ups,inputdatetime from MonitorUPSRecord where equipmentno = #{equipmentno} order by inputdatetime desc limit 1 ")
     Monitorupsrecord selectUps(@Param("equipmentno") String equipmentno);
 
