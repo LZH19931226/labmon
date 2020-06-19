@@ -34,10 +34,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -130,17 +128,25 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setMessage("当前设备类型无设备信息");
                 return apiResponse;
             }
+            List<String> eqNos = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toList());
+            Map<String, List<WarningCurveDatamModel>> collectMap = null;
+            if (CollectionUtils.isNotEmpty(eqNos)){
+                List<WarningCurveDatamModel> lowlimitByEqNos = equipmentInfoMapper.getLowlimitByEqNos(eqNos);
+                if (CollectionUtils.isNotEmpty(lowlimitByEqNos)){
+                    collectMap = lowlimitByEqNos.stream().collect(Collectors.groupingBy(WarningCurveDatamModel::getEquipmentno));
+                }
+            }
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             for (Monitorequipment monitorequipment : monitorequipmentList) {
-//                String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
-//                monitorequipment.setSn(sn);
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
                     if (StringUtils.isNotEmpty(monitorequipmentlastdata.getCurrentdoorstate())) {
                         // 查找这个设备下开关量的最低值
-                        String lowlimit = equipmentInfoMapper.getLowlimit(monitorequipment.getEquipmentno());
-                        monitorequipment.setLowlimit(lowlimit);
+                        String equipmentno = monitorequipment.getEquipmentno();
+                        if (!collectMap.isEmpty()){
+                            monitorequipment.setLowlimit(collectMap.get(equipmentno).get(0).getLowlimit());
+                        }
                     }
                     monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 }
@@ -181,6 +187,14 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 return apiResponse;
             }
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+            List<String> eqNos = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toList());
+            Map<String, List<WarningCurveDatamModel>> collectMap = null;
+            if (CollectionUtils.isNotEmpty(eqNos)){
+                List<WarningCurveDatamModel> lowlimitByEqNos = equipmentInfoMapper.getLowlimitByEqNos(eqNos);
+                if (CollectionUtils.isNotEmpty(lowlimitByEqNos)){
+                    collectMap = lowlimitByEqNos.stream().collect(Collectors.groupingBy(WarningCurveDatamModel::getEquipmentno));
+                }
+            }
             for (Monitorequipment monitorequipment : monitorequipmentList) {
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
@@ -188,9 +202,12 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                     monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
                     if (StringUtils.isNotEmpty(monitorequipmentlastdata.getCurrentdoorstate())) {
                         // 查找这个设备下开关量的最低值
-                        String lowlimit = equipmentInfoMapper.getLowlimit(monitorequipment.getEquipmentno());
-                        monitorequipment.setLowlimit(lowlimit);
+                        String equipmentno = monitorequipment.getEquipmentno();
+                        if (!collectMap.isEmpty()){
+                            monitorequipment.setLowlimit(collectMap.get(equipmentno).get(0).getLowlimit());
+                        }
                     }
+                    monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 }
             }
             PageInfo<Monitorequipment> pageInfo = new PageInfo<Monitorequipment>(monitorequipmentList);

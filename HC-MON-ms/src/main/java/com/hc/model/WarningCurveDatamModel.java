@@ -17,4 +17,7 @@ public class WarningCurveDatamModel {
     private String equipmentno;
     @ApiModelProperty("探头对应的单位")
     private String instrumentconfigname;
+
+    @ApiModelProperty("开光量")
+    private String lowlimit;
 }
