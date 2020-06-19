@@ -16,7 +16,7 @@
         monitorequipment t1 LEFT JOIN monitorinstrument t2 on t1.equipmentno =t2.equipmentno
         WHERE
         t1.hospitalcode = #{hospitalcode}
-        AND t1.equipmenttypeid = '2'
+        AND t1.equipmenttypeid = #{equipmenttypeid}
         <if test="equipmentname!=null">
             and equipmentname like '%${equipmentname}%'
         </if>
