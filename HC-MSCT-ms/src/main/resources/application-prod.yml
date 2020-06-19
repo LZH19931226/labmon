@@ -100,5 +100,3 @@ mail:
 timing:
      phone1: 13774664356
      phone2: 18108674918
-#mybatis:
-#  mapperLocations: classpath:EquipmentInfoMapper.xml
