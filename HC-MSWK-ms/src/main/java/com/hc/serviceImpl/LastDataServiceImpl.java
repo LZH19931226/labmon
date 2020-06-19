@@ -132,6 +132,7 @@ public class LastDataServiceImpl implements LastDataService {
                 String equipmentlastdata = monitorequipmentlastdata1.getEquipmentlastdata();
                 if (StringUtils.isNotEmpty(equipmentlastdata)){
                     //非空  直接 新增一条数据
+                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
                     if (StringUtils.equals(equipmentTypeId, "1")) {
                         Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
