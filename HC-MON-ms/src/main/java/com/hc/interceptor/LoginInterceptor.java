@@ -32,13 +32,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         String url = request.getRequestURI();
         String token = request.getParameter("token");
         //获取用户token
-        HttpSession session = request.getSession();
         JSONObject res = new JSONObject();
-        logger.info("LoginInterceptor 调用接口！================== Url:" + url + ";Token:" + token + ";SessionID:" + session.getId());
         String path = request.getServletPath();
         try {
             if (url.contains("/error")) {
-                logger.error("页面发生错误 跳转到 /error 页面中");
                 return true;
             }
             if (
@@ -47,9 +44,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                             || path.matches("/swagger-resources") || path.matches("/v2/api-docs")
                             || path.matches(".*/apk/.*") || path.matches(".*/api/insParamSet/sendMessage") || path.matches(".*/api/insParamSet/sendMessages") || path.matches(".*/api/insParamSet/updateDevicetoken")
                             || path.matches(".*api/warningInfo/showData") || path.matches(".*/api/equipmentInfo/a") || path.matches(".*/api/equipmentInfo/getEquipmentInfoByHospitalcode")) {
-                logger.info("匹配上了，直接放行：" + path);
             } else {
-                logger.info("未匹配 NO_INTERCEPTOR_PATH path : " + path);
                 //数据是空
                 if (StringUtils.isEmpty(token)) {
                     logger.info("token为空");
