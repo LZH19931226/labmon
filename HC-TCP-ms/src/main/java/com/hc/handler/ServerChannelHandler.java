@@ -2,8 +2,8 @@ package com.hc.handler;
 
 
 import com.hc.bean.MTOnlineBean;
-import com.hc.bean.ParamaterModel;
 import com.hc.config.RedisTemplateUtil;
+import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
 import com.hc.socketServer.IotServer;

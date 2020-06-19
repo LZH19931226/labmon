@@ -86,4 +86,8 @@ public class paramaterModelUtils {
 
     }
 
+    public static void  main(String atgs[]){
+        System.out.println(gas("01F4"));
+
+    }
 }

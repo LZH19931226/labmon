@@ -102,10 +102,10 @@ pagehelper:
 Android:
   baseUrl: C:\tool\tomcatServer\123\apache-tomcat-9.0.8\webapps\ROOT\apk\
   ipport:  http://www.sosum.net:8098/apk/
-#logging:
-#  level:
-#    com:
-#      hc:
-#        mapper: debug
+logging:
+  level:
+    com:
+      hc:
+        mapper: debug
 
 

@@ -2,7 +2,7 @@ package com.hc.controller;
 
 import com.hc.bean.ApiResponse;
 import com.hc.bean.MTOnlineBean;
-import com.hc.bean.ParamaterModel;
+import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
