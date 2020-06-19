@@ -12,7 +12,7 @@ import com.hc.utils.ApiResponse;
  **/
 public interface WarningRecordInfoService {
 
-    ApiResponse<String> instwarningrecordinfo(WarningRecordInfo warningrecordinfo);
+    ApiResponse<WarningRecordInfo> instwarningrecordinfo(WarningRecordInfo warningrecordinfo);
 
     ApiResponse<CurveInfoModel> getWarningCurveData(String warningRecordId, String startTime, String endTime);
 }

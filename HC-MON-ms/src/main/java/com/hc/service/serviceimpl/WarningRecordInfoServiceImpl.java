@@ -6,7 +6,6 @@ import com.hc.entity.WarningRecordInfo;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.WarningrecordInfoMapper;
 import com.hc.model.*;
-import com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel;
 import com.hc.service.WarningRecordInfoService;
 import com.hc.utils.ApiResponse;
 import com.hc.utils.TimeHelper;
@@ -38,21 +37,20 @@ public class WarningRecordInfoServiceImpl implements WarningRecordInfoService {
     private EquipmentInfoMapper equipmentInfoMapper;
 
     @Override
-    public ApiResponse<String> instwarningrecordinfo(WarningRecordInfo warningrecordinfo) {
-        try {
+    public ApiResponse<WarningRecordInfo> instwarningrecordinfo(WarningRecordInfo warningrecordinfo) {
+        ApiResponse<WarningRecordInfo> apiResponse = new ApiResponse<>();
             int id = warningrecordinfo.getId();
             if (id != 0) {
                 warningrecordinfo.setUpdatetime(new Date());
                 wreDao.updateWarningRecordInfo(warningrecordinfo.getInfo(), warningrecordinfo.getUpdateuser(), warningrecordinfo.getId());
-                return ApiResponse.updateSuccess();
+                apiResponse.setResult(warningrecordinfo);
+                return apiResponse;
             } else {
                 warningrecordinfo.setCreatetime(new Date());
             }
             wreDao.save(warningrecordinfo);
-        } catch (Exception e) {
-            return ApiResponse.fail(e.getMessage());
-        }
-        return ApiResponse.saveSuccess();
+        apiResponse.setResult(warningrecordinfo);
+        return apiResponse;
     }
 
     /*
@@ -95,6 +93,7 @@ N2	currentn2
      */
     @Override
     public ApiResponse<CurveInfoModel> getWarningCurveData(String warningRecordId, String startTime, String endTime) {
+        ApiResponse<CurveInfoModel> apiResponse = new ApiResponse<>();
         String search = "monitorequipmentlastdata";
         // 判断当前日期是否为当前月份
         boolean flag = TimeHelper.isCurrentMonth(startTime);
@@ -105,6 +104,13 @@ N2	currentn2
             search = "monitorequipmentlastdata" + "_" + year + month;
         }
         WarningCurveDatamModel warningCurveData = warningrecordInfoMapper.getWarningCurveData(warningRecordId);
+        String instrumentconfigname1 = warningCurveData.getInstrumentconfigname();
+        //电量无曲线
+        if (StringUtils.equalsAnyIgnoreCase(instrumentconfigname1,"QC","UPS")){
+            apiResponse.setCode(ApiResponse.NOT_FOUND);
+            apiResponse.setMessage("市电,电量无曲线");
+            return apiResponse;
+        }
         String instrumentconfigname = warningCurveData.getInstrumentconfigname();
         MonitortlastdataTypeModel monitortlastdataTypeModel = new MonitortlastdataTypeModel();
         monitortlastdataTypeModel.setEquipmentno(warningCurveData.getEquipmentno());
@@ -113,7 +119,7 @@ N2	currentn2
         monitortlastdataTypeModel.setTableName(search);
         monitortlastdataTypeModel.setType(changeInstrumentConfigName(instrumentconfigname));
         List<Monitorequipmentlastdata> monitorequipmentlastdataByType = equipmentInfoMapper.getMonitorequipmentlastdataByType(monitortlastdataTypeModel);
-        ApiResponse<CurveInfoModel> apiResponse = new ApiResponse<>();
+
         if (CollectionUtils.isEmpty(monitorequipmentlastdataByType)){
             apiResponse.setCode(ApiResponse.NOT_FOUND);
             apiResponse.setMessage("暂无数据");

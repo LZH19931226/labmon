@@ -86,7 +86,7 @@ public class WarningInfoController {
 
     @PostMapping
     @ApiOperation("插入报警备注信息")
-    public ApiResponse<String> insertwarningRecordInfo(@RequestBody WarningRecordInfo warningRecordInfo){
+    public ApiResponse<WarningRecordInfo> insertwarningRecordInfo(@RequestBody WarningRecordInfo warningRecordInfo){
         return warningRecordInfoService.instwarningrecordinfo(warningRecordInfo);
     }
 
