@@ -21,7 +21,7 @@ public class MathUtil {
         //4843 91 10 31383335303630303031 0E74 0258 01F4 57 23
         //4843 87 0e 31383136303630303031 0000 f000 7b23
         //4843 99 19 31383038393930303238 0E75 0E7C 0E7C 0E7C 0E78 0E81 0E7A 0E7C 0E78 0E78 01F7 0226 A4 23
-        String ruleone = "4843210A313833353135303030312A23";
+        String ruleone = "4843a51a32303136303630303138f000f000f000f000f0000000000000004e23";
 //		String   ruleone = "4843700c31383135303230313738cc4cf623";
         List<String> ruleone1 = ruleone(ruleone);
         List<String> strings = ruleTwo(ruleone1);
@@ -131,10 +131,10 @@ public class MathUtil {
 
         return list;
     }
-
+    //MT600 //MT1100
     public static String ruleMT(String sn) {
         String substring = sn.substring(4, 6);
-        if (StringUtils.equals(substring, "11")) {
+        if (StringUtils.equals(substring, "11")||StringUtils.equals(substring, "32")) {
             return sn;
         }
         return null;

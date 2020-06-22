@@ -87,7 +87,7 @@ public class paramaterModelUtils {
     }
 
     public static void  main(String atgs[]){
-        System.out.println(gas("01F4"));
+        System.out.println(gas("4843a51a32303136303630303138f000f000f000f000f0000000000000004e23"));
 
     }
 }

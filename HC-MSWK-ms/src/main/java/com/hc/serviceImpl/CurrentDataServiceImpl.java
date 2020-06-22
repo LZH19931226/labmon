@@ -1,6 +1,5 @@
 package com.hc.serviceImpl;
 
-import com.hc.bean.ParamaterModel;
 import com.hc.config.RedisTemplateUtil;
 import com.hc.entity.Monitorinstrument;
 import com.hc.model.ResponseModel.CurrentData;

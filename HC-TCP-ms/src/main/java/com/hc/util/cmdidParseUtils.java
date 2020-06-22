@@ -1051,10 +1051,10 @@ public class cmdidParseUtils {
 
 
     public static void main(String[] args) {
-        String id = "48 43 A2 1A  31 38 33 35 31 35 30 30 30 31  0E 74 0E 74 01 F4 02 58 00 64 00 64 00 32 00 00 24 23";
+        String id = "4843a51a32303136303630303039f000f000f000f000f0000000000000004e23 ";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
-        ParamaterModel paramaterModel = paseA2(s, null, null);
+        ParamaterModel paramaterModel = paseA5(s, null, null);
         System.out.println(paramaterModel);
     }
 
@@ -1139,11 +1139,11 @@ public class cmdidParseUtils {
         String substring1 = cmd.substring(28, 32);
         paramaterModel.setTEMP(pasetemperature1(substring1));
         String substring2 = cmd.substring(32, 36);
-        paramaterModel.setO2(gas(substring2));
+        paramaterModel.setO2(paseAir(substring2));
         String substring3 = cmd.substring(36, 40);
-        paramaterModel.setCO2(gas(substring3));
+        paramaterModel.setCO2(paseAir(substring3));
         String substring4 = cmd.substring(40, 44);
-        paramaterModel.setRH(gas(substring4));
+        paramaterModel.setRH(paseAir(substring4));
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
