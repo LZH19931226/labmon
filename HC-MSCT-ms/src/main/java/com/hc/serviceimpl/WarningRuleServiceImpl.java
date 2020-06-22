@@ -160,7 +160,7 @@ WarningRuleServiceImpl implements WarningRuleService {
 //                                warningModel.setPkid(pkid);
 //                            }
 //                        }
-                        warningrecordDao.updatePhone(pkid);
+                        //warningrecordDao.updatePhone(pkid);
 
                     }
                 }
