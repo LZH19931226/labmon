@@ -1,565 +1,198 @@
-2020-06-03 11:27:58.463 [restartedMain] INFO  o.s.c.a.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@657730d5: startup date [Wed Jun 03 11:27:58 CST 2020]; root of context hierarchy
-2020-06-03 11:27:58.609 [restartedMain] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2020-06-03 11:27:58.645 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$86bcaa] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2020-06-03 11:27:59.230 [restartedMain] INFO  com.hc.SpringServiceAApplication - No active profile set, falling back to default profiles: default
-2020-06-03 11:27:59.247 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@47b2f150: startup date [Wed Jun 03 11:27:59 CST 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@657730d5
-2020-06-03 11:28:00.244 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
-2020-06-03 11:28:00.290 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper.laboratoryMain]' package. Please check your configuration.
-2020-06-03 11:28:00.449 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
-2020-06-03 11:28:00.543 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.InstrumentParamConfigDao.
-2020-06-03 11:28:00.545 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.RepairinfoDao.
-2020-06-03 11:28:00.545 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.OperationlogDao.
-2020-06-03 11:28:00.545 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.UserRightDao.
-2020-06-03 11:28:00.545 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorEquipmentDao.
-2020-06-03 11:28:00.546 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorInstrumentDao.
-2020-06-03 11:28:00.546 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.OperationlogdetailDao.
-2020-06-03 11:28:00.546 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.HospitalofreginfoDao.
-2020-06-03 11:28:00.546 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.UserEquipmentRightDao.
-2020-06-03 11:28:00.546 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorInstrumentTypeDao.
-2020-06-03 11:28:00.547 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.HospitalEquipmentDao.
-2020-06-03 11:28:00.763 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=cd492cef-30d1-33a1-97f3-19899534d067
-2020-06-03 11:28:00.780 [restartedMain] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2020-06-03 11:28:00.869 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$e46cb9ad] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2020-06-03 11:28:00.895 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$86bcaa] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2020-06-03 11:28:01.241 [restartedMain] INFO  o.s.b.c.e.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8097 (http)
-2020-06-03 11:28:01.248 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2020-06-03 11:28:01.249 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.23
-2020-06-03 11:28:01.368 [localhost-startStop-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2020-06-03 11:28:01.369 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2122 ms
-2020-06-03 11:28:01.522 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
-2020-06-03 11:28:01.528 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
-2020-06-03 11:28:01.528 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
-2020-06-03 11:28:01.529 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
-2020-06-03 11:28:01.529 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
-2020-06-03 11:28:02.067 [restartedMain] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'entityManagerFactoryPrimary'
-2020-06-03 11:28:02.175 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+2020-06-22 14:26:28.590 [restartedMain] INFO  o.s.c.a.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@440a2b0e: startup date [Mon Jun 22 14:26:28 CST 2020]; root of context hierarchy
+2020-06-22 14:26:28.919 [restartedMain] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2020-06-22 14:26:28.996 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$2d996db0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-06-22 14:26:29.662 [restartedMain] INFO  com.hc.SpringServiceAApplication - No active profile set, falling back to default profiles: default
+2020-06-22 14:26:29.689 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@33fba7b7: startup date [Mon Jun 22 14:26:29 CST 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@440a2b0e
+2020-06-22 14:26:32.144 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-06-22 14:26:32.226 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper.laboratoryMain]' package. Please check your configuration.
+2020-06-22 14:26:32.553 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-06-22 14:26:32.727 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.InstrumentParamConfigDao.
+2020-06-22 14:26:32.730 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.RepairinfoDao.
+2020-06-22 14:26:32.731 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.OperationlogDao.
+2020-06-22 14:26:32.734 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.UserRightDao.
+2020-06-22 14:26:32.736 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorEquipmentDao.
+2020-06-22 14:26:32.736 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorInstrumentDao.
+2020-06-22 14:26:32.737 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.OperationlogdetailDao.
+2020-06-22 14:26:32.737 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.HospitalofreginfoDao.
+2020-06-22 14:26:32.738 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.UserEquipmentRightDao.
+2020-06-22 14:26:32.738 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorInstrumentTypeDao.
+2020-06-22 14:26:32.739 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.HospitalEquipmentDao.
+2020-06-22 14:26:33.097 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=cd492cef-30d1-33a1-97f3-19899534d067
+2020-06-22 14:26:33.138 [restartedMain] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2020-06-22 14:26:33.361 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$117f6ab3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-06-22 14:26:33.447 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$2d996db0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-06-22 14:26:34.003 [restartedMain] INFO  o.s.b.c.e.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8097 (http)
+2020-06-22 14:26:34.012 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2020-06-22 14:26:34.013 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.23
+2020-06-22 14:26:34.193 [localhost-startStop-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2020-06-22 14:26:34.193 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4504 ms
+2020-06-22 14:26:34.462 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2020-06-22 14:26:34.472 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2020-06-22 14:26:34.473 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2020-06-22 14:26:34.473 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2020-06-22 14:26:34.473 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2020-06-22 14:26:35.435 [restartedMain] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'entityManagerFactoryPrimary'
+2020-06-22 14:26:35.449 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
 	name: entityManagerFactoryPrimary
 	...]
-2020-06-03 11:28:02.227 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.0.12.Final}
-2020-06-03 11:28:02.228 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
-2020-06-03 11:28:02.229 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000021: Bytecode provider name : javassist
-2020-06-03 11:28:02.263 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
-2020-06-03 11:28:02.390 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2020-06-03 11:28:02.546 [restartedMain] WARN  org.hibernate.mapping.RootClass - HHH000038: Composite-id class does not override equals(): com.hc.entity.HospitalequimentKey
-2020-06-03 11:28:02.546 [restartedMain] WARN  org.hibernate.mapping.RootClass - HHH000039: Composite-id class does not override hashCode(): com.hc.entity.HospitalequimentKey
-2020-06-03 11:28:02.759 [restartedMain] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'entityManagerFactoryPrimary'
-2020-06-03 11:28:03.332 [restartedMain] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
-2020-06-03 11:28:03.903 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/showAllData],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.ShowData>> com.hc.controller.AlarmStatisticsController.showAllData()
-2020-06-03 11:28:03.903 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/alarmStatisticsShow],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.AlarmHospitalInfo>> com.hc.controller.AlarmStatisticsController.alarm()
-2020-06-03 11:28:03.905 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/exporeExcle],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.AlarmStatisticsController.exporeExcle(javax.servlet.http.HttpServletResponse)
-2020-06-03 11:28:03.905 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/exporeExcles],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.AlarmStatisticsController.exporeExcles(javax.servlet.http.HttpServletResponse)
-2020-06-03 11:28:03.905 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/getHospitalAlarmInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.AlarmData>> com.hc.controller.AlarmStatisticsController.getHospitalAralmInfo(java.lang.String,java.lang.String,java.lang.String)
-2020-06-03 11:28:03.907 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/updateUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Userright> com.hc.controller.ClientInfoController.updateUser(com.hc.entity.Userright)
-2020-06-03 11:28:03.907 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/deleteUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.ClientInfoController.deleteUser(com.hc.entity.Userright)
-2020-06-03 11:28:03.907 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/selectUserInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.ClientInfoModel>> com.hc.controller.ClientInfoController.selectUserInfoPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String)
-2020-06-03 11:28:03.907 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/addUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Userright> com.hc.controller.ClientInfoController.addUser(com.hc.entity.Userright)
-2020-06-03 11:28:03.908 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/addEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.addEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
-2020-06-03 11:28:03.909 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/updateEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.updateEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
-2020-06-03 11:28:03.909 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectAllEquipmentType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipmenttype>> com.hc.controller.HospitalEquipmentTypeController.selectAllEquipmentType()
-2020-06-03 11:28:03.909 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectAllEquipmentTypeByCode],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipmenttype>> com.hc.controller.HospitalEquipmentTypeController.selectAllEquipmentTypeByCode(java.lang.String)
-2020-06-03 11:28:03.909 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectEquipmentTypePage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel>> com.hc.controller.HospitalEquipmentTypeController.selectEquipmentPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String)
-2020-06-03 11:28:03.909 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/deleteEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.deleteEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
-2020-06-03 11:28:03.910 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/addHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Hospitalofreginfo> com.hc.controller.HospitalInfoController.addHospitalInfo(com.hc.entity.Hospitalofreginfo)
-2020-06-03 11:28:03.911 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/getHospitalInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Hospitalofreginfo>> com.hc.controller.HospitalInfoController.selectHospitalInfo()
-2020-06-03 11:28:03.911 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/updateHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Hospitalofreginfo> com.hc.controller.HospitalInfoController.updateHospitalInfo(com.hc.entity.Hospitalofreginfo)
-2020-06-03 11:28:03.911 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/deleteHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalInfoController.deleteHospitalInfo(com.hc.entity.Hospitalofreginfo)
-2020-06-03 11:28:03.911 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/getHospitalInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Hospitalofreginfo>> com.hc.controller.HospitalInfoController.selectHospitalInfoPage(java.lang.String,java.lang.Integer,java.lang.Integer)
-2020-06-03 11:28:03.912 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/updateInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.updateInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:28:03.912 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/deleteInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.deleteInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:28:03.913 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/addInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.addInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:28:03.913 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/showInsType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrumenttype>> com.hc.controller.InstrumentInfoController.showInstrumentType()
-2020-06-03 11:28:03.913 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/selectInstrumentPage],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.AllInstrumentInfoModel>> com.hc.controller.InstrumentInfoController.selectInstrumentPage(com.hc.model.RequestModel.InstrumentPageModel)
-2020-06-03 11:28:03.913 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/addInstrumentParam],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.addInstrumentParam(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:28:03.917 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/addEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.addEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:28:03.917 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/updateEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.updateEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:28:03.918 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/selectAllEquipmentByCode],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipment>> com.hc.controller.MonitorEquipmentController.selectAllEquipmentTypeByCode(java.lang.String,java.lang.String)
-2020-06-03 11:28:03.918 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/selectEquipmentPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.MonitorEquipmentInfoModel>> com.hc.controller.MonitorEquipmentController.selectEquipmentPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String)
-2020-06-03 11:28:03.918 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/deleteEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.deleteEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:28:03.918 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/showInstrumentType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrumenttype>> com.hc.controller.MonitorEquipmentController.showInstrumentType(java.lang.String)
-2020-06-03 11:28:03.918 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/showInstrumentInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrument>> com.hc.controller.MonitorEquipmentController.showInstrumentInfo(java.lang.String,java.lang.Integer,java.lang.String)
-2020-06-03 11:28:03.918 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/addWireEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.addWireEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:28:03.919 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/info]}" onto public java.lang.String com.hc.controller.MyController.testA()
-2020-06-03 11:28:03.919 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/log/getAllLog],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Operationlog>> com.hc.controller.OperationlogdetailMapper.getAllLog(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
-2020-06-03 11:28:03.919 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/log/getlogDeatil],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Operationlogdetail>> com.hc.controller.OperationlogdetailMapper.getlogDeatil(java.lang.String)
-2020-06-03 11:28:03.920 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/getsn],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrument>> com.hc.controller.RepairinfoController.getSn(java.lang.String)
-2020-06-03 11:28:03.922 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/selectPageInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Repairinfo>> com.hc.controller.RepairinfoController.selectPageInfo(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
-2020-06-03 11:28:03.922 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/addRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Repairinfo> com.hc.controller.RepairinfoController.addRepairinfo(com.hc.entity.Repairinfo)
-2020-06-03 11:28:03.922 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/deleteRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.RepairinfoController.deleteRepairinfo(com.hc.entity.Repairinfo)
-2020-06-03 11:28:03.923 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/updateRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.RepairinfoController.updateRepairinfo(com.hc.entity.Repairinfo)
-2020-06-03 11:28:03.923 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userAuthorInfo/updateUserAuthor],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserAuthorController.updateUserAuthor(com.hc.model.RequestModel.UserauthorInfoModel)
-2020-06-03 11:28:03.923 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userAuthorInfo/selectUserAuthorInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.UserAuthInfoModel>> com.hc.controller.UserAuthorController.selectUserAuthorInfoPage(java.lang.Integer,java.lang.Integer)
-2020-06-03 11:28:03.924 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userBackInfo/userLogin],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserInfoController.userLogin(com.hc.entity.Userback)
-2020-06-03 11:28:03.924 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userBackInfo/updatePwd],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserInfoController.updatePwd(com.hc.entity.Userback)
-2020-06-03 11:28:03.925 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v2/api-docs],methods=[GET],produces=[application/json || application/hal+json]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)
-2020-06-03 11:28:03.926 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources/configuration/security]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
-2020-06-03 11:28:03.927 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources]}" onto org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
-2020-06-03 11:28:03.927 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources/configuration/ui]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
-2020-06-03 11:28:03.930 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
-2020-06-03 11:28:03.930 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
-2020-06-03 11:28:04.602 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@47b2f150: startup date [Wed Jun 03 11:27:59 CST 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@657730d5
-2020-06-03 11:28:04.645 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/swagger-ui.html] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:28:04.645 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/static*] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:28:04.645 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:28:04.645 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:28:04.681 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:28:05.166 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2020-06-03 11:28:05.258 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
-2020-06-03 11:28:05.259 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
-2020-06-03 11:28:05.262 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
-2020-06-03 11:28:05.262 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
-2020-06-03 11:28:05.316 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
-2020-06-03 11:28:05.323 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'environmentManager' has been autodetected for JMX exposure
-2020-06-03 11:28:05.324 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'configurationPropertiesRebinder' has been autodetected for JMX exposure
-2020-06-03 11:28:05.324 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'refreshScope' has been autodetected for JMX exposure
-2020-06-03 11:28:05.326 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'environmentManager': registering with JMX server as MBean [org.springframework.cloud.context.environment:name=environmentManager,type=EnvironmentManager]
-2020-06-03 11:28:05.334 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'refreshScope': registering with JMX server as MBean [org.springframework.cloud.context.scope.refresh:name=refreshScope,type=RefreshScope]
-2020-06-03 11:28:05.341 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'configurationPropertiesRebinder': registering with JMX server as MBean [org.springframework.cloud.context.properties:name=configurationPropertiesRebinder,context=47b2f150,type=ConfigurationPropertiesRebinder]
-2020-06-03 11:28:05.997 [restartedMain] INFO  o.s.context.support.DefaultLifecycleProcessor - Starting beans in phase 0
-2020-06-03 11:28:06.004 [restartedMain] INFO  o.s.cloud.netflix.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
-2020-06-03 11:28:06.031 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
-2020-06-03 11:28:06.282 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using JSON encoding codec LegacyJacksonJson
-2020-06-03 11:28:06.282 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using JSON decoding codec LegacyJacksonJson
-2020-06-03 11:28:06.351 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using XML encoding codec XStreamXml
-2020-06-03 11:28:06.351 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using XML decoding codec XStreamXml
-2020-06-03 11:28:06.474 [restartedMain] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
-2020-06-03 11:28:06.621 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Disable delta property : false
-2020-06-03 11:28:06.621 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
-2020-06-03 11:28:06.621 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Force full registry fetch : false
-2020-06-03 11:28:06.622 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Application is null : false
-2020-06-03 11:28:06.622 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
-2020-06-03 11:28:06.622 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Application version is -1: true
-2020-06-03 11:28:06.622 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
-2020-06-03 11:28:10.968 [restartedMain] ERROR c.n.d.s.t.decorator.RedirectingEurekaHttpClient - Request execution error
-com.sun.jersey.api.client.ClientHandlerException: java.net.ConnectException: Connection refused: connect
-	at com.sun.jersey.client.apache4.ApacheHttpClient4Handler.handle(ApacheHttpClient4Handler.java:187)
-	at com.sun.jersey.api.client.filter.GZIPContentEncodingFilter.handle(GZIPContentEncodingFilter.java:123)
-	at com.netflix.discovery.EurekaIdentityHeaderFilter.handle(EurekaIdentityHeaderFilter.java:27)
-	at com.sun.jersey.api.client.Client.handle(Client.java:652)
-	at com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
-	at com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
-	at com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
-	at com.netflix.discovery.shared.transport.jersey.AbstractJerseyEurekaHttpClient.getApplicationsInternal(AbstractJerseyEurekaHttpClient.java:194)
-	at com.netflix.discovery.shared.transport.jersey.AbstractJerseyEurekaHttpClient.getApplications(AbstractJerseyEurekaHttpClient.java:165)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$6.execute(EurekaHttpClientDecorator.java:137)
-	at com.netflix.discovery.shared.transport.decorator.MetricsCollectingEurekaHttpClient.execute(MetricsCollectingEurekaHttpClient.java:73)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getApplications(EurekaHttpClientDecorator.java:134)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$6.execute(EurekaHttpClientDecorator.java:137)
-	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:118)
-	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:79)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getApplications(EurekaHttpClientDecorator.java:134)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$6.execute(EurekaHttpClientDecorator.java:137)
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:119)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getApplications(EurekaHttpClientDecorator.java:134)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$6.execute(EurekaHttpClientDecorator.java:137)
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getApplications(EurekaHttpClientDecorator.java:134)
-	at com.netflix.discovery.DiscoveryClient.getAndStoreFullRegistry(DiscoveryClient.java:1013)
-	at com.netflix.discovery.DiscoveryClient.fetchRegistry(DiscoveryClient.java:927)
-	at com.netflix.discovery.DiscoveryClient.<init>(DiscoveryClient.java:408)
-	at com.netflix.discovery.DiscoveryClient.<init>(DiscoveryClient.java:266)
-	at com.netflix.discovery.DiscoveryClient.<init>(DiscoveryClient.java:262)
-	at org.springframework.cloud.netflix.eureka.CloudEurekaClient.<init>(CloudEurekaClient.java:60)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration.eurekaClient(EurekaClientAutoConfiguration.java:225)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration$$EnhancerBySpringCGLIB$$7efb5c9.CGLIB$eurekaClient$0(<generated>)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration$$EnhancerBySpringCGLIB$$7efb5c9$$FastClassBySpringCGLIB$$66a8441f.invoke(<generated>)
-	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:228)
-	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:358)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration$$EnhancerBySpringCGLIB$$7efb5c9.eurekaClient(<generated>)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:162)
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:588)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1173)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1067)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
-	at org.springframework.beans.factory.support.AbstractBeanFactory$2.getObject(AbstractBeanFactory.java:345)
-	at org.springframework.cloud.context.scope.GenericScope$BeanLifecycleWrapper.getBean(GenericScope.java:359)
-	at org.springframework.cloud.context.scope.GenericScope.get(GenericScope.java:176)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:340)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
-	at org.springframework.aop.target.SimpleBeanTargetSource.getTarget(SimpleBeanTargetSource.java:35)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration.getTargetObject(EurekaRegistration.java:133)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration.getEurekaClient(EurekaRegistration.java:122)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaServiceRegistry.maybeInitializeClient(EurekaServiceRegistry.java:56)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaServiceRegistry.register(EurekaServiceRegistry.java:37)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaAutoServiceRegistration.start(EurekaAutoServiceRegistration.java:73)
-	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:175)
-	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:50)
-	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:348)
-	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:151)
-	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:114)
-	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:880)
-	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.finishRefresh(EmbeddedWebApplicationContext.java:144)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:546)
-	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:693)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:360)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1118)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1107)
-	at com.hc.SpringServiceAApplication.main(SpringServiceAApplication.java:17)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
-Caused by: java.net.ConnectException: Connection refused: connect
-	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
-	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
-	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
-	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
-	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
-	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
-	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
-	at java.net.Socket.connect(Socket.java:589)
-	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:121)
-	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180)
-	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:144)
-	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:134)
-	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:610)
-	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:445)
-	at org.apache.http.impl.client.AbstractHttpClient.doExecute(AbstractHttpClient.java:835)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:118)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:56)
-	at com.sun.jersey.client.apache4.ApacheHttpClient4Handler.handle(ApacheHttpClient4Handler.java:173)
-	... 74 common frames omitted
-2020-06-03 11:28:10.973 [restartedMain] WARN  c.n.d.s.t.decorator.RetryableEurekaHttpClient - Request execution failed with message: java.net.ConnectException: Connection refused: connect
-2020-06-03 11:28:10.975 [restartedMain] ERROR com.netflix.discovery.DiscoveryClient - DiscoveryClient_HC-HTGL-MS/PC-20190801IFVM:HC-HTGL-ms:8097 - was unable to refresh its cache! status = Cannot execute request on any known server
-com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:111)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getApplications(EurekaHttpClientDecorator.java:134)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$6.execute(EurekaHttpClientDecorator.java:137)
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getApplications(EurekaHttpClientDecorator.java:134)
-	at com.netflix.discovery.DiscoveryClient.getAndStoreFullRegistry(DiscoveryClient.java:1013)
-	at com.netflix.discovery.DiscoveryClient.fetchRegistry(DiscoveryClient.java:927)
-	at com.netflix.discovery.DiscoveryClient.<init>(DiscoveryClient.java:408)
-	at com.netflix.discovery.DiscoveryClient.<init>(DiscoveryClient.java:266)
-	at com.netflix.discovery.DiscoveryClient.<init>(DiscoveryClient.java:262)
-	at org.springframework.cloud.netflix.eureka.CloudEurekaClient.<init>(CloudEurekaClient.java:60)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration.eurekaClient(EurekaClientAutoConfiguration.java:225)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration$$EnhancerBySpringCGLIB$$7efb5c9.CGLIB$eurekaClient$0(<generated>)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration$$EnhancerBySpringCGLIB$$7efb5c9$$FastClassBySpringCGLIB$$66a8441f.invoke(<generated>)
-	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:228)
-	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:358)
-	at org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration$RefreshableEurekaClientConfiguration$$EnhancerBySpringCGLIB$$7efb5c9.eurekaClient(<generated>)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:162)
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:588)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1173)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1067)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
-	at org.springframework.beans.factory.support.AbstractBeanFactory$2.getObject(AbstractBeanFactory.java:345)
-	at org.springframework.cloud.context.scope.GenericScope$BeanLifecycleWrapper.getBean(GenericScope.java:359)
-	at org.springframework.cloud.context.scope.GenericScope.get(GenericScope.java:176)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:340)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
-	at org.springframework.aop.target.SimpleBeanTargetSource.getTarget(SimpleBeanTargetSource.java:35)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration.getTargetObject(EurekaRegistration.java:133)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration.getEurekaClient(EurekaRegistration.java:122)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaServiceRegistry.maybeInitializeClient(EurekaServiceRegistry.java:56)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaServiceRegistry.register(EurekaServiceRegistry.java:37)
-	at org.springframework.cloud.netflix.eureka.serviceregistry.EurekaAutoServiceRegistration.start(EurekaAutoServiceRegistration.java:73)
-	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:175)
-	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:50)
-	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:348)
-	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:151)
-	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:114)
-	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:880)
-	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.finishRefresh(EmbeddedWebApplicationContext.java:144)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:546)
-	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:693)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:360)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1118)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1107)
-	at com.hc.SpringServiceAApplication.main(SpringServiceAApplication.java:17)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
-2020-06-03 11:28:10.981 [restartedMain] WARN  com.netflix.discovery.DiscoveryClient - Using default backup registry implementation which does not do anything.
-2020-06-03 11:28:10.985 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
-2020-06-03 11:28:10.989 [restartedMain] INFO  com.netflix.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
-2020-06-03 11:28:10.996 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1591154890995 with initial instances count: 0
-2020-06-03 11:28:11.024 [restartedMain] INFO  o.s.c.n.e.serviceregistry.EurekaServiceRegistry - Registering application HC-HTGL-ms with eureka with status UP
-2020-06-03 11:28:11.025 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1591154891025, current=UP, previous=STARTING]
-2020-06-03 11:28:11.027 [DiscoveryClient-InstanceInfoReplicator-0] INFO  com.netflix.discovery.DiscoveryClient - DiscoveryClient_HC-HTGL-MS/PC-20190801IFVM:HC-HTGL-ms:8097: registering service...
-2020-06-03 11:28:11.028 [restartedMain] INFO  o.s.context.support.DefaultLifecycleProcessor - Starting beans in phase 2147483647
-2020-06-03 11:28:11.029 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
-2020-06-03 11:28:11.044 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
-2020-06-03 11:28:11.055 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
-2020-06-03 11:28:11.369 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: addEquipmentTypeUsingPOST_1
-2020-06-03 11:28:11.380 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: deleteEquipmentTypeUsingPOST_1
-2020-06-03 11:28:11.390 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: selectAllEquipmentTypeByCodeUsingGET_1
-2020-06-03 11:28:11.404 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: selectEquipmentPageUsingGET_1
-2020-06-03 11:28:11.418 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: showInstrumentTypeUsingGET_1
-2020-06-03 11:28:11.423 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: updateEquipmentTypeUsingPOST_1
-2020-06-03 11:28:11.538 [restartedMain] INFO  o.s.b.c.e.tomcat.TomcatEmbeddedServletContainer - Tomcat started on port(s): 8097 (http)
-2020-06-03 11:28:11.539 [restartedMain] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8097
-2020-06-03 11:28:12.111 [restartedMain] INFO  com.hc.config.PoliceStationInfoCache2 - 慢慢解决
-2020-06-03 11:28:13.288 [restartedMain] INFO  com.hc.config.PoliceStationInfoCache1 - 慢慢解决
-2020-06-03 11:28:13.555 [restartedMain] INFO  com.hc.config.PoliceStationInfoCache - 执行探头信息同步
-2020-06-03 11:28:13.556 [restartedMain] INFO  com.hc.SpringServiceAApplication - Started SpringServiceAApplication in 15.716 seconds (JVM running for 17.342)
-2020-06-03 11:28:15.056 [DiscoveryClient-InstanceInfoReplicator-0] ERROR c.n.d.s.t.decorator.RedirectingEurekaHttpClient - Request execution error
-com.sun.jersey.api.client.ClientHandlerException: java.net.ConnectException: Connection refused: connect
-	at com.sun.jersey.client.apache4.ApacheHttpClient4Handler.handle(ApacheHttpClient4Handler.java:187)
-	at com.sun.jersey.api.client.filter.GZIPContentEncodingFilter.handle(GZIPContentEncodingFilter.java:123)
-	at com.netflix.discovery.EurekaIdentityHeaderFilter.handle(EurekaIdentityHeaderFilter.java:27)
-	at com.sun.jersey.api.client.Client.handle(Client.java:652)
-	at com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
-	at com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
-	at com.sun.jersey.api.client.WebResource$Builder.post(WebResource.java:570)
-	at com.netflix.discovery.shared.transport.jersey.AbstractJerseyEurekaHttpClient.register(AbstractJerseyEurekaHttpClient.java:56)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
-	at com.netflix.discovery.shared.transport.decorator.MetricsCollectingEurekaHttpClient.execute(MetricsCollectingEurekaHttpClient.java:73)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
-	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:118)
-	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:79)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:119)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:798)
-	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:104)
-	at com.netflix.discovery.InstanceInfoReplicator$1.run(InstanceInfoReplicator.java:88)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused: connect
-	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
-	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
-	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
-	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
-	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
-	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
-	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
-	at java.net.Socket.connect(Socket.java:589)
-	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:121)
-	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180)
-	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:144)
-	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:134)
-	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:610)
-	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:445)
-	at org.apache.http.impl.client.AbstractHttpClient.doExecute(AbstractHttpClient.java:835)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:118)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:56)
-	at com.sun.jersey.client.apache4.ApacheHttpClient4Handler.handle(ApacheHttpClient4Handler.java:173)
-	... 30 common frames omitted
-2020-06-03 11:28:15.058 [DiscoveryClient-InstanceInfoReplicator-0] WARN  c.n.d.s.t.decorator.RetryableEurekaHttpClient - Request execution failed with message: java.net.ConnectException: Connection refused: connect
-2020-06-03 11:28:15.058 [DiscoveryClient-InstanceInfoReplicator-0] WARN  com.netflix.discovery.DiscoveryClient - DiscoveryClient_HC-HTGL-MS/PC-20190801IFVM:HC-HTGL-ms:8097 - registration failed Cannot execute request on any known server
-com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:111)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:798)
-	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:104)
-	at com.netflix.discovery.InstanceInfoReplicator$1.run(InstanceInfoReplicator.java:88)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-2020-06-03 11:28:15.058 [DiscoveryClient-InstanceInfoReplicator-0] WARN  com.netflix.discovery.InstanceInfoReplicator - There was a problem with the instance info replicator
-com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:111)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
-	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:798)
-	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:104)
-	at com.netflix.discovery.InstanceInfoReplicator$1.run(InstanceInfoReplicator.java:88)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
-	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-2020-06-03 11:36:17.278 [restartedMain] INFO  o.s.c.a.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@5f720a0e: startup date [Wed Jun 03 11:36:17 CST 2020]; root of context hierarchy
-2020-06-03 11:36:17.440 [restartedMain] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2020-06-03 11:36:17.479 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$fc9a8a8c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2020-06-03 11:36:18.039 [restartedMain] INFO  com.hc.SpringServiceAApplication - No active profile set, falling back to default profiles: default
-2020-06-03 11:36:18.053 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@6d6e977f: startup date [Wed Jun 03 11:36:18 CST 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5f720a0e
-2020-06-03 11:36:19.037 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
-2020-06-03 11:36:19.081 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper.laboratoryMain]' package. Please check your configuration.
-2020-06-03 11:36:19.222 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
-2020-06-03 11:36:19.309 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.InstrumentParamConfigDao.
-2020-06-03 11:36:19.311 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.RepairinfoDao.
-2020-06-03 11:36:19.311 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.OperationlogDao.
-2020-06-03 11:36:19.311 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.UserRightDao.
-2020-06-03 11:36:19.312 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorEquipmentDao.
-2020-06-03 11:36:19.312 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorInstrumentDao.
-2020-06-03 11:36:19.312 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.OperationlogdetailDao.
-2020-06-03 11:36:19.312 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.HospitalofreginfoDao.
-2020-06-03 11:36:19.313 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.UserEquipmentRightDao.
-2020-06-03 11:36:19.313 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.MonitorInstrumentTypeDao.
-2020-06-03 11:36:19.313 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.hc.dao.HospitalEquipmentDao.
-2020-06-03 11:36:19.528 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=cd492cef-30d1-33a1-97f3-19899534d067
-2020-06-03 11:36:19.548 [restartedMain] INFO  o.s.b.f.a.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2020-06-03 11:36:19.637 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$e080878f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2020-06-03 11:36:19.664 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$fc9a8a8c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2020-06-03 11:36:20.031 [restartedMain] INFO  o.s.b.c.e.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8097 (http)
-2020-06-03 11:36:20.048 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2020-06-03 11:36:20.049 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.23
-2020-06-03 11:36:20.201 [localhost-startStop-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2020-06-03 11:36:20.202 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2148 ms
-2020-06-03 11:36:20.345 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
-2020-06-03 11:36:20.348 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
-2020-06-03 11:36:20.349 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
-2020-06-03 11:36:20.349 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
-2020-06-03 11:36:20.349 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
-2020-06-03 11:36:20.929 [restartedMain] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'entityManagerFactoryPrimary'
-2020-06-03 11:36:20.938 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
-	name: entityManagerFactoryPrimary
-	...]
-2020-06-03 11:36:20.987 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.0.12.Final}
-2020-06-03 11:36:20.988 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
-2020-06-03 11:36:20.989 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000021: Bytecode provider name : javassist
-2020-06-03 11:36:21.026 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
-2020-06-03 11:36:21.154 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2020-06-03 11:36:21.353 [restartedMain] WARN  org.hibernate.mapping.RootClass - HHH000038: Composite-id class does not override equals(): com.hc.entity.HospitalequimentKey
-2020-06-03 11:36:21.353 [restartedMain] WARN  org.hibernate.mapping.RootClass - HHH000039: Composite-id class does not override hashCode(): com.hc.entity.HospitalequimentKey
-2020-06-03 11:36:21.571 [restartedMain] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'entityManagerFactoryPrimary'
-2020-06-03 11:36:22.184 [restartedMain] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
-2020-06-03 11:36:22.748 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/showAllData],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.ShowData>> com.hc.controller.AlarmStatisticsController.showAllData()
-2020-06-03 11:36:22.750 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/exporeExcles],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.AlarmStatisticsController.exporeExcles(javax.servlet.http.HttpServletResponse)
-2020-06-03 11:36:22.751 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/alarmStatisticsShow],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.AlarmHospitalInfo>> com.hc.controller.AlarmStatisticsController.alarm()
-2020-06-03 11:36:22.751 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/exporeExcle],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.AlarmStatisticsController.exporeExcle(javax.servlet.http.HttpServletResponse)
-2020-06-03 11:36:22.751 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/getHospitalAlarmInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.AlarmData>> com.hc.controller.AlarmStatisticsController.getHospitalAralmInfo(java.lang.String,java.lang.String,java.lang.String)
-2020-06-03 11:36:22.753 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/addUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Userright> com.hc.controller.ClientInfoController.addUser(com.hc.entity.Userright)
-2020-06-03 11:36:22.753 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/deleteUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.ClientInfoController.deleteUser(com.hc.entity.Userright)
-2020-06-03 11:36:22.753 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/updateUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Userright> com.hc.controller.ClientInfoController.updateUser(com.hc.entity.Userright)
-2020-06-03 11:36:22.753 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/selectUserInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.ClientInfoModel>> com.hc.controller.ClientInfoController.selectUserInfoPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String)
-2020-06-03 11:36:22.755 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/addEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.addEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
-2020-06-03 11:36:22.755 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/updateEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.updateEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
-2020-06-03 11:36:22.755 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectEquipmentTypePage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel>> com.hc.controller.HospitalEquipmentTypeController.selectEquipmentPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String)
-2020-06-03 11:36:22.755 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/deleteEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.deleteEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
-2020-06-03 11:36:22.755 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectAllEquipmentTypeByCode],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipmenttype>> com.hc.controller.HospitalEquipmentTypeController.selectAllEquipmentTypeByCode(java.lang.String)
-2020-06-03 11:36:22.756 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectAllEquipmentType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipmenttype>> com.hc.controller.HospitalEquipmentTypeController.selectAllEquipmentType()
-2020-06-03 11:36:22.757 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/addHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Hospitalofreginfo> com.hc.controller.HospitalInfoController.addHospitalInfo(com.hc.entity.Hospitalofreginfo)
-2020-06-03 11:36:22.757 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/deleteHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalInfoController.deleteHospitalInfo(com.hc.entity.Hospitalofreginfo)
-2020-06-03 11:36:22.757 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/updateHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Hospitalofreginfo> com.hc.controller.HospitalInfoController.updateHospitalInfo(com.hc.entity.Hospitalofreginfo)
-2020-06-03 11:36:22.757 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/getHospitalInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Hospitalofreginfo>> com.hc.controller.HospitalInfoController.selectHospitalInfoPage(java.lang.String,java.lang.Integer,java.lang.Integer)
-2020-06-03 11:36:22.757 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/getHospitalInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Hospitalofreginfo>> com.hc.controller.HospitalInfoController.selectHospitalInfo()
-2020-06-03 11:36:22.759 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/deleteInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.deleteInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:36:22.759 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/updateInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.updateInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:36:22.759 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/addInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.addInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:36:22.759 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/addInstrumentParam],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.addInstrumentParam(com.hc.model.RequestModel.InstrumentInfoModel)
-2020-06-03 11:36:22.760 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/selectInstrumentPage],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.AllInstrumentInfoModel>> com.hc.controller.InstrumentInfoController.selectInstrumentPage(com.hc.model.RequestModel.InstrumentPageModel)
-2020-06-03 11:36:22.760 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/showInsType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrumenttype>> com.hc.controller.InstrumentInfoController.showInstrumentType()
-2020-06-03 11:36:22.764 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/addEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.addEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:36:22.764 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/updateEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.updateEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:36:22.764 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/selectEquipmentPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.MonitorEquipmentInfoModel>> com.hc.controller.MonitorEquipmentController.selectEquipmentPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String)
-2020-06-03 11:36:22.764 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/deleteEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.deleteEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:36:22.765 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/selectAllEquipmentByCode],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipment>> com.hc.controller.MonitorEquipmentController.selectAllEquipmentTypeByCode(java.lang.String,java.lang.String)
-2020-06-03 11:36:22.765 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/showInstrumentType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrumenttype>> com.hc.controller.MonitorEquipmentController.showInstrumentType(java.lang.String)
-2020-06-03 11:36:22.765 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/addWireEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.addWireEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
-2020-06-03 11:36:22.765 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/showInstrumentInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrument>> com.hc.controller.MonitorEquipmentController.showInstrumentInfo(java.lang.String,java.lang.Integer,java.lang.String)
-2020-06-03 11:36:22.766 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/info]}" onto public java.lang.String com.hc.controller.MyController.testA()
-2020-06-03 11:36:22.766 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/log/getAllLog],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Operationlog>> com.hc.controller.OperationlogdetailMapper.getAllLog(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
-2020-06-03 11:36:22.766 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/log/getlogDeatil],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Operationlogdetail>> com.hc.controller.OperationlogdetailMapper.getlogDeatil(java.lang.String)
-2020-06-03 11:36:22.767 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/getsn],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrument>> com.hc.controller.RepairinfoController.getSn(java.lang.String)
-2020-06-03 11:36:22.769 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/deleteRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.RepairinfoController.deleteRepairinfo(com.hc.entity.Repairinfo)
-2020-06-03 11:36:22.769 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/updateRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.RepairinfoController.updateRepairinfo(com.hc.entity.Repairinfo)
-2020-06-03 11:36:22.769 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/selectPageInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Repairinfo>> com.hc.controller.RepairinfoController.selectPageInfo(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
-2020-06-03 11:36:22.770 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/addRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Repairinfo> com.hc.controller.RepairinfoController.addRepairinfo(com.hc.entity.Repairinfo)
-2020-06-03 11:36:22.770 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userAuthorInfo/updateUserAuthor],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserAuthorController.updateUserAuthor(com.hc.model.RequestModel.UserauthorInfoModel)
-2020-06-03 11:36:22.770 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userAuthorInfo/selectUserAuthorInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.UserAuthInfoModel>> com.hc.controller.UserAuthorController.selectUserAuthorInfoPage(java.lang.Integer,java.lang.Integer)
-2020-06-03 11:36:22.771 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userBackInfo/userLogin],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserInfoController.userLogin(com.hc.entity.Userback)
-2020-06-03 11:36:22.771 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userBackInfo/updatePwd],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserInfoController.updatePwd(com.hc.entity.Userback)
-2020-06-03 11:36:22.771 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v2/api-docs],methods=[GET],produces=[application/json || application/hal+json]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)
-2020-06-03 11:36:22.774 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources/configuration/security]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
-2020-06-03 11:36:22.774 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources]}" onto org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
-2020-06-03 11:36:22.775 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources/configuration/ui]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
-2020-06-03 11:36:22.777 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
-2020-06-03 11:36:22.777 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
-2020-06-03 11:36:23.449 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@6d6e977f: startup date [Wed Jun 03 11:36:18 CST 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5f720a0e
-2020-06-03 11:36:23.490 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/swagger-ui.html] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:36:23.491 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/static*] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:36:23.491 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:36:23.491 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:36:23.525 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
-2020-06-03 11:36:23.993 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
-2020-06-03 11:36:24.075 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
-2020-06-03 11:36:24.075 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
-2020-06-03 11:36:24.078 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
-2020-06-03 11:36:24.078 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
-2020-06-03 11:36:24.133 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
-2020-06-03 11:36:24.140 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'environmentManager' has been autodetected for JMX exposure
-2020-06-03 11:36:24.142 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'configurationPropertiesRebinder' has been autodetected for JMX exposure
-2020-06-03 11:36:24.142 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'refreshScope' has been autodetected for JMX exposure
-2020-06-03 11:36:24.144 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'environmentManager': registering with JMX server as MBean [org.springframework.cloud.context.environment:name=environmentManager,type=EnvironmentManager]
-2020-06-03 11:36:24.154 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'refreshScope': registering with JMX server as MBean [org.springframework.cloud.context.scope.refresh:name=refreshScope,type=RefreshScope]
-2020-06-03 11:36:24.161 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'configurationPropertiesRebinder': registering with JMX server as MBean [org.springframework.cloud.context.properties:name=configurationPropertiesRebinder,context=6d6e977f,type=ConfigurationPropertiesRebinder]
-2020-06-03 11:36:24.819 [restartedMain] INFO  o.s.context.support.DefaultLifecycleProcessor - Starting beans in phase 0
-2020-06-03 11:36:24.824 [restartedMain] INFO  o.s.cloud.netflix.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
-2020-06-03 11:36:24.851 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
-2020-06-03 11:36:25.107 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using JSON encoding codec LegacyJacksonJson
-2020-06-03 11:36:25.107 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using JSON decoding codec LegacyJacksonJson
-2020-06-03 11:36:25.175 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using XML encoding codec XStreamXml
-2020-06-03 11:36:25.175 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using XML decoding codec XStreamXml
-2020-06-03 11:36:25.302 [restartedMain] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
-2020-06-03 11:36:25.449 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Disable delta property : false
-2020-06-03 11:36:25.449 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
-2020-06-03 11:36:25.449 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Force full registry fetch : false
-2020-06-03 11:36:25.449 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Application is null : false
-2020-06-03 11:36:25.449 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
-2020-06-03 11:36:25.449 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Application version is -1: true
-2020-06-03 11:36:25.449 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
-2020-06-03 11:36:25.847 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - The response status is 200
-2020-06-03 11:36:25.848 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
-2020-06-03 11:36:25.850 [restartedMain] INFO  com.netflix.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
-2020-06-03 11:36:25.853 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1591155385852 with initial instances count: 0
-2020-06-03 11:36:25.867 [restartedMain] INFO  o.s.c.n.e.serviceregistry.EurekaServiceRegistry - Registering application HC-HTGL-ms with eureka with status UP
-2020-06-03 11:36:25.868 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1591155385868, current=UP, previous=STARTING]
-2020-06-03 11:36:25.870 [DiscoveryClient-InstanceInfoReplicator-0] INFO  com.netflix.discovery.DiscoveryClient - DiscoveryClient_HC-HTGL-MS/PC-20190801IFVM:HC-HTGL-ms:8097: registering service...
-2020-06-03 11:36:25.870 [restartedMain] INFO  o.s.context.support.DefaultLifecycleProcessor - Starting beans in phase 2147483647
-2020-06-03 11:36:25.870 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
-2020-06-03 11:36:25.886 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
-2020-06-03 11:36:25.901 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
-2020-06-03 11:36:25.946 [DiscoveryClient-InstanceInfoReplicator-0] INFO  com.netflix.discovery.DiscoveryClient - DiscoveryClient_HC-HTGL-MS/PC-20190801IFVM:HC-HTGL-ms:8097 - registration status: 204
-2020-06-03 11:36:26.213 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: addEquipmentTypeUsingPOST_1
-2020-06-03 11:36:26.223 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: deleteEquipmentTypeUsingPOST_1
-2020-06-03 11:36:26.234 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: selectAllEquipmentTypeByCodeUsingGET_1
-2020-06-03 11:36:26.246 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: selectEquipmentPageUsingGET_1
-2020-06-03 11:36:26.260 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: showInstrumentTypeUsingGET_1
-2020-06-03 11:36:26.265 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: updateEquipmentTypeUsingPOST_1
-2020-06-03 11:36:26.387 [restartedMain] INFO  o.s.b.c.e.tomcat.TomcatEmbeddedServletContainer - Tomcat started on port(s): 8097 (http)
-2020-06-03 11:36:26.388 [restartedMain] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8097
-2020-06-03 11:36:27.946 [restartedMain] INFO  com.hc.config.PoliceStationInfoCache1 - 慢慢解决
-2020-06-03 11:36:28.137 [restartedMain] INFO  com.hc.config.PoliceStationInfoCache - 执行探头信息同步
-2020-06-03 11:36:28.138 [restartedMain] INFO  com.hc.SpringServiceAApplication - Started SpringServiceAApplication in 11.539 seconds (JVM running for 12.484)
-2020-06-03 11:36:55.849 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - Disable delta property : false
-2020-06-03 11:36:55.850 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
-2020-06-03 11:36:55.850 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - Force full registry fetch : false
-2020-06-03 11:36:55.850 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - Application is null : false
-2020-06-03 11:36:55.850 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
-2020-06-03 11:36:55.850 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - Application version is -1: false
-2020-06-03 11:36:55.850 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
-2020-06-03 11:36:55.886 [DiscoveryClient-CacheRefreshExecutor-0] INFO  com.netflix.discovery.DiscoveryClient - The response status is 200
-2020-06-03 11:41:25.452 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
-2020-06-03 11:46:25.455 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
-2020-06-03 11:51:25.456 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 14:26:35.557 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.0.12.Final}
+2020-06-22 14:26:35.559 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2020-06-22 14:26:35.560 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000021: Bytecode provider name : javassist
+2020-06-22 14:26:35.637 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2020-06-22 14:26:35.915 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2020-06-22 14:26:36.246 [restartedMain] WARN  org.hibernate.mapping.RootClass - HHH000038: Composite-id class does not override equals(): com.hc.entity.HospitalequimentKey
+2020-06-22 14:26:36.246 [restartedMain] WARN  org.hibernate.mapping.RootClass - HHH000039: Composite-id class does not override hashCode(): com.hc.entity.HospitalequimentKey
+2020-06-22 14:26:36.676 [restartedMain] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'entityManagerFactoryPrimary'
+2020-06-22 14:26:37.594 [restartedMain] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2020-06-22 14:26:38.560 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/getHospitalAlarmInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.AlarmData>> com.hc.controller.AlarmStatisticsController.getHospitalAralmInfo(java.lang.String,java.lang.String,java.lang.String)
+2020-06-22 14:26:38.561 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/showAllData],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.ShowData>> com.hc.controller.AlarmStatisticsController.showAllData()
+2020-06-22 14:26:38.561 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/alarmStatisticsShow],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.model.ResponseModel.AlarmHospitalInfo>> com.hc.controller.AlarmStatisticsController.alarm()
+2020-06-22 14:26:38.562 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/exporeExcles],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.AlarmStatisticsController.exporeExcles(javax.servlet.http.HttpServletResponse)
+2020-06-22 14:26:38.562 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/alarmStatistics/exporeExcle],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.AlarmStatisticsController.exporeExcle(javax.servlet.http.HttpServletResponse)
+2020-06-22 14:26:38.568 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/addUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Userright> com.hc.controller.ClientInfoController.addUser(com.hc.entity.Userright)
+2020-06-22 14:26:38.569 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/selectUserInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.ClientInfoModel>> com.hc.controller.ClientInfoController.selectUserInfoPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String)
+2020-06-22 14:26:38.569 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/updateUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Userright> com.hc.controller.ClientInfoController.updateUser(com.hc.entity.Userright)
+2020-06-22 14:26:38.569 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/clientInfo/deleteUser],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.ClientInfoController.deleteUser(com.hc.entity.Userright)
+2020-06-22 14:26:38.573 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/updateEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.updateEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
+2020-06-22 14:26:38.574 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectAllEquipmentType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipmenttype>> com.hc.controller.HospitalEquipmentTypeController.selectAllEquipmentType()
+2020-06-22 14:26:38.575 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectAllEquipmentTypeByCode],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipmenttype>> com.hc.controller.HospitalEquipmentTypeController.selectAllEquipmentTypeByCode(java.lang.String)
+2020-06-22 14:26:38.576 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/deleteEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.deleteEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
+2020-06-22 14:26:38.576 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/selectEquipmentTypePage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel>> com.hc.controller.HospitalEquipmentTypeController.selectEquipmentPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String)
+2020-06-22 14:26:38.576 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentTypeInfo/addEquipmentType],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalEquipmentTypeController.addEquipmentType(com.hc.model.RequestModel.EquipmentTypeInfoModel)
+2020-06-22 14:26:38.578 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/deleteHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.HospitalInfoController.deleteHospitalInfo(com.hc.entity.Hospitalofreginfo)
+2020-06-22 14:26:38.578 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/getHospitalInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Hospitalofreginfo>> com.hc.controller.HospitalInfoController.selectHospitalInfoPage(java.lang.String,java.lang.Integer,java.lang.Integer)
+2020-06-22 14:26:38.578 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/updateHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Hospitalofreginfo> com.hc.controller.HospitalInfoController.updateHospitalInfo(com.hc.entity.Hospitalofreginfo)
+2020-06-22 14:26:38.578 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/getHospitalInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Hospitalofreginfo>> com.hc.controller.HospitalInfoController.selectHospitalInfo()
+2020-06-22 14:26:38.578 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/hospitalInfo/addHospitalInfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Hospitalofreginfo> com.hc.controller.HospitalInfoController.addHospitalInfo(com.hc.entity.Hospitalofreginfo)
+2020-06-22 14:26:38.580 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/selectInstrumentPage],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.AllInstrumentInfoModel>> com.hc.controller.InstrumentInfoController.selectInstrumentPage(com.hc.model.RequestModel.InstrumentPageModel)
+2020-06-22 14:26:38.580 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/showInsType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrumenttype>> com.hc.controller.InstrumentInfoController.showInstrumentType()
+2020-06-22 14:26:38.580 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/addInstrumentParam],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.addInstrumentParam(com.hc.model.RequestModel.InstrumentInfoModel)
+2020-06-22 14:26:38.581 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/deleteInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.deleteInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
+2020-06-22 14:26:38.581 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/updateInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.updateInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
+2020-06-22 14:26:38.581 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/instrumentInfo/addInstrument],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.InstrumentInfoController.addInstrument(com.hc.model.RequestModel.InstrumentInfoModel)
+2020-06-22 14:26:38.586 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/updateEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.updateEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
+2020-06-22 14:26:38.587 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/selectAllEquipmentByCode],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorequipment>> com.hc.controller.MonitorEquipmentController.selectAllEquipmentTypeByCode(java.lang.String,java.lang.String)
+2020-06-22 14:26:38.587 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/deleteEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.deleteEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
+2020-06-22 14:26:38.587 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/selectEquipmentPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.MonitorEquipmentInfoModel>> com.hc.controller.MonitorEquipmentController.selectEquipmentPage(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String)
+2020-06-22 14:26:38.587 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/showInstrumentType],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrumenttype>> com.hc.controller.MonitorEquipmentController.showInstrumentType(java.lang.String)
+2020-06-22 14:26:38.587 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/addEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.addEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
+2020-06-22 14:26:38.588 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/showInstrumentInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrument>> com.hc.controller.MonitorEquipmentController.showInstrumentInfo(java.lang.String,java.lang.Integer,java.lang.String)
+2020-06-22 14:26:38.588 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/equipmentInfo/addWireEquipment],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.MonitorEquipmentController.addWireEquipmentType(com.hc.model.RequestModel.EquipmentInfoModel)
+2020-06-22 14:26:38.588 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/info]}" onto public java.lang.String com.hc.controller.MyController.testA()
+2020-06-22 14:26:38.589 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/log/getlogDeatil],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Operationlogdetail>> com.hc.controller.OperationlogdetailMapper.getlogDeatil(java.lang.String)
+2020-06-22 14:26:38.589 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/log/getAllLog],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Operationlog>> com.hc.controller.OperationlogdetailMapper.getAllLog(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2020-06-22 14:26:38.590 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/deleteRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.RepairinfoController.deleteRepairinfo(com.hc.entity.Repairinfo)
+2020-06-22 14:26:38.591 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/updateRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.RepairinfoController.updateRepairinfo(com.hc.entity.Repairinfo)
+2020-06-22 14:26:38.591 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/selectPageInfo],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.entity.Repairinfo>> com.hc.controller.RepairinfoController.selectPageInfo(java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2020-06-22 14:26:38.591 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/addRepairinfo],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.hc.entity.Repairinfo> com.hc.controller.RepairinfoController.addRepairinfo(com.hc.entity.Repairinfo)
+2020-06-22 14:26:38.591 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/repairinfo/getsn],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.util.List<com.hc.entity.Monitorinstrument>> com.hc.controller.RepairinfoController.getSn(java.lang.String)
+2020-06-22 14:26:38.592 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userAuthorInfo/selectUserAuthorInfoPage],methods=[GET],produces=[application/json]}" onto public com.hc.units.ApiResponse<com.github.pagehelper.Page<com.hc.model.ResponseModel.UserAuthInfoModel>> com.hc.controller.UserAuthorController.selectUserAuthorInfoPage(java.lang.Integer,java.lang.Integer)
+2020-06-22 14:26:38.592 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userAuthorInfo/updateUserAuthor],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserAuthorController.updateUserAuthor(com.hc.model.RequestModel.UserauthorInfoModel)
+2020-06-22 14:26:38.593 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userBackInfo/updatePwd],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserInfoController.updatePwd(com.hc.entity.Userback)
+2020-06-22 14:26:38.593 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/api/userBackInfo/userLogin],methods=[POST],produces=[application/json]}" onto public com.hc.units.ApiResponse<java.lang.String> com.hc.controller.UserInfoController.userLogin(com.hc.entity.Userback)
+2020-06-22 14:26:38.593 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v2/api-docs],methods=[GET],produces=[application/json || application/hal+json]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)
+2020-06-22 14:26:38.596 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources]}" onto org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
+2020-06-22 14:26:38.598 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources/configuration/ui]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
+2020-06-22 14:26:38.603 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/swagger-resources/configuration/security]}" onto org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
+2020-06-22 14:26:38.609 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2020-06-22 14:26:38.609 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2020-06-22 14:26:39.614 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@33fba7b7: startup date [Mon Jun 22 14:26:29 CST 2020]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@440a2b0e
+2020-06-22 14:26:39.694 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/swagger-ui.html] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-06-22 14:26:39.695 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/static*] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-06-22 14:26:39.695 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-06-22 14:26:39.695 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-06-22 14:26:39.775 [restartedMain] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-06-22 14:26:40.545 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2020-06-22 14:26:40.681 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2020-06-22 14:26:40.681 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-06-22 14:26:40.685 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2020-06-22 14:26:40.685 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-06-22 14:26:40.772 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2020-06-22 14:26:40.784 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'environmentManager' has been autodetected for JMX exposure
+2020-06-22 14:26:40.785 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'configurationPropertiesRebinder' has been autodetected for JMX exposure
+2020-06-22 14:26:40.786 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Bean with name 'refreshScope' has been autodetected for JMX exposure
+2020-06-22 14:26:40.788 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'environmentManager': registering with JMX server as MBean [org.springframework.cloud.context.environment:name=environmentManager,type=EnvironmentManager]
+2020-06-22 14:26:40.812 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'refreshScope': registering with JMX server as MBean [org.springframework.cloud.context.scope.refresh:name=refreshScope,type=RefreshScope]
+2020-06-22 14:26:40.823 [restartedMain] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Located managed bean 'configurationPropertiesRebinder': registering with JMX server as MBean [org.springframework.cloud.context.properties:name=configurationPropertiesRebinder,context=33fba7b7,type=ConfigurationPropertiesRebinder]
+2020-06-22 14:26:41.690 [restartedMain] INFO  o.s.context.support.DefaultLifecycleProcessor - Starting beans in phase 0
+2020-06-22 14:26:41.697 [restartedMain] INFO  o.s.cloud.netflix.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2020-06-22 14:26:41.756 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2020-06-22 14:26:42.093 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using JSON encoding codec LegacyJacksonJson
+2020-06-22 14:26:42.093 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using JSON decoding codec LegacyJacksonJson
+2020-06-22 14:26:42.223 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using XML encoding codec XStreamXml
+2020-06-22 14:26:42.224 [restartedMain] INFO  c.n.discovery.provider.DiscoveryJerseyProvider - Using XML decoding codec XStreamXml
+2020-06-22 14:26:42.482 [restartedMain] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 14:26:42.613 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Disable delta property : false
+2020-06-22 14:26:42.613 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2020-06-22 14:26:42.613 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2020-06-22 14:26:42.613 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Application is null : false
+2020-06-22 14:26:42.613 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2020-06-22 14:26:42.613 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Application version is -1: true
+2020-06-22 14:26:42.613 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2020-06-22 14:26:43.113 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - The response status is 200
+2020-06-22 14:26:43.115 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2020-06-22 14:26:43.117 [restartedMain] INFO  com.netflix.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2020-06-22 14:26:43.120 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1592807203119 with initial instances count: 1
+2020-06-22 14:26:43.145 [restartedMain] INFO  o.s.c.n.e.serviceregistry.EurekaServiceRegistry - Registering application HC-HTGL-ms with eureka with status UP
+2020-06-22 14:26:43.146 [restartedMain] INFO  com.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1592807203146, current=UP, previous=STARTING]
+2020-06-22 14:26:43.147 [DiscoveryClient-InstanceInfoReplicator-0] INFO  com.netflix.discovery.DiscoveryClient - DiscoveryClient_HC-HTGL-MS/PC-20190801IFVM:HC-HTGL-ms:8097: registering service...
+2020-06-22 14:26:43.149 [restartedMain] INFO  o.s.context.support.DefaultLifecycleProcessor - Starting beans in phase 2147483647
+2020-06-22 14:26:43.149 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2020-06-22 14:26:43.164 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2020-06-22 14:26:43.185 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2020-06-22 14:26:43.189 [DiscoveryClient-InstanceInfoReplicator-0] INFO  com.netflix.discovery.DiscoveryClient - DiscoveryClient_HC-HTGL-MS/PC-20190801IFVM:HC-HTGL-ms:8097 - registration status: 204
+2020-06-22 14:26:43.652 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: addEquipmentTypeUsingPOST_1
+2020-06-22 14:26:43.663 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: deleteEquipmentTypeUsingPOST_1
+2020-06-22 14:26:43.683 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: selectAllEquipmentTypeByCodeUsingGET_1
+2020-06-22 14:26:43.697 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: selectEquipmentPageUsingGET_1
+2020-06-22 14:26:43.724 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: showInstrumentTypeUsingGET_1
+2020-06-22 14:26:43.738 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: updateEquipmentTypeUsingPOST_1
+2020-06-22 14:26:43.988 [restartedMain] INFO  o.s.b.c.e.tomcat.TomcatEmbeddedServletContainer - Tomcat started on port(s): 8097 (http)
+2020-06-22 14:26:43.989 [restartedMain] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8097
+2020-06-22 14:26:47.438 [restartedMain] INFO  com.hc.config.PoliceStationInfoCache - 执行探头信息同步
+2020-06-22 14:26:47.440 [restartedMain] INFO  com.hc.SpringServiceAApplication - Started SpringServiceAApplication in 19.843 seconds (JVM running for 21.175)
+2020-06-22 14:31:42.617 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 14:36:42.618 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 14:41:42.620 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 14:46:42.621 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 14:51:42.622 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 14:56:42.625 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:01:42.627 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:06:42.628 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:11:42.630 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:16:42.632 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:21:42.635 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:26:42.636 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:31:42.638 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:36:42.641 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:41:42.642 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:46:42.644 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:51:42.645 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 15:56:42.647 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:01:42.649 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:06:42.650 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:11:42.651 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:16:42.652 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:21:42.654 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:26:42.655 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:31:42.657 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:36:42.659 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:41:42.661 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:46:42.664 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:51:42.665 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 16:56:42.666 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:01:42.669 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:06:42.671 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:11:42.673 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:16:42.675 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:21:42.677 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:26:42.678 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:31:42.680 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:36:42.681 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:41:42.684 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:46:42.686 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:51:42.688 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 17:56:42.690 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 18:01:42.692 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 18:06:42.694 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2020-06-22 18:11:42.696 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.shared.resolver.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
