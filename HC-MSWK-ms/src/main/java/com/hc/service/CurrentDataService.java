@@ -1,6 +1,5 @@
 package com.hc.service;
 
-import com.hc.bean.ParamaterModel;
 import com.hc.entity.Monitorinstrument;
 
 import java.util.Date;

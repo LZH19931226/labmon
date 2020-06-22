@@ -1,18 +1,14 @@
 package com.hc.listenter;
 
-import com.hc.bean.ParamaterModel;
 import com.hc.bean.WarningMqModel;
-import com.hc.config.RedisTemplateUtil;
 import com.hc.entity.Monitorinstrument;
 import com.hc.exchange.SocketMessage;
+import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.MTJudgeService;
 import com.hc.service.MessagePushService;
-import com.hc.service.MonitorinstrumentService;
 import com.hc.utils.JsonUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

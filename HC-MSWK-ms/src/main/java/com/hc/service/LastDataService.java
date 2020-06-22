@@ -9,5 +9,5 @@ import java.util.Date;
  */
 public interface LastDataService {
 
-    public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, Date time,String hospitalcode);
+    void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, Date time, String hospitalcode);
 }

@@ -115,6 +115,7 @@ public class Monitorequipmentlastdata  implements Serializable {
      * 当前锁电量
      */
     private String currentqcl;
+
     private String currenttemperature1;
     private String currenttemperature2;
 
@@ -134,30 +135,57 @@ public class Monitorequipmentlastdata  implements Serializable {
 
     private String currenttemperature10;
 
+    /**
+     * 左路温度  左舱室温度
+     */
     private String currentlefttemperature;
-
+    /**
+     * 右路温度  右舱室温度
+     */
     private String currentrigthtemperature;
-
+    /**
+     * 温差
+     */
     private String currenttemperaturediff;
-
+    /**
+     * 左盖板温度
+     */
     private String currentleftcovertemperature;
-
+    /**
+     * 左底板温度
+     */
     private String currentleftendtemperature;
-
+    /**
+     * 左气流
+     */
     private String currentleftairflow;
-
+    /**
+     * 右盖板温度
+     */
     private String currentrightcovertemperature;
-
+    /**
+     * 右底板温度
+     */
     private String currentrightendtemperature;
-
+    /**
+     * 右气流
+     */
     private String currentrightairflow;
-
+    /**
+     * 氮气
+     */
     private String currentn2;
-
-
-
-
-
-
+    /**
+     * 左舱室湿度
+     */
+    private String leftCompartmentHumidity;
+    /**
+     * 右舱室湿度
+     */
+    private String rightCompartmentHumidity;
+    /**
+     * 电压
+     */
+    private String voltage;
 
 }

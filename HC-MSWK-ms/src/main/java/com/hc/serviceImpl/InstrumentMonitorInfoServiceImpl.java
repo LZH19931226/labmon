@@ -1,6 +1,5 @@
 package com.hc.serviceImpl;
 
-import com.hc.bean.ParamaterModel;
 import com.hc.bean.RecordTime;
 import com.hc.bean.ShowModel;
 import com.hc.bean.WarningMqModel;
@@ -13,6 +12,7 @@ import com.hc.mapper.MonitorInstrumentMapper;
 import com.hc.model.MapperModel.TimeoutEquipment;
 import com.hc.model.RequestModel.InstrumentInfoModel;
 import com.hc.msctservice.MsctService;
+import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.CurrentDataService;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.LastDataService;
@@ -65,7 +65,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
 
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        log.info("接收值：" + JsonUtil.toJson(model) + "探头设备："+JsonUtil.toJson(monitorinstrument));
+        log.info("接收值：" + JsonUtil.toJson(model) + "探头设备：" + JsonUtil.toJson(monitorinstrument));
         //命令id
         Date time = model.getNowTime();
         Monitorequipmentlastdata monitorequipmentlastdata = new Monitorequipmentlastdata();
@@ -392,7 +392,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     if (StringUtils.isNotEmpty(model.getPRESS()) && StringUtils.isNotEmpty(yl)) {
 
                         String calibration = calibration(yl, model.getPRESS());
-                        if (!StringUtils.equalsAny(calibration,"0.0","0.00","0")) {
+                        if (!StringUtils.equalsAny(calibration, "0.0", "0.00", "0")) {
                             showModel.setEquipmentno(equipmentno);
                             showModel.setData(calibration);
                             showModel.setUnit("压力");
@@ -406,7 +406,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     }
                     if (StringUtils.isNotEmpty(model.getRH()) && StringUtils.isNotEmpty(sd)) {
                         String calibration = calibration(sd, model.getRH());
-                        if (!StringUtils.equalsAny(calibration,"0","0.0","0.00")) {
+                        if (!StringUtils.equalsAny(calibration, "0", "0.0", "0.00")) {
                             showModel.setEquipmentno(equipmentno);
                             showModel.setData(calibration);
                             showModel.setUnit("湿度");
@@ -1151,8 +1151,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     }
                     break;
                 case "a1":
-                    log.info("进入DCK1000培养箱数据插入："+JsonUtil.toJson(model));
-                    String snA1 = model.getSN();
                     // 舱室一到舱室10
                     monitorequipmentlastdata.setCurrenttemperature1(model.getTEMP());
                     monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
@@ -1164,8 +1162,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature8(model.getTEMP8());
                     break;
                 case "a2":
-                    log.info("进入DCK1000培养箱数据插入："+JsonUtil.toJson(model));
-                    String snA2 = model.getSN();
                     monitorequipmentlastdata.setCurrenttemperature9(model.getTEMP9());
                     monitorequipmentlastdata.setCurrenttemperature10(model.getTEMP10());
                     monitorequipmentlastdata.setCurrento2(model.getO2());
@@ -1176,7 +1172,26 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     //气流
                     monitorequipmentlastdata.setCurrentairflow1(model.getAirflow());
                     break;
-
+                case "a3":
+                    monitorequipmentlastdata.setCurrentlefttemperature(model.getLeftCompartmentTemp());
+                    monitorequipmentlastdata.setCurrentleftairflow(model.getLeftCompartmentFlow());
+                    monitorequipmentlastdata.setLeftCompartmentHumidity(model.getLeftCompartmentHumidity());
+                    monitorequipmentlastdata.setCurrentrigthtemperature(model.getRightCompartmentTemp());
+                    monitorequipmentlastdata.setCurrentrightairflow(model.getRightCompartmentFlow());
+                    monitorequipmentlastdata.setRightCompartmentHumidity(model.getRightCompartmentHumidity());
+                    break;
+                case "a4":
+                    monitorequipmentlastdata.setCurrentups(model.getUPS());
+                    monitorequipmentlastdata.setVoltage(model.getVoltage());
+                    break;
+                case "a5":
+                    monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
+                    monitorequipmentlastdata.setCurrento2(model.getO2());
+                    monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
+                    monitorequipmentlastdata.setCurrenthumidity(model.getRH());
+                    break;
+                default:
+                    break;
             }
             if (!ObjectUtils.isEmpty(monitorequipmentlastdata)) {
                 //从缓存中取数据

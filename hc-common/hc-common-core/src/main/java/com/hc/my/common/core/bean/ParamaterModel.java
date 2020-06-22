@@ -84,10 +84,6 @@ public class ParamaterModel {
 
 
 
-
-
-
-
     //"时间"
     private Date nowTime ;
     //"通道id"

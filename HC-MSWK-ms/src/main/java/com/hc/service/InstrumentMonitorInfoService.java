@@ -1,9 +1,8 @@
 package com.hc.service;
 
-import com.hc.bean.ParamaterModel;
-import com.hc.bean.WarningModel;
 import com.hc.bean.WarningMqModel;
 import com.hc.entity.Monitorinstrument;
+import com.hc.my.common.core.bean.ParamaterModel;
 
 import java.util.List;
 
@@ -13,5 +12,5 @@ public interface InstrumentMonitorInfoService {
 	 * 数据存储
 	 */
 
-	public List<WarningMqModel> save(ParamaterModel model , Monitorinstrument monitorinstrument);
+	List<WarningMqModel> save(ParamaterModel model, Monitorinstrument monitorinstrument);
 }

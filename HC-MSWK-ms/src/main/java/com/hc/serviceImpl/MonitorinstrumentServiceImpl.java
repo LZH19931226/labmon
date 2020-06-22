@@ -1,6 +1,5 @@
 package com.hc.serviceImpl;
 
-import com.hc.bean.ParamaterModel;
 import com.hc.config.RedisTemplateUtil;
 import com.hc.dao.MonitorequipmentDao;
 import com.hc.entity.Monitorequipment;
@@ -8,6 +7,7 @@ import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.MonitorInstrumentMapper;
 import com.hc.model.MapperModel.TimeoutEquipment;
 import com.hc.msctservice.MsctService;
+import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MessagePushService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.utils.JsonUtil;
