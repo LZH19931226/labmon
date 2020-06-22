@@ -1173,7 +1173,13 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow1(model.getAirflow());
                     break;
                 case "a3":
-                    monitorequipmentlastdata.setCurrentlefttemperature(model.getLeftCompartmentTemp());
+                    if (StringUtils.isNotEmpty(model.getLeftCompartmentTemp())) {
+                        //对数据做非空判断
+                        monitorequipmentlastdata.setCurrentlefttemperature(model.getLeftCompartmentTemp());
+                        //生成报警模型，到MSCT处理
+                        WarningMqModel warningMqModel97 = procWarnModel(model.getLeftCompartmentTemp(), monitorinstrument, model.getNowTime(), 23, "左舱室温度");
+                    }
+
                     monitorequipmentlastdata.setCurrentleftairflow(model.getLeftCompartmentFlow());
                     monitorequipmentlastdata.setLeftCompartmentHumidity(model.getLeftCompartmentHumidity());
                     monitorequipmentlastdata.setCurrentrigthtemperature(model.getRightCompartmentTemp());
