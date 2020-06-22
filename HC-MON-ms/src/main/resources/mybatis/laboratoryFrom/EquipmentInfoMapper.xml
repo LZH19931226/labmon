@@ -9,20 +9,21 @@
 
     <select id="getEquipmentByTypePageInfo" parameterType="com.hc.model.PageUserModel"
             resultType="com.hc.entity.Monitorequipment">
-        SELECT
-        t1.*,
-        t2.sn
-        FROM
-        monitorequipment t1 LEFT JOIN monitorinstrument t2 on t1.equipmentno =t2.equipmentno
-        WHERE
-        t1.hospitalcode = #{hospitalcode}
-        AND t1.equipmenttypeid = '2'
-        <if test="equipmentname!=null">
-            and equipmentname like '%${equipmentname}%'
-        </if>
-        AND t1.clientvisible = '1'
-        ORDER BY
-        t1.equipmentname
+        select
+        *
+        FROM monitorequipment
+        <where>
+            hospitalcode =#{hospitalcode}
+            and equipmenttypeid = #{equipmenttypeid}
+            <if test="equipmentname!=null">
+                and equipmentname like #{equipmentname}
+            </if>
+            and clientvisible='1'
+
+
+        </where>
+        order by equipmentname
+
     </select>
     <select id="getCurveInfo" parameterType="com.hc.model.CurvelReqeustModel"
             resultType="com.hc.entity.Monitorequipmentlastdata">

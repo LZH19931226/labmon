@@ -180,6 +180,8 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             }
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             for (Monitorequipment monitorequipment : monitorequipmentList) {
+                String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
+                monitorequipment.setSn(sn);
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
