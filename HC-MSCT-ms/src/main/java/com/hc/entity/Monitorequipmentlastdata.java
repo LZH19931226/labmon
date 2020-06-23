@@ -1,22 +1,23 @@
 package com.hc.entity;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Date;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Table(name = "monitorequipmentlastdata")
 @Entity
 @Getter
 @Setter
 @ToString
-public class Monitorequipmentlastdata implements Serializable {
+public class Monitorequipmentlastdata  implements Serializable {
 
     @Id
     private String pkid;
@@ -110,6 +111,10 @@ public class Monitorequipmentlastdata implements Serializable {
      * 当前电量
      */
     private String currentqc;
+    /**
+     * 当前锁电量
+     */
+    private String currentqcl;
 
     private String currenttemperature1;
     private String currenttemperature2;
@@ -130,26 +135,57 @@ public class Monitorequipmentlastdata implements Serializable {
 
     private String currenttemperature10;
 
+    /**
+     * 左路温度  左舱室温度
+     */
     private String currentlefttemperature;
-
+    /**
+     * 右路温度  右舱室温度
+     */
     private String currentrigthtemperature;
-
+    /**
+     * 温差
+     */
     private String currenttemperaturediff;
-    @ApiModelProperty("左盖板温度")
+    /**
+     * 左盖板温度
+     */
     private String currentleftcovertemperature;
-    @ApiModelProperty("左底板温度")
+    /**
+     * 左底板温度
+     */
     private String currentleftendtemperature;
-    @ApiModelProperty("左气流")
+    /**
+     * 左气流
+     */
     private String currentleftairflow;
-    @ApiModelProperty("右盖板温度")
+    /**
+     * 右盖板温度
+     */
     private String currentrightcovertemperature;
-    @ApiModelProperty("右底板温度")
+    /**
+     * 右底板温度
+     */
     private String currentrightendtemperature;
-    @ApiModelProperty("右气流")
+    /**
+     * 右气流
+     */
     private String currentrightairflow;
-
+    /**
+     * 氮气
+     */
     private String currentn2;
-
-
+    /**
+     * 左舱室湿度
+     */
+    private String leftCompartmentHumidity;
+    /**
+     * 右舱室湿度
+     */
+    private String rightCompartmentHumidity;
+    /**
+     * 电压
+     */
+    private String voltage;
 
 }

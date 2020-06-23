@@ -1,37 +1,35 @@
 package com.hc.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Table(name = "monitorequipmentlastdata")
+@Entity
 @Getter
 @Setter
 @ToString
 public class Monitorequipmentlastdata  implements Serializable {
+
+    @Id
+    private String pkid;
     /**
      * 设备编号
      */
-    @Id
     private String equipmentno;
 
     /**
      * 记录时间
      */
-    @Id
-    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date inputdatetime;
-
-
-
     /**
      * 医院编号
      */
@@ -86,20 +84,23 @@ public class Monitorequipmentlastdata  implements Serializable {
      * 当前PM2_5
      */
     private String currentpm25;
+    /**
+     * 培养箱气流
+     */
+    private String currentairflow1;
 
     /**
      * 当前PM10
      */
     private String currentpm10;
     /**
-     * 当前PM5
-     */
-    private String currentpm5;
-
-    /**
      * 当前PM0.5
      */
     private String currentpm05;
+    /**
+     * 当前PM5
+     */
+    private String currentpm5;
 
     /**
      * 当前市电是否异常
@@ -110,11 +111,12 @@ public class Monitorequipmentlastdata  implements Serializable {
      * 当前电量
      */
     private String currentqc;
+    /**
+     * 当前锁电量
+     */
     private String currentqcl;
-    private String currentairflow1;
 
     private String currenttemperature1;
-
     private String currenttemperature2;
 
     private String currenttemperature3;
@@ -133,29 +135,57 @@ public class Monitorequipmentlastdata  implements Serializable {
 
     private String currenttemperature10;
 
+    /**
+     * 左路温度  左舱室温度
+     */
     private String currentlefttemperature;
-
+    /**
+     * 右路温度  右舱室温度
+     */
     private String currentrigthtemperature;
     /**
-     * 温度差值
+     * 温差
      */
     private String currenttemperaturediff;
-    @ApiModelProperty("左盖板温度")
+    /**
+     * 左盖板温度
+     */
     private String currentleftcovertemperature;
-    @ApiModelProperty("左底板温度")
+    /**
+     * 左底板温度
+     */
     private String currentleftendtemperature;
-    @ApiModelProperty("左气流")
+    /**
+     * 左气流
+     */
     private String currentleftairflow;
-    @ApiModelProperty("右盖板温度")
+    /**
+     * 右盖板温度
+     */
     private String currentrightcovertemperature;
-    @ApiModelProperty("右底板温度")
+    /**
+     * 右底板温度
+     */
     private String currentrightendtemperature;
-    @ApiModelProperty("右气流")
+    /**
+     * 右气流
+     */
     private String currentrightairflow;
-
+    /**
+     * 氮气
+     */
     private String currentn2;
-
-//    private static final long serialVersionUID = 1L;
-
+    /**
+     * 左舱室湿度
+     */
+    private String leftCompartmentHumidity;
+    /**
+     * 右舱室湿度
+     */
+    private String rightCompartmentHumidity;
+    /**
+     * 电压
+     */
+    private String voltage;
 
 }
