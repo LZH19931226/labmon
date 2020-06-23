@@ -188,11 +188,11 @@ public class UserInfoServiceImpl implements UserInfoService {
             }else {
                 monitorequipmenttypeModels = equipmentTypeMapper.getAllEquipmentType(userright.getHospitalcode());
             }
-//            String token = TokenHelper.createToken(userid);
-//            redisTemplateUtil.boundValueOps(userid).set(token);
+          //  String token = TokenHelper.createToken(userid);
+         //   redisTemplateUtil.boundValueOps(userid).set(token);
             Hospitalofreginfo one = hospitaDao.getOne(userright.getHospitalcode());
             loginResponseModel.setHospitalcode(userright.getHospitalcode());
-     //       loginResponseModel.setToken(token);
+       //     loginResponseModel.setToken(token);
             loginResponseModel.setUserid(userright.getUserid());
             loginResponseModel.setPwd(userright.getPwd());
             loginResponseModel.setPhonenum(userright.getPhonenum());
