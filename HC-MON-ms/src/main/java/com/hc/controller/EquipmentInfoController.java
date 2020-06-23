@@ -4,12 +4,14 @@ import com.github.pagehelper.Page;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorupsrecord;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
-import com.hc.model.*;
+import com.hc.model.BatchModel;
+import com.hc.model.CurveInfoModel;
+import com.hc.model.EquipmentCurrentDateModel;
+import com.hc.model.QueryInfoModel;
 import com.hc.model.ResponseModel.EquipmentConfigInfoModel;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.serviceimpl.Test;
 import com.hc.utils.ApiResponse;
-
 import com.hc.utils.HttpUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.lang.management.OperatingSystemMXBean;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
