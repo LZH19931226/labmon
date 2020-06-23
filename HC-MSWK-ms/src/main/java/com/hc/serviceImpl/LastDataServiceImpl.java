@@ -156,13 +156,13 @@ public class LastDataServiceImpl implements LastDataService {
                     } else {
                         service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
                     }
-                    if (StringUtils.equals(equipmentTypeId, "1")) {
+                  //  if (StringUtils.equals(equipmentTypeId, "1")) {
                         Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
                         monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
                         objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
-                    } else {
-                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
-                    }
+//                    } else {
+//                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
+//                    }
 
                 } else {
                     //数据更新
