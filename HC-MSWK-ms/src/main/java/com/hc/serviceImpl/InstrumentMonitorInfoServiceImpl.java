@@ -82,7 +82,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         String sn = model.getSN();
         RecordTime recordTime = new RecordTime();
         recordTime.setInputdatetime(time);
-        List<WarningMqModel> list = new ArrayList<WarningMqModel>();
+        List<WarningMqModel> list = new ArrayList<>();
         String cmdid = model.getCmdid();
         log.info("接收值2：" + JsonUtil.toJson(model));
         // 判断当前上传数据当前时间
@@ -727,9 +727,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 // C60培养箱
                 case "93":
-                    String co2 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":1");
                     String yq = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":2");
-                    String wd = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":4");
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                     WarningMqModel warningMqModel = procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(warningMqModel);
@@ -1152,50 +1150,180 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 case "a1":
                     // 舱室一到舱室10
-                    monitorequipmentlastdata.setCurrenttemperature1(model.getTEMP());
-                    monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
-                    monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3());
-                    monitorequipmentlastdata.setCurrenttemperature4(model.getTEMP4());
-                    monitorequipmentlastdata.setCurrenttemperature5(model.getTEMP5());
-                    monitorequipmentlastdata.setCurrenttemperature6(model.getTEMP6());
-                    monitorequipmentlastdata.setCurrenttemperature7(model.getTEMP7());
-                    monitorequipmentlastdata.setCurrenttemperature8(model.getTEMP8());
-                    break;
-                case "a2":
-                    monitorequipmentlastdata.setCurrenttemperature9(model.getTEMP9());
-                    monitorequipmentlastdata.setCurrenttemperature10(model.getTEMP10());
-                    monitorequipmentlastdata.setCurrento2(model.getO2());
-                    monitorequipmentlastdata.setCurrentn2(model.getN2());
-                    monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
-                    //压力
-                    monitorequipmentlastdata.setCurrentairflow(model.getPRESS());
-                    //气流
-                    monitorequipmentlastdata.setCurrentairflow1(model.getAirflow());
-                    break;
-                case "a3":
-                    if (StringUtils.isNotEmpty(model.getLeftCompartmentTemp())) {
-                        //对数据做非空判断
-                        monitorequipmentlastdata.setCurrentlefttemperature(model.getLeftCompartmentTemp());
-                        //生成报警模型，到MSCT处理
-                        WarningMqModel warningMqModel97 = procWarnModel(model.getLeftCompartmentTemp(), monitorinstrument, model.getNowTime(), 23, "左舱室温度");
+                    String temp1 = model.getTEMP();
+                    if (StringUtils.isNotEmpty(temp1)){
+                        monitorequipmentlastdata.setCurrenttemperature1(temp1);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp1, monitorinstrument, model.getNowTime(), 13, "舱室1温度");
                         list.add(warningMqModel97);
                     }
-
-                    monitorequipmentlastdata.setCurrentleftairflow(model.getLeftCompartmentFlow());
-                    monitorequipmentlastdata.setLeftCompartmentHumidity(model.getLeftCompartmentHumidity());
-                    monitorequipmentlastdata.setCurrentrigthtemperature(model.getRightCompartmentTemp());
-                    monitorequipmentlastdata.setCurrentrightairflow(model.getRightCompartmentFlow());
-                    monitorequipmentlastdata.setRightCompartmentHumidity(model.getRightCompartmentHumidity());
+                    String temp2 = model.getTEMP2();
+                    if (StringUtils.isNotEmpty(temp2)){
+                        monitorequipmentlastdata.setCurrenttemperature2(temp2);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp2, monitorinstrument, model.getNowTime(), 14, "舱室2温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp3 = model.getTEMP3();
+                    if (StringUtils.isNotEmpty(temp3)){
+                        monitorequipmentlastdata.setCurrenttemperature3(temp3);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp3, monitorinstrument, model.getNowTime(), 15, "舱室3温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp4 = model.getTEMP4();
+                    if (StringUtils.isNotEmpty(temp4)){
+                        monitorequipmentlastdata.setCurrenttemperature4(temp4);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp4, monitorinstrument, model.getNowTime(), 16, "舱室4温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp5 = model.getTEMP5();
+                    if (StringUtils.isNotEmpty(temp5)){
+                        monitorequipmentlastdata.setCurrenttemperature5(temp5);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp5, monitorinstrument, model.getNowTime(), 17, "舱室5温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp6 = model.getTEMP6();
+                    if (StringUtils.isNotEmpty(temp6)){
+                        monitorequipmentlastdata.setCurrenttemperature6(temp6);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp6, monitorinstrument, model.getNowTime(), 18, "舱室6温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp7 = model.getTEMP7();
+                    if (StringUtils.isNotEmpty(temp7)){
+                        monitorequipmentlastdata.setCurrenttemperature7(temp7);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp7, monitorinstrument, model.getNowTime(), 19, "舱室7温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp8 = model.getTEMP8();
+                    if (StringUtils.isNotEmpty(temp8)){
+                        monitorequipmentlastdata.setCurrenttemperature8(temp8);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp8, monitorinstrument, model.getNowTime(), 20, "舱室8温度");
+                        list.add(warningMqModel97);
+                    }
+                    break;
+                case "a2":
+                    String temp9 = model.getTEMP9();
+                    if (StringUtils.isNotEmpty(temp9)){
+                        monitorequipmentlastdata.setCurrenttemperature9(temp9);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp9, monitorinstrument, model.getNowTime(), 21, "舱室9温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp10 = model.getTEMP10();
+                    if (StringUtils.isNotEmpty(temp10)){
+                        monitorequipmentlastdata.setCurrenttemperature10(temp10);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp10, monitorinstrument, model.getNowTime(), 22, "舱室10温度");
+                        list.add(warningMqModel97);
+                    }
+                    String o22 = model.getO2();
+                    if (StringUtils.isNotEmpty(o22)){
+                        monitorequipmentlastdata.setCurrento2(o22);
+                        WarningMqModel warningMqModel97 = procWarnModel(o22, monitorinstrument, model.getNowTime(), 2, "O2浓度");
+                        list.add(warningMqModel97);
+                    }
+                    String n2 = model.getN2();
+                    if (StringUtils.isNotEmpty(n2)){
+                        monitorequipmentlastdata.setCurrentn2(n2);
+                        WarningMqModel warningMqModel97 = procWarnModel(n2, monitorinstrument, model.getNowTime(), 36, "N2压力");
+                        list.add(warningMqModel97);
+                    }
+                    String co21 = model.getCO2();
+                    if (StringUtils.isNotEmpty(co21)){
+                        monitorequipmentlastdata.setCurrentcarbondioxide(co21);
+                        WarningMqModel warningMqModel97 = procWarnModel(co21, monitorinstrument, model.getNowTime(), 1, "CO2浓度");
+                        list.add(warningMqModel97);
+                    }
+                    //压力
+                    String press1 = model.getPRESS();
+                    if (StringUtils.isNotEmpty(press1)){
+                        monitorequipmentlastdata.setCurrentairflow(press1);
+                        WarningMqModel warningMqModel97 = procWarnModel(press1, monitorinstrument, model.getNowTime(), 6, "CO2压力");
+                        list.add(warningMqModel97);
+                    }
+                    //气流
+                    String airflow1 = model.getAirflow();
+                    if (StringUtils.isNotEmpty(airflow1)){
+                        monitorequipmentlastdata.setCurrentairflow1(airflow1);
+                        WarningMqModel warningMqModel97 = procWarnModel(airflow1, monitorinstrument, model.getNowTime(), 25, "气体流量");
+                        list.add(warningMqModel97);
+                    }
+                    break;
+                case "a3":
+                    String leftCompartmentTemp = model.getLeftCompartmentTemp();
+                    if (StringUtils.isNotEmpty(leftCompartmentTemp)) {
+                        //对数据做非空判断
+                        monitorequipmentlastdata.setCurrentlefttemperature(leftCompartmentTemp);
+                        //生成报警模型，到MSCT处理
+                        WarningMqModel warningMqModel97 = procWarnModel(leftCompartmentTemp, monitorinstrument, model.getNowTime(), 23, "左舱室温度");
+                        list.add(warningMqModel97);
+                    }
+                    String leftCompartmentFlow = model.getLeftCompartmentFlow();
+                    if (StringUtils.isNotEmpty(leftCompartmentFlow)) {
+                        monitorequipmentlastdata.setCurrentleftairflow(leftCompartmentFlow);
+                        WarningMqModel warningMqModel97 = procWarnModel(leftCompartmentFlow, monitorinstrument, model.getNowTime(), 31, "左舱室流量");
+                        list.add(warningMqModel97);
+                    }
+                    String leftCompartmentHumidity = model.getLeftCompartmentHumidity();
+                    if (StringUtils.isNotEmpty(leftCompartmentHumidity)){
+                        monitorequipmentlastdata.setLeftCompartmentHumidity(leftCompartmentHumidity);
+                        WarningMqModel warningMqModel97 = procWarnModel(leftCompartmentHumidity, monitorinstrument, model.getNowTime(), 37, "左舱室湿度");
+                        list.add(warningMqModel97);
+                    }
+                    String rightCompartmentTemp = model.getRightCompartmentTemp();
+                    if (StringUtils.isNotEmpty(rightCompartmentTemp)){
+                        monitorequipmentlastdata.setCurrentrigthtemperature(rightCompartmentTemp);
+                        WarningMqModel warningMqModel97 = procWarnModel(rightCompartmentTemp, monitorinstrument, model.getNowTime(), 24, "右舱室温度");
+                        list.add(warningMqModel97);
+                    }
+                    String rightCompartmentFlow = model.getRightCompartmentFlow();
+                    if (StringUtils.isNotEmpty(rightCompartmentFlow)){
+                        monitorequipmentlastdata.setCurrentrightairflow(rightCompartmentFlow);
+                        WarningMqModel warningMqModel97 = procWarnModel(rightCompartmentFlow, monitorinstrument, model.getNowTime(), 34, "右舱室流量");
+                        list.add(warningMqModel97);
+                    }
+                    String rightCompartmentHumidity = model.getRightCompartmentHumidity();
+                    if (StringUtils.isNotEmpty(rightCompartmentHumidity)){
+                        monitorequipmentlastdata.setRightCompartmentHumidity(rightCompartmentHumidity);
+                        WarningMqModel warningMqModel97 = procWarnModel(rightCompartmentHumidity, monitorinstrument, model.getNowTime(), 38, "右舱室湿度");
+                        list.add(warningMqModel97);
+                    }
                     break;
                 case "a4":
-                    monitorequipmentlastdata.setCurrentups(model.getUPS());
-                    monitorequipmentlastdata.setVoltage(model.getVoltage());
+                    String ups1 = model.getUPS();
+                    if (StringUtils.isNotEmpty(ups1)){
+                        monitorequipmentlastdata.setCurrentups(ups1);
+                        WarningMqModel warningMqModel97 = procWarnModel(ups1, monitorinstrument, model.getNowTime(), 10, "适配器供电状态");
+                        list.add(warningMqModel97);
+                    }
+                    String voltage = model.getVoltage();
+                    if (StringUtils.isNotEmpty(voltage)){
+                        monitorequipmentlastdata.setVoltage(voltage);
+                        WarningMqModel warningMqModel97 = procWarnModel(voltage, monitorinstrument, model.getNowTime(), 39, "电池电压");
+                        list.add(warningMqModel97);
+                    }
                     break;
                 case "a5":
-                    monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
-                    monitorequipmentlastdata.setCurrento2(model.getO2());
-                    monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
-                    monitorequipmentlastdata.setCurrenthumidity(model.getRH());
+                    String temp = model.getTEMP();
+                    if (StringUtils.isNotEmpty(temp)){
+                        monitorequipmentlastdata.setCurrenttemperature(temp);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp, monitorinstrument, model.getNowTime(), 4, "温度");
+                        list.add(warningMqModel97);
+                    }
+                    String o21 = model.getO2();
+                    if (StringUtils.isNotEmpty(o21)){
+                        monitorequipmentlastdata.setCurrento2(o21);
+                        WarningMqModel warningMqModel97 = procWarnModel(o21, monitorinstrument, model.getNowTime(), 2, "O2浓度百分比");
+                        list.add(warningMqModel97);
+                    }
+                    String co2 = model.getCO2();
+                    if (StringUtils.isNotEmpty(co2)){
+                        monitorequipmentlastdata.setCurrentcarbondioxide(co2);
+                        WarningMqModel warningMqModel97 = procWarnModel(co2, monitorinstrument, model.getNowTime(), 1, "CO2浓度百分比");
+                        list.add(warningMqModel97);
+                    }
+                    String rh = model.getRH();
+                    if(StringUtils.isNotEmpty(rh)){
+                        monitorequipmentlastdata.setCurrenthumidity(rh);
+                        WarningMqModel warningMqModel97 = procWarnModel(rh, monitorinstrument, model.getNowTime(), 5, "湿度百分比");
+                        list.add(warningMqModel97);
+                    }
                     break;
                 default:
                     break;
@@ -1223,7 +1351,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public void Temp(List<WarningMqModel> list, HashOperations<Object, Object, Object> objectObjectObjectHashOperations, Monitorinstrument monitorinstrument, ParamaterModel model, ShowModel showModel, String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        String sn = model.getSN();
         showModel.setEquipmentno(equipmentno);
         showModel.setData(data);
         showModel.setUnit("温度");
@@ -1238,7 +1365,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public void CO2(List<WarningMqModel> list, HashOperations<Object, Object, Object> objectObjectObjectHashOperations, Monitorinstrument monitorinstrument, ParamaterModel model, ShowModel showModel, String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        String sn = model.getSN();
         showModel.setEquipmentno(equipmentno);
         showModel.setData(model.getCO2());
         showModel.setUnit("CO2");
@@ -1257,7 +1383,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public void O2(List<WarningMqModel> list, HashOperations<Object, Object, Object> objectObjectObjectHashOperations, Monitorinstrument monitorinstrument, ParamaterModel model, ShowModel showModel, String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        String sn = model.getSN();
         showModel.setEquipmentno(equipmentno);
         showModel.setData(model.getO2());
         showModel.setUnit("O2");
@@ -1276,7 +1401,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public void RH(List<WarningMqModel> list, HashOperations<Object, Object, Object> objectObjectObjectHashOperations, Monitorinstrument monitorinstrument, ParamaterModel model, ShowModel showModel, String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        String sn = model.getSN();
         showModel.setEquipmentno(equipmentno);
         showModel.setData(model.getRH());
         showModel.setUnit("湿度");
@@ -1299,7 +1423,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public void JQ(List<WarningMqModel> list, HashOperations<Object, Object, Object> objectObjectObjectHashOperations, Monitorinstrument monitorinstrument, ParamaterModel model, ShowModel showModel, String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        String sn = model.getSN();
         showModel.setEquipmentno(equipmentno);
         showModel.setData(data);
         showModel.setUnit("甲醛");
@@ -1322,7 +1445,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public void PM5(List<WarningMqModel> list, HashOperations<Object, Object, Object> objectObjectObjectHashOperations, Monitorinstrument monitorinstrument, ParamaterModel model, ShowModel showModel, String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        String sn = model.getSN();
         showModel.setEquipmentno(equipmentno);
         showModel.setData(data);
         showModel.setUnit("PM5");
@@ -1344,7 +1466,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public void PM05(List<WarningMqModel> list, HashOperations<Object, Object, Object> objectObjectObjectHashOperations, Monitorinstrument monitorinstrument, ParamaterModel model, ShowModel showModel, String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        String sn = model.getSN();
         showModel.setEquipmentno(equipmentno);
         showModel.setData(data);
         showModel.setUnit("PM0.5");
@@ -1529,8 +1650,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     }
 
     public static void main(String args[]) {
-        String s = "-0.03";
-        Float aFloat = new Float(s);
         String s1 = new BigDecimal("37.03").add(new BigDecimal("-0.03")).toString();
 
         System.out.println(s1);
