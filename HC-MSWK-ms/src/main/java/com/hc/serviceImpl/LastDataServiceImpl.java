@@ -345,7 +345,7 @@ public class LastDataServiceImpl implements LastDataService {
             monitorequipmentlastdata.setCurrenttemperature5(monitorequipmentlastdata1.getCurrenttemperature5());
         }
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature6())) {
-            monitorequipmentlastdata.setCurrenttemperature(monitorequipmentlastdata1.getCurrenttemperature6());
+            monitorequipmentlastdata.setCurrenttemperature6(monitorequipmentlastdata1.getCurrenttemperature6());
         }
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature7())) {
             monitorequipmentlastdata.setCurrenttemperature7(monitorequipmentlastdata1.getCurrenttemperature7());
