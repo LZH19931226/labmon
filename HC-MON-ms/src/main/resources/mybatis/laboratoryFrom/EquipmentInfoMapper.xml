@@ -61,8 +61,10 @@
      b.currentleftairflow,
      b.currentrightcovertemperature,
      b.currentrightendtemperature,
-     b.currentrightairflow
-
+     b.currentrightairflow,
+     b.currentn2,
+     b.leftCompartmentHumidity,
+     b.rightCompartmentHumidity
      from monitorEquipment a left JOIN ${search} b on a.equipmentno = b.equipmentno  where
          str_to_date(inputdatetime,'%Y-%m-%d') = #{date}
         and a.equipmentno = #{equipmentno} order by b.inputdatetime
