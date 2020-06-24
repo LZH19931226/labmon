@@ -592,7 +592,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP10(temperature);
         }
         String substring3 = cmd.substring(36, 40);//O2浓度
-        if (StringUtils.equalsIgnoreCase(substring3, "F0")) {
+        if (StringUtils.equalsIgnoreCase(substring3,DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
             paramaterModel.setO2(DataRules.STATEC);
         } else {
@@ -601,7 +601,7 @@ public class cmdidParseUtils {
         }
 
         String substring4 = cmd.substring(40, 44);//CO2浓度
-        if (StringUtils.equalsIgnoreCase(substring4, "F0")) {
+        if (StringUtils.equalsIgnoreCase(substring4,DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
             paramaterModel.setCO2(DataRules.STATEC);
         } else {
@@ -609,7 +609,7 @@ public class cmdidParseUtils {
             paramaterModel.setCO2(co2);
         }
         String substring5 = cmd.substring(44, 48);//N2
-        if (StringUtils.equalsIgnoreCase(substring5, "F0")) {
+        if (StringUtils.equalsIgnoreCase(substring5,DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
             paramaterModel.setN2(DataRules.STATEC);
         } else {
@@ -617,7 +617,7 @@ public class cmdidParseUtils {
             paramaterModel.setN2(n2);
         }
         String substring6 = cmd.substring(48, 52);//CO2压力
-        if (StringUtils.equalsIgnoreCase(substring6, "F0")) {
+        if (StringUtils.equalsIgnoreCase(substring6,DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
             paramaterModel.setPRESS(DataRules.STATEC);
         } else {
@@ -625,7 +625,7 @@ public class cmdidParseUtils {
             paramaterModel.setPRESS(press);
         }
         String substring7 = cmd.substring(52, 56);//气流
-        if (StringUtils.equalsIgnoreCase(substring7, "F0")) {
+        if (StringUtils.equalsIgnoreCase(substring7,DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
             paramaterModel.setAirflow(DataRules.STATEC);
         } else {

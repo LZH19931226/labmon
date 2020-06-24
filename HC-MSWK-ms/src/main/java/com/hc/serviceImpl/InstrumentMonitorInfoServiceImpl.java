@@ -84,7 +84,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         recordTime.setInputdatetime(time);
         List<WarningMqModel> list = new ArrayList<>();
         String cmdid = model.getCmdid();
-        log.info("接收值2：" + JsonUtil.toJson(model));
         // 判断当前上传数据当前时间
         if (StringUtils.equals("8d", cmdid)) {
             //开关量问题：
@@ -112,8 +111,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     objectObjectObjectHashOperations.put(model.getSN(), model.getCmdid(), JsonUtil.toJson(recordTime));
                 }
             } else {
-                log.info("300和300LITE" + JsonUtil.toJson(model));
-
                 if (objectObjectObjectHashOperations.hasKey(model.getSN(), model.getCmdid() + ":" + channel)) {
                     String o = (String) objectObjectObjectHashOperations.get(model.getSN(), model.getCmdid() + ":" + channel);
                     if (StringUtils.isEmpty(o)) {
@@ -159,7 +156,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         try {
             String substring = sn.substring(4, 6);
             dataTimeOut(equipmentno);
-            log.info("接收值1：" + JsonUtil.toJson(model));
             switch (model.getCmdid()) {
                 case "85":
                     //获取 探头e类型id 用同步缓存(条件：温度 电量    sn号获取instypeid )

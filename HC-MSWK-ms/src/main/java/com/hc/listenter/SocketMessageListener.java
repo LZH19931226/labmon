@@ -38,7 +38,7 @@ public class SocketMessageListener {
 		LOGGER.info("数据处理中心服务接收到队列1中数据："+JsonUtil.toJson(model));
 		//MT500  MT600判断
 		Monitorinstrument monitorinstrument = mtJudgeService.mtJudge(model);
-		if (!org.apache.commons.lang3.ObjectUtils.allNotNull(monitorinstrument)) {
+		if (monitorinstrument==null) {
 			return ;
 		}
 		//执行数据写入 、 报警推送
