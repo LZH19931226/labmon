@@ -40,16 +40,15 @@ public interface EquipmentInfoMapper {
      * 根据设备类型编号和医院编号查询设备信息
      */
     @Select("SELECT\n" +
-            "\tt1.*,\n" +
-            "  t2.sn\t\n" +
+            "\tt1.* \n" +
             "FROM\n" +
-            "\tmonitorequipment t1 LEFT JOIN monitorinstrument t2 on t1.equipmentno =t2.equipmentno\n" +
+            "\tmonitorequipment t1 " +
             "\tWHERE\n" +
             "\tt1.hospitalcode = #{hospitalcode} \n" +
             "\tAND t1.equipmenttypeid = #{equipmenttypeid} \n" +
             "\tAND t1.clientvisible = '1' \n" +
             "ORDER BY\n" +
-            "\tt1.equipmentname ")
+            "\tt1.equipmentname  ")
     List<Monitorequipment> getEquipmentByType(@Param("hospitalcode") String hospitalcode,@Param("equipmenttypeid") String equipmenttypeid);
     /**
      * 根据设备编号查询设备信息
