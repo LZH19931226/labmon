@@ -526,11 +526,11 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                     n2Time.add(da);
                 }
                 if (StringUtils.isNotEmpty(lastDataModel.getLeftCompartmentHumidity())&& !exceptionData.contains(lastDataModel.getLeftCompartmentHumidity())) {
-                    leftCompartmentHumidity.add(lastDataModel.getCurrenttemperaturediff());
+                    leftCompartmentHumidity.add(lastDataModel.getLeftCompartmentHumidity());
                     leftCompartmentHumidityTime.add(da);
                 }
                 if (StringUtils.isNotEmpty(lastDataModel.getRightCompartmentHumidity())&& !exceptionData.contains(lastDataModel.getRightCompartmentHumidity())) {
-                    rightCompartmentHumidity.add(lastDataModel.getCurrenttemperaturediff());
+                    rightCompartmentHumidity.add(lastDataModel.getRightCompartmentHumidity());
                     rightCompartmentHumidityTime.add(da);
                 }
             }
@@ -1632,6 +1632,18 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             if (StringUtils.isNotEmpty(lastDataModel.getCurrentrightairflow()) ) {
                 rightair.add(lastDataModel.getCurrentrightairflow());
                 rightairTime.add(da);
+            }
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentn2())) {
+                n2.add(lastDataModel.getCurrentn2());
+                n2Time.add(da);
+            }
+            if (StringUtils.isNotEmpty(lastDataModel.getLeftCompartmentHumidity())) {
+                leftCompartmentHumidity.add(lastDataModel.getLeftCompartmentHumidity());
+                leftCompartmentHumidityTime.add(da);
+            }
+            if (StringUtils.isNotEmpty(lastDataModel.getRightCompartmentHumidity())) {
+                rightCompartmentHumidity.add(lastDataModel.getRightCompartmentHumidity());
+                rightCompartmentHumidityTime.add(da);
             }
 
         }

@@ -93,5 +93,17 @@ public class SingleTimeEquipmentModel {
     @Excel(name = "右气流",orderNum = "31")
     private String currentrightairflow;
 
+    /**
+     * 氮气
+     */
+    private String currentn2;
+    /**
+     * 左舱室湿度
+     */
+    private String leftCompartmentHumidity;
+    /**
+     * 右舱室湿度
+     */
+    private String rightCompartmentHumidity;
 
 }

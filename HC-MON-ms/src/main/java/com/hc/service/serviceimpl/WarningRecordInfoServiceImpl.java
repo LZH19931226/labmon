@@ -451,11 +451,11 @@ N2	currentn2
                  tempdiffTime.add(da);
              }
              if (StringUtils.isNotEmpty(lastDataModel.getLeftCompartmentHumidity())) {
-                 leftCompartmentHumidity.add(lastDataModel.getCurrenttemperaturediff());
+                 leftCompartmentHumidity.add(lastDataModel.getLeftCompartmentHumidity());
                  leftCompartmentHumidityTime.add(da);
              }
              if (StringUtils.isNotEmpty(lastDataModel.getRightCompartmentHumidity())) {
-                 rightCompartmentHumidity.add(lastDataModel.getCurrenttemperaturediff());
+                 rightCompartmentHumidity.add(lastDataModel.getRightCompartmentHumidity());
                  rightCompartmentHumidityTime.add(da);
              }
 
