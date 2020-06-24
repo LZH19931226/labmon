@@ -47,6 +47,7 @@ public class WarningServiceImpl implements WarningService {
     private MonitorinstrumentDao monitorinstrumentDao;
     @Autowired
     private AlmMsgService almservice;
+
     @Override
     public WarningModel produceWarn(WarningMqModel warningMqModel, Monitorinstrument monitorinstrument, Date date, Integer instrumentconfigid, String unit) {
         // redis缓存中取  当前探头监控类型数据   高低值
@@ -64,7 +65,7 @@ public class WarningServiceImpl implements WarningService {
         }
         //温度  co2  o2 存在 ABCD
         String warningphone = instrumentMonitorInfoModel.getWarningphone();
-        if (StringUtils.equals("0",warningphone)) {
+        if (StringUtils.equals("0", warningphone)) {
             //不启用报警，直接过滤信息
             return null;
         }
@@ -77,7 +78,7 @@ public class WarningServiceImpl implements WarningService {
             return null;
         }
         // 判断是否是多个500引起的报警问题
-        BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperation = redisTemplateUtil.boundHashOps("warningTime");
+        // BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperation = redisTemplateUtil.boundHashOps("warningTime");
         WarningDateModel warningDateModel = new WarningDateModel();
         warningDateModel.setDate(date);
 //        String o1 = (String) objectObjectObjectBoundHashOperation.get(instrumentparamconfigNO);
@@ -120,7 +121,7 @@ public class WarningServiceImpl implements WarningService {
                     if ("A".equals(data)) {
                         //未接传感器
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未接传感器或者未获取到数据");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"未接传感器或者未获取到数据"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未接传感器或者未获取到数据" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -131,7 +132,7 @@ public class WarningServiceImpl implements WarningService {
                     } else if ("B".equals(data)) {
                         //若超出量程范围
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：超出量程范围");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"超出量程范围"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "超出量程范围" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -142,7 +143,7 @@ public class WarningServiceImpl implements WarningService {
                     } else if ("C".equals(data)) {
                         //已接传感器且已校准，但值无效
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：已接传感器且已校准，但值无效");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"值无效"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "值无效" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -153,7 +154,7 @@ public class WarningServiceImpl implements WarningService {
                     } else if ("D".equals(data)) {
                         //已接传感器，但未校准
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:已接传感器，但未校准");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"未校准"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未校准" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -167,10 +168,10 @@ public class WarningServiceImpl implements WarningService {
                             //MT200M 新程序，两路温度判断
                             //当一路温度值存在异常，整个值无效
                             // 当两个值相差3度，值无效
-                            LOGGER.info("设备名："+equipmentname+" 温度值1："+data+"温度值2："+data1);
-                            if (StringUtils.equalsAny(data1,"A","B","C","D","E") || Math.abs(new Double(data) - new Double(data1)) >3){
+                            LOGGER.info("设备名：" + equipmentname + " 温度值1：" + data + "温度值2：" + data1);
+                            if (StringUtils.equalsAny(data1, "A", "B", "C", "D", "E") || Math.abs(new Double(data) - new Double(data1)) > 3) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：超出量程范围");
-                                warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"超出量程范围"+"]");
+                                warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "超出量程范围" + "]");
                                 warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                                 warningrecord.setInputdatetime(date);
                                 warningrecord.setHospitalcode(hospitalcode);
@@ -179,9 +180,9 @@ public class WarningServiceImpl implements WarningService {
                                 LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
                                 return null;
                             }
-                            if (LowHighVerify.verify(instrumentMonitorInfoModel, data) && LowHighVerify.verify(instrumentMonitorInfoModel, data1)){
+                            if (LowHighVerify.verify(instrumentMonitorInfoModel, data) && LowHighVerify.verify(instrumentMonitorInfoModel, data1)) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                                warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+data+"]");
+                                warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
                                 warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                                 warningrecord.setInputdatetime(date);
                                 warningrecord.setHospitalcode(hospitalcode);
@@ -195,7 +196,7 @@ public class WarningServiceImpl implements WarningService {
                         //高低值判断
                         if (LowHighVerify.verify(instrumentMonitorInfoModel, data)) {
                             warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                            warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+data+"]");
+                            warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
                             warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                             warningrecord.setInputdatetime(date);
                             warningrecord.setHospitalcode(hospitalcode);
@@ -205,10 +206,10 @@ public class WarningServiceImpl implements WarningService {
 
                             //天津和睦家： H33
 
-                            if (StringUtils.endsWithAny(hospitalcode,"H0010","H33")&& instrumentconfigid == 2 && monitorinstrument.getInstrumenttypeid() == 8){
+                            if (StringUtils.endsWithAny(hospitalcode, "H0010", "H33") && instrumentconfigid == 2 && monitorinstrument.getInstrumenttypeid() == 8) {
                                 //调用声光报警    根据 hospitalcode 查询mt600SN 号
                                 Monitorinstrument monitorinstrumentByCode = monitorinstrumentDao.getMonitorinstrumentByCode(hospitalcode);
-                                String MT600SN =  monitorinstrumentByCode.getSn();
+                                String MT600SN = monitorinstrumentByCode.getSn();
                                 almservice.pushMessage(MT600SN);
 //                                Map<String,String> map = new HashMap<String,String>();
 //                                map.put("MId",MT600SN);
@@ -217,13 +218,13 @@ public class WarningServiceImpl implements WarningService {
 //                                LOGGER.info("开启声光报警：MT600SN号"+MT600SN);
 //                                redisTemplateUtil.boundValueOps(MT600SN+"lgtalarm").set("1");
                             }
-                        }else{
-                            if (StringUtils.endsWithAny(hospitalcode,"H0010","H33")&& instrumentconfigid == 2 && monitorinstrument.getInstrumenttypeid() == 8){
+                        } else {
+                            if (StringUtils.endsWithAny(hospitalcode, "H0010", "H33") && instrumentconfigid == 2 && monitorinstrument.getInstrumenttypeid() == 8) {
                                 Monitorinstrument monitorinstrumentByCode = monitorinstrumentDao.getMonitorinstrumentByCode(hospitalcode);
-                                String MT600SN =  monitorinstrumentByCode.getSn();
-                                if(redisTemplateUtil.hasKey(MT600SN+"lgtalarm")){
-                                    String o2 =(String) redisTemplateUtil.boundValueOps(MT600SN + "lgtalarm").get();
-                                    if (StringUtils.equals("1",o2)){
+                                String MT600SN = monitorinstrumentByCode.getSn();
+                                if (redisTemplateUtil.hasKey(MT600SN + "lgtalarm")) {
+                                    String o2 = (String) redisTemplateUtil.boundValueOps(MT600SN + "lgtalarm").get();
+                                    if (StringUtils.equals("1", o2)) {
                                         almservice.pushMessage1(MT600SN);
                                     }
 
@@ -234,9 +235,9 @@ public class WarningServiceImpl implements WarningService {
                         break;
                     }
                 case 10:
-                    if (StringUtils.equals("1",data)) {
+                    if (StringUtils.equals("1", data)) {
                         warningrecord.setWarningremark("市电异常");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"市电异常"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "市电异常" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -246,14 +247,14 @@ public class WarningServiceImpl implements WarningService {
                     }
                     break;
                 case 11:
-                    if (StringUtils.equals("1",data)){
+                    if (StringUtils.equals("1", data)) {
                         data = "1.00";
-                    }else{
+                    } else {
                         data = "0.00";
                     }
                     if (instrumentMonitorInfoModel.getLowlimit().toString().equals(data)) {
-                        warningrecord.setWarningremark(equipmentname+"报警信号异常");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"报警信息异常"+"]");
+                        warningrecord.setWarningremark(equipmentname + "报警信号异常");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "报警信息异常" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -274,7 +275,7 @@ public class WarningServiceImpl implements WarningService {
                 case 35:
                     if (LowHighVerify.verify(instrumentMonitorInfoModel, data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+data+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -287,7 +288,7 @@ public class WarningServiceImpl implements WarningService {
                 case 24:
                     if ("A".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未获取到数据");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"未获取到数据"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未获取到数据" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -298,7 +299,7 @@ public class WarningServiceImpl implements WarningService {
                         return null;
                     } else if ("B".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：温度控制关闭");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"温度控制关闭"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "温度控制关闭" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -310,7 +311,7 @@ public class WarningServiceImpl implements WarningService {
 
                     } else if ("C".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：仓室门开启");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"仓室门开启"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "仓室门开启" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -320,7 +321,7 @@ public class WarningServiceImpl implements WarningService {
                         return null;
                     } else if ("D".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：温度控制异常");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"温度控制异常"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "温度控制异常" + "]");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
@@ -330,7 +331,7 @@ public class WarningServiceImpl implements WarningService {
                         return null;
                     } else if ("E".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：总开关关闭");
-                        warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+"总开关关闭"+"]");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "总开关关闭" + "]");
 
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
@@ -342,7 +343,7 @@ public class WarningServiceImpl implements WarningService {
                     } else {
                         if (LowHighVerify.verify(instrumentMonitorInfoModel, data)) {
                             warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                            warningrecord.setWarningvalue(equipmentname+":"+unit+" ["+data+"]");
+                            warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
                             warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                             warningrecord.setInputdatetime(date);
                             warningrecord.setHospitalcode(hospitalcode);
@@ -410,7 +411,8 @@ public class WarningServiceImpl implements WarningService {
                     } else {
                         break;
                     }
-
+                default:
+                    break;
             }
 
         } catch (Exception e) {

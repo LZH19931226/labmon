@@ -66,7 +66,6 @@ public class SocketMessageListener {
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME + "获取到的数据" + JsonUtil.toJson(mQmodel));
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
-            LOGGER.info("测试是否为空：" + JsonUtil.toJson(mQmodel));
             return;
         }
         String hospitalcode = model.getHospitalcode();
@@ -145,8 +144,6 @@ public class SocketMessageListener {
         } catch (Exception e) {
             LOGGER.error("友盟推送失败：原因：" + e.getMessage() + "数据结构为：" + JsonUtil.toJson(model));
         }
-        // 推送APP
-        LOGGER.info("执行成功");
 
     }
 
@@ -236,7 +233,6 @@ public class SocketMessageListener {
         } catch (Exception e) {
             LOGGER.error("友盟推送失败：原因：" + e.getMessage() + "数据结构为：" + JsonUtil.toJson(model));
         }
-        LOGGER.info("执行成功");
     }
 
 
@@ -325,8 +321,6 @@ public class SocketMessageListener {
         } catch (Exception e) {
             LOGGER.error("友盟推送失败：原因：" + e.getMessage() + "数据结构为：" + JsonUtil.toJson(model));
         }
-        // 推送APP
-        LOGGER.info("执行成功");
 
     }
 

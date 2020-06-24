@@ -351,6 +351,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             List<String> rightairTime = new ArrayList<String>();
             List<String> n2 = new ArrayList<String>();
             List<String> n2Time = new ArrayList<String>();
+            List<String> leftCompartmentHumidity = new ArrayList<String>();
+            List<String> leftCompartmentHumidityTime = new ArrayList<String>();
+            List<String> rightCompartmentHumidity = new ArrayList<String>();
+            List<String> rightCompartmentHumidityTime = new ArrayList<String>();
             for (Monitorequipmentlastdata lastDataModel : lastDataModelList) {
                 //       lastDataModel.setInputdatetime(TimeHelper.formats(lastDataModel.getInputdatetime()));
                 //液氮罐是否存在差值
@@ -521,390 +525,150 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                     n2.add(lastDataModel.getCurrentn2());
                     n2Time.add(da);
                 }
+                if (StringUtils.isNotEmpty(lastDataModel.getLeftCompartmentHumidity())&& !exceptionData.contains(lastDataModel.getLeftCompartmentHumidity())) {
+                    leftCompartmentHumidity.add(lastDataModel.getCurrenttemperaturediff());
+                    leftCompartmentHumidityTime.add(da);
+                }
+                if (StringUtils.isNotEmpty(lastDataModel.getRightCompartmentHumidity())&& !exceptionData.contains(lastDataModel.getRightCompartmentHumidity())) {
+                    rightCompartmentHumidity.add(lastDataModel.getCurrenttemperaturediff());
+                    rightCompartmentHumidityTime.add(da);
+                }
             }
             if (CollectionUtils.isNotEmpty(n2)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(n2Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(n2);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(n2,n2Time);
                 curveInfoModel.setN2(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(leftcovertemp)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(leftcovertempTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(leftcovertemp);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(leftcovertemp,leftcovertempTime);
                 curveInfoModel.setLeftcovertemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(leftendtemp)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(leftendTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(leftendtemp);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(leftendtemp,leftendTime);
                 curveInfoModel.setLeftendtemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(leftair)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(leftairTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(leftair);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(leftair,leftairTime);
                 curveInfoModel.setLeftair(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(rightcovertemp)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(rightcovertempTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(rightcovertemp);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(rightcovertemp,rightcovertempTime);
                 curveInfoModel.setRightcovertemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(rightendtemp)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(rightendtempTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(rightendtemp);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(rightendtemp, rightendtempTime);
                 curveInfoModel.setRightendtemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(rightair)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(rightairTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(rightair);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(rightair, rightairTime);
                 curveInfoModel.setRightair(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(tempdiff)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(tempdiffTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(tempdiff);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(tempdiff, tempdiffTime);
                 curveInfoModel.setDifftemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(airflow)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(airflowTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(airflow);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(airflow, airflowTime);
                 curveInfoModel.setAirflow(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(lefttemp)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(lefttempTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(lefttemp);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(lefttemp, lefttempTime);
                 curveInfoModel.setLefttemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(righttemp)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(righttempTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(righttemp);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(righttemp, righttempTime);
                 curveInfoModel.setRighttemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp1)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp1Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp1);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp1, temp1Time);
                 curveInfoModel.setTemp1(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp2)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp2Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp2);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp2, temp2Time);
                 curveInfoModel.setTemp2(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp3)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp3Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp3);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp3, temp3Time);
                 curveInfoModel.setTemp3(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp4)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp4Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp4);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp4, temp4Time);
                 curveInfoModel.setTemp4(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp5)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp5Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp5);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp5, temp5Time);
                 curveInfoModel.setTemp5(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp6)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp6Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp6);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp6, temp6Time);
                 curveInfoModel.setTemp6(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp7)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp7Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp7);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp7, temp7Time);
                 curveInfoModel.setTemp7(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp8)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp8Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp8);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp8, temp8Time);
                 curveInfoModel.setTemp8(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp9)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp9Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp9);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp9, temp9Time);
                 curveInfoModel.setTemp9(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp10)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(temp10Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp10);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp10, temp10Time);
                 curveInfoModel.setTemp10(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(temp)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(tempTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(temp);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(temp, tempTime);
                 curveInfoModel.setTemp(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(CO2)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(CO2Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(CO2);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(CO2, CO2Time);
                 curveInfoModel.setCo2(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(O2)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(O2Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(O2);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(O2, O2Time);
                 curveInfoModel.setO2(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(VOC)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(VOCTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(VOC);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(VOC, VOCTime);
                 curveInfoModel.setVoc(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(RH)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(RHTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(RH);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(RH, RHTime);
                 curveInfoModel.setRh(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(PM25)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(PM25Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(PM25);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(PM25, PM25Time);
                 curveInfoModel.setPm25(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(PM5)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(PM5Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(PM5);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(PM5, PM5Time);
                 curveInfoModel.setPm5(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(PM05)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(PM05Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(PM05);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(PM05, PM05Time);
                 curveInfoModel.setPm05(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(PM10)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(PM10Time);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(PM10);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(PM10, PM10Time);
                 curveInfoModel.setPm10(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(JQ)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(JQTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(JQ);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(JQ, JQTime);
                 curveInfoModel.setJq(curveDataModel);
             }
             if (CollectionUtils.isNotEmpty(PRESS)) {
-                CurveDataModel curveDataModel = new CurveDataModel();
-                curveDataModel.setXaxis(PRESSTime);
-                curveDataModel.setLegend(legend);
-                SeriesDataModel seriesDataModel = new SeriesDataModel();
-                seriesDataModel.setDate(PRESS);
-                seriesDataModel.setName(equipmentname);
-                List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-                seriesDataModelList.add(seriesDataModel);
-                curveDataModel.setSeries(seriesDataModelList);
+                CurveDataModel curveDataModel = generateCurveDataModel(PRESS, PRESSTime);
                 curveInfoModel.setPress(curveDataModel);
+            }
+            if (CollectionUtils.isNotEmpty(leftCompartmentHumidity)) {
+                CurveDataModel curveDataModel = generateCurveDataModel(leftCompartmentHumidity, leftCompartmentHumidityTime);
+                curveInfoModel.setLeftCompartmentHumidity(curveDataModel);
+            }
+            if (CollectionUtils.isNotEmpty(rightCompartmentHumidity)) {
+                CurveDataModel curveDataModel = generateCurveDataModel(rightCompartmentHumidity, rightCompartmentHumidityTime);
+                curveInfoModel.setRightCompartmentHumidity(curveDataModel);
             }
             if (ObjectUtils.isEmpty(curveInfoModel)) {
                 apiResponse.setCode(ApiResponse.FAILED);
@@ -919,6 +683,17 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
         }
+    }
+
+    private CurveDataModel generateCurveDataModel(List<String> listdata, List<String> listtime){
+        CurveDataModel curveDataModel = new CurveDataModel();
+        curveDataModel.setXaxis(listtime);
+        SeriesDataModel seriesDataModel = new SeriesDataModel();
+        seriesDataModel.setDate(listdata);
+        List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
+        seriesDataModelList.add(seriesDataModel);
+        curveDataModel.setSeries(seriesDataModelList);
+        return  curveDataModel;
     }
 
     @Override
@@ -1693,6 +1468,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         List<String> rightairTime = new ArrayList<String>();
         List<String> n2 = new ArrayList<String>();
         List<String> n2Time = new ArrayList<String>();
+        List<String> leftCompartmentHumidity = new ArrayList<String>();
+        List<String> leftCompartmentHumidityTime = new ArrayList<String>();
+        List<String> rightCompartmentHumidity = new ArrayList<String>();
+        List<String> rightCompartmentHumidityTime = new ArrayList<String>();
         for (SingleTimeEquipmentModel lastDataModel : info) {
             //       lastDataModel.setInputdatetime(TimeHelper.formats(lastDataModel.getInputdatetime()));
             //液氮罐是否存在差值
@@ -1857,324 +1636,140 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
 
         }
         if (CollectionUtils.isNotEmpty(n2)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(n2Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(n2);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(n2,n2Time);
             curveInfoModel.setN2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftcovertemp)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(leftcovertempTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(leftcovertemp);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(leftcovertemp,leftcovertempTime);
             curveInfoModel.setLeftcovertemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftendtemp)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(leftendTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(leftendtemp);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(leftendtemp,leftendTime);
             curveInfoModel.setLeftendtemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftair)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(leftairTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(leftair);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(leftair,leftairTime);
             curveInfoModel.setLeftair(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(rightcovertemp)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(rightcovertempTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(rightcovertemp);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(rightcovertemp,rightcovertempTime);
             curveInfoModel.setRightcovertemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(rightendtemp)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(rightendtempTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(rightendtemp);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(rightendtemp, rightendtempTime);
             curveInfoModel.setRightendtemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(rightair)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(rightairTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(rightair);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(rightair, rightairTime);
             curveInfoModel.setRightair(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(tempdiff)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(tempdiffTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(tempdiff);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(tempdiff, tempdiffTime);
             curveInfoModel.setDifftemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(airflow)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(airflowTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(airflow);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(airflow, airflowTime);
             curveInfoModel.setAirflow(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(lefttemp)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(lefttempTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(lefttemp);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(lefttemp, lefttempTime);
             curveInfoModel.setLefttemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(righttemp)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(righttempTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(righttemp);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(righttemp, righttempTime);
             curveInfoModel.setRighttemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp1)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp1Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp1);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp1, temp1Time);
             curveInfoModel.setTemp1(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp2)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp2Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp2);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp2, temp2Time);
             curveInfoModel.setTemp2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp3)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp3Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp3);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp3, temp3Time);
             curveInfoModel.setTemp3(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp4)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp4Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp4);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp4, temp4Time);
             curveInfoModel.setTemp4(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp5)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp5Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp5);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp5, temp5Time);
             curveInfoModel.setTemp5(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp6)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp6Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp6);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp6, temp6Time);
             curveInfoModel.setTemp6(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp7)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp7Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp7);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp7, temp7Time);
             curveInfoModel.setTemp7(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp8)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp8Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp8);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp8, temp8Time);
             curveInfoModel.setTemp8(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp9)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp9Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp9);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp9, temp9Time);
             curveInfoModel.setTemp9(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp10)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(temp10Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp10);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp10, temp10Time);
             curveInfoModel.setTemp10(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(tempTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(temp);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp, tempTime);
             curveInfoModel.setTemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(CO2)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(CO2Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(CO2);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(CO2, CO2Time);
             curveInfoModel.setCo2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(O2)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(O2Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(O2);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(O2, O2Time);
             curveInfoModel.setO2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(VOC)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(VOCTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(VOC);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(VOC, VOCTime);
             curveInfoModel.setVoc(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(RH)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(RHTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(RH);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(RH, RHTime);
             curveInfoModel.setRh(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM25)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(PM25Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(PM25);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM25, PM25Time);
             curveInfoModel.setPm25(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM5)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(PM5Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(PM5);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM5, PM5Time);
             curveInfoModel.setPm5(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM05)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(PM05Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(PM05);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM05, PM05Time);
             curveInfoModel.setPm05(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM10)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(PM10Time);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(PM10);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM10, PM10Time);
             curveInfoModel.setPm10(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(JQ)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(JQTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(JQ);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(JQ, JQTime);
             curveInfoModel.setJq(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PRESS)) {
-            CurveDataModel curveDataModel = new CurveDataModel();
-            curveDataModel.setXaxis(PRESSTime);
-            SeriesDataModel seriesDataModel = new SeriesDataModel();
-            seriesDataModel.setDate(PRESS);
-            List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
-            seriesDataModelList.add(seriesDataModel);
-            curveDataModel.setSeries(seriesDataModelList);
+            CurveDataModel curveDataModel = generateCurveDataModel(PRESS, PRESSTime);
             curveInfoModel.setPress(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(leftCompartmentHumidity)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(leftCompartmentHumidity, leftCompartmentHumidityTime);
+            curveInfoModel.setLeftCompartmentHumidity(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(rightCompartmentHumidity)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(rightCompartmentHumidity, rightCompartmentHumidityTime);
+            curveInfoModel.setRightCompartmentHumidity(curveDataModel);
         }
         apiResponse.setResult(curveInfoModel);
         return apiResponse;

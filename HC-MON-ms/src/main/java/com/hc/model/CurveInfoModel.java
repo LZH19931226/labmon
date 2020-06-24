@@ -79,4 +79,8 @@ public class CurveInfoModel {
     private CurveDataModel rightair;
     @ApiModelProperty("N2")
     private CurveDataModel n2;
+    @ApiModelProperty("左湿度")
+    private CurveDataModel leftCompartmentHumidity;
+    @ApiModelProperty("右湿度")
+    private CurveDataModel rightCompartmentHumidity;
 }
