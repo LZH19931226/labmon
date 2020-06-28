@@ -35,6 +35,8 @@ public class MTJudgeServiceImpl implements MTJudgeService {
 
     @Override
     public Monitorinstrument mtJudge(ParamaterModel model) {
+        //获取到数据
+    //    LOGGER.info("A系列信息："+JsonUtil.toJson(model));
         BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:sn");
         String SN = model.getSN();
         String cmdid = model.getCmdid();
@@ -84,6 +86,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
 
                 //根据通道id查询MT600sn 号
                 String MT600SN = (String) redisTemplateUtil.boundValueOps(channelId1 + ":" + ParamaterModel.class.getSimpleName()).get();
+
                 if (StringUtils.isEmpty(MT600SN)) {
                     String o1 = (String) objectObjectObjectBoundHashOperations.get(model.getSN());
                     if (StringUtils.isEmpty(o1)) {
@@ -112,6 +115,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
 
                 //根据通道id查询MT600sn 号
                 String MT600SN1 = (String) redisTemplateUtil.boundValueOps(channelId + ":" + ParamaterModel.class.getSimpleName()).get();
+   //             LOGGER.info("A系列信息1："+MT600SN1+"A系列信息"+JsonUtil.toJson(model));
                 if (StringUtils.isEmpty(MT600SN1)) {
                     String o1 = (String) objectObjectObjectBoundHashOperations.get(model.getSN());
                     if (StringUtils.isEmpty(o1)) {

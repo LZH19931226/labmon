@@ -65,7 +65,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
 
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        log.info("接收值：" + JsonUtil.toJson(model) + "探头设备：" + JsonUtil.toJson(monitorinstrument));
+        log.info("接收值：" + JsonUtil.toJson(model));
         //命令id
         Date time = model.getNowTime();
         Monitorequipmentlastdata monitorequipmentlastdata = new Monitorequipmentlastdata();
