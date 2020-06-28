@@ -104,6 +104,11 @@ N2	currentn2
             search = "monitorequipmentlastdata" + "_" + year + month;
         }
         WarningCurveDatamModel warningCurveData = warningrecordInfoMapper.getWarningCurveData(warningRecordId);
+        if(warningCurveData==null){
+            apiResponse.setCode(ApiResponse.NOT_FOUND);
+            apiResponse.setMessage("暂无数据");
+            return apiResponse;
+        }
         String instrumentconfigname1 = warningCurveData.getInstrumentconfigname();
         //电量无曲线
         if (StringUtils.equalsAnyIgnoreCase(instrumentconfigname1,"QC","UPS","DOOR","voltage")){
