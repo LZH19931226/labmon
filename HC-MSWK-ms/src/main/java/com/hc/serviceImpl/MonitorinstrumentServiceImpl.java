@@ -40,7 +40,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         //  根据sn 号查询医院编号   K hospitalcode:sn   --   K 设备sn  --  value   Monitorinstrument
         //根据MT600 sn号查询医院编号
         try {
-
+     //       LOGGER.info("instrument中查询信息："+JsonUtil.toJson(paramaterModel));
             BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:sn");
             String channel = null;
             Monitorinstrument monitorinstrument = new Monitorinstrument();
@@ -76,7 +76,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                 Monitorinstrument monitorinstrumentTest = monitorInstrumentMapper.selectHospitalCodeBySn(mt600sn);
          //       LOGGER.info("从数据库查询数据：" + JsonUtil.toJson(monitorinstrumentTest) + "查询SN号：" + mt600sn);
                 //    String instrumentno = monitorinstrumentTest.getInstrumentno();
-
+                LOGGER.info("instrument中MT600信息："+JsonUtil.toJson(paramaterModel) + "查询MT600SN信息："+JsonUtil.toJson(monitorinstrumentTest) );
                 if (monitorinstrumentTest == null) {
                     return null;
                 } else {
@@ -87,6 +87,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             }
             // 不做自动注册
             //判断当前传送数据设备是否注册到医院
+       //     LOGGER.info("instrument中SN查询信息："+JsonUtil.toJson(paramaterModel));
             String sn = "01";
             try {
                 sn = SN.substring(4, 6);
@@ -157,6 +158,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                 } else {
                     //MT300  MT30LITE非开关量
                     try {
+                        LOGGER.info("instrument中查询MT700信息："+JsonUtil.toJson(paramaterModel));
                         String o1 = (String) objectObjectObjectBoundHashOperations.get(SN);
                         if (StringUtils.isNotEmpty(o1)) {
                             monitorinstrument1 = JsonUtil.toBean(o1, Monitorinstrument.class);
