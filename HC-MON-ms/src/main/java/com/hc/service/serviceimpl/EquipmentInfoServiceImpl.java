@@ -237,8 +237,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<CurveInfoModel> getCurvelFirst(String date, String equipmentno) {
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-
-
         String o = (String) objectObjectObjectHashOperations.get("equipmentno:lastdata", equipmentno + ":" + date);
         LOGGER.info("当前值：" + o);
         boolean flags = false;
@@ -435,7 +433,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                         tempTime.add(da);
 
                 }
-
                 //CO2有无值
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrentcarbondioxide()) && !exceptionData.contains(lastDataModel.getCurrentcarbondioxide())) {
                     //if (!"A".equals(lastDataModel.getCurrentcarbondioxide()) && !"B".equals(lastDataModel.getCurrentcarbondioxide()) && !"C".equals(lastDataModel.getCurrentcarbondioxide()) && !"D".equals(lastDataModel.getCurrentcarbondioxide()) && !"E".equals(lastDataModel.getCurrentcarbondioxide())) {
@@ -883,19 +880,15 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<String> exportExcle(String equipmenttypeid, String equipmentno, String hospitalcode, String startdate, String enddate, HttpServletResponse response) {
         ApiResponse<String> apiResponse = new ApiResponse<String>();
-
         try {
-//            LOGGER.info(JsonUtil.toJson(response));
             Params param = new Params();
             if (StringUtils.isNotEmpty(equipmenttypeid)) {
                 param.setEquipmenttypeid(equipmenttypeid);
             }
-            //         param.setResponse(response);
             param.setEquipmentno(equipmentno);
             param.setHospitalcode(hospitalcode);
             param.setStartdate(startdate);
             param.setEnddate(enddate);
-            //  param.setResponse(response);
             String search = "monitorequipmentlastdata";
             // 判断当前日期是否为当前月份
             boolean flag = TimeHelper.isCurrentMonth(startdate);
