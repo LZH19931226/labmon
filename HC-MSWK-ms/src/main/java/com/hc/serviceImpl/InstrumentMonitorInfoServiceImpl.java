@@ -289,7 +289,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 //                        } catch (Exception e) {
 //                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "市电插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
 //                        }
-                        monitorequipmentlastdata.setCurrentups(model.getUPS());
+                        monitorequipmentlastdata.setCurrentups(ups);
                         log.info("执行插入市电:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorupsrecord));
                         WarningMqModel warningMqModel = procWarnModel(ups, monitorinstrument, model.getNowTime(), 10, "市电");
                         list.add(warningMqModel);

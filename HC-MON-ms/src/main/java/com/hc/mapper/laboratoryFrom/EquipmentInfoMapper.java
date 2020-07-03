@@ -40,7 +40,8 @@ public interface EquipmentInfoMapper {
      * 根据设备类型编号和医院编号查询设备信息
      */
     @Select("SELECT\n" +
-            "\tt1.equipmentno \n" +
+            "\tt1.* \n" +
+
             "FROM\n" +
             "\tmonitorequipment t1 " +
             "\tWHERE\n" +

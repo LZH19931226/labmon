@@ -216,9 +216,14 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setMessage("当前设备类型无设备信息");
                 return apiResponse;
             }
+            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             String equipmentno = monitorequipmentList.get(0).getEquipmentno();
             Monitorupsrecord monitorupsrecord = new Monitorupsrecord();
-            monitorupsrecord = equipmentInfoMapper.selectUps(equipmentno);
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+            if (StringUtils.isNotEmpty(lastdata)) {
+                Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+                monitorupsrecord.setUps(monitorequipmentlastdata.getCurrentups());
+            }
             if (ObjectUtils.isEmpty(monitorupsrecord)) {
                 apiResponse.setMessage("无市电记录");
                 apiResponse.setCode(ApiResponse.FAILED);
