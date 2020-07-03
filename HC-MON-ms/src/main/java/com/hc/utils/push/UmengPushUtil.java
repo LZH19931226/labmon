@@ -1,7 +1,6 @@
 package com.hc.utils.push;
 
 
-import com.hc.service.serviceimpl.EquipmentInfoServiceImpl;
 import com.hc.utils.DateUtil;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.push.android.*;

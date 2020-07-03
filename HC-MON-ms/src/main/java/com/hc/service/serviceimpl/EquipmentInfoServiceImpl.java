@@ -9,7 +9,6 @@ import com.hc.dao.InstrumentparamconfigDao;
 import com.hc.entity.*;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
-import com.hc.mapper.laboratoryFrom.InstrumentParamConfigInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.model.*;
 import com.hc.model.ExcleInfoModel.*;
@@ -34,9 +33,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by 16956 on 2018-08-01.
@@ -428,23 +428,23 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 }
                 //温度有无值
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature()) && !exceptionData.contains(lastDataModel.getCurrenttemperature())) {
-                   // if (!"A".equals() && !"B".equals(lastDataModel.getCurrenttemperature()) && !"C".equals(lastDataModel.getCurrenttemperature()) && !"D".equals(lastDataModel.getCurrenttemperature()) && !"E".equals(lastDataModel.getCurrenttemperature())) {
-                        temp.add(lastDataModel.getCurrenttemperature());
-                        tempTime.add(da);
+                    // if (!"A".equals() && !"B".equals(lastDataModel.getCurrenttemperature()) && !"C".equals(lastDataModel.getCurrenttemperature()) && !"D".equals(lastDataModel.getCurrenttemperature()) && !"E".equals(lastDataModel.getCurrenttemperature())) {
+                    temp.add(lastDataModel.getCurrenttemperature());
+                    tempTime.add(da);
 
                 }
                 //CO2有无值
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrentcarbondioxide()) && !exceptionData.contains(lastDataModel.getCurrentcarbondioxide())) {
                     //if (!"A".equals(lastDataModel.getCurrentcarbondioxide()) && !"B".equals(lastDataModel.getCurrentcarbondioxide()) && !"C".equals(lastDataModel.getCurrentcarbondioxide()) && !"D".equals(lastDataModel.getCurrentcarbondioxide()) && !"E".equals(lastDataModel.getCurrentcarbondioxide())) {
-                        CO2.add(lastDataModel.getCurrentcarbondioxide());
-                        CO2Time.add(da);
+                    CO2.add(lastDataModel.getCurrentcarbondioxide());
+                    CO2Time.add(da);
                     //}
                 }
                 //氧气有无值
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrento2()) && !exceptionData.contains(lastDataModel.getCurrento2())) {
-                   // if (!"A".equals(lastDataModel.getCurrento2()) && !"B".equals(lastDataModel.getCurrento2()) && !"C".equals(lastDataModel.getCurrento2()) && !"D".equals(lastDataModel.getCurrento2()) && !"E".equals(lastDataModel.getCurrento2())) {
-                        O2.add(lastDataModel.getCurrento2());
-                        O2Time.add(da);
+                    // if (!"A".equals(lastDataModel.getCurrento2()) && !"B".equals(lastDataModel.getCurrento2()) && !"C".equals(lastDataModel.getCurrento2()) && !"D".equals(lastDataModel.getCurrento2()) && !"E".equals(lastDataModel.getCurrento2())) {
+                    O2.add(lastDataModel.getCurrento2());
+                    O2Time.add(da);
                     //}
                 }
                 //voc 有无值

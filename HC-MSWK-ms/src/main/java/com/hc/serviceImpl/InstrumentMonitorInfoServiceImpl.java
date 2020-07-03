@@ -284,11 +284,11 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitorupsrecord.setInputdatetime(time);
                         monitorupsrecord.setUps(ups);
                         monitorupsrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        try {
-                            monitorUpsDao.saveAndFlush(monitorupsrecord);
-                        } catch (Exception e) {
-                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "市电插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                        }
+//                        try {
+////                            monitorUpsDao.saveAndFlush(monitorupsrecord);
+//                        } catch (Exception e) {
+//                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "市电插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
+//                        }
                         monitorequipmentlastdata.setCurrentups(model.getUPS());
                         log.info("执行插入市电:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorupsrecord));
                         WarningMqModel warningMqModel = procWarnModel(ups, monitorinstrument, model.getNowTime(), 10, "市电");

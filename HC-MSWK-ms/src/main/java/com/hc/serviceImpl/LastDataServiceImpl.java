@@ -156,7 +156,7 @@ public class LastDataServiceImpl implements LastDataService {
                     } else {
                         service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
                     }
-                  //  if (StringUtils.equals(equipmentTypeId, "1")) {
+//                    if (StringUtils.equals(equipmentTypeId, "1")) {
                         Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
                         monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
                         objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
@@ -178,102 +178,6 @@ public class LastDataServiceImpl implements LastDataService {
 
     }
 
-    /**
-     * 新增数据
-     *
-     * @param monitorequipmentlastdata  上一条数据
-     * @param monitorequipmentlastdata1 当前数据
-     * @return
-     */
-    public Monitorequipmentlastdata dataAdds(Monitorequipmentlastdata monitorequipmentlastdata, Monitorequipmentlastdata monitorequipmentlastdata1) {
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentairflow())) {
-            monitorequipmentlastdata.setCurrentairflow(monitorequipmentlastdata1.getCurrentairflow());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentcarbondioxide())) {
-            monitorequipmentlastdata.setCurrentcarbondioxide(monitorequipmentlastdata1.getCurrentcarbondioxide());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentdoorstate())) {
-            monitorequipmentlastdata.setCurrentdoorstate(monitorequipmentlastdata1.getCurrentdoorstate());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentformaldehyde())) {
-            monitorequipmentlastdata.setCurrentformaldehyde(monitorequipmentlastdata1.getCurrentformaldehyde());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenthumidity())) {
-            monitorequipmentlastdata.setCurrenthumidity(monitorequipmentlastdata1.getCurrenthumidity());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrento2())) {
-            monitorequipmentlastdata.setCurrento2(monitorequipmentlastdata1.getCurrento2());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentpm10())) {
-            monitorequipmentlastdata.setCurrentpm10(monitorequipmentlastdata1.getCurrentpm10());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentpm25())) {
-            monitorequipmentlastdata.setCurrentpm25(monitorequipmentlastdata1.getCurrentpm25());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentqc())) {
-            monitorequipmentlastdata.setCurrentqc(monitorequipmentlastdata1.getCurrentqc());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentqcl())) {
-            monitorequipmentlastdata.setCurrentqcl(monitorequipmentlastdata1.getCurrentqcl());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature())) {
-            monitorequipmentlastdata.setCurrenttemperature(monitorequipmentlastdata1.getCurrenttemperature());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentvoc())) {
-            monitorequipmentlastdata.setCurrentvoc(monitorequipmentlastdata1.getCurrentvoc());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentairflow1())) {
-            monitorequipmentlastdata.setCurrentairflow1(monitorequipmentlastdata1.getCurrentairflow1());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature1())) {
-            monitorequipmentlastdata.setCurrenttemperature1(monitorequipmentlastdata1.getCurrenttemperature1());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature2())) {
-            monitorequipmentlastdata.setCurrenttemperature2(monitorequipmentlastdata1.getCurrenttemperature2());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature3())) {
-            monitorequipmentlastdata.setCurrenttemperature3(monitorequipmentlastdata1.getCurrenttemperature3());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature4())) {
-            monitorequipmentlastdata.setCurrenttemperature4(monitorequipmentlastdata1.getCurrenttemperature4());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature5())) {
-            monitorequipmentlastdata.setCurrenttemperature5(monitorequipmentlastdata1.getCurrenttemperature5());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentlefttemperature())) {
-            monitorequipmentlastdata.setCurrentlefttemperature(monitorequipmentlastdata1.getCurrentlefttemperature());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentrigthtemperature())) {
-            monitorequipmentlastdata.setCurrentrigthtemperature(monitorequipmentlastdata1.getCurrentrigthtemperature());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperaturediff())) {
-            monitorequipmentlastdata.setCurrenttemperaturediff(monitorequipmentlastdata1.getCurrenttemperaturediff());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentleftcovertemperature())) {
-            monitorequipmentlastdata.setCurrentleftcovertemperature(monitorequipmentlastdata1.getCurrentleftcovertemperature());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentleftendtemperature())) {
-            monitorequipmentlastdata.setCurrentleftendtemperature(monitorequipmentlastdata1.getCurrentleftendtemperature());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentleftairflow())) {
-            monitorequipmentlastdata.setCurrentleftairflow(monitorequipmentlastdata1.getCurrentleftairflow());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentrightcovertemperature())) {
-            monitorequipmentlastdata.setCurrentrightcovertemperature(monitorequipmentlastdata1.getCurrentrightcovertemperature());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentrightendtemperature())) {
-            monitorequipmentlastdata.setCurrentrightendtemperature(monitorequipmentlastdata1.getCurrentrightendtemperature());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentrightairflow())) {
-            monitorequipmentlastdata.setCurrentrightairflow(monitorequipmentlastdata1.getCurrentrightairflow());
-        }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentn2())) {
-            monitorequipmentlastdata.setCurrentrightairflow(monitorequipmentlastdata1.getCurrentn2());
-        }
-        monitorequipmentlastdata.setInputdatetime(monitorequipmentlastdata1.getInputdatetime());
-        monitorequipmentlastdata.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-        return monitorequipmentlastdata;
-    }
 
     public Monitorequipmentlastdata dataAdd(Monitorequipmentlastdata monitorequipmentlastdata, Monitorequipmentlastdata monitorequipmentlastdata1, String typeid, String pc) {
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentairflow())) {
@@ -402,31 +306,31 @@ public class LastDataServiceImpl implements LastDataService {
         return monitorequipmentlastdata;
     }
 
-    public boolean tempMax(String temp, String temp1, String equipmentTypeid, String pc) {
-        if (!StringUtils.equalsAny(equipmentTypeid, "2", "3")) {
-            return true;
-        }
-
-        if (StringUtils.isEmpty(temp) || StringUtils.isEmpty(temp1)) {
-            return true;
-        }
-
-        // 当上次记录信息和本次记录温度信息存在异常时，则返回false
-        if (arrListt.contains(temp) || arrListt.contains(temp1)) {
-            return true;
-        }
-        // 数字比较大小
-        BigDecimal bigDecimal = new BigDecimal(temp);
-        BigDecimal bigDecimal1 = new BigDecimal(temp1);
-        BigDecimal abs = bigDecimal.subtract(bigDecimal1).abs();//返回两个差值的绝对值
-        int i = abs.compareTo(new BigDecimal(pc));
-        if (i == -1) {
-            //当在差值范围内时候，则展示出来
-            return true;
-        }
-
-        return false;
-    }
+//    public boolean tempMax(String temp, String temp1, String equipmentTypeid, String pc) {
+//        if (!StringUtils.equalsAny(equipmentTypeid, "2", "3")) {
+//            return true;
+//        }
+//
+//        if (StringUtils.isEmpty(temp) || StringUtils.isEmpty(temp1)) {
+//            return true;
+//        }
+//
+//        // 当上次记录信息和本次记录温度信息存在异常时，则返回false
+//        if (arrListt.contains(temp) || arrListt.contains(temp1)) {
+//            return true;
+//        }
+//        // 数字比较大小
+//        BigDecimal bigDecimal = new BigDecimal(temp);
+//        BigDecimal bigDecimal1 = new BigDecimal(temp1);
+//        BigDecimal abs = bigDecimal.subtract(bigDecimal1).abs();//返回两个差值的绝对值
+//        int i = abs.compareTo(new BigDecimal(pc));
+//        if (i == -1) {
+//            //当在差值范围内时候，则展示出来
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
     // 判断对象是否为空方法：
     public boolean checkObjAllFieldsIsNull(Object object) {
