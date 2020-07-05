@@ -7,9 +7,8 @@ import com.hc.config.RedisTemplateUtil;
 import com.hc.dao.InstrumentparamconfigDao;
 import com.hc.dao.OperationrecordDao;
 import com.hc.dao.UserrightDao;
-import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorinstrument;
-import com.hc.entity.Operationrecord;
+import com.hc.entity.*;
+import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentParamConfigInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
@@ -32,9 +31,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by 16956 on 2018-08-05.
@@ -54,14 +55,13 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
     @Autowired
     private UserrightDao userrightDao;
     @Autowired
-    private OperationrecordDao operationrecordDao;
-    @Autowired
     private InstrumentparamconfigDao instrumentparamconfigDao;
     @Autowired
     private MonitorInstrumentMapper monitorInstrumentMapper;
     @Autowired
     private UpdateRecordService updateRecordService;
-
+    @Autowired
+    private EquipmentInfoMapper equipmentInfoMapper;
     @Override
     public ApiResponse<String> addMt100Qc() {
         //查询所有的MT100设备
@@ -295,6 +295,54 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             return apiResponse;
         }
         return null;
+    }
+
+    @Override
+    public ApiResponse<List<UpsModel>> getCurrentUps(String hospitalcode, String equipmenttypeid) {
+        ApiResponse<List<UpsModel>> apiResponse = new ApiResponse<>();
+        List<UpsModel> upsModels = new ArrayList<>();
+        List<Monitorequipment> monitorequipmentList;
+        try {
+            monitorequipmentList = equipmentInfoMapper.getEquipmentByType(hospitalcode, equipmenttypeid);
+            if (CollectionUtils.isEmpty(monitorequipmentList)) {
+                apiResponse.setCode(ApiResponse.FAILED);
+                apiResponse.setMessage("当前设备类型无设备信息");
+                return apiResponse;
+            }
+            Map<String, List<Monitorequipment>> collect1 = monitorequipmentList.stream().collect(Collectors.groupingBy(Monitorequipment::getEquipmentno));
+            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+            Set<String> collect = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toSet());
+            List<Object> lastdata1 = objectObjectObjectHashOperations.multiGet("LASTDATA", Arrays.asList(collect));
+            lastdata1.forEach(s->{
+                UpsModel upsModel = new UpsModel();
+                Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean( (String)s, Monitorequipmentlastdata.class);
+                String equipmentno = monitorequipmentlastdata.getEquipmentno();
+                Monitorequipment monitorequipment = collect1.get(equipmentno).get(0);
+                upsModel.setEquipmentno(equipmentno);
+                upsModel.setEquipmentname(monitorequipment.getEquipmentname());
+                String currentups = monitorequipmentlastdata.getCurrentups();
+                if (StringUtils.isNotEmpty(currentups)){
+                    upsModel.setCurrentups(currentups);
+                }
+                String voltage = monitorequipmentlastdata.getVoltage();
+                if (StringUtils.isNotEmpty(voltage)){
+                    upsModel.setVoltage(voltage);
+                }
+                upsModels.add(upsModel);
+            });
+            if (ObjectUtils.isEmpty(lastdata1)) {
+                apiResponse.setMessage("无市电记录");
+                apiResponse.setCode(ApiResponse.FAILED);
+                return apiResponse;
+            }
+            apiResponse.setResult(upsModels);
+            return apiResponse;
+        } catch (Exception e) {
+            LOGGER.error("失败：" + e.getMessage());
+            apiResponse.setMessage("服务异常");
+            apiResponse.setCode(ApiResponse.FAILED);
+            return apiResponse;
+        }
     }
 
 }

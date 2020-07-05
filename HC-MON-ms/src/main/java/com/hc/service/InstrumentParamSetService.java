@@ -2,10 +2,14 @@ package com.hc.service;
 
 import com.github.pagehelper.Page;
 import com.hc.entity.Instrumentparamconfig;
+import com.hc.entity.Monitorupsrecord;
 import com.hc.model.PushSetModel;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
 import com.hc.model.UpdateDeviceTokenModel;
+import com.hc.model.UpsModel;
 import com.hc.utils.ApiResponse;
+
+import java.util.List;
 
 /**
  * Created by 16956 on 2018-08-05.
@@ -55,4 +59,5 @@ public interface InstrumentParamSetService {
     ApiResponse<String> updateDeviceToken(UpdateDeviceTokenModel updateDeviceTokenModel);
 
 
+    ApiResponse<List<UpsModel>> getCurrentUps(String hospitalcode, String equipmenttypeid);
 }

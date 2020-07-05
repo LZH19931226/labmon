@@ -1,27 +1,23 @@
 package com.hc.controller;
 
-import javax.validation.Valid;
-
-import com.hc.model.UpdateDeviceTokenModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.Page;
 import com.hc.entity.Instrumentparamconfig;
+import com.hc.model.EquipmentCurrentDateModel;
 import com.hc.model.PushSetModel;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
+import com.hc.model.UpdateDeviceTokenModel;
+import com.hc.model.UpsModel;
 import com.hc.service.InstrumentParamSetService;
 import com.hc.utils.ApiResponse;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by 16956 on 2018-08-05.
@@ -81,6 +77,16 @@ public class InstruParamSetController {
     @PostMapping("/updateDevicetoken")
     public ApiResponse<String> updateDeviceToken(@RequestBody @Valid UpdateDeviceTokenModel updateDeviceTokenModel){
         return instrumentParamSetService.updateDeviceToken(updateDeviceTokenModel);
+    }
+
+
+    @GetMapping("/getCurrentUps")
+    @ApiOperation(value = "获取当前市电", response = EquipmentCurrentDateModel.class)
+    public ApiResponse<List<UpsModel>> getUps(@ApiParam(name = "hospitalcode", value = "医院编号", required = true)
+                                                @RequestParam(value = "hospitalcode", required = true) String hospitalcode,
+                                              @ApiParam(name = "equipmenttypeid", value = "设备类型编号", required = true)
+                                                @RequestParam(value = "equipmenttypeid", required = true) String equipmenttypeid) {
+        return instrumentParamSetService.getCurrentUps(hospitalcode, equipmenttypeid);
     }
 
 }
