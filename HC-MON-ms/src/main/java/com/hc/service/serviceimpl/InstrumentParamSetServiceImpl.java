@@ -5,9 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.config.RedisTemplateUtil;
 import com.hc.dao.InstrumentparamconfigDao;
-import com.hc.dao.OperationrecordDao;
 import com.hc.dao.UserrightDao;
-import com.hc.entity.*;
+import com.hc.entity.Instrumentparamconfig;
+import com.hc.entity.Monitorequipment;
+import com.hc.entity.Monitorequipmentlastdata;
+import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentParamConfigInfoMapper;
@@ -312,25 +314,27 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             Map<String, List<Monitorequipment>> collect1 = monitorequipmentList.stream().collect(Collectors.groupingBy(Monitorequipment::getEquipmentno));
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             Set<String> collect = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toSet());
-            List<Object> lastdata1 = objectObjectObjectHashOperations.multiGet("LASTDATA", Arrays.asList(collect));
-            lastdata1.forEach(s->{
+            collect.forEach(s->{
                 UpsModel upsModel = new UpsModel();
-                Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean( (String)s, Monitorequipmentlastdata.class);
-                String equipmentno = monitorequipmentlastdata.getEquipmentno();
-                Monitorequipment monitorequipment = collect1.get(equipmentno).get(0);
-                upsModel.setEquipmentno(equipmentno);
-                upsModel.setEquipmentname(monitorequipment.getEquipmentname());
-                String currentups = monitorequipmentlastdata.getCurrentups();
-                if (StringUtils.isNotEmpty(currentups)){
-                    upsModel.setCurrentups(currentups);
+                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", s);
+                if (StringUtils.isNotEmpty(lastdata)) {
+                    Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+                    String equipmentno = monitorequipmentlastdata.getEquipmentno();
+                    Monitorequipment monitorequipment = collect1.get(equipmentno).get(0);
+                    upsModel.setEquipmentno(equipmentno);
+                    upsModel.setEquipmentname(monitorequipment.getEquipmentname());
+                    String currentups = monitorequipmentlastdata.getCurrentups();
+                    if (StringUtils.isNotEmpty(currentups)){
+                        upsModel.setCurrentups(currentups);
+                    }
+                    String voltage = monitorequipmentlastdata.getVoltage();
+                    if (StringUtils.isNotEmpty(voltage)){
+                        upsModel.setVoltage(voltage);
+                    }
+                    upsModels.add(upsModel);
                 }
-                String voltage = monitorequipmentlastdata.getVoltage();
-                if (StringUtils.isNotEmpty(voltage)){
-                    upsModel.setVoltage(voltage);
-                }
-                upsModels.add(upsModel);
             });
-            if (ObjectUtils.isEmpty(lastdata1)) {
+            if (ObjectUtils.isEmpty(upsModels)) {
                 apiResponse.setMessage("无市电记录");
                 apiResponse.setCode(ApiResponse.FAILED);
                 return apiResponse;
@@ -338,7 +342,7 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             apiResponse.setResult(upsModels);
             return apiResponse;
         } catch (Exception e) {
-            LOGGER.error("失败：" + e.getMessage());
+            LOGGER.info(e.getMessage());
             apiResponse.setMessage("服务异常");
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
