@@ -32,87 +32,76 @@ public class TimerConfig {
     private MessagePushService messagePushService;
     @Autowired
     private MonitorequipmentDao monitorequipmentDao;
-    @Scheduled(cron = "0 0/30 * * * ?")   // 从第0分钟开始 每三十分钟一次
+
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void Time() {
-        //  LocalDateTime localDateTime =LocalDateTime.now();
-        //  System.out.println("当前时间为:" + localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        /**
-         * 轮训查询： 半小时一次
-         */
         // 查询所有需要超时报警的设备
-        LOGGER.info("轮训启动："+TimeHelper.getCurrentTimes());
         List<TimeoutEquipment> timeoutEquipments = hospitalInfoMapper.getTimeoutEquipment();
         if (CollectionUtils.isEmpty(timeoutEquipments)) {
             return;
         }
         HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
-        LOGGER.info("设置超时设备:"+JsonUtil.toJson(timeoutEquipments));
-        int i = 0;
-        for (TimeoutEquipment timeoutEquipment :timeoutEquipments  ) {
-            i++;
+        LOGGER.info("设置超时设备:" + JsonUtil.toJson(timeoutEquipments));
+        for (TimeoutEquipment timeoutEquipment : timeoutEquipments) {
             String equipmentno = timeoutEquipment.getEquipmentno();
-
-            if (!redisTemple.hasKey("timeOut","equipmentno:"+equipmentno)){
-//                // 不存在数据：// 拨打电话报警
-//                timeoutEquipment.setDisabletype("0");// 设备超时报警
-//                String s = JsonUtil.toJson(timeoutEquipment);
-//                messagePushService.pushMessage5(s);
-                continue;
-
-            }else {
-                Integer timeouttime = timeoutEquipment.getTimeouttime();// 超时时间设置
+            if (redisTemple.hasKey("timeOut", "equipmentno:" + equipmentno)) {
+                // 超时时间设置
+                Integer timeouttime = timeoutEquipment.getTimeouttime();
                 //忘记设置超时时间，则为空
-                if (timeouttime == null){
+                if (timeouttime == null) {
                     continue;
                 }
                 // 存在数据，进行时间对比
-                String timeOut = (String)redisTemple.get("timeOut", "equipmentno:" + equipmentno);
+                String timeOut = (String) redisTemple.get("timeOut", "equipmentno:" + equipmentno);
                 // 时间对比
                 int datePoors = TimeHelper.getDatePoors(timeOut);
-                LOGGER.info("时间差："+datePoors);
                 String time = time(datePoors, timeouttime);
-                LOGGER.info("报警类型："+time);
-                switch (time){
+                switch (time) {
                     case "2":
-                        LOGGER.info("进入超时报警："+JsonUtil.toJson(timeoutEquipment));
                         // 超时报警
                         timeoutEquipment.setDisabletype("2");
                         timeoutEquipment.setTimeouttime(datePoors);
                         String s = JsonUtil.toJson(timeoutEquipment);
+                        LOGGER.info("超时报警推送:{}",JsonUtil.toJson(timeoutEquipment));
                         messagePushService.pushMessage5(s);
                         break;
                     case "3":
                         //禁用设备报警
-                        LOGGER.info("进入设备禁用报警："+JsonUtil.toJson(timeoutEquipment));
                         timeoutEquipment.setDisabletype("3");
                         String s1 = JsonUtil.toJson(timeoutEquipment);
+                        LOGGER.info("禁用报警推送:{}",JsonUtil.toJson(timeoutEquipment));
                         messagePushService.pushMessage5(s1);
                         //设备禁用
                         monitorequipmentDao.updateMonitorequipmentAble(equipmentno);
                         //存入redis
-                        redisTemple.put("disable","equipmentno:"+equipmentno,"1");
+                        redisTemple.put("disable", "equipmentno:" + equipmentno, "1");
+                        break;
+                    default:
                         break;
                 }
 
             }
         }
-        LOGGER.info("循环次数："+i);
 
     }
 
     /**
      * 超时时间计算方式
+     *
      * @param i 当前时间与最后上传数据时间差
      * @param j 医院设备类型设置超时时间
      * @return
      */
-    public String time(int i,int j){
-        if(i < j){
-            return "1";  // 不超时报警
-        } else if ( i > j && i < j + 60){
-            return "2"; // 超时报警
-        }else if (i > j+60){
-            return "3"; // 设备停用
+    private String time(int i, int j) {
+        // 不超时报警
+        if (i < j) {
+            return "1";
+            // 超时报警
+        } else if (i > j && i < j + 60) {
+            return "2";
+            // 设备停用
+        } else if (i > j + 60) {
+            return "3";
         }
         return null;
     }

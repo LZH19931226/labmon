@@ -42,17 +42,12 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         try {
      //       LOGGER.info("instrument中查询信息："+JsonUtil.toJson(paramaterModel));
             BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:sn");
-            String channel = null;
-            Monitorinstrument monitorinstrument = new Monitorinstrument();
+            String channel;
             String o = (String) objectObjectObjectBoundHashOperations.get(mt600sn);
             //  Monitorinstrument monitorinstrument4 = monitorInstrumentMapper.selectHospitalCodeBySn(mt600sn);
             //    LOGGER.info("测试从数据库查询数据：" + JsonUtil.toJson(monitorinstrument4) + "查询SN号：" + mt600sn);
-            if (StringUtils.isNotEmpty(o)) {
-                monitorinstrument = JsonUtil.toBean(o, Monitorinstrument.class);
-            } else {
+            if (StringUtils.isEmpty(o)) {
                 LOGGER.info("当前探头关联的MT600设备未注册到医院，SN号为：" + mt600sn);
-
-
                 if (StringUtils.equalsAny(mt600sn, "1821110012", "1821110018", "1832110005", "1809110003", "1821110021", "1832110013", "1832110034",
                         "1821110005", "1832110040", "1832110008", "1821110013", "1821110008", "1821110008", "1832110032"
                         , "1821110027", "1832110026", "1832110038", "1821110011", "1832110048", "1832110006", "1832110024",
@@ -62,8 +57,6 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                         "1813110018", "1813110010", "1832110045", "1813110030", "1813110009", "1813110019", "1813110012", "1813110028", "1813110006",
                         "1821110015", "1813110016", "1821110025", "1821110030", "1832110047", "1813110022", "1821110010", "1813110007",
                         "1821110004", "1821110028", "1832110011")) {
-
-
                     try {
                         LOGGER.info("进入拨打程序");
                         msctService.test2("18108674918", "瑞迪斯存储探头值失效");
@@ -118,7 +111,8 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                     // 报警通知
                     //查询当前设备
                     TimeoutEquipment one = monitorInstrumentMapper.getOne(equipmentno);
-                    one.setDisabletype("4");//解除报警
+                    //解除报警
+                    one.setDisabletype("4");
                     messagePushService.pushMessage5(JsonUtil.toJson(one));
                 }
                 return null;
