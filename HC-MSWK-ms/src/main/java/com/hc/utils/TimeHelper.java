@@ -78,7 +78,7 @@ public class TimeHelper {
 
         long diff = 0 ;
         try {
-            diff = new Date().getTime() - dateformats.parse(args).getTime();
+            diff = System.currentTimeMillis() - dateformats.parse(args).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
