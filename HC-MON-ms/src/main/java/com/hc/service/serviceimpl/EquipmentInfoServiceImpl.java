@@ -220,6 +220,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             String equipmentno = monitorequipmentList.get(0).getEquipmentno();
             Monitorupsrecord monitorupsrecord = new Monitorupsrecord();
             String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+            LOGGER.info("市电信息："+lastdata);
             if (StringUtils.isNotEmpty(lastdata)) {
                 Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
                 monitorupsrecord.setUps(monitorequipmentlastdata.getCurrentups());
