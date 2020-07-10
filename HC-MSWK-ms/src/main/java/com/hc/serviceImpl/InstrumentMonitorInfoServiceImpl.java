@@ -1657,17 +1657,17 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
 
         redisTemple.put("timeOut", "equipmentno:" + equipmentno, TimeHelper.getCurrentTimes());
-        if (redisTemple.hasKey("disable", "equipmentno:" + equipmentno)) {
-            //表示当前设备之前禁用，现在数据重新上传，又启用了
-            redisTemple.delete("disable", "equipmentno:" + equipmentno);
-            //启用设备
-            monitorequipmentDao.updateMonitorequipmentAble(equipmentno);
-            // 报警通知
-            //查询当前设备
-            TimeoutEquipment one = monitorInstrumentMapper.getOne(equipmentno);
-            one.setDisabletype("4");//解除报警
-            messagePushService.pushMessage5(JsonUtil.toJson(one));
-        }
+//        if (redisTemple.hasKey("disable", "equipmentno:" + equipmentno)) {
+//            //表示当前设备之前禁用，现在数据重新上传，又启用了
+//            redisTemple.delete("disable", "equipmentno:" + equipmentno);
+//            //启用设备
+//            monitorequipmentDao.updateMonitorequipmentAble(equipmentno);
+//            // 报警通知
+//            //查询当前设备
+//            TimeoutEquipment one = monitorInstrumentMapper.getOne(equipmentno);
+//            one.setDisabletype("4");//解除报警
+//            messagePushService.pushMessage5(JsonUtil.toJson(one));
+//        }
     }
 
 }
