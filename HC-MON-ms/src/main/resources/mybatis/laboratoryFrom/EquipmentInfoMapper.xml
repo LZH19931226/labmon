@@ -16,7 +16,7 @@
             hospitalcode =#{hospitalcode}
             and equipmenttypeid = #{equipmenttypeid}
             <if test="equipmentname!=null">
-                and equipmentname like #{equipmentname}
+                and equipmentname like '%${equipmentname}%'
             </if>
             and clientvisible='1'
 

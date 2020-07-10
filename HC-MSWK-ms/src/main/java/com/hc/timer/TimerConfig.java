@@ -5,9 +5,11 @@ import com.hc.dao.MonitorequipmentDao;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.MapperModel.TimeoutEquipment;
 import com.hc.service.MessagePushService;
+import com.hc.service.ThirdPartyService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 15350 on 2019/10/8.
@@ -32,6 +36,8 @@ public class TimerConfig {
     private MessagePushService messagePushService;
     @Autowired
     private MonitorequipmentDao monitorequipmentDao;
+    @Autowired
+    private ThirdPartyService thirdPartyService;
 
     @Scheduled(cron = "0 0/30 * * * ?")
     public void Time() {
@@ -42,11 +48,15 @@ public class TimerConfig {
         }
         HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
         LOGGER.info("设置超时设备:" + JsonUtil.toJson(timeoutEquipments));
+
+        //过滤禁用报警的设备
+
         for (TimeoutEquipment timeoutEquipment : timeoutEquipments) {
             String equipmentno = timeoutEquipment.getEquipmentno();
             if (redisTemple.hasKey("timeOut", "equipmentno:" + equipmentno)) {
                 // 超时时间设置
                 Integer timeouttime = timeoutEquipment.getTimeouttime();
+                String hospitalcode = timeoutEquipment.getHospitalcode();
                 //忘记设置超时时间，则为空
                 if (timeouttime == null) {
                     continue;
@@ -66,6 +76,12 @@ public class TimerConfig {
                         messagePushService.pushMessage5(s);
                         break;
                     case "3":
+                        //超时继续报警,但不禁用设备
+                        if (StringUtils.equalsAnyIgnoreCase(hospitalcode,"H24")){
+                            timeoutEquipment.setTimeouttime(datePoors);
+                            thirdPartyService.disableAlarm(timeoutEquipment);
+                            break;
+                        }
                         //禁用设备报警
                         timeoutEquipment.setDisabletype("3");
                         String s1 = JsonUtil.toJson(timeoutEquipment);

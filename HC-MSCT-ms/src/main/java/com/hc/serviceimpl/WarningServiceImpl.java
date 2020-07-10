@@ -69,7 +69,7 @@ public class WarningServiceImpl implements WarningService {
             //不启用报警，直接过滤信息
             return null;
         }
-        WarningModel warningModel = new WarningModel();
+        WarningModel warningModel;
         String hospitalcode = monitorinstrument.getHospitalcode();
         String equipmentname = instrumentMonitorInfoModel.getEquipmentname();
         String instrumentparamconfigNO = instrumentMonitorInfoModel.getInstrumentparamconfigNO();
@@ -78,23 +78,13 @@ public class WarningServiceImpl implements WarningService {
             return null;
         }
         // 判断是否是多个500引起的报警问题
-        // BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperation = redisTemplateUtil.boundHashOps("warningTime");
         WarningDateModel warningDateModel = new WarningDateModel();
         warningDateModel.setDate(date);
-//        String o1 = (String) objectObjectObjectBoundHashOperation.get(instrumentparamconfigNO);
-//        if (StringUtils.isEmpty(o1)) {
-//            objectObjectObjectBoundHashOperation.put(instrumentparamconfigNO, JsonUtil.toJson(warningDateModel));
-//        } else {
-//            //取出
-//            double datePoor = TimeHelper.getDatePoor(date, JsonUtil.toBean(o1, WarningDateModel.class).getDate());
-//            if (datePoor < 30) {
-//                LOGGER.info("当前设备：" + JsonUtil.toJson(monitorinstrument) + "上传时间间隔：" + datePoor);
-//                return null;
-//            }
-//            objectObjectObjectBoundHashOperation.put(instrumentparamconfigNO, JsonUtil.toJson(warningDateModel));
-//
-//        }
         Warningrecord warningrecord = new Warningrecord();
+        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
+        warningrecord.setInputdatetime(date);
+        warningrecord.setHospitalcode(hospitalcode);
+        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
         try {
             switch (instrumentconfigid) {
                 case 1:
@@ -126,48 +116,27 @@ public class WarningServiceImpl implements WarningService {
                         //未接传感器
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未接传感器或者未获取到数据");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未接传感器或者未获取到数据" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("B".equals(data)) {
                         //若超出量程范围
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：超出量程范围");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "超出量程范围" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("C".equals(data)) {
                         //已接传感器且已校准，但值无效
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：已接传感器且已校准，但值无效");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "值无效" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("D".equals(data)) {
                         //已接传感器，但未校准
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:已接传感器，但未校准");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未校准" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else {
-
                         if (StringUtils.isNotEmpty(data1)) {
                             //MT200M 新程序，两路温度判断
                             //当一路温度值存在异常，整个值无效
@@ -176,51 +145,26 @@ public class WarningServiceImpl implements WarningService {
                             if (StringUtils.equalsAny(data1, "A", "B", "C", "D", "E") || Math.abs(new Double(data) - new Double(data1)) > 3) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：超出量程范围");
                                 warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "超出量程范围" + "]");
-                                warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                                warningrecord.setInputdatetime(date);
-                                warningrecord.setHospitalcode(hospitalcode);
-                                warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                                warningrecord = warningrecordDao.save(warningrecord);
-                                LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                                saveWarningrecord(warningrecord,equipmentname,unit);
                                 return null;
                             }
                             if (LowHighVerify.verify(instrumentMonitorInfoModel, data) && LowHighVerify.verify(instrumentMonitorInfoModel, data1)) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
                                 warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                                warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                                warningrecord.setInputdatetime(date);
-                                warningrecord.setHospitalcode(hospitalcode);
-                                warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                                warningrecord = warningrecordDao.save(warningrecord);
-                                LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                                saveWarningrecord(warningrecord,equipmentname,unit);
                             }
-
-
                         }
                         //高低值判断
                         if (LowHighVerify.verify(instrumentMonitorInfoModel, data)) {
                             warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
                             warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                            warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                            warningrecord.setInputdatetime(date);
-                            warningrecord.setHospitalcode(hospitalcode);
-                            warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                            warningrecord = warningrecordDao.save(warningrecord);
-                            LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
-
+                            saveWarningrecord(warningrecord,equipmentname,unit);
                             //天津和睦家： H33
-
                             if (StringUtils.endsWithAny(hospitalcode, "H0010", "H33") && instrumentconfigid == 2 && monitorinstrument.getInstrumenttypeid() == 8) {
                                 //调用声光报警    根据 hospitalcode 查询mt600SN 号
                                 Monitorinstrument monitorinstrumentByCode = monitorinstrumentDao.getMonitorinstrumentByCode(hospitalcode);
                                 String MT600SN = monitorinstrumentByCode.getSn();
                                 almservice.pushMessage(MT600SN);
-//                                Map<String,String> map = new HashMap<String,String>();
-//                                map.put("MId",MT600SN);
-//                                map.put("cmd","484315001E23");
-//                                HttpUtil.get("http://39.104.102.191:8000/sendMsg", map);
-//                                LOGGER.info("开启声光报警：MT600SN号"+MT600SN);
-//                                redisTemplateUtil.boundValueOps(MT600SN+"lgtalarm").set("1");
                             }
                         } else {
                             if (StringUtils.endsWithAny(hospitalcode, "H0010", "H33") && instrumentconfigid == 2 && monitorinstrument.getInstrumenttypeid() == 8) {
@@ -231,9 +175,7 @@ public class WarningServiceImpl implements WarningService {
                                     if (StringUtils.equals("1", o2)) {
                                         almservice.pushMessage1(MT600SN);
                                     }
-
                                 }
-
                             }
                         }
                         break;
@@ -242,12 +184,7 @@ public class WarningServiceImpl implements WarningService {
                     if (StringUtils.equals("1", data)) {
                         warningrecord.setWarningremark("市电异常");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "市电异常" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                     }
                     break;
                 case 11:
@@ -259,12 +196,7 @@ public class WarningServiceImpl implements WarningService {
                     if (instrumentMonitorInfoModel.getLowlimit().toString().equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "报警信号异常");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "报警信息异常" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                     }
                     break;
                 case 3:
@@ -280,12 +212,7 @@ public class WarningServiceImpl implements WarningService {
                     if (LowHighVerify.verify(instrumentMonitorInfoModel, data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                     }
                     break;
                 case 23:
@@ -293,124 +220,60 @@ public class WarningServiceImpl implements WarningService {
                     if ("A".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未获取到数据");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未获取到数据" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("B".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：温度控制关闭");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "温度控制关闭" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
-
                     } else if ("C".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：仓室门开启");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "仓室门开启" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("D".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：温度控制异常");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "温度控制异常" + "]");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("E".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：总开关关闭");
                         warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "总开关关闭" + "]");
-
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else {
                         if (LowHighVerify.verify(instrumentMonitorInfoModel, data)) {
                             warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
                             warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                            warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                            warningrecord.setInputdatetime(date);
-                            warningrecord.setHospitalcode(hospitalcode);
-                            warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                            warningrecord = warningrecordDao.save(warningrecord);
-                            LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                            saveWarningrecord(warningrecord,equipmentname,unit);
                         }
                         break;
                     }
                 case 25:
                     if ("A".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未获取到数据");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("B".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：流量控制关闭");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("C".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：气体流量不稳定");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("D".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：气口压力低");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("E".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：无气或气流超出范围");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else if ("F".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：总开关关闭，但未断电");
-                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
-                        warningrecord.setInputdatetime(date);
-                        warningrecord.setHospitalcode(hospitalcode);
-                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord = warningrecordDao.save(warningrecord);
-                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        saveWarningrecord(warningrecord,equipmentname,unit);
                         return null;
                     } else {
                         break;
@@ -458,5 +321,9 @@ public class WarningServiceImpl implements WarningService {
 
         return warningModel;
 
+    }
+    private void  saveWarningrecord(Warningrecord warningrecord,String equipmentname,String unit){
+        warningrecordDao.save(warningrecord);
+        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
     }
 }
