@@ -42,8 +42,6 @@ public class TimerConfig {
     private MonitorequipmentDao monitorequipmentDao;
     @Autowired
     private ThirdPartyService thirdPartyService;
-    @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
 
     @Scheduled(cron = "0 0/30 * * * ?")
     public void Time() {
@@ -92,7 +90,7 @@ public class TimerConfig {
                     if (!StringUtils.equals(alwayalarm,"1")) {
                         Date starttime = hospitalofreginfo.getBegintime();
                         Date endtime = hospitalofreginfo.getEndtime();
-                        boolean b = DateUtils.belongCalendar(new Date(), starttime, endtime);
+                        boolean b = DateUtils.isEffectiveDate(new Date(), starttime, endtime);
                         if (b){
                             return;
                         }

@@ -14,6 +14,6 @@ import java.util.List;
 @Component
 public interface UserrightDao extends JpaRepository<Userright,String> {
 
-    @Query("select  a from Userright a where a.hospitalcode=:hospitalcode and a.timeout = '1'")
+    @Query("select  a from Userright a where a.hospitalcode=:hospitalcode and a.timeout = '1' ")
     List<Userright> getUserrightByHospitalcodeAAndTimeout (@Param("hospitalcode") String hospitalcode);
 }

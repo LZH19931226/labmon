@@ -1,6 +1,8 @@
 package com.hc.listenter;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.aliyuncs.dyvmsapi.model.v20170525.SingleCallByTtsResponse;
+import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.bean.Userright;
 import com.hc.bean.WarningModel;
 import com.hc.bean.WarningMqModel;
@@ -9,17 +11,16 @@ import com.hc.dao.MonitorequipmentlastdataDao;
 import com.hc.dao.SendrecordDao;
 import com.hc.dao.UserrightDao;
 import com.hc.dao.WarningrecordDao;
-import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Sendrecord;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.model.TimeoutEquipment;
 import com.hc.service.SendMesService;
 import com.hc.service.WarningService;
+import com.hc.serviceimpl.SendMesServiceImpl;
 import com.hc.utils.HttpUtil;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,7 @@ public class SocketMessageListener {
     public void onMessage1(String messageContent) {
         WarningMqModel mQmodel = JsonUtil.toBean(messageContent, WarningMqModel.class);
         Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
+
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME + "获取到的数据" + JsonUtil.toJson(mQmodel));
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
@@ -72,6 +74,8 @@ public class SocketMessageListener {
         String o = (String) hospitalphonenum.get(hospitalcode);
         if (StringUtils.isNotEmpty(o)) {
             list = JsonUtil.toList(o, Userright.class);
+
+
         } else {
             LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
             return;
@@ -110,10 +114,13 @@ public class SocketMessageListener {
                 sendrecord.setSendtype("0");
                 sendrecordDao.save(sendrecord);
             }
+
+
         }
         if (flag) {
             //拨打电话
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+
             String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorinstrument.getEquipmentno());
             if (StringUtils.isNotEmpty(lastdata)) {
                 //报警电话信息处理
@@ -124,19 +131,22 @@ public class SocketMessageListener {
                 monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
                 objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
             }
+
         }
         try {
             if (StringUtils.isNotEmpty(model.getPkid())) {
                 //推送APP
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("pkid", model.getPkid());
-                HttpUtil.get("http://www.sosum.net:8087/api-mon/api/insParamSet/sendMessage", map);
+                String s = HttpUtil.get("http://www.sosum.net:8087/api-mon/api/insParamSet/sendMessage", map);
+                LOGGER.info("友盟发送状态：" + s);
             }
         } catch (Exception e) {
             LOGGER.error("友盟推送失败：原因：" + e.getMessage() + "数据结构为：" + JsonUtil.toJson(model));
         }
 
     }
+
 
     //监听报警信息
     @StreamListener(BaoJinMsg.EXCHANGE_NAME1)
@@ -146,15 +156,17 @@ public class SocketMessageListener {
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME1 + "获取到的数据" + JsonUtil.toJson(mQmodel));
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
+            LOGGER.info("测试是否为空：" + JsonUtil.toJson(mQmodel));
             return;
         }
         String hospitalcode = model.getHospitalcode();
-        List<Userright> list;
+        List<Userright> list = new ArrayList<Userright>();
         BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
         String o = (String) hospitalphonenum.get(hospitalcode);
         if (StringUtils.isNotEmpty(o)) {
             list = JsonUtil.toList(o, Userright.class);
         } else {
+            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
             return;
         }
         String equipmentname = model.getEquipmentname();
@@ -162,12 +174,13 @@ public class SocketMessageListener {
         String value = model.getValue();
         try {
             String pkid = model.getPkid();
+
             warningrecordDao.updatePhone(pkid);
         } catch (Exception e) {
             LOGGER.error("更新报警信息失败：" + e.getMessage());
         }
         //获取电话
-        boolean flag = false;
+        boolean flag =false;
         for (Userright userright : list) {
             // 发送短信
             if (StringUtils.isNotEmpty(userright.getPhonenum())) {
@@ -204,15 +217,22 @@ public class SocketMessageListener {
                 monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
                 objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
             }
+
         }
         // 推送APP
-        if (StringUtils.isNotEmpty(model.getPkid())) {
-            //推送APP
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("pkid", model.getPkid());
-            HttpUtil.get("http://www.sosum.net:8087/api-mon/api/insParamSet/sendMessage", map);
+        try {
+            if (StringUtils.isNotEmpty(model.getPkid())) {
+                //推送APP
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("pkid", model.getPkid());
+                String s = HttpUtil.get("http://www.sosum.net:8087/api-mon/api/insParamSet/sendMessage", map);
+                LOGGER.info("友盟发送状态：" + s);
+            } else {
+                LOGGER.info("不存在推送信息");
+            }
+        } catch (Exception e) {
+            LOGGER.error("友盟推送失败：原因：" + e.getMessage() + "数据结构为：" + JsonUtil.toJson(model));
         }
-
     }
 
 
@@ -224,15 +244,17 @@ public class SocketMessageListener {
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + "获取到的数据" + JsonUtil.toJson(mQmodel));
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
+            LOGGER.info("测试是否为空：" + JsonUtil.toJson(mQmodel));
             return;
         }
         String hospitalcode = model.getHospitalcode();
-        List<Userright> list;
+        List<Userright> list = new ArrayList<>();
         BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
         String o = (String) hospitalphonenum.get(hospitalcode);
         if (StringUtils.isNotEmpty(o)) {
             list = JsonUtil.toList(o, Userright.class);
         } else {
+            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
             return;
         }
 
@@ -286,13 +308,19 @@ public class SocketMessageListener {
             }
 
         }
-        if (StringUtils.isNotEmpty(model.getPkid())) {
-            //推送APP
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("pkid", model.getPkid());
-            HttpUtil.get("http://www.sosum.net:8087/api-mon/api/insParamSet/sendMessage", map);
+        try {
+            if (StringUtils.isNotEmpty(model.getPkid())) {
+                //推送APP
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("pkid", model.getPkid());
+                String s = HttpUtil.get("http://www.sosum.net:8087/api-mon/api/insParamSet/sendMessage", map);
+                LOGGER.info("友盟发送状态：" + s);
+            } else {
+                LOGGER.info("不存在推送信息");
+            }
+        } catch (Exception e) {
+            LOGGER.error("友盟推送失败：原因：" + e.getMessage() + "数据结构为：" + JsonUtil.toJson(model));
         }
-
 
     }
 
@@ -308,15 +336,16 @@ public class SocketMessageListener {
             LOGGER.info("进入超时报警队列：" + message);
             String hospitalcode = timeoutEquipment.getHospitalcode();
             // 根据hospitalcode查找设置超时报警的联系人
-            List<com.hc.entity.Userright> userrightList = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
-            if (CollectionUtils.isEmpty(userrightList)) {
+            List<com.hc.entity.Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
+            if (org.apache.commons.collections4.CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
                 return;
             }
             String equipmentname = timeoutEquipment.getEquipmentname();
             String hospitalname = timeoutEquipment.getHospitalname();
             String disabletype = timeoutEquipment.getDisabletype();
             Integer timeouttime = timeoutEquipment.getTimeouttime();
-            for (com.hc.entity.Userright userright : userrightList) {
+            LOGGER.info("进入超时报警队列联系人：" + JsonUtil.toJson(userrightByHospitalcodeAAndTimeout));
+            for (com.hc.entity.Userright userright : userrightByHospitalcodeAAndTimeout) {
                 String phonenum = userright.getPhonenum();
                 if (StringUtils.isEmpty(phonenum)) {
                     continue;
@@ -332,14 +361,10 @@ public class SocketMessageListener {
                         break;
                     case "4":
                         sendMesService.sendMes1(phonenum, equipmentname, "解除", hospitalname, 1);
-                        break;
-                    default:
-                        return;
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return;
+            LOGGER.error("出线问题：" + e.getMessage());
         }
 
     }
@@ -348,7 +373,7 @@ public class SocketMessageListener {
     @StreamListener(BaoJinMsg.EXCHANGE_NAME3)
     public void onMessage4(String messageContent) {
         Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(messageContent, Monitorequipmentlastdata.class);
-        LOGGER.info("当前值服务进来:{}",messageContent);
+        LOGGER.info("当前值服务进来：" + messageContent);
         //头天信息删除
         //当前日期
         Date inputdatetime = monitorequipmentlastdata.getInputdatetime();
@@ -376,4 +401,19 @@ public class SocketMessageListener {
 
     }
 
+    public static void main(String[] args) {
+        SendMesService sendMesService = new SendMesServiceImpl();
+        List<String> list = new ArrayList<String>();
+        list.add("18108674918");
+        list.add("13164197389");
+        list.add("13026313312");
+
+        for (String s : list) {
+            SingleCallByTtsResponse singleCallByTtsResisponse = sendMesService.callPhone(s, "dsdsdsd");
+            System.out.println(JsonUtil.toJson(singleCallByTtsResisponse));
+        }
+
+        String s = "";
+        System.out.println(StringUtils.isNotEmpty(s));
+    }
 }
