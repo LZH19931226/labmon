@@ -2,8 +2,10 @@ package com.hc.timer;
 
 import com.hc.config.RedisTemplateUtil;
 import com.hc.dao.MonitorequipmentDao;
+import com.hc.entity.Hospitalofreginfo;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.MapperModel.TimeoutEquipment;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.MessagePushService;
 import com.hc.service.ThirdPartyService;
 import com.hc.utils.JsonUtil;
@@ -13,10 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,6 +42,8 @@ public class TimerConfig {
     private MonitorequipmentDao monitorequipmentDao;
     @Autowired
     private ThirdPartyService thirdPartyService;
+    @Autowired
+    private RedisTemplateUtil redisTemplateUtil;
 
     @Scheduled(cron = "0 0/30 * * * ?")
     public void Time() {
@@ -66,6 +72,34 @@ public class TimerConfig {
                 // 时间对比
                 int datePoors = TimeHelper.getDatePoors(timeOut);
                 String time = time(datePoors, timeouttime);
+                if (StringUtils.isEmpty(time)){
+                    return;
+                }
+
+                //对报警区间进行判断
+                if (StringUtils.equalsAnyIgnoreCase(hospitalcode,"H24")) {
+                    Hospitalofreginfo hospitalofreginfo;
+                    BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:info");
+                    String o = (String) objectObjectObjectBoundHashOperations.get(hospitalcode);
+                    if (StringUtils.isNotEmpty(o)) {
+                        hospitalofreginfo = JsonUtil.toBean(o, Hospitalofreginfo.class);
+                    } else {
+                        LOGGER.info("不存在当前医院信息，医院编号：" + hospitalcode);
+                        return;
+                    }
+                    String alwayalarm = hospitalofreginfo.getAlwayalarm();
+                    //报警区间
+                    if (!StringUtils.equals(alwayalarm,"1")) {
+                        Date starttime = hospitalofreginfo.getBegintime();
+                        Date endtime = hospitalofreginfo.getEndtime();
+                        boolean b = DateUtils.belongCalendar(new Date(), starttime, endtime);
+                        if (b){
+                            return;
+                        }
+
+                    }
+
+                }
                 switch (time) {
                     case "2":
                         // 超时报警

@@ -74,7 +74,6 @@ public class WarningServiceImpl implements WarningService {
         String equipmentname = instrumentMonitorInfoModel.getEquipmentname();
         String instrumentparamconfigNO = instrumentMonitorInfoModel.getInstrumentparamconfigNO();
         if (StringUtils.isEmpty(instrumentparamconfigNO)) {
-            LOGGER.info("redis缓存失败，取不到探头类型编号：数据为" + JsonUtil.toJson(instrumentMonitorInfoModel));
             return null;
         }
         // 判断是否是多个500引起的报警问题
