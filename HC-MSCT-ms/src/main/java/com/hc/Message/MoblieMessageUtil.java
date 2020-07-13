@@ -46,7 +46,7 @@ public class MoblieMessageUtil {
 
     //    @Value("${timing.phone}")
 //    private String phone;
-    public SendSmsResponse timingsms(String total, String normaltotal, String abnormal, String phone, String type) {
+    public SendSmsResponse timingsms(String total,String normaltotal,String abnormal,String phone,String type) {
         //通过手机号判断是否港澳台  "00"开头 港澳台
         boolean isLocalphone = !phone.startsWith("00");
 
@@ -67,7 +67,8 @@ public class MoblieMessageUtil {
         request.setSignName(signName);
         //必填:短信模板-可在短信控制台中找到
         request.setTemplateCode("SMS_190794846");
-        request.setTemplateParam("{\"total\":\"" + total + "\", \"normaltotal\":\"" + normaltotal + "\", \"abnormal\":\"" + abnormal + "\", \"type\":\"" + type + "\" }");
+        request.setTemplateParam("{\"total\":\"" + total + "\", \"normaltotal\":\"" + normaltotal + "\", \"abnormal\":\"" + abnormal+ "\", \"type\":\"" + type+"\" }");
+
 
 
         //hint 此处可能会抛出异常，注意catch
@@ -83,9 +84,11 @@ public class MoblieMessageUtil {
     }
 
 
+
     public SendSmsResponse sendmsg1(String phontnum, String instrumentname, String unit, String value, int time) {
         //通过手机号判断是否港澳台  "00"开头 港澳台
         boolean isLocalphone = !phontnum.startsWith("00");
+
         //初始化acsClient,暂不支持region化
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
         try {
@@ -102,22 +105,26 @@ public class MoblieMessageUtil {
         //必填:短信签名-可在短信控制台中找到
         request.setSignName(signName);
         //必填:短信模板-可在短信控制台中找到
+
         switch (unit) {
+
             case "超时":
                 request.setTemplateCode("SMS_175240648");
-                request.setTemplateParam("{\"hospitalname\":\"" + value + "\", \"equipmentname\":\"" + instrumentname + "\", \"ta\":\"" + time + "\" }");
+                request.setTemplateParam("{\"hospitalname\":\"" + value + "\", \"equipmentname\":\"" + instrumentname + "\", \"ta\":\"" + time  + "\" }");
                 break;
             case "禁用":
                 request.setTemplateCode("SMS_175070824");
-                request.setTemplateParam("{\"hospitalcode\":\"" + value + "\", \"equipmentname\":\"" + instrumentname + "\" }");
+                request.setTemplateParam("{\"hospitalcode\":\"" + value + "\", \"equipmentname\":\"" + instrumentname +  "\" }");
                 break;
             case "解除":
                 request.setTemplateCode("SMS_175070830");
-                request.setTemplateParam("{  \"equipmentname\":\"" + instrumentname + "\" }");
+                request.setTemplateParam("{  \"equipmentname\":\"" + instrumentname +  "\" }");
                 break;
-            default:
-                break;
+
+
         }
+
+
         //hint 此处可能会抛出异常，注意catch
         SendSmsResponse sendSmsResponse = null;
         try {
@@ -285,7 +292,7 @@ public class MoblieMessageUtil {
                     request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"AbnormalValue\":\"" + "温差" + value + "\"}");
                     break;
                 }
-                case "LEFTCOVERTEMP": {
+                case "LEFTCOVERTEMP":{
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141615792");
                     else
@@ -293,7 +300,7 @@ public class MoblieMessageUtil {
                     request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"AbnormalValue\":\"" + "左盖板温度" + value + "\"}");
                     break;
                 }
-                case "LEFTENDTEMP": {
+                case "LEFTENDTEMP":{
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141615792");
                     else
@@ -301,7 +308,7 @@ public class MoblieMessageUtil {
                     request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"AbnormalValue\":\"" + "左底板温度" + value + "\"}");
                     break;
                 }
-                case "左气流": {
+                case "左气流":{
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141615792");
                     else
@@ -309,7 +316,7 @@ public class MoblieMessageUtil {
                     request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"AbnormalValue\":\"" + "左气流" + value + "\"}");
                     break;
                 }
-                case "RIGHTCOVERTEMP": {
+                case "RIGHTCOVERTEMP":{
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141615792");
                     else
@@ -317,7 +324,7 @@ public class MoblieMessageUtil {
                     request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"AbnormalValue\":\"" + "右盖板温度" + value + "\"}");
                     break;
                 }
-                case "RIGHTENDTEMP": {
+                case "RIGHTENDTEMP":{
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141615792");
                     else
@@ -325,7 +332,7 @@ public class MoblieMessageUtil {
                     request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"AbnormalValue\":\"" + "右底板温度" + value + "\"}");
                     break;
                 }
-                case "右气流": {
+                case "右气流":{
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141615792");
                     else
@@ -343,21 +350,21 @@ public class MoblieMessageUtil {
                 }
                 case "超时":
                     request.setTemplateCode("SMS_175120392");
-                    request.setTemplateParam("{\"hospitalname\":\"" + value + "\", \"equipmentname\":\"" + instrumentname + "\"}");
+                    request.setTemplateParam("{\"hospitalname\":\"" +  value+ "\", \"equipmentname\":\""  + instrumentname + "\"}");
                     break;
                 case "禁用":
                     request.setTemplateCode("SMS_175070824");
-                    request.setTemplateCode("{\"hospitalname\":\"" + value + "\", \"equipmentname\":\"" + instrumentname + "\"}");
+                    request.setTemplateCode("{\"hospitalname\":\"" +  value+ "\", \"equipmentname\":\""  + instrumentname + "\"}");
                 default: {
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141595963");
                     else
                         request.setTemplateCode("SMS_141605914");
-                    if (StringUtils.equals(unit, "QC")) {
+                    if (StringUtils.equals(unit,"QC")){
                         request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"Unit\":\"" + "电量" + "\", \"AbnormalValue\":\"" + value + "\"}");
-                    } else if (StringUtils.equals(unit, "QCL")) {
+                    }else if (StringUtils.equals(unit,"QCL")){
                         request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"Unit\":\"" + "锁电量" + "\", \"AbnormalValue\":\"" + value + "\"}");
-                    } else {
+                    }else {
                         request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"Unit\":\"" + unit + "\", \"AbnormalValue\":\"" + value + "\"}");
                     }
                 }

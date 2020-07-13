@@ -25,35 +25,44 @@ public class SendMesServiceImpl implements SendMesService {
 
     @Override
     public SendSmsResponse sendMes(String phonenum, String equipmentname, String unit, String value) {
-        return moblieMessageUtil.sendmsg(phonenum, equipmentname, unit, value);
+        SendSmsResponse sendmsg = moblieMessageUtil.sendmsg(phonenum, equipmentname, unit, value);
+        log.info("拨打电话对象:{},响应值:{}",phonenum,sendmsg.getCode());
+        return sendmsg;
     }
 
     @Override
     public SendSmsResponse sendMes1(String phonenum, String equipmentname, String unit, String value, int time) {
+        SendSmsResponse sendmsg = moblieMessageUtil.sendmsg1(phonenum, equipmentname, unit, value,time);
 
-        return moblieMessageUtil.sendmsg1(phonenum, equipmentname, unit, value,time);
+        return sendmsg;
     }
 
     @Override
     public SendSmsResponse timingsms(String total, String normaltotal, String abnormal,String phone,String type) {
+        SendSmsResponse sendmsg = moblieMessageUtil.timingsms(total, normaltotal, abnormal,phone,type);
 
-        return moblieMessageUtil.timingsms(total, normaltotal, abnormal,phone,type);
+        return sendmsg;
     }
 
     @Override
     @Async
     public SingleCallByTtsResponse callPhone(String phone, String equipmentname) {
-        return singleCallByTtsUtils.sendSms(phone, equipmentname);
+        SingleCallByTtsResponse singleCallByTtsResponse = singleCallByTtsUtils.sendSms(phone, equipmentname);
+        log.info("拨打电话对象:{},响应值:{}",phone,singleCallByTtsResponse.getCode());
+        return singleCallByTtsResponse;
     }
 
     @Override
     @Async
     public SingleCallByTtsResponse receivePhone(String phone) {
-        return singleCallByTtsUtils.sendSmsReceive(phone);
+        SingleCallByTtsResponse singleCallByTtsResponse = singleCallByTtsUtils.sendSmsReceive(phone);
+        log.info("回拨电话对象:{},响应值:{}",phone,singleCallByTtsResponse.getCode());
+        return singleCallByTtsResponse;
     }
 
     @Override
     public SendSmsResponse sendCode(String phonenum, String code) {
-        return moblieMessageUtil.senCode(phonenum, code);
+        SendSmsResponse sendSmsResponse = moblieMessageUtil.senCode(phonenum, code);
+        return sendSmsResponse;
     }
 }
