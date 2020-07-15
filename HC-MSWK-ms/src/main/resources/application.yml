@@ -2,10 +2,11 @@ spring:
   application:
     name: HC-MSWK-ms
   rabbitmq:
-    host: 119.3.93.146
+    host: 192.168.1.90
     port: 5672
-    username: guest
-    password: guest
+    username: hc
+    password: 123456
+    virtual-host: HCMQ
   datasource:
     url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.jdbc.Driver
@@ -47,7 +48,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8086/eureka/
+      defaultZone: http://localhost:10086/eureka/
 mybatis:   ## 可指定多个，用逗号或者分号隔开
   config-location: classpath:mybatis/MapperConfig.xml
   typeAliasesPackage: com.hc.entity

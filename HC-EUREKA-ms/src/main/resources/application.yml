@@ -6,9 +6,9 @@ eureka:
     fetch-registry: 'false'
     register-with-eureka: 'false'
     serviceUrl:
-      defaultZone: http://localhost:8086/eureka/
+      defaultZone: http://localhost:10086/eureka/
 server:
-  port: 8086
+  port: 10086
 spring:
   application:
     name: HC-EUREKA-ms

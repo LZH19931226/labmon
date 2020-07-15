@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 10087
 spring:
   application:
     name: HC-TCP-ms
@@ -12,13 +12,14 @@ spring:
          max-idle: 100
        timeout: 10000
   rabbitmq:
-    host: 119.3.93.146
+    host: 192.168.1.90
     port: 5672
-    username: guest
-    password: guest
+    username: hc
+    password: 123456
     listener:
       simple:
         default-requeue-rejected: true
+    virtual-host: HCMQ
 #socket配置信息
 netty:
   ip: 127.0.0.1
