@@ -44,8 +44,8 @@ public class SingleCallByTtsUtils {
 	
 	
 	//必填-被叫显号,可在语音控制台中找到所购买的显号
-//	@Value("${CallBy.CalledShowNumber}")
-//	private String CalledShowNumber;
+	@Value("${CallBy.CalledShowNumber}")
+	private String CalledShowNumber;
 	// 
 	@Value("${CallBy.TtsID}")
 	private String TtsID;
@@ -73,7 +73,7 @@ public class SingleCallByTtsUtils {
         IAcsClient acsClient = new DefaultAcsClient(profile);
         SingleCallByTtsRequest request = new SingleCallByTtsRequest();
         //必填-被叫显号,可在语音控制台中找到所购买的显号
-      //  request.setCalledShowNumber(CalledShowNumber);
+//        request.setCalledShowNumber(CalledShowNumber);
         //必填-被叫号码
         request.setCalledNumber(mobile); 
         //必填-Tts模板ID

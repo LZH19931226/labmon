@@ -1028,7 +1028,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     /**
                      * 双路温度电量查询应答，命令 ID：0x9B（MT200M 项目）
                      */
-                    log.info("双路温度测试进入：SN:" + model.getSN());
                     if (StringUtils.isNotEmpty(model.getTEMP())) {
                         showModel.setEquipmentno(equipmentno);
                         showModel.setData(model.getTEMP());
@@ -1038,8 +1037,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                         WarningMqModel warningMqModel97 = procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                         if (!StringUtils.equalsAny(model.getTEMP(), "A", "B", "C", "D", "E")) {
-
-
                             if (StringUtils.isNotEmpty(model.getTEMP2())) {
                                 if (StringUtils.equalsAny(model.getTEMP2(), "A", "B", "C", "D", "E") || Math.abs(new Double(model.getTEMP()) - new Double(model.getTEMP2())) > 3) {
                                     monitorequipmentlastdata.setCurrenttemperature("C");
@@ -1048,11 +1045,15 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             }
                         }
                         list.add(warningMqModel97);
-
+                    }
+                    String sn2 = model.getSN();
+                    String proSn = sn2.substring(0, 4);
+                    //大于2015即为新版mt200m
+                    if (Integer.parseInt(proSn)>=2015){
+                        monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
                     }
                     if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
                         monitorequipmentlastdata.setCurrentqc(model.getQC());
-
                         WarningMqModel warningMqModel98 = procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                         list.add(warningMqModel98);
                     }
