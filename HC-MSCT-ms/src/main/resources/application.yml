@@ -79,7 +79,7 @@ CallBy:
    accessKeyId: LTAI4Fh7qr78heUy5w69wfSm
    accessKeySecret: hWikSbW0g2cyNoTCvNd6OEXBEFBy0p
    CalledShowNumber: "02759770206"                                       ##被叫显号,可在语音控制台中找到所购买的显号
-   TtsID: TTS_135036499                                                   ##Tts模板ID
+   TtsID: TTS_196655486                                                   ##Tts模板ID
            
 mail:
    accessKey:                
