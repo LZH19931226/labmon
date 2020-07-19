@@ -19,10 +19,7 @@ import com.hc.model.SingleTimeExcle.PyxExcleModel;
 import com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.UpdateRecordService;
-import com.hc.utils.ApiResponse;
-import com.hc.utils.FileUtil;
-import com.hc.utils.JsonUtil;
-import com.hc.utils.TimeHelper;
+import com.hc.utils.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -143,6 +140,15 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                     monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
                 }
             }
+            //针对设备类型异常值代表未接入传感器属性设置为空在做过滤
+            monitorequipmentList.forEach(s->{
+                String sn = s.getSn();
+                Monitorequipmentlastdata monitorequipmentlastdata = s.getMonitorequipmentlastdata();
+                if (null!=monitorequipmentlastdata){
+                    Monitorequipmentlastdata monitorequipmentlastdata1 = MtUnConnectedSensorFilter.mtCheckUnCs(sn, monitorequipmentlastdata);
+                    s.setMonitorequipmentlastdata(monitorequipmentlastdata1);
+                }
+            });
             apiResponse.setMessage("查询成功");
             apiResponse.setCode(ApiResponse.SUCCESS);
             apiResponse.setResult(monitorequipmentList);
@@ -193,6 +199,14 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                     }
                 }
             }
+            monitorequipmentList.forEach(s->{
+                String sn = s.getSn();
+                Monitorequipmentlastdata monitorequipmentlastdata = s.getMonitorequipmentlastdata();
+                if (null!=monitorequipmentlastdata){
+                    Monitorequipmentlastdata monitorequipmentlastdata1 = MtUnConnectedSensorFilter.mtCheckUnCs(sn, monitorequipmentlastdata);
+                    s.setMonitorequipmentlastdata(monitorequipmentlastdata1);
+                }
+            });
             PageInfo<Monitorequipment> pageInfo = new PageInfo<Monitorequipment>(monitorequipmentList);
             apiResponse.setPage(pageInfo);
             return apiResponse;

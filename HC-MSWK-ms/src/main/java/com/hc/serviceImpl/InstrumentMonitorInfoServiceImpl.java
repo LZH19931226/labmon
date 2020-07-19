@@ -817,12 +817,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         }
                         list.add(warningMqModel97);
                     }
-                    if (!listAbs.contains(model.getTEMP2())) {
                         monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());// 室温
-                    }
-                    if (!listAbs.contains(model.getTEMP3())) {
                         monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3()); // 壁温
-                    }
                     monitorequipmentlastdata.setCurrentqcl(model.getQC());
                     WarningMqModel warningMqModel99 = procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 35, "锁电量");
                     list.add(warningMqModel99);
