@@ -798,7 +798,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     listAbs.add("B");
                     listAbs.add("C");
                     listAbs.add("D");
-                    if (StringUtils.isNotEmpty(model.getTEMP()) && !StringUtils.equals(model.getTEMP(), "B")) {
+                    if (StringUtils.isNotEmpty(model.getTEMP())) {
                         //首先确定有值，然后确定是非双探头才存值
                         showModel.setEquipmentno(equipmentno);
                         showModel.setData(model.getTEMP());
@@ -808,8 +808,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                         WarningMqModel warningMqModel97 = procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                         if (!StringUtils.equalsAny(model.getTEMP(), "A", "B", "C", "D", "E")) {
-
-
                             if (StringUtils.isNotEmpty(model.getTEMP2())) {
                                 if (StringUtils.equalsAny(model.getTEMP4(), "A", "B", "C", "D", "E") || Math.abs(new Double(model.getTEMP()) - new Double(model.getTEMP4())) > 3) {
                                     monitorequipmentlastdata.setCurrenttemperature("C");

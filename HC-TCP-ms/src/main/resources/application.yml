@@ -5,7 +5,7 @@ spring:
     name: HC-TCP-ms
   #redis配置信息
   redis:
-       host: 127.0.0.1
+       host: 192.168.1.90
        port: 6379
        pool:
          max-active: 200

@@ -1051,10 +1051,10 @@ public class cmdidParseUtils {
 
 
     public static void main(String[] args) {
-        String id = "4843a51a32303136303630303039f000f000f000f000f0000000000000004e23 ";
+        String id = "48439c1332303136313830303737fff0fff0fff0fff050d823 ";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
-        ParamaterModel paramaterModel = paseA5(s, null, null);
+        ParamaterModel paramaterModel = pase9c(s, null, null);
         System.out.println(paramaterModel);
     }
 
