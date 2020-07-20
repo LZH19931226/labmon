@@ -1022,7 +1022,10 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     /**
                      * 双路温度电量查询应答，命令 ID：0x9B（MT200M 项目）
                      */
+                    String sn2 = model.getSN();
+                    String proSn = sn2.substring(0, 4);
                     if (StringUtils.isNotEmpty(model.getTEMP())) {
+                        //老版本mt200m报警以及温度
                         showModel.setEquipmentno(equipmentno);
                         showModel.setData(model.getTEMP());
                         showModel.setUnit("温度");
@@ -1030,21 +1033,36 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                         WarningMqModel warningMqModel97 = procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
-                        if (!StringUtils.equalsAny(model.getTEMP(), "A", "B", "C", "D", "E")) {
-                            if (StringUtils.isNotEmpty(model.getTEMP2())) {
-                                if (StringUtils.equalsAny(model.getTEMP2(), "A", "B", "C", "D", "E") || Math.abs(new Double(model.getTEMP()) - new Double(model.getTEMP2())) > 3) {
+                        if (Integer.parseInt(proSn)<2015) {
+                           if (!StringUtils.equalsAny(model.getTEMP(), "A", "B", "C", "D", "E")) {
+                                if (StringUtils.isNotEmpty(model.getTEMP2())) {
+                                    if (StringUtils.equalsAny(model.getTEMP2(), "A", "B", "C", "D", "E") || Math.abs(new Double(model.getTEMP()) - new Double(model.getTEMP2())) > 3) {
+                                        monitorequipmentlastdata.setCurrenttemperature("C");
+                                    }
+                                    warningMqModel97.setCurrentData1(model.getTEMP2());
+                                }
+                            }
+                            list.add(warningMqModel97);
+                        }else {
+                       //温度一温度二均小于-197°认为值无效
+                            String temp = model.getTEMP();
+                            String temp2 = model.getTEMP2();
+                            if (!StringUtils.equalsAny(temp, "A", "B", "C", "D", "E")) {
+                                int i = Integer.parseInt(temp);
+                                if (i<-197){
                                     monitorequipmentlastdata.setCurrenttemperature("C");
+                                }
+                            }
+                            monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
+                            if (!StringUtils.equalsAny(temp2, "A", "B", "C", "D", "E")) {
+                                int i = Integer.parseInt(temp2);
+                                if (i<-197){
+                                    monitorequipmentlastdata.setCurrenttemperature2("C");
                                 }
                                 warningMqModel97.setCurrentData1(model.getTEMP2());
                             }
+                            list.add(warningMqModel97);
                         }
-                        list.add(warningMqModel97);
-                    }
-                    String sn2 = model.getSN();
-                    String proSn = sn2.substring(0, 4);
-                    //大于2015即为新版mt200m
-                    if (Integer.parseInt(proSn)>=2015){
-                        monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
                     }
                     if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
                         monitorequipmentlastdata.setCurrentqc(model.getQC());

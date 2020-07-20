@@ -4,7 +4,7 @@ import com.hc.entity.Monitorinstrument;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.InstrumentInfoModel;
 import com.hc.model.ResponseModel.AllInstrumentInfoModel;
-import com.hc.model.ResponseModel.InstrumentMonitorInfoModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

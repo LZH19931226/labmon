@@ -6,7 +6,7 @@ import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.laboratoryFrom.ClientInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
-import com.hc.model.ResponseModel.InstrumentMonitorInfoModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.units.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

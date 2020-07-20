@@ -1,6 +1,7 @@
 package com.hc.utils;
 
-import com.hc.model.ResponseModel.InstrumentMonitorInfoModel;
+
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 
 import java.math.BigDecimal;
 
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 public class LowHighVerify {
 
 
-    public static boolean verify(InstrumentMonitorInfoModel monitorInfoModel,String date){
+    public static boolean verify(InstrumentMonitorInfoModel monitorInfoModel, String date){
         BigDecimal bigDecimal = new BigDecimal(date);
         BigDecimal low = monitorInfoModel.getLowlimit();
         BigDecimal high = monitorInfoModel.getHighlimit();

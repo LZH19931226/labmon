@@ -5,7 +5,7 @@
 <!--<sql id="Base_Column_List">
     id, name, age
 </sql>-->
-<select id="selectInfo" parameterType="com.hc.model.RequestModel.InstrumentInfoModel" resultType="com.hc.model.ResponseModel.InstrumentMonitorInfoModel">
+<select id="selectInfo" parameterType="com.hc.model.RequestModel.InstrumentInfoModel" resultType="com.hc.my.common.core.bean.InstrumentMonitorInfoModel">
 
     select
             b.instrumenttypeid,

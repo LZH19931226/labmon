@@ -5,7 +5,7 @@ import com.hc.config.RedisTemplateUtil;
 import com.hc.dao.InstrumentparamconfigDao;
 import com.hc.dao.WarningrecordDao;
 import com.hc.entity.Hospitalofreginfo;
-import com.hc.model.ResponseModel.InstrumentMonitorInfoModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.WarningRuleService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
@@ -40,7 +40,7 @@ WarningRuleServiceImpl implements WarningRuleService {
      * 先判断医院   、  在进行判断是否三次报警
      */
     @Override
-    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentMonitorInfoModel instrumentMonitorInfoModel,String remark) {
+    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentMonitorInfoModel instrumentMonitorInfoModel, String remark) {
 
         try {
             Hospitalofreginfo hospitalofreginfo = new Hospitalofreginfo();

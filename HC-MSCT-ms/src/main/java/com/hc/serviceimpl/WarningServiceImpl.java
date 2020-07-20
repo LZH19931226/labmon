@@ -7,28 +7,21 @@ import com.hc.dao.MonitorinstrumentDao;
 import com.hc.dao.WarningrecordDao;
 import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Warningrecord;
-import com.hc.model.ResponseModel.InstrumentMonitorInfoModel;
 import com.hc.model.WarningDateModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.AlmMsgService;
 import com.hc.service.WarningRuleService;
 import com.hc.service.WarningService;
-import com.hc.utils.HttpUtil;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.LowHighVerify;
-import com.hc.utils.TimeHelper;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**

@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.dao.RepairinfoDao;
 import com.hc.entity.Monitorinstrument;
-import com.hc.entity.Operationlog;
 import com.hc.entity.Repairinfo;
 import com.hc.mapper.laboratoryFrom.RepairinfoMapper;
 import com.hc.service.RepairinfoService;
