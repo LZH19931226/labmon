@@ -1,9 +1,11 @@
 package com.hc.mapper.laboratoryFrom;
 
+import com.hc.model.InstrumentMonitorInfoModel;
 import com.hc.model.ResponseModel.EquipmentConfigInfoModel;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfo;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 
@@ -27,5 +29,5 @@ public interface InstrumentParamConfigInfoMapper {
      */
     List<InstrumentParamConfigInfo> ShowInsParamConfigInfo(String equipmentno);
 
-
+    List<InstrumentMonitorInfoModel> selectInstrumentByEqNo(@Param("eqNos") List<String> eqNos);
 }

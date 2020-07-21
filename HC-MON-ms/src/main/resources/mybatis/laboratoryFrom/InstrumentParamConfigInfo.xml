@@ -27,6 +27,27 @@ from  monitorequipment b
                         where b.equipmentno = #{equipmentno}
     </select>
 
-
+    <select id="selectInstrumentByEqNo" resultType="com.hc.model.InstrumentMonitorInfoModel"
+            parameterType="java.util.List">
+        SELECT
+        e.equipmentno,
+        b.instrumenttypename,
+        c.instrumentconfigid,
+        c.instrumentconfigname,
+        a.lowlimit,
+        a.highlimit,
+        a.saturation
+        FROM
+        InstrumentParamConfig a
+        LEFT JOIN monitorinstrumenttype b ON a.instrumenttypeid = b.instrumenttypeid
+        LEFT JOIN instrumentconfig c ON a.instrumentconfigid = c.instrumentconfigid
+        LEFT JOIN MonitorInstrument d ON a.instrumentno = d.instrumentno
+        LEFT JOIN MonitorEquipment e ON d.equipmentno = e.equipmentno
+        WHERE
+        e.equipmentno in
+        <foreach collection="eqNos" item="id" open="(" close=")" separator="," index="index">
+            #{id}
+        </foreach>
+    </select>
 
 </mapper>

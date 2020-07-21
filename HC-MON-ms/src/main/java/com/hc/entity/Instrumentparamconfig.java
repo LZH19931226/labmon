@@ -73,6 +73,11 @@ public class Instrumentparamconfig implements Serializable {
 
     private String calibration;
 
+    /**
+     * 饱和值
+     */
+    private BigDecimal saturation;
+
     @Transient
     private String userName;
 

@@ -36,7 +36,8 @@ public class InstrumentMonitorInfoModel {
     private String instrumentno;
     //报警推送时间
     private Date warningtime;
-
     private String calibration;
+    //饱和值
+    private BigDecimal saturation;
 
 }

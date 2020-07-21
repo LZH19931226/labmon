@@ -44,6 +44,10 @@ public interface InstrumentMonitorInfoMapper {
     )
     InstrumentMonitorInfoModel selectInstrumentOneInfo(@Param("instrumentparamconfigNO") String instrumentparamconfigNO);
 
+
+
+
+
     @Select("SELECT " +
             "a.userid, " +
             "a.devicetype device_type, " +

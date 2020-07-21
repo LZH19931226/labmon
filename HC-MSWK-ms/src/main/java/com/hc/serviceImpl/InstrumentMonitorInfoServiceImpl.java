@@ -1048,15 +1048,17 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             String temp = model.getTEMP();
                             String temp2 = model.getTEMP2();
                             if (!StringUtils.equalsAny(temp, "A", "B", "C", "D", "E")) {
-                                int i = Integer.parseInt(temp);
-                                if (i<-197){
+                                BigDecimal bigDecimal = new BigDecimal(temp);
+                                double v1 = bigDecimal.doubleValue();
+                                if (v1<-197.0){
                                     monitorequipmentlastdata.setCurrenttemperature("C");
                                 }
                             }
                             monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
                             if (!StringUtils.equalsAny(temp2, "A", "B", "C", "D", "E")) {
-                                int i = Integer.parseInt(temp2);
-                                if (i<-197){
+                                BigDecimal bigDecimal = new BigDecimal(temp2);
+                                double v1 = bigDecimal.doubleValue();
+                                if (v1<-197.0){
                                     monitorequipmentlastdata.setCurrenttemperature2("C");
                                 }
                                 warningMqModel97.setCurrentData1(model.getTEMP2());
@@ -1344,6 +1346,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             return list;
 
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "数据插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
             return null;
         }

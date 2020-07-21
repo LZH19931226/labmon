@@ -57,4 +57,6 @@ public class AllInstrumentInfoModel {
     private String calibration;
 
     private String firsttime;
+
+    private BigDecimal saturation;
 }

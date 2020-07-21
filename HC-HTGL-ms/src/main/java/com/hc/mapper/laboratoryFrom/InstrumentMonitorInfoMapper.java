@@ -29,7 +29,7 @@ public interface InstrumentMonitorInfoMapper {
             "c.instrumentconfigid," +
             "c.instrumentconfigname," +
             "a.lowlimit," +
-            "a.highlimit " +
+            "a.highlimit,a.saturation " +
 
             "from instrumentmonitor a left join  monitorinstrumenttype b on a.instrumenttypeid = b.instrumenttypeid " +
             "                         left join  instrumentconfig c on a.instrumentconfigid = c.instrumentconfigid where a.instrumenttypeid = #{instrumenttypeid}")
@@ -80,7 +80,7 @@ public interface InstrumentMonitorInfoMapper {
             "a.instrumentparamconfigNO, " +
             "a.pushtime, "+
             "a.warningtime,"+
-            "a.calibration,"+
+            "a.calibration,a.saturation,"+
             "ifnull(a.warningphone,'0') warningphone  " +
             "from InstrumentParamConfig a left join  monitorinstrumenttype b on a.instrumenttypeid = b.instrumenttypeid " +
             "                         left join  instrumentconfig c on a.instrumentconfigid = c.instrumentconfigid " +
@@ -99,7 +99,7 @@ public interface InstrumentMonitorInfoMapper {
             "c.instrumentconfigname," +
             "a.lowlimit," +
             "a.highlimit," +
-            "a.alarmtime, " +
+            "a.alarmtime, a.saturation, " +
             "a.instrumentparamconfigNO, " +
             "a.pushtime, "+
             "a.warningtime,"+

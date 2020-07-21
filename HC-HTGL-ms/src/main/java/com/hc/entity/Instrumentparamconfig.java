@@ -80,6 +80,12 @@ public class Instrumentparamconfig implements Serializable {
      */
     private String calibration;
 
+
+    /**
+     * 饱和值
+     */
+    private BigDecimal saturation;
+
     private static final long serialVersionUID = 1L;
 
 

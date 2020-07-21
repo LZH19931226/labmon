@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class LowHighVerify {
 
 
-    public static boolean verify(InstrumentMonitorInfoModel monitorInfoModel, String date){
+    public static boolean verify(InstrumentMonitorInfoModel monitorInfoModel, String date) {
         BigDecimal bigDecimal = new BigDecimal(date);
         BigDecimal low = monitorInfoModel.getLowlimit();
         BigDecimal high = monitorInfoModel.getHighlimit();
@@ -26,4 +26,16 @@ public class LowHighVerify {
         }
         return false;
     }
+
+
+    public static boolean verifyMt200m(BigDecimal high, String date) {
+        BigDecimal bigDecimal = new BigDecimal(date);
+        int i = bigDecimal.compareTo(high);
+        if (i < 0) {
+            return false;
+        }
+        return true;
+    }
+
+
 }

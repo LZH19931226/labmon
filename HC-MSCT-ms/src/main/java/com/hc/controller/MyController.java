@@ -1,8 +1,10 @@
 package com.hc.controller;
 
 import com.hc.bean.ApiResponse;
+import com.hc.dao.InstrumentparamconfigDao;
 import com.hc.dao.MonitorequipmentDao;
 import com.hc.entity.Monitorequipment;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import com.hc.Message.SingleCallByTtsUtils;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -30,6 +33,9 @@ public class MyController {
 
 	@Autowired
 	private MonitorequipmentDao monitorequipmentDao;
+
+	@Autowired
+	private InstrumentparamconfigDao instrumentparamconfigDao;
 
 	@GetMapping("/tests")
 	public ApiResponse<List<Monitorequipment>> get(){
@@ -84,4 +90,11 @@ public class MyController {
 		singleCallByTtsUtils.sendSms("18108674918", "测试打电话");
 		return "电话拨打成功";
 	}
+
+	@GetMapping("asdadsa")
+	public BigDecimal test22(String v){
+		BigDecimal mt200mHighLimit = instrumentparamconfigDao.getMt200mHighLimit(v);
+		return mt200mHighLimit;
+	}
+
 }

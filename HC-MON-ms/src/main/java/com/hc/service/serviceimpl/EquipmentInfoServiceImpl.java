@@ -9,6 +9,7 @@ import com.hc.dao.InstrumentparamconfigDao;
 import com.hc.entity.*;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
+import com.hc.mapper.laboratoryFrom.InstrumentParamConfigInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.model.*;
 import com.hc.model.ExcleInfoModel.*;
@@ -30,10 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by 16956 on 2018-08-01.
@@ -55,6 +54,8 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     private InstrumentMonitorInfoMapper instrumentMonitorInfoMapper;
     @Autowired
     private MonitorInstrumentMapper monitorInstrumentMapper;
+    @Autowired
+    private InstrumentParamConfigInfoMapper instrumentParamConfigInfoMapper;
     @Autowired
     private UpdateRecordService updateRecordService;
 
@@ -125,10 +126,18 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setMessage("当前设备类型无设备信息");
                 return apiResponse;
             }
+            List<String> collect = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toList());
+            List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels = instrumentParamConfigInfoMapper.selectInstrumentByEqNo(collect);
+            Map<String, List<InstrumentMonitorInfoModel>> collect1 = instrumentMonitorInfoModels.stream().collect(Collectors.groupingBy(InstrumentMonitorInfoModel::getEquipmentno));
+            List<Monitorinstrument> sns = equipmentInfoMapper.getSns(collect);
+            Map<String, List<Monitorinstrument>> collect2 = sns.stream().collect(Collectors.groupingBy(Monitorinstrument::getEquipmentno));
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             for (Monitorequipment monitorequipment : monitorequipmentList) {
-                String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
-                monitorequipment.setSn(sn);
+                String equipmentno = monitorequipment.getEquipmentno();
+                List<Monitorinstrument> monitorinstruments = collect2.get(equipmentno);
+                if (CollectionUtils.isNotEmpty(monitorinstruments)){
+                    monitorequipment.setSn(monitorinstruments.get(0).getSn());
+                }
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
@@ -138,6 +147,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                         monitorequipment.setLowlimit(lowlimit);
                     }
                     monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
+                }
+                List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels1 = collect1.get(equipmentno);
+                if (CollectionUtils.isNotEmpty(instrumentMonitorInfoModels1)){
+                    monitorequipment.setInstrumentMonitorInfoModel(instrumentMonitorInfoModels1);
                 }
             }
             //针对设备类型异常值代表未接入传感器属性设置为空在做过滤
@@ -184,10 +197,18 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setMessage("当前设备类型无设备信息");
                 return apiResponse;
             }
+            List<String> collect = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toList());
+            List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels = instrumentParamConfigInfoMapper.selectInstrumentByEqNo(collect);
+            Map<String, List<InstrumentMonitorInfoModel>> collect1 = instrumentMonitorInfoModels.stream().collect(Collectors.groupingBy(InstrumentMonitorInfoModel::getEquipmentno));
+            List<Monitorinstrument> sns = equipmentInfoMapper.getSns(collect);
+            Map<String, List<Monitorinstrument>> collect2 = sns.stream().collect(Collectors.groupingBy(Monitorinstrument::getEquipmentno));
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             for (Monitorequipment monitorequipment : monitorequipmentList) {
-                String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
-                monitorequipment.setSn(sn);
+                String equipmentno = monitorequipment.getEquipmentno();
+                List<Monitorinstrument> monitorinstruments = collect2.get(equipmentno);
+                if (CollectionUtils.isNotEmpty(monitorinstruments)){
+                    monitorequipment.setSn(monitorinstruments.get(0).getSn());
+                }
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
@@ -196,6 +217,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                         // 查找这个设备下开关量的最低值
                         String lowlimit = equipmentInfoMapper.getLowlimit(monitorequipment.getEquipmentno());
                         monitorequipment.setLowlimit(lowlimit);
+                    }
+                    List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels1 = collect1.get(equipmentno);
+                    if (CollectionUtils.isNotEmpty(instrumentMonitorInfoModels1)){
+                        monitorequipment.setInstrumentMonitorInfoModel(instrumentMonitorInfoModels1);
                     }
                 }
             }
@@ -1105,7 +1130,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<Monitorequipment> showInfoByEquipmentNo(String equipmentno) {
         ApiResponse<Monitorequipment> apiResponse = new ApiResponse<Monitorequipment>();
-        List<Monitorinstrument> list = new ArrayList<Monitorinstrument>();
         Monitorequipment monitorequipment = new Monitorequipment();
 //        if (CollectionUtils.isEmpty(list)){
 //            apiResponse.setMessage("当前无数据");

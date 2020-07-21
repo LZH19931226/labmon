@@ -33,6 +33,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -165,8 +166,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             return apiResponse;
         }
         //根据探头类型编号设置对应探头参数值
-        List<InstrumentMonitorInfoModel> instrumentMonitorInfoModelList = new ArrayList<InstrumentMonitorInfoModel>();
-        instrumentMonitorInfoModelList = instrumentMonitorInfoMapper.selectInfoByInsTypeId(equipmentInfoModel.getInstrumenttypeid());
+        List<InstrumentMonitorInfoModel>  instrumentMonitorInfoModelList = instrumentMonitorInfoMapper.selectInfoByInsTypeId(equipmentInfoModel.getInstrumenttypeid());
         if (CollectionUtils.isEmpty(instrumentMonitorInfoModelList)) {
             apiResponse.setMessage("添加设备成功，添加探头类型失败，不存在当前监控设备,请联系管理员");
             apiResponse.setCode(ApiResponse.FAILED);
@@ -185,11 +185,14 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                 instrumentparamconfig.setInstrumentname(monitorinstrument.getInstrumentname());
                 instrumentparamconfig.setInstrumentno(monitorinstrument.getInstrumentno());
                 instrumentparamconfig.setInstrumenttypeid(instrumentMonitorInfoModel.getInstrumenttypeid());
+                BigDecimal saturation = instrumentMonitorInfoModel.getSaturation();
+                if (null!=saturation){
+                    instrumentparamconfig.setSaturation(saturation);
+                }
                 instrumentparamconfig.setAlarmtime(3);
                 instrumentparamconfig = instrumentParamConfigDao.save(instrumentparamconfig);
                 HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                InstrumentMonitorInfoModel instrumentMonitorInfoModel1 = new InstrumentMonitorInfoModel();
-                instrumentMonitorInfoModel1 = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
+                InstrumentMonitorInfoModel instrumentMonitorInfoModel1 = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
                 objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel1));
             }
         } catch (Exception e) {

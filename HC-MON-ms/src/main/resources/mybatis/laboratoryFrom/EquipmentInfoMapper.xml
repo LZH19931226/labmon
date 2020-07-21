@@ -506,4 +506,10 @@ ORDER BY
         LIMIT 1
 
     </select>
+    <select id="getSns" resultType="com.hc.entity.Monitorinstrument" parameterType="java.util.List">
+     select equipmentno,sn from monitorinstrument where equipmentno in
+        <foreach collection="equipmentnos" item="id" open="(" close=")" separator="," index="index">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

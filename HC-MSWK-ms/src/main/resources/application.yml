@@ -37,7 +37,7 @@ spring:
     ansi:
       enabled: detect
   redis:
-    host: 127.0.0.1
+    host: 192.168.1.90
     port: 6379
     pool:
        max-active: 200
@@ -48,7 +48,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:10086/eureka/
+      defaultZone: http://192.168.1.90:10086/eureka/
 mybatis:   ## 可指定多个，用逗号或者分号隔开
   config-location: classpath:mybatis/MapperConfig.xml
   typeAliasesPackage: com.hc.entity

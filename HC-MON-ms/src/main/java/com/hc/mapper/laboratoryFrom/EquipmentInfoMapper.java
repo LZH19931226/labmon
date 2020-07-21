@@ -61,6 +61,8 @@ public interface EquipmentInfoMapper {
     String getSn(@Param("equipmentno") String equipmentno);
 
 
+    List<Monitorinstrument> getSns(@Param("equipmentnos") List<String> equipmentnos);
+
 
 
     /**

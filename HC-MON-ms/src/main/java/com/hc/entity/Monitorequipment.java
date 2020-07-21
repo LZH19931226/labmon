@@ -1,5 +1,6 @@
 package com.hc.entity;
 
+import com.hc.model.InstrumentMonitorInfoModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -44,6 +45,8 @@ public class Monitorequipment implements Serializable {
     private String  sn;
 
     private Monitorequipmentlastdata monitorequipmentlastdata;
+
+    private List<InstrumentMonitorInfoModel> instrumentMonitorInfoModel;
     /**
      * 最低值  ： 最低值为0 就是报警信号开
      */

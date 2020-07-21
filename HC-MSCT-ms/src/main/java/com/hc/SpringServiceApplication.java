@@ -11,12 +11,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableEurekaClient
-//@EnableFeignClients
 @EnableSwagger2
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableScheduling
-//@MapperScan("com.hc.mapper")
 public class SpringServiceApplication {
 
 	public static void main(String[] args) {

@@ -118,6 +118,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
         BigDecimal lowlimit = instrumentInfoModel.getLowlimit();
         BigDecimal highlimit = instrumentInfoModel.getHighlimit();
         String warningphone = instrumentInfoModel.getWarningphone();
+        BigDecimal saturation = instrumentInfoModel.getSaturation();
         Integer instrumenttypeid = instrumentInfoModel.getInstrumenttypeid();
         instrumentparamconfig.setWarningphone(warningphone);
         instrumentparamconfig.setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -127,6 +128,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
         instrumentparamconfig.setInstrumentno(instrumentno);
         instrumentparamconfig.setInstrumenttypeid(instrumenttypeid);
         instrumentparamconfig.setInstrumentname(instrumentname);
+        instrumentparamconfig.setSaturation(saturation);
         try {
             instrumentparamconfig = instrumentParamConfigDao.save(instrumentparamconfig);
             //执行同步缓存
@@ -153,7 +155,6 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentInfoModel.getInstrumentparamconfigNO());
             String instrumentparamconfigNO = instrumentInfoModel.getInstrumentparamconfigNO();
             String usernames = instrumentInfoModel.getUsernames();
-            InstrumentInfoModel model = new InstrumentInfoModel();
             //获取医院名称
             ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfigNO);
             InstrumentInfoModel one = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfigNO);
@@ -162,7 +163,6 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentParamConfigDao.delete(instrumentInfoModel.getInstrumentparamconfigNO());
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             objectObjectObjectHashOperations.delete("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString());
-
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());
             apiResponse.setMessage("删除探头失败，请联系管理员");
@@ -228,6 +228,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
         String warningphone = instrumentInfoModel.getWarningphone();
         String calibration = instrumentInfoModel.getCalibration();
         String channel = instrumentInfoModel.getChannel();
+        BigDecimal saturation = instrumentInfoModel.getSaturation();
         try {
             //修改sn时候查询当前修改后的sn是否在其余位置存在
 //            Integer count = monitorInstrumentMapper.isSn(sn, instrumentno);
@@ -286,9 +287,10 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentparamconfig.setInstrumentparamconfigno(instrumentparamconfigNO);
             instrumentparamconfig.setAlarmtime(alarmtime);
             instrumentparamconfig.setCalibration(calibration);
+            instrumentparamconfig.setSaturation(saturation);
             Instrumentparamconfig one2 = instrumentParamConfigDao.getOne(instrumentparamconfigNO);
             instrumentparamconfig.setFirsttime(one2.getFirsttime());
-            instrumentparamconfig = instrumentParamConfigDao.save(instrumentparamconfig);
+            instrumentParamConfigDao.save(instrumentparamconfig);
             InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
             objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
             return apiResponse;
