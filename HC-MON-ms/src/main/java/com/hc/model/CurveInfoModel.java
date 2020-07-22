@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * Created by 16956 on 2018-08-01.
  */
@@ -83,4 +85,6 @@ public class CurveInfoModel {
     private CurveDataModel leftCompartmentHumidity;
     @ApiModelProperty("右湿度")
     private CurveDataModel rightCompartmentHumidity;
+    @ApiModelProperty("探头上下限")
+    private List<InstrumentMonitorInfoModel> instrumentMonitorInfoModel;
 }

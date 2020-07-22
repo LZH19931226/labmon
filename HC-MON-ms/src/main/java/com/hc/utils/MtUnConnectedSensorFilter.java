@@ -96,10 +96,15 @@ public class MtUnConnectedSensorFilter {
         String snType = sn.substring(4, 6);
         switch (snType) {
             case "18":
+                //一路温度
+                String currenttemperature = monitorequipmentlastdata.getCurrenttemperature();
                 //室温
                 String currenttemperature2 = monitorequipmentlastdata.getCurrenttemperature2();
                 //壁温
                 String currenttemperature3 = monitorequipmentlastdata.getCurrenttemperature3();
+                if (StringUtils.equals(currenttemperature, "B")) {
+                    monitorequipmentlastdata.setCurrenttemperature(null);
+                }
                 if (StringUtils.equals(currenttemperature2, "B")) {
                     monitorequipmentlastdata.setCurrenttemperature2(null);
                 }

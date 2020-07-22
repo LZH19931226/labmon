@@ -324,6 +324,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setCode(ApiResponse.FAILED);
                 return apiResponse;
             }
+
 //            LastDataModel lastDataModel1 = lastDataModelList.get(0);
 //            String equipmentname = lastDataModel1.getEquipmentname();
             Monitorequipment equipmentByNo = equipmentInfoMapper.getEquipmentByNo(equipmentno);
@@ -716,6 +717,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setCode(ApiResponse.FAILED);
                 apiResponse.setMessage("无当前曲线数据");
                 return apiResponse;
+            }
+            List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels = instrumentParamConfigInfoMapper.selectInstrumentByEqNo(Collections.singletonList(equipmentno));
+            if (CollectionUtils.isNotEmpty(instrumentMonitorInfoModels)){
+                curveInfoModel.setInstrumentMonitorInfoModel(instrumentMonitorInfoModels);
             }
             apiResponse.setResult(curveInfoModel);
             return apiResponse;

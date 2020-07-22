@@ -139,7 +139,7 @@ public class MoblieMessageUtil {
 
     public SendSmsResponse sendmsg(String phontnum, String instrumentname, String unit, String value) {
         //通过手机号判断是否港澳台  "00"开头 港澳台
-        boolean isLocalphone = !phontnum.startsWith("00");
+        boolean    = !phontnum.startsWith("00");
 
         //初始化acsClient,暂不支持region化
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
