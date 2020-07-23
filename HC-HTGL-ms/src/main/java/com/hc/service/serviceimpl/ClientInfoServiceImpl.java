@@ -46,8 +46,7 @@ public class ClientInfoServiceImpl implements ClientInfoService {
     private OperationlogdetaiMapper operationlogdetaiMapper;
     @Override
     public ApiResponse<Userright> addUser(Userright userright) {
-        ApiResponse<Userright> apiResponse = new ApiResponse<Userright>();
-
+        ApiResponse<Userright> apiResponse = new ApiResponse<>();
         try{
             //相同用户名或者id 验证
             Userright userright1 = clientInfoMapper.selectUserByUser(userright);

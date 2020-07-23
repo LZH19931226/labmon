@@ -28,8 +28,7 @@ import java.util.List;
  */
 @Service
 public class UpdateRecordServiceImpl implements UpdateRecordService {
-    @Autowired
-    private OperationlogdetaiMapper operationlogdetaiMapper;
+
     @Autowired
     private OperationlogService operationlogService;
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateRecordServiceImpl.class);

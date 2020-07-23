@@ -69,5 +69,7 @@ public class Userright implements Serializable {
     private String usertype;
 
 
+    private String reminders;
+
 
 }
