@@ -2,11 +2,11 @@ package com.hc.service;
 
 import com.github.pagehelper.Page;
 import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorupsrecord;
 import com.hc.model.PushSetModel;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
 import com.hc.model.UpdateDeviceTokenModel;
 import com.hc.model.UpsModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.utils.ApiResponse;
 
 import java.util.List;
@@ -60,4 +60,6 @@ public interface InstrumentParamSetService {
 
 
     ApiResponse<List<UpsModel>> getCurrentUps(String hospitalcode, String equipmenttypeid);
+
+    ApiResponse<List<InstrumentMonitorInfoModel>> getLowHighLimit(String equipmentno);
 }

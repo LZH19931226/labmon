@@ -2,11 +2,9 @@ package com.hc.controller;
 
 import com.github.pagehelper.Page;
 import com.hc.entity.Instrumentparamconfig;
-import com.hc.model.EquipmentCurrentDateModel;
-import com.hc.model.PushSetModel;
+import com.hc.model.*;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
-import com.hc.model.UpdateDeviceTokenModel;
-import com.hc.model.UpsModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.InstrumentParamSetService;
 import com.hc.utils.ApiResponse;
 import io.swagger.annotations.Api;
@@ -88,5 +86,14 @@ public class InstruParamSetController {
                                                 @RequestParam(value = "equipmenttypeid", required = true) String equipmenttypeid) {
         return instrumentParamSetService.getCurrentUps(hospitalcode, equipmenttypeid);
     }
+
+
+    @GetMapping("/getLowHighLimit")
+    @ApiOperation("获取探头高低值")
+    public ApiResponse<List<InstrumentMonitorInfoModel>> getLowHighLimit(@ApiParam(name = "equipmentno", value = "设备编号", required = true)
+                                                                         @RequestParam(value = "equipmentno") String equipmentno){
+
+        return instrumentParamSetService.getLowHighLimit(equipmentno);
+    };
 
 }

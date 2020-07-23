@@ -1,9 +1,9 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.model.InstrumentMonitorInfoModel;
 import com.hc.model.ResponseModel.EquipmentConfigInfoModel;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfo;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;

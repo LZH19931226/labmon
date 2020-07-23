@@ -85,6 +85,4 @@ public class CurveInfoModel {
     private CurveDataModel leftCompartmentHumidity;
     @ApiModelProperty("右湿度")
     private CurveDataModel rightCompartmentHumidity;
-    @ApiModelProperty("探头上下限")
-    private List<InstrumentMonitorInfoModel> instrumentMonitorInfoModel;
 }

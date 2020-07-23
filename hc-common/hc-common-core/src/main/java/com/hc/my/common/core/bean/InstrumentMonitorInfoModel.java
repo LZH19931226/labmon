@@ -39,5 +39,5 @@ public class InstrumentMonitorInfoModel {
     private String calibration;
     //饱和值
     private BigDecimal saturation;
-
+    private String equipmentno;
 }

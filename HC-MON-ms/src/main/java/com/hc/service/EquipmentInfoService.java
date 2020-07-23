@@ -9,7 +9,8 @@ package com.hc.service;
         import com.hc.model.EquipmentCurrentDateModel;
         import com.hc.model.QueryInfoModel;
         import com.hc.model.ResponseModel.EquipmentConfigInfoModel;
-import com.hc.utils.ApiResponse;
+        import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
+        import com.hc.utils.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
         import java.util.List;
@@ -87,4 +88,5 @@ public interface EquipmentInfoService {
      * 获取当前医院该设备所有探头该月份时间点位数据
      */
     ApiResponse<CurveInfoModel> getCurveInfoByMonthTime(String equipmentno, String time);
+
 }

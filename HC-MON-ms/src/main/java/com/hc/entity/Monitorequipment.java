@@ -1,13 +1,12 @@
 package com.hc.entity;
 
-import com.hc.model.InstrumentMonitorInfoModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.*;
 @Getter
 @Setter
 @ToString

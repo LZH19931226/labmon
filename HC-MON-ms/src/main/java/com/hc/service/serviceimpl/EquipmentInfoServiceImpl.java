@@ -18,6 +18,7 @@ import com.hc.model.SingleTimeExcle.HjExcleModel;
 import com.hc.model.SingleTimeExcle.OtherExcleModel;
 import com.hc.model.SingleTimeExcle.PyxExcleModel;
 import com.hc.model.SingleTimeExcle.SingleTimeEquipmentModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.UpdateRecordService;
 import com.hc.utils.*;
@@ -717,10 +718,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setCode(ApiResponse.FAILED);
                 apiResponse.setMessage("无当前曲线数据");
                 return apiResponse;
-            }
-            List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels = instrumentParamConfigInfoMapper.selectInstrumentByEqNo(Collections.singletonList(equipmentno));
-            if (CollectionUtils.isNotEmpty(instrumentMonitorInfoModels)){
-                curveInfoModel.setInstrumentMonitorInfoModel(instrumentMonitorInfoModels);
             }
             apiResponse.setResult(curveInfoModel);
             return apiResponse;

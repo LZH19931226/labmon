@@ -20,6 +20,7 @@ import com.hc.model.ResponseModel.EquipmentConfigInfoModel;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfo;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
 import com.hc.model.ResponseModel.MessageSendModel;
+import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.InstrumentParamSetService;
 import com.hc.service.UpdateRecordService;
 import com.hc.utils.ApiResponse;
@@ -348,5 +349,14 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             return apiResponse;
         }
     }
+
+    @Override
+    public ApiResponse<List<InstrumentMonitorInfoModel>> getLowHighLimit(String equipmentno) {
+        ApiResponse<List<InstrumentMonitorInfoModel>> apiResponse = new ApiResponse<>();
+        List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels = instrumentParamConfigInfoMapper.selectInstrumentByEqNo(Collections.singletonList(equipmentno));
+        apiResponse.setResult(instrumentMonitorInfoModels);
+        return apiResponse;
+    }
+
 
 }
