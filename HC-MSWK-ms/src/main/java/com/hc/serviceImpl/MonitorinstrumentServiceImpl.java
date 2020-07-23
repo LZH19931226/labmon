@@ -97,11 +97,11 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             if (cliva == null){
                 return null;
             }
-//            Boolean clientvisible = cliva.getClientvisible();
-//            if ( !clientvisible) {
+            Boolean clientvisible = cliva.getClientvisible();
+            if ( !clientvisible) {
 //                String equipmentno = cliva.getEquipmentno();
-//                // 未启用
-//              //  LOGGER.info("设备未启用SN号：" + SN);
+                // 未启用
+              //  LOGGER.info("设备未启用SN号：" + SN);
 //                HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
 //                if (redisTemple.hasKey("disable","equipmentno:"+equipmentno)){
 //                    //表示当前设备之前禁用，现在数据重新上传，又启用了
@@ -115,8 +115,8 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
 //                    one.setDisabletype("4");
 //                    messagePushService.pushMessage5(JsonUtil.toJson(one));
 //                }
-//                return null;
-//            }
+                return null;
+            }
 
             if (StringUtils.equalsAny(instrumenttypename, "MT300", "MT300LITE", "MT700")) {
                 //存在则判断是不是传的开关量
