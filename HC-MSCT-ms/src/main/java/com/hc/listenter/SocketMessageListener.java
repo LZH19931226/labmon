@@ -199,15 +199,15 @@ public class SocketMessageListener {
             if (StringUtils.isNotEmpty(userright.getPhonenum())) {
                 flag = true;
                 String reminders = userright.getReminders();
-                if (StringUtils.equals(reminders, "1")) {
+                if (StringUtils.isEmpty(reminders)){
+                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
+                    LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                }else if (StringUtils.equals(reminders, "1")) {
                     LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
                     sendMesService.callPhone(userright.getPhonenum(), equipmentname);
                 } else if (StringUtils.equals(reminders, "2")) {
-                    SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
-                    LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                } else {
-                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
-                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
                     SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
                     LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 }

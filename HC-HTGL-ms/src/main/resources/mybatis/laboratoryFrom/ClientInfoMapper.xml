@@ -20,7 +20,8 @@
     b.isreceive,
     b.reveivecount,
     b.receiveinterval,
-    b.usertype
+    b.usertype,
+    b.reminders
     from hospitalofreginfo a right join userright b on a.hospitalcode=b.hospitalcode
     <where>
         '1'='1'

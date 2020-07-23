@@ -58,5 +58,6 @@ public class ClientInfoModel {
 
     private String usertype;
 
+    private String reminders;
 
 }
