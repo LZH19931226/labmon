@@ -1033,7 +1033,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                         WarningMqModel warningMqModel97 = procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
-                        if (Integer.parseInt(proSn)<2015) {
+                        if (Integer.parseInt(proSn)<2031) {
                            if (!StringUtils.equalsAny(model.getTEMP(), "A", "B", "C", "D", "E")) {
                                 if (StringUtils.isNotEmpty(model.getTEMP2())) {
                                     if (StringUtils.equalsAny(model.getTEMP2(), "A", "B", "C", "D", "E") || Math.abs(new Double(model.getTEMP()) - new Double(model.getTEMP2())) > 3) {
