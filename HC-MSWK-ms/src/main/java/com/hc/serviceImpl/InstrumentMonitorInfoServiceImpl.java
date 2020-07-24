@@ -4,19 +4,13 @@ import com.hc.bean.RecordTime;
 import com.hc.bean.ShowModel;
 import com.hc.bean.WarningMqModel;
 import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.MonitorUpsDao;
-import com.hc.dao.MonitorequipmentDao;
-import com.hc.dao.MonitroDoorDao;
 import com.hc.entity.*;
-import com.hc.mapper.MonitorInstrumentMapper;
-import com.hc.model.MapperModel.TimeoutEquipment;
 import com.hc.model.RequestModel.InstrumentInfoModel;
 import com.hc.msctservice.MsctService;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.CurrentDataService;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.LastDataService;
-import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -41,10 +35,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     private static final Logger log = LoggerFactory.getLogger(InstrumentMonitorInfoServiceImpl.class);
     DecimalFormat df = new DecimalFormat("######0.00");
 
-    @Autowired
-    private MonitroDoorDao monitroDoorDao;
-    @Autowired
-    private MonitorUpsDao monitorUpsDao;
+
+
     @Autowired
     private LastDataService lastDataService;
     @Autowired
@@ -53,12 +45,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     private RedisTemplateUtil redisTemplateUtil;
     @Autowired
     private CurrentDataService currentDataService;
-    @Autowired
-    private MonitorequipmentDao monitorequipmentDao;
-    @Autowired
-    private MonitorInstrumentMapper monitorInstrumentMapper;
-    @Autowired
-    private MessagePushService messagePushService;
 
     @Override
     public List<WarningMqModel> save(ParamaterModel model, Monitorinstrument monitorinstrument) {
@@ -313,12 +299,12 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitordoorstaterecord.setEquipmentno(equipmentno);
                         monitordoorstaterecord.setInputdatetime(time);
                         monitordoorstaterecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        try {
-                            monitroDoorDao.saveAndFlush(monitordoorstaterecord);
-                        } catch (Exception e) {
-                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "开关门记录插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                        }
-                        monitorequipmentlastdata.setCurrentdoorstate(DOOR);
+//                        try {
+//                            monitroDoorDao.saveAndFlush(monitordoorstaterecord);
+//                        } catch (Exception e) {
+//                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "开关门记录插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
+//                        }
+//                        monitorequipmentlastdata.setCurrentdoorstate(DOOR);
                         log.info("执行插入开关门:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitordoorstaterecord));
                         WarningMqModel warningMqModel = procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
                         list.add(warningMqModel);
@@ -602,11 +588,11 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorupsrecord.setInputdatetime(time);
                     monitorupsrecord.setUps(ups);
                     monitorupsrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                    try {
-                        monitorUpsDao.saveAndFlush(monitorupsrecord);
-                    } catch (Exception e) {
-                        log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "市电插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                    }
+//                    try {
+//                        monitorUpsDao.saveAndFlush(monitorupsrecord);
+//                    } catch (Exception e) {
+//                        log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "市电插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
+//                    }
                     monitorequipmentlastdata.setCurrentups(ups);
                     log.info("执行插入市电:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorupsrecord));
                     WarningMqModel warningMqModel7 = procWarnModel(model.getUPS(), monitorinstrument, model.getNowTime(), 10, "市电");
@@ -627,11 +613,11 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitordoorstaterecord.setEquipmentno(equipmentno);
                         monitordoorstaterecord.setInputdatetime(time);
                         monitordoorstaterecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        try {
-                            monitroDoorDao.saveAndFlush(monitordoorstaterecord);
-                        } catch (Exception e) {
-                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "开关门记录插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                        }
+//                        try {
+//                            monitroDoorDao.saveAndFlush(monitordoorstaterecord);
+//                        } catch (Exception e) {
+//                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "开关门记录插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
+//                        }
                         monitorequipmentlastdata.setCurrentdoorstate(DOOR);
                         log.info("执行插入开关门:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitordoorstaterecord));
                         WarningMqModel warningMqModel8 = procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
