@@ -304,7 +304,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 //                        } catch (Exception e) {
 //                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "开关门记录插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
 //                        }
-//                        monitorequipmentlastdata.setCurrentdoorstate(DOOR);
+                        monitorequipmentlastdata.setCurrentdoorstate(DOOR);
                         log.info("执行插入开关门:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitordoorstaterecord));
                         WarningMqModel warningMqModel = procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
                         list.add(warningMqModel);
