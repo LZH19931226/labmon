@@ -40,7 +40,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         //  根据sn 号查询医院编号   K hospitalcode:sn   --   K 设备sn  --  value   Monitorinstrument
         //根据MT600 sn号查询医院编号
         try {
-     //       LOGGER.info("instrument中查询信息："+JsonUtil.toJson(paramaterModel));
+            //       LOGGER.info("instrument中查询信息："+JsonUtil.toJson(paramaterModel));
             BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:sn");
             String channel;
             String o = (String) objectObjectObjectBoundHashOperations.get(mt600sn);
@@ -67,25 +67,25 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                 }
                 //查询数据库：
                 Monitorinstrument monitorinstrumentTest = monitorInstrumentMapper.selectHospitalCodeBySn(mt600sn);
-         //       LOGGER.info("从数据库查询数据：" + JsonUtil.toJson(monitorinstrumentTest) + "查询SN号：" + mt600sn);
+                //       LOGGER.info("从数据库查询数据：" + JsonUtil.toJson(monitorinstrumentTest) + "查询SN号：" + mt600sn);
                 //    String instrumentno = monitorinstrumentTest.getInstrumentno();
-                LOGGER.info("instrument中MT600信息："+JsonUtil.toJson(paramaterModel) + "查询MT600SN信息："+JsonUtil.toJson(monitorinstrumentTest) );
+                LOGGER.info("instrument中MT600信息：" + JsonUtil.toJson(paramaterModel) + "查询MT600SN信息：" + JsonUtil.toJson(monitorinstrumentTest));
                 if (monitorinstrumentTest == null) {
                     return null;
                 } else {
                     //同步缓存
-      //              LOGGER.info("执行同步缓存：");
+                    //              LOGGER.info("执行同步缓存：");
                     objectObjectObjectBoundHashOperations.put(mt600sn, JsonUtil.toJson(monitorinstrumentTest));
                 }
             }
             // 不做自动注册
             //判断当前传送数据设备是否注册到医院
-       //     LOGGER.info("instrument中SN查询信息："+JsonUtil.toJson(paramaterModel));
+            //     LOGGER.info("instrument中SN查询信息："+JsonUtil.toJson(paramaterModel));
             String sn = "01";
             try {
                 sn = SN.substring(4, 6);
             } catch (Exception e) {
-               LOGGER.error("SN号异常：" + SN);
+                LOGGER.error("SN号异常：" + SN);
             }
 
             //获取MT型
@@ -94,14 +94,14 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             //根据sn查询当前设备是否警用还是启用
             Monitorequipment cliva = monitorInstrumentMapper.isCliva(SN);
             //    LOGGER.info("当前设备是否启用状态："+SN+";状态："+cliva);
-            if (cliva == null){
+            if (cliva == null) {
                 return null;
             }
             Boolean clientvisible = cliva.getClientvisible();
-            if ( !clientvisible) {
+            if (!clientvisible) {
 //                String equipmentno = cliva.getEquipmentno();
                 // 未启用
-              //  LOGGER.info("设备未启用SN号：" + SN);
+                //  LOGGER.info("设备未启用SN号：" + SN);
 //                HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
 //                if (redisTemple.hasKey("disable","equipmentno:"+equipmentno)){
 //                    //表示当前设备之前禁用，现在数据重新上传，又启用了
@@ -120,7 +120,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
 
             if (StringUtils.equalsAny(instrumenttypename, "MT300", "MT300LITE", "MT700")) {
                 //存在则判断是不是传的开关量
-                if (StringUtils.equals(paramaterModel.getCmdid(),"8d")) {
+                if (StringUtils.equals(paramaterModel.getCmdid(), "8d")) {
                     if (StringUtils.isEmpty(paramaterModel.getDOOR())) {
                         return null;
                     }
@@ -147,12 +147,13 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                                 //		monitorRegisterHospitalService.instrumentRegister(instrumenttypename, paramaterModel, monitorinstrument, channel);
                                 return null;
                             }
+                        default:
                             break;
                     }
                 } else {
                     //MT300  MT30LITE非开关量
                     try {
-                        LOGGER.info("instrument中查询MT700信息："+JsonUtil.toJson(paramaterModel));
+                        LOGGER.info("instrument中查询MT700信息：" + JsonUtil.toJson(paramaterModel));
                         String o1 = (String) objectObjectObjectBoundHashOperations.get(SN);
                         if (StringUtils.isNotEmpty(o1)) {
                             monitorinstrument1 = JsonUtil.toBean(o1, Monitorinstrument.class);
@@ -184,10 +185,10 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                         monitorinstrument1 = JsonUtil.toBean(o1, Monitorinstrument.class);
                     } else {
                         monitorinstrument1 = monitorInstrumentMapper.selectHospitalCodeBySn(SN);
-                  //      LOGGER.info("第三段代码获取数据：" + JsonUtil.toJson(monitorinstrument1));
+                        //      LOGGER.info("第三段代码获取数据：" + JsonUtil.toJson(monitorinstrument1));
                         //    String s  = monitorinstrument1.getInstrumentno();
                         if (monitorinstrument1 == null) {
-             //               LOGGER.info("当前设备未注册到医院：" + SN);
+                            //               LOGGER.info("当前设备未注册到医院：" + SN);
                             return null;
                         } else {
                             //同步缓存
@@ -200,7 +201,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             }
 
             if (StringUtils.isEmpty(monitorinstrument1.getEquipmentno())) {
-        //        LOGGER.info("当前设备探头SN号未绑定设备: " + SN);
+                //        LOGGER.info("当前设备探头SN号未绑定设备: " + SN);
                 return null;    //数据不做插入 ，不做报警服务  只做添加探头
             }
             return monitorinstrument1;
