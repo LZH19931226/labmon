@@ -59,7 +59,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                         "1821110004", "1821110028", "1832110011")) {
                     try {
                         LOGGER.info("进入拨打程序");
-                        msctService.test2("18108674918", "瑞迪斯存储探头值失效");
+                      //  msctService.test2("18108674918", "瑞迪斯存储探头值失效");
                         msctService.test2("17786499503", "瑞迪斯存储探头值失效");
                     } catch (Exception e) {
                         LOGGER.error("redis拨打电话异常：" + e.getMessage());
