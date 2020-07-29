@@ -1322,6 +1322,56 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         list.add(warningMqModel97);
                     }
                     break;
+                case "a6":
+                    String temp11 = model.getTEMP();
+                    if (StringUtils.isNotEmpty(temp11)){
+                        monitorequipmentlastdata.setCurrenttemperature(temp11);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp11, monitorinstrument, model.getNowTime(), 4, "舱室1温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp12 = model.getTEMP2();
+                    if (StringUtils.isNotEmpty(temp12)){
+                        monitorequipmentlastdata.setCurrenttemperature2(temp12);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp12, monitorinstrument, model.getNowTime(), 14, "舱室2温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp13 = model.getTEMP3();
+                    if (StringUtils.isNotEmpty(temp13)){
+                        monitorequipmentlastdata.setCurrenttemperature3(temp13);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp13, monitorinstrument, model.getNowTime(), 15, "舱室3温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp14 = model.getTEMP4();
+                    if (StringUtils.isNotEmpty(temp14)){
+                        monitorequipmentlastdata.setCurrenttemperature4(temp14);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp14, monitorinstrument, model.getNowTime(), 16, "舱室4温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp15 = model.getTEMP5();
+                    if (StringUtils.isNotEmpty(temp15)){
+                        monitorequipmentlastdata.setCurrenttemperature5(temp15);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp15, monitorinstrument, model.getNowTime(), 17, "舱室5温度");
+                        list.add(warningMqModel97);
+                    }
+                    String temp16 = model.getTEMP6();
+                    if (StringUtils.isNotEmpty(temp16)){
+                        monitorequipmentlastdata.setCurrenttemperature6(temp16);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp16, monitorinstrument, model.getNowTime(), 18, "舱室6温度");
+                        list.add(warningMqModel97);
+                    }
+                    String o23 = model.getO2();
+                    if (StringUtils.isNotEmpty(o23)){
+                        monitorequipmentlastdata.setCurrento2(o23);
+                        WarningMqModel warningMqModel97 = procWarnModel(o23, monitorinstrument, model.getNowTime(), 2, "O2浓度百分比");
+                        list.add(warningMqModel97);
+                    }
+                    String co22 = model.getCO2();
+                    if (StringUtils.isNotEmpty(co22)){
+                        monitorequipmentlastdata.setCurrentcarbondioxide(co22);
+                        WarningMqModel warningMqModel97 = procWarnModel(co22, monitorinstrument, model.getNowTime(), 1, "CO2浓度百分比");
+                        list.add(warningMqModel97);
+                    }
+                    break;
                 default:
                     break;
             }

@@ -33,6 +33,15 @@ public class cmdidParseUtils {
                     }
     }
 
+    public static String paseAir10(String co2) {
+
+        if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSC)) {
+            return DataRules.STATEA;
+        } else{
+                        return gas10(co2);
+                    }
+    }
+
     public static String pasetemperature(String substring2) {
 
         // 未接入传感器
@@ -57,6 +66,20 @@ public class cmdidParseUtils {
                     }
 
     }
+
+    public static String pasetemperature2(String substring2) {
+
+        // 未接入传感器
+        if (StringUtils.equalsIgnoreCase(substring2, DataRules.OUTLIERSC)) {
+            return DataRules.STATEA;
+        } else {
+            return paramaterModelUtils.temperature10(substring2);
+        }
+
+    }
+
+
+
 
     public static String pasetemperature1(String tem) {
         if (StringUtils.equalsIgnoreCase(tem, DataRules.OUTLIERSA)) {
@@ -1051,10 +1074,10 @@ public class cmdidParseUtils {
 
 
     public static void main(String[] args) {
-        String id = "48439c1332303136313830303737fff0fff0fff0fff050d823 ";
+        String id = "48 43 A6 1A  31 38 33 35 31 35 30 30 30 31  01 72 01 72 01 72 01 72 01 72 01 72 00 32 00 3C B3 23 ";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
-        ParamaterModel paramaterModel = pase9c(s, null, null);
+        ParamaterModel paramaterModel = paseA6(s, null, null);
         System.out.println(paramaterModel);
     }
 
@@ -1144,6 +1167,39 @@ public class cmdidParseUtils {
         paramaterModel.setCO2(paseAir(substring3));
         String substring4 = cmd.substring(40, 44);
         paramaterModel.setRH(paseAir(substring4));
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
+        return paramaterModel;
+    }
+
+    public static ParamaterModel paseA6(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+        String substring1 = cmd.substring(28, 32);
+        paramaterModel.setTEMP(pasetemperature2(substring1));
+        String substring2 = cmd.substring(32, 36);
+        paramaterModel.setTEMP2(pasetemperature2(substring2));
+        String substring3 = cmd.substring(36, 40);
+        paramaterModel.setTEMP3(pasetemperature2(substring3));
+        String substring4 = cmd.substring(40, 44);
+        paramaterModel.setTEMP4(pasetemperature2(substring4));
+        String substring5 = cmd.substring(44, 48);
+        paramaterModel.setTEMP5(pasetemperature2(substring5));
+        String substring6 = cmd.substring(48, 52);
+        paramaterModel.setTEMP6(pasetemperature2(substring6));
+        String substring7 = cmd.substring(52, 56);
+        paramaterModel.setO2(paseAir10(substring7));
+        String substring8 = cmd.substring(56, 60);
+        paramaterModel.setCO2(paseAir10(substring8));
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
+        return paramaterModel;
+    }
+
+    public static ParamaterModel paseA7(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+
+
+
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
