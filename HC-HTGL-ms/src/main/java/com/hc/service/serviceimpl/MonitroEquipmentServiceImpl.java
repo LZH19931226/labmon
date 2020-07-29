@@ -33,6 +33,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,15 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
         } else if (instrumenttypeid == 14) {
             equipmentbrand = "G185";
         }
+        //需要添加探头
+        if (StringUtils.isEmpty(equipmentInfoModel.getChannel())) {
+            Integer J = monitorInstrumentMapper.isExist(equipmentInfoModel.getSn());
+            if (J > 0) {
+                apiResponse.setMessage("添加设备失败,sn已被占用");
+                apiResponse.setCode(ApiResponse.FAILED);
+                return apiResponse;
+            }
+        }
         //添加设备  判断有无探头
         monitorequipment.setEquipmentbrand(equipmentbrand);
         monitorequipment.setHospitalcode(hospitalcode);
@@ -125,15 +135,6 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             apiResponse.setCode(ApiResponse.FAILED);
             apiResponse.setMessage("服务异常，请联系管理员");
             return apiResponse;
-        }
-        //需要添加探头
-        if (StringUtils.isEmpty(equipmentInfoModel.getChannel())) {
-            Integer J = monitorInstrumentMapper.isExist(equipmentInfoModel.getSn());
-            if (J > 0) {
-                apiResponse.setMessage("添加设备成功，添加探头失败，当前sn号已被占用");
-                apiResponse.setCode(ApiResponse.FAILED);
-                return apiResponse;
-            }
         }
         //生成探头
         Monitorinstrument monitorinstrument = new Monitorinstrument();
