@@ -1325,8 +1325,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 case "a6":
                     String temp11 = model.getTEMP();
                     if (StringUtils.isNotEmpty(temp11)){
-                        monitorequipmentlastdata.setCurrenttemperature(temp11);
-                        WarningMqModel warningMqModel97 = procWarnModel(temp11, monitorinstrument, model.getNowTime(), 4, "舱室1温度");
+                        monitorequipmentlastdata.setCurrenttemperature1(temp11);
+                        WarningMqModel warningMqModel97 = procWarnModel(temp11, monitorinstrument, model.getNowTime(), 13, "舱室1温度");
                         list.add(warningMqModel97);
                     }
                     String temp12 = model.getTEMP2();
