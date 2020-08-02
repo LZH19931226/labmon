@@ -22,7 +22,16 @@ from hospitalofreginfo a inner join userright b on a.hospitalcode = b.hospitalco
  order by a.hospitalcode,b.username desc
 </select>
 
-
+<select id="searchScByHosMon" parameterType="java.util.Map" resultType="com.hc.entity.UserScheduLing">
+    select  * from userscheduling where
+    hospitalcode =#{hosId}
+    <if test="month.length() lt 8">
+      and   DATE_FORMAT(starttime,'%Y-%m') =#{month}
+    </if>
+    <if test="month.length() gt 8">
+      and  DATE_FORMAT(starttime,'%Y-%m-%d') =#{month}
+    </if>
+</select>
 
 
 </mapper>

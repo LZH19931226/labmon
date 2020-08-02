@@ -1,7 +1,9 @@
 package com.hc.mapper.laboratoryFrom;
 
+import com.hc.entity.UserScheduLing;
 import com.hc.model.ResponseModel.UserAuthInfoModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 
@@ -18,4 +20,8 @@ public interface UserAuthorInfoMapper {
      * 分页模糊查询用户权限信息
      */
     List<UserAuthInfoModel> selectUserAuthorPage(RowBounds rowBounds);
+
+
+
+    List<UserScheduLing> searchScByHosMon(@Param("hosId") String hosId, @Param("month") String month);
 }

@@ -1,17 +1,27 @@
 package com.hc.service.serviceimpl;
 
 import com.hc.config.RedisTemplateUtil;
+import com.hc.dao.UserScheduLingDao;
+import com.hc.entity.UserScheduLing;
 import com.hc.entity.Userback;
+import com.hc.mapper.laboratoryFrom.UserAuthorInfoMapper;
 import com.hc.mapper.laboratoryFrom.UserInfoMapper;
+import com.hc.model.RequestModel.UserScheduLingPostModel;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.UserInfoService;
 import com.hc.units.ApiResponse;
 import com.hc.units.TokenHelper;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,6 +34,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoMapper userInfoMapper;
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
+    @Autowired
+    private UserAuthorInfoMapper userAuthorInfoMapper;
+    @Autowired
+    private UserScheduLingDao userScheduLingDao;
+
+
     @Override
     public ApiResponse<String> userLogin(Userback userback) {
         ApiResponse<String> apiResponse = new ApiResponse<String>();
@@ -61,6 +77,35 @@ public class UserInfoServiceImpl implements UserInfoService {
         userback1.setPwd(userback.getNewpwd());
         userInfoMapper.updatePwd(userback1);
 
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse<String> addusersc(UserScheduLingPostModel userScheduLingPostModel) {
+        List<UserScheduLing> userScheduLings = userScheduLingPostModel.getUserScheduLings();
+        if (CollectionUtils.isEmpty(userScheduLings)){
+            return ApiResponse.fail("不允许添加空");
+        }
+        Date starttime = userScheduLingPostModel.getStarttime();
+        String createuser = userScheduLingPostModel.getCreateuser();
+        Date endtime = userScheduLingPostModel.getEndtime();
+        String hospitalcode = userScheduLingPostModel.getHospitalcode();
+        userScheduLingDao.deleteStHos(DateUtils.paseDate(starttime),hospitalcode);
+        userScheduLings.forEach(s->{
+            s.setStarttime(starttime);
+            s.setEndtime(endtime);
+            s.setHospitalcode(hospitalcode);
+            s.setCreatetime(new Date());
+            s.setCreateuser(createuser);
+        });
+        userScheduLingDao.save(userScheduLings);
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<List<UserScheduLing>> searchScByHosMon(String hosId, String month) {
+        ApiResponse<List<UserScheduLing>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userAuthorInfoMapper.searchScByHosMon(hosId,month));
         return apiResponse;
     }
 }

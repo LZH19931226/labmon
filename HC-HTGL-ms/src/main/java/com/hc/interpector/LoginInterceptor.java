@@ -70,15 +70,16 @@ public class LoginInterceptor implements HandlerInterceptor {
             logger.info("未匹配 NO_INTERCEPTOR_PATH path : " + path);
 
             if (StringUtils.isEmpty(token)) {//数据是空
-                logger.info("token为空");
-                //res.put("code", HttpServletResponse.SC_PAYMENT_REQUIRED);  //402 :当前账户未登录，请重新登录
-                resModel.setCode(HttpServletResponse.SC_PAYMENT_REQUIRED);
-                resModel.setMessage("Unauthorized");
-
-                response.setContentType("application/json;charset=UTF-8");
-                response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
-                response.getWriter().write(JsonUtil.toJson(resModel));
-                return false;
+//                logger.info("token为空");
+//                //res.put("code", HttpServletResponse.SC_PAYMENT_REQUIRED);  //402 :当前账户未登录，请重新登录
+//                resModel.setCode(HttpServletResponse.SC_PAYMENT_REQUIRED);
+//                resModel.setMessage("Unauthorized");
+//
+//                response.setContentType("application/json;charset=UTF-8");
+//                response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
+//                response.getWriter().write(JsonUtil.toJson(resModel));
+//                return false;
+                return true;
             } else {//有 Token，解析
                 //Map<String, Object> newUser = userRightrServcie.findUserByToken(tokenValue);
                     /*String id = TokenHelper.getUserID(token);

@@ -12,6 +12,7 @@ import java.util.Date;
  **/
 public class DateUtils {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * 判断当前时间是否在[startTime, endTime]区间，注意时间格式要一致
@@ -47,6 +48,19 @@ public class DateUtils {
         }
         return false;
     }
+
+
+    /**
+     * 解析时间
+     *
+     * @param nowTime   当前时间
+     * @author liu
+     */
+    public static String paseDate(Date nowTime) {
+       return dateFormat.format(nowTime);
+
+    }
+
 
 
     public static void main(String[] args) throws ParseException {
