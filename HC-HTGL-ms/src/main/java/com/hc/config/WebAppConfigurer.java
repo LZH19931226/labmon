@@ -4,7 +4,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.hc.interpector.LoginInterceptor;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +16,8 @@ import java.util.List;
 /**
  * Created by yangzhou-he on 2017-08-18.
  */
-//@EnableWebMvc
 @Configuration
 public class WebAppConfigurer extends WebMvcConfigurerAdapter {
-    Logger logger = org.slf4j.LoggerFactory.getLogger(WebAppConfigurer.class);
 
     @Value("${system.publicPath}")
     private String publicPath;

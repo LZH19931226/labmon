@@ -2,8 +2,10 @@ package com.hc.my.common.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author LiuZhiHao
@@ -62,10 +64,25 @@ public class DateUtils {
     }
 
 
+    /**
+     * 获取指定时间前一天
+     * @param day   指定时间
+     * @author liu
+     */
+    public static String getYesterday(Date day){
+        long ms = day.getTime() - 1*24*3600*1000L;
+        Date prevDay = new Date(ms);
+        return dateFormat.format(prevDay);
+    }
 
     public static void main(String[] args) throws ParseException {
-        Date startTime = simpleDateFormat.parse("09:00:00");
-        Date endTime = simpleDateFormat.parse("19:50:59");
-        System.out.println(isEffectiveDate(new Date(), startTime, endTime));
+//        Date startTime = simpleDateFormat.parse("09:00:00");
+//        Date endTime = simpleDateFormat.parse("19:50:59");
+//        System.out.println(isEffectiveDate(new Date(), startTime, endTime));
+//        System.out.println(getYesterday(new Date()));
+        List<String> list = Arrays.asList("1","2");
+        List<String> list2 = Arrays.asList("4","1");
+        list=list2;
+        System.out.println(list);
     }
 }

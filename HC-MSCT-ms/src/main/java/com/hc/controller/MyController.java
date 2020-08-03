@@ -3,8 +3,11 @@ package com.hc.controller;
 import com.hc.bean.ApiResponse;
 import com.hc.dao.InstrumentparamconfigDao;
 import com.hc.dao.MonitorequipmentDao;
+import com.hc.dao.UserScheduLingDao;
 import com.hc.entity.Monitorequipment;
+import com.hc.entity.UserScheduLing;
 import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
+import com.hc.my.common.core.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +22,7 @@ import com.hc.Message.SingleCallByTtsUtils;
 import io.swagger.annotations.ApiOperation;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,6 +40,10 @@ public class MyController {
 
 	@Autowired
 	private InstrumentparamconfigDao instrumentparamconfigDao;
+
+	@Autowired
+	private UserScheduLingDao userScheduLingDao;
+
 
 	@GetMapping("/tests")
 	public ApiResponse<List<Monitorequipment>> get(){
@@ -92,9 +100,15 @@ public class MyController {
 	}
 
 	@GetMapping("asdadsa")
-	public BigDecimal test22(String v){
-		BigDecimal mt200mHighLimit = instrumentparamconfigDao.getMt200mHighLimit(v);
-		return mt200mHighLimit;
+	public List<UserScheduLing> test22(String v){
+		List<UserScheduLing> h0010 = userScheduLingDao.findUserScByHosSt("H0010", "2020-08-03");
+		h0010.forEach(s->{
+			Date starttime = s.getStarttime();
+			Date endtime = s.getEndtime();
+			boolean effectiveDate = DateUtils.isEffectiveDate(new Date(), starttime, endtime);
+            System.out.println(effectiveDate);
+		});
+		return userScheduLingDao.findUserScByHosSt("H0010","2020-08-03");
 	}
 
 }
