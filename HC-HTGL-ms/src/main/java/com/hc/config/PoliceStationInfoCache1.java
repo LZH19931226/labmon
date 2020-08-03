@@ -1,9 +1,6 @@
 package com.hc.config;
 
-import com.hc.dao.HospitalofreginfoDao;
-import com.hc.dao.MonitorInstrumentDao;
 import com.hc.entity.Monitorinstrument;
-import com.hc.mapper.laboratoryFrom.ClientInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
@@ -21,22 +18,16 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-// 同步缓存  ：  底层原理是一个守护线程
 @Component
 @Order(value = 2)
 public class PoliceStationInfoCache1 implements CommandLineRunner {
 
 
     @Autowired
-    private ClientInfoMapper clientInfoMapper;
-    @Autowired
     private InstrumentMonitorInfoMapper instrumentMonitorInfoMapper;
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
-    @Autowired
-    private MonitorInstrumentDao monitorInstrumentDao;
-    @Autowired
-    private HospitalofreginfoDao hospitalofreginfoDao;
+
     @Autowired
     private MonitorInstrumentMapper monitorInstrumentMapper;
     private final Logger log = LoggerFactory.getLogger(PoliceStationInfoCache1.class);
@@ -61,18 +52,7 @@ public class PoliceStationInfoCache1 implements CommandLineRunner {
 
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
 
-//        List<Hospitalofreginfo> hospitalofreginfoList = new ArrayList<Hospitalofreginfo>();
-//        hospitalofreginfoList = hospitalofreginfoDao.findAll();
-//        for (Hospitalofreginfo hospitalofreginfo : hospitalofreginfoList) {
-//            List<Userright> userrightList = new ArrayList<Userright>();
-//            userrightList = clientInfoMapper.selectUserInfoByHospitalcode(hospitalofreginfo.getHospitalcode());
-//            if (CollectionUtils.isNotEmpty(userrightList)) {
-//                objectObjectObjectHashOperations.put("hospital:phonenum", hospitalofreginfo.getHospitalcode(), JsonUtil.toJson(userrightList));
-//            }
-//            objectObjectObjectHashOperations.put("hospital:info", hospitalofreginfo.getHospitalcode(), JsonUtil.toJson(hospitalofreginfo));
-//        }
-//        log.info("执行探头信息同步");
-        List<Monitorinstrument> list = new ArrayList<Monitorinstrument>();
+        List<Monitorinstrument> list;
         list = monitorInstrumentMapper.showMonitorInstrumentChannel();
         if (CollectionUtils.isNotEmpty(list)) {
             for (Monitorinstrument monitorinstrument : list) {
@@ -81,12 +61,12 @@ public class PoliceStationInfoCache1 implements CommandLineRunner {
                 }
             }
         }
-        List<InstrumentMonitorInfoModel> instrumentMonitorInfoModelList = new ArrayList<InstrumentMonitorInfoModel>();
+        List<InstrumentMonitorInfoModel> instrumentMonitorInfoModelList;
         instrumentMonitorInfoModelList = instrumentMonitorInfoMapper.selectInstrumentInfo();
         for (InstrumentMonitorInfoModel instrumentMonitorInfoModel : instrumentMonitorInfoModelList) {
             objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
         }
-        List<Monitorinstrument> monitorinstrumentList = new ArrayList<Monitorinstrument>();
+        List<Monitorinstrument> monitorinstrumentList;
         monitorinstrumentList = monitorInstrumentMapper.selectInstrumentInfo();
         for (Monitorinstrument monitorinstrument : monitorinstrumentList) {
             if (StringUtils.isNotEmpty(monitorinstrument.getSn())) {

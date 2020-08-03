@@ -69,6 +69,11 @@ public class UserScheduLing {
 
 
 
+    /**
+     * 创建者
+     */
+    private String reminders;
+
 
 
 }

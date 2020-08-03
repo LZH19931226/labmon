@@ -18,7 +18,6 @@ import javax.sql.DataSource;
 
 @Configuration
 @MapperScan(basePackages = {"com.hc.mapper.laboratoryMain"}, sqlSessionFactoryRef = "NitrogenSqlSessionFactory")
-
 public class MainMapperConfig {
 
     @Autowired
