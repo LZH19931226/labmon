@@ -200,14 +200,26 @@ public class SocketMessageListener {
                 }else if (date.compareTo(starttime)<0){
                     lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(starttime) == 0).collect(Collectors.toList());
                 }
-                for (UserScheduLing s : lings) {
-                    Userright userright = new Userright();
-                    userright.setReminders(s.getReminders());
-                    String userphone = s.getUserphone();
-                    if (StringUtils.isNotEmpty(userphone)) {
-                        userright.setPhonenum(userphone);
+                if (CollectionUtils.isEmpty(lings)){
+                    BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
+                    String o = (String) hospitalphonenum.get(hospitalcode);
+                    if (StringUtils.isNotEmpty(o)) {
+                        list = JsonUtil.toList(o, Userright.class);
+                    } else {
+                        LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+                        return;
                     }
-                    list.add(userright);
+
+                }else {
+                    for (UserScheduLing s : lings) {
+                        Userright userright = new Userright();
+                        userright.setReminders(s.getReminders());
+                        String userphone = s.getUserphone();
+                        if (StringUtils.isNotEmpty(userphone)) {
+                            userright.setPhonenum(userphone);
+                        }
+                        list.add(userright);
+                    }
                 }
             } else {
                     BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
