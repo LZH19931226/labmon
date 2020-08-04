@@ -186,6 +186,11 @@ public class SocketMessageListener {
                 UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size()-1);
                 Date starttime = userScheduLing.getStarttime();
                 Date endtime = userScheduLing.getEndtime();
+
+                UserScheduLing userScheduLing1 = userScByHosSt1.get(0);
+                Date endtime1 = userScheduLing1.getEndtime();
+
+                //大于今天最晚时间
                 if (date.compareTo(endtime)>0){
                     BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
                     String o = (String) hospitalphonenum.get(hospitalcode);
@@ -195,10 +200,12 @@ public class SocketMessageListener {
                         LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
                         return;
                     }
+                    //处于今天之中
                 }else if (date.compareTo(starttime)>=0 && date.compareTo(endtime)<=0){
                     lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
+                    //位于昨天
                 }else if (date.compareTo(starttime)<0){
-                    lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(starttime) == 0).collect(Collectors.toList());
+                    lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(endtime1) == 0).collect(Collectors.toList());
                 }
                 if (CollectionUtils.isEmpty(lings)){
                     BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");

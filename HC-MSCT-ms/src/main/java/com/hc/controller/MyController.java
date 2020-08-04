@@ -119,7 +119,7 @@ public class MyController {
 			}else if (date.compareTo(starttime)>=0 && date.compareTo(endtime)<=0){
 				lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
 			}else if (date.compareTo(starttime)<0){
-				lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(starttime) == 0).collect(Collectors.toList());
+				lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) < 0).collect(Collectors.toList());
 			}
 		}
 		return lings;
