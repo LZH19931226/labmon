@@ -17,9 +17,10 @@ import java.util.List;
 public interface UserScheduLingDao extends JpaRepository<UserScheduLing,Integer> {
 
 
-    @Query(nativeQuery = true,value = "select  * from userscheduling where hospitalcode = ?1  and  DATE_FORMAT(starttime,'%Y-%m-%d') = ?2")
-    List<UserScheduLing> findUserScByHosSt(String hospitalcode,String starttime);
-
-    @Query(nativeQuery = true,value = "SELECT *,ABS( NOW( ) - startTime ) AS diffTime  FROM userscheduling ORDER BY createtime desc limit 1")
-    UserScheduLing selectRecentlyUs();
+    @Query(nativeQuery = true,value = "SELECT * FROM userscheduling WHERE hospitalcode = ?1 AND( DATE_FORMAT( starttime, '%Y-%m-%d' ) = ?2 or DATE_FORMAT( starttime, '%Y-%m-%d' ) = ?3 ) " +
+            "ORDER BY starttime ")
+    List<UserScheduLing> findUserScByHosSt(String hospitalcode,String starttime,String endtime);
+//
+//    @Query(nativeQuery = true,value = "SELECT *,ABS( NOW( ) - startTime ) AS diffTime  FROM userscheduling where hospitalcode = ?1  ORDER BY createtime desc limit 1")
+//    UserScheduLing selectRecentlyUs(String hospitalcode);
 }

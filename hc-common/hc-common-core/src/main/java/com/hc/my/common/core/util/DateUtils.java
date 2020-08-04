@@ -55,13 +55,16 @@ public class DateUtils {
     /**
      * 解析时间
      *
-     * @param nowTime   当前时间
+     * @param nowTime   当前时间 yyyy-mm-dd
      * @author liu
      */
     public static String paseDate(Date nowTime) {
        return dateFormat.format(nowTime);
 
     }
+
+
+
 
 
     /**

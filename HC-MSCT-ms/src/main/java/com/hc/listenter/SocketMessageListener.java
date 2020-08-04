@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @EnableBinding(BaoJinMsg.class)
@@ -178,21 +179,14 @@ public class SocketMessageListener {
             List<Userright> list = new ArrayList<>();
             //判断该医院当天是否有人员排班
             Date date = new Date();
-            UserScheduLing userScheduLing1 = userScheduLingDao.selectRecentlyUs();
-            if (null!=userScheduLing1) {
-                List<UserScheduLing> userScByHosSt;
-                Date starttime1 = userScheduLing1.getStarttime();
-                //判断当前时间区间
-                int i = date.compareTo(starttime1);
-                if (i<0){
-                    String yesterday = DateUtils.getYesterday(starttime1);
-                    userScByHosSt= userScheduLingDao.findUserScByHosSt(hospitalcode, yesterday);
-                }else {
-                    String today = DateUtils.paseDate(date);
-                    userScByHosSt= userScheduLingDao.findUserScByHosSt(hospitalcode, today);
-                }
-                if (CollectionUtils.isEmpty(userScByHosSt)){
-                    //无排班则取所有人员
+            String today = DateUtils.paseDate(date);
+            List<UserScheduLing> userScByHosSt1 = userScheduLingDao.findUserScByHosSt(hospitalcode, today,DateUtils.getYesterday(date));
+            if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
+                List<UserScheduLing> lings = new ArrayList<>();
+                UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size()-1);
+                Date starttime = userScheduLing.getStarttime();
+                Date endtime = userScheduLing.getEndtime();
+                if (date.compareTo(endtime)>0){
                     BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
                     String o = (String) hospitalphonenum.get(hospitalcode);
                     if (StringUtils.isNotEmpty(o)) {
@@ -201,28 +195,30 @@ public class SocketMessageListener {
                         LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
                         return;
                     }
-                }else {
-                    for (UserScheduLing s:userScByHosSt){
-                        Userright userright = new Userright();
-                        userright.setReminders(s.getReminders());
-                        String userphone = s.getUserphone();
-                        if (StringUtils.isNotEmpty(userphone)){
-                            userright.setPhonenum(userphone);
-                        }
-                        list.add(userright);
+                }else if (date.compareTo(starttime)>=0 && date.compareTo(endtime)<=0){
+                    lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
+                }else if (date.compareTo(starttime)<0){
+                    lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(starttime) == 0).collect(Collectors.toList());
+                }
+                for (UserScheduLing s : lings) {
+                    Userright userright = new Userright();
+                    userright.setReminders(s.getReminders());
+                    String userphone = s.getUserphone();
+                    if (StringUtils.isNotEmpty(userphone)) {
+                        userright.setPhonenum(userphone);
                     }
+                    list.add(userright);
                 }
             } else {
-                //无排班则取所有人员
-                BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-                String o = (String) hospitalphonenum.get(hospitalcode);
-                if (StringUtils.isNotEmpty(o)) {
-                    list = JsonUtil.toList(o, Userright.class);
-                } else {
-                    LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-                    return;
+                    BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
+                    String o = (String) hospitalphonenum.get(hospitalcode);
+                    if (StringUtils.isNotEmpty(o)) {
+                        list = JsonUtil.toList(o, Userright.class);
+                    } else {
+                        LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+                        return;
+                    }
                 }
-            }
             String pkid = model.getPkid();
             warningrecordDao.updatePhone(pkid);
             //获取电话

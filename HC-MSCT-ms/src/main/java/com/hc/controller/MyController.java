@@ -6,8 +6,11 @@ import com.hc.dao.MonitorequipmentDao;
 import com.hc.dao.UserScheduLingDao;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.UserScheduLing;
+import com.hc.entity.Userright;
 import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.my.common.core.util.DateUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +25,10 @@ import com.hc.Message.SingleCallByTtsUtils;
 import io.swagger.annotations.ApiOperation;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -101,14 +106,23 @@ public class MyController {
 
 	@GetMapping("asdadsa")
 	public List<UserScheduLing> test22(String v){
-		List<UserScheduLing> h0010 = userScheduLingDao.findUserScByHosSt("H0010", "2020-08-03");
-		h0010.forEach(s->{
-			Date starttime = s.getStarttime();
-			Date endtime = s.getEndtime();
-			boolean effectiveDate = DateUtils.isEffectiveDate(new Date(), starttime, endtime);
-            System.out.println(effectiveDate);
-		});
-		return userScheduLingDao.findUserScByHosSt("H0010","2020-08-03");
-	}
+		Date date = new Date();
+		String today = DateUtils.paseDate(date);
+		List<UserScheduLing> userScByHosSt1 = userScheduLingDao.findUserScByHosSt("H0010", today,DateUtils.getYesterday(date));
+		List<UserScheduLing> lings = new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
+			UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);
+			Date starttime = userScheduLing.getStarttime();
+			Date endtime = userScheduLing.getEndtime();
+			if (date.compareTo(endtime)>0){
+				System.out.println("大于最大时间无");
+			}else if (date.compareTo(starttime)>=0 && date.compareTo(endtime)<=0){
+				lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
+			}else if (date.compareTo(starttime)<0){
+				lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(starttime) == 0).collect(Collectors.toList());
+			}
+		}
+		return lings;
+ 	}
 
 }
