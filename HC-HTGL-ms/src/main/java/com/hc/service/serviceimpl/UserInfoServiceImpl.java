@@ -12,7 +12,6 @@ import com.hc.service.UserInfoService;
 import com.hc.units.ApiResponse;
 import com.hc.units.TokenHelper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +42,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public ApiResponse<String> userLogin(Userback userback) {
         ApiResponse<String> apiResponse = new ApiResponse<String>();
-        Userback userback1 = new Userback();
+        Userback userback1;
         try{
             userback1 = userInfoMapper.userLogin(userback);
             if (StringUtils.isEmpty(userback1)){
