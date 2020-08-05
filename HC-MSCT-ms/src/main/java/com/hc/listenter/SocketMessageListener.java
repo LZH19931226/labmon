@@ -180,48 +180,27 @@ public class SocketMessageListener {
             //判断该医院当天是否有人员排班
             Date date = new Date();
             String today = DateUtils.paseDate(date);
-            List<UserScheduLing> userScByHosSt1 = userScheduLingDao.findUserScByHosSt(hospitalcode, today,DateUtils.getYesterday(date));
+            List<UserScheduLing> userScByHosSt1 = userScheduLingDao.findUserScByHosSt(hospitalcode, today, DateUtils.getYesterday(date));
             if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
                 List<UserScheduLing> lings = new ArrayList<>();
-                UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size()-1);
+                UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);
                 Date starttime = userScheduLing.getStarttime();
                 Date endtime = userScheduLing.getEndtime();
-
                 UserScheduLing userScheduLing1 = userScByHosSt1.get(0);
                 Date endtime1 = userScheduLing1.getEndtime();
-
-                //大于今天最晚时间
-                if (date.compareTo(endtime)>0){
-                    BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-                    String o = (String) hospitalphonenum.get(hospitalcode);
-                    if (StringUtils.isNotEmpty(o)) {
-                        list = JsonUtil.toList(o, Userright.class);
-                    } else {
-                        LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-                        return;
-                    }
-                    //处于今天之中
-                }else if (date.compareTo(starttime)>=0 && date.compareTo(endtime)<=0){
+                //大于今天最晚时间不处理
+                //处于今天
+                if (date.compareTo(starttime) >= 0 && date.compareTo(endtime) <= 0) {
                     lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
                     //位于昨天
-                }else if (date.compareTo(starttime)<0){
+                } else if (date.compareTo(starttime) < 0) {
                     lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(endtime1) == 0).collect(Collectors.toList());
                 }
-                if (CollectionUtils.isEmpty(lings)){
-                    BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-                    String o = (String) hospitalphonenum.get(hospitalcode);
-                    if (StringUtils.isNotEmpty(o)) {
-                        list = JsonUtil.toList(o, Userright.class);
-                    } else {
-                        LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-                        return;
-                    }
-
-                }else {
+                if (CollectionUtils.isNotEmpty(lings)) {
                     for (UserScheduLing s : lings) {
                         Userright userright = new Userright();
                         String reminders = s.getReminders();
-                        if (StringUtils.isNotEmpty(reminders)){
+                        if (StringUtils.isNotEmpty(reminders)) {
                             userright.setReminders(reminders);
                         }
                         String userphone = s.getUserphone();
@@ -231,16 +210,17 @@ public class SocketMessageListener {
                         list.add(userright);
                     }
                 }
-            } else {
-                    BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-                    String o = (String) hospitalphonenum.get(hospitalcode);
-                    if (StringUtils.isNotEmpty(o)) {
-                        list = JsonUtil.toList(o, Userright.class);
-                    } else {
-                        LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-                        return;
-                    }
+            }
+            if (CollectionUtils.isEmpty(list)){
+                BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
+                String o = (String) hospitalphonenum.get(hospitalcode);
+                if (StringUtils.isNotEmpty(o)) {
+                    list = JsonUtil.toList(o, Userright.class);
+                } else {
+                    LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+                    return;
                 }
+            }
             String pkid = model.getPkid();
             warningrecordDao.updatePhone(pkid);
             //获取电话
