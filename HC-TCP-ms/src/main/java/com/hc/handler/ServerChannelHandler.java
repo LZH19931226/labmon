@@ -30,7 +30,7 @@ import java.util.Random;
 
 @Component
 @Sharable
-public class ServerChannelHandler extends ChannelInboundHandlerAdapter{
+public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	
 	
 	private static final Logger log = LoggerFactory.getLogger(ServerChannelHandler.class);

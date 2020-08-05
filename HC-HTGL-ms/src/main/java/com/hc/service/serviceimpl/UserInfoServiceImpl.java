@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -81,6 +82,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    @Transactional
     public ApiResponse<String> addusersc(UserScheduLingPostModel userScheduLingPostModel) {
         List<UserScheduLing> userScheduLings = userScheduLingPostModel.getUserScheduLings();
         if (CollectionUtils.isEmpty(userScheduLings)){

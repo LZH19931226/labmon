@@ -32,30 +32,20 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-
         //return true;
         String url = request.getRequestURI();        // 用户访问地址
         String token = request.getHeader("token");
         //获取用户token
         HttpSession session = request.getSession();
-        PrintWriter out = null;
         ResModel resModel = new ResModel();
         logger.info("LoginInterceptor 调用接口！================== Url:" + url + ";Token:" + token + ";SessionID:" + session.getId());
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String strBackUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + httpRequest.getContextPath()
-                + httpRequest.getServletPath() + "?" + (httpRequest.getQueryString());
-
         String path = request.getServletPath();
-
-        //String tokenValue = request.getHeader("token");
 
         if (url.indexOf("/error") > -1) {
             logger.error("页面发生错误 跳转到 /error 页面中");
             return true;
         }
-
-        String publicPath = baseConfiguration.getPublicPath();
         //if (path.matches(Const.NO_INTERCEPTOR_PATH) || path.matches(".*/api/.*") ||path.matches(baseConfiguration.getPublicPath())) {
         if (path.matches(Const.NO_INTERCEPTOR_PATH) || path.matches(baseConfiguration.getPublicPath()) ||
                 path.matches(".*/api/userBackInfo/userLogin")|| path.matches("/swagger-resources/configuration/ui")
@@ -70,16 +60,14 @@ public class LoginInterceptor implements HandlerInterceptor {
             logger.info("未匹配 NO_INTERCEPTOR_PATH path : " + path);
 
             if (StringUtils.isEmpty(token)) {//数据是空
-//                logger.info("token为空");
-//                //res.put("code", HttpServletResponse.SC_PAYMENT_REQUIRED);  //402 :当前账户未登录，请重新登录
-//                resModel.setCode(HttpServletResponse.SC_PAYMENT_REQUIRED);
-//                resModel.setMessage("Unauthorized");
-//
-//                response.setContentType("application/json;charset=UTF-8");
-//                response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
-//                response.getWriter().write(JsonUtil.toJson(resModel));
-//                return false;
-                return true;
+                //res.put("code", HttpServletResponse.SC_PAYMENT_REQUIRED);  //402 :当前账户未登录，请重新登录
+                resModel.setCode(HttpServletResponse.SC_PAYMENT_REQUIRED);
+                resModel.setMessage("Unauthorized");
+
+                response.setContentType("application/json;charset=UTF-8");
+                response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
+                response.getWriter().write(JsonUtil.toJson(resModel));
+                return false;
             } else {//有 Token，解析
                 //Map<String, Object> newUser = userRightrServcie.findUserByToken(tokenValue);
                     /*String id = TokenHelper.getUserID(token);

@@ -220,7 +220,10 @@ public class SocketMessageListener {
                 }else {
                     for (UserScheduLing s : lings) {
                         Userright userright = new Userright();
-                        userright.setReminders(s.getReminders());
+                        String reminders = s.getReminders();
+                        if (StringUtils.isNotEmpty(reminders)){
+                            userright.setReminders(reminders);
+                        }
                         String userphone = s.getUserphone();
                         if (StringUtils.isNotEmpty(userphone)) {
                             userright.setPhonenum(userphone);
