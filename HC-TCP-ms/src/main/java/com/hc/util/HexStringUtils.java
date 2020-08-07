@@ -51,9 +51,11 @@ public class HexStringUtils {
 	   
 	   //343834333038303030333233
 	   //484308000323
-	   String data="31383231303530303835";
-	   
-	   String fromHex = fromHex(data);
+       String cmd="4843980b313838383038303030310a9223";
+
+       String substring = cmd.substring(8, 28);
+
+	   String fromHex = fromHex(substring);
 	   
 	   System.out.println(fromHex);
 	   

@@ -961,7 +961,8 @@ public class cmdidParseUtils {
     public static ParamaterModel pase98(String cmd) {
         ParamaterModel paramaterModel = new ParamaterModel();
         String type = cmd.substring(28, 30);
-        switch (type) {
+        String electricity = paramaterModelUtils.electricity(type);
+        switch (electricity) {
             //正常->预警； (报警信息：有漏气倾向)
             case "01":
                 paramaterModel.setAirflow("G");
@@ -1086,10 +1087,10 @@ public class cmdidParseUtils {
 
 
     public static void main(String[] args) {
-        String id = "48 43 A6 1A  31 38 33 35 31 35 30 30 30 31  01 72 01 72 01 72 01 72 01 72 01 72 00 32 00 3C B3 23 ";
+        String id = "4843980b313838383038303030310a9223";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
-        ParamaterModel paramaterModel = paseA6(s, null, null);
+        ParamaterModel paramaterModel = pase98(s);
         System.out.println(paramaterModel);
     }
 
