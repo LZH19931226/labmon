@@ -435,7 +435,6 @@ public class WarningServiceImpl implements WarningService {
                         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                         warningrecord = warningrecordDao.save(warningrecord);
                         LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
-                        return null;
                     } else if ("M".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备漏气报警");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
@@ -444,7 +443,6 @@ public class WarningServiceImpl implements WarningService {
                         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                         warningrecord = warningrecordDao.save(warningrecord);
                         LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
-                        return null;
                     } else if ("O".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备气压低报警");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
@@ -453,7 +451,6 @@ public class WarningServiceImpl implements WarningService {
                         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                         warningrecord = warningrecordDao.save(warningrecord);
                         LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
-                        return null;
                     } else {
                         break;
                     }

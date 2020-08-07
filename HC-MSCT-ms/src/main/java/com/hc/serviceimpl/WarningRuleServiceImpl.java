@@ -88,8 +88,6 @@ WarningRuleServiceImpl implements WarningRuleService {
                     //根据医院编号查询报警联系人电话号码
                     //第三次报警
                     redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                    Object o1 = cj.get("hospitalcode:" + hospitalcode, instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-
                     //判断当前时间是否大于 pushtime  然后是否app推送
 //                    Date pushtime = instrumentMonitorInfoModel.getPushtime();
 ////                    LOGGER.info("pushtime:"+pushtime);

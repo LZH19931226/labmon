@@ -809,7 +809,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 case "98":
                     String airflow2 = model.getAirflow();
                     if (StringUtils.isNotEmpty(airflow2)){
-                        monitorequipmentlastdata.setCurrentairflow(airflow2);
+                        monitorequipmentlastdata.setCurrentairflow1(airflow2); ;
                         //只有airFlow 是 I M O才报警生成报警模型
                         if(StringUtils.equalsAnyIgnoreCase(airflow2,"I","M","O")){
                             WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(airflow2, monitorinstrument, model.getNowTime(), 25, "气流");

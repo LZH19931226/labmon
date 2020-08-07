@@ -305,15 +305,9 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         curvelReqeustModel.setSearch(search);
         curvelReqeustModel.setDate(date);
         curvelReqeustModel.setEquipmentno(equipmentno);
-        List<String> exceptionData = new ArrayList<String>();
-        exceptionData.add("A");
-        exceptionData.add("B");
-        exceptionData.add("C");
-        exceptionData.add("D");
-        exceptionData.add("E");
-        exceptionData.add("F");
+        List<String> exceptionData = Arrays.asList("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q");
         try {
-            List<Monitorequipmentlastdata> lastDataModelList = new ArrayList<Monitorequipmentlastdata>();
+            List<Monitorequipmentlastdata> lastDataModelList;
             if (flags) {
                 lastDataModelList = JsonUtil.toList(o, Monitorequipmentlastdata.class);
             } else {
@@ -325,9 +319,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 apiResponse.setCode(ApiResponse.FAILED);
                 return apiResponse;
             }
-
-//            LastDataModel lastDataModel1 = lastDataModelList.get(0);
-//            String equipmentname = lastDataModel1.getEquipmentname();
             Monitorequipment equipmentByNo = equipmentInfoMapper.getEquipmentByNo(equipmentno);
             String equipmentname = equipmentByNo.getEquipmentname();
             List<String> legend = new ArrayList<String>();
@@ -401,7 +392,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             List<String> rightCompartmentHumidity = new ArrayList<String>();
             List<String> rightCompartmentHumidityTime = new ArrayList<String>();
             for (Monitorequipmentlastdata lastDataModel : lastDataModelList) {
-                //       lastDataModel.setInputdatetime(TimeHelper.formats(lastDataModel.getInputdatetime()));
                 //液氮罐是否存在差值
                 String da = TimeHelper.formats(lastDataModel.getInputdatetime());
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperaturediff())) {
@@ -475,21 +465,18 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 }
                 //温度有无值
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature()) && !exceptionData.contains(lastDataModel.getCurrenttemperature())) {
-                    // if (!"A".equals() && !"B".equals(lastDataModel.getCurrenttemperature()) && !"C".equals(lastDataModel.getCurrenttemperature()) && !"D".equals(lastDataModel.getCurrenttemperature()) && !"E".equals(lastDataModel.getCurrenttemperature())) {
                     temp.add(lastDataModel.getCurrenttemperature());
                     tempTime.add(da);
 
                 }
                 //CO2有无值
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrentcarbondioxide()) && !exceptionData.contains(lastDataModel.getCurrentcarbondioxide())) {
-                    //if (!"A".equals(lastDataModel.getCurrentcarbondioxide()) && !"B".equals(lastDataModel.getCurrentcarbondioxide()) && !"C".equals(lastDataModel.getCurrentcarbondioxide()) && !"D".equals(lastDataModel.getCurrentcarbondioxide()) && !"E".equals(lastDataModel.getCurrentcarbondioxide())) {
                     CO2.add(lastDataModel.getCurrentcarbondioxide());
                     CO2Time.add(da);
                     //}
                 }
                 //氧气有无值
                 if (StringUtils.isNotEmpty(lastDataModel.getCurrento2()) && !exceptionData.contains(lastDataModel.getCurrento2())) {
-                    // if (!"A".equals(lastDataModel.getCurrento2()) && !"B".equals(lastDataModel.getCurrento2()) && !"C".equals(lastDataModel.getCurrento2()) && !"D".equals(lastDataModel.getCurrento2()) && !"E".equals(lastDataModel.getCurrento2())) {
                     O2.add(lastDataModel.getCurrento2());
                     O2Time.add(da);
                     //}
@@ -743,133 +730,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public ApiResponse<CurveInfoModel> getCurveSecond(String date, List<String> equipmentnoList, String type) {
         ApiResponse<CurveInfoModel> apiResponse = new ApiResponse<CurveInfoModel>();
-//        CurveInfoModel curveInfoModel = new CurveInfoModel();
-//        List<List<LastDataModel>> lastDataModelLists = new ArrayList<List<LastDataModel>>();
-//        CurvelReqeustModel curvelReqeustModel = new CurvelReqeustModel();
-//        curvelReqeustModel.setDate(date);
-//        try {
-//            for (String equipmentno : equipmentnoList) {
-//                curvelReqeustModel.setEquipmentno(equipmentno);
-//                List<LastDataModel> lastDataModelList = new ArrayList<LastDataModel>();
-//                lastDataModelList = equipmentInfoMapper.getCurveInfo(curvelReqeustModel);
-//                if (!CollectionUtils.isEmpty(lastDataModelList)) {
-//                    lastDataModelLists.add(lastDataModelList);
-//                }
-//            }
-//            if (CollectionUtils.isEmpty(lastDataModelLists)) {
-//                apiResponse.setCode(ApiResponse.FAILED);
-//                apiResponse.setMessage("无当前曲线数据");
-//                return apiResponse;
-//            }
-//            List<String> tempTime = new ArrayList<String>();
-//            List<String> CO2Time = new ArrayList<String>();
-//            List<String> O2Time = new ArrayList<String>();
-//            List<String> legend = new ArrayList<String>();
-//            List<SeriesDataModel> seriesDataModelTEMPList = new ArrayList<SeriesDataModel>();
-//            List<SeriesDataModel> seriesDataModelCO2List = new ArrayList<SeriesDataModel>();
-//            List<SeriesDataModel> seriesDataModelO2List = new ArrayList<SeriesDataModel>();
-//            for (List<LastDataModel> lastDataModels : lastDataModelLists) {
-//                legend.add(lastDataModels.get(0).getEquipmentname());
-//                List<String> temp = new ArrayList<String>();
-//                List<String> CO2 = new ArrayList<String>();
-//                List<String> O2 = new ArrayList<String>();
-//                tempTime = new ArrayList<String>();
-//                O2Time = new ArrayList<String>();
-//                CO2Time = new ArrayList<String>();
-//                for (LastDataModel model : lastDataModels) {
-//
-//                    switch (type) {
-//                        case "0":
-//                            //温度有无值
-//                            if (!StringUtils.isEmpty(model.getCurrenttemperature())) {
-//                                temp.add(model.getCurrenttemperature());
-//                                tempTime.add(model.getInputdatetime());
-//                            }
-//                            //CO2有无值
-//                            if (!StringUtils.isEmpty(model.getCurrentcarbondioxide())) {
-//                                CO2.add(model.getCurrentcarbondioxide());
-//                                CO2Time.add(model.getInputdatetime());
-//                            }
-//                            //氧气有无值
-//                            if (!StringUtils.isEmpty(model.getCurrento2())) {
-//                                O2.add(model.getCurrento2());
-//                                O2Time.add(model.getInputdatetime());
-//                            }
-//                            break;
-//                        case "1":
-//                            //氧气有无值
-//                            if (!StringUtils.isEmpty(model.getCurrento2())) {
-//                                O2.add(model.getCurrento2());
-//                                O2Time.add(model.getInputdatetime());
-//                            }
-//                            break;
-//                        case "2":
-//                            if (!StringUtils.isEmpty(model.getCurrentcarbondioxide())) {
-//                                CO2.add(model.getCurrentcarbondioxide());
-//                                CO2Time.add(model.getInputdatetime());
-//                            }
-//                            break;
-//                        case "3":
-//                            //温度有无值
-//                            if (!StringUtils.isEmpty(model.getCurrenttemperature())) {
-//                                temp.add(model.getCurrenttemperature());
-//                                tempTime.add(model.getInputdatetime());
-//                            }
-//
-//                    }
-//                }
-//                if (!CollectionUtils.isEmpty(temp)) {
-//                    SeriesDataModel seriesDataModel = new SeriesDataModel();
-//                    seriesDataModel.setName(lastDataModels.get(0).getEquipmentname());
-//                    seriesDataModel.setDate(temp);
-//                    seriesDataModelTEMPList.add(seriesDataModel);
-//
-//                }
-//                if (!CollectionUtils.isEmpty(CO2)) {
-//                    SeriesDataModel seriesDataModel = new SeriesDataModel();
-//                    seriesDataModel.setName(lastDataModels.get(0).getEquipmentname());
-//                    seriesDataModel.setDate(CO2);
-//                    seriesDataModelCO2List.add(seriesDataModel);
-//
-//                }
-//                if (!CollectionUtils.isEmpty(O2)) {
-//                    SeriesDataModel seriesDataModel = new SeriesDataModel();
-//                    seriesDataModel.setName(lastDataModels.get(0).getEquipmentname());
-//                    seriesDataModel.setDate(O2);
-//                    seriesDataModelO2List.add(seriesDataModel);
-//
-//                }
-//
-//            }
-//            if (!CollectionUtils.isEmpty(seriesDataModelTEMPList)) {
-//                CurveDataModel curveDataModel = new CurveDataModel();
-//                curveDataModel.setLegend(legend);
-//                curveDataModel.setXaxis(tempTime);
-//                curveDataModel.setSeries(seriesDataModelTEMPList);
-//                curveInfoModel.setTemp(curveDataModel);
-//            }
-//            if (!CollectionUtils.isEmpty(seriesDataModelO2List)) {
-//                CurveDataModel curveDataModel = new CurveDataModel();
-//                curveDataModel.setLegend(legend);
-//                curveDataModel.setXaxis(O2Time);
-//                curveDataModel.setSeries(seriesDataModelO2List);
-//                curveInfoModel.setO2(curveDataModel);
-//            }
-//            if (!CollectionUtils.isEmpty(seriesDataModelCO2List)) {
-//                CurveDataModel curveDataModel = new CurveDataModel();
-//                curveDataModel.setLegend(legend);
-//                curveDataModel.setXaxis(CO2Time);
-//                curveDataModel.setSeries(seriesDataModelCO2List);
-//                curveInfoModel.setCo2(curveDataModel);
-//            }
-//            apiResponse.setResult(curveInfoModel);
-//            return apiResponse;
-//        } catch (Exception e) {
-//            LOGGER.error("失败：" + e.getMessage());
-//            apiResponse.setMessage("服务异常");
-//            apiResponse.setCode(ApiResponse.FAILED);
-//            return apiResponse;
-//        }
         return null;
     }
 
@@ -1407,11 +1267,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         }
         FileUtil.exportExcleUnSheets(listss, titleLists, sheetLists, classLists,
                 one.getHospitalname() +operationdate + "监控数据.xls", response);
-
-
-
-
-
         return apiResponse;
 
     }

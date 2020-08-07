@@ -14,6 +14,7 @@ import com.hc.service.WarningService;
 import com.hc.utils.HttpUtil;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
+import com.hc.utils.UnitCase;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -57,7 +58,7 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME)
     public void onMessage1(String messageContent) {
-        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME + ":{}" + messageContent);
+        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME + ":" + messageContent);
         msctMessage(messageContent);
 
     }
@@ -68,7 +69,7 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME1)
     public void onMessage2(String messageContent) {
-        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME1 + ":{}" + JsonUtil.toJson(messageContent));
+        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME1 + ":" + JsonUtil.toJson(messageContent));
         msctMessage(messageContent);
 
     }
@@ -79,7 +80,7 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME2)
     public void onMessage3(String messageContent) {
-        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + ":{}" + messageContent);
+        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + ":" + messageContent);
         msctMessage(messageContent);
 
     }
@@ -173,7 +174,7 @@ public class SocketMessageListener {
                 return;
             }
             String equipmentname = model.getEquipmentname();
-            String unit = model.getUnit();
+            String unit = UnitCase.caseUint(model.getUnit());
             String value = model.getValue();
             String hospitalcode = model.getHospitalcode();
             List<Userright> list = new ArrayList<>();
@@ -225,6 +226,7 @@ public class SocketMessageListener {
             warningrecordDao.updatePhone(pkid);
             //获取电话
             boolean flag = false;
+            LOGGER.info("通知报警的人员:"+JsonUtil.toJson(list));
             for (Userright userright : list) {
                 // 发送短信
                 if (StringUtils.isNotEmpty(userright.getPhonenum())) {

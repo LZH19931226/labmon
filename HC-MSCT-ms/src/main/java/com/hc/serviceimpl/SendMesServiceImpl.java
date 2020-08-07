@@ -31,7 +31,7 @@ public class SendMesServiceImpl implements SendMesService {
     @Override
     public SendSmsResponse sendMes(String phonenum, String equipmentname, String unit, String value) {
         SendSmsResponse sendmsg = moblieMessageUtil.sendmsg(phonenum, equipmentname, unit, value);
-        log.info("拨打电话对象:{},响应值:{}",phonenum,sendmsg.getCode());
+        log.info("发送短信:{},响应值:{}",phonenum,sendmsg.getCode());
         return sendmsg;
     }
 
