@@ -131,8 +131,11 @@ public interface MonitorInstrumentMapper {
             "and instrumenttypeid = #{instrumenttypeid} and ifnull(channel,'0') = #{channel}")
     List<Monitorinstrument> showInstruments(@Param("hospitalcode") String hospitalcode,@Param("instrumenttypeid") Integer instrumenttypeid,@Param("channel") String channel);
 
-    @Select("select count(*) from monitorinstrument where sn = #{sn} and instrumentno !=#{instrumentno}")
-    Integer isSn(@Param("sn") String sn,@Param("instrumentno") String instrumentno);
+    @Select("select * from monitorinstrument where instrumentno =#{instrumentno}")
+    Monitorinstrument isSn(@Param("instrumentno") String instrumentno);
+
+    @Select("select * from monitorinstrument where sn =#{sn}")
+    Monitorinstrument isSns(@Param("sn") String sn);
 
     @Select("select * from monitorinstrument where channel = '1' or channel = '2'")
     List<Monitorinstrument> showMonitorInstrumentChannel();
@@ -168,6 +171,7 @@ public interface MonitorInstrumentMapper {
 
     @Select("select * from monitorinstrument where sn = #{sn} limit 1")
     Monitorinstrument getMonitorInstrument(@Param("sn") String sn);
+
 
 }
 

@@ -231,13 +231,15 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
         BigDecimal saturation = instrumentInfoModel.getSaturation();
         try {
             //修改sn时候查询当前修改后的sn是否在其余位置存在
-//            Integer count = monitorInstrumentMapper.isSn(sn, instrumentno);
-//            if (count > 0) {
-//                apiResponse.setMessage("当前sn已被其他设备占用");
-//                apiResponse.setCode(ApiResponse.FAILED);
-//                return apiResponse;
-//            }\
-            Monitorinstrument one = monitorInstrumentDao.getOne(instrumentno);
+            Monitorinstrument one = monitorInstrumentMapper.isSn(instrumentno);
+            if (!StringUtils.equals(sn,one.getSn())){
+                Monitorinstrument sn2 = monitorInstrumentMapper.isSns(sn);
+                if (null!=sn2) {
+                    apiResponse.setMessage("当前sn已被其他设备占用");
+                    apiResponse.setCode(ApiResponse.FAILED);
+                    return apiResponse;
+                }
+            }
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             String channel1 = one.getChannel();
             if (StringUtils.isNotEmpty(channel1)) {
