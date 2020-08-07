@@ -83,22 +83,21 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Transactional
     public ApiResponse<String> addusersc(UserScheduLingPostModel userScheduLingPostModel) {
         List<UserScheduLing> userScheduLings = userScheduLingPostModel.getUserScheduLings();
-        if (CollectionUtils.isEmpty(userScheduLings)){
-            return ApiResponse.fail("不允许添加空");
-        }
         Date starttime = userScheduLingPostModel.getStarttime();
         String createuser = userScheduLingPostModel.getCreateuser();
         Date endtime = userScheduLingPostModel.getEndtime();
         String hospitalcode = userScheduLingPostModel.getHospitalcode();
         userScheduLingDao.deleteStHos(DateUtils.paseDate(starttime),hospitalcode);
-        userScheduLings.forEach(s->{
-            s.setStarttime(starttime);
-            s.setEndtime(endtime);
-            s.setHospitalcode(hospitalcode);
-            s.setCreatetime(new Date());
-            s.setCreateuser(createuser);
-        });
-        userScheduLingDao.save(userScheduLings);
+        if (CollectionUtils.isNotEmpty(userScheduLings)){
+            userScheduLings.forEach(s->{
+                s.setStarttime(starttime);
+                s.setEndtime(endtime);
+                s.setHospitalcode(hospitalcode);
+                s.setCreatetime(new Date());
+                s.setCreateuser(createuser);
+            });
+            userScheduLingDao.save(userScheduLings);
+        }
         return ApiResponse.success();
     }
 

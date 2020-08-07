@@ -964,35 +964,47 @@ public class cmdidParseUtils {
         switch (type) {
             //正常->预警； (报警信息：有漏气倾向)
             case "01":
-                paramaterModel.setAirflow("A");
+                paramaterModel.setAirflow("G");
                 break;
             //预警->正常；(报警信息：恢复正常)
             case "02":
-                paramaterModel.setAirflow("B");
+                paramaterModel.setAirflow("H");
                 break;
             //预警->报警； (报警信息：发生报警事件)
             case "03":
-                paramaterModel.setAirflow("C");
+                paramaterModel.setAirflow("I");
                 break;
             //报警->关闭； (报警信息： 手动关闭报警)
             case "04":
-                paramaterModel.setAirflow("D");
+                paramaterModel.setAirflow("J");
                 break;
             //设备正常运行； (状态信息， 3 分钟/次)
             case "05":
-                paramaterModel.setAirflow("E");
+                paramaterModel.setAirflow("K");
                 break;
             //设备漏气预警； (状态信息， 3 分钟/次)
             case "06":
-                paramaterModel.setAirflow("F");
+                paramaterModel.setAirflow("L");
                 break;
             //设备漏气报警； (状态信息， 3 分钟/次)
             case "07":
-                paramaterModel.setAirflow("G");
+                paramaterModel.setAirflow("M");
                 break;
             //手动关闭报警； (状态信息， 3 分钟/次)
             case "08":
-                paramaterModel.setAirflow("H");
+                paramaterModel.setAirflow("N");
+                break;
+            //设备气压低报警；(状态信息，3 分钟/次)
+            case "09":
+                paramaterModel.setAirflow("O");
+                break;
+            //手动关闭气压低报警；(状态信息，3 分钟/次)
+            case "10":
+                paramaterModel.setAirflow("P");
+                break;
+            //休眠模式；(状态信息，3 分钟/次)
+            case "11":
+                paramaterModel.setAirflow("Q");
                 break;
             default:
                 return null;

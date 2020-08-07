@@ -170,7 +170,7 @@ public class WarningServiceImpl implements WarningService {
                             //老版本mt200m判断逻辑生产周大于20年15周为新的mt200m报警逻辑更改
                             String sn = monitorinstrument.getSn();
                             String proSn = sn.substring(0, 4);
-                            if (Integer.parseInt(proSn)<2031) {
+                            if (Integer.parseInt(proSn) < 2031) {
                                 //当一路温度值存在异常，整个值无效
                                 // 当两个值相差3度，值无效
                                 if (StringUtils.equalsAny(data1, "A", "B", "C", "D", "E") || Math.abs(new Double(data) - new Double(data1)) > 3) {
@@ -194,11 +194,11 @@ public class WarningServiceImpl implements WarningService {
                                     warningrecord = warningrecordDao.save(warningrecord);
                                     LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
                                 }
-                            }else {
+                            } else {
                                 //获取二路温度探头设置的值
                                 BigDecimal mt200mHighLimit = instrumentparamconfigDao.getMt200mHighLimit(monitorinstrument.getInstrumentno());
                                 //大于最大值
-                                if (LowHighVerify.verifyMt200m(instrumentMonitorInfoModel.getHighlimit(), data)&& LowHighVerify.verifyMt200m(mt200mHighLimit, data1)){
+                                if (LowHighVerify.verifyMt200m(instrumentMonitorInfoModel.getHighlimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit, data1)) {
                                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
                                     warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
                                     warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
@@ -419,6 +419,34 @@ public class WarningServiceImpl implements WarningService {
                         return null;
                     } else if ("F".equals(data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：总开关关闭，但未断电");
+                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
+                        warningrecord.setInputdatetime(date);
+                        warningrecord.setHospitalcode(hospitalcode);
+                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                        warningrecord = warningrecordDao.save(warningrecord);
+                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        return null;
+                        //I M O为98协议上传的气流状态 需要报警的模型
+                    } else if ("I".equals(data)) {
+                        warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：发生漏气报警事件");
+                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
+                        warningrecord.setInputdatetime(date);
+                        warningrecord.setHospitalcode(hospitalcode);
+                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                        warningrecord = warningrecordDao.save(warningrecord);
+                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        return null;
+                    } else if ("M".equals(data)) {
+                        warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备漏气报警");
+                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
+                        warningrecord.setInputdatetime(date);
+                        warningrecord.setHospitalcode(hospitalcode);
+                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                        warningrecord = warningrecordDao.save(warningrecord);
+                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        return null;
+                    } else if ("O".equals(data)) {
+                        warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备气压低报警");
                         warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
