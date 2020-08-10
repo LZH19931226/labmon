@@ -158,7 +158,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             monitorequipmentList.forEach(s->{
                 String sn = s.getSn();
                 Monitorequipmentlastdata monitorequipmentlastdata = s.getMonitorequipmentlastdata();
-                if (null!=monitorequipmentlastdata){
+                if (null!=monitorequipmentlastdata&&StringUtils.isNotEmpty(sn)){
                     Monitorequipmentlastdata monitorequipmentlastdata1 = MtUnConnectedSensorFilter.mtCheckUnCs(sn, monitorequipmentlastdata);
                     s.setMonitorequipmentlastdata(monitorequipmentlastdata1);
                 }
@@ -168,7 +168,8 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             apiResponse.setResult(monitorequipmentList);
             return apiResponse;
         } catch (Exception e) {
-            LOGGER.error("失败：" + e.getMessage());
+            e.printStackTrace();
+            LOGGER.error("失败：" + e);
             apiResponse.setMessage("服务异常");
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
@@ -228,7 +229,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             monitorequipmentList.forEach(s->{
                 String sn = s.getSn();
                 Monitorequipmentlastdata monitorequipmentlastdata = s.getMonitorequipmentlastdata();
-                if (null!=monitorequipmentlastdata){
+                if (null!=monitorequipmentlastdata&&StringUtils.isNotEmpty(sn)){
                     Monitorequipmentlastdata monitorequipmentlastdata1 = MtUnConnectedSensorFilter.mtCheckUnCs(sn, monitorequipmentlastdata);
                     s.setMonitorequipmentlastdata(monitorequipmentlastdata1);
                 }
