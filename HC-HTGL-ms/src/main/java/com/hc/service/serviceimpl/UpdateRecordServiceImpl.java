@@ -315,7 +315,7 @@ public class UpdateRecordServiceImpl implements UpdateRecordService {
         if (timeouttime1 == null) {
             timeouttime1 = 0;
         }
-        if (timeouttime != timeouttime1) {
+        if (timeouttime.equals(timeouttime1)) {
             flag = true;
             Operationlogdetail operationlogdetail = new Operationlogdetail();
             operationlogdetail.setFiledname("timeouttime");

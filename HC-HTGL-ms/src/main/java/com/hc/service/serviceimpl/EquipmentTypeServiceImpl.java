@@ -55,11 +55,6 @@ public class EquipmentTypeServiceImpl implements EquipmentTypeService {
         Hospitalequiment hospitalequiment = new Hospitalequiment();
         String hospitalcode = equipmentTypeInfoModel.getHospitalcode();
         String equipmenttypeid = equipmentTypeInfoModel.getEquipmenttypeid();
-//        HospitalequimentKey hospitalequimentKey = new HospitalequimentKey();
-//
-//        String h = equipmentTypeInfoModel.getHospitalcode();
-//        hospitalequimentKey.setHospitalcode(h);
-//        hospitalequimentKey.setEquipmenttypeid(equipmentTypeInfoModel.getEquipmenttypeid());
         hospitalequiment.setHospitalequimentKey(new HospitalequimentKey(equipmenttypeid, hospitalcode));
         hospitalequiment.setIsvisible(equipmentTypeInfoModel.getIsvisible());
         String timeout = equipmentTypeInfoModel.getTimeout();
@@ -84,60 +79,7 @@ public class EquipmentTypeServiceImpl implements EquipmentTypeService {
             Hospitalofreginfo one = hospitalofreginfoDao.getOne(hospitalcode1);
             updateRecordService.updateEquipmentType(one.getHospitalname(),usernames,equipmentTypeInfoModel1,equipmentTypeInfoModel,"0","0");
             hospitalEquipmentDao.save(hospitalequiment);
-
             return apiResponse;
-
-            //添加设备
-//            for (EquipmentInfoModel equipmentInfoModel : equipmentTypeInfoModel.getEquipmentInfoModelList()) {
-//                Monitorequipment monitorequipment = new Monitorequipment();
-//                monitorequipment.setEquipmentname(equipmentInfoModel.getEquipmentname());
-//                monitorequipment.setClientvisible(true);
-//                monitorequipment.setEquipmenttypeid(equipmenttypeid);
-//                monitorequipment.setEquipmentbrand(equipmentInfoModel.getEquipmentbrand());
-//                //uuid生成主键
-//                monitorequipment.setEquipmentno(UUID.randomUUID().toString().replaceAll("-", ""));
-//                monitorequipment.setHospitalcode(hospitalcode);
-//                monitorequipment = monitorEquipmentDao.save(monitorequipment);
-//                //判断当前sn号是否存在
-//                Integer J = monitorInstrumentMapper.isExist(equipmentInfoModel.getSn());
-//                if (J > 0) {
-//                    reponse = reponse + monitorequipment.getEquipmentname() + "设备sn被占用；";
-//                    continue;
-//                }
-//                //生成探头
-//                Monitorinstrument monitorinstrument = new Monitorinstrument();
-//                monitorinstrument.setInstrumenttypeid(equipmentInfoModel.getInstrumenttypeid());
-//                monitorinstrument.setEquipmentno(monitorequipment.getEquipmentno());
-//                monitorinstrument.setInstrumentname(monitorequipment.getEquipmentname() + "探头");
-//                monitorinstrument.setSn(equipmentInfoModel.getSn());
-//                //默认是3次
-//                monitorinstrument.setAlarmtime(3);
-//                monitorinstrument.setInstrumentno(UUID.randomUUID().toString().replaceAll("-", ""));
-//                monitorinstrument.setHospitalcode(hospitalcode);
-//                monitorinstrument = monitorInstrumentDao.save(monitorinstrument);
-//                //根据探头类型编号设置对应探头参数值
-//                List<InstrumentMonitorInfoModel> instrumentMonitorInfoModelList = new ArrayList<InstrumentMonitorInfoModel>();
-//                instrumentMonitorInfoModelList = instrumentMonitorInfoMapper.selectInfoByInsTypeId(equipmentInfoModel.getInstrumenttypeid());
-//                if (CollectionUtils.isEmpty(instrumentMonitorInfoModelList)) {
-//                    continue;
-//                }
-//                for (InstrumentMonitorInfoModel instrumentMonitorInfoModel : instrumentMonitorInfoModelList) {
-//                    //添加探头参数
-//                    Instrumentparamconfig instrumentparamconfig = new Instrumentparamconfig();
-//                    instrumentparamconfig.setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""));
-//                    //默认是不报警
-//                    instrumentparamconfig.setWarningphone("0");
-//                    instrumentparamconfig.setHighlimit(instrumentMonitorInfoModel.getHighlimit());
-//                    instrumentparamconfig.setLowlimit(instrumentMonitorInfoModel.getLowlimit());
-//                    instrumentparamconfig.setInstrumentconfigid(instrumentMonitorInfoModel.getInstrumentconfigid());
-//                    instrumentparamconfig.setInstrumentname(monitorinstrument.getInstrumentname());
-//                    instrumentparamconfig.setInstrumentno(monitorinstrument.getInstrumentno());
-//                    instrumentparamconfig.setInstrumenttypeid(instrumentMonitorInfoModel.getInstrumenttypeid());
-//                    instrumentParamConfigDao.save(instrumentparamconfig);
-//                }
-//            }
-//            apiResponse.setMessage("添加设备类型和设备成功;备注:" + reponse);
-//            return apiResponse;
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());
             apiResponse.setMessage("服务异常");
