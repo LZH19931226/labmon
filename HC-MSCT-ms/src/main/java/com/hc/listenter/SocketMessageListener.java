@@ -178,6 +178,7 @@ public class SocketMessageListener {
             String value = model.getValue();
             String hospitalcode = model.getHospitalcode();
             List<Userright> list = new ArrayList<>();
+            List<String> phones = new ArrayList<>();
             //判断该医院当天是否有人员排班
             Date date = new Date();
             String today = DateUtils.paseDate(date);
@@ -200,50 +201,61 @@ public class SocketMessageListener {
                 if (CollectionUtils.isNotEmpty(lings)) {
                     for (UserScheduLing s : lings) {
                         Userright userright = new Userright();
-                        String reminders = s.getReminders();
-                        if (StringUtils.isNotEmpty(reminders)) {
-                            userright.setReminders(reminders);
-                        }
+                        //排班的人默认都是电话+短信
+                        userright.setReminders(null);
                         String userphone = s.getUserphone();
                         if (StringUtils.isNotEmpty(userphone)) {
                             userright.setPhonenum(userphone);
+                            phones.add(userphone);
                         }
                         list.add(userright);
                     }
                 }
             }
-            if (CollectionUtils.isEmpty(list)){
-                BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-                String o = (String) hospitalphonenum.get(hospitalcode);
-                if (StringUtils.isNotEmpty(o)) {
-                    list = JsonUtil.toList(o, Userright.class);
-                } else {
-                    LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-                    return;
+            BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
+            String o = (String) hospitalphonenum.get(hospitalcode);
+            if (StringUtils.isEmpty(o)) {
+                LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+                return;
+            }
+            //未排班的人
+            if (CollectionUtils.isEmpty(list)) {
+                list = JsonUtil.toList(o, Userright.class);
+            } else {
+                //有排班的人和未排班的人
+                if (CollectionUtils.isNotEmpty(phones)) {
+                    List<Userright> allusers = JsonUtil.toList(o, Userright.class);
+                    if (CollectionUtils.isNotEmpty(allusers)) {
+                        List<Userright> collect = allusers.stream().filter(s -> !phones.contains(s.getPhonenum())).collect(Collectors.toList());
+                        list.addAll(collect);
+                    }
                 }
             }
             String pkid = model.getPkid();
             warningrecordDao.updatePhone(pkid);
             //获取电话
             boolean flag = false;
-            LOGGER.info("通知报警的人员:"+JsonUtil.toJson(list));
+            LOGGER.info("通知报警的人员:" + JsonUtil.toJson(list));
             for (Userright userright : list) {
+                String reminders = userright.getReminders();
+                String phonenum = userright.getPhonenum();
+                //不报警
+                if (StringUtils.equals(reminders, "3") || StringUtils.isEmpty(phonenum)) {
+                    continue;
+                }
                 // 发送短信
-                if (StringUtils.isNotEmpty(userright.getPhonenum())) {
-                    flag = true;
-                    String reminders = userright.getReminders();
-                    if (StringUtils.isEmpty(reminders)) {
-                        LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
-                        sendMesService.callPhone(userright.getPhonenum(), equipmentname);
-                        SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
-                        LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                    } else if (StringUtils.equals(reminders, "1")) {
-                        LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
-                        sendMesService.callPhone(userright.getPhonenum(), equipmentname);
-                    } else if (StringUtils.equals(reminders, "2")) {
-                        SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
-                        LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                    }
+                flag = true;
+                if (StringUtils.isEmpty(reminders)) {
+                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
+                    LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                } else if (StringUtils.equals(reminders, "1")) {
+                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                } else if (StringUtils.equals(reminders, "2")) {
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
+                    LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 }
             }
 
