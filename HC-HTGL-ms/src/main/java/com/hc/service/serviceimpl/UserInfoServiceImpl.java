@@ -87,11 +87,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         String createuser = userScheduLingPostModel.getCreateuser();
         Date endtime = userScheduLingPostModel.getEndtime();
         String hospitalcode = userScheduLingPostModel.getHospitalcode();
-        userScheduLingDao.deleteStHos(DateUtils.paseDate(starttime),hospitalcode);
+        userScheduLingDao.deleteStHos(hospitalcode,DateUtils.paseDatetime(starttime),DateUtils.paseDatetime(endtime));
         if (CollectionUtils.isNotEmpty(userScheduLings)){
             userScheduLings.forEach(s->{
-                s.setStarttime(starttime);
-                s.setEndtime(endtime);
                 s.setHospitalcode(hospitalcode);
                 s.setCreatetime(new Date());
                 s.setCreateuser(createuser);

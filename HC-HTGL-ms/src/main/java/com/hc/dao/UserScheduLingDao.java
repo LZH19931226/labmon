@@ -16,8 +16,8 @@ import javax.transaction.Transactional;
 public interface UserScheduLingDao extends JpaRepository<UserScheduLing,Integer> {
 
 
-    @Query(value = "DELETE FROM userscheduling WHERE  DATE_FORMAT(starttime,'%Y-%m-%d') = ?1 and hospitalcode = ?2", nativeQuery = true)
+    @Query(value = "DELETE FROM userscheduling WHERE hospitalcode=?1 and starttime BETWEEN ?2 and ?3 ", nativeQuery = true)
     @Modifying
-    void deleteStHos(String starttime,String hospitalcode);
+    void deleteStHos(String hospitalcode,String starttime,String endtime);
 
 }

@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
  * Created by 16956 on 2018-08-05.
  */
 @Transactional
-/////嘻嘻嘻
 public interface InstrumentparamconfigDao extends JpaRepository<Instrumentparamconfig,String> {
     /**
      * 更改当前报警探头监控类型状态

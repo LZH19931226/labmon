@@ -964,39 +964,39 @@ public class cmdidParseUtils {
         String electricity = paramaterModelUtils.electricity(type);
         switch (electricity) {
             //正常->预警； (报警信息：有漏气倾向)
-            case "01":
+            case "1":
                 paramaterModel.setAirflow("G");
                 break;
             //预警->正常；(报警信息：恢复正常)
-            case "02":
+            case "2":
                 paramaterModel.setAirflow("H");
                 break;
             //预警->报警； (报警信息：发生报警事件)
-            case "03":
+            case "3":
                 paramaterModel.setAirflow("I");
                 break;
             //报警->关闭； (报警信息： 手动关闭报警)
-            case "04":
+            case "4":
                 paramaterModel.setAirflow("J");
                 break;
             //设备正常运行； (状态信息， 3 分钟/次)
-            case "05":
+            case "5":
                 paramaterModel.setAirflow("K");
                 break;
             //设备漏气预警； (状态信息， 3 分钟/次)
-            case "06":
+            case "6":
                 paramaterModel.setAirflow("L");
                 break;
             //设备漏气报警； (状态信息， 3 分钟/次)
-            case "07":
+            case "7":
                 paramaterModel.setAirflow("M");
                 break;
             //手动关闭报警； (状态信息， 3 分钟/次)
-            case "08":
+            case "8":
                 paramaterModel.setAirflow("N");
                 break;
             //设备气压低报警；(状态信息，3 分钟/次)
-            case "09":
+            case "9":
                 paramaterModel.setAirflow("O");
                 break;
             //手动关闭气压低报警；(状态信息，3 分钟/次)
@@ -1087,7 +1087,7 @@ public class cmdidParseUtils {
 
 
     public static void main(String[] args) {
-        String id = "4843980b313838383038303030310a9223";
+        String id = "4843980b31383838303830303031099123";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
         ParamaterModel paramaterModel = pase98(s);
