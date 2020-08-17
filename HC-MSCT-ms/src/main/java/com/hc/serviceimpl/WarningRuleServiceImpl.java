@@ -24,17 +24,13 @@ import java.util.Date;
  * Created by 16956 on 2018-08-10.
  */
 @Service
-public class
-
-WarningRuleServiceImpl implements WarningRuleService {
+public class WarningRuleServiceImpl implements WarningRuleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(WarningRuleServiceImpl.class);
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
-
     @Autowired
     private InstrumentparamconfigDao instrumentparamconfigDao;
-    @Autowired
-    private WarningrecordDao warningrecordDao;
+
     /**
      * 进来的默认都是启用报警的
      * 先判断医院   、  在进行判断是否三次报警
@@ -168,7 +164,7 @@ WarningRuleServiceImpl implements WarningRuleService {
                 //判断半小时内是否报警
                 if (ObjectUtils.allNotNull(instrumentMonitorInfoModel.getWarningtime())){
                     double poor = TimeHelper.getDatePoorMin(new Date(),instrumentMonitorInfoModel.getWarningtime());
-                    LOGGER.info("半小时内不报警：时间"+String.valueOf(poor)+"设备名称："+instrumentMonitorInfoModel.getEquipmentname());
+                    LOGGER.info("1小时内间隔不报警：时间"+String.valueOf(poor)+"设备名称："+instrumentMonitorInfoModel.getEquipmentname());
                     if (poor > 60){
                         //可以报警
                         instrumentparamconfigDao.updateWarnTime(new Date(),instrumentMonitorInfoModel.getInstrumentparamconfigNO());
