@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,10 +30,6 @@ import java.util.UUID;
 @Service
 public class UpdateRecordServiceImpl implements UpdateRecordService {
     @Autowired
-    private OperationlogdetaiMapper operationlogdetaiMapper;
-    @Autowired
-    private OperationlogService operationlogService;
-    @Autowired
     private OperationlogdetailDao operationlogdetailDao;
     @Autowired
     private OperationlogDao operationlogDao;
@@ -41,8 +38,6 @@ public class UpdateRecordServiceImpl implements UpdateRecordService {
     @Override
     @Async
     public void updateEquipmentMonitor(String equipmentnames, String hospitalname, String name, EquipmentInfoModel oldEquipmentInfoModel, EquipmentInfoModel nowEquipmentInfoModel, String type, String operationType) {
-        String tsl = "tsl";
-        synchronized (tsl) {
             LOGGER.info("当前值："+ JsonUtil.toJson(nowEquipmentInfoModel + " 历史值："+JsonUtil.toJson(oldEquipmentInfoModel)));
             List<Operationlogdetail> operationlogdetails = new ArrayList<>();
             boolean flag = false;
@@ -103,19 +98,16 @@ public class UpdateRecordServiceImpl implements UpdateRecordService {
                     operationlogdetailDao.saveAndFlush(operationlogdetail);
                 }
             }
-        }
     }
 
     @Override
     @Async
+    @Transactional(rollbackOn = Exception.class)
     public void updateInstrumentMonitor(String instrumentname,String equipmentname, String hospitalname, String name, InstrumentInfoModel oldInstrumentInfoModel, InstrumentInfoModel nowInstrumentInfoModel, String type, String operationType) {
-        String tsl = "tsl";
-        synchronized (tsl) {
             List<Operationlogdetail> operationlogdetails = new ArrayList<>();
             boolean flag = false;
             String sn = oldInstrumentInfoModel.getSn();
             String sn1 = nowInstrumentInfoModel.getSn();
-
             if (!StringUtils.equals(sn1, sn)) {
                 flag = true;
                 Operationlogdetail operationlogdetail = new Operationlogdetail();
@@ -263,13 +255,6 @@ public class UpdateRecordServiceImpl implements UpdateRecordService {
                 }
             }
 
-        }
     }
 
-    public static void main(String args[]) {
-        BigDecimal b = null;
-        BigDecimal a = new BigDecimal("1");
-        //int i = b.compareTo(a);
-        System.out.println(b.toString());
-    }
 }

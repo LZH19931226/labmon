@@ -547,10 +547,4 @@ public class UpdateRecordServiceImpl implements UpdateRecordService {
 
     }
 
-    public static void main(String args[]) {
-        BigDecimal b = null;
-        BigDecimal a = new BigDecimal("1");
-        //int i = b.compareTo(a);
-        System.out.println(b.toString());
-    }
 }
