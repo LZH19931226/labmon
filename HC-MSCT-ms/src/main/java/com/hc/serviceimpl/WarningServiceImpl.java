@@ -163,7 +163,19 @@ public class WarningServiceImpl implements WarningService {
                         warningrecord = warningrecordDao.save(warningrecord);
                         LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
                         return null;
-                    } else {
+                    }  else if ("E".equals(data)) {
+                        //已接传感器，但未校准
+                        warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:未获取到数据");
+                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未获取到数据" + "]");
+                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
+                        warningrecord.setInputdatetime(date);
+                        warningrecord.setHospitalcode(hospitalcode);
+                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                        warningrecord = warningrecordDao.save(warningrecord);
+                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                        return null;
+                    }
+                    else {
                         if (StringUtils.isNotEmpty(data1)) {
                             //MT200M 新程序，两路温度判断
                             LOGGER.info("设备名：" + equipmentname + " 温度值1：" + data + "温度值2：" + data1);
