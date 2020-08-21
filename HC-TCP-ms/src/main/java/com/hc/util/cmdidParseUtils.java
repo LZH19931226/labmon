@@ -36,7 +36,7 @@ public class cmdidParseUtils {
     public static String paseAir10(String co2) {
 
         if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSC)) {
-            return DataRules.STATEA;
+            return DataRules.STATEE;
         } else{
                         return gas10(co2);
                     }
@@ -71,7 +71,7 @@ public class cmdidParseUtils {
 
         // 未接入传感器
         if (StringUtils.equalsIgnoreCase(substring2, DataRules.OUTLIERSC)) {
-            return DataRules.STATEA;
+            return DataRules.STATEE;
         } else {
             return paramaterModelUtils.temperature10(substring2);
         }
