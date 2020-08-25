@@ -41,7 +41,8 @@ public class SocketMessageListener {
     private RedisTemplateUtil redisTemplateUtil;
     @Autowired
     private WarningService warningService;
-
+    @Autowired
+    private SendrecordDao sendrecordDao;
     @Autowired
     private WarningrecordDao warningrecordDao;
     @Autowired
@@ -236,6 +237,7 @@ public class SocketMessageListener {
             //获取电话
             boolean flag = false;
             LOGGER.info("通知报警的人员:" + JsonUtil.toJson(list));
+            List<Sendrecord>  list1  = new ArrayList<>();
             for (Userright userright : list) {
                 String reminders = userright.getReminders();
                 String phonenum = userright.getPhonenum();
@@ -248,15 +250,26 @@ public class SocketMessageListener {
                 if (StringUtils.isEmpty(reminders)) {
                     LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
                     sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
+                    list1.add(sendrecord);
                     SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
                     LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                    Sendrecord sendrecord1 = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "0");
+                    list1.add(sendrecord1);
                 } else if (StringUtils.equals(reminders, "1")) {
                     LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
                     sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
+                    list1.add(sendrecord);
                 } else if (StringUtils.equals(reminders, "2")) {
                     SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
                     LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "0");
+                    list1.add(sendrecord);
                 }
+            }
+            if (CollectionUtils.isNotEmpty(list1)){
+                sendrecordDao.save(list1);
             }
 
             if (flag) {
@@ -280,6 +293,18 @@ public class SocketMessageListener {
             e.printStackTrace();
         }
 
+    }
+
+    public Sendrecord producePhoneRecord(String phone,String hospitalcode,String equipmentname,String unit,String type){
+        Sendrecord sendrecord = new Sendrecord();
+        sendrecord.setPhonenum(phone);
+        sendrecord.setCreatetime(new Date());
+        sendrecord.setHospitalcode(hospitalcode);
+        sendrecord.setSendtype(type);
+        sendrecord.setEquipmentname(equipmentname);
+        sendrecord.setUnit(unit);
+        sendrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+        return  sendrecord;
     }
 
 

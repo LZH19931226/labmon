@@ -51,11 +51,11 @@ public class WarningServiceImpl implements WarningService {
         String data = warningMqModel.getCurrrentData();
         String data1 = warningMqModel.getCurrentData1();
         InstrumentMonitorInfoModel instrumentMonitorInfoModel = new InstrumentMonitorInfoModel();
-        BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:instrumentparam");
+        Object o = redisTemplateUtil.boundHashOps("hospital:instrumentparam").get(monitorinstrument.getInstrumentno() + ":" + instrumentconfigid.toString());
         //存在
-        String o = (String) objectObjectObjectBoundHashOperations.get(monitorinstrument.getInstrumentno() + ":" + instrumentconfigid.toString());
-        if (StringUtils.isNotEmpty(o)) {
-            instrumentMonitorInfoModel = JsonUtil.toBean(o, InstrumentMonitorInfoModel.class);
+        if (o!=null) {
+            String o1 = (String)o;
+            instrumentMonitorInfoModel = JsonUtil.toBean(o1, InstrumentMonitorInfoModel.class);
         } else {
             LOGGER.info("SN：" + monitorinstrument.getSn() + "设备：" + unit + "未绑定探头监控类型;" + "实际探头值为：" + JsonUtil.toJson(instrumentMonitorInfoModel));
             return null;
