@@ -17,8 +17,8 @@ public class cmdidParseUtils {
         if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSA)) {
             return DataRules.STATEA;
         } else
-            // 若超出量程范围(0%-20%)，该值为 0xFF00；
-            if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSB)) {
+            // 若超出量程范围(0%-20%)，该值为 0xFF00； 针对mt400得异常值
+            if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSB)||StringUtils.equalsIgnoreCase(co2, "028C")||StringUtils.equalsIgnoreCase(co2, "9C00")) {
                 return DataRules.STATEB;
             } else
                 // 若已接传感器且已校准，但值无效，该值为 0xFFF0;

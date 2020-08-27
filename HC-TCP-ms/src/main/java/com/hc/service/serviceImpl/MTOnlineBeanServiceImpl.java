@@ -117,34 +117,58 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                 case "8e":
                     // 湿度
                     String substring7 = cmd.substring(28, 32);
-                    String gas6 = paramaterModelUtils.gas(substring7);
-                    gas6 = CustomUtils.agreementAll(gas6, "0", "100");
-                    paramaterModel.setRH(gas6);
+                    if (StringUtils.equalsAnyIgnoreCase(substring7,"ff00")){
+                        paramaterModel.setRH("B");
+                    }else {
+                        String gas6 = paramaterModelUtils.gas(substring7);
+                        gas6 = CustomUtils.agreementAll(gas6, "0", "100");
+                        paramaterModel.setRH(gas6);
+                    }
                     // 压力
                     String substring8 = cmd.substring(32, 36);
-                    String electricity2 = electricity(substring8);
-                    electricity2 = CustomUtils.agreementAll(electricity2, "600", "1200");
-                    paramaterModel.setPRESS(electricity2);
+                    if (StringUtils.equalsAnyIgnoreCase(substring8,"ff00")){
+                        paramaterModel.setPRESS("B");
+                    }else {
+                        String electricity2 = electricity(substring8);
+                        electricity2 = CustomUtils.agreementAll(electricity2, "600", "1200");
+                        paramaterModel.setPRESS(electricity2);
+                    }
                     // PM2.5
                     String substring9 = cmd.substring(36, 40);
-                    String electricity3 = electricity(substring9);
-                    electricity3 = CustomUtils.agreementAll(electricity3, "0", "500");
-                    paramaterModel.setPM25(electricity3);
+                    if (StringUtils.equalsAnyIgnoreCase(substring9,"ff00")){
+                        paramaterModel.setPM25("B");
+                    }else {
+                        String electricity3 = electricity(substring9);
+                        electricity3 = CustomUtils.agreementAll(electricity3, "0", "500");
+                        paramaterModel.setPM25(electricity3);
+                    }
                     // PM10
                     String substring10 = cmd.substring(40, 44);
-                    String electricity4 = electricity(substring10);
-                    electricity4 = CustomUtils.agreementAll(electricity4, "0", "500");
-                    paramaterModel.setPM10(electricity4);
+                    if (StringUtils.equalsAnyIgnoreCase(substring10,"ff00")){
+                        paramaterModel.setPM10("B");
+                    }else {
+                        String electricity4 = electricity(substring10);
+                        electricity4 = CustomUtils.agreementAll(electricity4, "0", "500");
+                        paramaterModel.setPM10(electricity4);
+                    }
                     // VOC
                     String substring11 = cmd.substring(44, 48);
-                    String gas7 = paramaterModelUtils.gas(substring11);
-                    gas7 = CustomUtils.agreementAll(gas7, "0", "200");
-                    paramaterModel.setVOC(gas7);
+                    if (StringUtils.equalsAnyIgnoreCase(substring11,"9C00")){
+                        paramaterModel.setVOC("B");
+                    }else {
+                        String gas7 = paramaterModelUtils.gas(substring11);
+                        gas7 = CustomUtils.agreementAll(gas7, "0", "200");
+                        paramaterModel.setVOC(gas7);
+                    }
                     // 甲醛
                     String substring12 = cmd.substring(48, 52);
-                    String electricity5 = paramaterModelUtils.electricity2(substring12);
-                    electricity5 = CustomUtils.agreementAll(electricity5,"0","2");
-                    paramaterModel.setOX(electricity5);
+                    if (StringUtils.equalsAnyIgnoreCase(substring12,"ff00")){
+                        paramaterModel.setOX("B");
+                    }else {
+                        String electricity5 = paramaterModelUtils.electricity2(substring12);
+                        electricity5 = CustomUtils.agreementAll(electricity5, "0", "2");
+                        paramaterModel.setOX(electricity5);
+                    }
                     list.add(paramaterModel);
                     continue;
                     //模拟500的温度
