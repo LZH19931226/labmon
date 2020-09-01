@@ -39,7 +39,7 @@ public class TimerConfig {
     private HospitalInfoMapper hospitalInfoMapper;
     @Autowired
     private MessagePushService messagePushService;
-//
+    //
     @Scheduled(cron = "0 0 * * * ?")
     public void Time() {
         // 查询所有需要超时报警的设备

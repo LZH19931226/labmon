@@ -50,8 +50,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (path.matches(Const.NO_INTERCEPTOR_PATH) || path.matches(baseConfiguration.getPublicPath()) ||
                 path.matches(".*/api/userBackInfo/userLogin")|| path.matches("/swagger-resources/configuration/ui")
                 || path.matches("/swagger-resources") || path.matches("/v2/api-docs")
-              || path.matches(".*/api/equipmentInfo/a") || path.matches(".*/api/repairinfo/*")
-              || path.matches(".*/api/alarmStatistics/exporeExcle") || path.matches(".*/api/alarmStatistics/exporeExcles")
+                || path.matches(".*/api/equipmentInfo/a") || path.matches(".*/api/repairinfo/*")
+                || path.matches(".*/api/alarmStatistics/exporeExcle") || path.matches(".*/api/alarmStatistics/exporeExcles")
                 || path.matches(".*/api/repairinfo/selectPageInfo")  ) {
             logger.info("匹配上了，直接放行：" + path);
 //                System.out.println("匹配上了  path 直接放行: " + path);
