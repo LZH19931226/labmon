@@ -126,6 +126,20 @@ public class MtUnConnectedSensorFilter {
                     monitorequipmentlastdata.setCurrentcarbondioxide(null);
                 }
                 break;
+            case "06":
+                String currento3 = monitorequipmentlastdata.getCurrento2();
+                if (StringUtils.equals(currento3, "A")){
+                    monitorequipmentlastdata.setCurrento2(null);
+                }
+                String currenttemperature4 = monitorequipmentlastdata.getCurrenttemperature();
+                if (StringUtils.equals(currenttemperature4, "A")){
+                    monitorequipmentlastdata.setCurrenttemperature(null);
+                }
+                String currentcarbondioxide1 = monitorequipmentlastdata.getCurrentcarbondioxide();
+                if (StringUtils.equals(currentcarbondioxide1, "A")){
+                    monitorequipmentlastdata.setCurrentcarbondioxide(null);
+                }
+                break;
             default:
                 return monitorequipmentlastdata;
 
