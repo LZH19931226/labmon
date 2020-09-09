@@ -18,6 +18,7 @@ import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.WiredInstrumentModel;
+import com.hc.model.ResponseModel.AllInstrumentInfoModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
 import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.MonitorEquipmentService;
@@ -26,6 +27,9 @@ import com.hc.units.ApiResponse;
 import com.hc.units.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +37,14 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -457,5 +467,76 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             apiResponse.setResult(list);
         }
         return apiResponse;
+    }
+
+    @Override
+    public void searchEqByTwoYear(HttpServletResponse response) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime localDateTime = now.minusYears(2);
+        int year = localDateTime.getYear();
+        //获取年份
+        String substring = String.valueOf(year).substring(2, 4);
+        //获取周数
+        WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY,1);
+        int weeks = localDateTime.get(weekFields.weekOfYear());
+        //获取2两年前sn规则
+        String sn =substring+weeks;
+        List<AllInstrumentInfoModel> allInstrumentInfoModels = instrumentMonitorInfoMapper.searchEqByTwoYear(sn);
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("综合满意度评分结果");
+        sheet.setDefaultColumnWidth((short)18);
+        String fileName = "截至今日2年前sn号导出" + ".xls";
+        String[] headers = { "医院名称", "设备类型", "设备名称", "设备sn号" };
+        CellRangeAddress region = new CellRangeAddress(0, 0, 0, 4);
+        sheet.addMergedRegion(region);
+        HSSFRow rowTitle = sheet.createRow(0);
+        Cell oneCell = rowTitle.createCell(0);
+        oneCell.setCellValue("截至今日2年前sn号");// 设置标题内容
+        // 合并的单元格样式
+        HSSFCellStyle boderStyle = workbook.createCellStyle();
+        boderStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        boderStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        boderStyle.setWrapText(true);
+        oneCell.setCellStyle(boderStyle);
+        HSSFRow row = sheet.createRow(1);
+        // 在excel表中添加表头
+        for (int i = 0; i < headers.length; i++) {
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+
+        int rowNum = 2;
+        // 在表中存放查询到的数据放入对应的列
+        for (AllInstrumentInfoModel allInstrumentInfoModel : allInstrumentInfoModels) {
+            HSSFRow row1 = sheet.createRow(rowNum);
+            row1.createCell(0).setCellValue(allInstrumentInfoModel.getHospitalname());
+            row1.createCell(1).setCellValue(allInstrumentInfoModel.getEquipmenttypename());
+            row1.createCell(2).setCellValue(allInstrumentInfoModel.getEquipmentname());
+            row1.createCell(3).setCellValue(allInstrumentInfoModel.getSn());
+            rowNum++;
+        }
+        try {
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-disposition",
+                    "attachment;filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+            response.flushBuffer();
+            workbook.write(response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public  static  void  main(String args[]){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime localDateTime = now.minusYears(2);
+        int year = localDateTime.getYear();
+        //获取年份
+        String substring = String.valueOf(year).substring(2, 4);
+        //获取周数
+        WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY,1);
+        int weeks = localDateTime.get(weekFields.weekOfYear());
+       System.out.println(substring+weeks);
+
     }
 }

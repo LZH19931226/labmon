@@ -5,6 +5,8 @@ import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Monitorinstrumenttype;
 import com.hc.model.RequestModel.EquipmentInfoModel;
+import com.hc.model.RequestModel.InstrumentPageModel;
+import com.hc.model.ResponseModel.AllInstrumentInfoModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
 import com.hc.service.MonitorEquipmentService;
 import com.hc.units.ApiResponse;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -98,5 +101,14 @@ public class MonitorEquipmentController {
                                                                        @RequestParam(value = "channel", required = true) String channel){
         return monitorEquipmentService.showInstrumentInfo(hospitalcode,instrumenttypeid,channel);
     }
+
+
+    @GetMapping("/searchEqByTwoYear")
+    @ApiOperation(value = "查询设备")
+    public void searchEqByTwoYear(HttpServletResponse response) {
+         monitorEquipmentService.searchEqByTwoYear(response);
+
+    }
+
 
 }

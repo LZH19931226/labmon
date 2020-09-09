@@ -1,6 +1,5 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Monitorinstrument;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.InstrumentInfoModel;
 import com.hc.model.ResponseModel.AllInstrumentInfoModel;
@@ -116,13 +115,20 @@ public interface InstrumentMonitorInfoMapper {
     @Select("select count(*) from InstrumentParamConfig where instrumentno = #{instrumentno}")
     Integer getCount(@Param("instrumentno") String instrumentno);
 
-    /**
-     * 查询探头通道信息
-     */
-    @Select("select * from monitorinstrument where ifnull(channel,'0') !='0'")
-    List<Monitorinstrument> selectInstruChannel();
 
-    @Select(" select * from monitorinstrument where sn = #{sn} limit 1")
-    Monitorinstrument getMonitor(@Param("sn") String sn);
+    @Select("SELECT\n" +
+            "  t3.hospitalname," +
+            "\tt4.equipmenttypename,\n" +
+            "\tt1.equipmentname,\n" +
+            "\tt2.sn\n" +
+            "FROM\n" +
+            "\tmonitorequipment t1\n" +
+            "\tLEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno \n" +
+            "\tLEFT JOIN hospitalofreginfo t3 on t1.hospitalcode =t3.hospitalcode\n" +
+            "\tLEFT JOIN monitorequipmenttype t4 on t1.equipmenttypeid=t4.equipmenttypeid\n" +
+            "WHERE\n" +
+            " \tSUBSTRING(t2.sn,1,4)  <= #{sn}\n" +
+            "\t")
+    List<AllInstrumentInfoModel> searchEqByTwoYear(@Param("sn") String sn);
 
 }

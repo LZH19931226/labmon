@@ -8,6 +8,7 @@ import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
 import com.hc.units.ApiResponse;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -52,8 +53,8 @@ public interface MonitorEquipmentService {
      */
     ApiResponse<List<Monitorinstrument>> showInstrumentInfo(String hospitalcode,Integer instrumenttypeid,String channel);
 
-    /**
-     *
-     */
+    void searchEqByTwoYear(HttpServletResponse response);
+
+
 
 }

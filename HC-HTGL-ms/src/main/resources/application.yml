@@ -1,7 +1,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.1.90:10086/eureka/
+      defaultZone: http://localhost:10086/eureka/
 server:
   tomcat:
     uri-encoding: UTF-8
