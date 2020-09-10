@@ -14,6 +14,13 @@
             </pattern>
         </encoder>
     </appender>
+    <appender name="LOGSTASH"
+              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>172.24.58.145:9600</destination>
+        <queueSize>1048576</queueSize>
+        <encoder charset="GB2312"
+                 class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
     <!-- 按照每天生成日志文件 -->
     <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/HC-MSCT-ms.log</file>
@@ -51,5 +58,6 @@
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
+        <appender-ref ref="LOGSTASH"/>
     </root>
 </configuration>
