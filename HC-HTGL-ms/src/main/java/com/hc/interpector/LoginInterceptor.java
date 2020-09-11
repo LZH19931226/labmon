@@ -52,7 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 || path.matches("/swagger-resources") || path.matches("/v2/api-docs")
                 || path.matches(".*/api/equipmentInfo/a") || path.matches(".*/api/repairinfo/*")
                 || path.matches(".*/api/alarmStatistics/exporeExcle") || path.matches(".*/api/alarmStatistics/exporeExcles")
-                || path.matches(".*/api/repairinfo/selectPageInfo")  ) {
+                || path.matches(".*/api/repairinfo/selectPageInfo")|| path.matches(".*/api/repairinfo/alarmStatisticsShow")  ) {
             logger.info("匹配上了，直接放行：" + path);
 //                System.out.println("匹配上了  path 直接放行: " + path);
             //              return true;
