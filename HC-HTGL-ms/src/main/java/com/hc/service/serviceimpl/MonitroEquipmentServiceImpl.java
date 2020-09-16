@@ -25,6 +25,7 @@ import com.hc.service.MonitorEquipmentService;
 import com.hc.service.UpdateRecordService;
 import com.hc.units.ApiResponse;
 import com.hc.units.JsonUtil;
+import com.hc.units.MtUnConnectedSensorFilter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -486,7 +487,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
         HSSFSheet sheet = workbook.createSheet("综合满意度评分结果");
         sheet.setDefaultColumnWidth((short)18);
         String fileName = "截至今日2年前sn号导出" + ".xls";
-        String[] headers = { "医院名称", "设备类型", "设备名称", "设备sn号" };
+        String[] headers = { "医院名称", "设备类型", "设备名称", "设备型号","设备sn号" };
         CellRangeAddress region = new CellRangeAddress(0, 0, 0, 4);
         sheet.addMergedRegion(region);
         HSSFRow rowTitle = sheet.createRow(0);
@@ -513,7 +514,14 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             row1.createCell(0).setCellValue(allInstrumentInfoModel.getHospitalname());
             row1.createCell(1).setCellValue(allInstrumentInfoModel.getEquipmenttypename());
             row1.createCell(2).setCellValue(allInstrumentInfoModel.getEquipmentname());
-            row1.createCell(3).setCellValue(allInstrumentInfoModel.getSn());
+            String sn1 = allInstrumentInfoModel.getSn();
+            if (StringUtils.isNotEmpty(sn1)){
+                String s = MtUnConnectedSensorFilter.mtCheck(sn1.substring(4, 6));
+                row1.createCell(3).setCellValue(s);
+            }else {
+                row1.createCell(3).setCellValue("null");
+            }
+            row1.createCell(4).setCellValue(sn1);
             rowNum++;
         }
         try {
