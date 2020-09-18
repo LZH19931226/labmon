@@ -212,16 +212,16 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
-                    monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
                     if (StringUtils.isNotEmpty(monitorequipmentlastdata.getCurrentdoorstate())) {
                         // 查找这个设备下开关量的最低值
                         String lowlimit = equipmentInfoMapper.getLowlimit(monitorequipment.getEquipmentno());
                         monitorequipment.setLowlimit(lowlimit);
                     }
-                    List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels1 = collect1.get(equipmentno);
-                    if (CollectionUtils.isNotEmpty(instrumentMonitorInfoModels1)) {
-                        monitorequipment.setInstrumentMonitorInfoModel(instrumentMonitorInfoModels1);
-                    }
+                    monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
+                }
+                List<InstrumentMonitorInfoModel> instrumentMonitorInfoModels1 = collect1.get(equipmentno);
+                if (CollectionUtils.isNotEmpty(instrumentMonitorInfoModels1)) {
+                    monitorequipment.setInstrumentMonitorInfoModel(instrumentMonitorInfoModels1);
                 }
             }
             monitorequipmentList.forEach(s -> {
