@@ -193,7 +193,7 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         String zuo = cmd.substring(28, 32);
         if (StringUtils.equalsIgnoreCase(zuo, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP(DataRules.STATEA);
+            paramaterModel.setTEMP(DataRules.STATEE);
         } else if (StringUtils.equalsIgnoreCase(zuo, DataRules.OUTLIERSF)) {
             paramaterModel.setTEMP(DataRules.STATEB);
         } else if (StringUtils.equalsIgnoreCase(zuo, DataRules.OUTLIERSG)) {
@@ -201,7 +201,7 @@ public class cmdidParseUtils {
         } else if (StringUtils.equalsIgnoreCase(zuo, DataRules.OUTLIERSH)) {
             paramaterModel.setTEMP(DataRules.STATED);
         } else if (StringUtils.equalsIgnoreCase(zuo, DataRules.OUTLIERSI)) {
-            paramaterModel.setTEMP(DataRules.STATEE);
+            paramaterModel.setTEMP(DataRules.STATEA);
         } else {
             String temperature1 = temperature(zuo);
             temperature1 = CustomUtils.agreementAll(temperature1, "0", "50");
@@ -211,7 +211,7 @@ public class cmdidParseUtils {
 
         String you = cmd.substring(32, 36);
         if (StringUtils.equalsIgnoreCase(you, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP2(DataRules.STATEA);
+            paramaterModel.setTEMP2(DataRules.STATEE);
         } else if (StringUtils.equalsIgnoreCase(you, DataRules.OUTLIERSF)) {
             paramaterModel.setTEMP2(DataRules.STATEB);
         } else if (StringUtils.equalsIgnoreCase(you, DataRules.OUTLIERSG)) {
@@ -219,7 +219,7 @@ public class cmdidParseUtils {
         } else if (StringUtils.equalsIgnoreCase(you, DataRules.OUTLIERSH)) {
             paramaterModel.setTEMP2(DataRules.STATED);
         } else if (StringUtils.equalsIgnoreCase(you, DataRules.OUTLIERSI)) {
-            paramaterModel.setTEMP2(DataRules.STATEE);
+            paramaterModel.setTEMP2(DataRules.STATEA);
         } else {
             String temperature1 = temperature(you);
             temperature1 = CustomUtils.agreementAll(temperature1, "0", "50");
@@ -229,7 +229,7 @@ public class cmdidParseUtils {
 
         String qi = cmd.substring(36, 40);
         if (StringUtils.equalsIgnoreCase(qi, DataRules.OUTLIERSC)) {
-            paramaterModel.setAirflow(DataRules.STATEA);
+            paramaterModel.setAirflow(DataRules.STATEE);
         } else if (StringUtils.equalsIgnoreCase(qi, DataRules.OUTLIERSF)) {
             paramaterModel.setAirflow(DataRules.STATEB);
         } else if (StringUtils.equalsIgnoreCase(qi, DataRules.OUTLIERSG)) {
@@ -239,7 +239,7 @@ public class cmdidParseUtils {
         } else if (StringUtils.equalsIgnoreCase(qi, DataRules.OUTLIERSI)) {
             paramaterModel.setAirflow(DataRules.STATEE);
         } else if (StringUtils.equalsIgnoreCase(qi, DataRules.OUTLIERSJ)) {
-            paramaterModel.setAirflow(DataRules.STATEF);
+            paramaterModel.setAirflow(DataRules.STATEA);
         } else {
             String airflow = electricity(qi);
             int a = new Integer(airflow);
@@ -262,7 +262,7 @@ public class cmdidParseUtils {
         String substring4 = cmd.substring(40, 44);
 
         if (StringUtils.equalsIgnoreCase(substring1, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP(DataRules.STATEA);
+            paramaterModel.setTEMP(DataRules.STATEE);
         } else {
             String temperature = temperature(substring1);
             temperature = CustomUtils.agreementAll(temperature, "0", "50");
@@ -270,7 +270,7 @@ public class cmdidParseUtils {
         }
 
         if (StringUtils.equalsIgnoreCase(substring2, DataRules.OUTLIERSC)) {
-            paramaterModel.setCO2(DataRules.STATEA);
+            paramaterModel.setCO2(DataRules.STATEE);
         } else {
             String gas = gas(substring2);
             gas = CustomUtils.agreementAll(gas, "0", "20");
@@ -278,7 +278,7 @@ public class cmdidParseUtils {
         }
 
         if (StringUtils.equalsIgnoreCase(substring3, DataRules.OUTLIERSC)) {
-            paramaterModel.setRH(DataRules.STATEA);
+            paramaterModel.setRH(DataRules.STATEE);
         } else {
             String rh = gas(substring3);
             rh = CustomUtils.agreementAll(rh, "0", "100");
@@ -286,7 +286,7 @@ public class cmdidParseUtils {
         }
 
         if (StringUtils.equalsIgnoreCase(substring4, DataRules.OUTLIERSC)) {
-            paramaterModel.setO2(DataRules.STATEA);
+            paramaterModel.setO2(DataRules.STATEE);
         } else {
             String o2 = gas(substring4);
             o2 = CustomUtils.agreementAll(o2, "0", "30");
@@ -308,7 +308,7 @@ public class cmdidParseUtils {
 
 
         if (StringUtils.equalsIgnoreCase(substring1, DataRules.OUTLIERSC)) {
-            paramaterModel.setCO2(DataRules.STATEA);
+            paramaterModel.setCO2(DataRules.STATEE);
         } else {
             String co2 = gas(substring1);
             co2 = CustomUtils.agreementAll(co2, "0", "20");
@@ -316,7 +316,7 @@ public class cmdidParseUtils {
         }
 
         if (StringUtils.equalsIgnoreCase(substring2, DataRules.OUTLIERSC)) {
-            paramaterModel.setO2(DataRules.STATEA);
+            paramaterModel.setO2(DataRules.STATEE);
         } else {
             String o2 = gas(substring2);
             o2 = CustomUtils.agreementAll(o2, "0", "30");
@@ -325,7 +325,7 @@ public class cmdidParseUtils {
 
 
         if (StringUtils.equalsIgnoreCase(substring3, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP(DataRules.STATEA);
+            paramaterModel.setTEMP(DataRules.STATEE);
         } else {
             String temperature1 = temperature(substring3);
             temperature1 = CustomUtils.agreementAll(temperature1, "0", "50");
@@ -335,7 +335,7 @@ public class cmdidParseUtils {
 
 
         if (StringUtils.equalsIgnoreCase(substring4, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP2(DataRules.STATEA);
+            paramaterModel.setTEMP2(DataRules.STATEE);
         } else {
             String temperature2 = temperature(substring4);
             temperature2 = CustomUtils.agreementAll(temperature2, "0", "50");
@@ -343,7 +343,7 @@ public class cmdidParseUtils {
         }
 
         if (StringUtils.equalsIgnoreCase(substring5, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP3(DataRules.STATEA);
+            paramaterModel.setTEMP3(DataRules.STATEE);
         } else {
             String temperature3 = temperature(substring5);
             temperature3 = CustomUtils.agreementAll(temperature3, "0", "50");
@@ -351,7 +351,7 @@ public class cmdidParseUtils {
         }
 
         if (StringUtils.equalsIgnoreCase(substring6, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP4(DataRules.STATEA);
+            paramaterModel.setTEMP4(DataRules.STATEE);
         } else {
             String temperature4 = temperature(substring6);
             temperature4 = CustomUtils.agreementAll(temperature4, "0", "50");
@@ -359,7 +359,7 @@ public class cmdidParseUtils {
         }
 
         if (StringUtils.equalsIgnoreCase(substring7, DataRules.OUTLIERSC)) {
-            paramaterModel.setTEMP5(DataRules.STATEA);
+            paramaterModel.setTEMP5(DataRules.STATEE);
         } else {
             String temperature5 = temperature(substring7);
             temperature5 = CustomUtils.agreementAll(temperature5, "0", "50");
@@ -1101,7 +1101,7 @@ public class cmdidParseUtils {
         String substring1 = cmd.substring(28, 32);
         if (StringUtils.equalsIgnoreCase(substring1, DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据(设备异常或培养箱断电);
-            paramaterModel.setLeftCompartmentTemp(DataRules.STATEC);
+            paramaterModel.setLeftCompartmentTemp(DataRules.STATEE);
         } else {
             String temperature = temperature(substring1);
             paramaterModel.setLeftCompartmentTemp(temperature);
@@ -1110,7 +1110,7 @@ public class cmdidParseUtils {
         String substring2 = cmd.substring(32, 36);
         if (StringUtils.equalsIgnoreCase(substring2, DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
-            paramaterModel.setLeftCompartmentFlow(DataRules.STATEC);
+            paramaterModel.setLeftCompartmentFlow(DataRules.STATEE);
         } else {
             String temperature = gas(substring2);
             paramaterModel.setLeftCompartmentFlow(temperature);
@@ -1119,7 +1119,7 @@ public class cmdidParseUtils {
         String substring3 = cmd.substring(36, 40);
         if (StringUtils.equalsIgnoreCase(substring3, DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
-            paramaterModel.setLeftCompartmentHumidity(DataRules.STATEC);
+            paramaterModel.setLeftCompartmentHumidity(DataRules.STATEE);
         } else {
             String temperature = electricity(substring3);
             paramaterModel.setLeftCompartmentHumidity(temperature);
@@ -1128,7 +1128,7 @@ public class cmdidParseUtils {
         String substring4 = cmd.substring(40, 44);
         if (StringUtils.equalsIgnoreCase(substring4, DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据(设备异常或培养箱断电);
-            paramaterModel.setRightCompartmentTemp(DataRules.STATEC);
+            paramaterModel.setRightCompartmentTemp(DataRules.STATEE);
         } else {
             String temperature = temperature(substring4);
             paramaterModel.setRightCompartmentTemp(temperature);
@@ -1137,7 +1137,7 @@ public class cmdidParseUtils {
         //右舱室流量
         if (StringUtils.equalsIgnoreCase(substring5, DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
-            paramaterModel.setRightCompartmentFlow(DataRules.STATEC);
+            paramaterModel.setRightCompartmentFlow(DataRules.STATEE);
         } else {
             String temperature = gas(substring5);
             paramaterModel.setRightCompartmentFlow(temperature);
@@ -1146,7 +1146,7 @@ public class cmdidParseUtils {
         String substring6 = cmd.substring(48, 52);
         if (StringUtils.equalsIgnoreCase(substring6, DataRules.OUTLIERSC)) {
             // FFF0   == 未获取到数据
-            paramaterModel.setRightCompartmentHumidity(DataRules.STATEC);
+            paramaterModel.setRightCompartmentHumidity(DataRules.STATEE);
         } else {
             String temperature = electricity(substring6);
             paramaterModel.setRightCompartmentHumidity(temperature);
