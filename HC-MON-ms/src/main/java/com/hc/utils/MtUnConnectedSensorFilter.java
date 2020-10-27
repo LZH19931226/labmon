@@ -140,6 +140,12 @@ public class MtUnConnectedSensorFilter {
                     monitorequipmentlastdata.setCurrentcarbondioxide(null);
                 }
                 break;
+            case "14":
+                String currenttemperature5 = monitorequipmentlastdata.getCurrenttemperature();
+                if (StringUtils.equals(currenttemperature5, "A")){
+                    monitorequipmentlastdata.setCurrenttemperature(null);
+                }
+                break;
             default:
                 return monitorequipmentlastdata;
 
