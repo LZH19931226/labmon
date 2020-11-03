@@ -377,6 +377,10 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 //                    ParamaterModel  paramaterModel19 = cmdidParseUtils.paseA7(cmd, sn, cmdid);
 //                    list.add(paramaterModel19);
                     continue;
+                case "a8":
+                    ParamaterModel  paramaterModel19 = cmdidParseUtils.paseA8(cmd, sn, cmdid);
+                    list.add(paramaterModel19);
+                    continue;
                  default:
                      return null;
             }

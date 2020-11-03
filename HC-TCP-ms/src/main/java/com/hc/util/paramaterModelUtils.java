@@ -40,8 +40,8 @@ public class paramaterModelUtils {
         // 二进制转10进制(占位符除外)
         int a = Integer.parseInt(hexadecimal.substring(1, hexadecimal.length()), 2);
         int b = 10;
-        Double f = (double) a / b;
-        return rule + f.toString();
+        double f = (double) a / b;
+        return rule + f;
     }
 
 
@@ -101,7 +101,7 @@ public class paramaterModelUtils {
 //        return f.toString();
     }
     public static String chu(Integer a,String b){
-        return new BigDecimal(a).divide(new BigDecimal(b), 2, BigDecimal.ROUND_HALF_UP).toString();
+        return new BigDecimal(a).divide(new BigDecimal(b), 3, BigDecimal.ROUND_HALF_UP).toString();
 
 
     }

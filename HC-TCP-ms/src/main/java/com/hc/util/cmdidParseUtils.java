@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 
 import static com.hc.util.paramaterModelUtils.*;
+import static com.hc.util.paramaterModelUtils.electricity;
 
 public class cmdidParseUtils {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(cmdidParseUtils.class);
@@ -78,6 +79,20 @@ public class cmdidParseUtils {
 
     }
 
+
+
+    public static String pasetemperature3(String substring2) {
+
+        // 未接入传感器
+        if (StringUtils.equalsIgnoreCase(substring2, DataRules.OUTLIERSC)) {
+            return DataRules.STATEE;
+        } else if (StringUtils.equalsIgnoreCase(substring2,"FFF1")){
+            return DataRules.STATEC;
+        }else {
+            return paramaterModelUtils.temperature10(substring2);
+        }
+
+    }
 
 
 
@@ -1210,11 +1225,84 @@ public class cmdidParseUtils {
 
     public static ParamaterModel paseA7(String cmd, String sn, String cmdid) {
         ParamaterModel paramaterModel = new ParamaterModel();
-
-
-
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
+    }
+
+    public static ParamaterModel paseA8(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+        String substring1 = cmd.substring(28, 32);
+        paramaterModel.setTEMP(pasetemperature3(substring1));
+        String substring2 = cmd.substring(32, 34);
+        if (StringUtils.equalsIgnoreCase(substring2,"F0")){
+            paramaterModel.setRH(DataRules.STATEE);
+        }else if (StringUtils.equalsIgnoreCase(substring2,"F1")){
+            paramaterModel.setRH(DataRules.STATEC);
+        }else {
+            paramaterModel.setRH(electricity(substring2));
+        }
+        String substring3 = cmd.substring(34, 36);
+        if (StringUtils.equalsIgnoreCase(substring3,"F0")){
+            paramaterModel.setCO2(DataRules.STATEE);
+        }else if (StringUtils.equalsIgnoreCase(substring3,"F1")){
+            paramaterModel.setCO2(DataRules.STATEC);
+        }else {
+            paramaterModel.setCO2(gas(substring3));
+        }
+        String substring4 = cmd.substring(36, 40);
+        if (StringUtils.equalsIgnoreCase(substring4, DataRules.OUTLIERSC)) {
+            paramaterModel.setO2(DataRules.STATEE);
+        } else if (StringUtils.equalsIgnoreCase(substring4,"FFF1")){
+            paramaterModel.setO2(DataRules.STATEC);
+        }else if (StringUtils.equalsIgnoreCase(substring4,"FFF2")){
+            paramaterModel.setO2(DataRules.STATED);
+        }else {
+            paramaterModel.setO2(gas10(substring4));
+        }
+        String substring5 = cmd.substring(40, 44);
+        if (StringUtils.equalsIgnoreCase(substring5, DataRules.OUTLIERSC)) {
+            paramaterModel.setPRESS(DataRules.STATEE);
+        } else if (StringUtils.equalsIgnoreCase(substring5,"FFF1")){
+            paramaterModel.setPRESS(DataRules.STATEC);
+        }else {
+            paramaterModel.setPRESS(electricity(substring5));
+        }
+        String substring6 = cmd.substring(44, 48);
+        if (StringUtils.equalsIgnoreCase(substring6, DataRules.OUTLIERSC)) {
+            paramaterModel.setPM25(DataRules.STATEE);
+        } else if (StringUtils.equalsIgnoreCase(substring6,"FFF1")){
+            paramaterModel.setPM25(DataRules.STATEC);
+        }else {
+            paramaterModel.setPM25(electricity(substring6));
+        }
+        String substring7 = cmd.substring(48, 52);
+        if (StringUtils.equalsIgnoreCase(substring7, DataRules.OUTLIERSC)) {
+            paramaterModel.setPM10(DataRules.STATEE);
+        } else if (StringUtils.equalsIgnoreCase(substring7,"FFF1")){
+            paramaterModel.setPM10(DataRules.STATEC);
+        }else {
+            paramaterModel.setPM10(electricity(substring7));
+        }
+        String substring8 = cmd.substring(52, 56);
+        if (StringUtils.equalsIgnoreCase(substring8, DataRules.OUTLIERSC)) {
+            paramaterModel.setOX(DataRules.STATEE);
+        } else if (StringUtils.equalsIgnoreCase(substring8,"FFF1")){
+            paramaterModel.setOX(DataRules.STATEC);
+        }else {
+            paramaterModel.setOX(electricity2(substring8));
+        }
+        String substring9 = cmd.substring(56, 60);
+        if (StringUtils.equalsIgnoreCase(substring9, DataRules.OUTLIERSC)) {
+            paramaterModel.setVOC(DataRules.STATEE);
+        } else if (StringUtils.equalsIgnoreCase(substring9,"FFF1")){
+            paramaterModel.setVOC(DataRules.STATEC);
+        }else {
+            paramaterModel.setVOC(electricity2(substring9));
+        }
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
+        return paramaterModel;
+
     }
 }
