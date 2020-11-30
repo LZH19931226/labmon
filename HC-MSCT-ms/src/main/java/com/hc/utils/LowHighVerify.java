@@ -37,5 +37,11 @@ public class LowHighVerify {
         return true;
     }
 
+    public static void main(String[] args){
+
+
+
+    }
+
 
 }

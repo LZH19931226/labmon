@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -182,6 +181,7 @@ public class WarningServiceImpl implements WarningService {
                             //老版本mt200m判断逻辑生产周大于20年15周为新的mt200m报警逻辑更改
                             String sn = monitorinstrument.getSn();
                             String proSn = sn.substring(0, 4);
+                            String sns = sn.substring(5, 7);
                             if (Integer.parseInt(proSn) < 2031) {
                                 //当一路温度值存在异常，整个值无效
                                 // 当两个值相差3度，值无效
@@ -205,8 +205,33 @@ public class WarningServiceImpl implements WarningService {
                                     warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                                     warningrecord = warningrecordDao.save(warningrecord);
                                     LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                                    break;
                                 }
                             } else {
+                                if (!StringUtils.equals(sns,"17")){
+                                    if (StringUtils.equalsAny(data1, "A", "B", "C", "D", "E") || Math.abs(new Double(data) - new Double(data1)) > 3) {
+                                        warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：超出量程范围");
+                                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "超出量程范围" + "]");
+                                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
+                                        warningrecord.setInputdatetime(date);
+                                        warningrecord.setHospitalcode(hospitalcode);
+                                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                                        warningrecord = warningrecordDao.save(warningrecord);
+                                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                                        return null;
+                                    }
+                                    if (LowHighVerify.verify(instrumentMonitorInfoModel, data) && LowHighVerify.verify(instrumentMonitorInfoModel, data1)) {
+                                        warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+                                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
+                                        warningrecord.setInstrumentparamconfigNO(instrumentparamconfigNO);
+                                        warningrecord.setInputdatetime(date);
+                                        warningrecord.setHospitalcode(hospitalcode);
+                                        warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                                        warningrecord = warningrecordDao.save(warningrecord);
+                                        LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                                        break;
+                                    }
+                                }
                                 //获取二路温度探头设置的值
                                 BigDecimal mt200mHighLimit = instrumentparamconfigDao.getMt200mHighLimit(monitorinstrument.getInstrumentno());
                                 //大于最大值
@@ -219,6 +244,7 @@ public class WarningServiceImpl implements WarningService {
                                     warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                                     warningrecord = warningrecordDao.save(warningrecord);
                                     LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
+                                    break;
                                 }
                             }
                             break;
