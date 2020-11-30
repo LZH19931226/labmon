@@ -757,7 +757,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());// 室温
                     monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3()); // 壁温
                     monitorequipmentlastdata.setCurrentqcl(model.getQC());
-                    WarningMqModel warningMqModel99 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 35, "锁电量");
+                    WarningMqModel warningMqModel99 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "锁电量");
                     list.add(warningMqModel99);
                     if (!listAbs.contains(model.getTEMP2()) && !listAbs.contains(model.getTEMP3())) {
                         //两个值全部正常，才能计算差值
