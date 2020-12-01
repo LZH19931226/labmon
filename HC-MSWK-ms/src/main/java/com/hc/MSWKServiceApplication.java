@@ -10,9 +10,9 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableEurekaClient
 @MapperScan("com.hc.mapper")
 @EnableFeignClients
-public class SpringServiceApplication {
+public class MSWKServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringServiceApplication.class, args);
+		SpringApplication.run(MSWKServiceApplication.class, args);
 	}
 }
