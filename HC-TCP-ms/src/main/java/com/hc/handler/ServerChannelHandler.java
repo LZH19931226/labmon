@@ -78,8 +78,10 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		//当连接关闭时，移除在线列表
 		closeChannel(ctx);
-		log.info("移除了该通道的连接:"+ctx.channel().id().asShortText());
+		String asShortText = ctx.channel().id().asShortText();
+		log.info("移除了该通道的连接:"+asShortText);
 		super.channelInactive(ctx);
+
 	}
 	
 	//通道内发生异常数据
@@ -88,6 +90,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 		try {
 			if (!(cause instanceof ReadTimeoutException)) {
 				String asShortText = ctx.channel().id().asShortText();
+				cause.printStackTrace();
 				log.error("通道[" + asShortText + "]数据处理异常", cause.fillInStackTrace());
 			}
 		}catch (Exception e){
@@ -96,7 +99,8 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 			//当连接关闭时，移除在线列表
 			closeChannel(ctx);
 		}
-    }
+
+	}
 	
 	
 	/**
@@ -106,7 +110,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		ByteBuf buf  = (ByteBuf)msg;
 		String dataStr=null;
-
+		String asShortText=null;
 		try{
 			byte[] receiveMsgBytes = new byte[buf.readableBytes()];
 			buf.readBytes(receiveMsgBytes);
@@ -114,7 +118,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 		     dataStr = Hex.encodeHexString(receiveMsgBytes);
 
 	         //通道id
-	        String asShortText = ctx.channel().id().asShortText();
+	         asShortText = ctx.channel().id().asShortText();
 	        log.info("通道["+asShortText+"]接收数据:"+dataStr);
 
 
@@ -155,6 +159,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	        
 		}catch (Exception e) {
 			log.error("数据接收转发异常"+e+"异常数据为:"+dataStr);
+			redisDao.delete(asShortText + ":" + ParamaterModel.class.getSimpleName());
 		}finally{
 			//从InBound里读取的ByteBuf要手动释放
 			ReferenceCountUtil.release(msg);
