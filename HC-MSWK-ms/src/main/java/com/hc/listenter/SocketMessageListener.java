@@ -33,24 +33,24 @@ public class SocketMessageListener {
     @StreamListener(SocketMessage.EXCHANGE_NAME)
     public void onMessage(String messageContent) {
         LOGGER.info("数据处理中心服务接收到队列1中数据:" + messageContent);
-        mswkMessage(messageContent);
+        mswkMessage(messageContent,"1");
     }
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME2)
     public void onMessage1(String messageContent) {
         LOGGER.info("数据处理中心服务接收到队列2中数据:" + messageContent);
-        mswkMessage(messageContent);
+        mswkMessage(messageContent,"2");
     }
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME3)
     public void onMessage2(String messageContent) {
         LOGGER.info("数据处理中心服务接收到队列3中数据:" + messageContent);
-        mswkMessage(messageContent);
+        mswkMessage(messageContent,"3");
     }
 
-    public void mswkMessage(String messageContent) {
+    public void mswkMessage(String messageContent,String topic) {
         ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
         //MT500  MT600判断
         Monitorinstrument monitorinstrument = mtJudgeService.mtJudge(model);
@@ -62,8 +62,22 @@ public class SocketMessageListener {
         //报警消息处理
         if (CollectionUtils.isNotEmpty(save)) {
             for (WarningMqModel warningModel : save) {
-                service.pushMessage3(JsonUtil.toJson(warningModel));
-                LOGGER.info("数据插入服务结束，推送去报警服务：" + JsonUtil.toJson(warningModel));
+                switch (topic){
+                    case "1":
+                        service.pushMessage1(JsonUtil.toJson(warningModel));
+                        LOGGER.info("数据插入服务结束，推送去报警服务：" + JsonUtil.toJson(warningModel));
+                        break;
+                    case "2":
+                        service.pushMessage2(JsonUtil.toJson(warningModel));
+                        LOGGER.info("数据插入服务结束，推送去报警服务：" + JsonUtil.toJson(warningModel));
+                        break;
+                    case "3":
+                        service.pushMessage3(JsonUtil.toJson(warningModel));
+                        LOGGER.info("数据插入服务结束，推送去报警服务：" + JsonUtil.toJson(warningModel));
+                        break;
+                    default:
+                        break;
+                }
 
             }
         }
