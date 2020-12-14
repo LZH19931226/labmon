@@ -19,6 +19,28 @@ public class cmdidParseUtils {
             return DataRules.STATEA;
         } else
             // 若超出量程范围(0%-20%)，该值为 0xFF00； 针对mt400得异常值
+            if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSB)) {
+                return DataRules.STATEB;
+            } else
+                // 若已接传感器且已校准，但值无效，该值为 0xFFF0;
+                if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSC)) {
+                    return DataRules.STATEC;
+                } else
+                    // 若已接传感器，但未校准，该值为 0xFFFF；
+                    if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSD)) {
+                        return DataRules.STATED;
+                    } else {
+                        return gas(co2);
+                    }
+    }
+
+
+    public static String paseAirMT400(String co2) {
+
+        if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSA)) {
+            return DataRules.STATEA;
+        } else
+            // 若超出量程范围(0%-20%)，该值为 0xFF00； 针对mt400得异常值
             if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSB)||StringUtils.equalsIgnoreCase(co2, "028C")||StringUtils.equalsIgnoreCase(co2, "9C00")) {
                 return DataRules.STATEB;
             } else
@@ -33,6 +55,10 @@ public class cmdidParseUtils {
                         return gas(co2);
                     }
     }
+
+
+
+
 
     public static String paseAir10(String co2) {
 

@@ -101,7 +101,7 @@ public class paramaterModelUtils {
 //        return f.toString();
     }
     public static String chu(Integer a,String b){
-        return new BigDecimal(a).divide(new BigDecimal(b), 3, BigDecimal.ROUND_HALF_UP).toString();
+        return new BigDecimal(a).divide(new BigDecimal(b), 2, BigDecimal.ROUND_HALF_UP).toString();
 
 
     }
