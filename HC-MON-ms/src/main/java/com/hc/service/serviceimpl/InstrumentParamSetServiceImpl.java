@@ -152,21 +152,21 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
         ApiResponse<String> apiResponse = new ApiResponse<String>();
         InstrumentMonitorInfoModel instrumentMonitorInfoModel = new InstrumentMonitorInfoModel();
         try {
-            InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
-            String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentparamconfig.getInstrumentparamconfigno());
-
-            instrumentparamConfigSetMapper.updateWarnPhone(instrumentparamconfig);
-            InstrumentInfoModel one2 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
-            one2.setWarningphone(instrumentparamconfig.getWarningphone());
-            //修改后存redis缓存
-            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
-            instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
-            LOGGER.info("手机APP禁用启用报警：对象为：" + JsonUtil.toJson(instrumentMonitorInfoModel));
-            objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
-            ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
-
-            updateRecordService.updateInstrumentMonitor(instrumentName,showModel.getEquipmentname(), showModel.getHospitalname(), instrumentparamconfig.getUserName(), one1, one2, "1", "1");
+            synchronized (this) {
+                InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
+                String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentparamconfig.getInstrumentparamconfigno());
+                instrumentparamConfigSetMapper.updateWarnPhone(instrumentparamconfig);
+                InstrumentInfoModel one2 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
+                one2.setWarningphone(instrumentparamconfig.getWarningphone());
+                //修改后存redis缓存
+                HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+                instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
+                instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
+                LOGGER.info("手机APP禁用启用报警：对象为：" + JsonUtil.toJson(instrumentMonitorInfoModel));
+                objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+                ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
+                updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), instrumentparamconfig.getUserName(), one1, one2, "1", "1");
+            }
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());

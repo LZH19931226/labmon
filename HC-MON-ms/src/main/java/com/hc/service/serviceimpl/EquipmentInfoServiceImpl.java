@@ -72,18 +72,18 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             return apiResponse;
         }
         for (Instrumentparamconfig instrumentparamconfig : equipmentTypeAllConfig) {
-            InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
-
-            instrumentparamconfig.setWarningphone(warningphone);
-            instrumentparamconfigDao.save(instrumentparamconfig);
-            InstrumentInfoModel one2 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
-
-            String instrumentparamconfigNO = instrumentparamconfig.getInstrumentparamconfigno();
-            InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
-            ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
-            String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentparamconfigNO);
-            updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), batchModel.getUsername(), one1, one2, "1", "1");
-            objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+            synchronized (this) {
+                InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
+                instrumentparamconfig.setWarningphone(warningphone);
+                instrumentparamconfigDao.save(instrumentparamconfig);
+                InstrumentInfoModel one2 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
+                String instrumentparamconfigNO = instrumentparamconfig.getInstrumentparamconfigno();
+                InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
+                ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
+                String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentparamconfigNO);
+                updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), batchModel.getUsername(), one1, one2, "1", "1");
+                objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+            }
         }
 
         return apiResponse;
