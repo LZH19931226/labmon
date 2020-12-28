@@ -9,4 +9,5 @@ import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 public interface WarningRuleService {
 
     WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentMonitorInfoModel instrumentMonitorInfoModel, String remark);
+
 }

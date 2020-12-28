@@ -11,7 +11,6 @@ import com.hc.model.TimeoutEquipment;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.SendMesService;
 import com.hc.service.WarningService;
-import com.hc.utils.HttpUtil;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
 import com.hc.utils.UnitCase;
@@ -49,6 +48,8 @@ public class SocketMessageListener {
     private UserrightDao userrightDao;
     @Autowired
     private UserScheduLingDao userScheduLingDao;
+    @Autowired
+    private WarningrecordSortDao warningrecordSortDao;
 
 
     @Autowired
@@ -167,17 +168,20 @@ public class SocketMessageListener {
     }
 
     public void msctMessage(String message) {
-        try {
-            WarningMqModel mQmodel = JsonUtil.toBean(message, WarningMqModel.class);
-            Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
-            WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
-            if (ObjectUtils.isEmpty(model)) {
-                return;
-            }
-            String equipmentname = model.getEquipmentname();
-            String unit = UnitCase.caseUint(model.getUnit());
-            String value = model.getValue();
-            String hospitalcode = model.getHospitalcode();
+        WarningMqModel mQmodel = JsonUtil.toBean(message, WarningMqModel.class);
+        Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
+        WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
+        if (ObjectUtils.isEmpty(model)) {
+            return;
+        }
+        String equipmentname = model.getEquipmentname();
+        String unit = UnitCase.caseUint(model.getUnit());
+        String value = model.getValue();
+        String hospitalcode = model.getHospitalcode();
+        //不走排班逻辑,定制报警需求
+        Boolean scIsTrue = warningRuleSend(model);
+        if (scIsTrue) {
+            boolean flag = false;
             List<Userright> list = new ArrayList<>();
             List<String> phones = new ArrayList<>();
             //判断该医院当天是否有人员排班
@@ -235,9 +239,7 @@ public class SocketMessageListener {
             String pkid = model.getPkid();
             warningrecordDao.updatePhone(pkid);
             //获取电话
-            boolean flag = false;
-            LOGGER.info("通知报警的人员:" + JsonUtil.toJson(list));
-            List<Sendrecord>  list1  = new ArrayList<>();
+            List<Sendrecord> list1 = new ArrayList<>();
             for (Userright userright : list) {
                 String reminders = userright.getReminders();
                 String phonenum = userright.getPhonenum();
@@ -268,10 +270,9 @@ public class SocketMessageListener {
                     list1.add(sendrecord);
                 }
             }
-            if (CollectionUtils.isNotEmpty(list1)){
+            if (CollectionUtils.isNotEmpty(list1)) {
                 sendrecordDao.save(list1);
             }
-
             if (flag) {
                 //拨打电话
                 HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
@@ -285,17 +286,14 @@ public class SocketMessageListener {
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
                     objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
                 }
-
+                //友盟推送
+                sendMesService.sendYmMessage(model.getPkid());
             }
-            //友盟推送
-            sendMesService.sendYmMessage(model.getPkid());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
     }
 
-    public Sendrecord producePhoneRecord(String phone,String hospitalcode,String equipmentname,String unit,String type){
+    public Sendrecord producePhoneRecord(String phone, String hospitalcode, String equipmentname, String
+            unit, String type) {
         Sendrecord sendrecord = new Sendrecord();
         sendrecord.setPhonenum(phone);
         sendrecord.setCreatetime(new Date());
@@ -304,7 +302,89 @@ public class SocketMessageListener {
         sendrecord.setEquipmentname(equipmentname);
         sendrecord.setUnit(unit);
         sendrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-        return  sendrecord;
+        return sendrecord;
+    }
+
+
+    /**
+     * 浙妇保医院定制需求
+     */
+    public Boolean warningRuleSend(WarningModel model) {
+        String hospitalcode = model.getHospitalcode();
+        String equipmentname = model.getEquipmentname();
+        String unit = UnitCase.caseUint(model.getUnit());
+        String value = model.getValue();
+        String pkid = model.getPkid();
+        if (!StringUtils.equalsAny(hospitalcode, "5e6d5037c93a4d619368553b09f5a657")) {
+            return true;
+        }
+        BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
+        String o = (String) hospitalphonenum.get(hospitalcode);
+        if (StringUtils.isEmpty(o)) {
+            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+            return false;
+        }
+        List<Userright> userrights = JsonUtil.toList(o, Userright.class);
+        if (CollectionUtils.isEmpty(userrights)) {
+            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+            return false;
+        }
+        //给所有人发短信
+        List<Sendrecord> list1 = new ArrayList<>();
+        for (Userright userright : userrights) {
+            String phonenum = userright.getPhonenum();
+            // 发送短信
+            if (StringUtils.isNotEmpty(phonenum)) {
+                SendSmsResponse sendSmsResponse = sendMesService.sendMes(phonenum, equipmentname, unit, value);
+                LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentname, unit, "0");
+                list1.add(sendrecord1);
+            }
+        }
+        Map<Integer, Userright> userrightMap = new HashMap<>();
+        userrights.forEach(s -> {
+            String username = s.getUsername();
+            if (StringUtils.isNotEmpty(username)) {
+                String lastString = username.substring(username.length() - 1, username.length());
+                if (StringUtils.contains(lastString, "1,2,3,4,5,6,7,8,9")) {
+                    userrightMap.put(Integer.parseInt(lastString), s);
+                }
+
+            }
+        });
+        if (userrightMap.isEmpty()) {
+            //若无规则联系人则给所有人打电话
+            for (Userright userright : userrights) {
+                String phonenum = userright.getPhonenum();
+                if (StringUtils.isNotEmpty(phonenum)) {
+                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
+                    list1.add(sendrecord);
+                }
+            }
+
+        }else {
+            Set<Integer> integers = userrightMap.keySet();
+            Integer integer = integers.stream().sorted(Integer::compareTo).findFirst().get();
+            Userright userright = userrightMap.get(integer);
+            LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+            sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+            Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
+            list1.add(sendrecord);
+        }
+        warningrecordDao.updatePhone(pkid);
+        //生成定时报警逻辑
+        WarningrecordSort warningrecordSort = new WarningrecordSort();
+        warningrecordSort.setPkid(pkid);
+        warningrecordSort.setIsRead("0");
+        warningrecordSort.setWarningStatus("1");
+        warningrecordSort.setInputdatetime(new Date());
+        warningrecordSortDao.save(warningrecordSort);
+        if (CollectionUtils.isNotEmpty(list1)) {
+            sendrecordDao.save(list1);
+        }
+        return false;
     }
 
 
