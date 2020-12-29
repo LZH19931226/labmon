@@ -372,15 +372,16 @@ public class SocketMessageListener {
             sendMesService.callPhone(userright.getPhonenum(), equipmentname);
             Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
             list1.add(sendrecord);
+            //生成定时报警逻辑
+            WarningrecordSort warningrecordSort = new WarningrecordSort();
+            warningrecordSort.setPkid(pkid);
+            warningrecordSort.setIsRead("0");
+            warningrecordSort.setEquipmentname(equipmentname);
+            warningrecordSort.setWarningStatus("1");
+            warningrecordSort.setInputdatetime(new Date());
+            warningrecordSortDao.save(warningrecordSort);
         }
         warningrecordDao.updatePhone(pkid);
-        //生成定时报警逻辑
-        WarningrecordSort warningrecordSort = new WarningrecordSort();
-        warningrecordSort.setPkid(pkid);
-        warningrecordSort.setIsRead("0");
-        warningrecordSort.setWarningStatus("1");
-        warningrecordSort.setInputdatetime(new Date());
-        warningrecordSortDao.save(warningrecordSort);
         if (CollectionUtils.isNotEmpty(list1)) {
             sendrecordDao.save(list1);
         }

@@ -15,4 +15,6 @@ public interface WarningRecordInfoService {
     ApiResponse<WarningRecordInfo> instwarningrecordinfo(WarningRecordInfo warningrecordinfo);
 
     ApiResponse<CurveInfoModel> getWarningCurveData(String warningRecordId, String startTime, String endTime);
+
+    ApiResponse<String> zfbwarningRuleSend(String warningRecordSortId);
 }

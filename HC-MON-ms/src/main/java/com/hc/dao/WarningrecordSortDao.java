@@ -2,6 +2,7 @@ package com.hc.dao;
 
 import com.hc.entity.WarningrecordSort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,8 +18,7 @@ import java.util.List;
 public interface WarningrecordSortDao extends JpaRepository<WarningrecordSort,Integer> {
 
 
-
-
-    @Query("select  a from WarningrecordSort a where a.hospitalcode=:hospitalcode and a.isRead = '0' ")
-    List<WarningrecordSort> getWarningrecordSortByHospitalcodeAAndisRead (@Param("hospitalcode") String hospitalcode);
+    @Modifying
+    @Query("update WarningrecordSort  ws set ws.isRead ='1' where ws.id <=:warningRecordSortId")
+    void zfbwarningRuleSend(String warningRecordSortId);
 }

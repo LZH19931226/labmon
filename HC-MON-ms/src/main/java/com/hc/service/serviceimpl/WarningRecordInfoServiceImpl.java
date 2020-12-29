@@ -1,6 +1,7 @@
 package com.hc.service.serviceimpl;
 
 import com.hc.dao.WarningRecordInfoDao;
+import com.hc.dao.WarningrecordSortDao;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.WarningRecordInfo;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
@@ -29,12 +30,12 @@ public class WarningRecordInfoServiceImpl implements WarningRecordInfoService {
 
     @Autowired
     private WarningRecordInfoDao wreDao;
-
     @Autowired
     private WarningrecordInfoMapper warningrecordInfoMapper;
-
     @Autowired
     private EquipmentInfoMapper equipmentInfoMapper;
+    @Autowired
+    private WarningrecordSortDao warningrecordSortDao;
 
     @Override
     public ApiResponse<WarningRecordInfo> instwarningrecordinfo(WarningRecordInfo warningrecordinfo) {
@@ -133,6 +134,12 @@ N2	currentn2
         CurveInfoModel curveInfoModel = produceCurveInfo(monitorequipmentlastdataByType);
         apiResponse.setResult(curveInfoModel);
         return apiResponse;
+    }
+
+    @Override
+    public ApiResponse<String> zfbwarningRuleSend(String warningRecordSortId) {
+        warningrecordSortDao.zfbwarningRuleSend(warningRecordSortId);
+        return ApiResponse.saveSuccess();
     }
 
     private String changeInstrumentConfigName(String instrumentconfigname) {

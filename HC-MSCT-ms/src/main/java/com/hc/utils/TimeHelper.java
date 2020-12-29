@@ -18,22 +18,11 @@ public class TimeHelper {
     /**
      * 时间比较方法
      */
-    public static double getDatePoor(Date endDate, Date nowDate) {
-
-        double nd = 1000;
-// 获得两个时间的毫秒时间差异
-
+    public static double getDatePoor(Date nowDate, Date endDate) {
+        double nd = 1000 * 60;
+        // 获得两个时间的毫秒时间差异
         long diff = endDate.getTime() - nowDate.getTime();
-        double diffe = diff;
-
-
-        double s = diff / nd;
-
-// 计算差多少秒//输出结果
-
-// long sec = diff % nd % nh % nm / ns;
-
-        return s;
+        return diff / nd;
 
     }
 
@@ -55,6 +44,20 @@ public class TimeHelper {
         return s;
 
     }
+
+    public static void main(String[] args) throws InterruptedException {
+        Date date = new Date();
+        Thread.sleep(3000);
+        double datePoor = getDatePoor(date, new Date());
+        System.out.println(datePoor);
+
+
+    }
+
+
+
+
+
     /**
      * String类型当前时间比较方法
      */

@@ -102,4 +102,11 @@ public class WarningInfoController {
     }
 
 
+    @GetMapping("/zfbwarningRuleSend")
+    @ApiOperation("确认报警通知")
+    public  ApiResponse<String> zfbwarningRuleSend(@ApiParam(name = "warningRecordSortId", value = "报警提醒id", required = true)
+                                                       @RequestParam(value = "warningRecordSortId") String warningRecordSortId){
+        return warningRecordInfoService.zfbwarningRuleSend(warningRecordSortId);
+    }
+
 }
