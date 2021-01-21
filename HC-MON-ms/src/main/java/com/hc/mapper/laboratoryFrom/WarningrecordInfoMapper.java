@@ -1,11 +1,13 @@
 package com.hc.mapper.laboratoryFrom;
 
 import com.hc.entity.Warningrecord;
+import com.hc.entity.WarningrecordSort;
 import com.hc.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -94,4 +96,6 @@ public interface WarningrecordInfoMapper {
     List<NewWarningRecord> getWarNingRecordInfoMonthCount(@Param("monitortlastdataTypeModel") MonitortlastdataTypeModel monitortlastdataTypeModel);
 
 
+    @Select("SELECT * FROM warningrecordsort a WHERE a.isRead ='0' ORDER BY id desc limit 1")
+    WarningrecordSort zfbwarningButton();
 }

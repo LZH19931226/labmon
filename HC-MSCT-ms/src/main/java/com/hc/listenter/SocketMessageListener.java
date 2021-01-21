@@ -346,7 +346,7 @@ public class SocketMessageListener {
             String username = s.getUsername();
             if (StringUtils.isNotEmpty(username)) {
                 String lastString = username.substring(username.length() - 1, username.length());
-                if (StringUtils.contains(lastString, "1,2,3,4,5,6,7,8,9")) {
+                if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
                     userrightMap.put(Integer.parseInt(lastString), s);
                 }
 
@@ -389,4 +389,13 @@ public class SocketMessageListener {
     }
 
 
+    public static void main(String[] args){
+        String username ="xiaoliu3";
+        String lastString = username.substring(username.length() - 1, username.length());
+        if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
+            System.out.println("sada");
+
+        }
+
+    }
 }

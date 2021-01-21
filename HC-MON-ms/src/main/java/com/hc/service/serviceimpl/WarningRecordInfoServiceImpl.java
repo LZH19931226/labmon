@@ -4,6 +4,7 @@ import com.hc.dao.WarningRecordInfoDao;
 import com.hc.dao.WarningrecordSortDao;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.WarningRecordInfo;
+import com.hc.entity.WarningrecordSort;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.WarningrecordInfoMapper;
 import com.hc.model.*;
@@ -140,6 +141,14 @@ N2	currentn2
     public ApiResponse<String> zfbwarningRuleSend(String warningRecordSortId) {
         warningrecordSortDao.zfbwarningRuleSend(warningRecordSortId);
         return ApiResponse.saveSuccess();
+    }
+
+    @Override
+    public ApiResponse<WarningrecordSort> zfbwarningButton() {
+        ApiResponse<WarningrecordSort> apiResponse = new ApiResponse<>();
+        WarningrecordSort warningrecordSort =  warningrecordInfoMapper.zfbwarningButton();
+        apiResponse.setResult(warningrecordSort);
+        return apiResponse;
     }
 
     private String changeInstrumentConfigName(String instrumentconfigname) {

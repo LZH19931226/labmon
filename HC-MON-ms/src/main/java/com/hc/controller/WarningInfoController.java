@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.github.pagehelper.Page;
 import com.hc.entity.WarningRecordInfo;
 import com.hc.entity.Warningrecord;
+import com.hc.entity.WarningrecordSort;
 import com.hc.model.CurveInfoModel;
 import com.hc.model.NewWarningRecord;
 import com.hc.model.PushSetModel;
@@ -108,5 +109,12 @@ public class WarningInfoController {
                                                        @RequestParam(value = "warningRecordSortId") String warningRecordSortId){
         return warningRecordInfoService.zfbwarningRuleSend(warningRecordSortId);
     }
+
+    @GetMapping("/zfbwarningButton")
+    @ApiOperation("获取报警提醒按钮最新状态")
+    public ApiResponse<WarningrecordSort> zfbwarningButton(){
+        return warningRecordInfoService.zfbwarningButton();
+    }
+
 
 }

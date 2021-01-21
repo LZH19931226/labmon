@@ -2,6 +2,7 @@ package com.hc.service;
 
 
 import com.hc.entity.WarningRecordInfo;
+import com.hc.entity.WarningrecordSort;
 import com.hc.model.CurveInfoModel;
 import com.hc.utils.ApiResponse;
 
@@ -17,4 +18,6 @@ public interface WarningRecordInfoService {
     ApiResponse<CurveInfoModel> getWarningCurveData(String warningRecordId, String startTime, String endTime);
 
     ApiResponse<String> zfbwarningRuleSend(String warningRecordSortId);
+
+    ApiResponse<WarningrecordSort> zfbwarningButton();
 }

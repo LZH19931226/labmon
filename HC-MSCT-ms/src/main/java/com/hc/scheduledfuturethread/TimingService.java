@@ -130,7 +130,7 @@ public class TimingService {
     }
 
 
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 */4 * * * ?")
     public void zfbwarningRuleSend() {
         String hospitalcode = "5e6d5037c93a4d619368553b09f5a657";
         List<WarningrecordSort> warRead = warningrecordSortDao.getWarningrecordSortByHospitalcodeAAndisRead(hospitalcode);
@@ -148,7 +148,7 @@ public class TimingService {
                 String username = s.getUsername();
                 if (StringUtils.isNotEmpty(username)) {
                     String lastString = username.substring(username.length() - 1, username.length());
-                    if (StringUtils.contains(lastString, "1,2,3,4,5,6,7,8,9")) {
+                    if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
                         userrightMap.put(Integer.parseInt(lastString), s);
                     }
 

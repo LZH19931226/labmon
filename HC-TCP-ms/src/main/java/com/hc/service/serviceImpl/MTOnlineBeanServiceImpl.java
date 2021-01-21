@@ -407,9 +407,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
     }
 
     public static void main(String args[]) {
-        for (int i = 0; i < 100; i++) {
-            System.out.println(37.01 + 0.01);
-        }
+        cmdidParseUtils.pase91("48439110323035313036303031350b6c07e700303923");
     }
 
 

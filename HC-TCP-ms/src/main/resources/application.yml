@@ -5,7 +5,7 @@ spring:
     name: HC-TCP-ms
   #redis配置信息
   redis:
-       host: 192.168.1.90
+       host: 127.0.0.1
        port: 6379
        pool:
          max-active: 200
@@ -23,7 +23,7 @@ spring:
 #socket配置信息
 netty:
   ip: 127.0.0.1
-  port: 8080
+  port: 4001
   bossGroupCount: 4
   wokerGroupCount: 8
   keepAlive: true
