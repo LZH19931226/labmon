@@ -139,7 +139,7 @@ N2	currentn2
 
     @Override
     public ApiResponse<String> zfbwarningRuleSend(String warningRecordSortId) {
-        warningrecordSortDao.zfbwarningRuleSend(warningRecordSortId);
+        warningrecordSortDao.zfbwarningRuleSend(Integer.parseInt(warningRecordSortId));
         return ApiResponse.saveSuccess();
     }
 

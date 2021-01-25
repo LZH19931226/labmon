@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 
@@ -18,8 +19,8 @@ public interface WarningrecordSortDao extends JpaRepository<WarningrecordSort,In
 
 
     @Modifying
-    @Query("update WarningrecordSort  ws set ws.isRead ='1' where ws.id <=:warningRecordSortId")
-    void zfbwarningRuleSend(String warningRecordSortId);
+    @Query("update WarningrecordSort  ws set ws.isRead ='1' where ws.id <= :waid")
+    void zfbwarningRuleSend(@Param("waid")int waid);
 
 
 }

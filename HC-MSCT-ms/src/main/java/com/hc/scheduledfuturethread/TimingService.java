@@ -130,7 +130,7 @@ public class TimingService {
     }
 
 
-    @Scheduled(cron = "0 */4 * * * ?")
+    @Scheduled(cron = "0 */9 * * * ?")
     public void zfbwarningRuleSend() {
         String hospitalcode = "5e6d5037c93a4d619368553b09f5a657";
         List<WarningrecordSort> warRead = warningrecordSortDao.getWarningrecordSortByHospitalcodeAAndisRead(hospitalcode);
@@ -164,7 +164,7 @@ public class TimingService {
                             Date inputdatetime = s.getInputdatetime();
                             double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
                             //大于5分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 5) {
+                            if (datePoor >= 10) {
                                 Integer integer = collect1.get(1);
                                 Userright userright = userrightMap.get(integer);
                                 sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
@@ -178,7 +178,7 @@ public class TimingService {
                             Date inputdatetime = s.getInputdatetime();
                             double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
                             //大于5分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 10) {
+                            if (datePoor >= 20) {
                                 Integer integer = collect1.get(2);
                                 Userright userright = userrightMap.get(integer);
                                 sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
@@ -192,7 +192,7 @@ public class TimingService {
                             Date inputdatetime = s.getInputdatetime();
                             double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
                             //大于5分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 15) {
+                            if (datePoor >= 30) {
                                 Integer integer = collect1.get(3);
                                 Userright userright = userrightMap.get(integer);
                                 sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
@@ -206,7 +206,7 @@ public class TimingService {
                             Date inputdatetime = s.getInputdatetime();
                             double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
                             //大于20分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 20) {
+                            if (datePoor >= 40) {
                                 Integer integer = collect1.get(4);
                                 Userright userright = userrightMap.get(integer);
                                 sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
@@ -219,7 +219,7 @@ public class TimingService {
                         v.forEach(s -> {
                             Date inputdatetime = s.getInputdatetime();
                             double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
-                            if (datePoor >= 25) {
+                            if (datePoor >= 50) {
                                 //都未确认给所有人拨打电话
                                 for (Userright userright : userrights) {
                                     String phonenum = userright.getPhonenum();

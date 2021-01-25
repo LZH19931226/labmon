@@ -180,7 +180,7 @@ public class WarningServiceImpl implements WarningService {
                             //老版本mt200m判断逻辑生产周大于20年15周为新的mt200m报警逻辑更改
                             String sn = monitorinstrument.getSn();
                             String proSn = sn.substring(0, 4);
-                            String sns = sn.substring(5, 7);
+                            String sns = sn.substring(4, 6);
                             if (Integer.parseInt(proSn) < 2031) {
                                 //当一路温度值存在异常，整个值无效
                                 // 当两个值相差3度，值无效

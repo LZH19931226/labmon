@@ -379,6 +379,7 @@ public class SocketMessageListener {
             warningrecordSort.setEquipmentname(equipmentname);
             warningrecordSort.setWarningStatus("1");
             warningrecordSort.setInputdatetime(new Date());
+            warningrecordSort.setHospitalcode("5e6d5037c93a4d619368553b09f5a657");
             warningrecordSortDao.save(warningrecordSort);
         }
         warningrecordDao.updatePhone(pkid);
