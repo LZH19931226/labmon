@@ -130,114 +130,114 @@ public class TimingService {
     }
 
 
-    @Scheduled(cron = "0 */9 * * * ?")
-    public void zfbwarningRuleSend() {
-        String hospitalcode = "5e6d5037c93a4d619368553b09f5a657";
-        List<WarningrecordSort> warRead = warningrecordSortDao.getWarningrecordSortByHospitalcodeAAndisRead(hospitalcode);
-        if (CollectionUtils.isNotEmpty(warRead)) {
-            Map<String, List<WarningrecordSort>> collect = warRead.stream().collect(Collectors.groupingBy(WarningrecordSort::getWarningStatus));
-            BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-            String o = (String) hospitalphonenum.get(hospitalcode);
-            List<Userright> userrights = JsonUtil.toList(o, Userright.class);
-            if (CollectionUtils.isEmpty(userrights)) {
-                return;
-            }
-            //获取报警序号得联系人员
-            Map<Integer, Userright> userrightMap = new HashMap<>();
-            userrights.forEach(s -> {
-                String username = s.getUsername();
-                if (StringUtils.isNotEmpty(username)) {
-                    String lastString = username.substring(username.length() - 1, username.length());
-                    if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
-                        userrightMap.put(Integer.parseInt(lastString), s);
-                    }
-
-                }
-            });
-            Set<Integer> integers = userrightMap.keySet();
-            List<Integer> collect1 = integers.stream().sorted(Integer::compareTo).collect(Collectors.toList());
-            List<WarningrecordSort> warningrecordSorts = new ArrayList<>();
-            collect.forEach((k, v) -> {
-                switch (k) {
-                    case "1":
-                        v.forEach(s -> {
-                            Date inputdatetime = s.getInputdatetime();
-                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
-                            //大于5分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 10) {
-                                Integer integer = collect1.get(1);
-                                Userright userright = userrightMap.get(integer);
-                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
-                                s.setWarningStatus("2");
-                                warningrecordSorts.add(s);
-                            }
-                        });
-                        break;
-                    case "2":
-                        v.forEach(s -> {
-                            Date inputdatetime = s.getInputdatetime();
-                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
-                            //大于5分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 20) {
-                                Integer integer = collect1.get(2);
-                                Userright userright = userrightMap.get(integer);
-                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
-                                s.setWarningStatus("3");
-                                warningrecordSorts.add(s);
-                            }
-                        });
-                        break;
-                    case "3":
-                        v.forEach(s -> {
-                            Date inputdatetime = s.getInputdatetime();
-                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
-                            //大于5分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 30) {
-                                Integer integer = collect1.get(3);
-                                Userright userright = userrightMap.get(integer);
-                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
-                                s.setWarningStatus("4");
-                                warningrecordSorts.add(s);
-                            }
-                        });
-                        break;
-                    case "4":
-                        v.forEach(s -> {
-                            Date inputdatetime = s.getInputdatetime();
-                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
-                            //大于20分钟未确认 给下一位电话 同时修改状态
-                            if (datePoor >= 40) {
-                                Integer integer = collect1.get(4);
-                                Userright userright = userrightMap.get(integer);
-                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
-                                s.setWarningStatus("5");
-                                warningrecordSorts.add(s);
-                            }
-                        });
-                        break;
-                    case "5":
-                        v.forEach(s -> {
-                            Date inputdatetime = s.getInputdatetime();
-                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
-                            if (datePoor >= 50) {
-                                //都未确认给所有人拨打电话
-                                for (Userright userright : userrights) {
-                                    String phonenum = userright.getPhonenum();
-                                    if (StringUtils.isNotEmpty(phonenum)) {
-                                        sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
-                                    }
-                                }
-                                s.setIsRead("1");
-                                warningrecordSorts.add(s);
-                            }
-                        });
-                        break;
-                    default:
-                        break;
-                }
-            });
-            warningrecordSortDao.save(warningrecordSorts);
-        }
-
-    }
+//    @Scheduled(cron = "0 */9 * * * ?")
+//    public void zfbwarningRuleSend() {
+//        String hospitalcode = "5e6d5037c93a4d619368553b09f5a657";
+//        List<WarningrecordSort> warRead = warningrecordSortDao.getWarningrecordSortByHospitalcodeAAndisRead(hospitalcode);
+//        if (CollectionUtils.isNotEmpty(warRead)) {
+//            Map<String, List<WarningrecordSort>> collect = warRead.stream().collect(Collectors.groupingBy(WarningrecordSort::getWarningStatus));
+//            BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
+//            String o = (String) hospitalphonenum.get(hospitalcode);
+//            List<Userright> userrights = JsonUtil.toList(o, Userright.class);
+//            if (CollectionUtils.isEmpty(userrights)) {
+//                return;
+//            }
+//            //获取报警序号得联系人员
+//            Map<Integer, Userright> userrightMap = new HashMap<>();
+//            userrights.forEach(s -> {
+//                String username = s.getUsername();
+//                if (StringUtils.isNotEmpty(username)) {
+//                    String lastString = username.substring(username.length() - 1, username.length());
+//                    if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
+//                        userrightMap.put(Integer.parseInt(lastString), s);
+//                    }
+//
+//                }
+//            });
+//            Set<Integer> integers = userrightMap.keySet();
+//            List<Integer> collect1 = integers.stream().sorted(Integer::compareTo).collect(Collectors.toList());
+//            List<WarningrecordSort> warningrecordSorts = new ArrayList<>();
+//            collect.forEach((k, v) -> {
+//                switch (k) {
+//                    case "1":
+//                        v.forEach(s -> {
+//                            Date inputdatetime = s.getInputdatetime();
+//                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
+//                            //大于5分钟未确认 给下一位电话 同时修改状态
+//                            if (datePoor >= 10) {
+//                                Integer integer = collect1.get(1);
+//                                Userright userright = userrightMap.get(integer);
+//                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
+//                                s.setWarningStatus("2");
+//                                warningrecordSorts.add(s);
+//                            }
+//                        });
+//                        break;
+//                    case "2":
+//                        v.forEach(s -> {
+//                            Date inputdatetime = s.getInputdatetime();
+//                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
+//                            //大于5分钟未确认 给下一位电话 同时修改状态
+//                            if (datePoor >= 20) {
+//                                Integer integer = collect1.get(2);
+//                                Userright userright = userrightMap.get(integer);
+//                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
+//                                s.setWarningStatus("3");
+//                                warningrecordSorts.add(s);
+//                            }
+//                        });
+//                        break;
+//                    case "3":
+//                        v.forEach(s -> {
+//                            Date inputdatetime = s.getInputdatetime();
+//                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
+//                            //大于5分钟未确认 给下一位电话 同时修改状态
+//                            if (datePoor >= 30) {
+//                                Integer integer = collect1.get(3);
+//                                Userright userright = userrightMap.get(integer);
+//                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
+//                                s.setWarningStatus("4");
+//                                warningrecordSorts.add(s);
+//                            }
+//                        });
+//                        break;
+//                    case "4":
+//                        v.forEach(s -> {
+//                            Date inputdatetime = s.getInputdatetime();
+//                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
+//                            //大于20分钟未确认 给下一位电话 同时修改状态
+//                            if (datePoor >= 40) {
+//                                Integer integer = collect1.get(4);
+//                                Userright userright = userrightMap.get(integer);
+//                                sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
+//                                s.setWarningStatus("5");
+//                                warningrecordSorts.add(s);
+//                            }
+//                        });
+//                        break;
+//                    case "5":
+//                        v.forEach(s -> {
+//                            Date inputdatetime = s.getInputdatetime();
+//                            double datePoor = TimeHelper.getDatePoor(inputdatetime, new Date());
+//                            if (datePoor >= 50) {
+//                                //都未确认给所有人拨打电话
+//                                for (Userright userright : userrights) {
+//                                    String phonenum = userright.getPhonenum();
+//                                    if (StringUtils.isNotEmpty(phonenum)) {
+//                                        sendMesService.callPhone(userright.getPhonenum(), s.getEquipmentname());
+//                                    }
+//                                }
+//                                s.setIsRead("1");
+//                                warningrecordSorts.add(s);
+//                            }
+//                        });
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            });
+//            warningrecordSortDao.save(warningrecordSorts);
+//        }
+//
+//    }
 }

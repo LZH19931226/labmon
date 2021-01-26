@@ -161,8 +161,6 @@ public class cmdidParseUtils {
         // 二路温度
         String substring4 = cmd.substring(32, 36);
         String pasetemperature1 = pasetemperature(substring4);
-        //验证数据
-        log.info("SN号：" + sn + "当前二路温度数据为：" + pasetemperature1);
         pasetemperature1 = CustomUtils.tem85(pasetemperature1, sn);
         paramaterModel.setTEMP2(pasetemperature1);
         // 电量

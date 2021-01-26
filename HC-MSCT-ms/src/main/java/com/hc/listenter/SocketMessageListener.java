@@ -179,7 +179,8 @@ public class SocketMessageListener {
         String value = model.getValue();
         String hospitalcode = model.getHospitalcode();
         //不走排班逻辑,定制报警需求
-        Boolean scIsTrue = warningRuleSend(model);
+       // Boolean scIsTrue = warningRuleSend(model);
+        Boolean scIsTrue=true;
         if (scIsTrue) {
             boolean flag = false;
             List<Userright> list = new ArrayList<>();
