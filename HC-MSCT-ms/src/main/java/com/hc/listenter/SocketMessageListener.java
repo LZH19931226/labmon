@@ -48,8 +48,8 @@ public class SocketMessageListener {
     private UserrightDao userrightDao;
     @Autowired
     private UserScheduLingDao userScheduLingDao;
-    @Autowired
-    private WarningrecordSortDao warningrecordSortDao;
+//    @Autowired
+//    private WarningrecordSortDao warningrecordSortDao;
 
 
     @Autowired
@@ -307,88 +307,88 @@ public class SocketMessageListener {
     }
 
 
-    /**
-     * 浙妇保医院定制需求
-     */
-    public Boolean warningRuleSend(WarningModel model) {
-        String hospitalcode = model.getHospitalcode();
-        String equipmentname = model.getEquipmentname();
-        String unit = UnitCase.caseUint(model.getUnit());
-        String value = model.getValue();
-        String pkid = model.getPkid();
-        if (!StringUtils.equalsAny(hospitalcode, "5e6d5037c93a4d619368553b09f5a657")) {
-            return true;
-        }
-        BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-        String o = (String) hospitalphonenum.get(hospitalcode);
-        if (StringUtils.isEmpty(o)) {
-            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-            return false;
-        }
-        List<Userright> userrights = JsonUtil.toList(o, Userright.class);
-        if (CollectionUtils.isEmpty(userrights)) {
-            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-            return false;
-        }
-        //给所有人发短信
-        List<Sendrecord> list1 = new ArrayList<>();
-        for (Userright userright : userrights) {
-            String phonenum = userright.getPhonenum();
-            // 发送短信
-            if (StringUtils.isNotEmpty(phonenum)) {
-                SendSmsResponse sendSmsResponse = sendMesService.sendMes(phonenum, equipmentname, unit, value);
-                LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentname, unit, "0");
-                list1.add(sendrecord1);
-            }
-        }
-        Map<Integer, Userright> userrightMap = new HashMap<>();
-        userrights.forEach(s -> {
-            String username = s.getUsername();
-            if (StringUtils.isNotEmpty(username)) {
-                String lastString = username.substring(username.length() - 1, username.length());
-                if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
-                    userrightMap.put(Integer.parseInt(lastString), s);
-                }
-
-            }
-        });
-        if (userrightMap.isEmpty()) {
-            //若无规则联系人则给所有人打电话
-            for (Userright userright : userrights) {
-                String phonenum = userright.getPhonenum();
-                if (StringUtils.isNotEmpty(phonenum)) {
-                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
-                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
-                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
-                    list1.add(sendrecord);
-                }
-            }
-
-        }else {
-            Set<Integer> integers = userrightMap.keySet();
-            Integer integer = integers.stream().sorted(Integer::compareTo).findFirst().get();
-            Userright userright = userrightMap.get(integer);
-            LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
-            sendMesService.callPhone(userright.getPhonenum(), equipmentname);
-            Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
-            list1.add(sendrecord);
-            //生成定时报警逻辑
-            WarningrecordSort warningrecordSort = new WarningrecordSort();
-            warningrecordSort.setPkid(pkid);
-            warningrecordSort.setIsRead("0");
-            warningrecordSort.setEquipmentname(equipmentname);
-            warningrecordSort.setWarningStatus("1");
-            warningrecordSort.setInputdatetime(new Date());
-            warningrecordSort.setHospitalcode("5e6d5037c93a4d619368553b09f5a657");
-            warningrecordSortDao.save(warningrecordSort);
-        }
-        warningrecordDao.updatePhone(pkid);
-        if (CollectionUtils.isNotEmpty(list1)) {
-            sendrecordDao.save(list1);
-        }
-        return false;
-    }
+//    /**
+//     * 浙妇保医院定制需求
+//     */
+//    public Boolean warningRuleSend(WarningModel model) {
+//        String hospitalcode = model.getHospitalcode();
+//        String equipmentname = model.getEquipmentname();
+//        String unit = UnitCase.caseUint(model.getUnit());
+//        String value = model.getValue();
+//        String pkid = model.getPkid();
+//        if (!StringUtils.equalsAny(hospitalcode, "5e6d5037c93a4d619368553b09f5a657")) {
+//            return true;
+//        }
+//        BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
+//        String o = (String) hospitalphonenum.get(hospitalcode);
+//        if (StringUtils.isEmpty(o)) {
+//            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+//            return false;
+//        }
+//        List<Userright> userrights = JsonUtil.toList(o, Userright.class);
+//        if (CollectionUtils.isEmpty(userrights)) {
+//            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+//            return false;
+//        }
+//        //给所有人发短信
+//        List<Sendrecord> list1 = new ArrayList<>();
+//        for (Userright userright : userrights) {
+//            String phonenum = userright.getPhonenum();
+//            // 发送短信
+//            if (StringUtils.isNotEmpty(phonenum)) {
+//                SendSmsResponse sendSmsResponse = sendMesService.sendMes(phonenum, equipmentname, unit, value);
+//                LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+//                Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentname, unit, "0");
+//                list1.add(sendrecord1);
+//            }
+//        }
+//        Map<Integer, Userright> userrightMap = new HashMap<>();
+//        userrights.forEach(s -> {
+//            String username = s.getUsername();
+//            if (StringUtils.isNotEmpty(username)) {
+//                String lastString = username.substring(username.length() - 1, username.length());
+//                if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
+//                    userrightMap.put(Integer.parseInt(lastString), s);
+//                }
+//
+//            }
+//        });
+//        if (userrightMap.isEmpty()) {
+//            //若无规则联系人则给所有人打电话
+//            for (Userright userright : userrights) {
+//                String phonenum = userright.getPhonenum();
+//                if (StringUtils.isNotEmpty(phonenum)) {
+//                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+//                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+//                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
+//                    list1.add(sendrecord);
+//                }
+//            }
+//
+//        }else {
+//            Set<Integer> integers = userrightMap.keySet();
+//            Integer integer = integers.stream().sorted(Integer::compareTo).findFirst().get();
+//            Userright userright = userrightMap.get(integer);
+//            LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+//            sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+//            Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
+//            list1.add(sendrecord);
+//            //生成定时报警逻辑
+//            WarningrecordSort warningrecordSort = new WarningrecordSort();
+//            warningrecordSort.setPkid(pkid);
+//            warningrecordSort.setIsRead("0");
+//            warningrecordSort.setEquipmentname(equipmentname);
+//            warningrecordSort.setWarningStatus("1");
+//            warningrecordSort.setInputdatetime(new Date());
+//            warningrecordSort.setHospitalcode("5e6d5037c93a4d619368553b09f5a657");
+//            warningrecordSortDao.save(warningrecordSort);
+//        }
+//        warningrecordDao.updatePhone(pkid);
+//        if (CollectionUtils.isNotEmpty(list1)) {
+//            sendrecordDao.save(list1);
+//        }
+//        return false;
+//    }
 
 
     public static void main(String[] args){

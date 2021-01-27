@@ -2,7 +2,6 @@ package com.hc.scheduledfuturethread;
 
 import com.hc.config.RedisTemplateUtil;
 import com.hc.dao.MonitorequipmentDao;
-import com.hc.dao.WarningrecordSortDao;
 import com.hc.entity.*;
 import com.hc.service.SendMesService;
 import com.hc.utils.JsonUtil;
@@ -12,13 +11,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by 15350 on 2020/5/26.
@@ -36,8 +33,7 @@ public class TimingService {
     private String phone1;
     @Value("${timing.phone2}")
     private String phone2;
-    @Autowired
-    private WarningrecordSortDao warningrecordSortDao;
+
 
 
     @Scheduled(cron = "0 0 20 * * *")
