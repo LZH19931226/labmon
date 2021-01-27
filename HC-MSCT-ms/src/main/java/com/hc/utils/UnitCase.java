@@ -15,6 +15,8 @@ public class UnitCase {
                 return "设备漏气";
             case "O":
                 return "设备气压低";
+            case "E":
+                return "未获取到数据";
             default:
                 return uint;
 
