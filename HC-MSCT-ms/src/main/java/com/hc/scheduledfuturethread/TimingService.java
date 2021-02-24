@@ -31,8 +31,6 @@ public class TimingService {
     private SendMesService sendMesService;
     @Value("${timing.phone1}")
     private String phone1;
-    @Value("${timing.phone2}")
-    private String phone2;
 
 
 
@@ -122,7 +120,6 @@ public class TimingService {
             type = "无";
         }
         sendMesService.timingsms(totals.toString(), normaltotals.toString(), abnormals.toString(), phone1, type);
-        sendMesService.timingsms(totals.toString(), normaltotals.toString(), abnormals.toString(), phone2, type);
     }
 
 

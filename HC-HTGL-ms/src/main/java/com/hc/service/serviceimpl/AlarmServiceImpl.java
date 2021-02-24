@@ -144,7 +144,7 @@ public class AlarmServiceImpl implements AlarmService {
                             break;
                         case "6":
                             try {
-                                alarmNumberService.equipmentType6(alarmEquipmentInfo.getEquipmentno(), alarmEquipmentInfo.getEquipmentname(), alarmEquipmentTypeInfo6);
+                                alarmNumberService.equipmentType6(hospitalofreginfo.getHospitalcode(),alarmEquipmentInfo.getEquipmentno(), alarmEquipmentInfo.getEquipmentname(), alarmEquipmentTypeInfo6);
                             } catch (Exception e) {
                                 LOGGER.error("服务异常，原因：" + e.getMessage());
                                 apiResponse.setCode(ApiResponse.FAILED);

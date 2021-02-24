@@ -317,7 +317,7 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             Set<String> collect = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toSet());
             collect.forEach(s->{
                 UpsModel upsModel = new UpsModel();
-                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", s);
+                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, s);
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
                     String equipmentno = monitorequipmentlastdata.getEquipmentno();

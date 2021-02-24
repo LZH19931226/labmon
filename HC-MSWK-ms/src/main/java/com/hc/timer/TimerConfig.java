@@ -79,7 +79,7 @@ public class TimerConfig {
                     continue;
                 }
             }
-            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
             if (StringUtils.isEmpty(lastdata)) {
                 continue;
             }

@@ -77,7 +77,7 @@ public class LastDataServiceImpl implements LastDataService {
             pc = ydgPc;
         }
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+        String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA" + hospitalcode, equipmentno);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(time);
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
@@ -102,7 +102,7 @@ public class LastDataServiceImpl implements LastDataService {
             }
 
             monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
-            objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
+            objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
 
         } else {
             //       try {
@@ -115,39 +115,30 @@ public class LastDataServiceImpl implements LastDataService {
                 if (datePoor > 4.8) {
                     //数据插入
                     log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
-                    // Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdds(monitorequipmentlastdata1, monitorequipmentlastdata);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
                     monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
                     service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
-                    objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
+                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
                 } else {
                     //数据更新
                     log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
                     Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata2);
-                    objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
+                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
                 }
             } else {
                 //其余医院十分钟
                 String equipmentlastdata = monitorequipmentlastdata1.getEquipmentlastdata();
-                if (StringUtils.isNotEmpty(equipmentlastdata)){
+                if (StringUtils.isNotEmpty(equipmentlastdata)) {
                     //非空  直接 新增一条数据
-                   // monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
-//                    if (StringUtils.equals(equipmentTypeId, "1")) {
-//                        Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-//                        monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
-//                        monitorequipmentlastdata2.setEquipmentlastdata(null);
-//                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
-//                    } else {
-                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
+                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
 
                     return;
                 }
                 if (datePoor > 9.7) {
                     //数据插入
                     log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
-                    //   Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdds(monitorequipmentlastdata1, monitorequipmentlastdata);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
                     monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
                     //咸宁医学院判断
@@ -156,20 +147,16 @@ public class LastDataServiceImpl implements LastDataService {
                     } else {
                         service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
                     }
-//                    if (StringUtils.equals(equipmentTypeId, "1")) {
-                        Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                        monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
-                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
-//                    } else {
-//                        objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
-//                    }
+                    Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
+                    monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
+                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
 
                 } else {
                     //数据更新
                     log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
                     Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata2);
-                    objectObjectObjectHashOperations.put("LASTDATA", equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
+                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
                 }
             }
 
@@ -183,7 +170,7 @@ public class LastDataServiceImpl implements LastDataService {
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentairflow())) {
             monitorequipmentlastdata.setCurrentairflow(monitorequipmentlastdata1.getCurrentairflow());
         }
-        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentups())){
+        if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentups())) {
             monitorequipmentlastdata.setCurrentups(monitorequipmentlastdata1.getCurrentups());
         }
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentpm5())) {

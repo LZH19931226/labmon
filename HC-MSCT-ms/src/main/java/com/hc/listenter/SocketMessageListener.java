@@ -277,7 +277,7 @@ public class SocketMessageListener {
             if (flag) {
                 //拨打电话
                 HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorinstrument.getEquipmentno());
+                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, monitorinstrument.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     //报警电话信息处理
                     Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
@@ -285,7 +285,7 @@ public class SocketMessageListener {
                     monitorequipmentlastdata1.setInputdatetime(new Date());
                     monitorequipmentlastdata1.setEquipmentlastdata("1");
                     monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
-                    objectObjectObjectHashOperations.put("LASTDATA", monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
+                    objectObjectObjectHashOperations.put("LASTDATA"+hospitalcode, monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
                 }
                 //友盟推送
                 sendMesService.sendYmMessage(model.getPkid());

@@ -20,7 +20,7 @@ public interface AlarmNumberService {
 
     void equipmentType5(String hospitalname,String hospitalcode,String equipmentno, String equipmentname, AlarmEquipmentTypeInfo alarmEquipmentTypeInfo, List list);
 
-    void equipmentType6(String equipmentno, String equipmentname, AlarmEquipmentTypeInfo alarmEquipmentTypeInfo);
+    void equipmentType6(String hospitalcode,String equipmentno, String equipmentname, AlarmEquipmentTypeInfo alarmEquipmentTypeInfo);
 
     List<ShowData> one (String hospitalname,String equipmentname,String equipmentno);
 

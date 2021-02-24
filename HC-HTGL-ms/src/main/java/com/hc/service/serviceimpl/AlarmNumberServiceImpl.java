@@ -51,7 +51,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         alarmEquipmentTypeInfo.setNumber(alarmEquipmentTypeInfo.getNumber() + 1);
         AlarmData alarmData = new AlarmData();
-        String o = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+        String o = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
         List<AbnormalDataModel> listModel = new ArrayList<>();
         //获取SN
         Monitorinstrument snByEquipmentno = monitorInstrumentMapper.getSnByEquipmentno(equipmentno);
@@ -176,7 +176,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         alarmEquipmentTypeInfo.setNumber(alarmEquipmentTypeInfo.getNumber() + 1);
         AlarmData alarmData = new AlarmData();
-        String o = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+        String o = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
         List<AbnormalDataModel> listModel = new ArrayList<>();
         //获取SN
         Monitorinstrument snByEquipmentno = monitorInstrumentMapper.getSnByEquipmentno(equipmentno);
@@ -333,7 +333,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         alarmEquipmentTypeInfo.setNumber(alarmEquipmentTypeInfo.getNumber() + 1);
         AlarmData alarmData = new AlarmData();
-        String o = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+        String o = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
         List<AbnormalDataModel> listModel = new ArrayList<>();
         //获取SN
         Monitorinstrument snByEquipmentno = monitorInstrumentMapper.getSnByEquipmentno(equipmentno);
@@ -407,7 +407,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         alarmEquipmentTypeInfo.setNumber(alarmEquipmentTypeInfo.getNumber() + 1);
         AlarmData alarmData = new AlarmData();
-        String o = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+        String o = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
         List<AbnormalDataModel> listModel = new ArrayList<>();
         //获取SN
         Monitorinstrument snByEquipmentno = monitorInstrumentMapper.getSnByEquipmentno(equipmentno);
@@ -474,7 +474,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         alarmEquipmentTypeInfo.setNumber(alarmEquipmentTypeInfo.getNumber() + 1);
         AlarmData alarmData = new AlarmData();
-        String o = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+        String o = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
         List<AbnormalDataModel> listModel = new ArrayList<>();
         //获取SN
         Monitorinstrument snByEquipmentno = monitorInstrumentMapper.getSnByEquipmentno(equipmentno);
@@ -540,10 +540,10 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
     }
 
     @Override
-    public void equipmentType6(String equipmentno, String equipmentname, AlarmEquipmentTypeInfo alarmEquipmentTypeInfo) {
+    public void equipmentType6(String hospitalcode,String equipmentno, String equipmentname, AlarmEquipmentTypeInfo alarmEquipmentTypeInfo) {
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         alarmEquipmentTypeInfo.setNumber(alarmEquipmentTypeInfo.getNumber() + 1);
-        String o = (String) objectObjectObjectHashOperations.get("LASTDATA", equipmentno);
+        String o = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
         String type = "0";
         if (StringUtils.isEmpty(o)) {
             //表示市电异常 或者无市电
