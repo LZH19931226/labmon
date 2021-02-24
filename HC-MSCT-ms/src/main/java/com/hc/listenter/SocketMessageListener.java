@@ -176,7 +176,7 @@ public class SocketMessageListener {
         }
         String equipmentname = model.getEquipmentname();
         String unit = UnitCase.caseUint(model.getUnit());
-        String value = model.getValue();
+        String value = UnitCase.caseUint(model.getValue());
         String hospitalcode = model.getHospitalcode();
         //不走排班逻辑,定制报警需求
        // Boolean scIsTrue = warningRuleSend(model);
