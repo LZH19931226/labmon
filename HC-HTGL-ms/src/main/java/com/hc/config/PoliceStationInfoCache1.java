@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Order(value = 2)
@@ -41,14 +42,9 @@ public class PoliceStationInfoCache1 implements CommandLineRunner {
             if (redisTemplateUtil.hasKey("DOOR:2")) {
                 redisTemplateUtil.delete("DOOR:2");
             }
-            if (redisTemplateUtil.hasKey("hospital:instrumentparam")) {
-                redisTemplateUtil.delete("hospital:instrumentparam"); //高低值
-            }
-
         } catch (Exception e) {
             log.error("删除redis缓存失败，原因：" + e.getMessage());
         }
-
 
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
 
@@ -63,8 +59,16 @@ public class PoliceStationInfoCache1 implements CommandLineRunner {
         }
         List<InstrumentMonitorInfoModel> instrumentMonitorInfoModelList;
         instrumentMonitorInfoModelList = instrumentMonitorInfoMapper.selectInstrumentInfo();
+
+        List<String> collect = instrumentMonitorInfoModelList.stream().map(InstrumentMonitorInfoModel::getHospitalcode).collect(Collectors.toList());
+        collect.forEach(s->{
+            if (redisTemplateUtil.hasKey("insprobe"+s)) {
+                redisTemplateUtil.delete("insprobe"+s);
+            }
+        });
         for (InstrumentMonitorInfoModel instrumentMonitorInfoModel : instrumentMonitorInfoModelList) {
-            objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+            String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
+            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
         }
         List<Monitorinstrument> monitorinstrumentList;
         monitorinstrumentList = monitorInstrumentMapper.selectInstrumentInfo();
