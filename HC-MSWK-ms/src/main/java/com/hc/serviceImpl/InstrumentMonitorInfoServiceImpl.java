@@ -49,15 +49,13 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
     @Override
     public List<WarningMqModel> save(ParamaterModel model, Monitorinstrument monitorinstrument) {
-
-
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        log.info("接收值：" + JsonUtil.toJson(model));
         //命令id
         Date time = model.getNowTime();
         Monitorequipmentlastdata monitorequipmentlastdata = new Monitorequipmentlastdata();
         ShowModel showModel = new ShowModel();
         String equipmentno = monitorinstrument.getEquipmentno();
+        String hospitalcode = monitorinstrument.getHospitalcode();
         if (StringUtils.isEmpty(equipmentno) || StringUtils.isEmpty(monitorinstrument.getInstrumentno())) {
             log.info("不存在数据：" + JsonUtil.toJson(monitorinstrument));
             return null;
@@ -148,7 +146,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     //获取 探头e类型id 用同步缓存(条件：温度 电量    sn号获取instypeid )
                     //根据监控参数类型编号、探头编号、探头类型编号查询监控参数编号\
 
-                    String o = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":4");
+                    String o = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":4");
                     if (StringUtils.equals("04", substring)) {
                         if (StringUtils.isNotEmpty(model.getTEMP2()) && StringUtils.isNotEmpty(o)) {
                             String calibration = showModelUtils.calibration(o, model.getTEMP2());
@@ -218,8 +216,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 case "87":
                     // CO2 O2 二氧化碳氧气
-                    String o1 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":1");
-                    String o2 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":2");
+                    String o1 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":1");
+                    String o2 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":2");
                     if (StringUtils.isNotEmpty(model.getCO2()) && StringUtils.isNotEmpty(o1)) {
                         String calibration = showModelUtils.calibration(o1, model.getCO2());
                         showModel.setEquipmentno(equipmentno);
@@ -285,7 +283,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 case "8d":
                     //开关门记录
                     //查询是否存在开门量（报警信息探头）
-                    String dd = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":11");
+                    String dd = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":11");
                     if (StringUtils.isNotEmpty(model.getDOORZ()) && StringUtils.isNotEmpty(dd)) {
                         String DOOR = "0";
                         if ("3".equals(model.getDOORZ()) || "1".equals(model.getDOORZ())) {
@@ -315,12 +313,12 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 case "8e":
                     // 3 :VOC 8: PM2.5 9: PM10 12: 甲醛 6: 压力   5:湿度
-                    String voc = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":3");
-                    String pm25 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":8");
-                    String pm10 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":9");
-                    String jq = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":12");
-                    String yl = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":6");
-                    String sd = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":5");
+                    String voc = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":3");
+                    String pm25 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":8");
+                    String pm10 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":9");
+                    String jq = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":12");
+                    String yl = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":6");
+                    String sd = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":5");
                     if (StringUtils.isNotEmpty(model.getVOC()) && StringUtils.isNotEmpty(voc)) {
                         String calibration = showModelUtils.calibration(voc, model.getVOC());
                         showModel.setEquipmentno(equipmentno);
@@ -404,9 +402,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 case "91":
                     // CO2 O2 温度
-                    String o3 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":1");
-                    String o4 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":2");
-                    String o5 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":4");
+                    String o3 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":1");
+                    String o4 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":2");
+                    String o5 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":4");
 
                     if (StringUtils.isNotEmpty(model.getCO2()) && StringUtils.isNotEmpty(o3)) {
                         String calibration = showModelUtils.calibration(o3, model.getCO2());
@@ -452,7 +450,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 case "70":
                     //模拟500的温度
-                    String o7 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":4");
+                    String o7 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":4");
                     if (StringUtils.isNotEmpty(o7) && StringUtils.isNotEmpty(model.getTEMP())) {
                         String calibration = showModelUtils.calibration(o7, model.getTEMP());
                         showModel.setEquipmentno(equipmentno);
@@ -470,7 +468,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 case "71":
                     //模拟500的co2
-                    String o6 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":1");
+                    String o6 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":1");
                     if (StringUtils.isNotEmpty(o6) && StringUtils.isNotEmpty(model.getCO2())) {
                         String calibration = showModelUtils.calibration(o6, model.getCO2());
                         showModel.setEquipmentno(equipmentno);
@@ -539,7 +537,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 case "75":
                     //模拟500 O2
-                    String o8 = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":2");
+                    String o8 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":2");
                     if (StringUtils.isNotEmpty(o8)) {
                         showModel.setEquipmentno(equipmentno);
                         showModel.setData(model.getO2());
@@ -636,9 +634,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
 
                 case "92":
-                    String left = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":23");
-                    String right = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":24");
-                    String airflow = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":25");
+                    String left = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":23");
+                    String right = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":24");
+                    String airflow = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":25");
                     if (StringUtils.isNotEmpty(model.getTEMP()) && StringUtils.isNotEmpty(left)) {
                         // String calibration = calibration(left, model.getTEMP());
                         monitorequipmentlastdata.setCurrentlefttemperature(model.getTEMP());
@@ -660,7 +658,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     break;
                 // C60培养箱
                 case "93":
-                    String yq = (String) objectObjectObjectHashOperations.get("hospital:instrumentparam", monitorinstrument.getInstrumentno() + ":2");
+                    String yq = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":2");
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(warningMqModel);

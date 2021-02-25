@@ -40,4 +40,5 @@ public class InstrumentMonitorInfoModel {
     //饱和值
     private BigDecimal saturation;
     private String equipmentno;
+    private String hospitalcode;
 }

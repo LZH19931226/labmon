@@ -38,7 +38,7 @@ public interface MonitorInstrumentMapper {
 
     @Select("SELECT\n" +
             "\tt1.*,\n" +
-            "  t2.sn\n" +
+            "  t2.sn,t2.hospitalcode \n" +
             "FROM\n" +
             "\tinstrumentparamconfig t1\n" +
             "LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno \n" +

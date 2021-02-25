@@ -136,7 +136,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                     List<InstrumentMonitorInfoModel> list = new ArrayList<InstrumentMonitorInfoModel>();
                     list = instrumentMonitorInfoMapper.selectInstrumentManyInfo(instrumentno);
                     for (InstrumentMonitorInfoModel instrumentMonitorInfoModel : list) {
-                        objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+                        objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
                     }
                     return apiResponse;
                 }
@@ -205,7 +205,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                 instrumentparamconfig = instrumentParamConfigDao.save(instrumentparamconfig);
                 HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
                 InstrumentMonitorInfoModel instrumentMonitorInfoModel1 = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
-                objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel1));
+                objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel1));
             }
         } catch (Exception e) {
             LOGGER.error("添加探头参数失败,原因:" + e.getMessage());
@@ -293,7 +293,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             InstrumentMonitorInfoModel instrumentMonitorInfoModel1 = new InstrumentMonitorInfoModel();
             instrumentMonitorInfoModel1 = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
-            objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel1));
+            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel1));
         }
         String equipmentno = monitorequipment.getEquipmentno();
         String usernames = equipmentInfoModel.getUsernames();

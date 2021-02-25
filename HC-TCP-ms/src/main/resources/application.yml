@@ -23,7 +23,7 @@ spring:
 #socket配置信息
 netty:
   ip: 127.0.0.1
-  port: 4001
+  port: 14001
   bossGroupCount: 4
   wokerGroupCount: 8
   keepAlive: true

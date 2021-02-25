@@ -137,7 +137,8 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             instrumentparamConfigSetMapper.updateWarningState(instrumentparamconfig);
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
-            objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+            String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
+            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());
@@ -161,9 +162,10 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
                 //修改后存redis缓存
                 HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
                 instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
+                String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
                 instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
                 LOGGER.info("手机APP禁用启用报警：对象为：" + JsonUtil.toJson(instrumentMonitorInfoModel));
-                objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+                objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
                 ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
                 updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), instrumentparamconfig.getUserName(), one1, one2, "1", "1");
             }

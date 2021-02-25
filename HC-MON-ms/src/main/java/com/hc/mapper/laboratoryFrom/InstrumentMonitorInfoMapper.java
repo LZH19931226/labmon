@@ -23,7 +23,7 @@ public interface InstrumentMonitorInfoMapper {
 
     @Select("select " +
             "d.instrumentno," +
-            "e.equipmentname, " +
+            "e.equipmentname,e.hospitalcode, " +
             "b.instrumenttypeid," +
             "b.instrumenttypename," +
             "c.instrumentconfigid," +

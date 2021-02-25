@@ -164,7 +164,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 //判断半小时内是否报警
                 if (ObjectUtils.allNotNull(instrumentMonitorInfoModel.getWarningtime())){
                     double poor = TimeHelper.getDatePoorMin(new Date(),instrumentMonitorInfoModel.getWarningtime());
-                    LOGGER.info("1小时内间隔不报警：时间"+String.valueOf(poor)+"设备名称："+instrumentMonitorInfoModel.getEquipmentname());
+                    LOGGER.info("1小时内间隔不报警：时间"+ poor +"设备名称："+instrumentMonitorInfoModel.getEquipmentname());
                     if (poor > 60){
                         //可以报警
                         instrumentparamconfigDao.updateWarnTime(new Date(),instrumentMonitorInfoModel.getInstrumentparamconfigNO());
@@ -172,7 +172,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                         //同步缓存
                         LOGGER.info("同步时间缓存："+instrumentMonitorInfoModel.getInstrumentparamconfigNO());
                         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                        objectObjectObjectHashOperations.put("hospital:instrumentparam",instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(),JsonUtil.toJson(instrumentMonitorInfoModel));
+                        objectObjectObjectHashOperations.put("insprobe"+hospitalcode,instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(),JsonUtil.toJson(instrumentMonitorInfoModel));
                     }else{
 
                         return null;
@@ -185,7 +185,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                     //同步缓存
                     LOGGER.info("同步时间缓存："+instrumentMonitorInfoModel.getInstrumentparamconfigNO());
                     HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                    objectObjectObjectHashOperations.put("hospital:instrumentparam",instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(),JsonUtil.toJson(instrumentMonitorInfoModel));
+                    objectObjectObjectHashOperations.put("insprobe"+hospitalcode,instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(),JsonUtil.toJson(instrumentMonitorInfoModel));
                 }
             }
             LOGGER.info("推送去电话报警："+JsonUtil.toJson(warningModel)+"设备名称："+instrumentMonitorInfoModel.getEquipmentname());

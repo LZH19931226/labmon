@@ -120,6 +120,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
         String warningphone = instrumentInfoModel.getWarningphone();
         BigDecimal saturation = instrumentInfoModel.getSaturation();
         Integer instrumenttypeid = instrumentInfoModel.getInstrumenttypeid();
+        String hospitalcode = instrumentInfoModel.getHospitalcode();
         instrumentparamconfig.setWarningphone(warningphone);
         instrumentparamconfig.setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""));
         instrumentparamconfig.setInstrumentconfigid(instrumentconfigid);
@@ -133,7 +134,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentparamconfig = instrumentParamConfigDao.save(instrumentparamconfig);
             //执行同步缓存
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentparamconfig));
+            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid(), JsonUtil.toJson(instrumentparamconfig));
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("添加探头类型失败，原因：" + e.getMessage());
@@ -158,11 +159,12 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             //获取医院名称
             ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfigNO);
             InstrumentInfoModel one = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfigNO);
+            String hospitalcode = one.getHospitalcode();
             InstrumentInfoModel instrumentInfoModel1 = new InstrumentInfoModel();
             updateRecordService.updateInstrumentMonitor(instrumentName,showModel.getEquipmentname(),showModel.getHospitalname(),usernames,one,instrumentInfoModel1,"0","2");
             instrumentParamConfigDao.delete(instrumentInfoModel.getInstrumentparamconfigNO());
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            objectObjectObjectHashOperations.delete("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString());
+            objectObjectObjectHashOperations.delete("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid());
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());
             apiResponse.setMessage("删除探头失败，请联系管理员");
@@ -294,7 +296,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentparamconfig.setFirsttime(one2.getFirsttime());
             instrumentParamConfigDao.save(instrumentparamconfig);
             InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
-            objectObjectObjectHashOperations.put("hospital:instrumentparam", instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid().toString(), JsonUtil.toJson(instrumentMonitorInfoModel));
+            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());

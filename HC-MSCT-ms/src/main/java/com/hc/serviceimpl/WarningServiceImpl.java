@@ -49,8 +49,9 @@ public class WarningServiceImpl implements WarningService {
         // redis缓存中取  当前探头监控类型数据   高低值
         String data = warningMqModel.getCurrrentData();
         String data1 = warningMqModel.getCurrentData1();
+        String hospitalcode = monitorinstrument.getHospitalcode();
         InstrumentMonitorInfoModel instrumentMonitorInfoModel = new InstrumentMonitorInfoModel();
-        Object o = redisTemplateUtil.boundHashOps("hospital:instrumentparam").get(monitorinstrument.getInstrumentno() + ":" + instrumentconfigid.toString());
+        Object o = redisTemplateUtil.boundHashOps("insprobe"+hospitalcode).get(monitorinstrument.getInstrumentno() + ":" + instrumentconfigid);
         //存在
         if (o != null) {
             String o1 = (String) o;
@@ -66,7 +67,6 @@ public class WarningServiceImpl implements WarningService {
             return null;
         }
         WarningModel warningModel = new WarningModel();
-        String hospitalcode = monitorinstrument.getHospitalcode();
         String equipmentname = instrumentMonitorInfoModel.getEquipmentname();
         String instrumentparamconfigNO = instrumentMonitorInfoModel.getInstrumentparamconfigNO();
         if (StringUtils.isEmpty(instrumentparamconfigNO)) {
