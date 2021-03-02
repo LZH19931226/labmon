@@ -31,11 +31,13 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -65,6 +67,7 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
     private UpdateRecordService updateRecordService;
     @Autowired
     private EquipmentInfoMapper equipmentInfoMapper;
+
     @Override
     public ApiResponse<String> addMt100Qc() {
         //查询所有的MT100设备
@@ -138,7 +141,7 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
             String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
-            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
+            objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());
@@ -149,26 +152,27 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
     }
 
     @Override
-    public ApiResponse<String> updateWarningPhone(Instrumentparamconfig instrumentparamconfig) {
+    @Transactional(rollbackOn = Exception.class)
+    public synchronized ApiResponse<String> updateWarningPhone(Instrumentparamconfig instrumentparamconfig) {
         ApiResponse<String> apiResponse = new ApiResponse<String>();
-        InstrumentMonitorInfoModel instrumentMonitorInfoModel = new InstrumentMonitorInfoModel();
+        InstrumentMonitorInfoModel instrumentMonitorInfoModel;
+        String instrumentparamconfigno = instrumentparamconfig.getInstrumentparamconfigno();
         try {
-            synchronized (this) {
-                InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
-                String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentparamconfig.getInstrumentparamconfigno());
-                instrumentparamConfigSetMapper.updateWarnPhone(instrumentparamconfig);
-                InstrumentInfoModel one2 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
-                one2.setWarningphone(instrumentparamconfig.getWarningphone());
-                //修改后存redis缓存
-                HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
-                String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
-                instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
-                LOGGER.info("手机APP禁用启用报警：对象为：" + JsonUtil.toJson(instrumentMonitorInfoModel));
-                objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
-                ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
-                updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), instrumentparamconfig.getUserName(), one1, one2, "1", "1");
-            }
+            InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNoNew(instrumentparamconfigno);
+            String instrumentName = one1.getInstrumentconfigname();
+            instrumentparamConfigSetMapper.updateWarnPhone(instrumentparamconfig);
+            InstrumentInfoModel one2 = new InstrumentInfoModel();
+            BeanUtils.copyProperties(one1,one2);
+            String warningphone = instrumentparamconfig.getWarningphone();
+            one2.setWarningphone(warningphone);
+            //修改后存redis缓存
+            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+            instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigno);
+            String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
+            instrumentMonitorInfoModel.setWarningphone(warningphone);
+            objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
+            ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
+            updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), instrumentparamconfig.getUserName(), one1, one2, "1", "1");
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());
@@ -213,13 +217,13 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
     }
 
     @Override
-    public ApiResponse<String> updateEquipmentClientvisible(String equipmentno, String clientvisible,String username) {
+    public ApiResponse<String> updateEquipmentClientvisible(String equipmentno, String clientvisible, String username) {
         EquipmentInfoModel one = monitorInstrumentMapper.getEquipmentInfoByEquipmentno(equipmentno);
         instrumentparamConfigSetMapper.updateEquipmentClientvisible(new Integer(clientvisible), equipmentno);
         EquipmentInfoModel one1 = monitorInstrumentMapper.getEquipmentInfoByEquipmentno(equipmentno);
         boolean flag = true;
-        if (StringUtils.equals("0",clientvisible)){
-            flag = false ;
+        if (StringUtils.equals("0", clientvisible)) {
+            flag = false;
         }
         one1.setClientvisible(flag);
         //设备禁用需要redis缓存同步
@@ -228,11 +232,11 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             type = "禁用";
         }
         LOGGER.info("开始设备禁用启用");
-        LOGGER.info("当前值："+JsonUtil.toJson(one1)+"  历史值："+JsonUtil.toJson(one));
+        LOGGER.info("当前值：" + JsonUtil.toJson(one1) + "  历史值：" + JsonUtil.toJson(one));
         String equipmentName = instrumentparamConfigSetMapper.getEquipmentName(equipmentno);
         String hospitalNameByEquipmentno = monitorInstrumentMapper.getHospitalNameByEquipmentno(equipmentno);
 
-        updateRecordService.updateEquipmentMonitor(equipmentName,hospitalNameByEquipmentno,username,one,one1,"1","1");
+        updateRecordService.updateEquipmentMonitor(equipmentName, hospitalNameByEquipmentno, username, one, one1, "1", "1");
         ApiResponse<String> apiResponse = new ApiResponse<>();
         return apiResponse;
     }
@@ -317,9 +321,9 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             Map<String, List<Monitorequipment>> collect1 = monitorequipmentList.stream().collect(Collectors.groupingBy(Monitorequipment::getEquipmentno));
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             Set<String> collect = monitorequipmentList.stream().map(Monitorequipment::getEquipmentno).collect(Collectors.toSet());
-            collect.forEach(s->{
+            collect.forEach(s -> {
                 UpsModel upsModel = new UpsModel();
-                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, s);
+                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA" + hospitalcode, s);
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
                     String equipmentno = monitorequipmentlastdata.getEquipmentno();
@@ -327,11 +331,11 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
                     upsModel.setEquipmentno(equipmentno);
                     upsModel.setEquipmentname(monitorequipment.getEquipmentname());
                     String currentups = monitorequipmentlastdata.getCurrentups();
-                    if (StringUtils.isNotEmpty(currentups)){
+                    if (StringUtils.isNotEmpty(currentups)) {
                         upsModel.setCurrentups(currentups);
                     }
                     String voltage = monitorequipmentlastdata.getVoltage();
-                    if (StringUtils.isNotEmpty(voltage)){
+                    if (StringUtils.isNotEmpty(voltage)) {
                         upsModel.setVoltage(voltage);
                     }
                     upsModels.add(upsModel);

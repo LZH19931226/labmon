@@ -115,6 +115,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     list.add(paramaterModel);
                     continue;
                 case "8e":
+                    //48 43 8e 16 31393139313230303136 1572 03ef 0000 0001 00eb 005c aa23
                     // 湿度
                     String substring7 = cmd.substring(28, 32);
                     if (StringUtils.equalsAnyIgnoreCase(substring7,"ff00")){

@@ -50,8 +50,9 @@ public class MyRunnable1 implements Runnable {
             total++;
             //获取数据
             String equipmentno = monitorequipment.getEquipmentno();
+            String hospitalcode = monitorequipment.getHospitalcode();
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA", monitorequipment.getEquipmentno());
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, monitorequipment.getEquipmentno());
             if (StringUtils.isNotEmpty(lastdata)) {
                 Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
                 //时间判断，是否超时

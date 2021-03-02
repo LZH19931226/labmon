@@ -44,5 +44,5 @@ public class InstrumentInfoModel {
     @ApiModelProperty("通道设置")
     private String channel;
     private String calibration;
-
+    private String instrumentconfigname;
 }

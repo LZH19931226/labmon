@@ -52,6 +52,25 @@ public interface MonitorInstrumentMapper {
             "where t1.instrumentparamconfigNO = #{instrumentparamconfigNO} limit 1")
     InstrumentInfoModel getInstrumentInfoByNo(@Param("instrumentparamconfigNO") String instrumentparamconfigNO);
 
+
+
+
+
+    @Select("SELECT\n" +
+            "\tt1.*,\n" +
+            "\tt2.sn,\n" +
+            "\tt3.instrumentconfigname\n" +
+            "FROM\n" +
+            "\tinstrumentparamconfig t1\n" +
+            "\tLEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno \n" +
+            "\tLEFT JOIN instrumentconfig t3 on t1.instrumentconfigid=t3.instrumentconfigid\n" +
+            "WHERE\n" +
+            "\tt1.instrumentparamconfigNO = #{instrumentparamconfigNO} limit 1 ;\n" +
+            "\t")
+    InstrumentInfoModel getInstrumentInfoByNoNew(@Param("instrumentparamconfigNO") String instrumentparamconfigNO);
+
+
+
     /**
      * 根据探头编号获取设备名称和医院名称
      */

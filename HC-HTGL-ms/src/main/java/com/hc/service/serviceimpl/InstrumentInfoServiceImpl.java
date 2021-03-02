@@ -31,6 +31,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -212,7 +213,8 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
      * @return
      */
     @Override
-    public ApiResponse<String> updateInstrument(InstrumentInfoModel instrumentInfoModel) {
+    @Transactional(rollbackOn = Exception.class)
+    public synchronized ApiResponse<String> updateInstrument(InstrumentInfoModel instrumentInfoModel) {
         ApiResponse<String> apiResponse = new ApiResponse<String>();
         Monitorinstrument monitorinstrument = new Monitorinstrument();
         String instrumentname = instrumentInfoModel.getInstrumentname();
@@ -258,7 +260,6 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             monitorinstrument.setSn(sn);
             monitorinstrument.setInstrumenttypeid(instrumenttypeid);
             monitorinstrument.setInstrumentno(instrumentno);
-            LOGGER.info("monitorinstrument:"+ JsonUtil.toJson(monitorinstrument));
             String usernames = instrumentInfoModel.getUsernames();
             //获取医院名称
             String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentInfoModel.getInstrumentparamconfigNO());
@@ -267,7 +268,6 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfigNO);
             updateRecordService.updateInstrumentMonitor(instrumentName,showModel.getEquipmentname(),showModel.getHospitalname(),usernames,one1,instrumentInfoModel,"0","1");
             monitorInstrumentDao.save(monitorinstrument);
-     //       LOGGER.info("monitorinstrument:"+ JsonUtil.toJson(save));
             if (StringUtils.isNotEmpty(monitorinstrument.getChannel())){
                 //同步缓存
                 LOGGER.info("执行开关量同步缓存");
