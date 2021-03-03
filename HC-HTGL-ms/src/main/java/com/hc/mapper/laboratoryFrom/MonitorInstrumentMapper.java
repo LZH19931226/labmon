@@ -45,6 +45,27 @@ public interface MonitorInstrumentMapper {
             "where t1.instrumentparamconfigNO = #{instrumentparamconfigNO} limit 1")
     InstrumentInfoModel getInstrumentInfoByNo(@Param("instrumentparamconfigNO") String instrumentparamconfigNO);
 
+
+
+    @Select("SELECT\n" +
+            "\tt1.*,\n" +
+            "\tt2.sn,\n" +
+            "\tt2.hospitalcode,\n" +
+            "\tt3.instrumentconfigname,\n" +
+            "\tt4.equipmentname,\n" +
+            "\tt5.hospitalname\n" +
+            "FROM\n" +
+            "\tinstrumentparamconfig t1\n" +
+            "\tLEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno \n" +
+            "\tLEFT JOIN instrumentconfig t3 ON t1.instrumentconfigid = t3.instrumentconfigid\n" +
+            "\tleft join monitorequipment t4 on t4.equipmentno = t2.equipmentno\n" +
+            "\tleft join hospitalofreginfo t5 on t4.hospitalcode= t5.hospitalcode\n" +
+            "WHERE\n" +
+            "\tt1.instrumentparamconfigNO = #{instrumentparamconfigNO} limit 1")
+    InstrumentInfoModel getInstrumentInfoByNoNew(@Param("instrumentparamconfigNO") String instrumentparamconfigNO);
+
+
+
     @Select(" select * from monitorinstrument where equipmentno = #{equipmentno}  limit 1 ")
     Monitorinstrument getSnByEquipmentno(@Param("equipmentno") String equipmentno);
 

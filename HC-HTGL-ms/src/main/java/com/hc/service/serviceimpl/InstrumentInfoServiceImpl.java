@@ -261,12 +261,11 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             monitorinstrument.setInstrumenttypeid(instrumenttypeid);
             monitorinstrument.setInstrumentno(instrumentno);
             String usernames = instrumentInfoModel.getUsernames();
-            //获取医院名称
-            String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentInfoModel.getInstrumentparamconfigNO());
-
-            ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfigNO);
-            InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfigNO);
-            updateRecordService.updateInstrumentMonitor(instrumentName,showModel.getEquipmentname(),showModel.getHospitalname(),usernames,one1,instrumentInfoModel,"0","1");
+            InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNoNew(instrumentparamconfigNO);
+            String instrumentName = one1.getInstrumentconfigname();
+            String hospitalname = one1.getHospitalname();
+            String equipmentname = one1.getEquipmentname();
+            updateRecordService.updateInstrumentMonitor(instrumentName,equipmentname,hospitalname,usernames,one1,instrumentInfoModel,"0","1");
             monitorInstrumentDao.save(monitorinstrument);
             if (StringUtils.isNotEmpty(monitorinstrument.getChannel())){
                 //同步缓存
@@ -296,6 +295,11 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentparamconfig.setFirsttime(one2.getFirsttime());
             instrumentParamConfigDao.save(instrumentparamconfig);
             InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
+            //强制修改只能操作的元素覆盖查询的元素
+            instrumentMonitorInfoModel.setAlarmtime(instrumentparamconfig.getAlarmtime());
+            instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
+            instrumentMonitorInfoModel.setHighlimit(instrumentparamconfig.getHighlimit());
+            instrumentMonitorInfoModel.setLowlimit(instrumentparamconfig.getLowlimit());
             objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
             return apiResponse;
         } catch (Exception e) {

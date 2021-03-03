@@ -48,4 +48,8 @@ public class InstrumentInfoModel {
     //饱和值
     private BigDecimal saturation;
 
+    private String instrumentconfigname;
+    private String hospitalname;
+
+
 }
