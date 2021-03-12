@@ -79,6 +79,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 InstrumentInfoModel one2 = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfig.getInstrumentparamconfigno());
                 String instrumentparamconfigNO = instrumentparamconfig.getInstrumentparamconfigno();
                 InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
+                instrumentMonitorInfoModel.setWarningphone(warningphone);
                 ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
                 String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentparamconfigNO);
                 updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), batchModel.getUsername(), one1, one2, "1", "1");

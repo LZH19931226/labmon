@@ -152,34 +152,26 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
     }
 
     @Override
-    @Transactional(rollbackOn = Exception.class)
     public synchronized ApiResponse<String> updateWarningPhone(Instrumentparamconfig instrumentparamconfig) {
         ApiResponse<String> apiResponse = new ApiResponse<String>();
-        InstrumentMonitorInfoModel instrumentMonitorInfoModel;
         String instrumentparamconfigno = instrumentparamconfig.getInstrumentparamconfigno();
-        try {
-            InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNoNew(instrumentparamconfigno);
-            String instrumentName = one1.getInstrumentconfigname();
-            instrumentparamConfigSetMapper.updateWarnPhone(instrumentparamconfig);
-            InstrumentInfoModel one2 = new InstrumentInfoModel();
-            BeanUtils.copyProperties(one1,one2);
-            String warningphone = instrumentparamconfig.getWarningphone();
-            one2.setWarningphone(warningphone);
-            //修改后存redis缓存
-            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigno);
-            String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
-            instrumentMonitorInfoModel.setWarningphone(warningphone);
-            objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
-            ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
-            updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), instrumentparamconfig.getUserName(), one1, one2, "1", "1");
-            return apiResponse;
-        } catch (Exception e) {
-            LOGGER.error("失败：" + e.getMessage());
-            apiResponse.setMessage("服务异常");
-            apiResponse.setCode(ApiResponse.FAILED);
-            return apiResponse;
-        }
+        InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNoNew(instrumentparamconfigno);
+        String instrumentName = one1.getInstrumentconfigname();
+        instrumentparamConfigSetMapper.updateWarnPhone(instrumentparamconfig);
+        InstrumentInfoModel one2 = new InstrumentInfoModel();
+        BeanUtils.copyProperties(one1, one2);
+        String warningphone = instrumentparamconfig.getWarningphone();
+        one2.setWarningphone(warningphone);
+        //修改后存redis缓存
+        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+        InstrumentMonitorInfoModel  instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigno);
+        String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
+        instrumentMonitorInfoModel.setWarningphone(warningphone);
+        objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
+        ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
+        updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), instrumentparamconfig.getUserName(), one1, one2, "1", "1");
+        return apiResponse;
+
     }
 
     @Override

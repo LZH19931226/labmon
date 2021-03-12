@@ -1,7 +1,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:10086/eureka/
+      defaultZone: http://192.168.1.90:10086/eureka/
   instance:
     prefer-ip-address: true
 server:
@@ -18,10 +18,10 @@ zuul:
   routes:
     api-mon:
       path: /api-mon/**
-      serviceId: http://localhost:8094/
+      serviceId: HC-MON-ms
     api-htgl:
       path: /api-htgl/**
-      serviceId: http://localhost:8097/
+      serviceId: HC-HTGL-ms
     api-msct:
       path: /api-msct/**
       serviceId: HC-MSCT-ms

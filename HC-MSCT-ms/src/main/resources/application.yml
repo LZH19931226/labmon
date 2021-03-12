@@ -39,7 +39,7 @@ spring:
         ansi:
         enabled: detect
   redis:
-      host: 127.0.0.1
+      host: 192.168.1.90
       port: 6379
       pool:
         max-active: 1200
@@ -63,7 +63,7 @@ eureka:
 #    lease-expiration-duration-in-seconds: 30
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:10086/eureka/
+      defaultZone: http://192.168.1.90:10086/eureka/
 sms:
    product: Dysmsapi                                            ##产品名称:云通信短信API产品,开发者无需替换
    domain: dysmsapi.aliyuncs.com                                ##产品域名,开发者无需替换
