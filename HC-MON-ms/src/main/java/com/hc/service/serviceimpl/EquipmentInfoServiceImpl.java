@@ -83,7 +83,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 ShowModel showModel = monitorInstrumentMapper.getHospitalNameEquipmentNameByNo(instrumentparamconfig.getInstrumentparamconfigno());
                 String instrumentName = monitorInstrumentMapper.getInstrumentName(instrumentparamconfigNO);
                 updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), batchModel.getUsername(), one1, one2, "1", "1");
-                objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
+                objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
             }
         }
 
@@ -132,15 +132,26 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             List<Monitorinstrument> sns = equipmentInfoMapper.getSns(collect);
             Map<String, List<Monitorinstrument>> collect2 = sns.stream().collect(Collectors.groupingBy(Monitorinstrument::getEquipmentno));
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+            Collection<Object> keys = new ArrayList<>(collect);
+            List<Object> lastdatas = objectObjectObjectHashOperations.multiGet("LASTDATA" + hospitalcode, keys);
+            List<Monitorequipmentlastdata> monitorequipmentlastdatas = new ArrayList<>();
+            lastdatas.forEach(s -> {
+                if (null != s) {
+                    String lasts = (String) s;
+                    Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lasts, Monitorequipmentlastdata.class);
+                    monitorequipmentlastdatas.add(monitorequipmentlastdata);
+                }
+            });
+            Map<String, List<Monitorequipmentlastdata>> collect3 = monitorequipmentlastdatas.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getEquipmentno));
             for (Monitorequipment monitorequipment : monitorequipmentList) {
                 String equipmentno = monitorequipment.getEquipmentno();
                 List<Monitorinstrument> monitorinstruments = collect2.get(equipmentno);
                 if (CollectionUtils.isNotEmpty(monitorinstruments)) {
                     monitorequipment.setSn(monitorinstruments.get(0).getSn());
                 }
-                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, monitorequipment.getEquipmentno());
-                if (StringUtils.isNotEmpty(lastdata)) {
-                    Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+                List<Monitorequipmentlastdata> monitorequipmentlastdatass = collect3.get(equipmentno);
+                if (CollectionUtils.isNotEmpty(monitorequipmentlastdatass)) {
+                    Monitorequipmentlastdata monitorequipmentlastdata = monitorequipmentlastdatass.get(0);
                     if (StringUtils.isNotEmpty(monitorequipmentlastdata.getCurrentdoorstate())) {
                         // 查找这个设备下开关量的最低值
                         String lowlimit = equipmentInfoMapper.getLowlimit(monitorequipment.getEquipmentno());
@@ -210,7 +221,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 if (CollectionUtils.isNotEmpty(monitorinstruments)) {
                     monitorequipment.setSn(monitorinstruments.get(0).getSn());
                 }
-                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, monitorequipment.getEquipmentno());
+                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA" + hospitalcode, monitorequipment.getEquipmentno());
                 if (StringUtils.isNotEmpty(lastdata)) {
                     Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
                     if (StringUtils.isNotEmpty(monitorequipmentlastdata.getCurrentdoorstate())) {
@@ -259,7 +270,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             String equipmentno = monitorequipmentList.get(0).getEquipmentno();
             Monitorupsrecord monitorupsrecord = new Monitorupsrecord();
-            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA" + hospitalcode, equipmentno);
             LOGGER.info("市电信息：" + lastdata);
             if (StringUtils.isNotEmpty(lastdata)) {
                 Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
@@ -616,7 +627,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
             }
             String sn = equipmentInfoMapper.getSn(monitorequipment.getEquipmentno());
             monitorequipment.setSn(sn);
-            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+monitorequipment.getHospitalcode(), monitorequipment.getEquipmentno());
+            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA" + monitorequipment.getHospitalcode(), monitorequipment.getEquipmentno());
             if (StringUtils.isNotEmpty(lastdata)) {
                 Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
                 monitorequipment.setMonitorequipmentlastdata(monitorequipmentlastdata);
