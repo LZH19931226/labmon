@@ -353,13 +353,26 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             monitorequipment.setHospitalcode(hospitalcode);
             monitorequipment.setEquipmentbrand(equipmentbrand);
             String usernames = equipmentInfoModel.getUsernames();
-            EquipmentInfoModel model = new EquipmentInfoModel();
             //获取医院名称
             String hospitalNameByEquipmentno = monitorInstrumentMapper.getHospitalNameByEquipmentno(equipmentno);
             EquipmentInfoModel one = monitorInstrumentMapper.getEquipmentInfoByEquipmentno(equipmentno);
             updateRecordService.updateEquipmentMonitor(one.getEquipmentname(),hospitalNameByEquipmentno,usernames,one,equipmentInfoModel,"0","1");
             monitorEquipmentDao.save(monitorequipment);
-            //设备的禁用与启用需要走redis
+            //通过设备找到探头信息
+            List<Instrumentparamconfig> allInstrumentByEquipmentno = monitorInstrumentMapper.getAllInstrumentByEquipmentno(equipmentno);
+            if (CollectionUtils.isNotEmpty(allInstrumentByEquipmentno)){
+                allInstrumentByEquipmentno.forEach(s->{
+                    //同步探头名称到缓存
+                    Object o = redisTemplateUtil.boundHashOps("insprobe"+hospitalcode).get(s.getInstrumentno() + ":" + s.getInstrumentconfigid());
+                    //存在
+                    String o1 = (String) o;
+                    InstrumentMonitorInfoModel   instrumentMonitorInfoModel = JsonUtil.toBean(o1, InstrumentMonitorInfoModel.class);
+                    if (null!=instrumentMonitorInfoModel){
+                        instrumentMonitorInfoModel.setEquipmentname(equipmentname);
+                        redisTemplateUtil.boundHashOps("insprobe"+hospitalcode).put(s.getInstrumentno() + ":" + s.getInstrumentconfigid(),JsonUtil.toJson(instrumentMonitorInfoModel));
+                    }
+                });
+            }
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());

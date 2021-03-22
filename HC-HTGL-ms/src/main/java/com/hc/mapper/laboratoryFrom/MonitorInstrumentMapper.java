@@ -165,12 +165,12 @@ public interface MonitorInstrumentMapper {
      * 获取当前设备下所有监控探头
      */
     @Select("SELECT\n" +
-            "\tt3.*\n" +
+            "\tt3.* \n" +
             "FROM\n" +
             "\tmonitorequipment t1\n" +
-            "LEFT JOIN monitorinstrument t2 on t1.equipmentno = t2.equipmentno\n" +
-            "left join instrumentparamconfig t3 on t2.instrumentno = t2.instrumentno\n" +
-            "where t1.equipmentno = #{equipmentno}")
+            "\tLEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno\n" +
+            "\tLEFT JOIN instrumentparamconfig t3 ON t2.instrumentno =t3.instrumentno\n" +
+            "\tWHERE t1.equipmentno = #{equipmentno}")
     List<Instrumentparamconfig> getAllInstrumentByEquipmentno(@Param("equipmentno") String equipmentno);
 
     /**
