@@ -300,6 +300,9 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
             instrumentMonitorInfoModel.setHighlimit(instrumentparamconfig.getHighlimit());
             instrumentMonitorInfoModel.setLowlimit(instrumentparamconfig.getLowlimit());
+            if (StringUtils.isNotEmpty(calibration)){
+                instrumentMonitorInfoModel.setCalibration(calibration);
+            }
             objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
             return apiResponse;
         } catch (Exception e) {
