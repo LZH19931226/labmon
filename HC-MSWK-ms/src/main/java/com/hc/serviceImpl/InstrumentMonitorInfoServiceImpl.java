@@ -1227,7 +1227,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitorequipmentlastdata.setRightCompartmentHumidity(rightCompartmentHumidity);
                         WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(rightCompartmentHumidity, monitorinstrument, model.getNowTime(), 38, "右舱室湿度");
                         list.add(warningMqModel97);
-                    }
+                        }
                     break;
                 case "a4":
                     String ups1 = model.getUPS();

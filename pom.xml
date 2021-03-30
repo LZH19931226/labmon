@@ -26,6 +26,7 @@
         <module>HC-MON-ms</module>
         <module>HC-HTGL-ms</module>
         <module>HC-EUREKA-ms</module>
+        <module>hc-message-ms</module>
         <module>hc-common</module>
     </modules>
     <dependencyManagement>

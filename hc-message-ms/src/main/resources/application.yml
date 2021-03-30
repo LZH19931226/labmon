@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: hc-message-ms
+  datasource:
+    url: jdbc:mysql://192.168.1.240:3306/notify
+    username: aplan
+    password: Aplan1234@
+mybatis-plus:
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.hc.my.message.entity
+server:
+  port: 8093
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-post-size: -1
+rsy:
+  controller: com.hc.my.message.controller

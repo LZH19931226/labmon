@@ -1,6 +1,9 @@
 package com.hc.my.common.core.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,6 +14,9 @@ import java.util.Date;
  * 描述:
  **/
 @Data
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class InstrumentMonitorInfoModel {
     //"探头类型编码
     private Integer instrumenttypeid;
@@ -41,4 +47,19 @@ public class InstrumentMonitorInfoModel {
     private BigDecimal saturation;
     private String equipmentno;
     private String hospitalcode;
+
+
+
+    public static  void  main(String[] args){
+
+      InstrumentMonitorInfoModel instrumentMonitorInfoModel = new InstrumentMonitorInfoModel();
+      instrumentMonitorInfoModel.setEquipmentname("sss");
+      InstrumentMonitorInfoModel instrumentMonitorInfoModel2 = new InstrumentMonitorInfoModel();
+      instrumentMonitorInfoModel2.setEquipmentname("sss");
+      System.out.println(instrumentMonitorInfoModel==instrumentMonitorInfoModel2);
+
+
+
+
+    }
 }
