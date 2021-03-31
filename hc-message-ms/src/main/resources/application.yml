@@ -1,10 +1,34 @@
 spring:
   application:
     name: hc-message-ms
+  redis:
+    host: 192.168.1.90
+    port: 6379
+    pool:
+      max-active: 200
+      max-idle: 100
+    timeout: 10000
   datasource:
-    url: jdbc:mysql://192.168.1.240:3306/notify
-    username: aplan
-    password: Aplan1234@
+    url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: hc
+    password: 123456
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    logAbandoned: true      #打印超时错误
+    removeAbandoned: true   # 设置自动连接超时回收
+    removeAbandonedTimeout: 10
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    cachePrepStmts: true
 mybatis-plus:
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.hc.my.message.entity
@@ -13,5 +37,4 @@ server:
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: -1
-rsy:
-  controller: com.hc.my.message.controller
+
