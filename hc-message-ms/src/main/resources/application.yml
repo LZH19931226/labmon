@@ -1,3 +1,9 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.1.90:10086/eureka/
+  instance:
+    prefer-ip-address: true
 spring:
   application:
     name: hc-message-ms

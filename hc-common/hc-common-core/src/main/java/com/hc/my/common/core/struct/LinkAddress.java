@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@Slf4j
 @Getter
 @NoArgsConstructor
 public class LinkAddress implements Serializable {
