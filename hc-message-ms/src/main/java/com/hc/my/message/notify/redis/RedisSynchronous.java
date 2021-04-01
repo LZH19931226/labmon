@@ -28,12 +28,19 @@ public class RedisSynchronous implements Notifier {
         String messageTitle = notification.getMessageTitle();
         //如果是hash类型的redis 此处存储hashkey
         String messageIntro = notification.getMessageIntro();
-        if (StringUtils.isNotEmpty(messageIntro)){
-            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            objectObjectObjectHashOperations.put(messageTitle,messageIntro,messageBodys);
-        }else {
-            ValueOperations<Object, Object> objectObjectValueOperations = redisTemplateUtil.opsForValue();
-            objectObjectValueOperations.set(messageTitle,messageBodys);
+        //1:put , 2:delete
+        String messageCover = notification.getMessageCover();
+        if (StringUtils.equals(messageCover,"1")){
+            if (StringUtils.isNotEmpty(messageIntro)){
+                HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+                objectObjectObjectHashOperations.put(messageTitle,messageIntro,messageBodys);
+            }else {
+                ValueOperations<Object, Object> objectObjectValueOperations = redisTemplateUtil.opsForValue();
+                objectObjectValueOperations.set(messageTitle,messageBodys);
+            }
+        }
+        if (StringUtils.equals(messageCover,"2")){
+               redisTemplateUtil.delete(messageTitle);
         }
         return null;
     }

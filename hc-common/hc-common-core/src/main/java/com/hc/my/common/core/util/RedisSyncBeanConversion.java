@@ -18,11 +18,12 @@ public class RedisSyncBeanConversion {
      * </p>
      * @return redis同步对象
      */
-    public  static  P2PNotify  redisSyncBean(String key,String hashKey,String body){
+    public  static  P2PNotify  redisSyncBean(String key,String hashKey,String body,String type){
         P2PNotify notification = new P2PNotify();
         notification.setMessageTitle(key);
         notification.setMessageIntro(hashKey);
         notification.setMessageBodys(body);
+        notification.setMessageCover(type);
         notification.setChannels(Collections.singletonList(NotifyChannel.PUSH));
         notification.setUserId("admin");
         notification.setServiceNo("1");
