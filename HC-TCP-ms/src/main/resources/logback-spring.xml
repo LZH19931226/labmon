@@ -21,23 +21,23 @@
         <encoder charset="GB2312"
                  class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
-    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/HC-TCP-ms.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--日志文件输出的文件名-->
-            <FileNamePattern>./logs/HC-TCP-ms.%d{yyyy-MM-dd}.log</FileNamePattern>
-            <MaxHistory>30</MaxHistory>
-        </rollingPolicy>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
-        </layout>
-        <!--日志文件最大的大小-->
-        <!-- <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-          <MaxFileSize>10MB</MaxFileSize>
-        </triggeringPolicy> -->
-    </appender>
+<!--    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>logs/HC-TCP-ms.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;-->
+<!--            <FileNamePattern>./logs/HC-TCP-ms.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+<!--            <MaxHistory>30</MaxHistory>-->
+<!--        </rollingPolicy>-->
+<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+<!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n-->
+<!--            </pattern>-->
+<!--        </layout>-->
+<!--        &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
+<!--        &lt;!&ndash; <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+<!--          <MaxFileSize>10MB</MaxFileSize>-->
+<!--        </triggeringPolicy> &ndash;&gt;-->
+<!--    </appender>-->
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
     <!-- <loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。-->
@@ -57,6 +57,6 @@
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="LOGSTASH"/>
-        <appender-ref ref="FILE"/>
+<!--        <appender-ref ref="FILE"/>-->
     </root>
 </configuration>
