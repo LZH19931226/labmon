@@ -74,6 +74,16 @@ public class TimeHelper {
         }
     }
 
+
+    public static Date getDateTimeFormat(String date) {
+        try {
+            return datetimeformat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String dateReduce(String date) {
         try {
             Date parse = datetimeformat.parse(date);

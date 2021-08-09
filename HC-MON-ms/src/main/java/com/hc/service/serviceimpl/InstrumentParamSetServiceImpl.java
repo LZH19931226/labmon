@@ -140,6 +140,10 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
             instrumentparamConfigSetMapper.updateWarningState(instrumentparamconfig);
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfig.getInstrumentparamconfigno());
+
+            instrumentMonitorInfoModel.setPushtime(TimeHelper.getDateTimeFormat(pushtime));
+            instrumentMonitorInfoModel.setWarningphone(warningphone);
+
             String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
             objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
             return apiResponse;
