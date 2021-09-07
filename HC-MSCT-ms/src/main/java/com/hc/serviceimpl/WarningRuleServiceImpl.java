@@ -39,7 +39,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
      */
     @Override
     public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentMonitorInfoModel instrumentMonitorInfoModel, String remark) {
-
+        Date pushtime = instrumentMonitorInfoModel.getPushtime();
         try {
             Hospitalofreginfo hospitalofreginfo = new Hospitalofreginfo();
             WarningModel warningModel = new WarningModel();
@@ -86,15 +86,13 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                     //根据医院编号查询报警联系人电话号码
                     //第三次报警
                     redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
+
                     //判断当前时间是否大于 pushtime  然后是否app推送
-                    Date pushtime = instrumentMonitorInfoModel.getPushtime();
-//                    LOGGER.info("pushtime:"+pushtime);
-                    if (ObjectUtils.anyNotNull(pushtime)) {
-                        warningModel.setPkid(pkid);
-                    } else {
-                        //判断当前时间是否大于推送时间
-                        if (new Date().compareTo(pushtime) != -1) {
-                            warningModel.setPkid(pkid);
+                    //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
+                    if (null!=pushtime){
+                        int time = pushtime.compareTo(new Date());
+                        if (time>= 0){
+                           return null;
                         }
                     }
                     warningModel.setPkid(pkid);
@@ -123,13 +121,11 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                         redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
 
                         //判断当前时间是否大于 pushtime  然后是否app推送
-                        Date pushtime = instrumentMonitorInfoModel.getPushtime();
-                        if (ObjectUtils.anyNotNull(pushtime)) {
-                            warningModel.setPkid(pkid);
-                        } else {
-                            //判断当前时间是否大于推送时间
-                            if (new Date().compareTo(pushtime) != -1) {
-                                warningModel.setPkid(pkid);
+                        //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
+                        if (null!=pushtime){
+                            int time = pushtime.compareTo(new Date());
+                            if (time>= 0){
+                                return null;
                             }
                         }
                         warningModel.setPkid(pkid);
@@ -145,15 +141,12 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                     } else {
                         LOGGER.info("当前达到三次连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"异常值："+data);
                         redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-
                         //判断当前时间是否大于 pushtime  然后是否app推送
-                        Date pushtime = instrumentMonitorInfoModel.getPushtime();
-                        if (ObjectUtils.anyNotNull(pushtime)) {
-                            warningModel.setPkid(pkid);
-                        } else {
-                            //判断当前时间是否大于推送时间
-                            if (new Date().compareTo(pushtime) != -1) {
-                                warningModel.setPkid(pkid);
+                        //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
+                        if (null!=pushtime){
+                            int time = pushtime.compareTo(new Date());
+                            if (time>= 0){
+                                return null;
                             }
                         }
                         warningrecordDao.updatePhone(pkid);
