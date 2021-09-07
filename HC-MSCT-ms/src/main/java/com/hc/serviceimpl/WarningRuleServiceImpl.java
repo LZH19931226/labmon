@@ -30,6 +30,8 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     private RedisTemplateUtil redisTemplateUtil;
     @Autowired
     private InstrumentparamconfigDao instrumentparamconfigDao;
+    @Autowired
+    private WarningrecordDao warningrecordDao;
 
     /**
      * 进来的默认都是启用报警的
@@ -85,16 +87,16 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                     //第三次报警
                     redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
                     //判断当前时间是否大于 pushtime  然后是否app推送
-//                    Date pushtime = instrumentMonitorInfoModel.getPushtime();
-////                    LOGGER.info("pushtime:"+pushtime);
-//                    if (ObjectUtils.anyNotNull(pushtime)) {
-//                        warningModel.setPkid(pkid);
-//                    } else {
-//                        //判断当前时间是否大于推送时间
-//                        if (new Date().compareTo(pushtime) != -1) {
-//                            warningModel.setPkid(pkid);
-//                        }
-//                    }
+                    Date pushtime = instrumentMonitorInfoModel.getPushtime();
+//                    LOGGER.info("pushtime:"+pushtime);
+                    if (ObjectUtils.anyNotNull(pushtime)) {
+                        warningModel.setPkid(pkid);
+                    } else {
+                        //判断当前时间是否大于推送时间
+                        if (new Date().compareTo(pushtime) != -1) {
+                            warningModel.setPkid(pkid);
+                        }
+                    }
                     warningModel.setPkid(pkid);
                     warningModel.setValue(data);
                     warningModel.setEquipmentname(instrumentMonitorInfoModel.getEquipmentname());
@@ -120,16 +122,16 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                         LOGGER.info("当前达到三次连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"异常值："+data);
                         redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
 
-//                        //判断当前时间是否大于 pushtime  然后是否app推送
-//                        Date pushtime = instrumentMonitorInfoModel.getPushtime();
-//                        if (ObjectUtils.anyNotNull(pushtime)) {
-//                            warningModel.setPkid(pkid);
-//                        } else {
-//                            //判断当前时间是否大于推送时间
-//                            if (new Date().compareTo(pushtime) != -1) {
-//                                warningModel.setPkid(pkid);
-//                            }
-//                        }
+                        //判断当前时间是否大于 pushtime  然后是否app推送
+                        Date pushtime = instrumentMonitorInfoModel.getPushtime();
+                        if (ObjectUtils.anyNotNull(pushtime)) {
+                            warningModel.setPkid(pkid);
+                        } else {
+                            //判断当前时间是否大于推送时间
+                            if (new Date().compareTo(pushtime) != -1) {
+                                warningModel.setPkid(pkid);
+                            }
+                        }
                         warningModel.setPkid(pkid);
                         warningModel.setValue(data);
                         warningModel.setEquipmentname(instrumentMonitorInfoModel.getEquipmentname());
@@ -144,18 +146,17 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                         LOGGER.info("当前达到三次连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"异常值："+data);
                         redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
 
-//                        //判断当前时间是否大于 pushtime  然后是否app推送
-//                        Date pushtime = instrumentMonitorInfoModel.getPushtime();
-//                        if (ObjectUtils.anyNotNull(pushtime)) {
-//                            warningModel.setPkid(pkid);
-//                        } else {
-//                            //判断当前时间是否大于推送时间
-//                            if (new Date().compareTo(pushtime) != -1) {
-//                                warningModel.setPkid(pkid);
-//                            }
-//                        }
-                        //warningrecordDao.updatePhone(pkid);
-
+                        //判断当前时间是否大于 pushtime  然后是否app推送
+                        Date pushtime = instrumentMonitorInfoModel.getPushtime();
+                        if (ObjectUtils.anyNotNull(pushtime)) {
+                            warningModel.setPkid(pkid);
+                        } else {
+                            //判断当前时间是否大于推送时间
+                            if (new Date().compareTo(pushtime) != -1) {
+                                warningModel.setPkid(pkid);
+                            }
+                        }
+                        warningrecordDao.updatePhone(pkid);
                     }
                 }
             }
