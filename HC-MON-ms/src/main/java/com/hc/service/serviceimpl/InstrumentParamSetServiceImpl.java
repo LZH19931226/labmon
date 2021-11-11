@@ -179,13 +179,14 @@ public class InstrumentParamSetServiceImpl implements InstrumentParamSetService 
     }
 
     @Override
-    public ApiResponse<Page<InstrumentParamConfigInfos>> showInsStart(String hospitalcode, String equipmenttypeid, Integer pagesize, Integer pagenum) {
+    public ApiResponse<Page<InstrumentParamConfigInfos>> showInsStart(String hospitalcode, String equipmenttypeid, Integer pagesize, Integer pagenum,String equipmentinfo) {
         ApiResponse<Page<InstrumentParamConfigInfos>> apiResponse = new ApiResponse<Page<InstrumentParamConfigInfos>>();
         List<InstrumentParamConfigInfos> instrumentParamConfigInfosList = new ArrayList<InstrumentParamConfigInfos>();
         List<InstrumentParamConfigInfo> instrumentParamConfigInfoList = new ArrayList<InstrumentParamConfigInfo>();
         EquipmentConfigInfoModel equipmentConfigInfoModel = new EquipmentConfigInfoModel();
         equipmentConfigInfoModel.setHospitalcode(hospitalcode);
         equipmentConfigInfoModel.setEquipmenttypeid(equipmenttypeid);
+        equipmentConfigInfoModel.setEquipmenttypename(equipmentinfo);
         Integer start = (pagenum - 1) * pagesize;
         Integer end = pagesize;
         PageRowBounds page = new PageRowBounds(start, end);

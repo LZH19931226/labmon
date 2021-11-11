@@ -36,7 +36,7 @@ public interface InstrumentParamSetService {
     /**
      * 展示所有设备探头监控类型可用禁用信息
      */
-    ApiResponse<Page<InstrumentParamConfigInfos>> showInsStart(String hospitalcode,String equipmenttypeid,Integer pagesize,Integer pagenum);
+    ApiResponse<Page<InstrumentParamConfigInfos>> showInsStart(String hospitalcode,String equipmenttypeid,Integer pagesize,Integer pagenum,String equipmentinfo);
 
     /**
      * 修改设备显示还是不显示

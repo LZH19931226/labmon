@@ -58,8 +58,10 @@ public class InstruParamSetController {
                                                                   @ApiParam(name = "pagesize", value = "每页显示行数", required = true)
                                                                   @RequestParam(value = "pagesize", required = true) Integer pagesize,
                                                                   @ApiParam(name = "pagenum", value = "当前页数", required = true)
-                                                                  @RequestParam(value = "pagenum", required = true) Integer pagenum) {
-        return instrumentParamSetService.showInsStart(hospitalcode,equipmenttypeid,pagesize,pagenum);
+                                                                  @RequestParam(value = "pagenum", required = true) Integer pagenum,
+                                                                  @ApiParam(name = "equipmentinfo", value = "", required = false)
+                                                                      @RequestParam(value = "equipmentinfo", required = false) String equipmentinfo) {
+        return instrumentParamSetService.showInsStart(hospitalcode,equipmenttypeid,pagesize,pagenum,equipmentinfo);
     }
 
     @GetMapping("/sendMessage")

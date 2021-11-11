@@ -11,7 +11,11 @@
     b.equipmentno,
     ifnull(b.clientvisible,'0') clientvisible
     from hospitalequiment a left join monitorequipment b on a.equipmenttypeid = b.equipmenttypeid and a.hospitalcode=b.hospitalcode
-    where ifnull(a.isvisible,'0') = '1'  and a.hospitalcode = #{hospitalcode} and a.equipmenttypeid = #{equipmenttypeid}  order by  b.equipmentname,b.clientvisible desc
+    where ifnull(a.isvisible,'0') = '1'
+    <if test="equipmenttypename != null and equipmenttypename !=''">
+      and   b.equipmentname  like concat('%',#{equipmenttypename},'%')
+      </if>
+      and a.hospitalcode = #{hospitalcode} and a.equipmenttypeid = #{equipmenttypeid}  order by  b.equipmentname,b.clientvisible desc
 </select>
     <select id="ShowInsParamConfigInfo" parameterType="java.lang.String" resultType="com.hc.model.ResponseModel.InstrumentParamConfigInfo">
     select

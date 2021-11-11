@@ -10,7 +10,7 @@ spring:
   application:
     name: HC-MON-ms
   redis:
-    host: 192.168.1.90
+    host: 127.0.0.1
     port: 6379
     pool:
       max-active: 200
@@ -18,7 +18,7 @@ spring:
     timeout: 10000
   datasource:
         primary:
-            url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://172.16.10.14:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
             driver-class-name: com.mysql.jdbc.Driver
             username: hc
             password: 123456
@@ -36,7 +36,7 @@ spring:
             maxPoolPreparedStatementPerConnectionSize: 20
             cachePrepStmts: true
         secondary:
-            url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://172.16.10.14:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
             driver-class-name: com.mysql.jdbc.Driver
             username: hc
             password: 123456
@@ -54,7 +54,7 @@ spring:
             maxPoolPreparedStatementPerConnectionSize: 20
             cachePrepStmts: true
         thirdly:
-            url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://172.16.10.14:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
             driver-class-name: com.mysql.jdbc.Driver
             username: hc
             password: 123456
@@ -80,7 +80,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.1.90:10086/eureka/
+      defaultZone: http://127.0.0.1:10086/eureka/
 server:
   port: 8094
 # mybatis
