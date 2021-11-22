@@ -25,28 +25,28 @@ public class ParamaterModel {
     private String TEMP;
     //二路温度"
     private String TEMP2;
-	//"三路温度"
-	private String TEMP3;
-	//"四路温度"
-	private String TEMP4;
-	//五路温度"
-	private String TEMP5;
-	//六路温度"
-	private String TEMP6;
-	//"七路温度"
-	private String TEMP7;
-	//"八路温度"
-	private String TEMP8;
-	//"九路温度"
-	private String TEMP9;
-	//"十路温度"
-	private String TEMP10;
-	//"气流"
-    private  String airflow;
+    //"三路温度"
+    private String TEMP3;
+    //"四路温度"
+    private String TEMP4;
+    //五路温度"
+    private String TEMP5;
+    //六路温度"
+    private String TEMP6;
+    //"七路温度"
+    private String TEMP7;
+    //"八路温度"
+    private String TEMP8;
+    //"九路温度"
+    private String TEMP9;
+    //"十路温度"
+    private String TEMP10;
+    //"气流"
+    private String airflow;
     //"湿度"
     private String RH;
-   //"压力"
-    private String PRESS; 
+    //"压力"
+    private String PRESS;
     //"电量"
     private String QC;
     //"PM2.5"
@@ -66,7 +66,7 @@ public class ParamaterModel {
     //开关量编号报警类型/状态 1：开->关 2：关->开 3：持续关 4：持续开
     private String DOORZ;
     //"甲醛")
-    private String OX ;
+    private String OX;
     //左舱室温度
     private String leftCompartmentTemp;
     //左舱室流量
@@ -81,11 +81,14 @@ public class ParamaterModel {
     private String rightCompartmentHumidity;
     //电压
     private String voltage;
-
+    //电流
+    private String current;
+    //功率
+    private String power;
 
 
     //"时间"
-    private Date nowTime ;
+    private Date nowTime;
     //"通道id"
     private String channelId;
 

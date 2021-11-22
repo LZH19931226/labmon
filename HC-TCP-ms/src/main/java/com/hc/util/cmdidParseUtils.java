@@ -1126,10 +1126,10 @@ public class cmdidParseUtils {
 
 
     public static void main(String[] args) {
-        String id = "4843980b31383838303830303031099123";
+        String id = "48 43 AA 1A 31 38 33 35 33 38 30 30 30 31 00 00 27 10 08 98 08 98 50 00 00 00 00 00 00 00 D9 23";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
-        ParamaterModel paramaterModel = pase98(s);
+        ParamaterModel paramaterModel = paseAA(s,null,null);
         System.out.println(paramaterModel);
     }
 
@@ -1285,7 +1285,7 @@ public class cmdidParseUtils {
             paramaterModel.setO2(gas10(substring4));
         }
         String substring5 = cmd.substring(40, 44);
-        if (StringUtils.equalsIgnoreCase(substring5, DataRules.OUTLIERSC)) {
+            if (StringUtils.equalsIgnoreCase(substring5, DataRules.OUTLIERSC)) {
             paramaterModel.setPRESS(DataRules.STATEE);
         } else if (StringUtils.equalsIgnoreCase(substring5,"FFF1")){
             paramaterModel.setPRESS(DataRules.STATEC);
@@ -1328,5 +1328,41 @@ public class cmdidParseUtils {
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
 
+    }
+
+    //48 43 AA 1A 31 38 33 35 33 38 30 30 30 31 00 00 27 10 08 98 08 98 50 00 00 00 00 00 00 00 D9 23
+    public static ParamaterModel paseAA(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+        String currentData = cmd.substring(28, 36);
+        if (StringUtils.equals(currentData,"FFFFFFF0")){
+            //值无效
+            paramaterModel.setCurrent(DataRules.STATEC);
+        }else if (StringUtils.equals(currentData,"FFFFFFF1")){
+            //超量程
+            paramaterModel.setCurrent(DataRules.STATEB);
+        }else {
+            paramaterModel.setCurrent(String.valueOf(Integer.parseInt(currentData, 16)/10));
+        }
+        String voltageData = cmd.substring(36, 40);
+        if (StringUtils.equals(voltageData,"FFF0")){
+            paramaterModel.setVoltage(DataRules.STATEC);
+        }else if (StringUtils.equals(voltageData,"FFF1")){
+            paramaterModel.setVoltage(DataRules.STATEB);
+        }else {
+            paramaterModel.setVoltage(String.valueOf(Integer.parseInt(voltageData, 16)/10));
+        }
+        String powerData = cmd.substring(40, 44);
+        if (StringUtils.equals(powerData,"FFF0")){
+            paramaterModel.setPower(DataRules.STATEC);
+        }else if (StringUtils.equals(powerData,"FFF1")){
+            paramaterModel.setPower(DataRules.STATEB);
+        }else {
+            paramaterModel.setPower(String.valueOf(Integer.parseInt(powerData, 16)/10));
+        }
+        String qcData = cmd.substring(44, 46);
+        paramaterModel.setQC(electricity(qcData));
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
+        return paramaterModel;
     }
 }
