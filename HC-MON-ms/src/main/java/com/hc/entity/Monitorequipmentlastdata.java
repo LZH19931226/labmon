@@ -187,5 +187,13 @@ public class Monitorequipmentlastdata  implements Serializable {
      * 电压
      */
     private String voltage;
+    /**
+     * 电流
+     */
+    private String current;
+    /**
+     * 功率
+     */
+    private String power;
 
 }
