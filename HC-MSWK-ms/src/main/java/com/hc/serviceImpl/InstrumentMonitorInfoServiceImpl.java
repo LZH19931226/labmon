@@ -1375,6 +1375,31 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         list.add(warningMqModel1);
                     }
                     break;
+                case "aa":
+                    String current = model.getCurrent();
+                    if (StringUtils.isNotEmpty(current)){
+                        monitorequipmentlastdata.setCurrent(current);
+                        WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(current, monitorinstrument, model.getNowTime(), 40, "电流");
+                        list.add(warningMqModel1);
+                    }
+                    String voltage1 = model.getVoltage();
+                    if (StringUtils.isNotEmpty(voltage1)){
+                        monitorequipmentlastdata.setVoltage(voltage1);
+                        WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(voltage1, monitorinstrument, model.getNowTime(), 39, "电压");
+                        list.add(warningMqModel1);
+                    }
+                    String power = model.getPower();
+                    if (StringUtils.isNotEmpty(power)){
+                        monitorequipmentlastdata.setPower(power);
+                        WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(power, monitorinstrument, model.getNowTime(), 41, "功率");
+                        list.add(warningMqModel1);
+                    }
+                    String qc = model.getQC();
+                    if (StringUtils.isNotEmpty(qc)){
+                        WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
+                        list.add(warningMqModel1);
+                    }
+                    break;
                 default:
                     break;
             }

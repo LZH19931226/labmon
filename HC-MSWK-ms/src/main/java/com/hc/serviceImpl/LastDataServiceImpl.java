@@ -1,5 +1,6 @@
 package com.hc.serviceImpl;
 
+import com.hc.bean.WarningMqModel;
 import com.hc.config.RedisTemplateUtil;
 import com.hc.dao.InstrumentParamConfigDao;
 import com.hc.dao.MonitorequipmentlastdataDao;
@@ -292,6 +293,14 @@ public class LastDataServiceImpl implements LastDataService {
         }
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getVoltage())) {
             monitorequipmentlastdata.setVoltage(monitorequipmentlastdata1.getVoltage());
+        }
+        String current = monitorequipmentlastdata1.getCurrent();
+        if (StringUtils.isNotEmpty(current)){
+            monitorequipmentlastdata.setCurrent(current);
+        }
+        String power = monitorequipmentlastdata1.getPower();
+        if (StringUtils.isNotEmpty(power)){
+            monitorequipmentlastdata.setPower(power);
         }
         return monitorequipmentlastdata;
     }
