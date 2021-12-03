@@ -1397,6 +1397,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     String qc = model.getQC();
                     if (StringUtils.isNotEmpty(qc)){
                         WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
+                        monitorequipmentlastdata.setCurrentqc(qc);
                         list.add(warningMqModel1);
                     }
                     break;
