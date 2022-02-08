@@ -202,8 +202,9 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <targetPath>BOOT-INF/classes/</targetPath>
+                <targetPath>./</targetPath>
             </resource>
+
         </resources>
         <plugins>
             <plugin>
@@ -211,7 +212,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 工程主入口-->
-                    <mainClass>com.hc.SpringServiceApplication</mainClass>
+                    <mainClass>com.hc.SpringMSCTApplication</mainClass>
                 </configuration>
                 <!--<executions>-->
                 <!--<execution>-->

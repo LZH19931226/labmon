@@ -1,7 +1,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.1.90:10086/eureka/
+      defaultZone: http://127.0.0.1:10086/eureka/
 server:
   tomcat:
     uri-encoding: UTF-8
@@ -11,10 +11,10 @@ spring:
     name: HC-HTGL-ms
   datasource:
            primary:
-               url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
                driver-class-name: com.mysql.jdbc.Driver
-               username: hc
-               password: 123456
+               username: root
+               password: root
                initial-size: 1
                max-idle: 20
                max-active: 20
@@ -29,10 +29,10 @@ spring:
                max-pool-prepared-statement-per-connection-size: 20
                filters: stat,wall,log4j,config
            secondary:
-               url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
                driver-class-name: com.mysql.jdbc.Driver
-               username: hc
-               password: 123456
+               username: root
+               password: root
                initial-size: 1
                max-idle: 20
                max-active: 20
@@ -47,10 +47,10 @@ spring:
                max-pool-prepared-statement-per-connection-size: 20
                filters: stat,wall,log4j,config
            thirdly:
-               url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
                driver-class-name: com.mysql.jdbc.Driver
-               username: hc
-               password: 123456
+               username: root
+               password: root
                initial-size: 1
                max-idle: 20    #最大空闲连接数
                max-active: 20   #最大连接数
@@ -70,7 +70,7 @@ spring:
                  naming:
                    physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   redis:
-        host: 192.168.1.90
+        host: 127.0.0.1
         port: 6379
         pool:
           max-active: 200
@@ -80,6 +80,9 @@ mybatis:   ## 可指定多个，用逗号或者分号隔开
     config-location: classpath:mybatis/MapperConfig.xml
     typeAliasesPackage: com.hc.entity
     mapperLocations: classpath:mybatis/sql/*.xml
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 logging:
     config: classpath:logback-spring.xml
 

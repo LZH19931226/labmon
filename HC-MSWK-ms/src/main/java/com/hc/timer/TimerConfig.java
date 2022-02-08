@@ -41,6 +41,7 @@ public class TimerConfig {
     private MessagePushService messagePushService;
     //
     @Scheduled(cron = "0 0 * * * ?")
+//    @Scheduled(cron = "0 0/1 * * * ?")
     public void Time() {
         // 查询所有需要超时报警的设备
         List<TimeoutEquipment> timeoutEquipments = hospitalInfoMapper.getTimeoutEquipment();

@@ -27,7 +27,12 @@ public interface HospitalEquipmentDao extends JpaRepository<Hospitalequiment,Hos
      * 将当前设备类型修改为不可用
      */
     @Modifying
-    @Query("update Hospitalequiment  a set a.isvisible=:isvisible,a.timeout =:timeout,a.timeouttime=:timeouttime where a.hospitalequimentKey=:hospitalequimentKey ")
-    Integer upateByEquipmenttypeid(@Param("isvisible") String isvisible,@Param("timeout") String timeout,@Param("timeouttime") Integer timeouttime,@Param("hospitalequimentKey") HospitalequimentKey hospitalequimentKey);
+    @Query("update Hospitalequiment  a set a.isvisible=:isvisible,a.timeout =:timeout,a.timeouttime=:timeouttime,a.alwayalarm=:alwayalarm" +
+            " where a.hospitalequimentKey=:hospitalequimentKey ")
+    Integer upateByEquipmenttypeid(@Param("isvisible") String isvisible,
+                                   @Param("timeout") String timeout,
+                                   @Param("timeouttime") Integer timeouttime,
+                                   @Param("alwayalarm") String alwayalarm,
+                                   @Param("hospitalequimentKey") HospitalequimentKey hospitalequimentKey);
 
 }

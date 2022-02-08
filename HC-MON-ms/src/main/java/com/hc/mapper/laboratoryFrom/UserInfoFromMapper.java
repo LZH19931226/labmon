@@ -1,6 +1,7 @@
 package com.hc.mapper.laboratoryFrom;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
@@ -19,4 +20,7 @@ public interface UserInfoFromMapper {
      */
     @Select("select * from userright where username = #{username} and pwd = #{pwd} and isuse = '1'")
     Userright userlogin(UserModel userModel);
+
+    @Select("select * from userright where userid=#{userid} and isuse = '1'")
+    Userright selectUserById(@Param("userid") String userId);
 }

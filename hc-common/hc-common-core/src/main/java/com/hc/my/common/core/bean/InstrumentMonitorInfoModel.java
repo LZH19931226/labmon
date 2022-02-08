@@ -48,7 +48,10 @@ public class InstrumentMonitorInfoModel {
     private String equipmentno;
     private String hospitalcode;
 
-
+    /**
+     * 是否启动全天报警
+     */
+    private String alwayalarm;
 
     public static  void  main(String[] args){
 

@@ -98,9 +98,10 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 			}
 	        for (ParamaterModel model : paseData) {
 				//是否是心跳
-				if (StringUtils.equals(model.getCmdid(), "88")) {
+				if (StringUtils.equals(model.getCmdid(), "88") ) {
 					//应答消息48 43 08 00 03 23
 					String charString="484308000323";
+					log.info("返回的心跳包:"+charString);
 					nettyUtil.sendData(ctx,charString);
 					continue;
 				}

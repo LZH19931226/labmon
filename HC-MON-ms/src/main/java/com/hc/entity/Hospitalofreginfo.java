@@ -16,34 +16,52 @@ public class Hospitalofreginfo implements Serializable {
     /**
      * 医院名称
      */
+    @Column(name="hospitalname")
     private String hospitalname;
 
     /**
      * 是否可用
      */
+    @Column(name="isenable")
     private String isenable;
 
     /**
      * 医院全称
      */
+    @Column(name="hospitalfullname")
     private String hospitalfullname;
 
     /**
      * 全天报警
      */
+    @Column(name="alwayalarm")
     private String alwayalarm;
 
     /**
      * 开始时间
      */
+    @Column(name="begintime")
     private Date begintime;
 
     /**
      * 结束时间
      */
+    @Column(name="endtime")
     private Date endtime;
 
-    private static final long serialVersionUID = 1L;
+    @Column(name="timeout")
+    private String timeout;
+
+//    private static final long serialVersionUID = 1L;
+
+
+    public String getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
+    }
 
     /**
      * 获取医院编号
@@ -178,7 +196,8 @@ public class Hospitalofreginfo implements Serializable {
         hospitalfullname("hospitalfullname"),
         alwayalarm("alwayalarm"),
         begintime("begintime"),
-        endtime("endtime");
+        endtime("endtime"),
+        timeout("timeout");
 
         private final String column;
 
@@ -201,5 +220,19 @@ public class Hospitalofreginfo implements Serializable {
         public String asc() {
             return this.column + " ASC";
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Hospitalofreginfo{" +
+                "hospitalcode='" + hospitalcode + '\'' +
+                ", hospitalname='" + hospitalname + '\'' +
+                ", isenable='" + isenable + '\'' +
+                ", hospitalfullname='" + hospitalfullname + '\'' +
+                ", alwayalarm='" + alwayalarm + '\'' +
+                ", begintime=" + begintime +
+                ", endtime=" + endtime +
+                ", timeout='" + timeout + '\'' +
+                '}';
     }
 }

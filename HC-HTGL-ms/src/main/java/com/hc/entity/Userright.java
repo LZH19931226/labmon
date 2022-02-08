@@ -71,5 +71,5 @@ public class Userright implements Serializable {
 
     private String reminders;
 
-
+    private String timeoutwarning;
 }

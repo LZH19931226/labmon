@@ -38,5 +38,7 @@ public interface ClientInfoMapper {
 
     @Select("select * from userright where hospitalcode  =#{hospitalcode}")
     List<Userright> selectUserInfoByHospitalcode(@Param("hospitalcode") String hospitalcode);
+
+
 }
 

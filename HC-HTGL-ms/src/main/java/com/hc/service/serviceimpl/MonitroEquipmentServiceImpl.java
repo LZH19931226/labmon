@@ -8,17 +8,17 @@ import com.hc.dao.InstrumentParamConfigDao;
 import com.hc.dao.MonitorEquipmentDao;
 import com.hc.dao.MonitorInstrumentDao;
 import com.hc.dao.MonitorInstrumentTypeDao;
-import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorequipment;
-import com.hc.entity.Monitorinstrument;
-import com.hc.entity.Monitorinstrumenttype;
+import com.hc.entity.*;
+import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.WiredInstrumentModel;
+import com.hc.model.RequestModel.WorkTimeBlockModel;
 import com.hc.model.ResponseModel.AllInstrumentInfoModel;
+import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
 import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.MonitorEquipmentService;
@@ -34,21 +34,18 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 ;
 
@@ -77,6 +74,24 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
     @Autowired
     private UpdateRecordService updateRecordService;
 
+    @Autowired
+    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+
+    @Autowired
+    private HospitalEquipmentMapper hospitalEquipmentMapper;
+
+    private void processAddEquipment(EquipmentInfoModel equipmentInfoModel){
+        List<MonitorEquipmentWarningTime> warningTimeList = equipmentInfoModel.getWorkTimeBlock();
+        if(warningTimeList != null){
+            warningTimeList.forEach(item->{
+                item.setEquipmentcategory("EQ");
+                item.setHospitalcode(equipmentInfoModel.getHospitalcode());
+                item.setEquipmentid(equipmentInfoModel.getEquipmentno());
+            });
+            monitorEquipmentWarningTimeDao.save(warningTimeList);
+        }
+    }
+
     @Override
     public ApiResponse<String> addMonitorEquipment(EquipmentInfoModel equipmentInfoModel) {
         ApiResponse<String> apiResponse = new ApiResponse<String>();
@@ -96,14 +111,15 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             equipmentbrand = "G185";
         }
         //需要添加探头
-        if (StringUtils.isEmpty(equipmentInfoModel.getChannel())) {
+        //SN号不能相同,去除判断通道的逻辑
+     //   if (StringUtils.isEmpty(equipmentInfoModel.getChannel())) {
             Integer J = monitorInstrumentMapper.isExist(equipmentInfoModel.getSn());
             if (J > 0) {
                 apiResponse.setMessage("添加设备失败,sn已被占用");
                 apiResponse.setCode(ApiResponse.FAILED);
                 return apiResponse;
             }
-        }
+   //     }
         //添加设备  判断有无探头
         monitorequipment.setEquipmentbrand(equipmentbrand);
         monitorequipment.setHospitalcode(hospitalcode);
@@ -111,6 +127,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
         monitorequipment.setEquipmentname(equipmentname);
         monitorequipment.setEquipmenttypeid(equipmenttypeid);
         monitorequipment.setEquipmentno(UUID.randomUUID().toString().replaceAll("-", ""));
+        monitorequipment.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
         monitorequipment = monitorEquipmentDao.save(monitorequipment);
         //从后台解析服务中获取的sn
         try {
@@ -160,6 +177,8 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             monitorinstrument.setInstrumentno(UUID.randomUUID().toString().replaceAll("-", ""));
             monitorinstrument.setHospitalcode(hospitalcode);
             monitorinstrument = monitorInstrumentDao.save(monitorinstrument);
+            equipmentInfoModel.setEquipmentno(monitorinstrument.getEquipmentno());
+            this.processAddEquipment(equipmentInfoModel);
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             if (StringUtils.isEmpty(monitorinstrument.getChannel())) {
                 objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
@@ -184,6 +203,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
         }
+
         try {
             for (InstrumentMonitorInfoModel instrumentMonitorInfoModel : instrumentMonitorInfoModelList) {
                 //添加探头参数
@@ -345,6 +365,26 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
         boolean clientvisible = equipmentInfoModel.isClientvisible();
         String equipmentbrand = equipmentInfoModel.getEquipmentbrand();
         String equipmentno = equipmentInfoModel.getEquipmentno();
+        //新增修改sn号码逻辑
+        String sn = equipmentInfoModel.getSn();
+        if(StringUtils.isEmpty(sn)){
+            apiResponse.setCode(ApiResponse.FAILED);
+            apiResponse.setMessage("请输入sn信息");
+            return apiResponse;
+        }
+        //sn号码不能重复
+        Integer J = monitorInstrumentMapper.isExist(equipmentInfoModel.getSn());
+        if (J > 0) {
+            apiResponse.setMessage("添加设备失败,sn已被占用");
+            apiResponse.setCode(ApiResponse.FAILED);
+            return apiResponse;
+        }
+        //查询监控设备,不为空则修改
+        Monitorinstrument updateMonitorInstrument = monitorInstrumentDao.getByEquipmentno(equipmentInfoModel.getEquipmentno());
+        if(updateMonitorInstrument != null){
+            updateMonitorInstrument.setSn(sn);
+            monitorInstrumentDao.save(updateMonitorInstrument);
+        }
         try {
             monitorequipment.setEquipmentno(equipmentno);
             monitorequipment.setEquipmenttypeid(equipmenttypeid);
@@ -353,6 +393,69 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             monitorequipment.setHospitalcode(hospitalcode);
             monitorequipment.setEquipmentbrand(equipmentbrand);
             String usernames = equipmentInfoModel.getUsernames();
+            monitorequipment.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
+
+            //警报时间段
+            List<MonitorEquipmentWarningTime> workTimeBlocks = equipmentInfoModel.getWorkTimeBlock();
+            List<MonitorEquipmentWarningTime> monitorEquipmentWarningTimeList = new ArrayList<MonitorEquipmentWarningTime>();
+            if(workTimeBlocks != null){
+                for(int i = 0;i<workTimeBlocks.size();i++){
+                    MonitorEquipmentWarningTime workTimeBlockModel = workTimeBlocks.get(i);
+                    if(workTimeBlockModel != null){
+                        Integer timeblockid = workTimeBlockModel.getTimeblockid();
+                        MonitorEquipmentWarningTime monitorEquipmentWarningTime = new MonitorEquipmentWarningTime();
+                        if(timeblockid != null){
+                            monitorEquipmentWarningTime.setTimeblockid(timeblockid);
+                        }
+                        monitorEquipmentWarningTime.setBegintime(workTimeBlockModel.getBegintime());
+                        monitorEquipmentWarningTime.setEndtime(workTimeBlockModel.getEndtime());
+                        monitorEquipmentWarningTime.setEquipmentid(monitorequipment.getEquipmentno());
+                        monitorEquipmentWarningTime.setEquipmentcategory("EQ");
+                        monitorEquipmentWarningTime.setHospitalcode(hospitalcode);
+                        monitorEquipmentWarningTimeList.add(monitorEquipmentWarningTime);
+                    }
+                }
+                if(!monitorEquipmentWarningTimeList.isEmpty()){
+                    monitorEquipmentWarningTimeDao.save(monitorEquipmentWarningTimeList);
+                }
+                //移除的时间警报数据
+                List<MonitorEquipmentWarningTime> deleteWarningTimeBlocks = equipmentInfoModel.getDeleteWarningTimeBlock();
+                if(deleteWarningTimeBlocks != null){
+                    Set<MonitorEquipmentWarningTime> delWorkTimeBlockModels = new HashSet<MonitorEquipmentWarningTime>();
+                    for(int i=0;i<deleteWarningTimeBlocks.size();i++){
+                        MonitorEquipmentWarningTime del = deleteWarningTimeBlocks.get(i);
+                        if(del != null){
+                            MonitorEquipmentWarningTime monitorEquipmentWarningTime = new MonitorEquipmentWarningTime();
+                            Integer timeblockid = del.getTimeblockid();
+                            boolean exists = monitorEquipmentWarningTimeDao.exists(timeblockid);
+                            if(exists){
+                                monitorEquipmentWarningTime.setTimeblockid(timeblockid);
+                                delWorkTimeBlockModels.add(monitorEquipmentWarningTime);
+                            }
+                        }
+                    }
+
+                    if(!delWorkTimeBlockModels.isEmpty()){
+                        monitorEquipmentWarningTimeDao.delete(delWorkTimeBlockModels);
+                    }
+                }
+            }
+
+            //更新缓存
+            Monitorinstrument monitorinstrument = monitorInstrumentMapper.selectInstrumentByEquipmentno(equipmentInfoModel.getEquipmentno());
+            if(monitorinstrument != null){
+                monitorinstrument.setWarningTimeList(monitorEquipmentWarningTimeList);
+                //同步探头名称到缓存
+                Object o = redisTemplateUtil.boundHashOps("hospital:sn").get(monitorinstrument.getSn());
+                if(o != null){
+                    //存在
+                    String o1 = (String) o;
+                    Monitorinstrument monitorinstrumentObj = JsonUtil.toBean(o1, Monitorinstrument.class);
+                    if (monitorinstrumentObj != null){
+                        redisTemplateUtil.boundHashOps("hospital:sn").put(monitorinstrument.getSn(),JsonUtil.toJson(monitorinstrument));
+                    }
+                }
+            }
             //获取医院名称
             String hospitalNameByEquipmentno = monitorInstrumentMapper.getHospitalNameByEquipmentno(equipmentno);
             EquipmentInfoModel one = monitorInstrumentMapper.getEquipmentInfoByEquipmentno(equipmentno);
@@ -362,14 +465,16 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             List<Instrumentparamconfig> allInstrumentByEquipmentno = monitorInstrumentMapper.getAllInstrumentByEquipmentno(equipmentno);
             if (CollectionUtils.isNotEmpty(allInstrumentByEquipmentno)){
                 allInstrumentByEquipmentno.forEach(s->{
-                    //同步探头名称到缓存
-                    Object o = redisTemplateUtil.boundHashOps("insprobe"+hospitalcode).get(s.getInstrumentno() + ":" + s.getInstrumentconfigid());
-                    //存在
-                    String o1 = (String) o;
-                    InstrumentMonitorInfoModel   instrumentMonitorInfoModel = JsonUtil.toBean(o1, InstrumentMonitorInfoModel.class);
-                    if (null!=instrumentMonitorInfoModel){
-                        instrumentMonitorInfoModel.setEquipmentname(equipmentname);
-                        redisTemplateUtil.boundHashOps("insprobe"+hospitalcode).put(s.getInstrumentno() + ":" + s.getInstrumentconfigid(),JsonUtil.toJson(instrumentMonitorInfoModel));
+                    if(s != null){
+                        //同步探头名称到缓存
+                        Object o = redisTemplateUtil.boundHashOps("insprobe"+hospitalcode).get(s.getInstrumentno() + ":" + s.getInstrumentconfigid());
+                        //存在
+                        String o1 = (String) o;
+                        InstrumentMonitorInfoModel   instrumentMonitorInfoModel = JsonUtil.toBean(o1, InstrumentMonitorInfoModel.class);
+                        if (null!=instrumentMonitorInfoModel){
+                            instrumentMonitorInfoModel.setEquipmentname(equipmentname);
+                            redisTemplateUtil.boundHashOps("insprobe"+hospitalcode).put(s.getInstrumentno() + ":" + s.getInstrumentconfigid(),JsonUtil.toJson(instrumentMonitorInfoModel));
+                        }
                     }
                 });
             }
@@ -402,6 +507,20 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                 apiResponse.setCode(ApiResponse.FAILED);
                 apiResponse.setMessage("无设备信息");
                 return apiResponse;
+            }
+            for(MonitorEquipmentInfoModel monitorEquipmentInfoModel : monitorEquipmentInfoModels){
+                MonitorEquipmentWarningTime monitorEquipmentWarningTime = new MonitorEquipmentWarningTime();
+                monitorEquipmentWarningTime.setEquipmentid(monitorEquipmentInfoModel.getEquipmentno());
+                monitorEquipmentWarningTime.setEquipmentcategory("EQ");
+                monitorEquipmentWarningTime.setHospitalcode(monitorEquipmentInfoModel.getHospitalcode());
+                Example<MonitorEquipmentWarningTime> timeExample = Example.of(monitorEquipmentWarningTime);
+                List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
+                monitorEquipmentInfoModel.setWarningTimeList(warningTimeDaoAll);
+                //查询SN号码
+                Monitorinstrument monitorinstrument = monitorInstrumentDao.getByEquipmentno(monitorEquipmentInfoModel.getEquipmentno());
+                if(monitorinstrument != null){
+                    monitorEquipmentInfoModel.setSn(monitorinstrument.getSn());
+                }
             }
             PageInfo<MonitorEquipmentInfoModel> pageInfo = new PageInfo<MonitorEquipmentInfoModel>(monitorEquipmentInfoModels);
             apiResponse.setPage(pageInfo);

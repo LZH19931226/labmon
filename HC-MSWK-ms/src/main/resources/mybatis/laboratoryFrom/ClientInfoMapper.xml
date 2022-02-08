@@ -29,5 +29,4 @@ from hospitalofreginfo a left join userright b on a.hospitalcode=b.hospitalcode
 </select>
 
 
-
 </mapper>

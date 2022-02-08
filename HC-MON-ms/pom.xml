@@ -155,7 +155,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<!-- 工程主入口-->
-					<mainClass>com.hc.SpringServiceApplication</mainClass>
+					<mainClass>com.hc.SpringMonitorApplication</mainClass>
 				</configuration>
 				<executions>
 					<execution>

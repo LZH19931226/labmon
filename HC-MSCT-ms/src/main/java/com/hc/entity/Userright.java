@@ -65,5 +65,7 @@ public class Userright implements Serializable {
 
     private String reminders;
 
+    private String timeoutwarning;
+
     private static final long serialVersionUID = 1L;
 }

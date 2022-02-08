@@ -55,4 +55,32 @@ public interface HospitalEquipmentMapper {
 
     @Select(" select * from hospitalequiment where hospitalcode = #{hospitalcode} and equipmenttypeid = #{equipmenttypeid}  ")
     EquipmentTypeInfoModel getInfo(@Param("hospitalcode") String hospitalcode,@Param("equipmenttypeid") String equipmenttypeid);
+
+    @Select("select * from ( select " +
+            "a.equipmenttypeid, " +
+            "b.equipmenttypename, " +
+            "a.hospitalcode, " +
+            "c.hospitalname, " +
+            "a.isvisible, " +
+            "a.timeout, " +
+            "a.timeouttime, " +
+            "a.alwayalarm " +
+            " from hospitalequiment a left join monitorequipmenttype b on a.equipmenttypeid = b.equipmenttypeid " +
+            " left join HospitalOfRegInfo c on a.hospitalcode = c.hospitalcode " +
+            " order by a.hospitalcode desc , a.equipmenttypeid ) K")
+    List<HospitalEquipmentTypeInfoModel> selectAllEquipmentType();
+
+    @Select("select * from ( select " +
+            " a.equipmenttypeid, " +
+            " b.equipmenttypename, " +
+            " a.hospitalcode, " +
+            " c.hospitalname, " +
+            " a.isvisible, " +
+            " a.timeout, " +
+            " a.timeouttime, " +
+            " a.alwayalarm " +
+            " from hospitalequiment a left join monitorequipmenttype b on a.equipmenttypeid = b.equipmenttypeid" +
+            " left join HospitalOfRegInfo c on a.hospitalcode = c.hospitalcode " +
+            " order by a.hospitalcode desc , a.equipmenttypeid ) K where K.hospitalcode = #{hospitalcode} and K.equipmenttypeid = #{equipmenttypeid}")
+    HospitalEquipmentTypeInfoModel selectEquipmentTypeByHospitalcodeAndEquipmenttypeid(@Param("hospitalcode") String hospitalcode , @Param("equipmenttypeid")String equipmenttypeid);
 }

@@ -21,7 +21,8 @@
     b.reveivecount,
     b.receiveinterval,
     b.usertype,
-    b.reminders
+    b.reminders,
+    b.timeoutwarning
     from hospitalofreginfo a right join userright b on a.hospitalcode=b.hospitalcode
     <where>
         '1'='1'
@@ -38,6 +39,11 @@
 
         </if>
 
+        <if test="setterWarningUsername != null">
+            <!--查询其他普通用户信息和当前的admin用户信息-->
+            and usertype = 'user'
+            or username = #{setterWarningUsername}
+        </if>
     </where>
 
 </select>

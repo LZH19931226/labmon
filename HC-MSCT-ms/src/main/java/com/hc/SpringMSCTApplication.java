@@ -15,12 +15,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableScheduling
-public class SpringServiceApplication {
+public class SpringMSCTApplication {
 
 	public static void main(String[] args) {
 
 
-		SpringApplication.run(SpringServiceApplication.class, args);
+		SpringApplication.run(SpringMSCTApplication.class, args);
 
 	}
 }

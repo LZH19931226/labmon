@@ -1,24 +1,24 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.1.90:10086/eureka/
+      defaultZone: http://127.0.0.1:10086/eureka/
   instance:
     prefer-ip-address: true
 spring:
   application:
     name: hc-message-ms
   redis:
-    host: 192.168.1.90
+    host: 127.0.0.1
     port: 6379
     pool:
       max-active: 200
       max-idle: 100
     timeout: 10000
   datasource:
-    url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.jdbc.Driver
-    username: hc
-    password: 123456
+    username: root
+    password: root
     initialSize: 5
     minIdle: 5
     maxActive: 20

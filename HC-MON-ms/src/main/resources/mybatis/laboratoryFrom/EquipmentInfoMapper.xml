@@ -109,7 +109,7 @@
         currentrightendtemperature,
         currentrightairflow
         from ${search}   where
-        equipmentno = #{equipmentno} and str_to_date(inputdatetime,'%Y-%m-%d') BETWEEN #{startdate}
+        equipmentno = #{equipmentno} and str_to_date(inputdatetime,'%Y-%m-%d %H:%i:%s') BETWEEN #{startdate}
         AND #{enddate} order by inputdatetime
 
     </select>

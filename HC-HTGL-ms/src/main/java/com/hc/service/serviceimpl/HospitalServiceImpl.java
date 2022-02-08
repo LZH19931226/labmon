@@ -53,6 +53,8 @@ public class HospitalServiceImpl implements HospitalService {
                 return apiResponse;
             }
             hospitalofreginfo.setHospitalcode(UUID.randomUUID().toString().replaceAll("-", ""));
+            //默认不开启全天报警
+            hospitalofreginfo.setAlwayalarm("0");
             hospitalofreginfo1 = hospitalofreginfoDao.save(hospitalofreginfo);
             String usernames = hospitalofreginfo.getUsernames();
             String hospitalname = hospitalofreginfo.getHospitalname();

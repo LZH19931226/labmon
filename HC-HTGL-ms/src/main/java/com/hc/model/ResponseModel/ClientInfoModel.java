@@ -60,4 +60,6 @@ public class ClientInfoModel {
 
     private String reminders;
 
+    private String timeoutwarning;
+
 }

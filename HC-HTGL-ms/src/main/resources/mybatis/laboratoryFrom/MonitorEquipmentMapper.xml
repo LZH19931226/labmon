@@ -14,7 +14,8 @@ c.hospitalname,
 d.clientvisible,
 d.equipmentno,
 d.equipmentbrand,
-d.equipmentname
+d.equipmentname,
+d.alwayalarm
 from hospitalequiment a left join monitorequipmenttype b on a.equipmenttypeid = b.equipmenttypeid
                         left join HospitalOfRegInfo c on a.hospitalcode = c.hospitalcode
                         inner join  monitorequipment d on (a.equipmenttypeid = d.equipmenttypeid and a.hospitalcode = d.hospitalcode)

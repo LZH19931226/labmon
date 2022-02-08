@@ -77,25 +77,34 @@ eureka:
     serviceUrl:
       defaultZone: http://39.104.178.216:8086/eureka/
 sms:
-   product: Dysmsapi                                            ##产品名称:云通信短信API产品,开发者无需替换
-   domain: dysmsapi.aliyuncs.com                                ##产品域名,开发者无需替换
+  ##产品名称:云通信短信API产品,开发者无需替换
+   product: Dysmsapi
+  ##产品域名,开发者无需替换
+   domain: dysmsapi.aliyuncs.com
    accessKeyId: LTAI4Fh7qr78heUy5w69wfSm
    accessKeySecret: hWikSbW0g2cyNoTCvNd6OEXBEFBy0p
-   signName: 互创实验室监控                                                   ##短信签名
+  ##短信签名
+   signName: 互创实验室监控
    
 CallBy:
-   product: Dyvmsapi                                            ##产品名称:云通信语音API产品,开发者无需替换
-   domain: dyvmsapi.aliyuncs.com                                ##产品域名,开发者无需替换
+  ##产品名称:云通信语音API产品,开发者无需替换
+   product: Dyvmsapi
+  ##产品域名,开发者无需替换
+   domain: dyvmsapi.aliyuncs.com
    accessKeyId: LTAI4Fh7qr78heUy5w69wfSm
    accessKeySecret: hWikSbW0g2cyNoTCvNd6OEXBEFBy0p
-   CalledShowNumber: "02759770206"                                       ##被叫显号,可在语音控制台中找到所购买的显号
-   TtsID: TTS_196655486                                                   ##Tts模板ID
+  ##被叫显号,可在语音控制台中找到所购买的显号
+   CalledShowNumber: "02759770206"
+  ##Tts模板ID
+   TtsID: TTS_196655486
            
 mail:
    accessKey:                
    accessSecret:
-   AccountName:                              ##控制台创建的发信地址
-   FromAlias:                                ##发信人昵称
+  ##控制台创建的发信地址
+   AccountName:
+  ##发信人昵称
+   FromAlias:
    TagName:
 timing:
      phone1: 13774664356

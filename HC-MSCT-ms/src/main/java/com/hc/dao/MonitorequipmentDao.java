@@ -17,4 +17,7 @@ public interface MonitorequipmentDao extends JpaRepository<Monitorequipment,Stri
 
     @Query("select  a  from Monitorequipment a  where a.hospitalcode = '2cc0db66222042389cca37ba4ac5f281' ")
     List<Monitorequipment> getMonitorequipmentByHospitalcode();
+
+    @Query("select  equipmenttypeid  from Monitorequipment a  where a.equipmentno=:equipmentno ")
+    String getByEquipmentno(@Param("equipmentno") String equipmentno);
 }

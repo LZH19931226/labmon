@@ -45,6 +45,21 @@ public class Monitorequipment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 全天报警
+     *  1=全天报警
+     *  0=不全天报警
+     */
+    private String alwayalarm;
+
+    public String getAlwayalarm() {
+        return alwayalarm;
+    }
+
+    public void setAlwayalarm(String alwayalarm) {
+        this.alwayalarm = alwayalarm;
+    }
+
+    /**
      * 获取设备编号
      *
      * @return equipmentno - 设备编号

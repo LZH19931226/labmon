@@ -77,9 +77,10 @@ public class SingleCallByTtsUtils {
         //必填-被叫号码
         request.setCalledNumber(mobile); 
         //必填-Tts模板ID
-        request.setTtsCode(TtsID);
+        request.setTtsCode("TTS_184620316");
          //可选-当模板中存在变量时需要设置此值
-        request.setTtsParam("{\"InstrumentName\":\""+ instrumentname +  "\"}");
+        request.setTtsParam("{\"Instrument_Name\":\""+ instrumentname +  "\"}");
+        request.setTtsParam("{\"phonenum\":\""+ mobile +  "\"}");
 //        //可选-音量 取值范围 0--200
 //        request.setVolume(100);
 //        //可选-播放次数
@@ -90,7 +91,7 @@ public class SingleCallByTtsUtils {
         SingleCallByTtsResponse singleCallByTtsResponse = null;
 		try {
 			log.info("语音发送的请求"+JsonUtil.toJson(request));
-			singleCallByTtsResponse = acsClient.getAcsResponse(request);
+            singleCallByTtsResponse = acsClient.getAcsResponse(request);
 			log.info("语音返回的请求"+JsonUtil.toJson(singleCallByTtsResponse));
 		} catch (ClientException e) {
             log.error(e+"");
@@ -120,7 +121,7 @@ public class SingleCallByTtsUtils {
         //必填-被叫号码
         request.setCalledNumber(mobile);
         //必填-Tts模板ID
-        request.setTtsCode("TTS_184620316");
+        request.setTtsCode("TTS_135036499");
         //可选-当模板中存在变量时需要设置此值
         request.setTtsParam("{\"phonenum\":\""+ mobile +  "\"}");
 //        //可选-音量 取值范围 0--200
@@ -160,7 +161,7 @@ public class SingleCallByTtsUtils {
         //组装请求对象-具体描述见控制台-文档部分内容
         SingleCallByVoiceRequest request = new SingleCallByVoiceRequest();
         //必填-被叫显号,可在语音控制台中找到所购买的显号
-        request.setCalledShowNumber("025000000");
+        request.setCalledShowNumber(CalledShowNumber);
         //必填-被叫号码
         request.setCalledNumber("15000000000");
         //必填-语音文件ID
@@ -192,7 +193,7 @@ public class SingleCallByTtsUtils {
         //组装请求对象-具体描述见控制台-文档部分内容
         IvrCallRequest request = new IvrCallRequest();
         //必填-被叫显号,可在语音控制台中找到所购买的显号
-        request.setCalledShowNumber("057156210000");
+        request.setCalledShowNumber(CalledShowNumber);
         //必填-被叫号码
         request.setCalledNumber("15000000000");
         request.setPlayTimes(3L);

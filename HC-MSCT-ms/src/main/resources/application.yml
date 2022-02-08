@@ -7,16 +7,16 @@ spring:
         serviceId: HC-MSCT-ms
         enabled: true
   rabbitmq:
-    host: 192.168.1.90
+    host: 127.0.0.1
     port: 5672
     username: hc
     password: 123456
     virtual-host: HCMQ
   datasource:
-      url: jdbc:mysql://192.168.1.221:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
       driver-class-name: com.mysql.jdbc.Driver
-      username: hc
-      password: 123456
+      username: root
+      password: root
       initialSize: 5
       minIdle: 5
       maxActive: 20
@@ -39,7 +39,7 @@ spring:
         ansi:
         enabled: detect
   redis:
-      host: 192.168.1.90
+      host: 127.0.0.1
       port: 6379
       pool:
         max-active: 1200
@@ -63,28 +63,40 @@ eureka:
 #    lease-expiration-duration-in-seconds: 30
   client:
     serviceUrl:
-      defaultZone: http://192.168.1.90:10086/eureka/
+      defaultZone: http://127.0.0.1:10086/eureka/
 sms:
-   product: Dysmsapi                                            ##产品名称:云通信短信API产品,开发者无需替换
-   domain: dysmsapi.aliyuncs.com                                ##产品域名,开发者无需替换
-   accessKeyId: LTAI4Fh7qr78heUy5w69wfSm
-   accessKeySecret: hWikSbW0g2cyNoTCvNd6OEXBEFBy0p
-   signName: 互创实验室监控                                                   ##短信签名
+  ##产品名称:云通信短信API产品,开发者无需替换
+  product: Dysmsapi
+  ##产品域名,开发者无需替换
+  domain: dysmsapi.aliyuncs.com
+  accessKeyId: LTAI4Fh7qr78heUy5w69wfSm
+  accessKeySecret: hWikSbW0g2cyNoTCvNd6OEXBEFBy0p
+  ##短信签名
+  signName: 互创实验室监控
    
 CallBy:
-   product: Dyvmsapi                                            ##产品名称:云通信语音API产品,开发者无需替换
-   domain: dyvmsapi.aliyuncs.com                                ##产品域名,开发者无需替换
-   accessKeyId: LTAI4Fh7qr78heUy5w69wfSm
-   accessKeySecret: hWikSbW0g2cyNoTCvNd6OEXBEFBy0p
-   CalledShowNumber: "02759770206"                                       ##被叫显号,可在语音控制台中找到所购买的显号
-   TtsID: TTS_196655486                                                   ##Tts模板ID
+  ##产品名称:云通信语音API产品,开发者无需替换
+  product: Dyvmsapi
+  ##产品域名,开发者无需替换
+  domain: dyvmsapi.aliyuncs.com
+  accessKeyId: LTAI4Fh7qr78heUy5w69wfSm
+  accessKeySecret: hWikSbW0g2cyNoTCvNd6OEXBEFBy0p
+  ##被叫显号,可在语音控制台中找到所购买的显号
+  CalledShowNumber: "02759770206"
+  ##Tts模板ID
+  TtsID: TTS_196655486
            
 mail:
-   accessKey:                
-   accessSecret:
-   AccountName:                              ##控制台创建的发信地址
-   FromAlias:                                ##发信人昵称
-   TagName:
+  accessKey:
+  accessSecret:
+  ##控制台创建的发信地址
+  AccountName:
+  ##发信人昵称
+  FromAlias:
+  TagName:
 timing:
-     phone1: 13774664356
-     phone2: 18108674918
+  phone1: 13774664356
+  phone2: 18108674918
+
+logging:
+  config: classpath:logback-spring.xml
