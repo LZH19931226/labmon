@@ -373,11 +373,15 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             return apiResponse;
         }
         //sn号码不能重复
-        Integer J = monitorInstrumentMapper.isExist(equipmentInfoModel.getSn());
-        if (J > 0) {
-            apiResponse.setMessage("添加设备失败,sn已被占用");
-            apiResponse.setCode(ApiResponse.FAILED);
-            return apiResponse;
+        Monitorinstrument queryMonitorinstrument = monitorInstrumentMapper.getMonitorInstrument(equipmentInfoModel.getSn());
+        if (queryMonitorinstrument != null) {
+            //查询出来的医院编码和设备编码 与修改的设备不同.说明是不同设备.不同设备的sn号码不能相同
+            if(!queryMonitorinstrument.getHospitalcode().equals(hospitalcode)
+                & !queryMonitorinstrument.getEquipmentno().equals(equipmentno)){
+                apiResponse.setMessage("添加设备失败,sn已被占用");
+                apiResponse.setCode(ApiResponse.FAILED);
+                return apiResponse;
+            }
         }
         //查询监控设备,不为空则修改
         Monitorinstrument updateMonitorInstrument = monitorInstrumentDao.getByEquipmentno(equipmentInfoModel.getEquipmentno());
