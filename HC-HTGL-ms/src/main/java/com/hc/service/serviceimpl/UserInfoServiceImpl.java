@@ -12,6 +12,7 @@ import com.hc.service.UserInfoService;
 import com.hc.units.ApiResponse;
 import com.hc.units.TokenHelper;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ApiResponse<List<UserScheduLing>> searchScByHosMon(String hosId, String month) {
         ApiResponse<List<UserScheduLing>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userAuthorInfoMapper.searchScByHosMon(hosId,month));
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse<List<UserScheduLing>> searchScByHosMonSection(String hosId, String startMonth, String endMonth) {
+        ApiResponse<List<UserScheduLing>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userAuthorInfoMapper.searchScByHosMonSection(hosId,startMonth,endMonth));
         return apiResponse;
     }
 }

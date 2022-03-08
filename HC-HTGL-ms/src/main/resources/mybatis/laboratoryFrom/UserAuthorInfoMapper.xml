@@ -33,5 +33,16 @@ from hospitalofreginfo a inner join userright b on a.hospitalcode = b.hospitalco
     </if>
 </select>
 
-
+<select id="searchScByHosMonSection" parameterType="java.util.Map" resultType="com.hc.entity.UserScheduLing">
+    select  * from userscheduling where
+    hospitalcode =#{hosId}
+    <if test="startMonth.length() lt 8 and endMonth.length() lt 8 ">
+        and  DATE_FORMAT(starttime,'%Y-%m') &gt;= #{startMonth}
+        and  DATE_FORMAT(endtime,'%Y-%m') &lt;= #{endMonth}
+    </if>
+    <if test="startMonth.length() gt 8 and endMonth.length() gt 8 ">
+        and  DATE_FORMAT(starttime,'%Y-%m-%d') = #{startMonth}
+        and  str_to_date(#{endMonth},'%Y-%m-%d') &lt;= endtime
+    </if>
+</select>
 </mapper>

@@ -77,4 +77,6 @@ public class IncubatorModel {
     private String currentrightendtemperature;
     @Excel(name = "右气流",orderNum = "23")
     private String currentrightairflow;
+    @Excel(name = "异常详情",orderNum = "24")
+    private String warningremark;
 }

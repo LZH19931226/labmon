@@ -12,6 +12,5 @@ public class HcTcpMsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HcTcpMsApplication.class, args);
 
-
 	}
 }

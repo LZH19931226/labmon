@@ -94,6 +94,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 			//解析数据
 			List<ParamaterModel> paseData = service.paseData(dataStr);
 			if (CollectionUtils.isEmpty(paseData)) {
+				log.info("数据解析错误: "+dataStr);
 				return;
 			}
 	        for (ParamaterModel model : paseData) {

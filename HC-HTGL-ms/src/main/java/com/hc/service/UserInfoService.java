@@ -25,4 +25,6 @@ public interface UserInfoService {
     ApiResponse<String> addusersc(UserScheduLingPostModel userScheduLingPostModel);
 
     ApiResponse<List<UserScheduLing>> searchScByHosMon(String hosId, String month);
+
+    ApiResponse<List<UserScheduLing>> searchScByHosMonSection(String hosId, String startMonth,String endMonth);
 }

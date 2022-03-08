@@ -196,5 +196,14 @@ public interface MonitorInstrumentMapper {
 
     @Select("select * from monitorinstrument where equipmentno = #{equipmentno}")
     Monitorinstrument selectInstrumentByEquipmentno(@Param("equipmentno") String equipmentno);
+
+
+    /**
+     * 判断当前探头sn号是否重复
+     */
+    @Select("select count(*) from monitorinstrument where sn = #{sn} and hospitalcode = #{hospitalcode} and equipmentno = #{equipmentno}")
+    Integer isHospitalEquipmentExist(@Param("sn") String sn,
+                                     @Param("hospitalcode") String hospitalcode,
+                                     @Param("equipmentno") String equipmentno);
 }
 

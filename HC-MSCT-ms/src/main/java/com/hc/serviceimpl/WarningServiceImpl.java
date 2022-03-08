@@ -69,6 +69,7 @@ public class WarningServiceImpl implements WarningService {
         WarningModel warningModel = new WarningModel();
         String equipmentname = instrumentMonitorInfoModel.getEquipmentname();
         String instrumentparamconfigNO = instrumentMonitorInfoModel.getInstrumentparamconfigNO();
+        String equipmentno = instrumentMonitorInfoModel.getEquipmentno();
         if (StringUtils.isEmpty(instrumentparamconfigNO)) {
             LOGGER.info("redis缓存失败，取不到探头类型编号：数据为" + JsonUtil.toJson(instrumentMonitorInfoModel));
             return null;
@@ -91,6 +92,7 @@ public class WarningServiceImpl implements WarningService {
 //
 //        }
         Warningrecord warningrecord = new Warningrecord();
+        warningrecord.setEquipmentno(equipmentno);
         try {
             switch (instrumentconfigid) {
                 case 1:
@@ -126,6 +128,7 @@ public class WarningServiceImpl implements WarningService {
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
                         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+                        warningrecord.setEquipmentno("");
                         warningrecord = warningrecordDao.save(warningrecord);
                         LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
                         return null;

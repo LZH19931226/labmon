@@ -34,13 +34,13 @@ public class Monitorinstrument implements Serializable {
      *  1=全天报警
      *  0=不全天报警
      */
-    @Transient //排除持久化属性
+    @Transient //排除非持久化属性
     private String alwayalarm;
 
     /**
      * 报警时间段
      */
-    @Transient //排除持久化属性
+    @Transient //排除非持久化属性
     List<MonitorEquipmentWarningTime> warningTimeList;
 
     private static final long serialVersionUID = 1L;

@@ -196,6 +196,7 @@ public class SocketMessageListener {
         Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
+            LOGGER.info("解析数据为null,不发送报警!");
             return;
         }
         String equipmentname = model.getEquipmentname();
@@ -330,8 +331,8 @@ public class SocketMessageListener {
      *      N : 查询时间段.判断当前时间是否在报警的区间内
      *          Y : 报警
      *          N : 不报警,设备没有配置时间段再根据设备类型找是否要报警
-     *              2.设备是否全天报警
-     *                  Y : 根据设备和联系人方式直接发送警报
+     *              2.设备类型是否全天报警
+     *                  Y : 根据设备类型和联系人方式直接发送警报
      *                  N : 查询时间段.判断当前时间是否在报警的区间内
      */
     private boolean warningTimeBlockRule(Monitorinstrument monitorinstrument){

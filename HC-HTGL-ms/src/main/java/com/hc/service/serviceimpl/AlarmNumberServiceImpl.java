@@ -76,6 +76,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
 
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
+            alarmData.setWarningTime(monitorequipmentlastdata.getInputdatetime());
             //判断时间是否超时
             double datePoor = TimeHelper.getDatePoor(new Date(), monitorequipmentlastdata.getInputdatetime());
             if (datePoor > 90) {
@@ -199,6 +200,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             //objectObjectObjectHashOperations.put(hospitalcode + "+" + "2", equipmentno, JsonUtil.toJson(map));
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
+            alarmData.setWarningTime(monitorequipmentlastdata.getInputdatetime());
             //判断时间是否超时
             double datePoor = TimeHelper.getDatePoor(new Date(), monitorequipmentlastdata.getInputdatetime());
             if (StringUtils.equals(mtName, "MT100")) {
@@ -357,6 +359,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             //objectObjectObjectHashOperations.put(hospitalcode + "+" + "3", equipmentno, JsonUtil.toJson(map));
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
+            alarmData.setWarningTime(monitorequipmentlastdata.getInputdatetime());
             //判断时间是否超时
             double datePoor = TimeHelper.getDatePoor(new Date(), monitorequipmentlastdata.getInputdatetime());
             LOGGER.info("时间：" + monitorequipmentlastdata.getInputdatetime() + "datePoor:" + String.valueOf(datePoor));
@@ -430,6 +433,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
 
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
+            alarmData.setWarningTime(monitorequipmentlastdata.getInputdatetime());
             //判断时间是否超时
             double datePoor = TimeHelper.getDatePoor(new Date(), monitorequipmentlastdata.getInputdatetime());
             if (StringUtils.equals(mtName, "MT100")) {
@@ -496,6 +500,7 @@ public class AlarmNumberServiceImpl implements AlarmNumberService {
             nodata(sn, hospitalname, equipmentname, listModel, mtName,"操作台");
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(o, Monitorequipmentlastdata.class);
+            alarmData.setWarningTime(monitorequipmentlastdata.getInputdatetime());
             //判断时间是否超时
             double datePoor = TimeHelper.getDatePoor(new Date(), monitorequipmentlastdata.getInputdatetime());
             if (StringUtils.equals(mtName, "MT100")) {

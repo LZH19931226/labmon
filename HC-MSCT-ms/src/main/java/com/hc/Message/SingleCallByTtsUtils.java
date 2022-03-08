@@ -73,7 +73,7 @@ public class SingleCallByTtsUtils {
         IAcsClient acsClient = new DefaultAcsClient(profile);
         SingleCallByTtsRequest request = new SingleCallByTtsRequest();
         //必填-被叫显号,可在语音控制台中找到所购买的显号
-//        request.setCalledShowNumber(CalledShowNumber);
+        request.setCalledShowNumber(CalledShowNumber);
         //必填-被叫号码
         request.setCalledNumber(mobile); 
         //必填-Tts模板ID
@@ -117,7 +117,7 @@ public class SingleCallByTtsUtils {
         IAcsClient acsClient = new DefaultAcsClient(profile);
         SingleCallByTtsRequest request = new SingleCallByTtsRequest();
         //必填-被叫显号,可在语音控制台中找到所购买的显号
-     //   request.setCalledShowNumber(CalledShowNumber);
+        //request.setCalledShowNumber(CalledShowNumber);
         //必填-被叫号码
         request.setCalledNumber(mobile);
         //必填-Tts模板ID
@@ -161,7 +161,7 @@ public class SingleCallByTtsUtils {
         //组装请求对象-具体描述见控制台-文档部分内容
         SingleCallByVoiceRequest request = new SingleCallByVoiceRequest();
         //必填-被叫显号,可在语音控制台中找到所购买的显号
-        request.setCalledShowNumber(CalledShowNumber);
+        request.setCalledShowNumber("025000000");
         //必填-被叫号码
         request.setCalledNumber("15000000000");
         //必填-语音文件ID
@@ -193,7 +193,7 @@ public class SingleCallByTtsUtils {
         //组装请求对象-具体描述见控制台-文档部分内容
         IvrCallRequest request = new IvrCallRequest();
         //必填-被叫显号,可在语音控制台中找到所购买的显号
-        request.setCalledShowNumber(CalledShowNumber);
+        request.setCalledShowNumber("057156210000");
         //必填-被叫号码
         request.setCalledNumber("15000000000");
         request.setPlayTimes(3L);

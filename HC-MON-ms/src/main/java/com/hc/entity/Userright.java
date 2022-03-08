@@ -54,4 +54,6 @@ public class Userright implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Transient//排除非持久化属性
+    private  String reminders;
 }

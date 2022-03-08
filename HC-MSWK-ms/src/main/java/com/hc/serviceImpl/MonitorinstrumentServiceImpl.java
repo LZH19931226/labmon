@@ -93,7 +93,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             Monitorinstrument monitorinstrument1 = new Monitorinstrument();
             //根据sn查询当前设备是否警用还是启用
             Monitorequipment cliva = monitorInstrumentMapper.isCliva(SN);
-            //    LOGGER.info("当前设备是否启用状态："+SN+";状态："+cliva);
+            LOGGER.info("当前设备是否启用状态："+SN+";状态："+JsonUtil.toJson(cliva));
             if (cliva == null) {
                 return null;
             }
@@ -101,7 +101,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             if (!clientvisible) {
 //                String equipmentno = cliva.getEquipmentno();
                 // 未启用
-                //  LOGGER.info("设备未启用SN号：" + SN);
+                  LOGGER.info("设备未启用SN号：" + SN);
 //                HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
 //                if (redisTemple.hasKey("disable","equipmentno:"+equipmentno)){
 //                    //表示当前设备之前禁用，现在数据重新上传，又启用了
