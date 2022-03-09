@@ -21,13 +21,13 @@
             </pattern>
         </encoder>
     </appender>
-    <!--    <appender name="LOGSTASH"-->
-    <!--              class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
-    <!--        <destination>172.24.58.145:9600</destination>-->
-    <!--        <queueSize>1048576</queueSize>-->
-    <!--        <encoder charset="GB2312"-->
-    <!--                 class="net.logstash.logback.encoder.LogstashEncoder" />-->
-    <!--    </appender>-->
+        <appender name="LOGSTASH"
+                  class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>172.24.58.145:9600</destination>
+            <queueSize>1048576</queueSize>
+            <encoder charset="GB2312"
+                     class="net.logstash.logback.encoder.LogstashEncoder" />
+        </appender>
     <!-- 按照每天生成日志文件 -->
     <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/HC-TCP-ms.log</file>
@@ -90,8 +90,8 @@
     <!-- 也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root". -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="file_error"/>
-        <!--        <appender-ref ref="LOGSTASH"/>-->
+<!--        <appender-ref ref="FILE"/>-->
+<!--        <appender-ref ref="file_error"/>-->
+        <appender-ref ref="LOGSTASH"/>
     </root>
 </configuration>
