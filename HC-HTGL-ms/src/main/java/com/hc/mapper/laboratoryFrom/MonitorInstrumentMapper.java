@@ -4,6 +4,7 @@ import com.hc.entity.Instrumentmonitor;
 import com.hc.entity.Instrumentparamconfig;
 import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Monitorinstrumenttype;
+import com.hc.model.MapperModel.MonitorinstrumentModel;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.InstrumentInfoModel;
 import com.hc.model.ShowModel;
@@ -119,6 +120,10 @@ public interface MonitorInstrumentMapper {
     @Select("select a.*,b.alwayalarm,b.equipmenttypeid from monitorinstrument a left join monitorequipment" +
             " b on a.equipmentno = b.equipmentno order by equipmentno ")
     List<Monitorinstrument> selectInstrumentInfo();
+
+    @Select("select a.*,b.alwayalarm,b.equipmenttypeid from monitorinstrument a left join monitorequipment" +
+            " b on a.equipmentno = b.equipmentno order by equipmentno ")
+    List<MonitorinstrumentModel> selectInstrumentInfoCache();
 
     /**
      * 查询当前设备是否存在探头
