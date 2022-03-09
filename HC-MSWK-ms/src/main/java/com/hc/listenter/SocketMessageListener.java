@@ -55,6 +55,7 @@ public class SocketMessageListener {
         //MT500  MT600判断
         Monitorinstrument monitorinstrument = mtJudgeService.mtJudge(model);
         if (monitorinstrument == null) {
+            LOGGER.info("数据解析错误: "+messageContent);
             return;
         }
         //执行数据写入 、 报警推送

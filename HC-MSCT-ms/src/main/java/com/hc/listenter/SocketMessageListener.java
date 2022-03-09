@@ -7,6 +7,7 @@ import com.hc.bean.WarningModel;
 import com.hc.bean.WarningMqModel;
 import com.hc.config.RedisTemplateUtil;
 import com.hc.exchange.BaoJinMsg;
+import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.model.TimeoutEquipment;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.SendMesService;
@@ -51,6 +52,8 @@ public class SocketMessageListener {
 //    @Autowired
 //    private WarningrecordSortDao warningrecordSortDao;
 
+    @Autowired
+    private MonitorequipmentDao monitorequipmentDao;
 
     @Autowired
     private MonitorequipmentlastdataDao monitorequipmentlastdataDao;
@@ -113,10 +116,31 @@ public class SocketMessageListener {
                 if (StringUtils.isEmpty(phonenum)) {
                     continue;
                 }
+
+                /**
+                 * <option value="0">电话+短信</option>
+                 * <option value="1">电话</option>
+                 * <option value="2">短信</option>
+                 * <option value="3">不报警</option>
+                 */
+                String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
+                String unit = "超时";
                 switch (disabletype) {
                     case "2":
                         // 超时报警
-                        sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
+//                        sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
+                        if (StringUtils.equals(timeoutwarning, "0")) {
+                            LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                            sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
+                            LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                        } else if (StringUtils.equals(timeoutwarning, "1")) {
+                            LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                            sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                        } else if (StringUtils.equals(timeoutwarning, "2")) {
+                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
+                            LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                        }
                         break;
 //                    case "3":
 //                        //设备禁用
@@ -172,6 +196,7 @@ public class SocketMessageListener {
         Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
+            LOGGER.info("解析数据为null,不发送报警!");
             return;
         }
         String equipmentname = model.getEquipmentname();
@@ -217,6 +242,12 @@ public class SocketMessageListener {
                         list.add(userright);
                     }
                 }
+            }
+            //当前时间在报警的时间段内,开启警报信息
+            boolean warningTimeBlockRule = warningTimeBlockRule(monitorinstrument);
+            if(!warningTimeBlockRule){
+                //当前时间不在报警时间段内, 不用报警.直接返回
+                return;
             }
             BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
             String o = (String) hospitalphonenum.get(hospitalcode);
@@ -290,6 +321,155 @@ public class SocketMessageListener {
                 //友盟推送
                 sendMesService.sendYmMessage(model.getPkid());
             }
+        }
+    }
+
+    /**
+     * 报警时间段报警逻辑
+     *  1.去设备找是否全天报警.
+     *      Y : 根据设备和联系人方式直接发送警报
+     *      N : 查询时间段.判断当前时间是否在报警的区间内
+     *          Y : 报警
+     *          N : 不报警,设备没有配置时间段再根据设备类型找是否要报警
+     *              2.设备类型是否全天报警
+     *                  Y : 根据设备类型和联系人方式直接发送警报
+     *                  N : 查询时间段.判断当前时间是否在报警的区间内
+     */
+    private boolean warningTimeBlockRule(Monitorinstrument monitorinstrument){
+        Object hospitalSN = redisTemplateUtil.boundHashOps("hospital:sn").get(monitorinstrument.getSn());
+        if(hospitalSN != null){
+            Monitorinstrument monitorinstrumentObj = JsonUtil.toBean((String) hospitalSN, Monitorinstrument.class);
+            String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
+            //全天报警
+            if("1".equals(eqipmentAlwayalarm)){
+                return true;
+            }else{
+                //当前设备有配置时段,但是当前时间不在时段内.不报警
+                if(!currentTimeInWarningBlock(monitorinstrumentObj)){
+                  return false;
+                  //没有配置报警时间区间
+                } else if(monitorinstrumentObj.getWarningTimeList() == null
+                        || monitorinstrumentObj.getWarningTimeList().isEmpty()){
+                    //没有配置时间段,在设备类型查找
+                    String equipmenttypeid = monitorinstrument.getEquipmenttypeid();
+                    if(StringUtils.isEmpty(equipmenttypeid)){
+                        String queryEquipmenttypeid = monitorequipmentDao.getByEquipmentno(monitorinstrument.getEquipmentno());
+                        if(StringUtils.isNotEmpty(queryEquipmenttypeid)) equipmenttypeid = queryEquipmenttypeid;
+                    }
+                    Object equipmentTypeObject = redisTemplateUtil.boundHashOps("hospital:equipmenttype").get(
+                            equipmenttypeid +
+                                    "@"+monitorinstrument.getHospitalcode());
+                    HospitalEquipmentTypeInfoModel equipmentTypeInfoModel =
+                            JsonUtil.toBean((String)equipmentTypeObject, HospitalEquipmentTypeInfoModel.class);
+                    String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
+                    //设备类型全天报警,直接发送警报
+                    if("1".equals(alwayalarm)){
+                        return true;
+                    }else{
+                        //设备类型非全天报警
+                        List<MonitorEquipmentWarningTime> warningTimeList = equipmentTypeInfoModel.getWarningTimeList();
+                        if(warningTimeList != null && !warningTimeList.isEmpty()){
+                            return currentTimeInWarningBlock(equipmentTypeInfoModel);
+                        }
+                    }
+                }else{
+                    //根据时间段数据报警
+                    return currentTimeInWarningBlock(monitorinstrumentObj) ;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 当前时间是否存在配置的时间段中
+     * @param monitorinstrumentObj
+     * @return
+     */
+    private boolean currentTimeInWarningBlock(Object monitorinstrumentObj){
+        Monitorinstrument ruleObj = new Monitorinstrument();
+        List<MonitorEquipmentWarningTime> warningEquipmentTimeList = new ArrayList<MonitorEquipmentWarningTime>();
+        if(monitorinstrumentObj instanceof Monitorinstrument){
+            ruleObj = (Monitorinstrument)monitorinstrumentObj;
+            warningEquipmentTimeList = ruleObj.getWarningTimeList();
+        }
+
+        if(monitorinstrumentObj instanceof HospitalEquipmentTypeInfoModel){
+            HospitalEquipmentTypeInfoModel equipmentRuleObj = (HospitalEquipmentTypeInfoModel)monitorinstrumentObj;
+            warningEquipmentTimeList = equipmentRuleObj.getWarningTimeList();
+        }
+        Date nowDate = new Date();
+        List<Date> nowTime = sameDate(nowDate);
+        //设备类型配置时间区间,在设备类型里面拿时间进行比较
+        if(warningEquipmentTimeList != null && !warningEquipmentTimeList.isEmpty()){
+            int successDate = 0;
+            for(int i = 0;i<warningEquipmentTimeList.size();i++){
+                MonitorEquipmentWarningTime item = warningEquipmentTimeList.get(i);
+                if(item != null){
+                    Date begintime = item.getBegintime();
+                    Date endtime = item.getEndtime();
+                    List<Date> dateInterval = sameDate(begintime, endtime);
+                    if(isEffectiveDate(nowTime.get(0),dateInterval.get(0),dateInterval.get(1))){
+                        successDate += 1;
+                    }
+                }
+            }
+            if(successDate > 0){
+                //说明当前时间在时间区间内,可以发送短信或者拨电话
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 修改时间的年月日
+     */
+    private List<Date> sameDate(Date... dates){
+        if(dates != null){
+            Calendar nowCalendar = Calendar.getInstance();
+            List<Date> dateList = new ArrayList<Date>();
+            for(int i=0;i<dates.length;i++){
+                Date date = dates[i];
+                if(date == null) continue;
+                nowCalendar.setTime(date);
+                nowCalendar.set(Calendar.YEAR,1970);
+                nowCalendar.set(Calendar.MONTH,12);
+                nowCalendar.set(Calendar.DAY_OF_MONTH,12);
+                Date nowTime = nowCalendar.getTime();
+                dateList.add(i,nowTime);
+            }
+            return dateList;
+        }
+        return null;
+    }
+
+    /**
+     * 当前时间是否在此时间区间内
+     * @param nowTime
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+        if (nowTime.getTime() == startTime.getTime()
+                || nowTime.getTime() == endTime.getTime()){
+            return true;
+        }
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+
+        if (date.after(begin) && date.before(end)) {
+            return true;
+        } else {
+            return false;
         }
     }
 

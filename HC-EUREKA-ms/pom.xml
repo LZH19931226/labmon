@@ -39,7 +39,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 工程主入口-->
-                    <mainClass>com.hc.SpringCloudApplication</mainClass>
+                    <mainClass>com.hc.SpringEurekaApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

@@ -54,7 +54,8 @@ public class ClientInfoController {
                                                                  @ApiParam(name = "pagenum", value = "当前页码数", required = true)
                                                                  @RequestParam(value = "pagenum", required = true) Integer pagenum,
                                                                  @ApiParam(name = "hospitalcode", value = "模糊查询参数", required = false)
-                                                                 @RequestParam(value = "hospitalcode", required = false) String hospitalcode) {
-        return clientInfoService.selectUserInfoPage(hospitalcode,fuzzy,pagesize,pagenum);
+                                                                 @RequestParam(value = "hospitalcode", required = false) String hospitalcode,
+                                                                 @RequestParam(value = "setterWarningUsername", required = false) String setterWarningUsername) {
+        return clientInfoService.selectUserInfoPage(hospitalcode,fuzzy,pagesize,pagenum,setterWarningUsername);
     }
 }

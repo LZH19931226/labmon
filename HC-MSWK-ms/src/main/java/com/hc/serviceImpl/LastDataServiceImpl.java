@@ -86,9 +86,9 @@ public class LastDataServiceImpl implements LastDataService {
         if (StringUtils.isEmpty(lastdata)) {
             //数据初次上传
             List<Instrumentparamconfig> instrumentparamconfigByEquipmentno = monitorInstrumentMapper.getInstrumentparamconfigByEquipmentno(equipmentno);
-            if (CollectionUtils.isNotEmpty(instrumentparamconfigByEquipmentno)) {
+            if (instrumentparamconfigByEquipmentno != null & !instrumentparamconfigByEquipmentno.isEmpty()) {
                 //过滤为2的氧气探头
-                List<Instrumentparamconfig> collect = instrumentparamconfigByEquipmentno.stream().filter(s -> s.getInstrumentconfigid() == 2).collect(Collectors.toList());
+                List<Instrumentparamconfig> collect = instrumentparamconfigByEquipmentno.stream().filter(s->s != null).filter(s -> s.getInstrumentconfigid() == 2).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(collect)) {
                     collect.forEach(s -> {
                                 Date firsttime1 = s.getFirsttime();

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +44,46 @@ public class MoblieMessageUtil {
     // 短信签名
     @Value("${sms.signName}")
     private String signName;
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getAccessKeyId() {
+        return accessKeyId;
+    }
+
+    public void setAccessKeyId(String accessKeyId) {
+        this.accessKeyId = accessKeyId;
+    }
+
+    public String getAccessKeySecret() {
+        return accessKeySecret;
+    }
+
+    public void setAccessKeySecret(String accessKeySecret) {
+        this.accessKeySecret = accessKeySecret;
+    }
+
+    public String getSignName() {
+        return signName;
+    }
+
+    public void setSignName(String signName) {
+        this.signName = signName;
+    }
 
     //    @Value("${timing.phone}")
 //    private String phone;
@@ -157,9 +198,11 @@ public class MoblieMessageUtil {
         //必填:短信签名-可在短信控制台中找到
         request.setSignName(signName);
         //必填:短信模板-可在短信控制台中找到
-        if (unit == "UPS") {
+        if ("UPS".equalsIgnoreCase(unit)) {
+            unit = "电源";
+            request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"Unit\":\"" + unit + "\"}");
             if (isLocalphone)
-                request.setTemplateCode("SMS_141595921");
+                request.setTemplateCode("SMS_232173699");
             else
                 request.setTemplateCode("SMS_141605631");
         } else {

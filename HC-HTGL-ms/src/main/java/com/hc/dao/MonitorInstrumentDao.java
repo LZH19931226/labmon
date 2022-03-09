@@ -12,6 +12,6 @@ import javax.transaction.Transactional;
 public interface MonitorInstrumentDao extends JpaRepository<Monitorinstrument,String> {
 
 
-
+    Monitorinstrument getByEquipmentno(String equipmentno);
 
 }

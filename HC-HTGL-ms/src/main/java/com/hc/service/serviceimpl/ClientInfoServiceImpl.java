@@ -129,14 +129,14 @@ public class ClientInfoServiceImpl implements ClientInfoService {
             return apiResponse;
         }catch (Exception e){
             LOGGER.error("失败：" + e.getMessage());
-            apiResponse.setMessage("服务异常");
+            apiResponse.setMessage("服务异常" );
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
         }
     }
 
     @Override
-    public ApiResponse<Page<ClientInfoModel>> selectUserInfoPage(String hospitalcode, String fuzzy, Integer pagesize, Integer pagenum) {
+    public ApiResponse<Page<ClientInfoModel>> selectUserInfoPage(String hospitalcode, String fuzzy, Integer pagesize, Integer pagenum,String setterWarningUsername) {
         ApiResponse<Page<ClientInfoModel>> apiResponse = new ApiResponse<Page<ClientInfoModel>>();
         PageUserModel pageUserModel = new PageUserModel();
         try{
@@ -148,6 +148,7 @@ public class ClientInfoServiceImpl implements ClientInfoService {
             }
             pageUserModel.setHospitalcode(hospitalcode);
             pageUserModel.setFuzzy(fuzzy);
+            pageUserModel.setSetterWarningUsername(setterWarningUsername);
             List<ClientInfoModel> clientInfoMapperList = clientInfoMapper.selectUserInfoPage(page, pageUserModel);
             if (CollectionUtils.isEmpty(clientInfoMapperList)) {
                 apiResponse.setCode(ApiResponse.FAILED);

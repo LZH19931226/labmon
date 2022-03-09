@@ -45,4 +45,11 @@ public interface InstrumentInfoService {
      * 显示所有监控设备类型
      */
     ApiResponse<List<Monitorinstrumenttype>> showInstrumentType();
+
+    /**
+     * 清理设备缓存数据
+     * @param instrumentInfoModel
+     * @return
+     */
+    ApiResponse<String> cleanEquipment(AllInstrumentInfoModel instrumentInfoModel);
 }

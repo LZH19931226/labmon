@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Created by 16956 on 2018-07-31.
@@ -84,17 +85,25 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             String token = TokenHelper.createToken(userid);
             redisTemplateUtil.boundValueOps(userid).set(token);
-            Hospitalofreginfo one = hospitaDao.getOne(userright.getHospitalcode());
+            Hospitalofreginfo one = hospitaDao.findOne(userright.getHospitalcode());
             loginResponseModel.setHospitalcode(userright.getHospitalcode());
             loginResponseModel.setToken(token);
             loginResponseModel.setUserid(userright.getUserid());
             loginResponseModel.setPwd(userright.getPwd());
             loginResponseModel.setPhonenum(userright.getPhonenum());
+            //如果不是管理员不能看到设置警报菜单
+//            if(!"admin".equals(userright.getUsertype())){
+//                monitorequipmenttypeModels =
+//                        monitorequipmenttypeModels.stream()
+//                                .filter(item -> !"9".equals(item.getEquipmenttypeid())
+//                                        | !"设置报警".equals(item.getEquipmenttypename())).collect(Collectors.toList());
+//            }
             loginResponseModel.setHospitalEquipmentType(monitorequipmenttypeModels);
             loginResponseModel.setUsername(userright.getUsername());
             loginResponseModel.setUsertype(userright.getUsertype());
             loginResponseModel.setDevicetype(userright.getUsertype());
             loginResponseModel.setHospitalname(one.getHospitalname());
+
             apiResponse.setCode(ApiResponse.SUCCESS);
             apiResponse.setMessage("登录成功");
             LOGGER.info("安卓登录："+JsonUtil.toJson(loginResponseModel));

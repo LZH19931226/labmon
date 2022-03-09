@@ -69,7 +69,7 @@ public interface EquipmentInfoMapper {
      * 查询设备总数
      */
     @Select("select count(equipmentno) totalcount from monitorequipment where equipmenttypeid=#{equipmenttypeid}")
-    int getCount(@Param("equipmenttypeid") String equipmenttypeid);
+    int getCount(@Param("equipmenttypeid") String equipmenttypeid) ;
 
     /**
      * 分页显示   根据设备类型编号和医院编号查询设备信息   -- app使用

@@ -24,4 +24,10 @@ public class OtherModel {
      */
     @Excel(name = "温度",orderNum = "1")
     private String currenttemperature;
+
+    /**
+     * 值班人员
+     */
+    @Excel(name = "值班人员",orderNum = "2")
+    private String userscheduling ;
 }

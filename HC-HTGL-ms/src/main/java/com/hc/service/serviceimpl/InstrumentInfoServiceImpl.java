@@ -35,6 +35,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -381,5 +382,46 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             return apiResponse;
         }
 
+    }
+
+    /**
+     * 清理设备缓存数据
+     *
+     * @param instrumentInfoModel
+     * @return
+     */
+    @Override
+    public ApiResponse<String> cleanEquipment(AllInstrumentInfoModel instrumentInfoModel) {
+        String hospitalcode = instrumentInfoModel.getHospitalcode();
+        String equipmentno = instrumentInfoModel.getEquipmentno();
+        ApiResponse<String> apiResponse = new ApiResponse<String>();
+        if(StringUtils.isEmpty(hospitalcode)){
+            apiResponse.setMessage("清理缓存失败,医院编码错误");
+            apiResponse.setCode(ApiResponse.FAILED);
+            return apiResponse;
+        }
+        if(StringUtils.isEmpty(equipmentno)){
+            apiResponse.setMessage("清理缓存失败,设备编码错误");
+            apiResponse.setCode(ApiResponse.FAILED);
+            return apiResponse;
+        }
+        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+        StringBuffer lastKey = new StringBuffer("LASTDATA"+hospitalcode);
+        String lastDataKey = lastKey.toString();
+        Set<Object> keys = objectObjectObjectHashOperations.keys(lastDataKey);
+        if(!objectObjectObjectHashOperations.hasKey(lastDataKey,equipmentno)){
+            apiResponse.setMessage("清理缓存失败,数据不存在");
+            apiResponse.setCode(ApiResponse.FAILED);
+            return apiResponse;
+        }
+        Long delete = objectObjectObjectHashOperations.delete(lastDataKey, equipmentno);
+        if(delete > 0){
+            apiResponse.setMessage("清理缓存成功");
+            apiResponse.setCode(ApiResponse.SUCCESS);
+        }else{
+            apiResponse.setMessage("清理缓存失败");
+            apiResponse.setCode(ApiResponse.FAILED);
+        }
+        return apiResponse;
     }
 }

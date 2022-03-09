@@ -99,8 +99,8 @@ public class MyController {
 	@GetMapping("/test3")
 	@ApiOperation("测试语音接口")
 	public String test3(String mobile,String instrumentname) {
-		singleCallByTtsUtils.sendSms("13296607819", "测试打电话");
-		singleCallByTtsUtils.sendSms("18108674918", "测试打电话");
+		singleCallByTtsUtils.sendSms("17354359943", "测试打电话");
+	//	singleCallByTtsUtils.sendSms("18108674918", "测试打电话");
 		return "电话拨打成功";
 	}
 

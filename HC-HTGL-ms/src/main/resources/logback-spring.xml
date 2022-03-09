@@ -6,6 +6,13 @@
     <springProperty scope="context" name="type"
                     source="msConfig.logging.path" defaultValue="logs" />
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!-- 日志存放路径 -->
+    <property name="log.path" value="C:/DataCenter/lab/hc-HTGL/logs" />
+    <!-- 定义日志文件 输入位置 -->
+    <property name="logDir" value="C:/DataCenter/lab/hc-HTGL/logs" />
+    <!-- 日志最大的历史 30天 -->
+    <property name="maxHistory" value="30" />
+
     <!-- 日志输出的通道 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoder 默认配置为PatternLayoutEncoder -->
@@ -14,24 +21,53 @@
             </pattern>
         </encoder>
     </appender>
+    <!--    <appender name="LOGSTASH"-->
+    <!--              class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+    <!--        <destination>172.24.58.145:9600</destination>-->
+    <!--        <queueSize>1048576</queueSize>-->
+    <!--        <encoder charset="GB2312"-->
+    <!--                 class="net.logstash.logback.encoder.LogstashEncoder" />-->
+    <!--    </appender>-->
     <!-- 按照每天生成日志文件 -->
-<!--    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-<!--        <file>logs/HC-HTGL-ms.log</file>-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-<!--            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;-->
-<!--            <FileNamePattern>./logs/HC-HTGL-ms.%d{yyyy-MM-dd}.log</FileNamePattern>-->
-<!--            <MaxHistory>30</MaxHistory>-->
-<!--        </rollingPolicy>-->
-<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
-<!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
-<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n-->
-<!--            </pattern>-->
-<!--       </layout>-->
-<!--        &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
-<!--       &lt;!&ndash; <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
-<!--         <MaxFileSize>10MB</MaxFileSize>-->
-<!--       </triggeringPolicy> &ndash;&gt;-->
-<!--    </appender>-->
+    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/HC-HTGL-ms.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${log.path}/HC-HTGL-ms.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
+        </layout>
+        <!--日志文件最大的大小-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/sys-error.log</file>
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${log.path}/sys-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>ERROR</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
     <!-- <loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。-->
@@ -47,9 +83,15 @@
     <logger name="java.sql.Connection" level="DEBUG" />
     <logger name="java.sql.Statement" level="DEBUG" />
     <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <!-- 系统模块日志级别控制  -->
+    <logger name="com.hc" level="info" />
+    <!-- Spring日志级别控制  -->
+    <logger name="org.springframework" level="warn" />
     <!-- 也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root". -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-<!--        <appender-ref ref="FILE"/>-->
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="file_error"/>
+        <!--        <appender-ref ref="LOGSTASH"/>-->
     </root>
 </configuration>

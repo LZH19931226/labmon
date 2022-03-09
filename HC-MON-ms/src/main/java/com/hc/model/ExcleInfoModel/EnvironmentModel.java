@@ -87,4 +87,9 @@ public class EnvironmentModel {
     @Excel(name = "PM0.5",orderNum = "11")
     private String currentpm05;
 
+    /**
+     * 值班人员
+     */
+    @Excel(name = "值班人员",orderNum = "12")
+    private String userscheduling ;
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author LiuZhiHao
@@ -20,4 +21,5 @@ public interface UserScheduLingDao extends JpaRepository<UserScheduLing,Integer>
     @Modifying
     void deleteStHos(String hospitalcode,String starttime,String endtime);
 
+    List<UserScheduLing> queryByHospitalcode(String hospitalcode);
 }

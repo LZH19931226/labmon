@@ -58,6 +58,8 @@ public interface InstrumentMonitorInfoMapper {
             "a.pushtime, "+
             "a.warningtime,"+
             "a.calibration,"+
+            "e.alwayalarm,"+
+            "e.equipmentno,"+
             "ifnull(a.warningphone,'0') warningphone  " +
             "from InstrumentParamConfig a left join  monitorinstrumenttype b on a.instrumenttypeid = b.instrumenttypeid " +
             "                         left join  instrumentconfig c on a.instrumentconfigid = c.instrumentconfigid " +

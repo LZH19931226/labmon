@@ -42,6 +42,11 @@ public class Hospitalequiment  implements Serializable {
 
     private Integer timeouttime;
 
+    /**
+     * 全天报警
+     */
+    private String alwayalarm;
+
     private static final long serialVersionUID = 1L;
 
     /**

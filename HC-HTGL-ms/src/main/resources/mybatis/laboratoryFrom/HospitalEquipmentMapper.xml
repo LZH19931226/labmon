@@ -13,7 +13,8 @@ a.hospitalcode,
 c.hospitalname,
 a.isvisible,
     a.timeout,
-    a.timeouttime
+    a.timeouttime,
+    a.alwayalarm
 from hospitalequiment a left join monitorequipmenttype b on a.equipmenttypeid = b.equipmenttypeid
                         left join HospitalOfRegInfo c on a.hospitalcode = c.hospitalcode
       <where>

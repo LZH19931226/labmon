@@ -1,11 +1,13 @@
 package com.hc.model.RequestModel;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +31,18 @@ public class EquipmentTypeInfoModel {
     private String usernames;
     private List<EquipmentInfoModel> equipmentInfoModelList;
 
+    /**
+     * 全天报警
+     */
+    private String alwayalarm ;
+
+    /**
+     * 工作报警时间段
+     */
+    private WorkTimeBlockModel[] workTimeBlock;
+
+    /**
+     * 移除工作报警时间段
+     */
+    private WorkTimeBlockModel[] deleteWarningTimeBlock;
 }

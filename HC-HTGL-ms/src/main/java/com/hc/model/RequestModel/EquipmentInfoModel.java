@@ -1,5 +1,6 @@
 package com.hc.model.RequestModel;
 
+import com.hc.entity.MonitorEquipmentWarningTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -35,5 +36,18 @@ public class EquipmentInfoModel {
     @ApiModelProperty("有线设备模型")
     private List<WiredInstrumentModel> list;
 
+    /**
+     * 全天报警
+     */
+    private String alwayalarm;
 
+    /**
+     * 报警时间段
+     */
+    List<MonitorEquipmentWarningTime> workTimeBlock;
+
+    /**
+     * 删除的报警时间段
+     */
+    List<MonitorEquipmentWarningTime> deleteWarningTimeBlock;
 }

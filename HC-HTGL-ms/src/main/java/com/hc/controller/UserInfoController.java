@@ -49,9 +49,11 @@ public class UserInfoController {
     @ApiOperation("获取该医院某时间排班")
     public ApiResponse<List<UserScheduLing>> searchScByHosMon(@ApiParam(name = "hosId", value = "医院id", required = true)
     @RequestParam(value = "hosId") String hosId,
-                                                             @ApiParam(name = "month", value = "年月", required = true)
-                                                        @RequestParam(value = "month") String month) {
-        return userInfoService.searchScByHosMon(hosId, month);
+    @ApiParam(name = "startmonth", value = "年月", required = true)
+    @RequestParam(value = "startmonth") String startmonth,
+    @ApiParam(name = "endmonth", value = "年月", required = true)
+    @RequestParam(value = "endmonth") String endmonth) {
+        return userInfoService.searchScByHosMonSection(hosId, startmonth, endmonth);
     }
 
 

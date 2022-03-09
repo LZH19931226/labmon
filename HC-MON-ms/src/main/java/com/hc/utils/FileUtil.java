@@ -26,7 +26,9 @@ public class FileUtil {
 
     }
     public static void exportExcel(List<?> list, String title, String sheetName, Class<?> pojoClass,String fileName, HttpServletResponse response){
-        defaultExport(list, pojoClass, fileName, response, new ExportParams(title, sheetName));
+        ExportParams exportParams = new ExportParams(title, sheetName);
+        exportParams.setType(ExcelType.XSSF);
+        defaultExport(list, pojoClass, fileName, response, exportParams);
     }
 
     /**

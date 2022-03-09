@@ -208,4 +208,17 @@ public class Hospitalofreginfo implements Serializable {
             return this.column + " ASC";
         }
     }
+
+    @Override
+    public String toString() {
+        return "Hospitalofreginfo{" +
+                "hospitalcode='" + hospitalcode + '\'' +
+                ", hospitalname='" + hospitalname + '\'' +
+                ", isenable='" + isenable + '\'' +
+                ", hospitalfullname='" + hospitalfullname + '\'' +
+                ", alwayalarm='" + alwayalarm + '\'' +
+                ", begintime=" + begintime +
+                ", endtime=" + endtime +
+                '}';
+    }
 }

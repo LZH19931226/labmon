@@ -80,6 +80,7 @@
         order by c.hospitalcode desc,a.orderno,d.equipmentname ) k
         <where>
             '1'='1'
+            and instrumentparamconfigNO is not null
             <if test="fuzzy!=null">
                 and instrumentconfigname like #{fuzzy}
                 or instrumentname like #{fuzzy}

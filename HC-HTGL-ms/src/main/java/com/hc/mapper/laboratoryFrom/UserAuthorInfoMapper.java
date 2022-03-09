@@ -24,4 +24,6 @@ public interface UserAuthorInfoMapper {
 
 
     List<UserScheduLing> searchScByHosMon(@Param("hosId") String hosId, @Param("month") String month);
+
+    List<UserScheduLing> searchScByHosMonSection(@Param("hosId") String hosId, @Param("startMonth") String startMonth, @Param("endMonth") String endMonth);
 }

@@ -23,4 +23,6 @@ public class PageUserModel {
     private String equipmenttypeid;
     @ApiModelProperty("设备编码")
     private String equipmentno;
+    //设置警报方式
+    private String setterWarningUsername ;
 }

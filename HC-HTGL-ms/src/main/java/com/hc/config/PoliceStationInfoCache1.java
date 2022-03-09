@@ -70,19 +70,19 @@ public class PoliceStationInfoCache1 implements CommandLineRunner {
             String hospitalcode = instrumentMonitorInfoModel.getHospitalcode();
             objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
         }
-        List<Monitorinstrument> monitorinstrumentList;
-        monitorinstrumentList = monitorInstrumentMapper.selectInstrumentInfo();
-        for (Monitorinstrument monitorinstrument : monitorinstrumentList) {
-            if (StringUtils.isNotEmpty(monitorinstrument.getSn())) {
-                if (StringUtils.isEmpty(monitorinstrument.getChannel())) {
-                    objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
-                } else {
-                    if ("1".equals(monitorinstrument.getChannel())) {
-                        objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
-                    }
-                }
-            }
-        }
+//        List<Monitorinstrument> monitorinstrumentList;
+//        monitorinstrumentList = monitorInstrumentMapper.selectInstrumentInfo();
+//        for (Monitorinstrument monitorinstrument : monitorinstrumentList) {
+//            if (StringUtils.isNotEmpty(monitorinstrument.getSn())) {
+//                if (StringUtils.isEmpty(monitorinstrument.getChannel())) {
+//                    objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
+//                } else {
+//                    if ("1".equals(monitorinstrument.getChannel())) {
+//                        objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
+//                    }
+//                }
+//            }
+//        }
     }
 
 }

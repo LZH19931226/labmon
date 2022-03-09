@@ -27,6 +27,8 @@ public interface ClientInfoService {
 
     /**
      * 分页模糊查询展示所有用户信息
+     * 新增setterWarningUsername 用作判断.在mon服务调用
+     * 当前admin只能查看和修改当前admin的信息
      */
-    ApiResponse<Page<ClientInfoModel>> selectUserInfoPage(String hospitalcode,String fuzzy,Integer pagesize,Integer pagenum);
+    ApiResponse<Page<ClientInfoModel>> selectUserInfoPage(String hospitalcode,String fuzzy,Integer pagesize,Integer pagenum,String setterWarningUsername);
 }
