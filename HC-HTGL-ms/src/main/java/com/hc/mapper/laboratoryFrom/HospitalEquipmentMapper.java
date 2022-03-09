@@ -1,6 +1,7 @@
 package com.hc.mapper.laboratoryFrom;
 
 import com.hc.entity.Monitorequipmenttype;
+import com.hc.model.MapperModel.MonitorEquipmentWarningTimeModel;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.EquipmentTypeInfoModel;
 import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
@@ -83,4 +84,25 @@ public interface HospitalEquipmentMapper {
             " left join HospitalOfRegInfo c on a.hospitalcode = c.hospitalcode " +
             " order by a.hospitalcode desc , a.equipmenttypeid ) K where K.hospitalcode = #{hospitalcode} and K.equipmenttypeid = #{equipmenttypeid}")
     HospitalEquipmentTypeInfoModel selectEquipmentTypeByHospitalcodeAndEquipmenttypeid(@Param("hospitalcode") String hospitalcode , @Param("equipmenttypeid")String equipmenttypeid);
+
+
+
+    @Select("SELECT " +
+            "t1.alwayalarm," +
+            "t2.* " +
+            "FROM" +
+            "hospitalequiment t1," +
+            "monitorequipmentwarningtime t2 " +
+            "WHERE" +
+            "t1.hospitalcode = t2.hospitalcode " +
+            "AND t2.hospitalcode = #{hospitalcode}} " +
+            "AND t2.equipmentid = #{equipmenttypeid}} " +
+            "AND t2.equipmentcategory = 'TYPE' " +
+            "AND t1.equipmenttypeid = #{equipmenttypeid}")
+    MonitorEquipmentWarningTimeModel getMonitorEquipmentWarningTimeModel(@Param("hospitalcode") String hospitalcode , @Param("equipmenttypeid")String equipmenttypeid);
+
+
+
+
+
 }

@@ -116,7 +116,7 @@ public interface MonitorInstrumentMapper {
     @Select("select * from monitorinstrument where instrumentno = #{instrumentno}")
     Monitorinstrument selectMonInfoBySn(@Param("instrumentno") String instrumentno);
 
-    @Select("select a.*,b.alwayalarm from monitorinstrument a left join monitorequipment" +
+    @Select("select a.*,b.alwayalarm,b.equipmenttypeid from monitorinstrument a left join monitorequipment" +
             " b on a.equipmentno = b.equipmentno order by equipmentno ")
     List<Monitorinstrument> selectInstrumentInfo();
 

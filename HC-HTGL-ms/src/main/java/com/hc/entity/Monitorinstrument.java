@@ -27,6 +27,8 @@ public class Monitorinstrument implements Serializable {
     private String sn;
     //智能报警限制次数
     private Integer alarmtime;
+
+    private String equipmenttypeid;
     @ApiModelProperty("开关量")
     private String channel;
     /**

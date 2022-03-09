@@ -7,12 +7,14 @@ import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
+import com.hc.model.MapperModel.MonitorEquipmentWarningTimeModel;
 import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.units.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -21,6 +23,8 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -72,30 +76,25 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
             List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
             //1.EQ无值 WarningTime  eq表alw空 或者不空
             String alwayalarm = monitorinstrument.getAlwayalarm();
+            String equipmenttypeid = monitorinstrument.getEquipmenttypeid();
+            String hospitalcode = monitorinstrument.getHospitalcode();
             if (CollectionUtils.isEmpty(warningTimeDaoAll)){
+                MonitorEquipmentWarningTimeModel monitorEquipmentWarningTimeModel = hospitalEquipmentMapper.getMonitorEquipmentWarningTimeModel(hospitalcode, equipmenttypeid);
                 if (StringUtils.isEmpty(alwayalarm)){
-                    //取设备类型里面的alw 取设备类型里面的时段
+                    //取设备类型里面的alw
+                    monitorEquipmentWarningTimeModel.setAlwayalarm(monitorEquipmentWarningTimeModel.getAlwayalarm());
                 }else {
                     monitorinstrument.setAlwayalarm(alwayalarm);
                 }
                 //取设备类型里面的时间段
-
+                MonitorEquipmentWarningTime monitorEquipmentWarningTime1 = new MonitorEquipmentWarningTime();
+                BeanUtils.copyProperties(monitorEquipmentWarningTimeModel,monitorEquipmentWarningTime1);
+                monitorinstrument.setWarningTimeList(Collections.singletonList(monitorEquipmentWarningTime1));
             }else {
-                if (StringUtils.isEmpty(alwayalarm)){
-                    //取设备类型里面的alw 取设备类型里面的时段
-                }else {
-                    monitorinstrument.setAlwayalarm(alwayalarm);
-                }
-
-
+                monitorinstrument.setAlwayalarm(alwayalarm);
+                monitorinstrument.setWarningTimeList(warningTimeDaoAll);
             }
-//            monitorinstrument.setWarningTimeList(warningTimeDaoAll);
-//            //设备是否全天报警默认和设备类型保持一致
-//            List<Monitorequipment> monitorequipmentList = monitorEquipmentMapper
-//                    .selectEquipmentByCode(monitorinstrument.getHospitalcode(), monitorinstrument.getEquipmentno());
-//            if (CollectionUtils.isNotEmpty(monitorequipmentList)) {
-//                monitorinstrument.setAlwayalarm(monitorequipmentList.get(0).getAlwayalarm());
-//            }
+
             if (StringUtils.isNotEmpty(monitorinstrument.getSn())) {
                 String toJson = JsonUtil.toJson(monitorinstrument);
                 if (StringUtils.isEmpty(monitorinstrument.getChannel())) {
