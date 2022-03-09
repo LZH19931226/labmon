@@ -82,7 +82,7 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
                 MonitorEquipmentWarningTimeModel monitorEquipmentWarningTimeModel = hospitalEquipmentMapper.getMonitorEquipmentWarningTimeModel(hospitalcode, equipmenttypeid);
                 if (StringUtils.isEmpty(alwayalarm)){
                     //取设备类型里面的alw
-                    monitorEquipmentWarningTimeModel.setAlwayalarm(monitorEquipmentWarningTimeModel.getAlwayalarm());
+                    monitorinstrument.setAlwayalarm(monitorEquipmentWarningTimeModel.getAlwayalarm());
                 }else {
                     monitorinstrument.setAlwayalarm(alwayalarm);
                 }

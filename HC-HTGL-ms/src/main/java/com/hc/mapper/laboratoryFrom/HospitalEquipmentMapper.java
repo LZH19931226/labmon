@@ -88,17 +88,17 @@ public interface HospitalEquipmentMapper {
 
 
     @Select("SELECT " +
-            "t1.alwayalarm," +
-            "t2.* " +
-            "FROM" +
-            "hospitalequiment t1," +
-            "monitorequipmentwarningtime t2 " +
-            "WHERE" +
-            "t1.hospitalcode = t2.hospitalcode " +
-            "AND t2.hospitalcode = #{hospitalcode}} " +
-            "AND t2.equipmentid = #{equipmenttypeid}} " +
-            "AND t2.equipmentcategory = 'TYPE' " +
-            "AND t1.equipmenttypeid = #{equipmenttypeid}")
+            " t1.alwayalarm, " +
+            " t2.* " +
+            " FROM " +
+            " hospitalequiment t1, " +
+            " monitorequipmentwarningtime t2  " +
+            " WHERE " +
+            " t1.hospitalcode = t2.hospitalcode " +
+            " AND t2.hospitalcode = #{hospitalcode} " +
+            " AND t2.equipmentid = #{equipmenttypeid} " +
+            " AND t2.equipmentcategory = 'TYPE' " +
+            " AND t1.equipmenttypeid = #{equipmenttypeid}")
     MonitorEquipmentWarningTimeModel getMonitorEquipmentWarningTimeModel(@Param("hospitalcode") String hospitalcode , @Param("equipmenttypeid")String equipmenttypeid);
 
 
