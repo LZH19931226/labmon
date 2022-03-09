@@ -89,8 +89,8 @@
     <logger name="org.springframework" level="warn" />
     <!-- 也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root". -->
     <root level="INFO">
-<!--        <appender-ref ref="STDOUT"/>-->
-<!--        <appender-ref ref="FILE"/>-->
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
 <!--        <appender-ref ref="file_error"/>-->
         <!--        <appender-ref ref="LOGSTASH"/>-->
     </root>
