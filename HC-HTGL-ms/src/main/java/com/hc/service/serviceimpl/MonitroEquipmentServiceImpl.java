@@ -383,10 +383,12 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             }
         }
         //查询监控设备,不为空则修改
-        Monitorinstrument updateMonitorInstrument = monitorInstrumentDao.getByEquipmentno(equipmentInfoModel.getEquipmentno());
-        if(updateMonitorInstrument != null){
-            updateMonitorInstrument.setSn(sn);
-            monitorInstrumentDao.save(updateMonitorInstrument);
+        List<Monitorinstrument> updateMonitorInstruments = monitorInstrumentDao.getByEquipmentno(equipmentInfoModel.getEquipmentno());
+        if(CollectionUtils.isNotEmpty(updateMonitorInstruments)){
+            updateMonitorInstruments.forEach(item -> {
+                item.setSn(sn);
+                monitorInstrumentDao.save(updateMonitorInstruments);
+         });
         }
         try {
             monitorequipment.setEquipmentno(equipmentno);
@@ -520,9 +522,9 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                 List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
                 monitorEquipmentInfoModel.setWarningTimeList(warningTimeDaoAll);
                 //查询SN号码
-                Monitorinstrument monitorinstrument = monitorInstrumentDao.getByEquipmentno(monitorEquipmentInfoModel.getEquipmentno());
-                if(monitorinstrument != null){
-                    monitorEquipmentInfoModel.setSn(monitorinstrument.getSn());
+                List<Monitorinstrument> updateMonitorInstruments = monitorInstrumentDao.getByEquipmentno(monitorEquipmentInfoModel.getEquipmentno());
+                if(CollectionUtils.isNotEmpty(updateMonitorInstruments)) {  
+                    monitorEquipmentInfoModel.setSn(updateMonitorInstruments.get(0).getSn());
                 }
             }
             PageInfo<MonitorEquipmentInfoModel> pageInfo = new PageInfo<MonitorEquipmentInfoModel>(monitorEquipmentInfoModels);
