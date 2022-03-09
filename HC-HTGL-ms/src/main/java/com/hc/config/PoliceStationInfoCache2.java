@@ -51,7 +51,7 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
                 redisTemplateUtil.delete("hospital:sn");
             }
 
-            if(redisTemplateUtil.hasKey("hospital:equipmenttype")){
+            if (redisTemplateUtil.hasKey("hospital:equipmenttype")) {
                 redisTemplateUtil.delete("hospital:equipmenttype");
             }
         } catch (Exception e) {
@@ -69,16 +69,33 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
             monitorEquipmentWarningTime.setEquipmentcategory("EQ");
             monitorEquipmentWarningTime.setHospitalcode(monitorinstrument.getHospitalcode());
             Example<MonitorEquipmentWarningTime> timeExample = Example.of(monitorEquipmentWarningTime);
-            if(monitorinstrument.getWarningTimeList() == null){
-                List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
-                monitorinstrument.setWarningTimeList(warningTimeDaoAll);
-                //设备是否全天报警默认和设备类型保持一致
-                List<Monitorequipment> monitorequipmentList  = monitorEquipmentMapper
-                        .selectEquipmentByCode(monitorinstrument.getHospitalcode(),monitorinstrument.getEquipmentno());
-                if(CollectionUtils.isNotEmpty(monitorequipmentList)){
-                    monitorinstrument.setAlwayalarm(monitorequipmentList.get(0).getAlwayalarm());
+            List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
+            //1.EQ无值 WarningTime  eq表alw空 或者不空
+            String alwayalarm = monitorinstrument.getAlwayalarm();
+            if (CollectionUtils.isEmpty(warningTimeDaoAll)){
+                if (StringUtils.isEmpty(alwayalarm)){
+                    //取设备类型里面的alw 取设备类型里面的时段
+                }else {
+                    monitorinstrument.setAlwayalarm(alwayalarm);
                 }
+                //取设备类型里面的时间段
+
+            }else {
+                if (StringUtils.isEmpty(alwayalarm)){
+                    //取设备类型里面的alw 取设备类型里面的时段
+                }else {
+                    monitorinstrument.setAlwayalarm(alwayalarm);
+                }
+
+
             }
+//            monitorinstrument.setWarningTimeList(warningTimeDaoAll);
+//            //设备是否全天报警默认和设备类型保持一致
+//            List<Monitorequipment> monitorequipmentList = monitorEquipmentMapper
+//                    .selectEquipmentByCode(monitorinstrument.getHospitalcode(), monitorinstrument.getEquipmentno());
+//            if (CollectionUtils.isNotEmpty(monitorequipmentList)) {
+//                monitorinstrument.setAlwayalarm(monitorequipmentList.get(0).getAlwayalarm());
+//            }
             if (StringUtils.isNotEmpty(monitorinstrument.getSn())) {
                 String toJson = JsonUtil.toJson(monitorinstrument);
                 if (StringUtils.isEmpty(monitorinstrument.getChannel())) {
@@ -92,7 +109,7 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
         }
 
         List<HospitalEquipmentTypeInfoModel> modelList = hospitalEquipmentMapper.selectAllEquipmentType();
-        modelList.forEach(item->{
+        modelList.forEach(item -> {
             MonitorEquipmentWarningTime monitorEquipmentWarningTime = new MonitorEquipmentWarningTime();
             monitorEquipmentWarningTime.setEquipmentid(item.getEquipmenttypeid());
             monitorEquipmentWarningTime.setEquipmentcategory("TYPE");
@@ -100,7 +117,7 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
             Example<MonitorEquipmentWarningTime> timeExample = Example.of(monitorEquipmentWarningTime);
             List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
             item.setWarningTimeList(warningTimeDaoAll);
-            objectObjectObjectHashOperations.put("hospital:equipmenttype",item.getEquipmenttypeid()+"@"+item.getHospitalcode(),
+            objectObjectObjectHashOperations.put("hospital:equipmenttype", item.getEquipmenttypeid() + "@" + item.getHospitalcode(),
                     JsonUtil.toJson(item));
         });
     }
