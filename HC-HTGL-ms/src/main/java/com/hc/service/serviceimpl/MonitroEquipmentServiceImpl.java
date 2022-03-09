@@ -523,7 +523,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                 monitorEquipmentInfoModel.setWarningTimeList(warningTimeDaoAll);
                 //查询SN号码
                 List<Monitorinstrument> updateMonitorInstruments = monitorInstrumentDao.getByEquipmentno(monitorEquipmentInfoModel.getEquipmentno());
-                if(CollectionUtils.isNotEmpty(updateMonitorInstruments)) {
+                if(CollectionUtils.isNotEmpty(updateMonitorInstruments)) {  
                     monitorEquipmentInfoModel.setSn(updateMonitorInstruments.get(0).getSn());
                 }
             }
