@@ -415,7 +415,7 @@ public class SocketMessageListener {
                     }
                 }
             }
-            if(successDate > 0){
+            if(successDate > 2){
                 //说明当前时间在时间区间内,可以发送短信或者拨电话
                 return true;
             }
@@ -468,9 +468,9 @@ public class SocketMessageListener {
         end.setTime(endTime);
 
         if (date.after(begin) && date.before(end)) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
