@@ -247,6 +247,7 @@ public class SocketMessageListener {
             boolean warningTimeBlockRule = warningTimeBlockRule(monitorinstrument);
             if(!warningTimeBlockRule){
                 //当前时间不在报警时间段内, 不用报警.直接返回
+                LOGGER.info("当前时间不在报警时间段内, 不用报警.直接返回, 医院code :" + hospitalcode +" monitorinstrument "+monitorinstrument);
                 return;
             }
             BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
