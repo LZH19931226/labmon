@@ -420,9 +420,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                         monitorEquipmentWarningTimeList.add(monitorEquipmentWarningTime);
                     }
                 }
-                if(!monitorEquipmentWarningTimeList.isEmpty()){
-                    monitorEquipmentWarningTimeDao.save(monitorEquipmentWarningTimeList);
-                }
+                monitorEquipmentWarningTimeDao.save(monitorEquipmentWarningTimeList);
                 //移除的时间警报数据
                 List<MonitorEquipmentWarningTime> deleteWarningTimeBlocks = equipmentInfoModel.getDeleteWarningTimeBlock();
                 if(deleteWarningTimeBlocks != null){
@@ -523,7 +521,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
                 monitorEquipmentInfoModel.setWarningTimeList(warningTimeDaoAll);
                 //查询SN号码
                 List<Monitorinstrument> updateMonitorInstruments = monitorInstrumentDao.getByEquipmentno(monitorEquipmentInfoModel.getEquipmentno());
-                if(CollectionUtils.isNotEmpty(updateMonitorInstruments)) {  
+                if(CollectionUtils.isNotEmpty(updateMonitorInstruments)) {
                     monitorEquipmentInfoModel.setSn(updateMonitorInstruments.get(0).getSn());
                 }
             }

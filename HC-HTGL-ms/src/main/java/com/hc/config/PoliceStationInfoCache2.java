@@ -1,11 +1,15 @@
 package com.hc.config;
 
+import com.hc.dao.MonitorEquipmentDao;
 import com.hc.entity.MonitorEquipmentWarningTime;
+import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
+import com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.units.JsonUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +41,9 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
     @Autowired
     private HospitalEquipmentMapper hospitalEquipmentMapper;
 
+    @Autowired
+    private MonitorEquipmentMapper monitorEquipmentMapper;
+
     @Override
     public void run(String... arg0) {
         try {
@@ -65,6 +72,12 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
             if(monitorinstrument.getWarningTimeList() == null){
                 List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
                 monitorinstrument.setWarningTimeList(warningTimeDaoAll);
+                //设备是否全天报警默认和设备类型保持一致
+                List<Monitorequipment> monitorequipmentList  = monitorEquipmentMapper
+                        .selectEquipmentByCode(monitorinstrument.getHospitalcode(),monitorinstrument.getEquipmentno());
+                if(CollectionUtils.isNotEmpty(monitorequipmentList)){
+                    monitorinstrument.setAlwayalarm(monitorequipmentList.get(0).getAlwayalarm());
+                }
             }
             if (StringUtils.isNotEmpty(monitorinstrument.getSn())) {
                 String toJson = JsonUtil.toJson(monitorinstrument);
