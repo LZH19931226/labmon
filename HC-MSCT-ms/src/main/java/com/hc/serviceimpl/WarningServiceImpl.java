@@ -128,7 +128,6 @@ public class WarningServiceImpl implements WarningService {
                         warningrecord.setInputdatetime(date);
                         warningrecord.setHospitalcode(hospitalcode);
                         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                        warningrecord.setEquipmentno("");
                         warningrecord = warningrecordDao.save(warningrecord);
                         LOGGER.info("产生一条报警记录：" + equipmentname + unit + "数据异常：" + JsonUtil.toJson(warningrecord));
                         return null;
