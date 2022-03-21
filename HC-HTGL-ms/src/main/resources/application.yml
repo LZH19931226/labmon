@@ -11,7 +11,7 @@ spring:
     name: HC-HTGL-ms
   datasource:
            primary:
-               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               url: jdbc:mysql://172.16.10.130:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
                driver-class-name: com.mysql.jdbc.Driver
                username: root
                password: root
@@ -29,7 +29,7 @@ spring:
                max-pool-prepared-statement-per-connection-size: 20
                filters: stat,wall,log4j,config
            secondary:
-               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               url: jdbc:mysql://172.16.10.130:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
                driver-class-name: com.mysql.jdbc.Driver
                username: root
                password: root
@@ -47,7 +47,7 @@ spring:
                max-pool-prepared-statement-per-connection-size: 20
                filters: stat,wall,log4j,config
            thirdly:
-               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               url: jdbc:mysql://172.16.10.130:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
                driver-class-name: com.mysql.jdbc.Driver
                username: root
                password: root
