@@ -451,6 +451,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
 
             //更新缓存
             Monitorinstrument monitorinstrument = monitorInstrumentMapper.selectInstrumentByEquipmentno(equipmentInfoModel.getEquipmentno());
+            monitorinstrument.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
             if(monitorinstrument != null){
                 monitorinstrument.setWarningTimeList(monitorEquipmentWarningTimeList);
                 //同步探头名称到缓存
