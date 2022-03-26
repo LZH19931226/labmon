@@ -48,6 +48,7 @@ public class MainJpaConfig {
     public PlatformTransactionManager transactionManagerPrimary(EntityManagerFactoryBuilder builder) {
         return new JpaTransactionManager(entityManagerFactoryPrimary(builder).getObject());
     }
+
     @Autowired(required = false)
     private JpaProperties jpaProperties;
 

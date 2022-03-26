@@ -1,13 +1,11 @@
 package com.hc.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.TypeDef;
-import org.springframework.boot.actuate.endpoint.jmx.DataEndpointMBean;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+
 
 /**
  * Created by 15350 on 2020/2/21.

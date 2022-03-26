@@ -34,7 +34,6 @@ public class cmdidParseUtils {
                     }
     }
 
-
     public static String paseAirMT400(String co2) {
 
         if (StringUtils.equalsIgnoreCase(co2, DataRules.OUTLIERSA)) {
@@ -55,10 +54,6 @@ public class cmdidParseUtils {
                         return gas(co2);
                     }
     }
-
-
-
-
 
     public static String paseAir10(String co2) {
 
@@ -105,8 +100,6 @@ public class cmdidParseUtils {
 
     }
 
-
-
     public static String pasetemperature3(String substring2) {
 
         // 未接入传感器
@@ -119,8 +112,6 @@ public class cmdidParseUtils {
         }
 
     }
-
-
 
     public static String pasetemperature1(String tem) {
         if (StringUtils.equalsIgnoreCase(tem, DataRules.OUTLIERSA)) {
@@ -147,7 +138,6 @@ public class cmdidParseUtils {
                         }
     }
 
-
     public static ParamaterModel Paser85(String cmd, String sn, String cmdid) {
         ParamaterModel paramaterModel = new ParamaterModel();
         // 一路温度
@@ -172,7 +162,6 @@ public class cmdidParseUtils {
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
     }
-
 
     public static ParamaterModel Paser87(String cmd, String sn, String cmdid) {
         ParamaterModel paramaterModel = new ParamaterModel();
@@ -700,7 +689,6 @@ public class cmdidParseUtils {
         return paramaterModel;
     }
 
-
     /**
      * 桌面培养箱DC
      *
@@ -1123,7 +1111,6 @@ public class cmdidParseUtils {
         return paramaterModel;
 
     }
-
 
     public static void main(String[] args) {
         String id = "48 43 AA 1A 31 38 33 35 33 38 30 30 30 31 00 00 27 10 08 98 08 98 50 00 00 00 00 00 00 00 D9 23";

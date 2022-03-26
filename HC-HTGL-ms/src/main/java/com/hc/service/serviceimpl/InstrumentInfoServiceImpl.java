@@ -8,7 +8,6 @@ import com.hc.dao.InstrumentParamConfigDao;
 import com.hc.dao.MonitorInstrumentDao;
 import com.hc.dao.MonitorInstrumentTypeDao;
 import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Monitorinstrumenttype;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
@@ -269,27 +268,18 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             String equipmentname = one1.getEquipmentname();
             updateRecordService.updateInstrumentMonitor(instrumentName,equipmentname,hospitalname,usernames,one1,instrumentInfoModel,"0","1");
             monitorInstrumentDao.save(monitorinstrument);
-            //更新开关量以及报警次数缓存
-            Monitorinstrument monitorinstrument1 = JsonUtil.toBean((String) objectObjectObjectHashOperations.get("hospital:sn", monitorinstrument.getSn()), Monitorinstrument.class);
-            if (null!=monitorinstrument1){
-                monitorinstrument1.setChannel(channel);
-                monitorinstrument1.setInstrumentname(instrumentname);
-                monitorinstrument1.setEquipmentno(equipmentno);
-                monitorinstrument1.setHospitalcode(hospitalcode);
-                monitorinstrument1.setAlarmtime(alarmtime);
-                monitorinstrument1.setSn(sn);
-                monitorinstrument1.setInstrumenttypeid(instrumenttypeid);
-                monitorinstrument1.setInstrumentno(instrumentno);
-            }
             if (StringUtils.isNotEmpty(monitorinstrument.getChannel())){
                 //同步缓存
+                LOGGER.info("执行开关量同步缓存");
                 objectObjectObjectHashOperations.put("DOOR:"+monitorinstrument.getChannel(),monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
+
                 if ("1".equals(monitorinstrument.getChannel())){
                     //默认通道一绑定监控co2 o2 温度
-                    objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
+                    objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
+
                 }
             }else {
-                objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
+                objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
             }
             instrumentparamconfig.setInstrumenttypeid(instrumenttypeid);
             instrumentparamconfig.setInstrumentno(instrumentno);
