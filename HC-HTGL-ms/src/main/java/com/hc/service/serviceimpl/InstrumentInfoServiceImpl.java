@@ -283,7 +283,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             }
             if (StringUtils.isNotEmpty(monitorinstrument.getChannel())){
                 //同步缓存
-                objectObjectObjectHashOperations.put("DOOR:"+monitorinstrument.getChannel(),monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
+                objectObjectObjectHashOperations.put("DOOR:"+monitorinstrument.getChannel(),monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
                 if ("1".equals(monitorinstrument.getChannel())){
                     //默认通道一绑定监控co2 o2 温度
                     objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
