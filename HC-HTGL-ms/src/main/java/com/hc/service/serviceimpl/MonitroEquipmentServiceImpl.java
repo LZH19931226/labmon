@@ -176,14 +176,9 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             monitorinstrument.setAlarmtime(3);
             monitorinstrument.setInstrumentno(UUID.randomUUID().toString().replaceAll("-", ""));
             monitorinstrument.setHospitalcode(hospitalcode);
-            //新增报警时段
-            monitorinstrument.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
             monitorinstrument = monitorInstrumentDao.save(monitorinstrument);
             equipmentInfoModel.setEquipmentno(monitorinstrument.getEquipmentno());
             this.processAddEquipment(equipmentInfoModel);
-            //重新赋值属性
-            monitorinstrument.setWarningTimeList(equipmentInfoModel.getWorkTimeBlock());
-            monitorinstrument.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             if (StringUtils.isEmpty(monitorinstrument.getChannel())) {
                 objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
@@ -451,7 +446,6 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
 
             //更新缓存
             Monitorinstrument monitorinstrument = monitorInstrumentMapper.selectInstrumentByEquipmentno(equipmentInfoModel.getEquipmentno());
-            monitorinstrument.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
             if(monitorinstrument != null){
                 monitorinstrument.setWarningTimeList(monitorEquipmentWarningTimeList);
                 //同步探头名称到缓存

@@ -5,7 +5,7 @@ package com.hc.my.common.core.spring;
  * @date 2019/10/24 14:08
  * 描述:
  **/
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.core.annotation.Order;

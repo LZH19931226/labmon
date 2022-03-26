@@ -1,29 +1,45 @@
 server:
-  port: 10087
+  port: 8000
 spring:
   application:
     name: HC-TCP-ms
   #redis配置信息
+  #  redis:
+  #       host: 39.104.178.216
+  #       port: 6379
+  #       pool:
+  #         max-active: 200
+  #         max-idle: 100
+  #       timeout: 10000
   redis:
-       host: 127.0.0.1
-       port: 6379
-       pool:
-         max-active: 200
-         max-idle: 100
-       timeout: 10000
+    cluster:
+      nodes: 172.16.10.201:7000,172.16.10.202:7000,172.16.10.203:7000,172.16.10.201:7001,172.16.10.202:7001,172.16.10.203:7001
+      max-redirects: 3
+    timeout: 60000
+#    pool:
+#      max-idle: 300
+#      maxIdle: 100 #最大空闲连接数
+#      minIdle: 20 #最小空闲连接数
+#      maxWait: -1
+    jedis:
+      pool:
+        max-idle: 300
+        maxIdle: 100
+        minIdle: 20
+        maxWait: -1
   rabbitmq:
-    host: 127.0.0.1
     port: 5672
-    username: hc
-    password: 123456
+    username: rabbit
+    password: rabbit
+    virtual-host: HCMQ
     listener:
       simple:
         default-requeue-rejected: true
-    virtual-host: HCMQ
+    addresses: 172.16.10.201:5672,172.16.10.202:5672,172.16.10.203:5672
 #socket配置信息
 netty:
   ip: 127.0.0.1
-  port: 14001
+  port: 4001
   bossGroupCount: 4
   wokerGroupCount: 8
   keepAlive: true

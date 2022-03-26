@@ -11,8 +11,9 @@
     <properties>
         <hc.project.version>0.0.1</hc.project.version>
         <java.version>1.8</java.version>
-        <spring.boot.version>1.5.9.RELEASE</spring.boot.version>
-        <spring.cloud.version>Dalston.RELEASE</spring.cloud.version>
+        <spring.boot.version>2.1.7.RELEASE</spring.boot.version>
+        <spring.cloud.version>Greenwich.SR1</spring.cloud.version>
+<!--        <spring.cloud.version>2021.0.1</spring.cloud.version>-->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,11 +52,12 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <version>1.5.9.RELEASE</version>
+<!--            <version>1.5.9.RELEASE</version>-->
         </dependency>
     </dependencies>
     <build>
@@ -75,13 +77,13 @@
                     <configuration>
                         <finalName>${project.build.finalName}</finalName>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <goals>-->
+<!--                                <goal>repackage</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
                 </plugin>
 
             </plugins>

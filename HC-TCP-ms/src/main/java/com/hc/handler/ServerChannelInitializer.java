@@ -8,15 +8,20 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author user
+ */
 @Component
 public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> {
-	
-	//读操作空闲5分钟
+
+	/**
+	 * 读操作空闲5分钟
+	 */
 	public final static int READER_IDLE_TIME_SECONDS = 300;
-	
+
 	@Autowired
 	private ServerChannelHandler serverHandler;
-	
+
 	@Override
 	protected void initChannel(SocketChannel socketChannel) throws Exception {
 		ChannelPipeline pipeline = socketChannel.pipeline();

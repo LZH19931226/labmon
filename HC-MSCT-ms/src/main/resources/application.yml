@@ -7,10 +7,10 @@ spring:
         serviceId: HC-MSCT-ms
         enabled: true
   rabbitmq:
-    host: 127.0.0.1
+    host: 172.16.10.201
     port: 5672
-    username: hc
-    password: 123456
+    username: rabbit
+    password: rabbit
     virtual-host: HCMQ
   datasource:
       url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
@@ -39,12 +39,15 @@ spring:
         ansi:
         enabled: detect
   redis:
-      host: 127.0.0.1
-      port: 6379
-      pool:
-        max-active: 1200
-        max-idle: 100
-      timeout: 10000
+    cluster:
+      nodes: 172.16.10.201:7000,172.16.10.202:7000,172.16.10.203:7000,172.16.10.201:7001,172.16.10.202:7001,172.16.10.203:7001
+      max-redirects: 3
+    timeout: 60000
+    pool:
+      max-active: 300
+      maxIdle: 100 #最大空闲连接数
+      minIdle: 20 #最小空闲连接数
+      maxWait: -1
 server:
   port: 8093
 #  ssl:

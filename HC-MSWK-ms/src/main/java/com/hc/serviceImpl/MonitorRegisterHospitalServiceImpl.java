@@ -27,6 +27,7 @@ import java.util.UUID;
  */
 @Service
 public class MonitorRegisterHospitalServiceImpl implements MonitorRegisterHospitalService {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MonitorRegisterHospitalServiceImpl.class);
     @Autowired
     private MonitorInstrumentDao monitorInstrumentDao;

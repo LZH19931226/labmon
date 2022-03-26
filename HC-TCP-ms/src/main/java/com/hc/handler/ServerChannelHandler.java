@@ -17,12 +17,12 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.util.ReferenceCountUtil;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -42,7 +42,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	private RedisTemplateUtil redisDao;
 	@Autowired
 	private NettyUtil nettyUtil;
-	// 连接成功后，向server发送消息 
+	// 连接成功后，向server发送消息
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		//将新建立的通道放入group中
@@ -60,7 +60,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 		super.channelInactive(ctx);
 	}
 	//通道内发生异常数据
-	@Override  
+	@Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		try {
 			if (!(cause instanceof ReadTimeoutException)) {
@@ -78,7 +78,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	/**
 	 * 接收发送的消息，最后需要手工release接收数据的ByteBuf
 	 */
-	@Override	
+	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		ByteBuf buf  = (ByteBuf)msg;
 		String dataStr=null;
@@ -148,9 +148,9 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	 * 关闭通道，同时移除当前通道在线列表信息
 	 * @param ctx
 	 */
-	public void closeChannel(ChannelHandlerContext ctx){ 
+	public void closeChannel(ChannelHandlerContext ctx){
 		//从group中移除关闭的通道
-		IotServer.onlineChannels.remove(ctx.channel());	
+		IotServer.onlineChannels.remove(ctx.channel());
 		//关闭通道
 		ctx.close();
 		//主动移除通道在redis里面
