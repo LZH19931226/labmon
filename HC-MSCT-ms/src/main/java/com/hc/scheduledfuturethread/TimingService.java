@@ -1,6 +1,6 @@
 package com.hc.scheduledfuturethread;
 
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.dao.MonitorequipmentDao;
 import com.hc.entity.*;
 import com.hc.service.SendMesService;

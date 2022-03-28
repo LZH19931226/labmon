@@ -1,11 +1,9 @@
 package com.hc.scheduledfuturethread;
 
-import com.hc.bean.ApiResponse;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.dao.MonitorequipmentDao;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorequipmentlastdata;
-import com.hc.interfaceService.InterfaceMonService;
 import com.hc.service.SendMesService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;

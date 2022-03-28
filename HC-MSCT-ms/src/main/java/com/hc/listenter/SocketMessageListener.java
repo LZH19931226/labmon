@@ -5,7 +5,7 @@ import com.hc.dao.*;
 import com.hc.entity.*;
 import com.hc.bean.WarningModel;
 import com.hc.bean.WarningMqModel;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.model.TimeoutEquipment;

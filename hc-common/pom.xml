@@ -24,7 +24,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>HC-common</artifactId>
+	<artifactId>hc-common</artifactId>
 	<packaging>pom</packaging>
 
 	<description>hc 公共聚合模块</description>
@@ -32,5 +32,6 @@
 		<module>hc-common-core</module>
 		<module>hc-common-web</module>
 		<module>hc-common-data</module>
+		<module>hc-common-redis</module>
 	</modules>
 </project>

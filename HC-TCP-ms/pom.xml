@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.hc</groupId>
-            <artifactId>hc-common-core</artifactId>
+            <artifactId>hc-common-redis</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>com.hc</groupId>
-            <artifactId>hc-common-data</artifactId>
+            <artifactId>hc-common-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -46,10 +46,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
 
     </dependencies>
 
@@ -62,13 +58,13 @@
                     <!-- 工程主入口-->
                     <mainClass>com.hc.HcTcpMsApplication</mainClass>
                 </configuration>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,7 +1,7 @@
 package com.hc.controller;
 
-import com.hc.bean.ApiResponse;
 import com.hc.bean.MTOnlineBean;
+import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
 import io.swagger.annotations.Api;
@@ -23,7 +23,7 @@ public class SocketMsgController {
 	
 	@GetMapping("/sendMsg")
 	@ApiOperation("向指定的通道里面发送信息,MT600sn号,具体命令字符,发送指令类型1：声光报警开启 2：声光报警关闭")
-	public ApiResponse<String> sendMsg(String MId,String cmd){
+	public ApiResponse<String> sendMsg(String MId, String cmd){
 		return service.sendMsg(MId,cmd);
 	}
 	

@@ -1,7 +1,7 @@
 package com.hc.serviceimpl;
 
 import com.hc.bean.WarningModel;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.dao.InstrumentparamconfigDao;
 import com.hc.dao.WarningrecordDao;
 import com.hc.entity.Hospitalofreginfo;

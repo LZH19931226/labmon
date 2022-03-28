@@ -2,7 +2,7 @@ package com.hc.utils;
 
 import com.hc.bean.ShowModel;
 import com.hc.bean.WarningMqModel;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.Monitorinstrument;
 import com.hc.model.RequestModel.InstrumentInfoModel;

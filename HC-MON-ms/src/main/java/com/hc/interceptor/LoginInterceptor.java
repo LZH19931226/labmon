@@ -1,19 +1,16 @@
 package com.hc.interceptor;//package com.hc.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hc.config.BaseConfiguration;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.BaseConfiguration;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.constant.Const;
-import com.hc.utils.TokenHelper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * 自定义拦截器

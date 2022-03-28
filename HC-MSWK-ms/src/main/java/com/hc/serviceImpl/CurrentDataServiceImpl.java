@@ -1,6 +1,6 @@
 package com.hc.serviceImpl;
 
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Monitorinstrument;
 import com.hc.model.ResponseModel.CurrentData;
 import com.hc.service.CurrentDataService;

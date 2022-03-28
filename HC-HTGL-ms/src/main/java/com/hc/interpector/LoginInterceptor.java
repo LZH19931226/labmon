@@ -1,7 +1,7 @@
 package com.hc.interpector;//package com.hc.interceptor;
 
-import com.hc.config.BaseConfiguration;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.BaseConfiguration;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.model.ResModel;
 import com.hc.units.JsonUtil;
 import com.hc.units.TokenHelper;
@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
 /**

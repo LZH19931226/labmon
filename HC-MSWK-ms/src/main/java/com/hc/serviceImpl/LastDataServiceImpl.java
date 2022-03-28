@@ -1,7 +1,6 @@
 package com.hc.serviceImpl;
 
-import com.hc.bean.WarningMqModel;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.dao.InstrumentParamConfigDao;
 import com.hc.dao.MonitorequipmentlastdataDao;
 import com.hc.entity.Instrumentparamconfig;
@@ -22,7 +21,6 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;

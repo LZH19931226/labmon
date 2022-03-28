@@ -1,14 +1,12 @@
 package com.hc.timer;
 
-import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.MonitorequipmentDao;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.MapperModel.TimeoutEquipment;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.MessagePushService;
-import com.hc.service.ThirdPartyService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
 import org.apache.commons.collections.CollectionUtils;
@@ -23,8 +21,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by 15350 on 2019/10/8.

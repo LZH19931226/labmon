@@ -1,6 +1,6 @@
 package com.hc.serviceImpl;
 
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.InstrumentMonitorInfoMapper;

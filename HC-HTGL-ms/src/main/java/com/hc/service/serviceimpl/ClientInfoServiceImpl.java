@@ -3,7 +3,7 @@ package com.hc.service.serviceimpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.dao.UserEquipmentRightDao;
 import com.hc.dao.UserRightDao;
 import com.hc.entity.Userright;

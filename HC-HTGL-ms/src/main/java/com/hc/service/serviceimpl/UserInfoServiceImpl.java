@@ -1,6 +1,6 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.dao.UserScheduLingDao;
 import com.hc.entity.UserScheduLing;
 import com.hc.entity.Userback;
@@ -12,7 +12,6 @@ import com.hc.service.UserInfoService;
 import com.hc.units.ApiResponse;
 import com.hc.units.TokenHelper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

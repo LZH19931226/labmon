@@ -2,7 +2,6 @@ package com.hc.handler;
 
 
 import com.hc.bean.MTOnlineBean;
-import com.hc.config.RedisTemplateUtil;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
@@ -10,6 +9,7 @@ import com.hc.socketServer.IotServer;
 import com.hc.util.JsonUtil;
 import com.hc.util.MathUtil;
 import com.hc.util.NettyUtil;
+import com.redis.util.RedisTemplateUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,9 +1,9 @@
 package com.hc.service.serviceImpl;
 
-import com.hc.bean.ApiResponse;
 import com.hc.bean.MTOnlineBean;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ParamaterModel;
+import com.redis.util.RedisTemplateUtil;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.socketServer.IotServer;
 import com.hc.util.*;

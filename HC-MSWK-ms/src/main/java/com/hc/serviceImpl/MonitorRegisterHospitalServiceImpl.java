@@ -1,7 +1,7 @@
 package com.hc.serviceImpl;
 
 import com.hc.bean.ParamaterModel;
-import com.hc.config.RedisTemplateUtil;
+import com.hc.web.config.RedisTemplateUtil;
 import com.hc.dao.InstrumentParamConfigDao;
 import com.hc.dao.MonitorInstrumentDao;
 import com.hc.entity.Instrumentparamconfig;
