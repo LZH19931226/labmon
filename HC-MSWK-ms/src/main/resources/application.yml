@@ -17,7 +17,7 @@ spring:
       max-redirects: 3
     timeout: 60000
 server:
-  port: 9002
+  port: 10087
 eureka:
   client:
     serviceUrl:

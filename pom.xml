@@ -29,7 +29,6 @@
 <!--        <module>HC-HTGL-ms</module>-->
         <module>HC-EUREKA-ms</module>
         <module>hc-common</module>
-<!--        <module>hc-message-ms</module>-->
     </modules>
     <dependencyManagement>
         <dependencies>
