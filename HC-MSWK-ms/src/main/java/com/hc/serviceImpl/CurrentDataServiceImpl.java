@@ -1,10 +1,10 @@
 package com.hc.serviceImpl;
 
-import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Monitorinstrument;
-import com.hc.model.ResponseModel.CurrentData;
+import com.hc.model.CurrentData;
 import com.hc.service.CurrentDataService;
 import com.hc.utils.JsonUtil;
+import com.redis.util.RedisTemplateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package com.hc.serviceImpl;
 
-import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.InstrumentMonitorInfoMapper;
@@ -9,6 +8,7 @@ import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MTJudgeService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.utils.JsonUtil;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

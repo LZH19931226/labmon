@@ -1,10 +1,9 @@
 package com.hc.serviceImpl;
 
-import com.hc.bean.RecordTime;
-import com.hc.bean.ShowModel;
-import com.hc.bean.WarningMqModel;
-import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.*;
+import com.hc.model.RecordTime;
+import com.hc.model.ShowModel;
+import com.hc.model.WarningMqModel;
 import com.hc.msctservice.MsctService;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.CurrentDataService;
@@ -13,6 +12,7 @@ import com.hc.service.LastDataService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.ShowModelUtils;
 import com.hc.utils.TimeHelper;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoService {
@@ -56,7 +55,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         String equipmentno = monitorinstrument.getEquipmentno();
         String hospitalcode = monitorinstrument.getHospitalcode();
         if (StringUtils.isEmpty(equipmentno) || StringUtils.isEmpty(monitorinstrument.getInstrumentno())) {
-            log.info("不存在数据：" + JsonUtil.toJson(monitorinstrument));
             return null;
         }
         /**
@@ -70,11 +68,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         String cmdid = model.getCmdid();
         // 判断当前上传数据当前时间
         if (StringUtils.equals("8d", cmdid)) {
-            //开关量问题：
-            log.info("开关量时间计算：" + JsonUtil.toJson(model));
             String channel = monitorinstrument.getChannel();
             if (StringUtils.isEmpty(channel)) {
-                log.info("非300和300LITE" + JsonUtil.toJson(model));
                 if (objectObjectObjectHashOperations.hasKey(model.getSN(), model.getCmdid())) {
                     String o = (String) objectObjectObjectHashOperations.get(model.getSN(), model.getCmdid());
                     if (StringUtils.isEmpty(o)) {
@@ -142,39 +137,25 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             showModelUtils.dataTimeOut(equipmentno);
             switch (model.getCmdid()) {
                 case "85":
-                    //获取 探头e类型id 用同步缓存(条件：温度 电量    sn号获取instypeid )
-                    //根据监控参数类型编号、探头编号、探头类型编号查询监控参数编号\
-
                     String o = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":4");
                     if (StringUtils.equals("04", substring)) {
                         if (StringUtils.isNotEmpty(model.getTEMP2()) && StringUtils.isNotEmpty(o)) {
                             String calibration = showModelUtils.calibration(o, model.getTEMP2());
                             // 判断是否存在温度探头
-                            //  currentDataService.getCurrentData(model.getTEMP(),monitorinstrument,"TEMP",model.getNowTime());
                             showModel.setEquipmentno(equipmentno);
                             showModel.setData(calibration);
                             showModel.setUnit("温度");
                             showModel.setInputdatetime(time);
                             objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
                             monitorequipmentlastdata.setCurrenttemperature(calibration);
-                            try {
-
-                            } catch (Exception e) {
-                                log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "温度插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                            }
-                            //   log.info("执行插入temp:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
                             //执行报警服务
                             WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                             list.add(warningMqModel);
                         } else {
                             if (StringUtils.equals("1832120013", sn) && StringUtils.isEmpty(o)) {
-                                try {
                                     log.info("进入拨打程序");
                                     msctService.test2("18108674918", "瑞迪斯存储探头值失效");
                                     msctService.test2("17786499503", "瑞迪斯存储探头值失效");
-                                } catch (Exception e) {
-                                    log.error("redis拨打电话异常：" + e.getMessage());
-                                }
                             }
                             log.error("当前设备探头未同步至redis缓存：" + JsonUtil.toJson(model));
                         }
@@ -188,13 +169,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                                 showModel.setInputdatetime(time);
                                 objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
                                 monitorequipmentlastdata.setCurrenttemperature(calibration);
-                                try {
-                                    // monitorTempDao.saveAndFlush(monitortemperaturerecord);
-                                } catch (Exception e) {
-                                    log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "温度插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                                }
-                                //   log.info("执行插入temp:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
-                                //执行报警服务
                                 WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                                 list.add(warningMqModel);
                             }
@@ -208,7 +182,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             //常规液氮罐电量
                             monitorequipmentlastdata.setCurrentqc(model.getQC());
                         }
-
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                         list.add(warningMqModel);
                     }
@@ -224,12 +197,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("CO2");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("CO2", equipmentno, JsonUtil.toJson(showModel));
-
                         monitorequipmentlastdata.setCurrentcarbondioxide(calibration);
-
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 1, "CO2");
                         list.add(warningMqModel);
-
                     }
                     if (StringUtils.isNotEmpty(model.getO2()) && StringUtils.isNotEmpty(o2)) {
                         String calibration = showModelUtils.calibration(o2, model.getO2());
@@ -238,22 +208,17 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("O2");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("O2", equipmentno, JsonUtil.toJson(showModel));
-                        //  Monitoro2record monitoro2record = new Monitoro2record();
                         monitorequipmentlastdata.setCurrento2(calibration);
-
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 2, "O2");
                         list.add(warningMqModel);
                     }
                     break;
                 case "89":
-                    //市电
-                    log.info("市电：" + JsonUtil.toJson(model));
                     if (!StringUtils.isEmpty(model.getUPS())) {
                         String ups = "1"; // 表示市电异常
                         if ("3".equals(model.getUPS()) || "4".equals(model.getUPS())) {
                             ups = "0";//市电正常
                         }
-                        //      currentDataService.getCurrentData(ups,monitorinstrument,"UPS",model.getNowTime());
                         showModel.setEquipmentno(equipmentno);
                         if (StringUtils.equals("1", ups)) {
                             showModel.setData("异常");
@@ -263,18 +228,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("市电");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("UPS", equipmentno, JsonUtil.toJson(showModel));
-                        Monitorupsrecord monitorupsrecord = new Monitorupsrecord();
-                        monitorupsrecord.setEquipmentno(equipmentno);
-                        monitorupsrecord.setInputdatetime(time);
-                        monitorupsrecord.setUps(ups);
-                        monitorupsrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-//                        try {
-////                            monitorUpsDao.saveAndFlush(monitorupsrecord);
-//                        } catch (Exception e) {
-//                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "市电插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-//                        }
                         monitorequipmentlastdata.setCurrentups(ups);
-                        log.info("执行插入市电:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorupsrecord));
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(ups, monitorinstrument, model.getNowTime(), 10, "市电");
                         list.add(warningMqModel);
                     }
@@ -292,18 +246,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             DOOR = "1";
                             //表示开门
                         }
-                        Monitordoorstaterecord monitordoorstaterecord = new Monitordoorstaterecord();
-                        monitordoorstaterecord.setDoorstate(DOOR);
-                        monitordoorstaterecord.setEquipmentno(equipmentno);
-                        monitordoorstaterecord.setInputdatetime(time);
-                        monitordoorstaterecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-//                        try {
-//                            monitroDoorDao.saveAndFlush(monitordoorstaterecord);
-//                        } catch (Exception e) {
-//                            log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "开关门记录插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-//                        }
                         monitorequipmentlastdata.setCurrentdoorstate(DOOR);
-                        log.info("执行插入开关门:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitordoorstaterecord));
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
                         list.add(warningMqModel);
                     } else {
@@ -325,9 +268,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("空气质量");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("VOC", equipmentno, JsonUtil.toJson(showModel));
-
                         monitorequipmentlastdata.setCurrentvoc(calibration);
-                        //     log.info("执行插入环境VOC:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorvocrecord));
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 3, "空气质量");
                         list.add(warningMqModel);
                     }
@@ -339,7 +280,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("JQ", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrentformaldehyde(calibration);
-                        //  log.info("执行插入环境甲醛:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(jqrecord));
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 12, "甲醛");
                         list.add(warningMqModel);
                     }
@@ -351,7 +291,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("PM10", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrentpm10(calibration);
-                        //    log.info("执行插入环境PM2.5:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorpm10record));
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 9, "PM10");
                         list.add(warningMqModel);
                     }
@@ -362,14 +301,11 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("PM2.5");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("PM25", equipmentno, JsonUtil.toJson(showModel));
-
                         monitorequipmentlastdata.setCurrentpm25(calibration);
-                        //   log.info("执行插入环境PM10:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorpm25record));
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 8, "PM2.5");
                         list.add(warningMqModel);
                     }
                     if (StringUtils.isNotEmpty(model.getPRESS()) && StringUtils.isNotEmpty(yl)) {
-
                         String calibration = showModelUtils.calibration(yl, model.getPRESS());
                         if (!StringUtils.equalsAny(calibration, "0.0", "0.00", "0")) {
                             showModel.setEquipmentno(equipmentno);
@@ -378,7 +314,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             showModel.setInputdatetime(time);
                             objectObjectObjectHashOperations.put("PRESS", equipmentno, JsonUtil.toJson(showModel));
                             monitorequipmentlastdata.setCurrentairflow(calibration);
-                            //         log.info("执行插入环境压力:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(pressrecord));
                             WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 6, "压力");
                             list.add(warningMqModel);
                         }
@@ -391,9 +326,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             showModel.setUnit("湿度");
                             showModel.setInputdatetime(time);
                             objectObjectObjectHashOperations.put("RH", equipmentno, JsonUtil.toJson(showModel));
-
                             monitorequipmentlastdata.setCurrenthumidity(calibration);
-                            //    log.info("执行插入环境湿度:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorhumidityrecord));
                             WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 5, "湿度");
                             list.add(warningMqModel);
                         }
@@ -404,7 +337,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     String o3 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":1");
                     String o4 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":2");
                     String o5 = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":4");
-
                     if (StringUtils.isNotEmpty(model.getCO2()) && StringUtils.isNotEmpty(o3)) {
                         String calibration = showModelUtils.calibration(o3, model.getCO2());
                         showModel.setEquipmentno(equipmentno);
@@ -412,13 +344,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("CO2");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("CO2", equipmentno, JsonUtil.toJson(showModel));
-                        //   Monitorcarbondioxiderecord monitorcarbondioxiderecord = new Monitorcarbondioxiderecord();
                         monitorequipmentlastdata.setCurrentcarbondioxide(calibration);
-                        //    monitorcarbondioxiderecord.setCarbondioxide(model.getCO2());
-                        log.info("91设备编号：" + equipmentno);
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 1, "CO2");
                         list.add(warningMqModel);
-
                     }
                     if (StringUtils.isNotEmpty(model.getO2()) && StringUtils.isNotEmpty(o4)) {
                         String calibration = showModelUtils.calibration(o4, model.getO2());
@@ -427,10 +355,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("O2");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("O2", equipmentno, JsonUtil.toJson(showModel));
-                        Monitoro2record monitoro2record = new Monitoro2record();
                         monitorequipmentlastdata.setCurrento2(calibration);
-                        log.info("91设备编号：" + equipmentno);
-                        log.info("执行插入o2:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitoro2record));
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 2, "O2");
                         list.add(warningMqModel);
                     }
@@ -442,7 +367,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrenttemperature(calibration);
-
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                         list.add(warningMqModel);
                     }
@@ -457,10 +381,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("温度");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
-                        //  Monitortemperaturerecord monitortemperaturerecord = new Monitortemperaturerecord();
-                        // 数据插入和报警服务这里是异步
                         monitorequipmentlastdata.setCurrenttemperature(calibration);
-
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                         list.add(warningMqModel);
                     }
@@ -475,9 +396,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("CO2");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("CO2", equipmentno, JsonUtil.toJson(showModel));
-                        //      Monitorcarbondioxiderecord monitorcarbondioxiderecord = new Monitorcarbondioxiderecord();
                         monitorequipmentlastdata.setCurrentcarbondioxide(calibration);
-
                         WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 1, "CO2");
                         list.add(warningMqModel1);
                     }
@@ -489,13 +408,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     showModel.setUnit("湿度");
                     showModel.setInputdatetime(time);
                     objectObjectObjectHashOperations.put("RH", equipmentno, JsonUtil.toJson(showModel));
-                    try {
-                        monitorequipmentlastdata.setCurrenthumidity(model.getRH());
-                        //   monitorRhDao.saveAndFlush(monitorhumidityrecord);
-                    } catch (Exception e) {
-                        log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "湿度插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                    }
-                    //     log.info("执行插入环境湿度:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorhumidityrecord));
+                    monitorequipmentlastdata.setCurrenthumidity(model.getRH());
                     WarningMqModel warningMqModel2 = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度");
                     list.add(warningMqModel2);
                     break;
@@ -511,9 +424,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     showModel.setUnit("空气质量");
                     showModel.setInputdatetime(time);
                     objectObjectObjectHashOperations.put("VOC", equipmentno, JsonUtil.toJson(showModel));
-
                     monitorequipmentlastdata.setCurrentvoc(voc1);
-                    //     log.info("执行插入环境VOC:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorvocrecord));
                     WarningMqModel warningMqModel3 = showModelUtils.procWarnModel(voc1, monitorinstrument, model.getNowTime(), 3, "空气质量");
                     list.add(warningMqModel3);
                     break;
@@ -530,7 +441,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         integer2 = integer2 * 100;
                     }
                     monitorequipmentlastdata.setCurrentpm25(integer2.toString());
-                    //   log.info("执行插入环境PM10:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorpm25record));
                     WarningMqModel warningMqModel4 = showModelUtils.procWarnModel(integer2.toString(), monitorinstrument, model.getNowTime(), 8, "PM2.5");
                     list.add(warningMqModel4);
                     break;
@@ -551,7 +461,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 case "76":
                     //模拟500 QC
                     monitorequipmentlastdata.setCurrentqc(model.getQC());
-//               备sn号 " + sn + "插入的模型:" + JsonUtil.toJson(qcrecord));
                     WarningMqModel warningMqModel6 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                     list.add(warningMqModel6);
                     break;
@@ -562,13 +471,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         ups = "1";
                     }
                     currentDataService.getCurrentData(ups, monitorinstrument, "UPS", model.getNowTime());
-                    Monitorupsrecord monitorupsrecord = new Monitorupsrecord();
-                    monitorupsrecord.setEquipmentno(equipmentno);
-                    monitorupsrecord.setInputdatetime(time);
-                    monitorupsrecord.setUps(ups);
-                    monitorupsrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                     monitorequipmentlastdata.setCurrentups(ups);
-                    log.info("执行插入市电:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitorupsrecord));
                     WarningMqModel warningMqModel7 = showModelUtils.procWarnModel(model.getUPS(), monitorinstrument, model.getNowTime(), 10, "市电");
                     list.add(warningMqModel7);
                     break;
@@ -582,13 +485,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             DOOR = "1";
                             //表示有报警信息
                         }
-                        Monitordoorstaterecord monitordoorstaterecord = new Monitordoorstaterecord();
-                        monitordoorstaterecord.setDoorstate(DOOR);
-                        monitordoorstaterecord.setEquipmentno(equipmentno);
-                        monitordoorstaterecord.setInputdatetime(time);
-                        monitordoorstaterecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                         monitorequipmentlastdata.setCurrentdoorstate(DOOR);
-                        log.info("执行插入开关门:设备sn号   " + sn + "插入的模型:" + JsonUtil.toJson(monitordoorstaterecord));
                         WarningMqModel warningMqModel8 = showModelUtils.procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
                         list.add(warningMqModel8);
                     }
@@ -610,11 +507,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     if (v < 0.1) {
                         v = v * 100;
                     }
-                    try {
-                        monitorequipmentlastdata.setCurrentpm10(v.toString());
-                    } catch (Exception e) {
-                        log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "PM10插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
-                    }
+                    monitorequipmentlastdata.setCurrentpm10(v.toString());
                     WarningMqModel warningMqModel10 = showModelUtils.procWarnModel(v.toString(), monitorinstrument, model.getNowTime(), 9, "PM10");
                     list.add(warningMqModel10);
                     break;
@@ -629,15 +522,11 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     WarningMqModel warningMqModel11 = showModelUtils.procWarnModel(integer1.toString(), monitorinstrument, model.getNowTime(), 6, "压力");
                     list.add(warningMqModel11);
                     break;
-                // COOK培养箱数据
-
-
                 case "92":
                     String left = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":23");
                     String right = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":24");
                     String airflow = (String) objectObjectObjectHashOperations.get("insprobe"+hospitalcode, monitorinstrument.getInstrumentno() + ":25");
                     if (StringUtils.isNotEmpty(model.getTEMP()) && StringUtils.isNotEmpty(left)) {
-                        // String calibration = calibration(left, model.getTEMP());
                         monitorequipmentlastdata.setCurrentlefttemperature(model.getTEMP());
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 23, "左舱室温度");
                         list.add(warningMqModel);
@@ -703,7 +592,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     listAb.add("B");
                     listAb.add("C");
                     listAb.add("D");
-
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());  //液氮罐温度
                     WarningMqModel warningMqMode90 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(warningMqMode90);
@@ -807,7 +695,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     String airflow2 = model.getAirflow();
                     if (StringUtils.isNotEmpty(airflow2)) {
                         monitorequipmentlastdata.setCurrentairflow1(airflow2);
-                        ;
                         //只有airFlow 是 I M O才报警生成报警模型
                         if (StringUtils.equalsAnyIgnoreCase(airflow2, "I", "M", "O")) {
                             WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(airflow2, monitorinstrument, model.getNowTime(), 25, "气流");
@@ -923,7 +810,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrentrightcovertemperature(model.getTEMP4());
-                        //    log.info("执行插入temp:设备sn号   " + sn9n + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
                         //执行报警服务
                         WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(model.getTEMP4(), monitorinstrument, model.getNowTime(), 32, "右盖板温度");
                         list.add(warningMqModel97);
@@ -936,7 +822,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrentrightendtemperature(model.getTEMP5());
-                        //    log.info("执行插入temp:设备sn号   " + sn9n + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
                         //执行报警服务
                         WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(model.getTEMP5(), monitorinstrument, model.getNowTime(), 33, "右底板温度");
                         list.add(warningMqModel97);
@@ -949,7 +834,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("气流", equipmentno, JsonUtil.toJson(showModel));
                         monitorequipmentlastdata.setCurrentrightairflow(model.getTEMP6());
-                        //    log.info("执行插入temp:设备sn号   " + sn9n + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
                         //执行报警服务
                         WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(model.getTEMP6(), monitorinstrument, model.getNowTime(), 34, "右气流");
                         list.add(warningMqModel97);
@@ -1010,7 +894,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     }
                     break;
                 case "9f":
-                    String sn9n1 = model.getSN();
                     if (StringUtils.isNotEmpty(model.getTEMP())) {
                         // 左盖板温度
                         showModel.setEquipmentno(equipmentno);
@@ -1018,9 +901,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         showModel.setUnit("左舱室顶部温度");
                         showModel.setInputdatetime(time);
                         objectObjectObjectHashOperations.put("TEMP", equipmentno, JsonUtil.toJson(showModel));
-                        Monitortemperaturerecord monitortemperaturerecord = new Monitortemperaturerecord();
                         monitorequipmentlastdata.setCurrentleftcovertemperature(model.getTEMP());
-                        log.info("执行插入temp:设备sn号   " + sn9n1 + "插入的模型:" + JsonUtil.toJson(monitortemperaturerecord));
                         //执行报警服务
                         WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 29, "左舱室顶部温度");
                         list.add(warningMqModel97);

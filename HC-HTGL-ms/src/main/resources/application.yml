@@ -11,7 +11,7 @@ spring:
     name: HC-HTGL-ms
   datasource:
            primary:
-               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
+               url: jdbc:mysql://172.16.10.130:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
                driver-class-name: com.mysql.jdbc.Driver
                username: root
                password: root
@@ -28,47 +28,6 @@ spring:
                pool-prepared-statements: false
                max-pool-prepared-statement-per-connection-size: 20
                filters: stat,wall,log4j,config
-           secondary:
-               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
-               driver-class-name: com.mysql.jdbc.Driver
-               username: root
-               password: root
-               initial-size: 1
-               max-idle: 20
-               max-active: 20
-               test-on-borrow: true
-               max-wait: 60000
-               time-between-eviction-runs-millis: 60000
-               min-evictable-idle-time-millis: 300000
-               validation-query: SELECT 1 FROM DUAL
-               test-While-Idle: true
-               test-on-return: false
-               pool-prepared-statements: false
-               max-pool-prepared-statement-per-connection-size: 20
-               filters: stat,wall,log4j,config
-           thirdly:
-               url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
-               driver-class-name: com.mysql.jdbc.Driver
-               username: root
-               password: root
-               initial-size: 1
-               max-idle: 20    #最大空闲连接数
-               max-active: 20   #最大连接数
-               test-on-borrow: true
-               max-wait: 60000   #等待时间
-               time-between-eviction-runs-millis: 60000
-               min-evictable-idle-time-millis: 300000
-               validation-query: SELECT 1 FROM DUAL
-               test-While-Idle: true
-               test-on-return: false
-               pool-prepared-statements: false
-               max-pool-prepared-statement-per-connection-size: 20
-               filters: stat,wall,log4j,config
-  jpa:
-               show-sql: true
-               hibernate:
-                 naming:
-                   physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   redis:
         host: 127.0.0.1
         port: 6379

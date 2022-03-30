@@ -1,14 +1,14 @@
 package com.hc.timer;
 
-import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.mapper.HospitalInfoMapper;
-import com.hc.model.MapperModel.TimeoutEquipment;
+import com.hc.model.TimeoutEquipment;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -37,7 +37,6 @@ public class TimerConfig {
     private MessagePushService messagePushService;
     //
     @Scheduled(cron = "0 0 * * * ?")
-//    @Scheduled(cron = "0 0/1 * * * ?")
     public void Time() {
         // 查询所有需要超时报警的设备
         List<TimeoutEquipment> timeoutEquipments = hospitalInfoMapper.getTimeoutEquipment();

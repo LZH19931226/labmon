@@ -4,23 +4,20 @@ package com.hc.mapper;
  * Created by 16956 on 2018-08-08.
  */
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.entity.Instrumentparamconfig;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
-import com.hc.model.MapperModel.TimeoutEquipment;
+import com.hc.model.TimeoutEquipment;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * 探头
  */
-@Mapper
-@Component
-public interface MonitorInstrumentMapper {
+public interface MonitorInstrumentMapper extends BaseMapper<Monitorinstrument> {
 
     @Select(" SELECT\n" +
             "\tt3.*\n" +
@@ -47,22 +44,6 @@ public interface MonitorInstrumentMapper {
             "\twhere t1.sn = #{sn} limit 1  ")
     Monitorequipment isCliva(@Param("sn") String sn);
 
-    /**
-     * 根据sn号获取  typeid
-     */
 
-    @Select(" SELECT \n" +
-            "t3.hospitalname,\n" +
-            "t3.hospitalcode,\n" +
-            "t2.equipmentno,\n" +
-            "t2.equipmentname,\n" +
-            "t1.timeouttime\n" +
-            "FROM\n" +
-            "\thospitalofreginfo t3\n" +
-            "\tright JOIN hospitalequiment t1 ON t3.hospitalcode = t1.hospitalcode\n" +
-            "\tright JOIN monitorequipment t2 ON t1.hospitalcode = t2.hospitalcode \n" +
-            "\tAND t1.equipmenttypeid = t2.equipmenttypeid \n" +
-            "\twhere t2.equipmentno = #{equipmentno} limit 1 ")
-    TimeoutEquipment getOne(@Param("equipmentno") String equipmentno);
 
 }

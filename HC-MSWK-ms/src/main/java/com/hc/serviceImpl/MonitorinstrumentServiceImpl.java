@@ -1,21 +1,17 @@
 package com.hc.serviceImpl;
 
-import com.hc.web.config.RedisTemplateUtil;
-import com.hc.dao.MonitorequipmentDao;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.MonitorInstrumentMapper;
-import com.hc.msctservice.MsctService;
 import com.hc.my.common.core.bean.ParamaterModel;
-import com.hc.service.MessagePushService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.utils.JsonUtil;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,14 +20,9 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
 
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
-    @Autowired
-    private MsctService msctService;
+
     @Autowired
     private MonitorInstrumentMapper monitorInstrumentMapper;
-    @Autowired
-    private MonitorequipmentDao monitorequipmentDao;
-    @Autowired
-    private MessagePushService messagePushService;
 
     @Override
     public Monitorinstrument saveMonitorinstrument(String SN, String mt600sn, ParamaterModel paramaterModel) {
@@ -39,31 +30,12 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         //  根据sn 号查询医院编号   K hospitalcode:sn   --   K 设备sn  --  value   Monitorinstrument
         //根据MT600 sn号查询医院编号
         try {
-            //       LOGGER.info("instrument中查询信息："+JsonUtil.toJson(paramaterModel));
             BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:sn");
             String channel;
             String o = (String) objectObjectObjectBoundHashOperations.get(mt600sn);
-            //  Monitorinstrument monitorinstrument4 = monitorInstrumentMapper.selectHospitalCodeBySn(mt600sn);
-            //    LOGGER.info("测试从数据库查询数据：" + JsonUtil.toJson(monitorinstrument4) + "查询SN号：" + mt600sn);
+
             if (StringUtils.isEmpty(o)) {
                 LOGGER.info("当前探头关联的MT600设备未注册到医院，SN号为：" + mt600sn);
-//                if (StringUtils.equalsAny(mt600sn, "1821110012", "1821110018", "1832110005", "1809110003", "1821110021", "1832110013", "1832110034",
-//                        "1821110005", "1832110040", "1832110008", "1821110013", "1821110008", "1821110008", "1832110032"
-//                        , "1821110027", "1832110026", "1832110038", "1821110011", "1832110048", "1832110006", "1832110024",
-//                        "1821110019", "1832110013", "1821110009", "1821110020", "1821110018", "1821110021", "1821110023", "1832110003", "1821110016",
-//                        "1832110030", "1821110022", "1821110001", "1821110012", "1813110002", "1809110003", "1832110005", "1813110004",
-//                        "1821110002", "1813110005", "1813110020", "1821110007", "1813110026", "1809110002", "1813110001", "1832110033",
-//                        "1813110018", "1813110010", "1832110045", "1813110030", "1813110009", "1813110019", "1813110012", "1813110028", "1813110006",
-//                        "1821110015", "1813110016", "1821110025", "1821110030", "1832110047", "1813110022", "1821110010", "1813110007",
-//                        "1821110004", "1821110028", "1832110011")) {
-//                    try {
-//                        LOGGER.info("进入拨打程序");
-//                      //  msctService.test2("18108674918", "瑞迪斯存储探头值失效");
-//                       // msctService.test2("17786499503", "瑞迪斯存储探头值失效");
-//                    } catch (Exception e) {
-//                        LOGGER.error("redis拨打电话异常：" + e.getMessage());
-//                    }
-//                }
                 //查询数据库：
                 Monitorinstrument monitorinstrumentTest = monitorInstrumentMapper.selectHospitalCodeBySn(mt600sn);
                 //       LOGGER.info("从数据库查询数据：" + JsonUtil.toJson(monitorinstrumentTest) + "查询SN号：" + mt600sn);
@@ -73,13 +45,11 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                     return null;
                 } else {
                     //同步缓存
-                    //              LOGGER.info("执行同步缓存：");
                     objectObjectObjectBoundHashOperations.put(mt600sn, JsonUtil.toJson(monitorinstrumentTest));
                 }
             }
             // 不做自动注册
             //判断当前传送数据设备是否注册到医院
-            //     LOGGER.info("instrument中SN查询信息："+JsonUtil.toJson(paramaterModel));
             String sn = "01";
             try {
                 sn = SN.substring(4, 6);
@@ -98,22 +68,8 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             }
             Boolean clientvisible = cliva.getClientvisible();
             if (!clientvisible) {
-//                String equipmentno = cliva.getEquipmentno();
                 // 未启用
                   LOGGER.info("设备未启用SN号：" + SN);
-//                HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
-//                if (redisTemple.hasKey("disable","equipmentno:"+equipmentno)){
-//                    //表示当前设备之前禁用，现在数据重新上传，又启用了
-//                    redisTemple.delete("disable","equipmentno:"+equipmentno);
-//                    //启用设备
-//                    monitorequipmentDao.updateMonitorequipmentIsAble(equipmentno);
-//                    // 报警通知
-//                    //查询当前设备
-//                    TimeoutEquipment one = monitorInstrumentMapper.getOne(equipmentno);
-//                    //解除报警
-//                    one.setDisabletype("4");
-//                    messagePushService.pushMessage5(JsonUtil.toJson(one));
-//                }
                 return null;
             }
 
@@ -123,7 +79,6 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                     if (StringUtils.isEmpty(paramaterModel.getDOOR())) {
                         return null;
                     }
-
                     switch (paramaterModel.getDOOR()) {
                         case "1":
                             channel = "1";

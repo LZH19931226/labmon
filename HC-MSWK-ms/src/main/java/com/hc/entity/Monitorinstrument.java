@@ -2,30 +2,21 @@ package com.hc.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Table(name = "monitorinstrument")
-@Entity
-@Getter
-@Setter
-@ToString
+@TableName(value = "monitorinstrument")
+@Data
 public class Monitorinstrument implements Serializable {
 	
-	
-	
+
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 4186073419054465771L;
 
-	@Id
     private String instrumentno;
 
     private String instrumentname;

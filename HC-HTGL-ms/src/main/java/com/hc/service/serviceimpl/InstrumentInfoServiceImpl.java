@@ -269,7 +269,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             updateRecordService.updateInstrumentMonitor(instrumentName,equipmentname,hospitalname,usernames,one1,instrumentInfoModel,"0","1");
             monitorInstrumentDao.save(monitorinstrument);
             //更新开关量以及报警次数缓存
-            Monitorinstrument monitorinstrument1 = JsonUtil.toBean((String) objectObjectObjectHashOperations.get("hospital:sn", monitorinstrument.getSn()), Monitorinstrument.class);
+            Monitorinstrument monitorinstrument1 = JsonUtil.toBean((String) objectObjectObjectHashOperations.get("hospital:sn", one.getSn()), Monitorinstrument.class);
             if (null!=monitorinstrument1){
                 monitorinstrument1.setChannel(channel);
                 monitorinstrument1.setInstrumentname(instrumentname);

@@ -24,12 +24,12 @@
         <module>HC-ZULL-ms</module>
         <module>HC-TCP-ms</module>
         <module>HC-MSWK-ms</module>
-        <module>HC-MSCT-ms</module>
-        <module>HC-MON-ms</module>
-        <module>HC-HTGL-ms</module>
+<!--        <module>HC-MSCT-ms</module>-->
+<!--        <module>HC-MON-ms</module>-->
+<!--        <module>HC-HTGL-ms</module>-->
         <module>HC-EUREKA-ms</module>
         <module>hc-common</module>
-        <module>hc-message-ms</module>
+<!--        <module>hc-message-ms</module>-->
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -115,27 +115,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.5</version>
-                <configuration>
-                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
-                    <overwrite>true</overwrite>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok</artifactId>
-                        <version>1.16.20</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.11</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>

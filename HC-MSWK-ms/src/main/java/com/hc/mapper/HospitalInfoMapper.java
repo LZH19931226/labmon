@@ -2,26 +2,19 @@ package com.hc.mapper;
 
 import java.util.List;
 
-import com.hc.model.MapperModel.TimeoutEquipment;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hc.entity.Hospitalofreginfo;
+import com.hc.model.TimeoutEquipment;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 
-import com.hc.entity.Hospitalofreginfo;
 
 /**
  * Created by 16956 on 2018-08-10.
  */
-@Mapper
-@Component
-public interface HospitalInfoMapper {
+public interface HospitalInfoMapper extends BaseMapper<Hospitalofreginfo> {
 
-    @Select("select * from hospitalofreginfo where hospitalcode = #{hospitalcode}")
-    Hospitalofreginfo selectHospitalInfo(@Param("hospitalcode") String hospitalcode );
 
-    @Select("select phonenum from userright where hospitalcode = #{hospitalcode} and isuse = '1'")
-    List<String> selectUserByCode(@Param("hospitalcode") String hospitalcode);
 
     @Select(" select equipmenttypeid from monitorequipment where equipmentno = #{equipmentno}")
     String getEquipmentTypeId(@Param("equipmentno") String equipmentno);

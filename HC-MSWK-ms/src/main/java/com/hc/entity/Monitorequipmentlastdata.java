@@ -3,23 +3,14 @@ package com.hc.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
-@Table(name = "monitorequipmentlastdata")
-@Entity
-@Getter
-@Setter
-@ToString
+@TableName(value = "monitorequipmentlastdata")
+@Data
 public class Monitorequipmentlastdata  implements Serializable {
 
-    @Id
     private String pkid;
     /**
      * 设备编号

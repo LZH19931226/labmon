@@ -1,16 +1,16 @@
 package com.hc.serviceImpl;
 
-import com.hc.web.config.RedisTemplateUtil;
-import com.hc.dao.InstrumentParamConfigDao;
-import com.hc.dao.MonitorequipmentlastdataDao;
 import com.hc.entity.Instrumentparamconfig;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.mapper.HospitalInfoMapper;
+import com.hc.mapper.InstrumentParamConfigMapper;
 import com.hc.mapper.MonitorInstrumentMapper;
+import com.hc.mapper.MonitorequipmentlastdataMapper;
 import com.hc.service.LastDataService;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -21,7 +21,6 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,17 +35,15 @@ public class LastDataServiceImpl implements LastDataService {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
     @Autowired
-    private MonitorequipmentlastdataDao monitorequipmentlastdataDao;
+    private MonitorequipmentlastdataMapper monitorequipmentlastdataDao;
     @Autowired
     private MessagePushService service;
     @Autowired
     private HospitalInfoMapper hospitalInfoMapper;
     @Autowired
-    private InstrumentParamConfigDao instrumentParamConfigDao;
+    private InstrumentParamConfigMapper instrumentParamConfigDao;
     @Autowired
     private MonitorInstrumentMapper monitorInstrumentMapper;
-
-    public static final List<String> arrListt = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I");
 
     @Value("${hc.pyx.pc}")
     private String pyxPc;
@@ -92,7 +89,7 @@ public class LastDataServiceImpl implements LastDataService {
                                 Date firsttime1 = s.getFirsttime();
                                 if (null == firsttime1) {
                                     s.setFirsttime(new Date());
-                                    instrumentParamConfigDao.saveAndFlush(s);
+                                    instrumentParamConfigDao.insert(s);
                                 }
                             }
                     );
@@ -100,7 +97,7 @@ public class LastDataServiceImpl implements LastDataService {
 
             }
 
-            monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
+            monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
             objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
 
         } else {
@@ -114,7 +111,7 @@ public class LastDataServiceImpl implements LastDataService {
                 if (datePoor > 4.8) {
                     //数据插入
                     log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
+                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
                     monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
                     service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
@@ -122,7 +119,7 @@ public class LastDataServiceImpl implements LastDataService {
                     //数据更新
                     log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
                     Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata2);
+                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata2);
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
                 }
             } else {
@@ -130,7 +127,7 @@ public class LastDataServiceImpl implements LastDataService {
                 String equipmentlastdata = monitorequipmentlastdata1.getEquipmentlastdata();
                 if (StringUtils.isNotEmpty(equipmentlastdata)) {
                     //非空  直接 新增一条数据
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
+                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
 
                     return;
@@ -138,7 +135,7 @@ public class LastDataServiceImpl implements LastDataService {
                 if (datePoor > 9.7) {
                     //数据插入
                     log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata);
+                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
                     monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
                     //咸宁医学院判断
                     if (StringUtils.equals(hospitalcode, "166ce81489f84901bdae7a470874df58")) {
@@ -154,7 +151,7 @@ public class LastDataServiceImpl implements LastDataService {
                     //数据更新
                     log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
                     Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata2);
+                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata2);
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
                 }
             }

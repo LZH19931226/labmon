@@ -1,8 +1,8 @@
 package com.hc.listenter;
 
-import com.hc.bean.WarningMqModel;
 import com.hc.entity.Monitorinstrument;
 import com.hc.exchange.SocketMessage;
+import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.MTJudgeService;
@@ -17,6 +17,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 
 @Component
 @EnableBinding(SocketMessage.class)

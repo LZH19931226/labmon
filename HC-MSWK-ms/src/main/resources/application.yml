@@ -8,59 +8,22 @@ spring:
     password: rabbit
     virtual-host: HCMQ
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://172.16.10.130:3306/laboratory
     username: root
     password: root
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 'x'
-    testWhileIdle: true
-    testOnBorrow: false
-    logAbandoned: true      #打印超时错误
-    removeAbandoned: true   # 设置自动连接超时回收
-    removeAbandonedTimeout: 10
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
-    cachePrepStmts: true
-  jpa:
-    show-sql: true
-    hibernate:
-            naming:
-              physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-  output:
-    ansi:
-      enabled: detect
   redis:
     cluster:
       nodes: 172.16.10.201:7000,172.16.10.202:7000,172.16.10.203:7000,172.16.10.201:7001,172.16.10.202:7001,172.16.10.203:7001
       max-redirects: 3
     timeout: 60000
-    pool:
-      max-active: 300
-      maxIdle: 100 #最大空闲连接数
-      minIdle: 20 #最小空闲连接数
-      maxWait: -1
 server:
-  port: 8089
+  port: 9002
 eureka:
   client:
     serviceUrl:
       defaultZone: http://127.0.0.1:10086/eureka/
-mybatis:   ## 可指定多个，用逗号或者分号隔开
-  config-location: classpath:mybatis/MapperConfig.xml
-  typeAliasesPackage: com.hc.entity
-  mapperLocations: classpath:mybatis/laboratoryFrom/*.xml
 hc:
   pyx:
    pc: 0.5
   ydg:
    pc: 3
-
-logging:
-  config: classpath:logback-spring.xml

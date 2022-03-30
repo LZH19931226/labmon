@@ -1,12 +1,12 @@
 package com.hc.utils;
 
-import com.hc.bean.ShowModel;
-import com.hc.bean.WarningMqModel;
-import com.hc.web.config.RedisTemplateUtil;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.Monitorinstrument;
-import com.hc.model.RequestModel.InstrumentInfoModel;
+import com.hc.model.InstrumentInfoModel;
+import com.hc.model.ShowModel;
+import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.bean.ParamaterModel;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
