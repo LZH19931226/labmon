@@ -4,8 +4,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.web.config.RedisTemplateUtil;
-import com.hc.dao.HospitalEquipmentDao;
-import com.hc.dao.HospitalofreginfoDao;
+import com.hc.mapper.HospitalEquipmentDao;
+import com.hc.mapper.HospitalofreginfoDao;
 import com.hc.entity.*;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.model.MapperModel.PageUserModel;
@@ -44,7 +44,7 @@ public class EquipmentTypeServiceImpl implements EquipmentTypeService {
     @Autowired
     private HospitalofreginfoDao hospitalofreginfoDao;
     @Autowired
-    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+    private com.hc.mapper.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
 
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;

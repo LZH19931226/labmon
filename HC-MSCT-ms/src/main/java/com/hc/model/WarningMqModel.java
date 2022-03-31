@@ -1,4 +1,4 @@
-package com.hc.bean;
+package com.hc.model;
 
 import com.hc.entity.Monitorinstrument;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,4 +1,4 @@
-package com.hc.bean;
+package com.hc.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -4,10 +4,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.web.config.RedisTemplateUtil;
-import com.hc.dao.InstrumentParamConfigDao;
-import com.hc.dao.MonitorEquipmentDao;
-import com.hc.dao.MonitorInstrumentDao;
-import com.hc.dao.MonitorInstrumentTypeDao;
+import com.hc.mapper.InstrumentParamConfigDao;
+import com.hc.mapper.MonitorEquipmentDao;
+import com.hc.mapper.MonitorInstrumentDao;
+import com.hc.mapper.MonitorInstrumentTypeDao;
 import com.hc.entity.*;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
@@ -73,7 +73,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
     private UpdateRecordService updateRecordService;
 
     @Autowired
-    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+    private com.hc.mapper.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
 
     @Autowired
     private HospitalEquipmentMapper hospitalEquipmentMapper;

@@ -3,7 +3,7 @@ package com.hc.service.serviceimpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
-import com.hc.dao.WarningRecordDao;
+import com.hc.mapper.WarningRecordDao;
 import com.hc.entity.Warningrecord;
 import com.hc.mapper.laboratoryFrom.WarningrecordInfoMapper;
 import com.hc.model.*;

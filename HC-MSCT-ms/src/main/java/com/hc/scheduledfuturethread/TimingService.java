@@ -1,11 +1,11 @@
 package com.hc.scheduledfuturethread;
 
-import com.hc.web.config.RedisTemplateUtil;
-import com.hc.dao.MonitorequipmentDao;
+import com.hc.mapper.MonitorequipmentDao;
 import com.hc.entity.*;
 import com.hc.service.SendMesService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
+import com.redis.util.RedisTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

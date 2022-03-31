@@ -1,28 +1,18 @@
 package com.hc.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Table(name = "instrumentparamconfig")
-@Entity
-@Getter
-@Setter
-@ToString
+@TableName(value = "instrumentparamconfig")
+@Data
 public class Instrumentparamconfig implements Serializable {
     /**
      * 监控参数编号
      */
-    @Id
-    @Column(name = "instrumentparamconfigNO")
     private String instrumentparamconfigno;
 
     /**

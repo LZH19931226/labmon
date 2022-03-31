@@ -1,20 +1,16 @@
 package com.hc.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "userright")
-@Entity
+@TableName(value = "userright")
 @Data
 public class Userright implements Serializable {
     /**
      * 用户ID
      */
-    @Id
     private String userid;
 
     /**

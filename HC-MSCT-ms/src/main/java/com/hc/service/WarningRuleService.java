@@ -1,6 +1,6 @@
 package com.hc.service;
 
-import com.hc.bean.WarningModel;
+import com.hc.model.WarningModel;
 import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 
 /**

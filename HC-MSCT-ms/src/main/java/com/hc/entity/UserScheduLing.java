@@ -1,8 +1,10 @@
 package com.hc.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -10,13 +12,11 @@ import java.util.Date;
  * @date 2020/7/31 14:41
  * 描述:
  **/
-@Table(name = "userscheduling")
+@TableName(value = "userscheduling")
 @Data
-@Entity
 public class UserScheduLing {
 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Id
+    @TableId(type = IdType.AUTO)
     private int usid;
 
     /**

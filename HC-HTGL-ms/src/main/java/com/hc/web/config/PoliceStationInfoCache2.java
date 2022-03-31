@@ -36,7 +36,7 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
     private final Logger log = LoggerFactory.getLogger(PoliceStationInfoCache2.class);
 
     @Autowired
-    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+    private com.hc.mapper.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
 
     @Autowired
     private HospitalEquipmentMapper hospitalEquipmentMapper;

@@ -1,5 +1,8 @@
 package com.hc.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,21 +14,14 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.List;
 
-@Table(name = "monitorinstrument")
-@Entity
-@Getter
-@Setter
-@ToString
+@TableName(value = "monitorinstrument")
+@Data
 public class Monitorinstrument implements Serializable {
-	
-	
-	
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 4186073419054465771L;
 
-	@Id
     private String instrumentno;
 
     private String instrumentname;
@@ -45,15 +41,14 @@ public class Monitorinstrument implements Serializable {
      *  1=全天报警
      *  0=不全天报警
      */
-    @Transient //排除持久化属性
+    @TableField(exist = false) //排除持久化属性
     private String alwayalarm;
-
     /**
      * 报警时间段
      */
-    @Transient //排除持久化属性
+    @TableField(exist = false) //排除持久化属性
     List<MonitorEquipmentWarningTime> warningTimeList;
 
-    @Transient //排除持久化属性
+    @TableField(exist = false) //排除持久化属性
     private String equipmenttypeid;
 }

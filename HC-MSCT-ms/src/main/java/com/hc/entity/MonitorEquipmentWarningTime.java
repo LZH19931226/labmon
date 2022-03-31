@@ -1,12 +1,17 @@
 package com.hc.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
 
+@TableName(value = "monitorequipmentwarningtime")
 @Data
 public class MonitorEquipmentWarningTime {
+    @TableId(type = IdType.AUTO)
     private Integer timeblockid;
     //设备或者设备类型id
     private String equipmentid;

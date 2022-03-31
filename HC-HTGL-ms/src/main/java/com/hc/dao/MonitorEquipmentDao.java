@@ -1,4 +1,4 @@
-package com.hc.dao;
+package com.hc.mapper;
 
 import com.hc.entity.Monitorequipment;
 import org.springframework.data.jpa.repository.JpaRepository;

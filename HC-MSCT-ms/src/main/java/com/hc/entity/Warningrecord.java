@@ -1,25 +1,18 @@
 package com.hc.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name = "warningrecord")
-@Getter
-@Setter
-@ToString
-@Entity
+@TableName(value = "warningrecord")
+@Data
 public class Warningrecord implements Serializable {
     /**
      * pkid
      */
-    @Id
+
     private String pkid;
 
     /**

@@ -24,7 +24,7 @@
         <module>HC-ZULL-ms</module>
         <module>HC-TCP-ms</module>
         <module>HC-MSWK-ms</module>
-<!--        <module>HC-MSCT-ms</module>-->
+        <module>HC-MSCT-ms</module>
 <!--        <module>HC-MON-ms</module>-->
 <!--        <module>HC-HTGL-ms</module>-->
         <module>HC-EUREKA-ms</module>

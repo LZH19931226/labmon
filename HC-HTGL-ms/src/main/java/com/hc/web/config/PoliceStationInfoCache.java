@@ -1,6 +1,6 @@
 package com.hc.web.config;
 
-import com.hc.dao.HospitalofreginfoDao;
+import com.hc.mapper.HospitalofreginfoDao;
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.entity.Userright;
 import com.hc.mapper.laboratoryFrom.ClientInfoMapper;

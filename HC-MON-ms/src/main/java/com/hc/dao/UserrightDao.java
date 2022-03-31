@@ -1,4 +1,4 @@
-package com.hc.dao;
+package com.hc.mapper;
 
 import com.hc.entity.Userright;
 import com.hc.model.UserModel;

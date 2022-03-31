@@ -1,4 +1,4 @@
-package com.hc.model.ResponseModel;
+package com.hc.model;
 
 import com.hc.entity.MonitorEquipmentWarningTime;
 import io.swagger.annotations.ApiModel;

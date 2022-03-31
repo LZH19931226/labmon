@@ -1,14 +1,14 @@
 package com.hc.serviceimpl;
 
-import com.hc.bean.WarningModel;
-import com.hc.web.config.RedisTemplateUtil;
-import com.hc.dao.InstrumentparamconfigDao;
-import com.hc.dao.WarningrecordDao;
 import com.hc.entity.Hospitalofreginfo;
+import com.hc.mapper.InstrumentparamconfigDao;
+import com.hc.mapper.WarningrecordDao;
+import com.hc.model.WarningModel;
 import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.WarningRuleService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -55,7 +55,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
             }
 
             BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:info");
-            HashOperations<Object, Object, Object> cj = redisTemplateUtil.opsForHash();
             String o = (String)objectObjectObjectBoundHashOperations.get(hospitalcode);
             if (StringUtils.isNotEmpty(o)){
                 hospitalofreginfo = JsonUtil.toBean(o,Hospitalofreginfo.class);
@@ -75,8 +74,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
             if ("1".equals(hospitalofreginfo.getAlwayalarm())) {
                 //判断是否三次报警
                 redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).rightPush(data);
-
-
                 if (redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size() < alarmtime) {
                     LOGGER.info("当前连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"设备名称:"+ instrumentMonitorInfoModel.getEquipmentname()+"监控类型："+instrumentMonitorInfoModel.getInstrumentconfigname()+"异常值："+data);
                     return null;
@@ -86,7 +83,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                     //根据医院编号查询报警联系人电话号码
                     //第三次报警
                     redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-
                     //判断当前时间是否大于 pushtime  然后是否app推送
                     //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
                     if (null!=pushtime){
@@ -101,8 +97,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                     warningModel.setUnit(instrumentMonitorInfoModel.getInstrumentconfigname());
                     warningModel.setHospitalcode(hospitalcode);
                 }
-
-
             } else {
                 //判断是否在当前禁用报警时间段内
                 Date starttime = hospitalofreginfo.getBegintime();
@@ -119,7 +113,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                     } else {
                         LOGGER.info("当前达到三次连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"异常值："+data);
                         redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-
                         //判断当前时间是否大于 pushtime  然后是否app推送
                         //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
                         if (null!=pushtime){

@@ -1,20 +1,20 @@
 package com.hc.listenter;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.hc.dao.*;
+import com.hc.mapper.*;
 import com.hc.entity.*;
-import com.hc.bean.WarningModel;
-import com.hc.bean.WarningMqModel;
-import com.hc.web.config.RedisTemplateUtil;
 import com.hc.exchange.BaoJinMsg;
-import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
+import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.model.TimeoutEquipment;
+import com.hc.model.WarningModel;
+import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.SendMesService;
 import com.hc.service.WarningService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
 import com.hc.utils.UnitCase;
+import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,12 +49,8 @@ public class SocketMessageListener {
     private UserrightDao userrightDao;
     @Autowired
     private UserScheduLingDao userScheduLingDao;
-//    @Autowired
-//    private WarningrecordSortDao warningrecordSortDao;
-
     @Autowired
     private MonitorequipmentDao monitorequipmentDao;
-
     @Autowired
     private MonitorequipmentlastdataDao monitorequipmentlastdataDao;
 
@@ -124,11 +120,9 @@ public class SocketMessageListener {
                  * <option value="3">不报警</option>
                  */
                 String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
-                String unit = "超时";
                 switch (disabletype) {
                     case "2":
                         // 超时报警
-//                        sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
                         if (StringUtils.equals(timeoutwarning, "0")) {
                             LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
                             sendMesService.callPhone(userright.getPhonenum(), equipmentname);
@@ -142,12 +136,6 @@ public class SocketMessageListener {
                             LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                         }
                         break;
-//                    case "3":
-//                        //设备禁用
-//                        sendMesService.sendMes1(phonenum, equipmentname, "禁用", hospitalname, 1);
-//                        break;
-//                    case "4":
-//                        sendMesService.sendMes1(phonenum, equipmentname, "解除", hospitalname, 1);
                     default:
                         break;
                 }
@@ -304,7 +292,9 @@ public class SocketMessageListener {
                 }
             }
             if (CollectionUtils.isNotEmpty(list1)) {
-                sendrecordDao.save(list1);
+                list1.forEach(s->{
+                    sendrecordDao.insert(s);
+                });
             }
             if (flag) {
                 //拨打电话
@@ -316,7 +306,7 @@ public class SocketMessageListener {
                     monitorequipmentlastdata1.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
                     monitorequipmentlastdata1.setInputdatetime(new Date());
                     monitorequipmentlastdata1.setEquipmentlastdata("1");
-                    monitorequipmentlastdataDao.saveAndFlush(monitorequipmentlastdata1);
+                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata1);
                     objectObjectObjectHashOperations.put("LASTDATA"+hospitalcode, monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
                 }
                 //友盟推送

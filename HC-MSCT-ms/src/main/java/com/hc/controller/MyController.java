@@ -1,16 +1,9 @@
 package com.hc.controller;
 
-import com.hc.bean.ApiResponse;
-import com.hc.dao.InstrumentparamconfigDao;
-import com.hc.dao.MonitorequipmentDao;
-import com.hc.dao.UserScheduLingDao;
-import com.hc.entity.Monitorequipment;
 import com.hc.entity.UserScheduLing;
-import com.hc.entity.Userright;
-import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
+import com.hc.mapper.UserScheduLingDao;
 import com.hc.my.common.core.util.DateUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +17,6 @@ import com.hc.Message.SingleCallByTtsUtils;
 
 import io.swagger.annotations.ApiOperation;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,23 +32,11 @@ public class MyController {
 	@Autowired
 	private SingleCallByTtsUtils singleCallByTtsUtils;
 
-	@Autowired
-	private MonitorequipmentDao monitorequipmentDao;
-
-	@Autowired
-	private InstrumentparamconfigDao instrumentparamconfigDao;
 
 	@Autowired
 	private UserScheduLingDao userScheduLingDao;
 
 
-	@GetMapping("/tests")
-	public ApiResponse<List<Monitorequipment>> get(){
-		List<Monitorequipment> monitorequipmentByHospitalcode = monitorequipmentDao.getMonitorequipmentByHospitalcode();
-		ApiResponse<List<Monitorequipment>> apiResponse = new ApiResponse<>();
-		apiResponse.setResult(monitorequipmentByHospitalcode);
-		return apiResponse;
-	}
 	
 	
 	@GetMapping("/bj")
@@ -100,7 +80,6 @@ public class MyController {
 	@ApiOperation("测试语音接口")
 	public String test3(String mobile,String instrumentname) {
 		singleCallByTtsUtils.sendSms("17354359943", "测试打电话");
-	//	singleCallByTtsUtils.sendSms("18108674918", "测试打电话");
 		return "电话拨打成功";
 	}
 

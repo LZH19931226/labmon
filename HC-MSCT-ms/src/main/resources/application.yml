@@ -1,69 +1,23 @@
 spring:
   application:
     name: HC-MSCT-ms
-  cloud:
-    config:
-      discovery:
-        serviceId: HC-MSCT-ms
-        enabled: true
   rabbitmq:
-    host: 172.16.10.201
-    port: 5672
     username: rabbit
     password: rabbit
     virtual-host: HCMQ
+    addresses: 172.16.10.201:5672,172.16.10.202:5672,172.16.10.203:5672
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8
-      driver-class-name: com.mysql.jdbc.Driver
-      username: root
-      password: root
-      initialSize: 5
-      minIdle: 5
-      maxActive: 20
-      maxWait: 60000
-      timeBetweenEvictionRunsMillis: 60000
-      minEvictableIdleTimeMillis: 300000
-      validationQuery: SELECT 'x'
-      testWhileIdle: true
-      testOnBorrow: false
-      testOnReturn: false
-      poolPreparedStatements: true
-      maxPoolPreparedStatementPerConnectionSize: 20
-      cachePrepStmts: true
-  jpa:
-      show-sql: true
-      hibernate:
-              naming:
-                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      output:
-        ansi:
-        enabled: detect
+    url: jdbc:mysql://172.16.10.130:3306/laboratory
+    username: root
+    password: root
   redis:
     cluster:
       nodes: 172.16.10.201:7000,172.16.10.202:7000,172.16.10.203:7000,172.16.10.201:7001,172.16.10.202:7001,172.16.10.203:7001
       max-redirects: 3
     timeout: 60000
-    pool:
-      max-active: 300
-      maxIdle: 100 #最大空闲连接数
-      minIdle: 20 #最小空闲连接数
-      maxWait: -1
 server:
-  port: 8093
-#  ssl:
-#        key-store: classpath:tomcat.keystore
-#        key-store-password: 123456
-#        keyAlias: tomcat
-#        keyStoreType: PKCS12
+  port: 10088
 eureka:
-#  instance:
-#    hostname: 39.104.178.216
-#    instance-id: ${spring.application.name}
-#    prefer-ip-address: false
-#    # 心跳检测检测与续约时间
-#    # 测试时将值设置设置小些，保证服务关闭后注册中心能及时踢出服务
-#    lease-renewal-interval-in-seconds: 10
-#    lease-expiration-duration-in-seconds: 30
   client:
     serviceUrl:
       defaultZone: http://127.0.0.1:10086/eureka/
@@ -100,6 +54,3 @@ mail:
 timing:
   phone1: 13774664356
   phone2: 18108674918
-
-logging:
-  config: classpath:logback-spring.xml

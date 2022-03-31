@@ -2,11 +2,10 @@ spring:
   application:
     name: HC-MSWK-ms
   rabbitmq:
-    host: 172.16.10.201
-    port: 5672
     username: rabbit
     password: rabbit
     virtual-host: HCMQ
+    addresses: 172.16.10.201:5672,172.16.10.202:5672,172.16.10.203:5672
   datasource:
     url: jdbc:mysql://172.16.10.130:3306/laboratory
     username: root

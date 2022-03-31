@@ -1,8 +1,8 @@
 package com.hc.service;
 
-import com.hc.bean.WarningModel;
-import com.hc.bean.WarningMqModel;
 import com.hc.entity.Monitorinstrument;
+import com.hc.model.WarningModel;
+import com.hc.model.WarningMqModel;
 
 import java.util.Date;
 
