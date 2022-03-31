@@ -2,6 +2,7 @@ package com.hc.handler;
 
 
 import com.hc.bean.MTOnlineBean;
+import com.hc.exchange.Testqueue;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
@@ -20,6 +21,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -42,6 +44,10 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	private RedisTemplateUtil redisDao;
 	@Autowired
 	private NettyUtil nettyUtil;
+
+	@Autowired
+	private AmqpTemplate amqpTemplate;
+
 	// 连接成功后，向server发送消息
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -134,6 +140,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 	public  void randomPush(ParamaterModel model){
 		  Random  random = new Random();
 		  a=random.nextInt(3);
+		String snMessage = JsonUtil.toJson(model);
 		if (a==0){
 			msgservice.pushMessage(JsonUtil.toJson(model));
 		}
@@ -143,6 +150,7 @@ public class  ServerChannelHandler extends ChannelInboundHandlerAdapter{
 		if (a==2){
 			msgservice.pushMessage2(JsonUtil.toJson(model));
 		}
+		amqpTemplate.convertAndSend(Testqueue.TESTQUEUE,snMessage);
 	}
 	/**
 	 * 关闭通道，同时移除当前通道在线列表信息
