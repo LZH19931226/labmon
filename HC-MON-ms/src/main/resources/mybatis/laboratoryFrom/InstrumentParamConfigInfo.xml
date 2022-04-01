@@ -31,7 +31,7 @@ from  monitorequipment b
                         where b.equipmentno = #{equipmentno}
     </select>
 
-    <select id="selectInstrumentByEqNo" resultType="com.hc.my.common.core.bean.InstrumentMonitorInfoModel"
+    <select id="selectInstrumentByEqNo" resultType="com.hc.model.InstrumentMonitorInfoModel"
             parameterType="java.util.List">
         SELECT
         e.equipmentno,

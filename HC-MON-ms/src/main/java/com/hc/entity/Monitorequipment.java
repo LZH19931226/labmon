@@ -1,6 +1,6 @@
 package com.hc.entity;
 
-import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
+import com.hc.model.InstrumentMonitorInfoModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

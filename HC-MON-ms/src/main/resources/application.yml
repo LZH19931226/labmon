@@ -18,7 +18,7 @@ spring:
     timeout: 10000
   datasource:
         primary:
-            url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+            url: jdbc:mysql://172.16.10.130:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
             driver-class-name: com.mysql.jdbc.Driver
             username: root
             password: root
@@ -36,7 +36,7 @@ spring:
             maxPoolPreparedStatementPerConnectionSize: 20
             cachePrepStmts: true
         secondary:
-            url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+            url: jdbc:mysql://172.16.10.130:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
             driver-class-name: com.mysql.jdbc.Driver
             username: root
             password: root
@@ -54,7 +54,7 @@ spring:
             maxPoolPreparedStatementPerConnectionSize: 20
             cachePrepStmts: true
         thirdly:
-            url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+            url: jdbc:mysql://172.16.10:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&useSSL=false
             driver-class-name: com.mysql.jdbc.Driver
             username: root
             password: root

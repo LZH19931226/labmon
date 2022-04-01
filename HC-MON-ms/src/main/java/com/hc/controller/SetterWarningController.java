@@ -1,19 +1,26 @@
 package com.hc.controller;
 
-import com.hc.web.config.RedisTemplateUtil;
+import com.github.pagehelper.Page;
+import com.hc.config.RedisTemplateUtil;
 import com.hc.entity.Userright;
 import com.hc.model.ClientInfoModel;
 import com.hc.service.SetterWarningService;
 import com.hc.utils.ApiResponse;
+import com.hc.utils.TokenHelper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(value = "/api/clientInfo", produces = {MediaType.APPLICATION_JSON_VALUE})

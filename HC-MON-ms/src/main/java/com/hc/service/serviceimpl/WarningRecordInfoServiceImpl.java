@@ -1,7 +1,7 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.mapper.WarningRecordInfoDao;
-import com.hc.mapper.WarningrecordSortDao;
+import com.hc.dao.WarningRecordInfoDao;
+import com.hc.dao.WarningrecordSortDao;
 import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.WarningRecordInfo;
 import com.hc.entity.WarningrecordSort;
