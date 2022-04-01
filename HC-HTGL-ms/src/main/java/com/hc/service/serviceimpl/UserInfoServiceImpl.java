@@ -1,15 +1,15 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.web.config.RedisTemplateUtil;
-import com.hc.mapper.UserScheduLingDao;
+import com.hc.config.RedisTemplateUtil;
+import com.hc.dao.UserScheduLingDao;
 import com.hc.entity.UserScheduLing;
 import com.hc.entity.Userback;
 import com.hc.mapper.laboratoryFrom.UserAuthorInfoMapper;
 import com.hc.mapper.laboratoryFrom.UserInfoMapper;
 import com.hc.model.RequestModel.UserScheduLingPostModel;
-import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.UserInfoService;
 import com.hc.units.ApiResponse;
+import com.hc.units.DateUtils;
 import com.hc.units.TokenHelper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -87,7 +87,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         String createuser = userScheduLingPostModel.getCreateuser();
         Date endtime = userScheduLingPostModel.getEndtime();
         String hospitalcode = userScheduLingPostModel.getHospitalcode();
-        userScheduLingDao.deleteStHos(hospitalcode,DateUtils.paseDatetime(starttime),DateUtils.paseDatetime(endtime));
+        userScheduLingDao.deleteStHos(hospitalcode, DateUtils.paseDatetime(starttime),DateUtils.paseDatetime(endtime));
         if (CollectionUtils.isNotEmpty(userScheduLings)){
             userScheduLings.forEach(s->{
                 s.setHospitalcode(hospitalcode);

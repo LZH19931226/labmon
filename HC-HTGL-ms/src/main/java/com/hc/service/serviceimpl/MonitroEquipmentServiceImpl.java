@@ -3,22 +3,24 @@ package com.hc.service.serviceimpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
-import com.hc.web.config.RedisTemplateUtil;
-import com.hc.mapper.InstrumentParamConfigDao;
-import com.hc.mapper.MonitorEquipmentDao;
-import com.hc.mapper.MonitorInstrumentDao;
-import com.hc.mapper.MonitorInstrumentTypeDao;
+import com.hc.config.RedisTemplateUtil;
+import com.hc.dao.InstrumentParamConfigDao;
+import com.hc.dao.MonitorEquipmentDao;
+import com.hc.dao.MonitorInstrumentDao;
+import com.hc.dao.MonitorInstrumentTypeDao;
 import com.hc.entity.*;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
+import com.hc.model.InstrumentMonitorInfoModel;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.WiredInstrumentModel;
+import com.hc.model.RequestModel.WorkTimeBlockModel;
 import com.hc.model.ResponseModel.AllInstrumentInfoModel;
+import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
-import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.MonitorEquipmentService;
 import com.hc.service.UpdateRecordService;
 import com.hc.units.ApiResponse;
@@ -73,7 +75,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
     private UpdateRecordService updateRecordService;
 
     @Autowired
-    private com.hc.mapper.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
 
     @Autowired
     private HospitalEquipmentMapper hospitalEquipmentMapper;
@@ -174,9 +176,14 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
             monitorinstrument.setAlarmtime(3);
             monitorinstrument.setInstrumentno(UUID.randomUUID().toString().replaceAll("-", ""));
             monitorinstrument.setHospitalcode(hospitalcode);
+            //新增报警时段
+            monitorinstrument.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
             monitorinstrument = monitorInstrumentDao.save(monitorinstrument);
             equipmentInfoModel.setEquipmentno(monitorinstrument.getEquipmentno());
             this.processAddEquipment(equipmentInfoModel);
+            //重新赋值属性
+            monitorinstrument.setWarningTimeList(equipmentInfoModel.getWorkTimeBlock());
+            monitorinstrument.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
             if (StringUtils.isEmpty(monitorinstrument.getChannel())) {
                 objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument));
@@ -444,6 +451,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
 
             //更新缓存
             Monitorinstrument monitorinstrument = monitorInstrumentMapper.selectInstrumentByEquipmentno(equipmentInfoModel.getEquipmentno());
+            monitorinstrument.setAlwayalarm(equipmentInfoModel.getAlwayalarm());
             if(monitorinstrument != null){
                 monitorinstrument.setWarningTimeList(monitorEquipmentWarningTimeList);
                 //同步探头名称到缓存

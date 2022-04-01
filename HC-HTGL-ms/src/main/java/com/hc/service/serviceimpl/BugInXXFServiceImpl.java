@@ -1,7 +1,7 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.mapper.InstrumentParamConfigDao;
-import com.hc.mapper.MonitorInstrumentDao;
+import com.hc.dao.InstrumentParamConfigDao;
+import com.hc.dao.MonitorInstrumentDao;
 import com.hc.entity.Instrumentmonitor;
 import com.hc.entity.Instrumentparamconfig;
 import com.hc.entity.Monitorinstrument;

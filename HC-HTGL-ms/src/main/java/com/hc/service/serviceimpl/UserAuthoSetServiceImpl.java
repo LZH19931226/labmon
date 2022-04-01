@@ -3,7 +3,7 @@ package com.hc.service.serviceimpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
-import com.hc.mapper.UserEquipmentRightDao;
+import com.hc.dao.UserEquipmentRightDao;
 import com.hc.entity.Userequipmentright;
 import com.hc.mapper.laboratoryFrom.UserAuthorInfoMapper;
 import com.hc.model.RequestModel.UserauthorInfoModel;

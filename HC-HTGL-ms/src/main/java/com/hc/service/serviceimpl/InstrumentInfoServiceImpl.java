@@ -3,21 +3,22 @@ package com.hc.service.serviceimpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
-import com.hc.web.config.RedisTemplateUtil;
-import com.hc.mapper.InstrumentParamConfigDao;
-import com.hc.mapper.MonitorInstrumentDao;
-import com.hc.mapper.MonitorInstrumentTypeDao;
+import com.hc.config.RedisTemplateUtil;
+import com.hc.dao.InstrumentParamConfigDao;
+import com.hc.dao.MonitorInstrumentDao;
+import com.hc.dao.MonitorInstrumentTypeDao;
 import com.hc.entity.Instrumentparamconfig;
+import com.hc.entity.Monitorequipmentlastdata;
 import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Monitorinstrumenttype;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
+import com.hc.model.InstrumentMonitorInfoModel;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.InstrumentInfoModel;
 import com.hc.model.RequestModel.InstrumentPageModel;
 import com.hc.model.ResponseModel.AllInstrumentInfoModel;
 import com.hc.model.ShowModel;
-import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.InstrumentInfoService;
 import com.hc.service.UpdateRecordService;
 import com.hc.units.ApiResponse;
@@ -136,7 +137,7 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             instrumentparamconfig = instrumentParamConfigDao.save(instrumentparamconfig);
             //执行同步缓存
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid(), JsonUtil.toJson(instrumentparamconfig));
+            objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentparamconfig.getInstrumentno() + ":" + instrumentparamconfig.getInstrumentconfigid(), JsonUtil.toJson(instrumentparamconfig));
             return apiResponse;
         } catch (Exception e) {
             LOGGER.error("添加探头类型失败，原因：" + e.getMessage());
@@ -163,10 +164,10 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
             InstrumentInfoModel one = monitorInstrumentMapper.getInstrumentInfoByNo(instrumentparamconfigNO);
             String hospitalcode = one.getHospitalcode();
             InstrumentInfoModel instrumentInfoModel1 = new InstrumentInfoModel();
-            updateRecordService.updateInstrumentMonitor(instrumentName,showModel.getEquipmentname(),showModel.getHospitalname(),usernames,one,instrumentInfoModel1,"0","2");
+            updateRecordService.updateInstrumentMonitor(instrumentName, showModel.getEquipmentname(), showModel.getHospitalname(), usernames, one, instrumentInfoModel1, "0", "2");
             instrumentParamConfigDao.delete(instrumentInfoModel.getInstrumentparamconfigNO());
             HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            objectObjectObjectHashOperations.delete("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid());
+            objectObjectObjectHashOperations.delete("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid());
         } catch (Exception e) {
             LOGGER.error("失败：" + e.getMessage());
             apiResponse.setMessage("删除探头失败，请联系管理员");
@@ -181,16 +182,16 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
                 Monitorinstrument one = monitorInstrumentDao.findOne(instrumentInfoModel.getInstrumentno());
 
                 HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                if(org.apache.commons.lang3.StringUtils.isNotEmpty(one.getChannel())){
-                    if ("1".equals(one.getChannel())){
+                if (org.apache.commons.lang3.StringUtils.isNotEmpty(one.getChannel())) {
+                    if ("1".equals(one.getChannel())) {
                         objectObjectObjectHashOperations.delete("hospital:sn", one.getSn());
-                        objectObjectObjectHashOperations.delete("DOOR:"+one.getChannel(),one.getSn());
+                        objectObjectObjectHashOperations.delete("DOOR:" + one.getChannel(), one.getSn());
                         monitorInstrumentDao.delete(instrumentInfoModel.getInstrumentno());
-                    }else{
-                        objectObjectObjectHashOperations.delete("DOOR:"+one.getChannel(),one.getSn());
+                    } else {
+                        objectObjectObjectHashOperations.delete("DOOR:" + one.getChannel(), one.getSn());
                         monitorInstrumentDao.delete(instrumentInfoModel.getInstrumentno());
                     }
-                }else{
+                } else {
                     objectObjectObjectHashOperations.delete("hospital:sn", one.getSn());
                     //探头类型删除完了，将探头表里面那一行探头也删除了吧
                     monitorInstrumentDao.delete(instrumentInfoModel.getInstrumentno());
@@ -234,93 +235,87 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
         String calibration = instrumentInfoModel.getCalibration();
         String channel = instrumentInfoModel.getChannel();
         BigDecimal saturation = instrumentInfoModel.getSaturation();
-        try {
-            //修改sn时候查询当前修改后的sn是否在其余位置存在
-            Monitorinstrument one = monitorInstrumentMapper.isSn(instrumentno);
-            if (!StringUtils.equals(sn,one.getSn())){
-                Monitorinstrument sn2 = monitorInstrumentMapper.isSns(sn);
-                if (null!=sn2) {
-                    apiResponse.setMessage("当前sn已被其他设备占用");
-                    apiResponse.setCode(ApiResponse.FAILED);
-                    return apiResponse;
-                }
+        //修改sn时候查询当前修改后的sn是否在其余位置存在
+        Monitorinstrument one = monitorInstrumentMapper.isSn(instrumentno);
+        if (!StringUtils.equals(sn, one.getSn())) {
+            Monitorinstrument sn2 = monitorInstrumentMapper.isSns(sn);
+            if (null != sn2) {
+                apiResponse.setMessage("当前sn已被其他设备占用");
+                apiResponse.setCode(ApiResponse.FAILED);
+                return apiResponse;
             }
-            HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-            String channel1 = one.getChannel();
-            if (StringUtils.isNotEmpty(channel1)) {
-                if (!StringUtils.equals(channel1,channel)) {
-                    LOGGER.info("删除之前开关量缓存");
-                    objectObjectObjectHashOperations.delete("DOOR:"+channel1,sn);
-                }
+        }
+        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
+        String channel1 = one.getChannel();
+        if (StringUtils.isNotEmpty(channel1)) {
+            if (!StringUtils.equals(channel1, channel)) {
+                LOGGER.info("删除之前开关量缓存");
+                objectObjectObjectHashOperations.delete("DOOR:" + channel1, sn);
             }
-            monitorinstrument.setChannel(channel);
-            monitorinstrument.setInstrumentname(instrumentname);
-            monitorinstrument.setEquipmentno(equipmentno);
-            monitorinstrument.setHospitalcode(hospitalcode);
-            monitorinstrument.setAlarmtime(alarmtime);
-            monitorinstrument.setSn(sn);
-            monitorinstrument.setInstrumenttypeid(instrumenttypeid);
-            monitorinstrument.setInstrumentno(instrumentno);
-            String usernames = instrumentInfoModel.getUsernames();
-            InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNoNew(instrumentparamconfigNO);
-            String instrumentName = one1.getInstrumentconfigname();
-            String hospitalname = one1.getHospitalname();
-            String equipmentname = one1.getEquipmentname();
-            updateRecordService.updateInstrumentMonitor(instrumentName,equipmentname,hospitalname,usernames,one1,instrumentInfoModel,"0","1");
-            monitorInstrumentDao.save(monitorinstrument);
-            //更新开关量以及报警次数缓存
-            Monitorinstrument monitorinstrument1 = JsonUtil.toBean((String) objectObjectObjectHashOperations.get("hospital:sn", one.getSn()), Monitorinstrument.class);
-            if (null!=monitorinstrument1){
-                monitorinstrument1.setChannel(channel);
-                monitorinstrument1.setInstrumentname(instrumentname);
-                monitorinstrument1.setEquipmentno(equipmentno);
-                monitorinstrument1.setHospitalcode(hospitalcode);
-                monitorinstrument1.setAlarmtime(alarmtime);
-                monitorinstrument1.setSn(sn);
-                monitorinstrument1.setInstrumenttypeid(instrumenttypeid);
-                monitorinstrument1.setInstrumentno(instrumentno);
-            }
-            if (StringUtils.isNotEmpty(monitorinstrument.getChannel())){
-                //同步缓存
-                objectObjectObjectHashOperations.put("DOOR:"+monitorinstrument.getChannel(),monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
-                if ("1".equals(monitorinstrument.getChannel())){
-                    //默认通道一绑定监控co2 o2 温度
-                    objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
-                }
-            }else {
+        }
+        monitorinstrument.setChannel(channel);
+        monitorinstrument.setInstrumentname(instrumentname);
+        monitorinstrument.setEquipmentno(equipmentno);
+        monitorinstrument.setHospitalcode(hospitalcode);
+        monitorinstrument.setAlarmtime(alarmtime);
+        monitorinstrument.setSn(sn);
+        monitorinstrument.setInstrumenttypeid(instrumenttypeid);
+        monitorinstrument.setInstrumentno(instrumentno);
+        String usernames = instrumentInfoModel.getUsernames();
+        InstrumentInfoModel one1 = monitorInstrumentMapper.getInstrumentInfoByNoNew(instrumentparamconfigNO);
+        String instrumentName = one1.getInstrumentconfigname();
+        String hospitalname = one1.getHospitalname();
+        String equipmentname = one1.getEquipmentname();
+        updateRecordService.updateInstrumentMonitor(instrumentName, equipmentname, hospitalname, usernames, one1, instrumentInfoModel, "0", "1");
+        monitorInstrumentDao.save(monitorinstrument);
+        //更新开关量以及报警次数缓存
+        //取出原始的数据
+        Monitorinstrument monitorinstrument1 = JsonUtil.toBean((String) objectObjectObjectHashOperations.get("hospital:sn", one.getSn()), Monitorinstrument.class);
+        if (null != monitorinstrument1) {
+            monitorinstrument1.setChannel(channel);
+            monitorinstrument1.setInstrumentname(instrumentname);
+            monitorinstrument1.setEquipmentno(equipmentno);
+            monitorinstrument1.setHospitalcode(hospitalcode);
+            monitorinstrument1.setAlarmtime(alarmtime);
+            monitorinstrument1.setSn(sn);
+            monitorinstrument1.setInstrumenttypeid(instrumenttypeid);
+            monitorinstrument1.setInstrumentno(instrumentno);
+        }
+        if (StringUtils.isNotEmpty(monitorinstrument.getChannel())) {
+            //同步缓存
+            objectObjectObjectHashOperations.put("DOOR:" + monitorinstrument.getChannel(), monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
+            if ("1".equals(monitorinstrument.getChannel())) {
+                //默认通道一绑定监控co2 o2 温度
                 objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
             }
-            instrumentparamconfig.setInstrumenttypeid(instrumenttypeid);
-            instrumentparamconfig.setInstrumentno(instrumentno);
-            instrumentparamconfig.setInstrumentname(instrumentname);
-            instrumentparamconfig.setLowlimit(lowlimit);
-            instrumentparamconfig.setHighlimit(highlimit);
-            instrumentparamconfig.setWarningphone(warningphone);
-            instrumentparamconfig.setInstrumentconfigid(instrumentconfigid);
-            instrumentparamconfig.setInstrumentparamconfigno(instrumentparamconfigNO);
-            instrumentparamconfig.setAlarmtime(alarmtime);
-            instrumentparamconfig.setCalibration(calibration);
-            instrumentparamconfig.setSaturation(saturation);
-            Instrumentparamconfig one2 = instrumentParamConfigDao.getOne(instrumentparamconfigNO);
-            instrumentparamconfig.setFirsttime(one2.getFirsttime());
-            instrumentParamConfigDao.save(instrumentparamconfig);
-            InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
-            //强制修改只能操作的元素覆盖查询的元素
-            instrumentMonitorInfoModel.setAlarmtime(instrumentparamconfig.getAlarmtime());
-            instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
-            instrumentMonitorInfoModel.setHighlimit(instrumentparamconfig.getHighlimit());
-            instrumentMonitorInfoModel.setLowlimit(instrumentparamconfig.getLowlimit());
-            if (StringUtils.isNotEmpty(calibration)){
-                instrumentMonitorInfoModel.setCalibration(calibration);
-            }
-            objectObjectObjectHashOperations.put("insprobe"+hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
-            return apiResponse;
-        } catch (Exception e) {
-            LOGGER.error("失败：" + e.getMessage());
-            apiResponse.setMessage("服务异常");
-            apiResponse.setCode(ApiResponse.FAILED);
-            return apiResponse;
+        } else {
+            objectObjectObjectHashOperations.put("hospital:sn", monitorinstrument.getSn(), JsonUtil.toJson(monitorinstrument1));
         }
+        instrumentparamconfig.setInstrumenttypeid(instrumenttypeid);
+        instrumentparamconfig.setInstrumentno(instrumentno);
+        instrumentparamconfig.setInstrumentname(instrumentname);
+        instrumentparamconfig.setLowlimit(lowlimit);
+        instrumentparamconfig.setHighlimit(highlimit);
+        instrumentparamconfig.setWarningphone(warningphone);
+        instrumentparamconfig.setInstrumentconfigid(instrumentconfigid);
+        instrumentparamconfig.setInstrumentparamconfigno(instrumentparamconfigNO);
+        instrumentparamconfig.setAlarmtime(alarmtime);
+        instrumentparamconfig.setCalibration(calibration);
+        instrumentparamconfig.setSaturation(saturation);
+        Instrumentparamconfig one2 = instrumentParamConfigDao.getOne(instrumentparamconfigNO);
+        instrumentparamconfig.setFirsttime(one2.getFirsttime());
+        instrumentParamConfigDao.save(instrumentparamconfig);
+        InstrumentMonitorInfoModel instrumentMonitorInfoModel = instrumentMonitorInfoMapper.selectInstrumentOneInfo(instrumentparamconfigNO);
+        //强制修改只能操作的元素覆盖查询的元素
+        instrumentMonitorInfoModel.setAlarmtime(instrumentparamconfig.getAlarmtime());
+        instrumentMonitorInfoModel.setWarningphone(instrumentparamconfig.getWarningphone());
+        instrumentMonitorInfoModel.setHighlimit(instrumentparamconfig.getHighlimit());
+        instrumentMonitorInfoModel.setLowlimit(instrumentparamconfig.getLowlimit());
+        if (StringUtils.isNotEmpty(calibration)) {
+            instrumentMonitorInfoModel.setCalibration(calibration);
+        }
+        objectObjectObjectHashOperations.put("insprobe" + hospitalcode, instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(), JsonUtil.toJson(instrumentMonitorInfoModel));
+        return apiResponse;
     }
 
     @Override
@@ -367,11 +362,11 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
     public ApiResponse<List<Monitorinstrumenttype>> showInstrumentType() {
         ApiResponse<List<Monitorinstrumenttype>> apiResponse = new ApiResponse<List<Monitorinstrumenttype>>();
         List<Monitorinstrumenttype> list = new ArrayList<Monitorinstrumenttype>();
-        try{
+        try {
             list = monitorInstrumentTypeDao.findAll();
 
-            if (CollectionUtils.isNotEmpty(list)){
-                for (int i = list.size() -1;i >=0;i--) {
+            if (CollectionUtils.isNotEmpty(list)) {
+                for (int i = list.size() - 1; i >= 0; i--) {
                     String instrumenttypename = list.get(i).getInstrumenttypename();
                     if ("有线设备".equals(instrumenttypename)) {
                         list.remove(i);
@@ -379,13 +374,13 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
 
                 }
                 apiResponse.setResult(list);
-            }else{
+            } else {
                 apiResponse.setMessage("不存在监控设备信息");
                 apiResponse.setCode(ApiResponse.FAILED);
             }
             return apiResponse;
-        }catch (Exception e){
-            LOGGER.error("显示所有探头监控设备类型失败，原因："+e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("显示所有探头监控设备类型失败，原因：" + e.getMessage());
             apiResponse.setCode(ApiResponse.FAILED);
             apiResponse.setMessage("服务异常，请联系管理员");
             return apiResponse;
@@ -404,30 +399,30 @@ public class InstrumentInfoServiceImpl implements InstrumentInfoService {
         String hospitalcode = instrumentInfoModel.getHospitalcode();
         String equipmentno = instrumentInfoModel.getEquipmentno();
         ApiResponse<String> apiResponse = new ApiResponse<String>();
-        if(StringUtils.isEmpty(hospitalcode)){
+        if (StringUtils.isEmpty(hospitalcode)) {
             apiResponse.setMessage("清理缓存失败,医院编码错误");
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
         }
-        if(StringUtils.isEmpty(equipmentno)){
+        if (StringUtils.isEmpty(equipmentno)) {
             apiResponse.setMessage("清理缓存失败,设备编码错误");
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
         }
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        StringBuffer lastKey = new StringBuffer("LASTDATA"+hospitalcode);
+        StringBuffer lastKey = new StringBuffer("LASTDATA" + hospitalcode);
         String lastDataKey = lastKey.toString();
         Set<Object> keys = objectObjectObjectHashOperations.keys(lastDataKey);
-        if(!objectObjectObjectHashOperations.hasKey(lastDataKey,equipmentno)){
+        if (!objectObjectObjectHashOperations.hasKey(lastDataKey, equipmentno)) {
             apiResponse.setMessage("清理缓存失败,数据不存在");
             apiResponse.setCode(ApiResponse.FAILED);
             return apiResponse;
         }
         Long delete = objectObjectObjectHashOperations.delete(lastDataKey, equipmentno);
-        if(delete > 0){
+        if (delete > 0) {
             apiResponse.setMessage("清理缓存成功");
             apiResponse.setCode(ApiResponse.SUCCESS);
-        }else{
+        } else {
             apiResponse.setMessage("清理缓存失败");
             apiResponse.setCode(ApiResponse.FAILED);
         }

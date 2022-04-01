@@ -1,159 +1,122 @@
 package com.hc.units;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+/**
+ * @author LiuZhiHao
+ * @date 2020/7/13 9:54
+ * 描述:
+ **/
 public class DateUtils {
-	
-	/**@param format 根据指定的格式时间类型返回标准时间类型
-	 * 返回格式：2007-08-14
-	 * @return
-	 */
-	public static String  changeTime(String time) {
-		
-		if (StringUtils.isEmpty(time)) {
-			return null;
-		}
-		 String  aString = null;
-		if (time.contains("/")) {
-			 aString = time.replaceAll("/", "-");
-		}else {
-			   aString = time;
-		}
-		return aString;
-	}
-	
-	
-	
-	public static String  changeTime2(String time) {
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		String abc = null;
-		if (time.contains("-")) {
-			 abc = time.replaceAll("-", "");
-		}
-		
-		String replaceAll2 = abc.replaceAll(" ", "");
-		String substring = replaceAll2.substring(0,8);
-		return substring+"000000";
-	}
-	
-	public static Date changeTime3(String time) throws ParseException {
-		
-		if (StringUtils.isEmpty(time)) {
-			return null;
-		}
-		if (time.contains("-")) {
-			 Date date2 = getDate(time, "yyyy-MM-dd");
-			return date2;
-		}
-		String substring = time.substring(0, 4);
-		String substring2 = time.substring(4, 6);
-		String substring3 = time.substring(6, 8);
-		String date = substring+"-"+substring2+"-"+substring3;
-		 Date date2 = getDate(date, "yyyy-MM-dd");
-		return date2;
-		
-	}
-	
-	public static String getNowTime1() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String format = sdf.format(new Date());
-		String abc = format.replaceAll("-", "");
-		String replaceAll = abc.replaceAll(":", "");
-		String replaceAll2 = replaceAll.replaceAll(" ", "");
-		return replaceAll2;
-	}
-	
-	public static void main(String[] args) {
-		
-		String nowTime1 = getNowTime1();
-		System.out.println(nowTime1);
-		
-	}
-	/**
-	 * 返回格式：2007-08-14
-	 * @return
-	 */
-	public static String getToday(){
-		String time = "";
-		time = getToday("yyyy-MM-dd");
-		return time;
-	}
-	/**
-	 * 
-	 * @param format 根据指定的格式时间类型返回当前时间
-	 * @return
-	 */
-	public static String getToday(String format){
-		return getDateStr(Calendar.getInstance().getTime(),format);
-	}
-	
-	/**
-	 * 日期转字符
-	 * @param date
-	 * @param format
-	 * @return
-	 */
-	public static String getDateStr(Date date,String format){
-		SimpleDateFormat df = new SimpleDateFormat(format);
-		return df.format(date);
-	}
-	
-	public static Date getDate(String date,String format) throws ParseException{
-		SimpleDateFormat sf = new SimpleDateFormat(format);
-		return sf.parse(date);
-	}
-	
-	/**
-	 * @param millis
-	 * @return
-	 */
-	public static Date parseMills(long millis){
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(millis);
-		return calendar.getTime();
-	}
-	
-	public static Date getDateToday(String format) throws ParseException{
-		String str = getDateStr(Calendar.getInstance().getTime(),format);
-		return getDate(str,format);
-	}
-	
-	public static long getTimes(){
-		return new Date().getTime();
-	}
-	
-//	/**
-//	 * 考试年份编码
-//	 * @return
-//	 */
-//	public static String getYearCode(){
-//		Calendar cal = Calendar.getInstance();
-//    	int year = cal.get(Calendar.YEAR);
-//    	String yearStr = new Integer(year).toString();
-//    	return yearStr.substring(2,4);//当前年份后两位
-//	}
-	
-	/*public static void main(String[] args) throws ParseException{
-      
-		String aString  = "20180604115701";
-		String changeTime3 = changeTime3(aString);
-		System.out.println(changeTime3);
-		
-		
-	}*/
-	public static String getNowTime() {
-		return getToday("yyyy-MM-dd HH:mm:ss");
-	}
-	public static boolean checkTxnTime(String startTime, String endTime) {
-		String nowDate = getDateStr(new Date(), "HH:mm:ss");
-		if(nowDate.compareTo(startTime) >= 0 && nowDate.compareTo(endTime) <= 0){
-			return true;
-		}
-		return false; 
-	}
+
+    /**
+     * 判断当前时间是否在[startTime, endTime]区间，注意时间格式要一致
+     *
+     * @param nowTime   当前时间
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @author liu
+     */
+    public static boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+        String format1 = simpleDateFormat.format(nowTime);
+        String format2 = simpleDateFormat.format(startTime);
+        String format3 = simpleDateFormat.format(endTime);
+        try {
+            Date parse1 = simpleDateFormat.parse(format1);
+            Date parse2 = simpleDateFormat.parse(format2);
+            Date parse3 = simpleDateFormat.parse(format3);
+            Calendar date = Calendar.getInstance();
+            date.setTime(parse1);
+
+            Calendar begin = Calendar.getInstance();
+            begin.setTime(parse2);
+
+            Calendar end = Calendar.getInstance();
+            end.setTime(parse3);
+            if (date.after(begin) && date.before(end)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    /**
+     * 解析时间
+     *
+     * @param nowTime   当前时间 yyyy-mm-dd
+     * @author liu
+     */
+    public static String paseDate(Date nowTime) {
+       return dateFormat.format(nowTime);
+
+    }
+
+    public static String paseDatetime(Date nowTime) {
+        return datetimeFormat.format(nowTime);
+
+    }
+    /**
+     * 日期转字符
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String getDateStr(Date date,String format){
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        return df.format(date);
+    }
+    /**
+     *
+     * @param format 根据指定的格式时间类型返回当前时间
+     * @return
+     */
+    public static String getToday(String format){
+        return getDateStr(Calendar.getInstance().getTime(),format);
+    }
+
+    /**
+     * 返回格式：2007-08-14
+     * @return
+     */
+    public static String getToday(){
+        String time = "";
+        time = getToday("yyyy-MM-dd");
+        return time;
+    }
+
+    /**
+     * 获取指定时间前一天
+     * @param day   指定时间
+     * @author liu
+     */
+    public static String getYesterday(Date day){
+        long ms = day.getTime() - 1*24*3600*1000L;
+        Date prevDay = new Date(ms);
+        return dateFormat.format(prevDay);
+    }
+
+    public static void main(String[] args) throws ParseException {
+//        Date startTime = simpleDateFormat.parse("09:00:00");
+//        Date endTime = simpleDateFormat.parse("19:50:59");
+//        System.out.println(isEffectiveDate(new Date(), startTime, endTime));
+//        System.out.println(getYesterday(new Date()));
+        List<String> list = Arrays.asList("1","2");
+        List<String> list2 = Arrays.asList("4","1");
+        list=list2;
+        System.out.println(list);
+    }
 }

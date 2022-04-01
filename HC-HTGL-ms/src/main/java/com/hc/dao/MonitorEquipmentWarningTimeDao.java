@@ -1,4 +1,4 @@
-package com.hc.mapper;
+package com.hc.dao;
 
 import com.hc.entity.MonitorEquipmentWarningTime;
 import org.apache.ibatis.annotations.Insert;

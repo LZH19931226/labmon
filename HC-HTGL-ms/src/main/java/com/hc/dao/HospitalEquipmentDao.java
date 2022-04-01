@@ -1,4 +1,4 @@
-package com.hc.mapper;
+package com.hc.dao;
 
 import com.hc.entity.Hospitalequiment;
 import com.hc.entity.HospitalequimentKey;

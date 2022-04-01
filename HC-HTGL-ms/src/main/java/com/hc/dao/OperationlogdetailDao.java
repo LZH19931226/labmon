@@ -1,4 +1,4 @@
-package com.hc.mapper;
+package com.hc.dao;
 
 import com.hc.entity.Operationlogdetail;
 import org.springframework.data.jpa.repository.JpaRepository;

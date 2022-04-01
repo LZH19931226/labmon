@@ -1,4 +1,4 @@
-package com.hc.mapper;
+package com.hc.dao;
 
 import com.hc.entity.Userequipmentright;
 import org.springframework.data.jpa.repository.JpaRepository;

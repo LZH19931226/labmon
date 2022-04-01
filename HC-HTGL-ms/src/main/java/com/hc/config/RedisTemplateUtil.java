@@ -1,4 +1,4 @@
-package com.hc.web.config;
+package com.hc.config;
 
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;

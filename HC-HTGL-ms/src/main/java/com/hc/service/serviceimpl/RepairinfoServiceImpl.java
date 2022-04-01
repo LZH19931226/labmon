@@ -3,7 +3,7 @@ package com.hc.service.serviceimpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
-import com.hc.mapper.RepairinfoDao;
+import com.hc.dao.RepairinfoDao;
 import com.hc.entity.Monitorinstrument;
 import com.hc.entity.Repairinfo;
 import com.hc.mapper.laboratoryFrom.RepairinfoMapper;
