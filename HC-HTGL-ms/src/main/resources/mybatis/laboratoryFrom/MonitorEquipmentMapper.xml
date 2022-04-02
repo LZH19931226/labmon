@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="selectEquipmentPage" parameterType="com.hc.model.MapperModel.PageUserModel" resultType="com.hc.model.ResponseModel.MonitorEquipmentInfoModel">
+ select * from (   select
+a.equipmenttypeid,
+b.equipmenttypename,
+a.hospitalcode,
+c.hospitalname,
+d.clientvisible,
+d.equipmentno,
+d.equipmentbrand,
+d.equipmentname,
+d.alwayalarm
+from hospitalequiment a left join monitorequipmenttype b on a.equipmenttypeid = b.equipmenttypeid
+                        left join HospitalOfRegInfo c on a.hospitalcode = c.hospitalcode
+                        inner join  monitorequipment d on (a.equipmenttypeid = d.equipmenttypeid and a.hospitalcode = d.hospitalcode)
+                   <where>
+                       '1'='1'
+                       <if test="hospitalcode!=null">
+                           and a.hospitalcode = #{hospitalcode}
+                       </if>
+                       <if test="equipmenttypeid!=null">
+                           and a.equipmenttypeid=#{equipmenttypeid}
+                       </if>
+                   </where>
+                  order by a.hospitalcode desc,a.orderno ,d.equipmentname ) k
+                 <where>
+                     '1' = '1'
+                       <if test="fuzzy!=null">
+                           and equipmentname like #{fuzzy}
+                       </if>
+                   </where>
+
+
+</select>
+
+
+
+
+</mapper>

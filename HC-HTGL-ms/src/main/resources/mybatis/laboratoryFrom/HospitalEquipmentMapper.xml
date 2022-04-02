@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="selectAllEquipmentPage" parameterType="com.hc.model.MapperModel.PageUserModel" resultType="com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel">
+select * from ( select
+a.equipmenttypeid,
+b.equipmenttypename,
+a.hospitalcode,
+c.hospitalname,
+a.isvisible,
+    a.timeout,
+    a.timeouttime,
+    a.alwayalarm
+from hospitalequiment a left join monitorequipmenttype b on a.equipmenttypeid = b.equipmenttypeid
+                        left join HospitalOfRegInfo c on a.hospitalcode = c.hospitalcode
+      <where>
+          '1'='1'
+          <if test="hospitalcode!=null">
+             and  a.hospitalcode = #{hospitalcode}
+          </if>
+      </where>
+      order by a.hospitalcode desc , a.equipmenttypeid ) K
+      <where>
+          '1' = '1'
+
+          <if test="fuzzy!=null">
+             and  equipmenttypename like #{fuzzy} or hospitalname like #{fuzzy}
+          </if>
+
+      </where>
+
+
+
+</select>
+
+
+
+
+</mapper>

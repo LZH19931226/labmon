@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.mapper.laboratoryFrom.ClientInfoMapper">
+<!-- 通用查询结果列-->
+<!--<sql id="Base_Column_List">
+    id, name, age
+</sql>-->
+<select id="selectUserInfoPage" parameterType="com.hc.model.MapperModel.PageUserModel" resultType="com.hc.model.ResponseModel.ClientInfoModel">
+    select * from (select
+    a.hospitalname,
+    a.hospitalcode,
+    b.isuse,
+    b.phonenum,
+    b.pwd,
+    b.username,
+    b.userid,
+    b.devicetype,
+    b.devicetoken,
+    b.timeout,
+    b.isreceive,
+    b.reveivecount,
+    b.receiveinterval,
+    b.usertype,
+    b.reminders,
+    b.timeoutwarning
+    from hospitalofreginfo a right join userright b on a.hospitalcode=b.hospitalcode
+    <where>
+        '1'='1'
+        <if test="hospitalcode!=null">
+            and a.hospitalcode = #{hospitalcode}
+        </if>
+    </where>
+        order by a.hospitalname  ) k
+        <where>
+            '1' = '1'
+        <if test="fuzzy!=null">
+            and username like #{fuzzy}
+            or hospitalname like #{fuzzy}
+
+        </if>
+
+        <if test="setterWarningUsername != null">
+            <!--查询其他普通用户信息和当前的admin用户信息-->
+            and usertype = 'user'
+            or username = #{setterWarningUsername}
+        </if>
+    </where>
+
+</select>
+
+
+
+</mapper>
