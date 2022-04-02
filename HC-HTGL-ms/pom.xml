@@ -19,6 +19,7 @@
 			<type>pom</type>
 			<scope>import</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -151,6 +152,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.5.19.RELEASE</version>
 				<configuration>
 					<!-- 工程主入口-->
 					<mainClass>com.hc.SpringHTGLApplication</mainClass>
@@ -162,14 +164,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>8</source>
-					<target>8</target>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

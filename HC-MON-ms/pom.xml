@@ -12,6 +12,11 @@
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+			<version>1.4.7.RELEASE</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-dependencies</artifactId>
 			<version>1.5.9.RELEASE</version>
@@ -185,28 +190,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.5.9.RELEASE</version>
 				<configuration>
 					<!-- 工程主入口-->
 					<mainClass>com.hc.SpringMonitorApplication</mainClass>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
+				<!--				<executions>-->
+				<!--					<execution>-->
+				<!--						<goals>-->
+				<!--							<goal>repackage</goal>-->
+				<!--						</goals>-->
+				<!--					</execution>-->
+				<!--				</executions>-->
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
+		</plugins>
 	</build>
-
 
 </project>
