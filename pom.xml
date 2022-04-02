@@ -9,7 +9,7 @@
     <properties>
         <hc.project.version>0.0.1</hc.project.version>
         <mybatisplus.version>3.1.2</mybatisplus.version>
-        <mybatisplusgenerator.version>3.1.2</mybatisplusgenerator.version>
+        <mybatisplusgenerator.version>3.2.0</mybatisplusgenerator.version>
         <java.version>1.8</java.version>
         <swagger.version>2.9.2</swagger.version>
         <mybatisplus.version>3.1.2</mybatisplus.version>
@@ -21,16 +21,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
     </properties>
+
     <modules>
-<!--        <module>HC-ZULL-ms</module>-->
-        <module>HC-TCP-ms</module>
-        <module>HC-MSWK-ms</module>
-        <module>HC-MSCT-ms</module>
-<!--        <module>HC-MON-ms</module>-->
-<!--        <module>HC-HTGL-ms</module>-->
-<!--        <module>HC-EUREKA-ms</module>-->
         <module>hc-common</module>
+        <module>HC-MSWK-ms</module>
+        <module>HC-TCP-ms</module>
+        <module>HC-MSCT-ms</module>
+        <module>hc-openway-ms</module>
     </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -63,6 +62,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -93,6 +93,7 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.name}</finalName>
         <resources>
@@ -121,16 +122,7 @@
 
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <target>${maven.compiler.target}</target>
-                    <source>${maven.compiler.source}</source>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
+
+
 </project>

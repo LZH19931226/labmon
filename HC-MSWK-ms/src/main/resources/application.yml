@@ -17,10 +17,7 @@ spring:
     timeout: 60000
 server:
   port: 10087
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://127.0.0.1:10086/eureka/
+
 hc:
   pyx:
    pc: 0.5
