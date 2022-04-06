@@ -28,6 +28,7 @@
         <module>HC-TCP-ms</module>
         <module>HC-MSCT-ms</module>
         <module>hc-openway-ms</module>
+        <module>hc-labmon-ms</module>
     </modules>
 
     <dependencyManagement>
