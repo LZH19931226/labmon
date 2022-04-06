@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @TableName(value = "monitorinstrument")
@@ -28,7 +27,6 @@ public class Monitorinstrument implements Serializable {
     private String sn;
     //智能报警限制次数
     private Integer alarmtime;
-    @ApiModelProperty("开关量")
     private String channel;
 
 

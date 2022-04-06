@@ -4,7 +4,6 @@ import com.hc.entity.*;
 import com.hc.model.RecordTime;
 import com.hc.model.ShowModel;
 import com.hc.model.WarningMqModel;
-import com.hc.msctservice.MsctService;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.service.CurrentDataService;
 import com.hc.service.InstrumentMonitorInfoService;
@@ -36,8 +35,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
     @Autowired
     private LastDataService lastDataService;
-    @Autowired
-    private MsctService msctService;
+
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
     @Autowired
@@ -152,11 +150,11 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                             list.add(warningMqModel);
                         } else {
-                            if (StringUtils.equals("1832120013", sn) && StringUtils.isEmpty(o)) {
-                                    log.info("进入拨打程序");
-                                    msctService.test2("18108674918", "瑞迪斯存储探头值失效");
-                                    msctService.test2("17786499503", "瑞迪斯存储探头值失效");
-                            }
+//                            if (StringUtils.equals("1832120013", sn) && StringUtils.isEmpty(o)) {
+//                                    log.info("进入拨打程序");
+//                                    msctService.test2("18108674918", "瑞迪斯存储探头值失效");
+//                                    msctService.test2("17786499503", "瑞迪斯存储探头值失效");
+//                            }
                             log.error("当前设备探头未同步至redis缓存：" + JsonUtil.toJson(model));
                         }
                     } else {
