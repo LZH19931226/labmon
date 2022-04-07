@@ -29,6 +29,8 @@
         <module>HC-MSCT-ms</module>
         <module>hc-openway-ms</module>
         <module>hc-labmon-ms</module>
+        <module>hc-userprofile-ms</module>
+        <module>hc-labmanagement-ms</module>
     </modules>
 
     <dependencyManagement>
