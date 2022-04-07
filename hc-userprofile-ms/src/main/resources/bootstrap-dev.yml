@@ -4,7 +4,7 @@ spring:
       config:
         server-addr: 172.16.10.201:8848
         file-extension: yaml
-        prefix: hc-labmon-ms
+        prefix: hc-userprofile-ms
         group: DEFAULT_GROUP
         namespace: dev
       discovery:

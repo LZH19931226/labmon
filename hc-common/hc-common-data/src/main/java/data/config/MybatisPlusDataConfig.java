@@ -74,7 +74,7 @@ public class MybatisPlusDataConfig {
         // 全局配置文件
         GlobalConfig globalConfig = new GlobalConfig();
         DbConfig dbConfig = new DbConfig();
-        // 默认为自增
+        // 默认
         dbConfig.setIdType(IdType.UUID);
         globalConfig.setDbConfig(dbConfig);
         return globalConfig;
@@ -85,6 +85,7 @@ public class MybatisPlusDataConfig {
         MybatisConfiguration mybatisConfiguration = new MybatisConfiguration();
         //全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存。
         mybatisConfiguration.setCacheEnabled(true);
+        mybatisConfiguration.setMapUnderscoreToCamelCase(false);
         mybatisConfiguration.setLogImpl(StdOutImpl.class);
         return mybatisConfiguration;
     }
@@ -122,7 +123,7 @@ public class MybatisPlusDataConfig {
         Resource[] resources = resolver.getResources("classpath*:mapper/*Mapper.xml");
         mybatisSqlSessionFactoryBean.setMapperLocations(resources);
         //设置实体类扫码包路径
-        mybatisSqlSessionFactoryBean.setTypeAliasesPackage("com.hc.entity");
+        mybatisSqlSessionFactoryBean.setTypeAliasesPackage("com.hc.po");
         return mybatisSqlSessionFactoryBean;
     }
 }

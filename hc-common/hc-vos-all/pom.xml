@@ -20,19 +20,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.hc</groupId>
-		<artifactId>labmon</artifactId>
+		<artifactId>hc-common</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<artifactId>hc-vos-all</artifactId>
+	<packaging>jar</packaging>
+	<description>hc 公共包</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.hc</groupId>
+			<artifactId>hc-common-web</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
-	<artifactId>hc-common</artifactId>
-	<packaging>pom</packaging>
 
-	<description>hc 公共聚合模块</description>
-	<modules>
-		<module>hc-common-core</module>
-		<module>hc-common-web</module>
-		<module>hc-common-data</module>
-		<module>hc-common-redis</module>
-		<module>hc-vos-all</module>
-	</modules>
+    </dependencies>
 </project>
