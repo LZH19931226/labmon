@@ -10,4 +10,6 @@ public interface MTJudgeService {
 
 
     Monitorinstrument mtJudge(ParamaterModel paramaterModel);
+
+    Monitorinstrument checkProbe(ParamaterModel model);
 }

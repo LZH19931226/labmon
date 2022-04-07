@@ -119,7 +119,7 @@ public class LastDataServiceImpl implements LastDataService {
                     //数据更新
                     log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
                     Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata2);
+                    monitorequipmentlastdataDao.updateById(monitorequipmentlastdata2);
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
                 }
             } else {
@@ -129,7 +129,6 @@ public class LastDataServiceImpl implements LastDataService {
                     //非空  直接 新增一条数据
                     monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
-
                     return;
                 }
                 if (datePoor > 9.7) {
@@ -146,12 +145,11 @@ public class LastDataServiceImpl implements LastDataService {
                     Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
                     monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
-
                 } else {
                     //数据更新
                     log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
                     Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata2);
+                    monitorequipmentlastdataDao.updateById(monitorequipmentlastdata2);
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
                 }
             }

@@ -4,7 +4,9 @@ import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
 import com.hc.mapper.InstrumentMonitorInfoMapper;
 import com.hc.mapper.MonitorInstrumentMapper;
+import com.hc.model.MonitorinstrumentModel;
 import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.MTJudgeService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.utils.JsonUtil;
@@ -51,7 +53,6 @@ public class MTJudgeServiceImpl implements MTJudgeService {
             case "7":
                 //MT500通道
                 Monitorequipment cliva = monitorInstrumentMapper.isCliva(SN);
-                //    LOGGER.info("当前设备是否启用状态："+SN+";状态："+cliva);
                 if (cliva == null) {
                     return null;
                 }
@@ -83,10 +84,8 @@ public class MTJudgeServiceImpl implements MTJudgeService {
                 // MT600通道
                 //通道id
                 String channelId1 = model.getChannelId();
-
                 //根据通道id查询MT600sn 号
                 String MT600SN = (String) redisTemplateUtil.boundValueOps(channelId1 + ":" + ParamaterModel.class.getSimpleName()).get();
-
                 if (StringUtils.isEmpty(MT600SN)) {
                     String o1 = (String) objectObjectObjectBoundHashOperations.get(model.getSN());
                     if (StringUtils.isEmpty(o1)) {
@@ -108,14 +107,12 @@ public class MTJudgeServiceImpl implements MTJudgeService {
                 monitorinstrument = monitorinstrumentservice.saveMonitorinstrument(SN, MT600SN, model);
                 break;
             case "9":
-            case "a":  //新增A开头
+            case "a":
                 // MT600通道
                 //通道id
                 String channelId = model.getChannelId();
-
                 //根据通道id查询MT600sn 号
                 String MT600SN1 = (String) redisTemplateUtil.boundValueOps(channelId + ":" + ParamaterModel.class.getSimpleName()).get();
-   //             LOGGER.info("A系列信息1："+MT600SN1+"A系列信息"+JsonUtil.toJson(model));
                 if (StringUtils.isEmpty(MT600SN1)) {
                     String o1 = (String) objectObjectObjectBoundHashOperations.get(model.getSN());
                     if (StringUtils.isEmpty(o1)) {
@@ -136,5 +133,22 @@ public class MTJudgeServiceImpl implements MTJudgeService {
                 break;
         }
         return monitorinstrument;
+    }
+
+    @Override
+    public Monitorinstrument checkProbe(ParamaterModel model) {
+        String sn = model.getSN();
+        MonitorinstrumentModel monitorinstrumentModel = monitorInstrumentMapper.selectMonitorinstrumentInfoBySn(sn);
+        if (null == monitorinstrumentModel) {
+            LOGGER.info("当前设备未注册:{},状态:{}",sn,JsonUtil.toJson(monitorinstrumentModel));
+            return null;
+        }
+        Boolean clientvisible = monitorinstrumentModel.getClientvisible();
+        if (!clientvisible) {
+            // 未启用
+            LOGGER.info("设备未启用SN号:{}",sn);
+            return null;
+        }
+        return BeanConverter.convert(monitorinstrumentModel,Monitorinstrument.class);
     }
 }

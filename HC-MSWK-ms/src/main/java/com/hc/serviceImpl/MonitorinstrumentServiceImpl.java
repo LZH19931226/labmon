@@ -29,17 +29,11 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
 
         //  根据sn 号查询医院编号   K hospitalcode:sn   --   K 设备sn  --  value   Monitorinstrument
         //根据MT600 sn号查询医院编号
-        try {
             BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:sn");
             String channel;
             String o = (String) objectObjectObjectBoundHashOperations.get(mt600sn);
-
             if (StringUtils.isEmpty(o)) {
-                LOGGER.info("当前探头关联的MT600设备未注册到医院，SN号为：" + mt600sn);
-                //查询数据库：
                 Monitorinstrument monitorinstrumentTest = monitorInstrumentMapper.selectHospitalCodeBySn(mt600sn);
-                //       LOGGER.info("从数据库查询数据：" + JsonUtil.toJson(monitorinstrumentTest) + "查询SN号：" + mt600sn);
-                //    String instrumentno = monitorinstrumentTest.getInstrumentno();
                 LOGGER.info("instrument中MT600信息：" + JsonUtil.toJson(paramaterModel) + "查询MT600SN信息：" + JsonUtil.toJson(monitorinstrumentTest));
                 if (monitorinstrumentTest == null) {
                     return null;
@@ -50,13 +44,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
             }
             // 不做自动注册
             //判断当前传送数据设备是否注册到医院
-            String sn = "01";
-            try {
-                sn = SN.substring(4, 6);
-            } catch (Exception e) {
-                LOGGER.error("SN号异常：" + SN);
-            }
-
+            String   sn = SN.substring(4, 6);
             //获取MT型
             String instrumenttypename = MTcheck(sn);
             Monitorinstrument monitorinstrument1 = new Monitorinstrument();
@@ -72,7 +60,6 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                   LOGGER.info("设备未启用SN号：" + SN);
                 return null;
             }
-
             if (StringUtils.equalsAny(instrumenttypename, "MT300", "MT300LITE", "MT700")) {
                 //存在则判断是不是传的开关量
                 if (StringUtils.equals(paramaterModel.getCmdid(), "8d")) {
@@ -98,7 +85,6 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                             if (StringUtils.isNotEmpty(p)) {
                                 monitorinstrument1 = JsonUtil.toBean(p, Monitorinstrument.class);
                             } else {
-                                //		monitorRegisterHospitalService.instrumentRegister(instrumenttypename, paramaterModel, monitorinstrument, channel);
                                 return null;
                             }
                         default:
@@ -106,34 +92,23 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                     }
                 } else {
                     //MT300  MT30LITE非开关量
-                    try {
                         LOGGER.info("instrument中查询MT700信息：" + JsonUtil.toJson(paramaterModel));
                         String o1 = (String) objectObjectObjectBoundHashOperations.get(SN);
                         if (StringUtils.isNotEmpty(o1)) {
                             monitorinstrument1 = JsonUtil.toBean(o1, Monitorinstrument.class);
                         } else {
-                            //	monitorRegisterHospitalService.instrumentRegister(instrumenttypename, paramaterModel, monitorinstrument, channel);
                             //查询数据库是否存在探头
                             monitorinstrument1 = monitorInstrumentMapper.selectHospitalCodeBySn(SN);
-                            //      String s  = monitorinstrument1.getInstrumentno();
                             if (monitorinstrument1 == null) {
                                 LOGGER.info("当前设备未注册到医院：" + SN);
                                 return null;
                             } else {
                                 //同步缓存
-
                                 objectObjectObjectBoundHashOperations.put(SN, JsonUtil.toJson(monitorinstrument1));
                             }
-
-
                         }
-                    } catch (Exception e) {
-                        LOGGER.error("第二块代码块获取异常" + e.getMessage() + JsonUtil.toJson(paramaterModel));
-                    }
                 }
-
             } else {
-                try {
                     String o1 = (String) objectObjectObjectBoundHashOperations.get(SN);
                     if (StringUtils.isNotEmpty(o1)) {
                         monitorinstrument1 = JsonUtil.toBean(o1, Monitorinstrument.class);
@@ -149,22 +124,12 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                             objectObjectObjectBoundHashOperations.put(SN, JsonUtil.toJson(monitorinstrument1));
                         }
                     }
-                } catch (Exception e) {
-                    LOGGER.error("第三块代码块获取异常" + e.getMessage() + JsonUtil.toJson(paramaterModel));
-                }
             }
 
             if (StringUtils.isEmpty(monitorinstrument1.getEquipmentno())) {
-                //        LOGGER.info("当前设备探头SN号未绑定设备: " + SN);
-                return null;    //数据不做插入 ，不做报警服务  只做添加探头
+                return null;
             }
             return monitorinstrument1;
-
-        } catch (Exception e) {
-            LOGGER.error("判断当前探头是否注册失败,原因：" + e.getMessage() + "数据格式为：" + JsonUtil.toJson(paramaterModel));
-            return null;
-        }
-
     }
 
 
@@ -219,12 +184,5 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
 
     }
 
-//    public static void main(String args[]) {
-//        Monitorinstrument monitorinstrument = new Monitorinstrument();
-//        monitorinstrument = null;
-//        if (StringUtils.isEmpty(monitorinstrument.getInstrumentno())) {
-//            System.out.println("哈哈");
-//        }
-//    }
 
 }

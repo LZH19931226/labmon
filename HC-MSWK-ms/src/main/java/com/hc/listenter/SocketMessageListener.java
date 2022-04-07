@@ -54,9 +54,10 @@ public class SocketMessageListener {
     public void mswkMessage(String messageContent,String topic) {
         ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
         //MT500  MT600判断
-        Monitorinstrument monitorinstrument = mtJudgeService.mtJudge(model);
+        //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
+        //Monitorinstrument monitorinstrument = mtJudgeService.mtJudge(model);
+        Monitorinstrument monitorinstrument = mtJudgeService.checkProbe(model);
         if (monitorinstrument == null) {
-            LOGGER.info("数据解析错误: "+messageContent);
             return;
         }
         //执行数据写入 、 报警推送

@@ -1290,7 +1290,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("数据插入异常: "+e);
             log.error("cmdid:" + model.getCmdid() + " SN:" + sn + "数据插入失败：" + e.getMessage() + "数据：" + JsonUtil.toJson(model));
             return null;
         }

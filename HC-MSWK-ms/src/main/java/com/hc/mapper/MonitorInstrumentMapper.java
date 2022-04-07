@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.entity.Instrumentparamconfig;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorinstrument;
+import com.hc.model.MonitorinstrumentModel;
 import com.hc.model.TimeoutEquipment;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -44,6 +45,13 @@ public interface MonitorInstrumentMapper extends BaseMapper<Monitorinstrument> {
             "\twhere t1.sn = #{sn} limit 1  ")
     Monitorequipment isCliva(@Param("sn") String sn);
 
+
+
+    /**
+     * 根据设备sn号设备信息
+     */
+    @Select("SELECT t2.*,t1.clientvisible FROM monitorequipment t1,monitorinstrument t2 WHERE t1.equipmentno =t2.equipmentno  AND t2.sn = #{sn}")
+    MonitorinstrumentModel selectMonitorinstrumentInfoBySn(@Param("sn") String sn);
 
 
 }
