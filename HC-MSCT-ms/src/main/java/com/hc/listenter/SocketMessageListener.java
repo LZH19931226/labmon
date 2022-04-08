@@ -184,7 +184,6 @@ public class SocketMessageListener {
         Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
-            LOGGER.info("解析数据为null,不发送报警!");
             return;
         }
         String equipmentname = model.getEquipmentname();

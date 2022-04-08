@@ -74,7 +74,6 @@ public class WarningServiceImpl implements WarningService {
             LOGGER.info("redis缓存失败，取不到探头类型编号：数据为" + JsonUtil.toJson(instrumentMonitorInfoModel));
             return null;
         }
-        // 判断是否是多个500引起的报警问题
         WarningDateModel warningDateModel = new WarningDateModel();
         warningDateModel.setDate(date);
         Warningrecord warningrecord = new Warningrecord();
