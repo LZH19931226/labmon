@@ -1,25 +1,36 @@
 package com.hc.my.common.core.probe;
 
-import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
+
+/**
+ * 设备MT100F
+ * @author user
+ */
 @Data
-public class MT100F {
+public class MT100F extends PublicMethod {
 
-    //温度1
+    /**温度*/
     private String temperature;
-    //电量
+
+    /**电量*/
     private String electricity;
 
-
+    /**
+     * 获取温度的异常编码
+     * @param exceptionCode
+     * @return
+     */
     public String getProbeOutlierTemperature(String exceptionCode) {
-
-
-        return null;
+        return getExceptionInfo(exceptionCode);
     }
 
 
+    /**
+     * 获取电量的异常码
+     * @param exceptionCode 异常码
+     * @return null
+     */
     public String getProbeOutlierElectricity(String exceptionCode) {
         return null;
     }

@@ -2,10 +2,8 @@ package com.hc.my.common.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author LiuZhiHao
@@ -70,7 +68,25 @@ public class DateUtils {
 
     }
 
+    /**
+     * 获取当前时间
+     * @return
+     */
+    public  String getNowDate(){
+        return datetimeFormat.format(new Date());
+    }
 
+    /**
+     *
+     * @return  一个月以前的当前日期
+     */
+    public  String getCurrentDateTimeBeforeOneMonth(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -1);
+        Date m = c.getTime();
+        return datetimeFormat.format(m);
+    }
 
     /**
      * 获取指定时间前一天
@@ -88,9 +104,11 @@ public class DateUtils {
 //        Date endTime = simpleDateFormat.parse("19:50:59");
 //        System.out.println(isEffectiveDate(new Date(), startTime, endTime));
 //        System.out.println(getYesterday(new Date()));
-        List<String> list = Arrays.asList("1","2");
-        List<String> list2 = Arrays.asList("4","1");
-        list=list2;
-        System.out.println(list);
+//        List<String> list = Arrays.asList("1","2");
+//        List<String> list2 = Arrays.asList("4","1");
+//        list=list2;
+//        System.out.println(list);
+        String nowDate = new DateUtils().getNowDate();
+        System.out.println(nowDate);
     }
 }

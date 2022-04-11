@@ -1,46 +1,43 @@
 package com.hc.my.common.core.probe;
 
-import com.hc.my.common.core.constant.enums.ProbeOutlier;
+
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
 /**
- * 设备MT100
+ * 设备MT200
  * @author user
  */
 @Data
-public class MT100 {
+public class MT200 extends PublicMethod {
 
-    /**温度1(平均值)*/
+    /**温度1*/
     private String temperature1;
 
-    /**温度2(实时值)*/
+    /**温度2*/
     private String temperature2;
 
     /**电量*/
     private String electricity;
 
-
     /**
-     * 获取温度一的异常编码
-     * @param exceptionCode 异常码
-     * @return null
+     * 获取温度一的异常编码信息
+     * @param exceptionCode
+     * @return
      */
-    public String getProbeOutlierTemperature1(String exceptionCode) {
-        return null;
+    static String getProbeOutlierTemperature1(String exceptionCode) {
+        return getExceptionInfo(exceptionCode);
     }
+
 
     /**
      * 获取温度二的异常编码
      * @param exceptionCode 异常码
-     * @return
+     * @return null
      */
     public String getProbeOutlierTemperature2(String exceptionCode) {
-        if (StringUtils.equals(exceptionCode, ProbeOutlier.ZERO.name())) {
-            return ProbeOutlier.NO_SENSOR_IS_CONNECTED.name();
-        }
         return null;
     }
+
 
     /**
      * 获取电量的异常码
@@ -50,4 +47,5 @@ public class MT100 {
     public String getProbeOutlierElectricity(String exceptionCode) {
         return null;
     }
+
 }
