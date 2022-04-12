@@ -66,4 +66,6 @@ public class WarningrecordPo {
      */
     @TableField(exist = false)
     private String info;
+
+    private Integer count1;
 }

@@ -1,10 +1,11 @@
 package com.hc.dto;
 
+import com.hc.po.WarningrecordPo;
 import lombok.Data;
 
 @Data
-public class WarningrecordDto {
-
+public class WarningrecordDto extends WarningrecordPo {
+    
     /**
      * pkid
      */
@@ -57,4 +58,7 @@ public class WarningrecordDto {
      */
     private String info;
 
+    private Integer count1;
+    private Integer warningTotal;
+    private Integer warningInfoTotal;
 }
