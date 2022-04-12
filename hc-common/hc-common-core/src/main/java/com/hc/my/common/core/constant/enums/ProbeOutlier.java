@@ -23,11 +23,11 @@ public enum ProbeOutlier {
     FFF1("fff1"),
     FFF2("fff2"),
     FFF3("fff3"),
-    OXFFF0("0xfff0"),
-    OXFFF1("0xfff1"),
-    OXFFF2("0xfff2"),
-    OXFFF3("0xfff3"),
-    OXFFF4("0xfff4"),
+    OXFFF0("fff0"),
+    OXFFF1("fff1"),
+    OXFFF2("fff2"),
+    OXFFF3("fff3"),
+    OXFFF4("fff4"),
     F1("f1"),
     F0("f0");
 
