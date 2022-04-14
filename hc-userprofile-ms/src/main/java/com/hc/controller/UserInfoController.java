@@ -19,7 +19,7 @@ import javax.validation.Valid;
  */
 @Api(value = "后台用户信息")
 @RestController
-@RequestMapping(value = "/api/userBackInfo", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/user/userBackInfo", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class UserInfoController {
 
     @Autowired
@@ -29,6 +29,7 @@ public class UserInfoController {
     @ApiOperation(value = "后台管理员登录")
     public void userLogin(@ApiParam(name = "UserInfoVo", value = "用户登录对象", required = true)
             @RequestBody @Valid UserInfoVo userInfoVo) {
+        System.out.println("111111");
         userInfoApplication.userLogin(userInfoVo);
     }
 

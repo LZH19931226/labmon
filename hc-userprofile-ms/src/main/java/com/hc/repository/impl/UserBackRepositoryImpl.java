@@ -37,7 +37,7 @@ public class UserBackRepositoryImpl implements UserBackRepository {
     }
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = Exception.class)
     public void updatePassword(String userid, String pwd) {
         UserBackPo userBackPo = userBackDao.selectById(userid);
         if(userBackPo == null){
