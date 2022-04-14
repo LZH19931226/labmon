@@ -1,7 +1,7 @@
 package com.hc.controller;
 
+import com.hc.appliction.UserCommand;
 import com.hc.appliction.UserInfoApplication;
-import com.hc.vo.User.UserInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,15 +28,14 @@ public class UserInfoController {
     @PostMapping("/userLogin")
     @ApiOperation(value = "后台管理员登录")
     public void userLogin(@ApiParam(name = "UserInfoVo", value = "用户登录对象", required = true)
-            @RequestBody @Valid UserInfoVo userInfoVo) {
-        System.out.println("111111");
-        userInfoApplication.userLogin(userInfoVo);
+            @RequestBody @Valid UserCommand userCommand) {
+        userInfoApplication.userLogin(userCommand);
     }
 
     @PostMapping("/updatePwd")
     @ApiOperation(value = "更改用户密码")
-    public void updatePwd( @RequestBody @Valid UserInfoVo userInfoVo) {
-        userInfoApplication.updatePassword(userInfoVo);
+    public void updatePwd( @RequestBody @Valid UserCommand userCommand) {
+        userInfoApplication.updatePassword(userCommand);
     }
 
 }

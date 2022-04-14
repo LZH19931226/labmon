@@ -10,16 +10,14 @@ public interface UserBackRepository {
 
     /**
      * 用户登录
-     * @param username 用户名
-     * @param pwd 密码
+     * @param userBackDto 数据传输对象
      * @return UserBackDto
      */
-    UserBackDto userLogin(String username, String pwd);
+    UserBackDto userLogin(UserBackDto userBackDto);
 
     /**
      * 修改密码
-     * @param userid 用户id
-     * @param pwd 密码
+     * @param userBackDto 数据传输对象
      */
-    void updatePassword(String userid, String pwd);
+    void updatePassword(UserBackDto userBackDto);
 }

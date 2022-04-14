@@ -9,16 +9,15 @@ public interface UserBackService {
 
     /**
      * 用户登录
-     * @param username 用户
-     * @param pwd
+     *
+     * @param userBackDto
      * @return
      */
-    UserBackDto userLogin(String username, String pwd);
+    UserBackDto userLogin(UserBackDto userBackDto);
 
     /**
      * 修改密码
-     * @param userid 用户id
-     * @param pwd 密码
+     * @param userBackDto 用户数据传输对象
      */
-    void updatePassword(String userid, String pwd);
+    void updatePassword(UserBackDto userBackDto);
 }

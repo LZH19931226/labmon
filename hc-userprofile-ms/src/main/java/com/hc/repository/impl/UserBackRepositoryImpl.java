@@ -23,7 +23,10 @@ public class UserBackRepositoryImpl implements UserBackRepository {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserBackDto userLogin(String username, String pwd) {
+    public UserBackDto userLogin(UserBackDto userBackDto) {
+        String username = userBackDto.getUsername();
+        String pwd = userBackDto.getPwd();
+
         UserBackPo userBackPo = userBackDao
                 .selectOne(Wrappers.lambdaQuery(new UserBackPo())
                         .eq(UserBackPo::getUsername, username));
@@ -38,7 +41,9 @@ public class UserBackRepositoryImpl implements UserBackRepository {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updatePassword(String userid, String pwd) {
+    public void updatePassword(UserBackDto userBackDto) {
+        String userid = userBackDto.getUserid();
+        String pwd = userBackDto.getPwd();
         UserBackPo userBackPo = userBackDao.selectById(userid);
         if(userBackPo == null){
             throw new IedsException(UserEnumErrorCode.USER_NOT_EXISTS.getMessage());

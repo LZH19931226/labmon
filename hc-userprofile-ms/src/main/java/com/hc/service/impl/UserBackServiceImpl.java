@@ -16,12 +16,12 @@ public class UserBackServiceImpl implements UserBackService {
     private UserBackRepository userBackRepository;
 
     @Override
-    public UserBackDto userLogin(String username, String pwd) {
-        return userBackRepository.userLogin(username,pwd);
+    public UserBackDto userLogin(UserBackDto userBackDto) {
+        return userBackRepository.userLogin(userBackDto);
     }
 
     @Override
-    public void updatePassword(String userid, String pwd) {
-        userBackRepository.updatePassword(userid,pwd);
+    public void updatePassword(UserBackDto userBackDto) {
+        userBackRepository.updatePassword(userBackDto);
     }
 }
