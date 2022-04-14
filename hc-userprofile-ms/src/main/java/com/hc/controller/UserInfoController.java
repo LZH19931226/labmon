@@ -25,7 +25,7 @@ public class UserInfoController {
 
     @PostMapping("/userLogin")
     @ApiOperation(value = "后台管理员登录")
-    public void userLogin(@ApiParam(name = "UserInfoVo", value = "用户登录对象", required = true)
+    public void userLogin(@ApiParam(name = "UserCommand", value = "用户登录对象", required = true)
             @RequestBody UserCommand userCommand) {
         userInfoApplication.userLogin(userCommand);
     }
