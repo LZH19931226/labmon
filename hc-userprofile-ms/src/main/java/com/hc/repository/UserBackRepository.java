@@ -1,6 +1,7 @@
 package com.hc.repository;
 
 import com.hc.dto.UserBackDto;
+import com.hc.po.UserBackPo;
 
 /**
  *
@@ -10,14 +11,14 @@ public interface UserBackRepository {
 
     /**
      * 用户登录
-     * @param userBackDto 数据传输对象
+     * @param userBackPo 数据传输对象
      * @return UserBackDto
      */
-    UserBackDto userLogin(UserBackDto userBackDto);
+    UserBackDto userLogin(UserBackPo userBackPo);
 
     /**
      * 修改密码
-     * @param userBackDto 数据传输对象
+     * @param userBackPo 数据传输对象
      */
-    void updatePassword(UserBackDto userBackDto);
+    void updatePassword(UserBackPo userBackPo);
 }

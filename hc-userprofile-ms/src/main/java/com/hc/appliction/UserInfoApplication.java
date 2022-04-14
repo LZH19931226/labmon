@@ -1,6 +1,5 @@
 package com.hc.appliction;
 
-import com.hc.dto.UserBackDto;
 import com.hc.service.UserBackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,13 +15,11 @@ public class UserInfoApplication {
     private UserBackService userBackService;
 
     public void userLogin(UserCommand userCommand) {
-        UserBackDto userBackDto = new UserBackDto().setUsername(userCommand.getUsername()).setPwd(userCommand.getPwd());
-        userBackService.userLogin(userBackDto);
+        userBackService.userLogin(userCommand);
     }
 
     public void updatePassword(UserCommand userCommand) {
-        UserBackDto userBackDto = new UserBackDto().setUsername(userCommand.getUsername()).setPwd(userCommand.getPwd());
-        userBackService.updatePassword(userBackDto);
+        userBackService.updatePassword(userCommand);
     }
 
 }

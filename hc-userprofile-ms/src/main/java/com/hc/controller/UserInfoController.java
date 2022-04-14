@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
 /**
  * @author hc
  */
@@ -28,13 +26,13 @@ public class UserInfoController {
     @PostMapping("/userLogin")
     @ApiOperation(value = "后台管理员登录")
     public void userLogin(@ApiParam(name = "UserInfoVo", value = "用户登录对象", required = true)
-            @RequestBody @Valid UserCommand userCommand) {
+            @RequestBody UserCommand userCommand) {
         userInfoApplication.userLogin(userCommand);
     }
 
     @PostMapping("/updatePwd")
     @ApiOperation(value = "更改用户密码")
-    public void updatePwd( @RequestBody @Valid UserCommand userCommand) {
+    public void updatePwd( @RequestBody UserCommand userCommand) {
         userInfoApplication.updatePassword(userCommand);
     }
 

@@ -1,5 +1,6 @@
 package com.hc.service;
 
+import com.hc.appliction.UserCommand;
 import com.hc.dto.UserBackDto;
 
 /**
@@ -13,11 +14,11 @@ public interface UserBackService {
      * @param userBackDto
      * @return
      */
-    UserBackDto userLogin(UserBackDto userBackDto);
+    UserBackDto userLogin(UserCommand userBackDto);
 
     /**
      * 修改密码
      * @param userBackDto 用户数据传输对象
      */
-    void updatePassword(UserBackDto userBackDto);
+    void updatePassword(UserCommand userBackDto);
 }

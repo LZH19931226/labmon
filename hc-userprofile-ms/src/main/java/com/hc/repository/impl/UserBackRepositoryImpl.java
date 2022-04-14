@@ -23,29 +23,34 @@ public class UserBackRepositoryImpl implements UserBackRepository {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserBackDto userLogin(UserBackDto userBackDto) {
-        String username = userBackDto.getUsername();
-        String pwd = userBackDto.getPwd();
+    public UserBackDto userLogin(UserBackPo userBackPo) {
 
-        UserBackPo userBackPo = userBackDao
+        String username = userBackPo.getUsername();
+        String pwd = userBackPo.getPwd();
+
+        UserBackPo userPo = userBackDao
                 .selectOne(Wrappers.lambdaQuery(new UserBackPo())
                         .eq(UserBackPo::getUsername, username));
-        if(userBackPo == null){
+
+        if(userPo == null){
            throw  new IedsException(UserEnumErrorCode.USER_NOT_EXISTS.getMessage());
         }
-        if(!userBackPo.getPwd().equals(pwd)){
+        if(!userPo.getPwd().equals(pwd)){
             throw  new IedsException(UserEnumErrorCode.USER_ACCOUNT_OR_PASSWORD_ERROR.getMessage());
         }
-        return BeanConverter.convert(userBackPo, UserBackDto.class);
+
+        return BeanConverter.convert(userPo, UserBackDto.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updatePassword(UserBackDto userBackDto) {
-        String userid = userBackDto.getUserid();
-        String pwd = userBackDto.getPwd();
-        UserBackPo userBackPo = userBackDao.selectById(userid);
-        if(userBackPo == null){
+    public void updatePassword(UserBackPo userBackPo) {
+
+        String userid = userBackPo.getUserid();
+        String pwd = userBackPo.getPwd();
+
+        UserBackPo userBackPo1 = userBackDao.selectById(userid);
+        if(userBackPo1 == null){
             throw new IedsException(UserEnumErrorCode.USER_NOT_EXISTS.getMessage());
         }
         userBackDao.updateById(new UserBackPo().setUserid(userid).setPwd(pwd));
