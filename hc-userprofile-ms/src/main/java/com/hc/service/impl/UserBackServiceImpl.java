@@ -1,6 +1,6 @@
 package com.hc.service.impl;
 
-import com.hc.appliction.UserCommand;
+import com.hc.appliction.command.UserCommand;
 import com.hc.dto.UserBackDto;
 import com.hc.my.common.core.constant.enums.UserEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;

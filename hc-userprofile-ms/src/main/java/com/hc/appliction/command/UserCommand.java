@@ -1,4 +1,4 @@
-package com.hc.appliction;
+package com.hc.appliction.command;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

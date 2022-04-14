@@ -1,6 +1,6 @@
 package com.hc.service;
 
-import com.hc.appliction.UserCommand;
+import com.hc.appliction.command.UserCommand;
 import com.hc.dto.UserBackDto;
 
 /**

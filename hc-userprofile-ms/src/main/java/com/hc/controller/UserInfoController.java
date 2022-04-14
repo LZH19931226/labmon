@@ -1,6 +1,6 @@
 package com.hc.controller;
 
-import com.hc.appliction.UserCommand;
+import com.hc.appliction.command.UserCommand;
 import com.hc.appliction.UserInfoApplication;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,5 +1,6 @@
 package com.hc.appliction;
 
+import com.hc.appliction.command.UserCommand;
 import com.hc.service.UserBackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

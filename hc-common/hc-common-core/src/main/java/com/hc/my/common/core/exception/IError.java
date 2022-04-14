@@ -80,8 +80,8 @@ public interface IError extends Serializable {
         if (null == args || args.length < 1 || null == formatter || !split.matcher(formatter).find()) {
             return formatter;
         }
-        StringBuilder bu   = new StringBuilder();
-        String[]      cuts = formatter.split(split.pattern());
+        StringBuilder bu = new StringBuilder();
+        String[] cuts = formatter.split(split.pattern());
         for (int index = 0; index < cuts.length; index++) {
             bu.append(cuts[index]);
             if (index < args.length) {
@@ -90,5 +90,4 @@ public interface IError extends Serializable {
         }
         return bu.toString();
     }
-
 }
