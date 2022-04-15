@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(value = "后台用户信息")
 @RestController
-@RequestMapping(value = "/user/userBackInfo", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/userBackInfo", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class UserInfoController {
 
     @Autowired
