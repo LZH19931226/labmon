@@ -23,10 +23,20 @@ public interface HospitalRegistrationInfoRepository extends IService<HospitalReg
     List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand);
 
     /**
-     * 查润医院信息
+     * 插入医院信息
      * @param hospitalCommand 医院信息数据传输对象
-     * @return
      */
     void insertHospitalInfo(HospitalCommand hospitalCommand);
 
+    /**
+     *  修改医院信息
+     * @param hospitalCommand 医院信息数据传输对象
+     */
+    void editHospitalInfo(HospitalCommand hospitalCommand);
+
+    /**
+     * 更据医院编码删除医院信息
+     * @param hospitalCode 医院编码
+     */
+    void deleteHospitalInfoByCode(String hospitalCode);
 }

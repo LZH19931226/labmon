@@ -30,6 +30,7 @@ public class HospitalCommand {
     private String isEnable;
 
     /** 医院全称 */
+    @ApiModelProperty(value = "医院全称")
     private String hospitalFullName;
 
     /** 全天报警 */

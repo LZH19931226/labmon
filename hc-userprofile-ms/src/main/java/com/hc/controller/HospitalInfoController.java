@@ -6,7 +6,6 @@ import com.hc.appliction.command.HospitalCommand;
 import com.hc.vo.hospital.HospitalInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,15 +28,21 @@ public class HospitalInfoController {
     }
 
     @PostMapping("/addHospitalInfo")
-    @ApiOperation(value = "添加医院")
-    public void add(@ApiParam(name = "hospitalCommand" , value = "医院信息" , required = true)
-                                 @RequestBody  HospitalCommand hospitalCommand){
+    @ApiOperation(value = "新增医院信息")
+    public void add(@RequestBody  HospitalCommand hospitalCommand){
         hospitalInfoApplication.insertHospitalInfo(hospitalCommand);
     }
 
     @PutMapping("/editHospitalInfo")
-    public void edit(@ApiParam(name = "BsIncubatorCommand", value = "培养箱信息模型", required = true)
-                     @RequestBody HospitalCommand hospitalCommand){
+    @ApiOperation(value = "修改医院信息")
+    public void edit(@RequestBody HospitalCommand hospitalCommand){
         hospitalInfoApplication.editHospitalInfo(hospitalCommand);
     }
+
+    @DeleteMapping("/{hospitalCode}")
+    @ApiOperation(value = "删除医院信息")
+    public void delete(@PathVariable(name = "hospitalCode") String hospitalCode){
+        hospitalInfoApplication.deleteHospitalInfoByCode(hospitalCode);
+    }
+
 }

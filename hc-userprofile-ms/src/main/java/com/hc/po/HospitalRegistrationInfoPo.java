@@ -1,6 +1,7 @@
 package com.hc.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ import java.util.Date;
 public class HospitalRegistrationInfoPo implements Serializable {
 
     /** 医院编号 */
+    @TableId
     @TableField(value = "hospitalcode")
     private String hospitalCode;
 

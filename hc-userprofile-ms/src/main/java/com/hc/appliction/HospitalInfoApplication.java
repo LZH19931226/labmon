@@ -54,7 +54,6 @@ public class HospitalInfoApplication {
      * @return
      */
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
-
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
 
     }
@@ -65,5 +64,13 @@ public class HospitalInfoApplication {
      */
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
         hospitalRegistrationInfoService.editHospitalInfo(hospitalCommand);
+    }
+
+    /**
+     * 根据医院编码删除医院信息
+     * @param hospitalCode
+     */
+    public void deleteHospitalInfoByCode(String hospitalCode) {
+        hospitalRegistrationInfoService.deleteHospitalInfoByCode(hospitalCode);
     }
 }
