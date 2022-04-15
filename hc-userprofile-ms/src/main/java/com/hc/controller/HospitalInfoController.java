@@ -38,6 +38,6 @@ public class HospitalInfoController {
     @PutMapping("/editHospitalInfo")
     public void edit(@ApiParam(name = "BsIncubatorCommand", value = "培养箱信息模型", required = true)
                      @RequestBody HospitalCommand hospitalCommand){
-
+        hospitalInfoApplication.editHospitalInfo(hospitalCommand);
     }
 }

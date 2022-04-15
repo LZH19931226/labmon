@@ -1,6 +1,5 @@
 package com.hc.appliction;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.HospitalCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
@@ -32,11 +31,11 @@ public class HospitalInfoApplication {
      */
     public Page<HospitalInfoVo> selectHospitalInfo(HospitalCommand hospitalCommand, Long pageSize, Long pageCurrent) {
 
-        Page<HospitalInfoVo> page = new Page<>(pageCurrent,pageSize);
+        Page page = new Page<>(pageCurrent,pageSize);
 
         List<HospitalRegistrationInfoDto> hospitalInfos = hospitalRegistrationInfoService.selectHospitalInfo( page, hospitalCommand);
 
-        List<HospitalInfoVo> list = new ArrayList<>();
+        List list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(hospitalInfos)) {
             hospitalInfos.forEach(res->{
                 HospitalInfoVo build = HospitalInfoVo.builder()
@@ -49,8 +48,6 @@ public class HospitalInfoApplication {
             });
         }
         page.setRecords(list);
-        Object o = JSON.toJSON(page);
-        System.out.println(o);
         return page;
     }
 
@@ -63,5 +60,13 @@ public class HospitalInfoApplication {
 
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
 
+    }
+
+    /**
+     * 更新医院信息
+     * @param hospitalCommand
+     */
+    public void editHospitalInfo(HospitalCommand hospitalCommand) {
+        hospitalRegistrationInfoService.editHospitalInfo(hospitalCommand);
     }
 }

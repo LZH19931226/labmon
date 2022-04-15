@@ -7,7 +7,6 @@ import com.hc.my.common.core.constant.enums.HospitalEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.HospitalRegistrationInfoRepository;
 import com.hc.service.HospitalRegistrationInfoService;
-import com.hc.vo.hospital.HospitalInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     private HospitalRegistrationInfoRepository hospitalRegistrationInfoRepository;
 
     @Override
-    public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page<HospitalInfoVo> page, HospitalCommand hospitalCommand) {
+    public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
         return hospitalRegistrationInfoRepository.selectHospitalInfo(page, hospitalCommand);
     }
 
@@ -35,5 +34,10 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_NAME_NOT_NULL.getCode());
         }
         hospitalRegistrationInfoRepository.insertHospitalInfo(hospitalCommand);
+    }
+
+    @Override
+    public void editHospitalInfo(HospitalCommand hospitalCommand) {
+
     }
 }

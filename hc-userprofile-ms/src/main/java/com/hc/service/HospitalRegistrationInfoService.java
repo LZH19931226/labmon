@@ -3,7 +3,6 @@ package com.hc.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.HospitalCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
-import com.hc.vo.hospital.HospitalInfoVo;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public interface HospitalRegistrationInfoService {
      * @param hospitalCommand 医院信息数据传输对象
      * @return
      */
-    List<HospitalRegistrationInfoDto> selectHospitalInfo(Page<HospitalInfoVo> page, HospitalCommand hospitalCommand);
+    List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand);
 
     /**
      * 插入医院信息
@@ -27,4 +26,9 @@ public interface HospitalRegistrationInfoService {
      */
     void insertHospitalInfo(HospitalCommand hospitalCommand);
 
+    /**
+     * 修改医院信息
+     * @param hospitalCommand 医院信息数据传输对象
+     */
+    void editHospitalInfo(HospitalCommand hospitalCommand);
 }

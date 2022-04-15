@@ -1,6 +1,5 @@
 package com.hc.repository.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,8 +11,6 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalRegistrationInfoPo;
 import com.hc.repository.HospitalRegistrationInfoRepository;
-import com.hc.vo.hospital.HospitalInfoVo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +30,14 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page<HospitalInfoVo> page, HospitalCommand hospitalCommand) {
+    public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
 
-        Page<HospitalRegistrationInfoPo> objectPage = new Page<>(page.getCurrent(),page.getSize());
-        IPage<HospitalRegistrationInfoPo> iPage = hospitalRegistrationInfoDao.selectPage(objectPage, Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
-                .like(StringUtils.isNotBlank(hospitalCommand.getHospitalName()), HospitalRegistrationInfoPo::getHospitalName, hospitalCommand.getHospitalName())
-                .eq(StringUtils.isNotBlank(hospitalCommand.getIsEnable()),HospitalRegistrationInfoPo::getIsEnable,hospitalCommand.getIsEnable())
-                );
-        List<HospitalRegistrationInfoPo> records = iPage.getRecords();
-        return BeanConverter.convert(records, HospitalRegistrationInfoDto.class);
+//        IPage iPage = hospitalRegistrationInfoDao.selectPage(page, Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
+//                .like(StringUtils.isNotBlank(hospitalCommand.getHospitalName()), HospitalRegistrationInfoPo::getHospitalName, hospitalCommand.getHospitalName())
+//                .eq(StringUtils.isNotBlank(hospitalCommand.getIsEnable()),HospitalRegistrationInfoPo::getIsEnable,hospitalCommand.getIsEnable())
+//                );
+        List<HospitalRegistrationInfoDto> result = hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalFullName(),hospitalCommand.getIsEnable());
+        return result;
     }
 
     @Override
