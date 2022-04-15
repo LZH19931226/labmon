@@ -30,12 +30,9 @@ public class HospitalInfoApplication {
      * @return
      */
     public Page<HospitalInfoVo> selectHospitalInfo(HospitalCommand hospitalCommand, Long pageSize, Long pageCurrent) {
-
-        Page page = new Page<>(pageCurrent,pageSize);
-
+        Page<HospitalInfoVo> page = new Page<>(pageCurrent,pageSize);
         List<HospitalRegistrationInfoDto> hospitalInfos = hospitalRegistrationInfoService.selectHospitalInfo( page, hospitalCommand);
-
-        List list = new ArrayList<>();
+        List<HospitalInfoVo> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(hospitalInfos)) {
             hospitalInfos.forEach(res->{
                 HospitalInfoVo build = HospitalInfoVo.builder()

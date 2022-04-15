@@ -3,6 +3,7 @@ package com.hc.vo.hospital;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -12,20 +13,18 @@ import java.util.Date;
  * @author hc
  */
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class HospitalInfoVo {
 
     /** 医院编号 */
-    @JSONField(name = "hospitalCode")
     private String hospitalCode;
 
     /** 医院名称 */
-    @JSONField(name = "hospitalName")
     private String hospitalName;
 
     /** 是否可用 */
-    @JSONField(name = "isEnable")
     private String isEnable;
 
     /** 医院全称 */

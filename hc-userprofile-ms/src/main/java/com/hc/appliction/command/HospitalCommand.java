@@ -1,5 +1,7 @@
 package com.hc.appliction.command;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,15 +14,19 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(value = "医院请求信息体")
 public class HospitalCommand {
 
     /** 医院编号 */
+    @ApiModelProperty(value = "医院id")
     private String hospitalCode;
 
     /** 医院名称 */
+    @ApiModelProperty(value = "医院名称")
     private String hospitalName;
 
     /** 是否可用 */
+    @ApiModelProperty(value = "是否禁用")
     private String isEnable;
 
     /** 医院全称 */
@@ -43,5 +49,13 @@ public class HospitalCommand {
 
     /** 修改人 */
     private String updateBy;
+
+    /** 分页大小 */
+    @ApiModelProperty(value = "分页大小")
+    private Long pageSize;
+
+    /** 当前页 */
+    @ApiModelProperty(value = "当前页")
+    private Long pageCurrent;
 
 }
