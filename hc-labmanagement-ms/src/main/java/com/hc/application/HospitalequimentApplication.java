@@ -1,5 +1,8 @@
-package com.hc.appliction;
+package com.hc.application;
 
+import com.hc.application.command.HospitalEquimentTypeCommand;
+import com.hc.service.HospitalequimentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -13,5 +16,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class HospitalequimentApplication {
 
+    @Autowired
+    private HospitalequimentService hospitalequimentService;
 
+
+    public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
+        hospitalequimentService.addHospitalEquimentType(hospitalEquimentTypeCommand);
+    }
 }

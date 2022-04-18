@@ -1,6 +1,6 @@
 package com.hc.controller;
 
-import com.hc.appliction.MonitorequipmenttypeApplication;
+import com.hc.application.MonitorequipmenttypeApplication;
 import com.hc.vo.equimenttype.MonitorequipmenttypeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,6 +1,8 @@
 package com.hc.service;
 
 
+import com.hc.application.command.HospitalEquimentTypeCommand;
+
 /**
  * 
  *
@@ -11,5 +13,6 @@ package com.hc.service;
 public interface HospitalequimentService{
 
 
+    void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 }
 

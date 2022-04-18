@@ -1,4 +1,4 @@
-package com.hc.appliction;
+package com.hc.application;
 
 import com.hc.dto.MonitorequipmenttypeDTO;
 import com.hc.service.MonitorequipmenttypeService;
