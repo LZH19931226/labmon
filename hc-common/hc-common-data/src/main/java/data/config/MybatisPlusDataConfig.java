@@ -120,7 +120,7 @@ public class MybatisPlusDataConfig {
         mybatisSqlSessionFactoryBean.setPlugins(plugins);
         // 设置mapper.xml文件的路径
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resolver.getResources("classpath*:mapper/*Mapper.xml");
+        Resource[] resources = resolver.getResources("classpath*:mapper/*Dao.xml");
         mybatisSqlSessionFactoryBean.setMapperLocations(resources);
         //设置实体类扫码包路径
         mybatisSqlSessionFactoryBean.setTypeAliasesPackage("com.hc.po");
