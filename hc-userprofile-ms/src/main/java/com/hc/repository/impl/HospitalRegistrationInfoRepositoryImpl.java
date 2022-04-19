@@ -16,6 +16,7 @@ import com.hc.repository.HospitalRegistrationInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
 //                .like(StringUtils.isNotBlank(hospitalCommand.getHospitalName()), HospitalRegistrationInfoPo::getHospitalName, hospitalCommand.getHospitalName())
 //                .eq(StringUtils.isNotBlank(hospitalCommand.getIsEnable()),HospitalRegistrationInfoPo::getIsEnable,hospitalCommand.getIsEnable())
 //                );
-        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalFullName(),hospitalCommand.getIsEnable());
+        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalName(),hospitalCommand.getIsEnable());
     }
 
     @Override
@@ -49,7 +50,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         HospitalRegistrationInfoPo infoPo = BeanConverter.convert(hospitalCommand, HospitalRegistrationInfoPo.class);
         HospitalRegistrationInfoPo selectOne = hospitalRegistrationInfoDao.selectOne(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
-                .eq(HospitalRegistrationInfoPo::getHospitalFullName, hospitalCommand.getHospitalFullName()));
+                .eq(HospitalRegistrationInfoPo::getHospitalName, hospitalCommand.getHospitalName()));
         if(null!=selectOne){
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_ALREADY_EXISTS.getCode());
         }
@@ -61,20 +62,20 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
                 .setIsEnable(hospitalCommand.getIsEnable())
                 //默认设备为全天报警
                 .setAlwaysAlarm("1");
-        int insert = hospitalRegistrationInfoDao.insert(infoPo);
-        if (insert <= 0) {
-            throw  new IedsException(HospitalEnumErrorCode.ADD_HOSPITAL_INFO_FAILED.getCode());
-        }
+       hospitalRegistrationInfoDao.insert(infoPo);
+
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
-        HospitalRegistrationInfoPo convert = BeanConverter.convert(hospitalCommand, HospitalRegistrationInfoPo.class);
-        int i = hospitalRegistrationInfoDao.updateById(convert);
-        if(i<=0){
-            throw new IedsException(HospitalEnumErrorCode.UPDATE_HOSPITAL_INFO_FAIL.getCode());
+        HospitalEquipmentPo hospitalEquipmentPo =
+                hospitalRegistrationInfoDao.selectHospitalName(hospitalCommand.getHospitalName(),hospitalCommand.getHospitalCode());
+        if (!ObjectUtils.isEmpty(hospitalEquipmentPo)){
+            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_NAME_ALREADY_EXISTS.getCode());
         }
+        HospitalRegistrationInfoPo convert = BeanConverter.convert(hospitalCommand, HospitalRegistrationInfoPo.class);
+        hospitalRegistrationInfoDao.updateById(convert);
     }
 
     @Override
@@ -92,4 +93,15 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_INFO_DELETE_FAIL.getCode());
         }
     }
+
+    @Override
+    public List<HospitalRegistrationInfoDto> selectHospitalNameList() {
+        List<HospitalRegistrationInfoPo> list
+                = hospitalRegistrationInfoDao.selectList(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo()));
+
+        return list != null && list.size() !=0 ?
+                BeanConverter.convert(list,HospitalRegistrationInfoDto.class):null;
+    }
+
+
 }

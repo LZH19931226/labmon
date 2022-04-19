@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * 用户登录应用层
+ * 用户信息申请
  * @author hc
  */
 @Component

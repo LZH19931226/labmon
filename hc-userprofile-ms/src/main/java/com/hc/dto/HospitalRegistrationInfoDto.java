@@ -20,7 +20,7 @@ public class HospitalRegistrationInfoDto {
     /** 是否可用 */
     private String isEnable;
 
-    /** 医院全称 */
+    /** 医院简称 */
     private String hospitalFullName;
 
     /** 全天报警 */
