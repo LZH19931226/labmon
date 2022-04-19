@@ -35,7 +35,7 @@ public class HospitalRegistrationInfoPo implements Serializable {
     @TableField(value = "isenable")
     private String isEnable;
 
-    /** 医院全称 */
+    /** 医院简称 */
     @TableField(value = "hospitalfullname")
     private String hospitalFullName;
 

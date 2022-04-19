@@ -1,6 +1,5 @@
 package com.hc.vo.hospital;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +26,7 @@ public class HospitalInfoVo {
     /** 是否可用 */
     private String isEnable;
 
-    /** 医院全称 */
+    /** 医院简称 */
     private String hospitalFullName;
 
     /** 全天报警 */

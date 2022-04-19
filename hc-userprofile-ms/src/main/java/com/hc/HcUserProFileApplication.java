@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * 启动类
  * @author user
  */
-@SpringBootApplication
+@SpringBootApplication()
 @EnableDiscoveryClient
 @MapperScan("com.hc.infrastructure.dao")
 @EnableSwagger2

@@ -3,6 +3,7 @@ package com.hc.infrastructure.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.HospitalRegistrationInfoDto;
+import com.hc.po.HospitalEquipmentPo;
 import com.hc.po.HospitalRegistrationInfoPo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,23 +17,41 @@ import java.util.List;
 @Mapper
 public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistrationInfoPo> {
 
+    /**
+     * 查询医院信息列表
+     * @param page  分页对象
+     * @param hospitalName 医院全称
+     * @param isEnable 是否启用
+     * @return
+     */
     @Select("<script>"+
             "SELECT " +
-            "hospitalcode," +
-            "hospitalname," +
-            "isenable," +
-            "hospitalfullname," +
+            "hospitalcode hospitalCode," +
+            "hospitalname hospitalName," +
+            "isenable  isEnable," +
+            "hospitalfullname hospitalFullName," +
             "alwayalarm AS alwaysAlarm," +
-            "begintime" +
-            ",endtime," +
+            "begintime beginTime," +
+            "endtime endTime," +
             "timeout,update_time AS updateTime," +
             "update_by AS updateBy " +
             "FROM hospitalofreginfo where 1=1 " +
-            "<if test = 'hospitalFullName != null'> " +
-            "and hospitalfullname like concat('%', #{hospitalFullName}, '%')" +
+            "<if test = 'hospitalName != null  and hospitalName != \"\"'> " +
+            "and hospitalfullname like concat('%', #{hospitalName}, '%')" +
             "</if>" +
-            "<if  test = 'isEnable != null'> and isenable = #{isEnable}"+
+            "<if  test = 'isEnable != null and isEnable != \"\" '> " +
+            "and isenable = #{isEnable}"+
             "</if>"+
             "</script>")
-    List<HospitalRegistrationInfoDto> selectListByHospital(Page page, @Param(value = "hospitalFullName") String hospitalFullName, @Param(value = "isEnable") String isEnable);
+    List<HospitalRegistrationInfoDto> selectListByHospital(Page page, @Param(value = "hospitalName") String hospitalName, @Param(value = "isEnable") String isEnable);
+
+
+    /**
+     * 获取有无重复的医院名称
+     * @param hospitalName 医院名称
+     * @param hospitalCode 医院编码
+     * @return
+     */
+    @Select("select * from HospitalOfRegInfo where hospitalname = #{hospitalName}  and hospitalcode !=#{hospitalCode}")
+    HospitalEquipmentPo selectHospitalName(@Param("hospitalName") String hospitalName, @Param("hospitalCode") String hospitalCode);
 }

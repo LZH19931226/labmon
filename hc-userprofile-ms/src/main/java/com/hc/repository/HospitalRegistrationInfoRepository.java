@@ -39,4 +39,11 @@ public interface HospitalRegistrationInfoRepository extends IService<HospitalReg
      * @param hospitalCode 医院编码
      */
     void deleteHospitalInfoByCode(String hospitalCode);
+
+    /**
+     * 获取医院名称列表
+     * @return 医院名称集合
+     */
+    List<HospitalRegistrationInfoDto> selectHospitalNameList();
+
 }

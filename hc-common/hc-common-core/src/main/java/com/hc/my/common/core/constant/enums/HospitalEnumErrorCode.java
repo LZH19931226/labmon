@@ -11,6 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum HospitalEnumErrorCode {
     HOSPITAL_FULL_NAME_ALREADY_EXISTS("当前医院已存在，请勿重复增加"),
+    HOSPITAL_NAME_ALREADY_EXISTS("当前医院已存在,请修改医院名"),
     ADD_HOSPITAL_INFO_FAILED("添加医院信息失败"),
     HOSPITAL_FULL_NAME_NOT_NULL("医院全称不能为空"),
     HOSPITAL_CODE_NOT_NULL("医院编码不能为空"),
