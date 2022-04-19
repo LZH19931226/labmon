@@ -32,4 +32,10 @@ public class HospitalequimentController {
         hospitalequimentApplication.addHospitalEquimentType(hospitalEquimentTypeCommand);
     }
 
+    @PostMapping("updateHospitalEquimentType")
+    @ApiOperation("编辑医院设备类型")
+    public void updateHospitalEquimentType(@RequestBody HospitalEquimentTypeCommand hospitalEquimentTypeCommand){
+        hospitalequimentApplication.updateHospitalEquimentType(hospitalEquimentTypeCommand);
+    }
+
 }

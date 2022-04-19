@@ -2,7 +2,7 @@
 
 <configuration>
     <springProperty scope="context" name="appName"
-                    source="spring.application.name" defaultValue="labmon" />
+                    source="spring.application.name" defaultValue="htgl" />
     <springProperty scope="context" name="type"
                     source="msConfig.logging.path" defaultValue="logs" />
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
@@ -16,10 +16,10 @@
     </appender>
     <!-- 按照每天生成日志文件 -->
     <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/labmon.log</file>
+        <file>logs/htgl.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>./logs/labmon.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>./logs/htgl.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">

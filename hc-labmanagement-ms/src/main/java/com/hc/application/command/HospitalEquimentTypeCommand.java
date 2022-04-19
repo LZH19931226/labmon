@@ -51,4 +51,8 @@ public class HospitalEquimentTypeCommand {
     private WorkTimeBlockCommand[] workTimeBlock;
 
 
+    /**
+     * 移除工作报警时间段
+     */
+    private WorkTimeBlockCommand[] deleteWarningTimeBlock;
 }

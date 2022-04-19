@@ -1,13 +1,10 @@
 package com.hc.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -27,7 +24,6 @@ public class HospitalequimentPo  implements Serializable {
 	/**
 	 * 设备类型编码
 	 */
-	@TableId(type = IdType.AUTO)
 		private String equipmenttypeid;
 	/**
 	 * 医院编号

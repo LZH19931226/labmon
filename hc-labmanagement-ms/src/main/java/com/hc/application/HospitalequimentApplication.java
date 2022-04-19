@@ -23,4 +23,8 @@ public class HospitalequimentApplication {
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         hospitalequimentService.addHospitalEquimentType(hospitalEquimentTypeCommand);
     }
+
+    public void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
+        hospitalequimentService.updateHospitalEquimentType(hospitalEquimentTypeCommand);
+    }
 }

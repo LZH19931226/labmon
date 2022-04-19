@@ -15,6 +15,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum  HospitalequimentEnumErrorCode {
-
-
+    THE_SAME_DEVICE_TYPE_EXISTS("已经存在相同设备类型");
+    private String code;
 }

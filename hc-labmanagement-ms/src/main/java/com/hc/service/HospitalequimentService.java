@@ -14,5 +14,7 @@ public interface HospitalequimentService{
 
 
     void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+
+    void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 }
 
