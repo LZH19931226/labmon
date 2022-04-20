@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.HospitalofreginfoDao;
+import com.hc.infrastructure.dao.HospitalofreginfoDao;
 import com.hc.entity.Hospitalequiment;
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.mapper.laboratoryFrom.HospitalInfoMapper;

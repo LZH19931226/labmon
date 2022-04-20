@@ -1,7 +1,7 @@
 package com.hc.service.serviceimpl;
 
 import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.UserScheduLingDao;
+import com.hc.infrastructure.dao.UserScheduLingDao;
 import com.hc.entity.UserScheduLing;
 import com.hc.entity.Userback;
 import com.hc.mapper.laboratoryFrom.UserAuthorInfoMapper;

@@ -2,10 +2,9 @@ package com.hc.service.serviceimpl;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.github.pagehelper.Page;
-import com.hc.config.BaseConfiguration;
 import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.HospitaDao;
-import com.hc.dao.UserrightDao;
+import com.hc.infrastructure.dao.HospitaDao;
+import com.hc.infrastructure.dao.UserrightDao;
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.entity.Monitorequipment;
 import com.hc.entity.Monitorupsrecord;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Created by 16956 on 2018-07-31.

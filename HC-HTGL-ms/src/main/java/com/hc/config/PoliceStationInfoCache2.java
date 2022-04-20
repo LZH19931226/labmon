@@ -1,9 +1,7 @@
 package com.hc.config;
 
-import com.hc.dao.MonitorEquipmentDao;
 import com.hc.entity.MonitorEquipmentWarningTime;
-import com.hc.entity.Monitorequipment;
-import com.hc.entity.Monitorinstrument;
+import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
@@ -23,8 +21,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +37,7 @@ public class PoliceStationInfoCache2 implements CommandLineRunner {
     private final Logger log = LoggerFactory.getLogger(PoliceStationInfoCache2.class);
 
     @Autowired
-    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+    private MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
 
     @Autowired
     private HospitalEquipmentMapper hospitalEquipmentMapper;

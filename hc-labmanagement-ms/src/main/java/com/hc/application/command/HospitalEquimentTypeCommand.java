@@ -55,4 +55,12 @@ public class HospitalEquimentTypeCommand {
      * 移除工作报警时间段
      */
     private WorkTimeBlockCommand[] deleteWarningTimeBlock;
+
+    /** 分页大小 */
+    @ApiModelProperty(value = "分页大小")
+    private Long pageSize;
+
+    /** 当前页 */
+    @ApiModelProperty(value = "当前页")
+    private Long pageCurrent;
 }

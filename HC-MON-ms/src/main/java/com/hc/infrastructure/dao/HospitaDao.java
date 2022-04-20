@@ -1,4 +1,4 @@
-package com.hc.dao;
+package com.hc.infrastructure.dao;
 
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.entity.IosFileEntity;

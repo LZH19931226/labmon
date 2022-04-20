@@ -1,7 +1,7 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.dao.OperationlogDao;
-import com.hc.dao.OperationlogdetailDao;
+import com.hc.infrastructure.dao.OperationlogDao;
+import com.hc.infrastructure.dao.OperationlogdetailDao;
 import com.hc.entity.Operationlog;
 import com.hc.entity.Operationlogdetail;
 import com.hc.mapper.laboratoryFrom.OperationlogdetaiMapper;

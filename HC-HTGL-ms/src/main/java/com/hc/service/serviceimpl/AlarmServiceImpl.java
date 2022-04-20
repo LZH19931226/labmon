@@ -1,7 +1,7 @@
 package com.hc.service.serviceimpl;
 
 import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.HospitalofreginfoDao;
+import com.hc.infrastructure.dao.HospitalofreginfoDao;
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.mapper.laboratoryFrom.HospitalInfoMapper;
 import com.hc.model.AbnormalDataModel;
