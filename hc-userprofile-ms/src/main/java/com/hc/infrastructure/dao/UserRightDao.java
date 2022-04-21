@@ -27,9 +27,12 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
      */
     @Select("<script>"+
             "SELECT " +
-            "u.username username " +
-            ",u.pwd pwd\n " +
+            "u.userid userid " +
+            ",u.username username " +
+            ",u.pwd pwd " +
+            ",u.nickname nickname " +
             ",h.hospitalname hospitalName " +
+            ",h.hospitalcode hospitalCode " +
             ",u.phonenum  phoneNum " +
             ",u.isuse isUse " +
             ",u.usertype userType " +
@@ -39,7 +42,7 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             "FROM userright u " +
             "LEFT JOIN hospitalofreginfo h ON u.hospitalcode = h.hospitalcode "+
             "where 1=1" +
-            "<if test = 'hospitalName !=null and username != \"\"'>" +
+            "<if test = 'hospitalName !=null and hospitalName != \"\"'>" +
             "and h.hospitalName = #{hospitalName}" +
             "</if>" +
             "<if test = 'username != null and username != \"\"'>" +
@@ -48,9 +51,10 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             "<if test = 'phoneNum != null and phoneNum !=\"\"'> " +
             "and u.phonenum like concat('%',#{phoneNum},'%') " +
             "</if> " +
-            "<if test = 'isUse != null and isUse != \"\"'> " +
+            "<if test = 'isUse != null'> " +
             "and u.isuse  = #{isUse} " +
             "</if>" +
             "</script>")
     List<UserRightDto> findUserRightList(Page page, @Param("hospitalName") String hospitalName, @Param("username") String username, @Param("phoneNum") String phoneNum, @Param("isUse") Long isUse);
+
 }

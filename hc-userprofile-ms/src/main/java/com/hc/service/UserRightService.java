@@ -23,8 +23,19 @@ public interface UserRightService {
 
     /**
      * 添加用户信息
-     * @param userRightCommand
+     * @param userRightCommand 用户权限命令
      */
     void insertUserRightInfo(UserRightCommand userRightCommand);
 
+    /**
+     * 修改用户信息
+     * @param userRightCommand 用户权限命令
+     */
+    void updateUserRightInfo(UserRightCommand userRightCommand);
+
+    /**
+     * 删除用户信息
+     * @param userRightCommand 用户权限信息
+     */
+    void deleteUserRightInfo(UserRightCommand userRightCommand);
 }

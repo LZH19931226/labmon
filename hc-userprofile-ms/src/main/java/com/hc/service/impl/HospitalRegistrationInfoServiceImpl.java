@@ -41,10 +41,11 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_NOT_NULL.getCode());
         }
         hospitalRegistrationInfoRepository.insertHospitalInfo(hospitalCommand);
-
         //添加同步缓存
+        HospitalRegistrationInfoDto hospitalRegistrationInfoDto =
+                hospitalRegistrationInfoRepository.selectHospitalInfoByHospitalName(hospitalCommand.getHospitalName());
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.put("hospital:info",hospitalCommand.getHospitalCode(), JSON.toJSON(hospitalCommand));
+        objectObjectObjectHashOperations.put("hospital:info",hospitalRegistrationInfoDto.getHospitalCode(), JSON.toJSON(hospitalRegistrationInfoDto));
     }
 
     @Override
@@ -58,11 +59,12 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_NOT_NULL.getCode());
         }
         hospitalRegistrationInfoRepository.editHospitalInfo(hospitalCommand);
-
-        //修改同步缓存
+        //更新同步缓存
+        HospitalRegistrationInfoDto hospitalRegistrationInfoDto =
+                hospitalRegistrationInfoRepository.selectHospitalInfoByHospitalName(hospitalCommand.getHospitalName());
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.delete("hospital:info",hospitalCommand.getHospitalCode());
-        objectObjectObjectHashOperations.put("hospital:info",hospitalCommand.getHospitalCode(), JSON.toJSON(hospitalCommand));
+        objectObjectObjectHashOperations.delete("hospital:info",hospitalRegistrationInfoDto.getHospitalCode());
+        objectObjectObjectHashOperations.put("hospital:info",hospitalRegistrationInfoDto.getHospitalCode(), JSON.toJSON(hospitalRegistrationInfoDto));
     }
 
     @Override
@@ -80,4 +82,5 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     public List<HospitalRegistrationInfoDto> selectHospitalNameList() {
         return hospitalRegistrationInfoRepository.selectHospitalNameList();
     }
+
 }

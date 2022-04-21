@@ -5,9 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
-
-
 
 
 /**
@@ -20,40 +17,40 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Getter
-@ApiModel(value = "monitorequipment")
-public class MonitorequipmentVo  implements Serializable {
+@ApiModel(value = "监控设备")
+public class MonitorEquipmentVo  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 设备编号
 	 */
 		@ApiModelProperty(value="设备编号")
-	private String equipmentno;
+	private String equipmentNo;
 	/**
 	 * 设备类型编码
 	 */
 	@ApiModelProperty(value="设备类型编码")
-	private String equipmenttypeid;
+	private String equipmentTypeId;
 	/**
 	 * 医院编号
 	 */
 	@ApiModelProperty(value="医院编号")
-	private String hospitalcode;
+	private String hospitalCode;
 	/**
 	 * 设备名称
 	 */
 	@ApiModelProperty(value="设备名称")
-	private String equipmentname;
+	private String equipmentName;
 	/**
 	 * 设备品牌
 	 */
 	@ApiModelProperty(value="设备品牌")
-	private String equipmentbrand;
+	private String equipmentBrand;
 	/**
 	 * 是否显示
 	 */
 	@ApiModelProperty(value="是否显示")
-	private Integer clientvisible;
+	private Integer clientVisible;
 	/**
 	 * 
 	 */
@@ -63,7 +60,7 @@ public class MonitorequipmentVo  implements Serializable {
 	 * 全天警报 1=开启 0=关闭
 	 */
 	@ApiModelProperty(value="全天警报 1=开启 0=关闭")
-	private String alwayalarm;
+	private String alwaysAlarm;
 
 }
 

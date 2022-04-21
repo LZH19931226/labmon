@@ -18,7 +18,7 @@ public interface UserSchedulingRepository {
 
     /**
      * 插入用户排班信息
-     * @param userSchedulingDtoList
+     * @param userSchedulingDtoList 用户排班信息集合
      */
     void insertUserSchedulingInfo(List<UserSchedulingDto> userSchedulingDtoList);
 

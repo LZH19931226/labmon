@@ -34,6 +34,8 @@ public class UserRightApplication {
         if(userRightList!=null && userRightList.size()!=0){
             userRightList.forEach(res ->{
                 UserRightVo result = UserRightVo.builder()
+                        .hospitalCode(res.getHospitalCode())
+                        .userid(res.getUserid())
                         .username(res.getUsername())
                         .nickname(res.getNickname())
                         .pwd(res.getPwd())
@@ -42,8 +44,8 @@ public class UserRightApplication {
                         .isUse(res.getIsUse())
                         .userType(res.getUserType())
                         .deviceType(res.getDeviceType())
-                        .timeout(res.getTimeout())
-                        .timeoutWarning(res.getTimeoutWarning())
+                        .timeout(res.getTimeout()==null?"":res.getTimeout())
+                        .timeoutWarning(res.getTimeoutWarning()==null?"":res.getTimeoutWarning())
                         .build();
                 list.add(result);
             });
@@ -58,5 +60,21 @@ public class UserRightApplication {
      */
     public void insertUserRightInfo(UserRightCommand userRightCommand) {
         userRightService.insertUserRightInfo(userRightCommand);
+    }
+
+    /**
+     * 修改用户信息
+     * @param userRightCommand
+     */
+    public void updateUserRightInfo(UserRightCommand userRightCommand) {
+        userRightService.updateUserRightInfo(userRightCommand);
+    }
+
+    /**
+     * 删除用户信息
+     * @param userRightCommand
+     */
+    public void deleteUserRightInfo(UserRightCommand userRightCommand) {
+        userRightService.deleteUserRightInfo(userRightCommand);
     }
 }

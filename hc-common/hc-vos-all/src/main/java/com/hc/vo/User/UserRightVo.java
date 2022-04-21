@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRightVo {
+
+    /** 用户id */
+    private String userid;
+
     /** 用户名 */
     private String username;
 
@@ -25,6 +29,9 @@ public class UserRightVo {
 
     /** 医院名称 */
     private String hospitalName;
+
+    /** 医院编码 */
+    private String hospitalCode;
 
     /** 手机号 */
     private String phoneNum;

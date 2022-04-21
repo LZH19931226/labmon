@@ -34,17 +34,22 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
     @Autowired
     private HospitalEquipmentDao hospitalEquipmentDao;
 
+    /**
+     * 查询医院信息
+     * @param page 分页对象
+     * @param hospitalCommand 医院信息数据传输对象
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
-
-//        IPage iPage = hospitalRegistrationInfoDao.selectPage(page, Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
-//                .like(StringUtils.isNotBlank(hospitalCommand.getHospitalName()), HospitalRegistrationInfoPo::getHospitalName, hospitalCommand.getHospitalName())
-//                .eq(StringUtils.isNotBlank(hospitalCommand.getIsEnable()),HospitalRegistrationInfoPo::getIsEnable,hospitalCommand.getIsEnable())
-//                );
         return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalName(),hospitalCommand.getIsEnable());
     }
 
+    /**
+     * 插入医院信息
+     * @param hospitalCommand 医院信息数据传输对象
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
@@ -66,6 +71,10 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
 
     }
 
+    /**
+     * 修改医院信息
+     * @param hospitalCommand 医院信息数据传输对象
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
@@ -78,6 +87,10 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         hospitalRegistrationInfoDao.updateById(convert);
     }
 
+    /**
+     * 更据医院编码删除医院信息
+     * @param hospitalCode 医院编码
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteHospitalInfoByCode(String hospitalCode) {
@@ -94,14 +107,28 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         }
     }
 
+    /**
+     * 获取医院名称列表
+     * @return 医院名称集合
+     */
     @Override
     public List<HospitalRegistrationInfoDto> selectHospitalNameList() {
         List<HospitalRegistrationInfoPo> list
                 = hospitalRegistrationInfoDao.selectList(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo()));
-
         return list != null && list.size() !=0 ?
                 BeanConverter.convert(list,HospitalRegistrationInfoDto.class):null;
     }
 
-
+    /**
+     * 根据医院名称查询医院信息
+     *
+     * @param hospitalName
+     * @return
+     */
+    @Override
+    public HospitalRegistrationInfoDto selectHospitalInfoByHospitalName(String hospitalName) {
+        HospitalRegistrationInfoPo hospitalRegistrationInfoPo = hospitalRegistrationInfoDao.selectOne(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
+                .eq(HospitalRegistrationInfoPo::getHospitalName, hospitalName));
+        return BeanConverter.convert(hospitalRegistrationInfoPo,HospitalRegistrationInfoDto.class);
+    }
 }

@@ -33,7 +33,7 @@ public class HospitalInfoApplication {
      * @param hospitalCommand 医院传输对象
      * @param pageSize      分页大小
      * @param pageCurrent   当前页数
-     * @return
+     * @return 分页视图对象
      */
     public Page<HospitalInfoVo> selectHospitalInfo(HospitalCommand hospitalCommand, Long pageSize, Long pageCurrent) {
         Page<HospitalInfoVo> page = new Page<>(pageCurrent,pageSize);
@@ -103,6 +103,13 @@ public class HospitalInfoApplication {
         userSchedulingService.saveSchedule(userScheduleCommand);
     }
 
+    /**
+     * 通过医院编码和月份信息查找用户当月的排班信息
+     * @param hospitalCode 医院编码
+     * @param startMonth 开始月份
+     * @param endMonth 结束月份
+     * @return 用户信息集合
+     */
     public List<UserSchedulingVo> searchScByHosMon(String hospitalCode, String startMonth, String endMonth) {
         List<UserSchedulingDto> userSchedulingDtoList = userSchedulingService.searchScByHosMon(hospitalCode,startMonth,endMonth);
         List<UserSchedulingVo> list = new ArrayList<>();
@@ -138,8 +145,9 @@ public class HospitalInfoApplication {
     }
 
     /**
-     * 按代码查找排班本周
+     * 按代码查找本周排班信息
      * @param hospitalCode 医院编码
+     * @return 用户排班集合
      */
     public List<UserSchedulingVo> selectScheduleWeekByCode(String hospitalCode) {
         List<UserSchedulingDto> userSchedulingDtoList = userSchedulingService.selectScheduleWeekByCode(hospitalCode);
@@ -162,8 +170,8 @@ public class HospitalInfoApplication {
 
     /**
      * 将具有相同特性的元素合并
-     * @param userSchedulingDtoList
-     * @return
+     * @param userSchedulingDtoList 用户排班信息集合
+     * @return 合并后用户排班信息集合
      */
     public List<UserSchedulingDto> mergeElements(List<UserSchedulingDto> userSchedulingDtoList){
         List<UserSchedulingDto> listDto = new ArrayList<>();
