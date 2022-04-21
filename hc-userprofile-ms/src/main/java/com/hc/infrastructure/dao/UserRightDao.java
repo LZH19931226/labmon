@@ -43,7 +43,7 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             "LEFT JOIN hospitalofreginfo h ON u.hospitalcode = h.hospitalcode "+
             "where 1=1" +
             "<if test = 'hospitalName !=null and hospitalName != \"\"'>" +
-            "and h.hospitalName = #{hospitalName}" +
+            "and h.hospitalname = #{hospitalName}" +
             "</if>" +
             "<if test = 'username != null and username != \"\"'>" +
             "and u.username like concat('%',#{username},'%') "+

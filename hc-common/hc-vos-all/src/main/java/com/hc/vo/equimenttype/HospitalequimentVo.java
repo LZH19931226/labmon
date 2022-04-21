@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 
@@ -65,7 +64,6 @@ public class HospitalequimentVo  implements Serializable {
 
 	@ApiModelProperty(value = "设备名称")
 	private String equipmenttypename;
-
 
 
 	@ApiModelProperty(value="工作报警时间段")
