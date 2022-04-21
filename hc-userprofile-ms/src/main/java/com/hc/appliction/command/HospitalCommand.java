@@ -34,21 +34,27 @@ public class HospitalCommand {
     private String hospitalFullName;
 
     /** 全天报警 */
+    @ApiModelProperty(value = "全天报警")
     private String alwaysAlarm;
 
     /** 开始时间 */
+    @ApiModelProperty(value = "开始时间")
     private Date beginTime;
 
     /** 结束时间 */
+    @ApiModelProperty(value = "结束时间")
     private Date endTime;
 
     /** 超时设置 */
+    @ApiModelProperty(value = "超时设置")
     private String timeout;
 
     /** 修改时间 */
+    @ApiModelProperty(value = "修改时间")
     private Date updateTime;
 
     /** 修改人 */
+    @ApiModelProperty(value = "修改人")
     private String updateBy;
 
     /** 分页大小 */

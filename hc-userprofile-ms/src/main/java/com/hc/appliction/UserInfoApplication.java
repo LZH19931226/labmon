@@ -15,10 +15,18 @@ public class UserInfoApplication {
     @Autowired
     private UserBackService userBackService;
 
+    /**
+     * 用户登录
+     * @param userCommand 用户信息
+     */
     public void userLogin(UserCommand userCommand) {
         userBackService.userLogin(userCommand);
     }
 
+    /**
+     * 修改密码
+     * @param userCommand 用户信息
+     */
     public void updatePassword(UserCommand userCommand) {
         userBackService.updatePassword(userCommand);
     }

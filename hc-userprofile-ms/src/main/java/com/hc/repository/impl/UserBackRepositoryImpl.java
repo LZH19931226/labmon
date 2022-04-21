@@ -21,13 +21,17 @@ public class UserBackRepositoryImpl implements UserBackRepository {
     @Autowired
     private UserBackDao userBackDao;
 
+    /**
+     * 用户登录
+     * @param userBackPo 用户信息
+     * @return 用户信息
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserBackDto userLogin(UserBackPo userBackPo) {
 
         String username = userBackPo.getUsername();
         String pwd = userBackPo.getPwd();
-
         UserBackPo userPo = userBackDao
                 .selectOne(Wrappers.lambdaQuery(new UserBackPo())
                         .eq(UserBackPo::getUsername, username));
@@ -42,6 +46,10 @@ public class UserBackRepositoryImpl implements UserBackRepository {
         return BeanConverter.convert(userPo, UserBackDto.class);
     }
 
+    /**
+     * 修改密码
+     * @param userBackPo 数据传输对象
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updatePassword(UserBackPo userBackPo) {

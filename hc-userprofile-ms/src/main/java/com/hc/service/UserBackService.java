@@ -11,8 +11,8 @@ public interface UserBackService {
     /**
      * 用户登录
      *
-     * @param userBackDto
-     * @return
+     * @param userBackDto 用户数据传输对象
+     * @return 用户对象
      */
     UserBackDto userLogin(UserCommand userBackDto);
 

@@ -20,4 +20,30 @@ public interface UserRightRepository extends IService<UserRightPo> {
      * @return
      */
     List<UserRightDto> findUserRightList(Page page, UserRightCommand userRightCommand);
+
+    /**
+     * 插入用户权限信息
+     * @param userRightCommand 用户
+     */
+    void insertUserRightInfo(UserRightCommand userRightCommand);
+
+    /**
+     * 修改信息信息
+     * @param userRightCommand
+     */
+    void updateUserRightInfo(UserRightCommand userRightCommand);
+
+    /**
+     * 更具医院编码获取医院的所有人员信息
+     * @param hospitalCode 医院编码
+     * @return
+     */
+    List<UserRightDto> selectHospitalInfoByCode(String hospitalCode);
+
+    /**
+     * 删除用户信息
+     * @param userid
+     */
+    void deleteUserRightInfo(String userid);
+
 }

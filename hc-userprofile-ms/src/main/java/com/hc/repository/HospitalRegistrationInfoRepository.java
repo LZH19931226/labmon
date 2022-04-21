@@ -46,4 +46,10 @@ public interface HospitalRegistrationInfoRepository extends IService<HospitalReg
      */
     List<HospitalRegistrationInfoDto> selectHospitalNameList();
 
+    /**
+     * 根据医院名称查询医院信息
+     * @param hospitalName
+     * @return
+     */
+    HospitalRegistrationInfoDto selectHospitalInfoByHospitalName(String hospitalName);
 }

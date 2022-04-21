@@ -22,13 +22,13 @@ public class UserRightPo {
     /**
      * 医院编号
      */
-    @TableId
     @TableField(value = "hospitalcode")
     private String hospitalCode;
 
     /**
      * 用户ID
      */
+    @TableId
     @TableField(value = "userid")
     private String userid;
 

@@ -25,11 +25,20 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
     @Autowired
     private UserSchedulingDao userSchedulingDao;
 
+    /**
+     * 根据医院编码和时间删除用户排班信息
+     * @param hospitalCode 医院编码
+     * @param startTime 开始时间
+     */
     @Override
     public void deleteInfo(String hospitalCode, Date startTime) {
         userSchedulingDao.deleteInfo(hospitalCode,startTime);
     }
 
+    /**
+     * 插入用户排班信息
+     * @param userSchedulingDtoList 用户排班信息集合
+     */
     @Override
     public void insertUserSchedulingInfo(List<UserSchedulingDto> userSchedulingDtoList) {
         List<UserSchedulingPo> userSchedulingPos = BeanConverter.convert(userSchedulingDtoList, UserSchedulingPo.class);

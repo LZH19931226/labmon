@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserEnumErrorCode {
+    USERNAME_ALREADY_EXISTS("用户名已存在"),
     USER_NOT_EXISTS("用户不存在"),
     USER_ACCOUNT_OR_PASSWORD_ERROR("账号或者密码有误"),
     REQUEST_PARAMETER_NOT_VALID("请求参数不合法"),

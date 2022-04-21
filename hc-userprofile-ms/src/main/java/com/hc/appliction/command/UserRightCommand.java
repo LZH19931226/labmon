@@ -14,13 +14,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRightCommand {
 
+    /** 用户id */
+    private String userid;
+
     /** 医院名称 */
     @ApiModelProperty(value = "医院名称")
     private String hospitalName;
 
+    /** 医院编码 */
+    @ApiModelProperty(value = "医院编码")
+    private String hospitalCode;
+
     /** 用户名称 */
     @ApiModelProperty(value = "用户名称")
     private String username;
+
+    /** 用户昵称 */
+    @ApiModelProperty(value = "用户名称")
+    private String nickname;
 
     /** 密码 */
     @ApiModelProperty(value = "密码")

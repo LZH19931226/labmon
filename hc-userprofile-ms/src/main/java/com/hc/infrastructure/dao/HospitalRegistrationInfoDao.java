@@ -22,7 +22,7 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
      * @param page  分页对象
      * @param hospitalName 医院全称
      * @param isEnable 是否启用
-     * @return
+     * @return 医院信息传输对象集合
      */
     @Select("<script>"+
             "SELECT " +
@@ -50,7 +50,7 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
      * 获取有无重复的医院名称
      * @param hospitalName 医院名称
      * @param hospitalCode 医院编码
-     * @return
+     * @return 医院设备对象
      */
     @Select("select * from HospitalOfRegInfo where hospitalname = #{hospitalName}  and hospitalcode !=#{hospitalCode}")
     HospitalEquipmentPo selectHospitalName(@Param("hospitalName") String hospitalName, @Param("hospitalCode") String hospitalCode);

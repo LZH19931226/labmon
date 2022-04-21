@@ -7,10 +7,7 @@ import com.hc.vo.User.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户权限信息控制器
@@ -31,7 +28,21 @@ public class UserRightInfoController {
     }
 
     @PostMapping("/addUserRightInfo")
+    @ApiOperation("新增人员信息")
     public void add(@RequestBody UserRightCommand userRightCommand){
         userRightApplication.insertUserRightInfo(userRightCommand);
     }
+
+    @PutMapping("/updateUserRightInfo")
+    @ApiOperation("修改用户信息")
+    public void edit(@RequestBody UserRightCommand userRightCommand){
+        userRightApplication.updateUserRightInfo(userRightCommand);
+    }
+
+    @DeleteMapping("/deleteUserRightInfo")
+    @ApiOperation("删除用户信息")
+    public void remove(@RequestBody UserRightCommand userRightCommand){
+        userRightApplication.deleteUserRightInfo(userRightCommand);
+    }
+
 }
