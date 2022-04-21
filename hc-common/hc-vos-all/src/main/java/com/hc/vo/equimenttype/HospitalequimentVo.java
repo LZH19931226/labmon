@@ -60,6 +60,13 @@ public class HospitalequimentVo  implements Serializable {
 	private String alwayalarm;
 
 
+	@ApiModelProperty(value = "医院名称")
+	private String hospitalname;
+
+	@ApiModelProperty(value = "设备名称")
+	private String equipmenttypename;
+
+
 
 	@ApiModelProperty(value="工作报警时间段")
 	private List<MonitorequipmentwarningtimeVo> workTimeBlock;

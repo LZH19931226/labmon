@@ -47,7 +47,7 @@ public class HospitalequimentController {
 
 
     @GetMapping("/deleteHospitalEquimentType")
-    @ApiOperation("查询医院设备类型信息接口")
+    @ApiOperation("删除医院设备类型信息接口")
     public void deleteHospitalEquimentType(@RequestParam(name = "hospitalCode") String hospitalCode,
                                            @RequestParam(name = "equipmenttypeid") String equipmenttypeid){
         hospitalequimentApplication.deleteHospitalEquimentType(hospitalCode,equipmenttypeid);

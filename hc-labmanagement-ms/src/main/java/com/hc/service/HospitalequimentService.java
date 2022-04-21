@@ -21,5 +21,7 @@ public interface HospitalequimentService{
     void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 
     List<HospitalequimentDTO> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+
+    void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid);
 }
 

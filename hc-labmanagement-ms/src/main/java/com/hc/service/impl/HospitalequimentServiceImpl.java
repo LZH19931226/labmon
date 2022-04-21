@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.application.command.WorkTimeBlockCommand;
 import com.hc.constants.error.HospitalequimentEnumErrorCode;
@@ -7,8 +8,11 @@ import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.po.HospitalequimentPo;
+import com.hc.po.MonitorequipmentPo;
 import com.hc.po.MonitorequipmentwarningtimePo;
 import com.hc.repository.HospitalequimentRepository;
+import com.hc.repository.MonitorequipmentRepository;
 import com.hc.repository.MonitorequipmentwarningtimeRepository;
 import com.hc.service.HospitalequimentService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,6 +31,9 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
 
     @Autowired
     private MonitorequipmentwarningtimeRepository monitorequipmentwarningtimeRepository;
+
+    @Autowired
+    private MonitorequipmentRepository monitorequipmentRepository;
 
     @Override
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
@@ -122,6 +129,21 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     @Override
     public List<HospitalequimentDTO> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         return  hospitalequimentRepository.selectHospitalEquimentType(hospitalEquimentTypeCommand);
+    }
+
+    @Override
+    public void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid) {
+        //判断医院底下是否还有设备,有设备则不允许删除设备类型
+        List<MonitorequipmentPo> equipment = monitorequipmentRepository.list(Wrappers.lambdaQuery(new MonitorequipmentPo())
+                .eq(MonitorequipmentPo::getHospitalcode, hospitalCode)
+                .eq(MonitorequipmentPo::getEquipmenttypeid, equipmenttypeid)
+                .last("limit 1"));
+        if (CollectionUtils.isNotEmpty(equipment)){
+            throw  new IedsException(HospitalequimentEnumErrorCode.DEVICES_EXIST_UNDER_THIS_DEVICE_TYPE.getCode());
+        }
+        hospitalequimentRepository.remove(Wrappers.lambdaQuery(new HospitalequimentPo())
+        .eq(HospitalequimentPo::getHospitalcode,hospitalCode)
+        .eq(HospitalequimentPo::getEquipmenttypeid,equipmenttypeid));
     }
 
     public MonitorequipmentwarningtimeDTO  buildMonitorequipmentwarningtimeDTO(Date beginTime,Date endTime,String hospitalcode,String equipmenttypeid){

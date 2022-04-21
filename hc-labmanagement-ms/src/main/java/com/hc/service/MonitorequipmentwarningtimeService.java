@@ -1,6 +1,10 @@
 package com.hc.service;
 
 
+import com.hc.dto.MonitorequipmentwarningtimeDTO;
+
+import java.util.List;
+
 /**
  * 
  *
@@ -11,5 +15,6 @@ package com.hc.service;
 public interface MonitorequipmentwarningtimeService{
 
 
+    List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHosCode(List<String> hospitalcodes);
 }
 
