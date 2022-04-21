@@ -1,6 +1,6 @@
 package com.hc.config;
 
-import com.hc.dao.HospitalofreginfoDao;
+import com.hc.infrastructure.dao.HospitalofreginfoDao;
 import com.hc.entity.Hospitalofreginfo;
 import com.hc.entity.Userright;
 import com.hc.mapper.laboratoryFrom.ClientInfoMapper;
@@ -14,7 +14,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

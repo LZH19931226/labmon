@@ -1,0 +1,440 @@
+2022-04-20 12:32:41.831 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 12:32:41.831 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 12:32:42.244 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$c4ca7b5f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 12:32:42.244 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$c4ca7b5f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 12:32:43.160 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 12:32:43.160 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 12:32:43.206 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 12:32:43.206 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 12:32:43.212 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - The following profiles are active: dev
+2022-04-20 12:32:45.767 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 12:32:45.767 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 12:32:45.911 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 12:32:45.911 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 12:32:45.913 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 12:32:45.913 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 12:32:46.025 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 96ms. Found 0 repository interfaces.
+2022-04-20 12:32:46.025 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 96ms. Found 0 repository interfaces.
+2022-04-20 12:32:46.342 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 12:32:46.342 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 12:32:46.476 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 12:32:46.476 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 12:32:46.624 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$a8b07862] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 12:32:46.624 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$a8b07862] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 12:32:46.657 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$c4ca7b5f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 12:32:46.657 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$c4ca7b5f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 12:32:47.309 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 12:32:47.309 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 12:32:47.345 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 12:32:47.345 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 12:32:47.345 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 12:32:47.345 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 12:32:47.559 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 12:32:47.559 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 12:32:47.559 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4320 ms
+2022-04-20 12:32:47.559 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4320 ms
+2022-04-20 12:32:47.684 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 12:32:47.684 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 12:32:47.686 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 12:32:47.686 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 12:32:47.690 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 12:32:47.690 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 12:32:47.955 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 12:32:47.955 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 12:32:49.426 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 12:32:49.426 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 12:32:49.426 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 12:32:49.426 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 12:32:49.436 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 12:32:49.436 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 12:32:49.436 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 12:32:49.436 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 12:32:49.642 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 12:32:49.642 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 12:32:49.711 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 12:32:49.711 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 12:32:50.311 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 12:32:50.311 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 12:32:50.447 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 12:32:50.447 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 12:32:50.717 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 12:32:50.717 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 12:32:51.851 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 12:32:51.851 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 12:32:51.876 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 12:32:51.876 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 12:32:51.923 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 12:32:51.923 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 12:32:52.145 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 12:32:52.145 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 12:32:52.215 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 12:32:52.215 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 12:32:52.652 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - Started HcLabManagementMsApplication in 12.729 seconds (JVM running for 14.718)
+2022-04-20 12:54:23.425 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-20 12:54:23.425 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-20 12:54:23.425 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-20 12:54:23.425 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-20 12:54:23.433 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 8 ms
+2022-04-20 12:54:23.433 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 8 ms
+2022-04-20 14:33:07.421 [http-nio-10613-exec-8] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: illegal identifier : :pos 147, line 6, column 15{
+	"hospitalcode": "5a1c7c0c4c634630ada46e454f2efb67",
+	"equipmenttypeid": "1",
+	"workTimeBlock": [{
+                "timeblockid":97
+		"begintime": "1970-01-01 09:40:00",
+		"endtime": "1970-01-01 10:50:00"
+	},
+{
+
+		"begintime": "1970-01-01 11:40:00",
+		"endtime": "1970-01-01 12:50:00"
+	
+      ],
+	"deleteWarningTimeBlock": [{
+                "timeblockid":98
+	}],
+	"isvisible": 1,
+	"timeout": 1,
+	"timeouttime": "56",
+	"alwayalarm": 0
+}; nested exception is com.alibaba.fastjson.JSONException: illegal identifier : :pos 147, line 6, column 15{
+	"hospitalcode": "5a1c7c0c4c634630ada46e454f2efb67",
+	"equipmenttypeid": "1",
+	"workTimeBlock": [{
+                "timeblockid":97
+		"begintime": "1970-01-01 09:40:00",
+		"endtime": "1970-01-01 10:50:00"
+	},
+{
+
+		"begintime": "1970-01-01 11:40:00",
+		"endtime": "1970-01-01 12:50:00"
+	
+      ],
+	"deleteWarningTimeBlock": [{
+                "timeblockid":98
+	}],
+	"isvisible": 1,
+	"timeout": 1,
+	"timeouttime": "56",
+	"alwayalarm": 0
+}]
+2022-04-20 14:33:07.421 [http-nio-10613-exec-8] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: illegal identifier : :pos 147, line 6, column 15{
+	"hospitalcode": "5a1c7c0c4c634630ada46e454f2efb67",
+	"equipmenttypeid": "1",
+	"workTimeBlock": [{
+                "timeblockid":97
+		"begintime": "1970-01-01 09:40:00",
+		"endtime": "1970-01-01 10:50:00"
+	},
+{
+
+		"begintime": "1970-01-01 11:40:00",
+		"endtime": "1970-01-01 12:50:00"
+	
+      ],
+	"deleteWarningTimeBlock": [{
+                "timeblockid":98
+	}],
+	"isvisible": 1,
+	"timeout": 1,
+	"timeouttime": "56",
+	"alwayalarm": 0
+}; nested exception is com.alibaba.fastjson.JSONException: illegal identifier : :pos 147, line 6, column 15{
+	"hospitalcode": "5a1c7c0c4c634630ada46e454f2efb67",
+	"equipmenttypeid": "1",
+	"workTimeBlock": [{
+                "timeblockid":97
+		"begintime": "1970-01-01 09:40:00",
+		"endtime": "1970-01-01 10:50:00"
+	},
+{
+
+		"begintime": "1970-01-01 11:40:00",
+		"endtime": "1970-01-01 12:50:00"
+	
+      ],
+	"deleteWarningTimeBlock": [{
+                "timeblockid":98
+	}],
+	"isvisible": 1,
+	"timeout": 1,
+	"timeouttime": "56",
+	"alwayalarm": 0
+}]
+2022-04-20 14:37:24.420 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 14:37:24.420 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 14:37:24.778 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$178dd6c4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:37:24.778 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$178dd6c4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:37:25.442 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 14:37:25.442 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 14:37:25.459 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 14:37:25.459 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 14:37:25.464 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - The following profiles are active: dev
+2022-04-20 14:37:28.225 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 14:37:28.225 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 14:37:28.398 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 14:37:28.398 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 14:37:28.402 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 14:37:28.402 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 14:37:28.525 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 106ms. Found 0 repository interfaces.
+2022-04-20 14:37:28.525 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 106ms. Found 0 repository interfaces.
+2022-04-20 14:37:28.884 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 14:37:28.884 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 14:37:29.048 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 14:37:29.048 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 14:37:29.226 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$fb73d3c7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:37:29.226 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$fb73d3c7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:37:29.265 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$178dd6c4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:37:29.265 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$178dd6c4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:37:30.009 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 14:37:30.009 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 14:37:30.050 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 14:37:30.050 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 14:37:30.050 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 14:37:30.050 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 14:37:30.271 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 14:37:30.271 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 14:37:30.271 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4782 ms
+2022-04-20 14:37:30.271 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4782 ms
+2022-04-20 14:37:30.407 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:37:30.407 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:37:30.409 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 14:37:30.409 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 14:37:30.414 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:37:30.414 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:37:30.673 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 14:37:30.673 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 14:37:32.381 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:37:32.381 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:37:32.381 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:37:32.381 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:37:32.390 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:37:32.390 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:37:32.390 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:37:32.390 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:37:32.623 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:37:32.623 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:37:32.710 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 14:37:32.710 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 14:37:33.349 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 14:37:33.349 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 14:37:33.501 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 14:37:33.501 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 14:37:33.814 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:37:33.814 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:37:35.058 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 14:37:35.058 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 14:37:35.090 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 14:37:35.090 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 14:37:35.147 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 14:37:35.147 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 14:37:35.409 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 14:37:35.409 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 14:37:35.466 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 14:37:35.466 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 14:37:35.922 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - Started HcLabManagementMsApplication in 12.848 seconds (JVM running for 14.611)
+2022-04-20 14:37:47.985 [Thread-44] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-04-20 14:37:47.985 [Thread-44] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-04-20 14:37:47.995 [Thread-44] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-04-20 14:37:47.995 [Thread-44] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-04-20 14:37:48.002 [Thread-44] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-04-20 14:37:48.002 [Thread-44] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-04-20 14:37:48.003 [Thread-44] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:37:48.003 [Thread-44] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:37:48.007 [Thread-44] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-04-20 14:37:48.007 [Thread-44] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-04-20 14:37:48.015 [Thread-44] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-04-20 14:37:48.015 [Thread-44] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-04-20 14:38:03.586 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 14:38:03.586 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 14:38:04.058 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30445f3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:38:04.058 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30445f3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:38:04.874 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 14:38:04.874 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 14:38:04.890 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 14:38:04.890 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 14:38:04.894 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - The following profiles are active: dev
+2022-04-20 14:38:07.693 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 14:38:07.693 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 14:38:07.862 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 14:38:07.862 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 14:38:07.866 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 14:38:07.866 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 14:38:07.980 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 95ms. Found 0 repository interfaces.
+2022-04-20 14:38:07.980 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 95ms. Found 0 repository interfaces.
+2022-04-20 14:38:08.316 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 14:38:08.316 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 14:38:08.460 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 14:38:08.460 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 14:38:08.622 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b6ea42f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:38:08.622 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b6ea42f6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:38:08.663 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30445f3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:38:08.663 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30445f3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:38:09.401 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 14:38:09.401 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 14:38:09.436 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 14:38:09.436 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 14:38:09.436 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 14:38:09.436 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 14:38:09.666 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 14:38:09.666 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 14:38:09.666 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4743 ms
+2022-04-20 14:38:09.666 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4743 ms
+2022-04-20 14:38:09.803 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:38:09.803 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:38:09.805 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 14:38:09.805 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 14:38:09.810 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:38:09.810 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:38:10.168 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 14:38:10.168 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 14:38:11.748 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:38:11.748 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:38:11.749 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:38:11.749 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:38:11.758 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:38:11.758 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:38:11.759 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:38:11.759 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:38:11.984 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:38:11.984 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:38:12.065 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 14:38:12.065 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 14:38:12.712 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 14:38:12.712 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 14:38:12.877 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 14:38:12.877 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 14:38:13.189 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:38:13.189 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:38:14.449 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 14:38:14.449 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 14:38:14.475 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 14:38:14.475 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 14:38:14.531 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 14:38:14.531 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 14:38:14.788 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 14:38:14.788 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 14:38:15.182 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 14:38:15.182 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 14:38:15.601 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - Started HcLabManagementMsApplication in 13.867 seconds (JVM running for 16.453)
+2022-04-20 14:39:43.113 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-20 14:39:43.113 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-20 14:39:43.113 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-20 14:39:43.113 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-20 14:39:43.123 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 10 ms
+2022-04-20 14:39:43.123 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 10 ms
+2022-04-20 14:40:39.207 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=58s909ms569µs999ns).
+2022-04-20 14:40:39.207 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=58s909ms569µs999ns).
+2022-04-20 14:41:21.840 [Thread-48] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-04-20 14:41:21.840 [Thread-48] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-04-20 14:41:21.848 [Thread-48] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-04-20 14:41:21.848 [Thread-48] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-04-20 14:41:21.860 [Thread-48] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-04-20 14:41:21.860 [Thread-48] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-04-20 14:41:21.862 [Thread-48] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:41:21.862 [Thread-48] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:41:21.865 [Thread-48] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-04-20 14:41:21.865 [Thread-48] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-04-20 14:41:22.001 [Thread-48] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-04-20 14:41:22.001 [Thread-48] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-04-20 14:41:24.524 [http-nio-10613-exec-1] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:41:24.524 [http-nio-10613-exec-1] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:41:24.535 [http-nio-10613-exec-1] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-2 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:41:24.535 [http-nio-10613-exec-1] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-2 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:41:24.535 [http-nio-10613-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2022-04-20 14:41:24.535 [http-nio-10613-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2022-04-20 14:41:24.536 [http-nio-10613-exec-1] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:41:24.536 [http-nio-10613-exec-1] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:41:24.567 [http-nio-10613-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2022-04-20 14:41:24.567 [http-nio-10613-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2022-04-20 14:41:32.588 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 14:41:32.588 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-20 14:41:33.069 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$560c3a2c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:41:33.069 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$560c3a2c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:41:33.938 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 14:41:33.938 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-20 14:41:33.959 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 14:41:33.959 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-20 14:41:33.965 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - The following profiles are active: dev
+2022-04-20 14:41:36.803 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 14:41:36.803 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-04-20 14:41:36.969 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 14:41:36.969 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-20 14:41:36.972 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 14:41:36.972 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-20 14:41:37.088 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 99ms. Found 0 repository interfaces.
+2022-04-20 14:41:37.088 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 99ms. Found 0 repository interfaces.
+2022-04-20 14:41:37.459 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 14:41:37.459 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-20 14:41:37.602 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 14:41:37.602 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=09794b3c-bbab-3234-b8da-c028df286885
+2022-04-20 14:41:37.793 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$39f2372f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:41:37.793 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$39f2372f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:41:37.833 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$560c3a2c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:41:37.833 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$560c3a2c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-20 14:41:38.591 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 14:41:38.591 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-20 14:41:38.630 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 14:41:38.630 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-20 14:41:38.630 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 14:41:38.630 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-20 14:41:38.870 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 14:41:38.870 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-20 14:41:38.870 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4871 ms
+2022-04-20 14:41:38.870 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4871 ms
+2022-04-20 14:41:39.008 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:41:39.008 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-20 14:41:39.011 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 14:41:39.011 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-20 14:41:39.016 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:41:39.016 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-20 14:41:39.298 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 14:41:39.298 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-20 14:41:41.020 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:41:41.020 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:41:41.020 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:41:41.020 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:41:41.032 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:41:41.033 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:41:41.032 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-20 14:41:41.033 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-20 14:41:41.255 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:41:41.255 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-20 14:41:41.336 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 14:41:41.336 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-04-20 14:41:42.003 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 14:41:42.003 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-20 14:41:42.155 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 14:41:42.155 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-20 14:41:42.505 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:41:42.505 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-20 14:41:43.743 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 14:41:43.743 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-20 14:41:43.772 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 14:41:43.772 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-20 14:41:43.836 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 14:41:43.836 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-20 14:41:44.105 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 14:41:44.105 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-20 14:41:44.163 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 14:41:44.163 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.100.179:10613 register finished
+2022-04-20 14:41:44.625 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - Started HcLabManagementMsApplication in 13.995 seconds (JVM running for 16.037)
+2022-04-20 14:43:01.618 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-20 14:43:01.618 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-20 14:43:01.618 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-20 14:43:01.618 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-20 14:43:01.629 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 11 ms
+2022-04-20 14:43:01.629 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 11 ms
+2022-04-20 22:30:13.233 [Thread-47] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-04-20 22:30:13.233 [Thread-47] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-04-20 22:30:13.242 [Thread-47] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-04-20 22:30:13.242 [Thread-47] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-04-20 22:30:13.249 [Thread-47] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-04-20 22:30:13.249 [Thread-47] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-04-20 22:30:13.250 [Thread-47] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-04-20 22:30:13.250 [Thread-47] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-04-20 22:30:13.253 [Thread-47] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-04-20 22:30:13.253 [Thread-47] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-04-20 22:30:13.258 [Thread-47] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-04-20 22:30:13.258 [Thread-47] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

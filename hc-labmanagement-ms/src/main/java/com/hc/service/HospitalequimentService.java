@@ -2,6 +2,9 @@ package com.hc.service;
 
 
 import com.hc.application.command.HospitalEquimentTypeCommand;
+import com.hc.dto.HospitalequimentDTO;
+
+import java.util.List;
 
 /**
  * 
@@ -16,5 +19,7 @@ public interface HospitalequimentService{
     void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 
     void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+
+    List<HospitalequimentDTO> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 }
 

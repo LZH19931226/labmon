@@ -1,7 +1,7 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.dao.ApkFileEntityDao;
-import com.hc.dao.IosFileEntityDao;
+import com.hc.infrastructure.dao.ApkFileEntityDao;
+import com.hc.infrastructure.dao.IosFileEntityDao;
 import com.hc.entity.ApkFileEntity;
 import com.hc.entity.IosFileEntity;
 import com.hc.model.ApkCheck;

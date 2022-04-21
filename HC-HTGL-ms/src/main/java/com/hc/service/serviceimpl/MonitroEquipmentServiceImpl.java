@@ -4,11 +4,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.InstrumentParamConfigDao;
-import com.hc.dao.MonitorEquipmentDao;
-import com.hc.dao.MonitorInstrumentDao;
-import com.hc.dao.MonitorInstrumentTypeDao;
+import com.hc.infrastructure.dao.InstrumentParamConfigDao;
+import com.hc.infrastructure.dao.MonitorEquipmentDao;
+import com.hc.infrastructure.dao.MonitorInstrumentDao;
+import com.hc.infrastructure.dao.MonitorInstrumentTypeDao;
 import com.hc.entity.*;
+import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper;
@@ -17,9 +18,7 @@ import com.hc.model.InstrumentMonitorInfoModel;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.WiredInstrumentModel;
-import com.hc.model.RequestModel.WorkTimeBlockModel;
 import com.hc.model.ResponseModel.AllInstrumentInfoModel;
-import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
 import com.hc.service.MonitorEquipmentService;
 import com.hc.service.UpdateRecordService;
@@ -75,7 +74,7 @@ public class MonitroEquipmentServiceImpl implements MonitorEquipmentService {
     private UpdateRecordService updateRecordService;
 
     @Autowired
-    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+    private MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
 
     @Autowired
     private HospitalEquipmentMapper hospitalEquipmentMapper;

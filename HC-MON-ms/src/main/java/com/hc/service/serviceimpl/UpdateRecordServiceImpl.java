@@ -1,13 +1,11 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.dao.OperationlogDao;
-import com.hc.dao.OperationlogdetailDao;
+import com.hc.infrastructure.dao.OperationlogDao;
+import com.hc.infrastructure.dao.OperationlogdetailDao;
 import com.hc.entity.Operationlog;
 import com.hc.entity.Operationlogdetail;
-import com.hc.mapper.laboratoryFrom.OperationlogdetaiMapper;
 import com.hc.model.EquipmentInfoModel;
 import com.hc.model.InstrumentInfoModel;
-import com.hc.service.OperationlogService;
 import com.hc.service.UpdateRecordService;
 import com.hc.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;

@@ -4,9 +4,9 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.config.RedisTemplateUtil;
-import com.hc.dao.HospitalEquipmentDao;
-import com.hc.dao.HospitalofreginfoDao;
-import com.hc.dao.MonitorEquipmentWarningTimeDao;
+import com.hc.infrastructure.dao.HospitalEquipmentDao;
+import com.hc.infrastructure.dao.HospitalofreginfoDao;
+import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.entity.*;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.model.MapperModel.PageUserModel;
@@ -26,7 +26,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by 16956 on 2018-08-06.
@@ -46,7 +45,7 @@ public class EquipmentTypeServiceImpl implements EquipmentTypeService {
     @Autowired
     private HospitalofreginfoDao hospitalofreginfoDao;
     @Autowired
-    private com.hc.dao.MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
+    private MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;
 
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;

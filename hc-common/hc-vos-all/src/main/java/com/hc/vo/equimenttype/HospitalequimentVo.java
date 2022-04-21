@@ -6,8 +6,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
-
-
+import java.util.List;
 
 
 /**
@@ -59,6 +58,11 @@ public class HospitalequimentVo  implements Serializable {
 	 */
 	@ApiModelProperty(value="全天报警")
 	private String alwayalarm;
+
+
+
+	@ApiModelProperty(value="工作报警时间段")
+	private List<MonitorequipmentwarningtimeVo> workTimeBlock;
 
 }
 
