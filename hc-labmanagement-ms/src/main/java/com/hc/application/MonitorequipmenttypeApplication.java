@@ -2,7 +2,7 @@ package com.hc.application;
 
 import com.hc.dto.MonitorequipmenttypeDTO;
 import com.hc.service.MonitorequipmenttypeService;
-import com.hc.vo.equimenttype.MonitorequipmenttypeVo;
+import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,15 +23,15 @@ public class MonitorequipmenttypeApplication {
     private MonitorequipmenttypeService monitorequipmenttypeService;
 
 
-    public List<MonitorequipmenttypeVo> getAllmonitorequipmentType() {
+    public List<MonitorEquipmentTypeVo> getAllmonitorequipmentType() {
         List<MonitorequipmenttypeDTO> monitorequipmenttypeDTOS = monitorequipmenttypeService.getAllmonitorequipmentType();
         if (CollectionUtils.isNotEmpty(monitorequipmenttypeDTOS)) {
-            List<MonitorequipmenttypeVo> monitorequipmenttypeVoList = new ArrayList<>();
+            List<MonitorEquipmentTypeVo> monitorequipmenttypeVoList = new ArrayList<>();
             monitorequipmenttypeDTOS.forEach(s -> {
                         monitorequipmenttypeVoList.add(
-                                MonitorequipmenttypeVo.builder()
-                                        .equipmenttypeid(s.getEquipmenttypeid())
-                                        .equipmenttypename(s.getEquipmenttypename())
+                                MonitorEquipmentTypeVo.builder()
+                                        .equipmentTypeId(s.getEquipmenttypeid())
+                                        .equipmentTypeName(s.getEquipmenttypename())
                                         .build());
                     }
 

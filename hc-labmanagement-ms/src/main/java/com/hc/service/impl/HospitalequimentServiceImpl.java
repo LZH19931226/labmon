@@ -9,17 +9,20 @@ import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalequimentPo;
-import com.hc.po.MonitorequipmentPo;
-import com.hc.po.MonitorequipmentwarningtimePo;
+import com.hc.po.MonitorEquipmentPo;
+import com.hc.po.MonitorEquipmentWarningTimePo;
 import com.hc.repository.HospitalequimentRepository;
-import com.hc.repository.MonitorequipmentRepository;
+import com.hc.repository.MonitorEquipmentRepository;
 import com.hc.repository.MonitorequipmentwarningtimeRepository;
 import com.hc.service.HospitalequimentService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +36,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     private MonitorequipmentwarningtimeRepository monitorequipmentwarningtimeRepository;
 
     @Autowired
-    private MonitorequipmentRepository monitorequipmentRepository;
+    private MonitorEquipmentRepository monitorequipmentRepository;
 
     @Override
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
@@ -56,11 +59,9 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                 }
             }
             if (CollectionUtils.isNotEmpty(monitorequipmentwarningtimeDTOS)){
-                monitorequipmentwarningtimeRepository.saveBatch(BeanConverter.convert(monitorequipmentwarningtimeDTOS, MonitorequipmentwarningtimePo.class));
+                monitorequipmentwarningtimeRepository.saveBatch(BeanConverter.convert(monitorequipmentwarningtimeDTOS, MonitorEquipmentWarningTimePo.class));
             }
         }
-
-
     }
 
     @Override
@@ -88,10 +89,10 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                 }
             }
             if (CollectionUtils.isNotEmpty(addMonitorequipmentwarningtimeDTO)){
-                monitorequipmentwarningtimeRepository.saveBatch(BeanConverter.convert(addMonitorequipmentwarningtimeDTO, MonitorequipmentwarningtimePo.class));
+                monitorequipmentwarningtimeRepository.saveBatch(BeanConverter.convert(addMonitorequipmentwarningtimeDTO, MonitorEquipmentWarningTimePo.class));
             }
             if (CollectionUtils.isNotEmpty(updateMonitorequipmentwarningtimeDTO)){
-                monitorequipmentwarningtimeRepository.updateBatchById(BeanConverter.convert(updateMonitorequipmentwarningtimeDTO, MonitorequipmentwarningtimePo.class));
+                monitorequipmentwarningtimeRepository.updateBatchById(BeanConverter.convert(updateMonitorequipmentwarningtimeDTO, MonitorEquipmentWarningTimePo.class));
             }
         }
         if (null!=deleteWarningTimeBlock && deleteWarningTimeBlock.length>0){
@@ -134,9 +135,9 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     @Override
     public void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid) {
         //判断医院底下是否还有设备,有设备则不允许删除设备类型
-        List<MonitorequipmentPo> equipment = monitorequipmentRepository.list(Wrappers.lambdaQuery(new MonitorequipmentPo())
-                .eq(MonitorequipmentPo::getHospitalcode, hospitalCode)
-                .eq(MonitorequipmentPo::getEquipmenttypeid, equipmenttypeid)
+        List<MonitorEquipmentPo> equipment = monitorequipmentRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentPo())
+                .eq(MonitorEquipmentPo::getHospitalCode, hospitalCode)
+                .eq(MonitorEquipmentPo::getEquipmentTypeId, equipmenttypeid)
                 .last("limit 1"));
         if (CollectionUtils.isNotEmpty(equipment)){
             throw  new IedsException(HospitalequimentEnumErrorCode.DEVICES_EXIST_UNDER_THIS_DEVICE_TYPE.getCode());
