@@ -35,6 +35,7 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
                monitorinstrumenttypeDTO.setInstrumenttypeid(k);
                monitorinstrumenttypeDTO.setInstrumenttypename(v.get(0).getInstrumenttypename());
                monitorinstrumenttypeDTO.setInstrumentmonitorDTOS(v);
+               dtoList.add(monitorinstrumenttypeDTO);
             });
            return  dtoList;
        }
