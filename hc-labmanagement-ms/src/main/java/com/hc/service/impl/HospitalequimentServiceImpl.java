@@ -1,6 +1,7 @@
 package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.application.command.WorkTimeBlockCommand;
 import com.hc.constants.error.HospitalequimentEnumErrorCode;
@@ -79,7 +80,8 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
             for (WorkTimeBlockCommand workTimeBlockCommand : workTimeBlock) {
                 if (workTimeBlockCommand != null) {
                     Integer timeblockid = workTimeBlockCommand.getTimeblockid();
-                    MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO = buildMonitorequipmentwarningtimeDTO(workTimeBlockCommand.getBegintime(), workTimeBlockCommand.getEndtime(), hospitalcode, equipmenttypeid);
+                    MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO = buildMonitorequipmentwarningtimeDTO(
+                            workTimeBlockCommand.getBegintime(), workTimeBlockCommand.getEndtime(), hospitalcode, equipmenttypeid);
                     if (null==timeblockid){
                         addMonitorequipmentwarningtimeDTO.add(monitorequipmentwarningtimeDTO);
                     }else {
@@ -128,8 +130,8 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     }
 
     @Override
-    public List<HospitalequimentDTO> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
-        return  hospitalequimentRepository.selectHospitalEquimentType(hospitalEquimentTypeCommand);
+    public List<HospitalequimentDTO> selectHospitalEquimentType(Page page, HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
+        return  hospitalequimentRepository.selectHospitalEquimentType(page,hospitalEquimentTypeCommand);
     }
 
     @Override

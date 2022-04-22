@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
-import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.HospitalequimentService;
 import com.hc.service.MonitorequipmentwarningtimeService;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import com.hc.vo.equimenttype.MonitorequipmentwarningtimeVo;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,18 +44,18 @@ public class HospitalequimentApplication {
     public Page<HospitalequimentVo> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         Page<HospitalequimentVo> page = new Page<>(hospitalEquimentTypeCommand.getPageCurrent(),hospitalEquimentTypeCommand.getPageSize());
         List<HospitalequimentVo> hospitalequimentVos = new ArrayList<>();
-        List<HospitalequimentDTO> hospitalequimentDTOS = hospitalequimentService.selectHospitalEquimentType(hospitalEquimentTypeCommand);
+        List<HospitalequimentDTO> hospitalequimentDTOS = hospitalequimentService.selectHospitalEquimentType(page,hospitalEquimentTypeCommand);
         if (CollectionUtils.isNotEmpty(hospitalequimentDTOS)) {
             List<String> hospitalcodes = hospitalequimentDTOS.stream().map(HospitalequimentDTO::getHospitalcode).collect(Collectors.toList());
             List<MonitorequipmentwarningtimeDTO> warningtimes  = monitorequipmentwarningtimeService.selectWarningtimeByHosCode(hospitalcodes);
-            Map<String, List<MonitorequipmentwarningtimeDTO>> timesMap = null;
+            Map<String, List<MonitorequipmentwarningtimeDTO>> timesMap = new  HashedMap();
             if (CollectionUtils.isNotEmpty(warningtimes)){
                  timesMap = warningtimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode));
             }
             Map<String, List<MonitorequipmentwarningtimeDTO>> finalTimesMap = timesMap;
             hospitalequimentDTOS.forEach(s->{
                 String hospitalcode = s.getHospitalcode();
-                List<MonitorequipmentwarningtimeVo> workTimeBlock = null;
+                List<MonitorequipmentwarningtimeVo> workTimeBlock = new ArrayList<>();
                 if (!finalTimesMap.isEmpty()){
                     List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOS    = finalTimesMap.get(hospitalcode);
                     if (CollectionUtils.isNotEmpty(monitorequipmentwarningtimeDTOS)){

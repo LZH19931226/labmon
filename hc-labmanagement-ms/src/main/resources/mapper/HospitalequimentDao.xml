@@ -21,13 +21,13 @@
         LEFT JOIN hospitalofreginfo t3 ON t1.hospitalcode = t3.hospitalcode
         where
         1=1
-        <if test="hospitalEquimentTypeCommand.hospitalcode != null ">
+        <if test="hospitalEquimentTypeCommand.hospitalcode != null and hospitalEquimentTypeCommand.hospitalcode != '' ">
             and t1.hospitalcode= #{hospitalEquimentTypeCommand.hospitalcode}
         </if>
-        <if test="hospitalEquimentTypeCommand.equipmenttypeid != null ">
+        <if test="hospitalEquimentTypeCommand.equipmenttypeid != null and hospitalEquimentTypeCommand.equipmenttypeid != ''">
             and t1.equipmenttypeid= #{hospitalEquimentTypeCommand.equipmenttypeid}
         </if>
-        <if test="hospitalEquimentTypeCommand.isvisible != null ">
+        <if test="hospitalEquimentTypeCommand.isvisible != null and hospitalEquimentTypeCommand.isvisible != '' ">
             and t1.isvisible= #{hospitalEquimentTypeCommand.isvisible}
         </if>
     </select>

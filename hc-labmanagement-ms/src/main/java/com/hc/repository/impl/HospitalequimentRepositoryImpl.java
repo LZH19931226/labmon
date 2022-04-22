@@ -5,14 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.dto.HospitalequimentDTO;
+import com.hc.infrastructure.dao.HospitalequimentDao;
 import com.hc.my.common.core.util.BeanConverter;
-import com.hc.vo.hospital.HospitalInfoVo;
+import com.hc.po.HospitalequimentPo;
+import com.hc.repository.HospitalequimentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.hc.repository.HospitalequimentRepository;
-import com.hc.infrastructure.dao.HospitalequimentDao;
-import com.hc.po.HospitalequimentPo;
 
 import java.util.List;
 
@@ -47,10 +45,7 @@ public class HospitalequimentRepositoryImpl extends ServiceImpl<Hospitalequiment
     }
 
     @Override
-    public List<HospitalequimentDTO> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
-        Long pageCurrent = hospitalEquimentTypeCommand.getPageCurrent();
-        Long pageSize = hospitalEquimentTypeCommand.getPageSize();
-        Page<HospitalInfoVo> page = new Page<>(pageCurrent,pageSize);
+    public List<HospitalequimentDTO> selectHospitalEquimentType(Page page, HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         return hospitalequimentDao.selectHospitalEquimentType(page,hospitalEquimentTypeCommand);
     }
 }

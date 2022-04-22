@@ -1,5 +1,6 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.hc.application.command.HospitalEquimentTypeCommand;
@@ -18,5 +19,5 @@ public interface HospitalequimentRepository extends IService <HospitalequimentPo
 
     void updateHospitalEquiment(HospitalequimentDTO hospitalequimentDTO);
 
-    List<HospitalequimentDTO> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+    List<HospitalequimentDTO> selectHospitalEquimentType(Page page,HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 }
