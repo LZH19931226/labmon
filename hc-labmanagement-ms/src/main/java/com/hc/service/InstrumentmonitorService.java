@@ -1,6 +1,10 @@
 package com.hc.service;
 
 
+import com.hc.dto.MonitorinstrumenttypeDTO;
+
+import java.util.List;
+
 /**
  * 
  *
@@ -11,5 +15,6 @@ package com.hc.service;
 public interface InstrumentmonitorService{
 
 
+    List<MonitorinstrumenttypeDTO> selectMonitorEquipmentType(String instrumenttypeid);
 }
 

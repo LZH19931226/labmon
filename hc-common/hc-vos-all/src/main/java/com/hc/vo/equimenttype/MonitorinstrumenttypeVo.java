@@ -6,13 +6,10 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
-
-
+import java.util.List;
 
 
 /**
- * 
- * 
  * @author liuzhihao
  * @date 2022-04-18 15:27:01
  */
@@ -21,24 +18,31 @@ import java.util.Date;
 @Builder
 @Getter
 @ApiModel(value = "monitorinstrumenttype")
-public class MonitorinstrumenttypeVo  implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class MonitorinstrumenttypeVo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 探头类型编码
+     */
+    @ApiModelProperty(value = "探头类型编码")
+    private Integer instrumenttypeid;
+    /**
+     * 探头类型名称
+     */
+    @ApiModelProperty(value = "探头类型名称")
+    private String instrumenttypename;
+    /**
+     * 智能报警限制
+     */
+    @ApiModelProperty(value = "智能报警限制")
+    private Integer alarmtime;
+
 
 	/**
-	 * 探头类型编码
+	 * 探头信息
 	 */
-		@ApiModelProperty(value="探头类型编码")
-	private Integer instrumenttypeid;
-	/**
-	 * 探头类型名称
-	 */
-	@ApiModelProperty(value="探头类型名称")
-	private String instrumenttypename;
-	/**
-	 * 智能报警限制
-	 */
-	@ApiModelProperty(value="智能报警限制")
-	private Integer alarmtime;
+	@ApiModelProperty(value = "探头信息")
+    private List<InstrumentmonitorVo> instrumentmonitorVos;
 
 }
 

@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hc.dao.InstrumentmonitorDao">
+<mapper namespace="com.hc.infrastructure.dao.InstrumentmonitorDao">
 
 
+    <select id="selectMonitorEquipmentType" resultType="com.hc.dto.InstrumentmonitorDTO">
+        SELECT
+        t2.instrumenttypeid,
+        t2.instrumenttypename,
+        t3.instrumentconfigid,
+        t3.instrumentconfigname,
+        t1.lowlimit,
+        t1.saturation,
+        t1.highlimit
+        FROM
+        instrumentmonitor t1
+        LEFT JOIN monitorinstrumenttype t2 ON t1.instrumenttypeid = t2.instrumenttypeid
+        LEFT JOIN instrumentconfig t3 on t1.instrumentconfigid =t3.instrumentconfigid
+        where
+        1=1
+        <if test="instrumenttypeid != null">
+            and t1.instrumenttypeid= #{instrumenttypeid}
+        </if>
+        ORDER BY t1.instrumenttypeid
 
-
+    </select>
 </mapper>
