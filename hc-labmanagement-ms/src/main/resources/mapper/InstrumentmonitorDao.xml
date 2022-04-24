@@ -19,10 +19,9 @@
         LEFT JOIN instrumentconfig t3 on t1.instrumentconfigid =t3.instrumentconfigid
         where
         1=1
-        <if test="instrumenttypeid != null">
+        <if test="instrumenttypeid != null and instrumenttypeid != '' ">
             and t1.instrumenttypeid= #{instrumenttypeid}
         </if>
         ORDER BY t1.instrumenttypeid
-
     </select>
 </mapper>

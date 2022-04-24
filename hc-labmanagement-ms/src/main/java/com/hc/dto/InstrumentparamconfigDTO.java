@@ -1,12 +1,13 @@
 package com.hc.dto;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
  */
 @Data
 @ApiModel(value = "instrumentparamconfig")
+@Accessors(chain = true)
 public class InstrumentparamconfigDTO  implements Serializable {
 	private static final long serialVersionUID = 1L;
 

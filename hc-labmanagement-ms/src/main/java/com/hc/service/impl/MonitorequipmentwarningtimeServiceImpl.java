@@ -24,4 +24,14 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
                 .in(MonitorEquipmentWarningTimePo::getHospitalCode, hospitalcodes));
         return BeanConverter.convert(times,MonitorequipmentwarningtimeDTO.class);
     }
+
+    /**
+     * 差如报警时段
+     *
+     * @param monitorequipmentwarningtimeDTO
+     */
+    @Override
+    public void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO) {
+        monitorequipmentwarningtimeRepository.insetWarningtimeList(monitorequipmentwarningtimeDTO);
+    }
 }

@@ -19,4 +19,10 @@ public interface MonitorEquipmentService {
      * @return
      */
     List<MonitorEquipmentDto> getEquipmentInfoList(Page page, MonitorEquipmentCommand monitorEquipmentCommand);
+
+    /**
+     * 插入监控设备信息
+     * @param monitorEquipmentDto
+     */
+    void insertMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto);
 }

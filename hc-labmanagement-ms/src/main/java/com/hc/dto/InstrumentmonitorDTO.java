@@ -1,12 +1,10 @@
 package com.hc.dto;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -30,21 +28,25 @@ public class InstrumentmonitorDTO implements Serializable {
      */
     @ApiModelProperty(value = "监控参数类型编码")
     private Integer instrumentconfigid;
+
     /**
      * 探头类型编码
      */
     @ApiModelProperty(value = "探头类型编码")
     private Integer instrumenttypeid;
+
     /**
      * 最低限值
      */
     @ApiModelProperty(value = "最低限值")
     private BigDecimal lowlimit;
+
     /**
      * 最高限值
      */
     @ApiModelProperty(value = "最高限值")
     private BigDecimal highlimit;
+
     /**
      *
      */

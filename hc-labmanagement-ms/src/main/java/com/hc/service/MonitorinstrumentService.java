@@ -1,6 +1,8 @@
 package com.hc.service;
 
 
+import com.hc.dto.MonitorinstrumentDTO;
+
 /**
  * 
  *
@@ -11,5 +13,17 @@ package com.hc.service;
 public interface MonitorinstrumentService{
 
 
+    /**
+     * 通过sn和hospitalCode查询sn是否被占用
+     * @param monitorinstrumentDTO
+     * @return
+     */
+    Integer selectCount(MonitorinstrumentDTO monitorinstrumentDTO);
+
+    /**
+     * 插入监控仪器信息
+     * @param monitorinstrumentDTO
+     */
+    void insertMonitorinstrumentInfo(MonitorinstrumentDTO monitorinstrumentDTO);
 }
 

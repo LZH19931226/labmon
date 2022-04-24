@@ -1,15 +1,15 @@
 package com.hc.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 
@@ -28,7 +28,8 @@ public class InstrumentparamconfigPo  implements Serializable {
 	/**
 	 * 监控参数编号
 	 */
-	@TableId(type = IdType.AUTO)
+	@TableId()
+	@TableField(value = "instrumentparamconfigNO")
 		private String instrumentparamconfigno;
 	/**
 	 * 探头编号

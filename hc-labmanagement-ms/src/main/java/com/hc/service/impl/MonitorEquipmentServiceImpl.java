@@ -32,4 +32,14 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
 
         return monitorEquipmentRepository.getEquipmentInfoList(page,monitorEquipmentCommand);
     }
+
+    /**
+     * 插入监控设备信息
+     *
+     * @param monitorEquipmentDto
+     */
+    @Override
+    public void insertMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto) {
+        monitorEquipmentRepository.insertMonitorEquipment(monitorEquipmentDto);
+    }
 }

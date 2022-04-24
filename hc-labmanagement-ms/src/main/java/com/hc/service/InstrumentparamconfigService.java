@@ -1,6 +1,8 @@
 package com.hc.service;
 
 
+import com.hc.dto.InstrumentparamconfigDTO;
+
 /**
  * 
  *
@@ -11,5 +13,10 @@ package com.hc.service;
 public interface InstrumentparamconfigService{
 
 
+    /**
+     * 插入探头配置信息
+     * @param instrumentparamconfigDTO
+     */
+    void insertInstrumentmonitor(InstrumentparamconfigDTO instrumentparamconfigDTO);
 }
 

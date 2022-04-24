@@ -7,6 +7,7 @@ import com.hc.application.command.WorkTimeBlockCommand;
 import com.hc.constants.error.HospitalequimentEnumErrorCode;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
+import com.hc.my.common.core.constant.enums.HospitalEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalequimentPo;
@@ -17,6 +18,7 @@ import com.hc.repository.MonitorEquipmentRepository;
 import com.hc.repository.MonitorequipmentwarningtimeRepository;
 import com.hc.service.HospitalequimentService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,13 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     @Override
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         String hospitalcode = hospitalEquimentTypeCommand.getHospitalcode();
+        if(StringUtils.isBlank(hospitalcode)){
+            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_CODE_NOT_NULL.getCode());
+        }
         String equipmenttypeid = hospitalEquimentTypeCommand.getEquipmenttypeid();
+        if(StringUtils.isBlank(equipmenttypeid)){
+            throw new IedsException(HospitalequimentEnumErrorCode.HOSPITAL_TYPE_ID_NOT_NULL.getCode());
+        }
         //判断该医院该设备类型是不是被绑定过
         HospitalequimentDTO hospitalequiment =hospitalequimentRepository.selectHospitalEquiment(hospitalcode,equipmenttypeid);
         if (null!=hospitalequiment){

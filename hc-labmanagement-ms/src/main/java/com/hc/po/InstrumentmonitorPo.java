@@ -1,15 +1,13 @@
 package com.hc.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.io.Serializable;
-import java.util.Date;
-import lombok.Data;
+import java.math.BigDecimal;
 
 /**
  * 
@@ -28,7 +26,7 @@ public class InstrumentmonitorPo  implements Serializable {
 	/**
 	 * 监控参数类型编码
 	 */
-	@TableId(type = IdType.AUTO)
+	@TableId
 		private Integer instrumentconfigid;
 	/**
 	 * 探头类型编码

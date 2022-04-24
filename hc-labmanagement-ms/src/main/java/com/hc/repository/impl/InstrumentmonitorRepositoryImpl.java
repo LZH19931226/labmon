@@ -3,6 +3,7 @@ package com.hc.repository.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
+import com.hc.my.common.core.util.BeanConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,16 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
            return  dtoList;
        }
        return null;
+    }
+
+    /**
+     * 插入监控仪器信息
+     *
+     * @param instrumentmonitorDTO
+     */
+    @Override
+    public void insertInstrumentmonitorInfo(InstrumentmonitorDTO instrumentmonitorDTO) {
+        InstrumentmonitorPo instrumentmonitorPo = BeanConverter.convert(instrumentmonitorDTO, InstrumentmonitorPo.class);
+        instrumentmonitorDao.insert(instrumentmonitorPo);
     }
 }

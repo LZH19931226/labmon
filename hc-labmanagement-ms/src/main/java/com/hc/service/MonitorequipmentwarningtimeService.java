@@ -16,5 +16,11 @@ public interface MonitorequipmentwarningtimeService{
 
 
     List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHosCode(List<String> hospitalcodes);
+
+    /**
+     * 差如报警时段
+     * @param monitorequipmentwarningtimeDTO
+     */
+    void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO);
 }
 
