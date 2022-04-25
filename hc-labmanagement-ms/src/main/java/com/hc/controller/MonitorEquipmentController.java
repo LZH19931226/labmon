@@ -1,5 +1,6 @@
 package com.hc.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.MonitorEquipmentApplication;
 import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
@@ -23,9 +24,15 @@ public class MonitorEquipmentController {
     @Autowired
     private MonitorEquipmentApplication monitorEquipmentApplication;
 
+    @GetMapping("/findHardwareTypeProbeInformation")
+    @ApiOperation("获取硬件设备类型对应监控探头信息")
+    private List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation(){
+        return monitorEquipmentApplication.getHardwareTypeProbeInformation();
+    }
+
     @PostMapping("/findEquipmentInfo")
     @ApiOperation("分页查询设备信息")
-    public List<MonitorEquipmentVo> getEquipmentInfo(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
+    public Page<MonitorEquipmentVo> getEquipmentInfo(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
         return monitorEquipmentApplication.getEquipmentInfoList(monitorEquipmentCommand);
     }
 

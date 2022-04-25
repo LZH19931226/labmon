@@ -1,6 +1,5 @@
 package com.hc.po;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,12 +25,11 @@ public class InstrumentmonitorPo  implements Serializable {
 	/**
 	 * 监控参数类型编码
 	 */
-	@TableId
-		private Integer instrumentconfigid;
+	private Integer instrumentconfigid;
 	/**
 	 * 探头类型编码
 	 */
-		private Integer instrumenttypeid;
+	private Integer instrumenttypeid;
 	/**
 	 * 最低限值
 	 */

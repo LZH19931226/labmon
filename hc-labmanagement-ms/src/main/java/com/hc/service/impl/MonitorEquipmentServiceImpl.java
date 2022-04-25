@@ -42,4 +42,14 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public void insertMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto) {
         monitorEquipmentRepository.insertMonitorEquipment(monitorEquipmentDto);
     }
+
+    /**
+     * 更新监控设备信息
+     *
+     * @param monitorEquipmentDto
+     */
+    @Override
+    public void updateMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto) {
+        monitorEquipmentRepository.updateMonitorEquipment(monitorEquipmentDto);
+    }
 }

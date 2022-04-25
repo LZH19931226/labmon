@@ -3,13 +3,14 @@ package com.hc.repository.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.MonitorinstrumentDTO;
+import com.hc.infrastructure.dao.MonitorinstrumentDao;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.po.MonitorinstrumentPo;
+import com.hc.repository.MonitorinstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hc.repository.MonitorinstrumentRepository;
-import com.hc.infrastructure.dao.MonitorinstrumentDao;
-import com.hc.po.MonitorinstrumentPo;
+import java.util.List;
 
 
 @Repository
@@ -32,7 +33,31 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
     }
 
     /**
-     * 插入监控仪器信息
+     * 查询监控信息
+     *
+     * @param equipmentNo 设备id
+     * @return
+     */
+    @Override
+    public List<MonitorinstrumentDTO> selectMonitorByEno(String equipmentNo) {
+        List<MonitorinstrumentPo> monitorinstrumentPos
+                = monitorinstrumentDao.selectList(Wrappers.lambdaQuery(new MonitorinstrumentPo()).eq(MonitorinstrumentPo::getEquipmentno, equipmentNo));
+        return BeanConverter.convert(monitorinstrumentPos,MonitorinstrumentDTO.class);
+    }
+
+    /**
+     * 更新监控信息
+     *
+     * @param monitorinstrumentDTO
+     */
+    @Override
+    public void updateMonitorinstrumentInfo(MonitorinstrumentDTO monitorinstrumentDTO) {
+        MonitorinstrumentPo monitorinstrumentPo = BeanConverter.convert(monitorinstrumentDTO, MonitorinstrumentPo.class);
+        monitorinstrumentDao.updateById(monitorinstrumentPo);
+    }
+
+    /**
+     * 插入监控信息
      *
      * @param monitorinstrumentDTO
      */
@@ -41,4 +66,6 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
         MonitorinstrumentPo monitorinstrumentPo = BeanConverter.convert(monitorinstrumentDTO, MonitorinstrumentPo.class);
         monitorinstrumentDao.insert(monitorinstrumentPo);
     }
+
+
 }

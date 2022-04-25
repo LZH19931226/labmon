@@ -1,6 +1,11 @@
 package com.hc.service;
 
 
+import com.hc.dto.MonitorequipmenttypeDTO;
+import com.hc.dto.MonitorinstrumenttypeDTO;
+
+import java.util.List;
+
 /**
  * 
  *
@@ -11,5 +16,17 @@ package com.hc.service;
 public interface MonitorinstrumenttypeService{
 
 
+    /**
+     * 查询监控设备类型信息
+     * @param instrumenttypeid
+     * @return
+     */
+    MonitorequipmenttypeDTO selectinfo(Integer instrumenttypeid);
+
+    /**
+     * 查询所有的监控设备类型信息
+     * @return
+     */
+    List<MonitorinstrumenttypeDTO> seleclAll();
 }
 

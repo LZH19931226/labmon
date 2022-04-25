@@ -18,6 +18,11 @@ import java.util.List;
 public class MonitorEquipmentCommand {
 
     /**
+     * 监控参数编号
+     */
+    private String instrumentparamconfigno;
+
+    /**
      * 医院编码
      */
     private String hospitalCode;
@@ -31,6 +36,11 @@ public class MonitorEquipmentCommand {
      * 设备名称
      */
     private String equipmentName;
+
+    /**
+     * 设备类型
+     */
+    private String equipmentNo;
 
     /**
      * 分页大小
@@ -75,5 +85,7 @@ public class MonitorEquipmentCommand {
      * 报警时间段
      */
     private List<MonitorequipmentwarningtimeDTO> warningTimeList;
+
+    private List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList;
 
 }

@@ -28,4 +28,10 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      * @param monitorEquipmentDto
      */
     void insertMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto);
+
+    /**
+     * 更新井控设备信息
+     * @param monitorEquipmentDto
+     */
+    void updateMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto);
 }

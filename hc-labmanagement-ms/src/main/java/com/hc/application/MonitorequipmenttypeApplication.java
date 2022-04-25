@@ -34,7 +34,6 @@ public class MonitorequipmenttypeApplication {
                                         .equipmentTypeName(s.getEquipmenttypename())
                                         .build());
                     }
-
             );
             return monitorequipmenttypeVoList;
         }

@@ -1,5 +1,6 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
@@ -52,5 +53,46 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
     public void insertInstrumentmonitorInfo(InstrumentmonitorDTO instrumentmonitorDTO) {
         InstrumentmonitorPo instrumentmonitorPo = BeanConverter.convert(instrumentmonitorDTO, InstrumentmonitorPo.class);
         instrumentmonitorDao.insert(instrumentmonitorPo);
+    }
+
+    /**
+     * 更新监控仪器信息
+     *
+     * @param instrumentmonitorDTO
+     */
+    @Override
+    public void updateInstrumentmonitor(InstrumentmonitorDTO instrumentmonitorDTO) {
+        InstrumentmonitorPo instrumentmonitorPo = BeanConverter.convert(instrumentmonitorDTO, InstrumentmonitorPo.class);
+        instrumentmonitorDao.update(instrumentmonitorPo,
+                Wrappers.lambdaUpdate(new InstrumentmonitorPo())
+                        .eq(InstrumentmonitorPo::getInstrumentconfigid,instrumentmonitorPo.getInstrumentconfigid())
+                        .eq(InstrumentmonitorPo::getInstrumenttypeid,instrumentmonitorPo.getInstrumenttypeid()));
+    }
+
+    /**
+     * 判断插入的信息是否已存在
+     *
+     * @param instrumentmonitorDTO
+     * @return
+     */
+    @Override
+    public boolean selectOne(InstrumentmonitorDTO instrumentmonitorDTO) {
+        InstrumentmonitorPo instrumentmonitorPo = instrumentmonitorDao.selectOne(Wrappers.lambdaQuery(new InstrumentmonitorPo())
+                .eq(InstrumentmonitorPo::getInstrumentconfigid, instrumentmonitorDTO.getInstrumentconfigid())
+                .eq(InstrumentmonitorPo::getInstrumenttypeid, instrumentmonitorDTO.getInstrumenttypeid()));
+        return instrumentmonitorPo == null ? false : true;
+    }
+
+    /**
+     * 查询监控仪器信息
+     *
+     * @param instrumenttypeid
+     * @return
+     */
+    @Override
+    public List<InstrumentmonitorDTO> selectMonitorEquipmentList(Integer instrumenttypeid) {
+        List<InstrumentmonitorPo> instrumentmonitorPos = instrumentmonitorDao.selectList(Wrappers.lambdaQuery(new InstrumentmonitorPo())
+                .eq(InstrumentmonitorPo::getInstrumenttypeid, instrumenttypeid));
+        return BeanConverter.convert(instrumentmonitorPos,InstrumentmonitorDTO.class);
     }
 }

@@ -34,4 +34,38 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
     public void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO) {
         monitorequipmentwarningtimeRepository.insetWarningtimeList(monitorequipmentwarningtimeDTO);
     }
+
+
+    /**
+     * 批量修改报警时间段集合
+     *
+     * @param updateList
+     */
+    @Override
+    public void updateList(List<MonitorequipmentwarningtimeDTO> updateList) {
+        List<MonitorEquipmentWarningTimePo> convert = BeanConverter.convert(updateList, MonitorEquipmentWarningTimePo.class);
+        monitorequipmentwarningtimeRepository.updateBatchById(convert);
+    }
+
+    /**
+     * 删除报警时段
+     *
+     * @param monitorequipmentwarningtimeDTO
+     */
+    @Override
+    public void deleteInfo(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO) {
+        monitorequipmentwarningtimeRepository.deleteInfo(monitorequipmentwarningtimeDTO);
+    }
+
+    /**
+     * 获取报警时段集合
+     *
+     * @param hospitalCode
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHosCodeAndEno(String hospitalCode, String equipmentNo) {
+        return monitorequipmentwarningtimeRepository.selectWarningtimeByHosCodeAndEno(hospitalCode,equipmentNo);
+    }
 }

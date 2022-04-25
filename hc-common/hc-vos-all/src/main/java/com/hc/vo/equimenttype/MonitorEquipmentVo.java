@@ -79,7 +79,14 @@ public class 	MonitorEquipmentVo  implements Serializable {
 	/** 监控设备 */
 	private String instrumentTypeName;
 
+	/** 报警时段 */
 	private List<WarningTimeVo> warningTimeList;
+
+	/** 仪器监控信息 */
+	private MonitorinstrumenttypeVo monitorinstrumenttypeDTO;
+
+	/** 是否可以删除 */
+	private boolean deleteOrNot;
 
 }
 

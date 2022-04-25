@@ -19,4 +19,24 @@ public interface InstrumentmonitorRepository extends IService <Instrumentmonitor
      * @param instrumentmonitorDTO
      */
     void insertInstrumentmonitorInfo(InstrumentmonitorDTO instrumentmonitorDTO);
+
+    /**
+     * 更新监控仪器信息
+     * @param instrumentmonitorDTO
+     */
+    void updateInstrumentmonitor(InstrumentmonitorDTO instrumentmonitorDTO);
+
+    /**
+     * 判断插入的信息是否已存在
+     * @param instrumentmonitorDTO
+     * @return
+     */
+    boolean selectOne(InstrumentmonitorDTO instrumentmonitorDTO);
+
+    /**
+     * 查询监控仪器信息
+     * @param instrumenttypeid
+     * @return
+     */
+    List<InstrumentmonitorDTO> selectMonitorEquipmentList(Integer instrumenttypeid);
 }

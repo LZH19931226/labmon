@@ -25,4 +25,10 @@ public interface MonitorEquipmentService {
      * @param monitorEquipmentDto
      */
     void insertMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto);
+
+    /**
+     * 更新监控设备信息
+     * @param monitorEquipmentDto
+     */
+    void updateMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto);
 }

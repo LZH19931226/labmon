@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
 
+import java.util.List;
+
 
 public interface InstrumentparamconfigRepository extends IService <InstrumentparamconfigPo>{
 
@@ -13,4 +15,11 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @param instrumentparamconfigDTO
      */
     void insertInstrumentmonitor(InstrumentparamconfigDTO instrumentparamconfigDTO);
+
+    /**
+     * 获取仪器信息集合
+     * @param instrumentNo
+     * @return
+     */
+    List<InstrumentparamconfigDTO> slectinfo(String instrumentNo);
 }

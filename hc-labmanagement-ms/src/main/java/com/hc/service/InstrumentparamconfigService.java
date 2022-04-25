@@ -3,6 +3,8 @@ package com.hc.service;
 
 import com.hc.dto.InstrumentparamconfigDTO;
 
+import java.util.List;
+
 /**
  * 
  *
@@ -18,5 +20,12 @@ public interface InstrumentparamconfigService{
      * @param instrumentparamconfigDTO
      */
     void insertInstrumentmonitor(InstrumentparamconfigDTO instrumentparamconfigDTO);
+
+    /**
+     * 仪器配置参数集合
+     * @param instrumentNo
+     * @return
+     */
+    List<InstrumentparamconfigDTO> slectInfo(String instrumentNo);
 }
 

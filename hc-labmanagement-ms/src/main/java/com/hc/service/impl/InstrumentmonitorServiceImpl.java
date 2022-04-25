@@ -29,4 +29,36 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
     public void insertInstrumentmonitorInfo(InstrumentmonitorDTO instrumentmonitorDTO) {
         instrumentmonitorRepository.insertInstrumentmonitorInfo(instrumentmonitorDTO);
     }
+
+    /**
+     * 更新监控仪器信息
+     *
+     * @param instrumentmonitorDTO
+     */
+    @Override
+    public void updateInstrumentmonitor(InstrumentmonitorDTO instrumentmonitorDTO) {
+        instrumentmonitorRepository.updateInstrumentmonitor(instrumentmonitorDTO);
+    }
+
+    /**
+     * 判断插入的信息是否已存在
+     *
+     * @param instrumentmonitorDTO
+     * @return
+     */
+    @Override
+    public boolean selectOne(InstrumentmonitorDTO instrumentmonitorDTO) {
+        return instrumentmonitorRepository.selectOne(instrumentmonitorDTO);
+    }
+
+    /**
+     * 查询监控仪器信息
+     *
+     * @param instrumenttypeid
+     * @return
+     */
+    @Override
+    public List<InstrumentmonitorDTO> selectMonitorEquipmentList(Integer instrumenttypeid) {
+        return instrumentmonitorRepository.selectMonitorEquipmentList(instrumenttypeid);
+    }
 }

@@ -70,4 +70,15 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
         MonitorEquipmentPo monitorEquipmentPo = BeanConverter.convert(monitorEquipmentDto, MonitorEquipmentPo.class);
         monitorEquipmentDao.insert(monitorEquipmentPo);
     }
+
+    /**
+     * 更新井控设备信息
+     *
+     * @param monitorEquipmentDto
+     */
+    @Override
+    public void updateMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto) {
+        MonitorEquipmentPo monitorEquipmentPo = BeanConverter.convert(monitorEquipmentDto, MonitorEquipmentPo.class);
+        monitorEquipmentDao.updateById(monitorEquipmentPo);
+    }
 }

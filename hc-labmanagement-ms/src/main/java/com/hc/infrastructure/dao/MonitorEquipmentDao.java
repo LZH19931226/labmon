@@ -34,6 +34,7 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
             "met.equipmenttypeid equipmentTypeId ," +
             "me.equipmentname equipmentName , " +
             "a.sn, " +
+            "a.instrumentno instrumentNo," +
             "a.instrumenttypename instrumentTypeName," +
             "me.equipmentbrand equipmentBrand, " +
             "me.clientvisible clientVisible, " +
@@ -42,7 +43,7 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
             "monitorequipment me " +
             "LEFT JOIN hospitalofreginfo h ON me.hospitalcode = h.hospitalcode " +
             "LEFT JOIN monitorequipmenttype met ON met.equipmenttypeid = me.equipmenttypeid " +
-            "LEFT JOIN (SELECT mi.equipmentno,mi.sn,mit.instrumenttypename FROM monitorinstrument mi left JOIN monitorinstrumenttype mit ON mi.instrumenttypeid = mit.instrumenttypeid) a on a.equipmentno = me.equipmentno " +
+            "LEFT JOIN (SELECT mi.equipmentno,mi.sn,mi.instrumentno,mit.instrumenttypename FROM monitorinstrument mi left JOIN monitorinstrumenttype mit ON mi.instrumenttypeid = mit.instrumenttypeid) a on a.equipmentno = me.equipmentno " +
             "where 1=1 " +
             "<if test = 'hospitalCode != null and hospitalCode != \"\"' > " +
             "and h.hospitalcode = #{hospitalCode} " +
@@ -59,5 +60,6 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
             "</script>")
     List<MonitorEquipmentDto> getEquipmentInfoList(Page page, @Param("hospitalCode") String hospitalCode,
                                                    @Param("equipmentTypeId") String equipmentTypeId,
-                                                   @Param("equipmentName") String equipmentName,@Param("clientVisible") Long clientVisible);
+                                                   @Param("equipmentName") String equipmentName,
+                                                   @Param("clientVisible") Long clientVisible);
 }

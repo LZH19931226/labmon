@@ -33,5 +33,6 @@ public class MonitorEquipmentTypeVo implements Serializable {
 	@ApiModelProperty(value="设备类型名称")
 	private String equipmentTypeName;
 
+
 }
 

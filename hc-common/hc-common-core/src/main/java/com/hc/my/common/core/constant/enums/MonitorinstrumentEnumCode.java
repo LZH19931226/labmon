@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 public enum MonitorinstrumentEnumCode {
+    FAILED_TO_UPDATE_DEVICE("修改设备失败，sn已被占用"),
     FAILED_TO_ADD_DEVICE("添加设备失败,sn已被占用");
     private String message;
 }
