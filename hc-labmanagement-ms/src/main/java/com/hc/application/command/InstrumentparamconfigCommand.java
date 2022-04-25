@@ -1,35 +1,25 @@
-package com.hc.dto;
+package com.hc.application.command;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
-/**
- * @author liuzhihao
- * @email 1969994698@qq.com
- * @date 2022-04-18 15:27:01
- */
 @Data
-@ApiModel(value = "instrumentparamconfig")
-@Accessors(chain = true)
-public class InstrumentparamconfigDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class InstrumentparamconfigCommand {
 
     /**
      * 监控参数编号
      */
-    @ApiModelProperty(value = "监控参数编号")
+    @ApiModelProperty(value = "监控参数编号,修改时候使用")
     private String instrumentparamconfigno;
+
     /**
-     * 探头编号
+     * 设备编号
      */
-    @ApiModelProperty(value = "探头编号")
-    private String instrumentno;
+    @ApiModelProperty(value="设备编号,新增时候使用")
+    private String equipmentNo;
+
     /**
      * 监控参数类型编码
      */
@@ -60,42 +50,56 @@ public class InstrumentparamconfigDTO implements Serializable {
      */
     @ApiModelProperty(value = "是否启用电话/短信/App推送报警")
     private String warningphone;
-    /**
-     * 推送消息时间
-     */
-    @ApiModelProperty(value = "推送消息时间")
-    private Date pushtime;
-    /**
-     * 报警时间
-     */
-    @ApiModelProperty(value = "报警时间")
-    private Date warningtime;
+
     /**
      *
      */
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "通道")
     private String channel;
     /**
      *
      */
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "报警次数")
     private Integer alarmtime;
     /**
      *
      */
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "校准正负值")
     private String calibration;
+
     /**
      *
      */
-    @ApiModelProperty(value = "")
-    private Date firsttime;
-    /**
-     *
-     */
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "饱和值")
     private BigDecimal saturation;
 
+
+
+
+    /** 下面这些用作查询使用
+     * 设备类型编码
+     */
+    @ApiModelProperty(value="设备类型编码")
+    private String equipmentTypeId;
+
+    /**
+     * 医院编号
+     */
+    @ApiModelProperty(value="医院编号")
+    private String hospitalCode;
+
+
+    /** sn */
+    private String sn;
+
+
+    /**
+     * 分页大小
+     */
+    private Long pageSize;
+
+    /**
+     * 当前页
+     */
+    private Long pageCurrent;
 }
-
-
