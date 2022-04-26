@@ -1,0 +1,105 @@
+2022-04-22 18:01:21.296 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-22 18:01:21.296 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-22 18:01:21.489 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f8c6b101] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-22 18:01:21.489 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f8c6b101] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-22 18:01:21.690 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-22 18:01:21.690 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-04-22 18:01:21.696 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-22 18:01:21.696 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-04-22 18:01:21.699 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - The following profiles are active: dev
+2022-04-22 18:01:22.783 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-22 18:01:22.783 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-22 18:01:22.785 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-22 18:01:22.785 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-04-22 18:01:22.814 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 19ms. Found 0 repository interfaces.
+2022-04-22 18:01:22.814 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 19ms. Found 0 repository interfaces.
+2022-04-22 18:01:22.968 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'monitorEquipmentDao' and 'com.hc.infrastructure.dao.MonitorEquipmentDao' mapperInterface. Bean already defined with the same name!
+2022-04-22 18:01:22.968 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'monitorEquipmentDao' and 'com.hc.infrastructure.dao.MonitorEquipmentDao' mapperInterface. Bean already defined with the same name!
+2022-04-22 18:01:22.968 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'monitorEquipmentWarningTimeDao' and 'com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao' mapperInterface. Bean already defined with the same name!
+2022-04-22 18:01:22.968 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'monitorEquipmentWarningTimeDao' and 'com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao' mapperInterface. Bean already defined with the same name!
+2022-04-22 18:01:22.973 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-22 18:01:22.973 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-04-22 18:01:23.068 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=dcad4b49-ebd9-3c97-8b2e-0378bb24d1f6
+2022-04-22 18:01:23.068 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=dcad4b49-ebd9-3c97-8b2e-0378bb24d1f6
+2022-04-22 18:01:23.151 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dcacae04] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-22 18:01:23.151 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dcacae04] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-22 18:01:23.169 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f8c6b101] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-22 18:01:23.169 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f8c6b101] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-04-22 18:01:23.562 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-22 18:01:23.562 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-04-22 18:01:23.585 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-22 18:01:23.585 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-04-22 18:01:23.586 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-22 18:01:23.586 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-04-22 18:01:23.704 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-22 18:01:23.704 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-04-22 18:01:23.705 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1991 ms
+2022-04-22 18:01:23.705 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1991 ms
+2022-04-22 18:01:23.786 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-22 18:01:23.786 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-04-22 18:01:23.787 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-22 18:01:23.787 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-04-22 18:01:23.790 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-22 18:01:23.790 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-04-22 18:01:23.932 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-22 18:01:23.932 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-04-22 18:01:25.495 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-22 18:01:25.495 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-22 18:01:25.496 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-22 18:01:25.496 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-22 18:01:25.502 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-22 18:01:25.502 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-04-22 18:01:25.502 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-22 18:01:25.502 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-04-22 18:01:25.630 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-22 18:01:25.630 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-04-22 18:01:25.675 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-04-22 18:01:25.675 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-04-22 18:01:25.812 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-22 18:01:25.812 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-04-22 18:01:25.929 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-22 18:01:25.929 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-04-22 18:01:26.094 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-22 18:01:26.094 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-04-22 18:01:26.480 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-22 18:01:26.480 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-04-22 18:01:26.494 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-22 18:01:26.494 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-04-22 18:01:26.523 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-22 18:01:26.523 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-04-22 18:01:26.694 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-22 18:01:26.694 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-04-22 18:01:26.722 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.10.39:10613 register finished
+2022-04-22 18:01:26.722 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.10.39:10613 register finished
+2022-04-22 18:01:26.760 [restartedMain] INFO  com.hc.HcLabManagementMsApplication - Started HcLabManagementMsApplication in 6.112 seconds (JVM running for 6.751)
+2022-04-22 18:01:47.039 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-22 18:01:47.039 [http-nio-10613-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-22 18:01:47.039 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-22 18:01:47.039 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-04-22 18:01:47.046 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2022-04-22 18:01:47.046 [http-nio-10613-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2022-04-22 20:14:28.109 [http-nio-10613-exec-9] ERROR com.hc.web.handler.SpringExceptionHandle - occurs error when execute url =/hospitalequimentType/addHospitalEquimentType ,message 已经存在相同设备类型
+2022-04-22 20:14:28.117 [http-nio-10613-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:14:28.117 [http-nio-10613-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:14:32.521 [http-nio-10613-exec-7] ERROR com.hc.web.handler.SpringExceptionHandle - occurs error when execute url =/hospitalequimentType/addHospitalEquimentType ,message 已经存在相同设备类型
+2022-04-22 20:14:32.522 [http-nio-10613-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:14:32.522 [http-nio-10613-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:16:38.834 [http-nio-10613-exec-7] ERROR com.hc.web.handler.SpringExceptionHandle - occurs error when execute url =/hospitalequimentType/addHospitalEquimentType ,message 已经存在相同设备类型
+2022-04-22 20:16:38.835 [http-nio-10613-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:16:38.835 [http-nio-10613-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:16:45.428 [http-nio-10613-exec-6] ERROR com.hc.web.handler.SpringExceptionHandle - occurs error when execute url =/hospitalequimentType/addHospitalEquimentType ,message 已经存在相同设备类型
+2022-04-22 20:16:45.430 [http-nio-10613-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:16:45.430 [http-nio-10613-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:16:50.926 [http-nio-10613-exec-1] ERROR com.hc.web.handler.SpringExceptionHandle - occurs error when execute url =/hospitalequimentType/addHospitalEquimentType ,message 已经存在相同设备类型
+2022-04-22 20:16:50.927 [http-nio-10613-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:16:50.927 [http-nio-10613-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 已经存在相同设备类型]
+2022-04-22 20:19:28.539 [http-nio-10613-exec-10] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:19:28.539 [http-nio-10613-exec-10] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:19:59.837 [http-nio-10613-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:19:59.837 [http-nio-10613-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:21:26.566 [http-nio-10613-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:21:26.566 [http-nio-10613-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:21:51.837 [http-nio-10613-exec-2] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:21:51.837 [http-nio-10613-exec-2] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:22:47.100 [http-nio-10613-exec-7] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
+2022-04-22 20:22:47.100 [http-nio-10613-exec-7] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'equipmenttypeid' is not present]
