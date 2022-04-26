@@ -1,6 +1,8 @@
 package com.hc.service;
 
 
+import com.hc.dto.InstrumentconfigDTO;
+
 /**
  * 
  *
@@ -10,6 +12,11 @@ package com.hc.service;
  */
 public interface InstrumentconfigService{
 
-
+    /**
+     * 查询探头配置信息
+     * @param instrumentconfigid
+     * @return
+     */
+    InstrumentconfigDTO selectInfoByConfigid(Integer instrumentconfigid);
 }
 

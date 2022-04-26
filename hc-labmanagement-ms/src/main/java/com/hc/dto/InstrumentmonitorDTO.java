@@ -58,6 +58,11 @@ public class InstrumentmonitorDTO implements Serializable {
 	 */
 	@ApiModelProperty(value="监控参数类型名称")
 	private String instrumentconfigname;
+
+    /**
+     * 监控参数编号(instrumentparamconfig表)
+     */
+    private String instrumentparamconfigno;
 }
 
 

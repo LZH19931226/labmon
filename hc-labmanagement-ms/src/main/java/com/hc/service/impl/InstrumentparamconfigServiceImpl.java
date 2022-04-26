@@ -49,4 +49,14 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     public List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo) {
         return instrumentparamconfigRepository.selectInstrumentparamconfigByEqNo(equipmentNo);
     }
+
+    /**
+     * 更新探头配置信息
+     *
+     * @param instrumentparamconfigDTO
+     */
+    @Override
+    public void updateInfo(InstrumentparamconfigDTO instrumentparamconfigDTO) {
+        instrumentparamconfigRepository.updateInfo(instrumentparamconfigDTO);
+    }
 }

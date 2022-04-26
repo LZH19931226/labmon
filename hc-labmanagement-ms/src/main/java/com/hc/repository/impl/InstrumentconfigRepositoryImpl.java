@@ -1,6 +1,10 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hc.dto.InstrumentconfigDTO;
+import com.hc.my.common.core.util.BeanConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hc.repository.InstrumentconfigRepository;
@@ -11,5 +15,17 @@ import com.hc.po.InstrumentconfigPo;
 @Repository
 public class InstrumentconfigRepositoryImpl extends ServiceImpl<InstrumentconfigDao,InstrumentconfigPo> implements InstrumentconfigRepository  {
 
-
+    @Autowired
+    private InstrumentconfigDao instrumentconfigDao;
+    /**
+     * 查询探头配置信息
+     *
+     * @param instrumentconfigid
+     * @return
+     */
+    @Override
+    public InstrumentconfigDTO selectInfoByConfigid(Integer instrumentconfigid) {
+        InstrumentconfigPo instrumentconfigPo = instrumentconfigDao.selectOne(Wrappers.lambdaQuery(new InstrumentconfigPo()).eq(InstrumentconfigPo::getInstrumentconfigid, instrumentconfigid));
+        return BeanConverter.convert(instrumentconfigPo,InstrumentconfigDTO.class);
+    }
 }

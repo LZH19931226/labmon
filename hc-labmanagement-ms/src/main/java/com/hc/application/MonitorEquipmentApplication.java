@@ -44,6 +44,9 @@ public class MonitorEquipmentApplication {
    @Autowired
    private MonitorinstrumenttypeService monitorinstrumenttypeService;
 
+   @Autowired
+   private InstrumentconfigService instrumentconfigService;
+
     /**
      * 分页获取监控设备信息
      * @param monitorEquipmentCommand 监控设备
@@ -61,13 +64,18 @@ public class MonitorEquipmentApplication {
                 MonitorinstrumenttypeDTO  monitorinstrumenttypeDTO = mergeCollections(instrumentparamconfigDTOList);
                 List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
                 List<InstrumentmonitorVo> instrumentmonitorVOS = new ArrayList<>();
-                for (InstrumentmonitorDTO instrumentmonitorDTO : instrumentmonitorDTOS) {
-                    InstrumentmonitorVo build = InstrumentmonitorVo.builder()
-                            .instrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
-                            .instrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
-                            .highlimit(instrumentmonitorDTO.getHighlimit())
-                            .lowlimit(instrumentmonitorDTO.getLowlimit()).build();
-                    instrumentmonitorVOS.add(build);
+                if(CollectionUtils.isNotEmpty(instrumentmonitorDTOS)){
+                    for (InstrumentmonitorDTO instrumentmonitorDTO : instrumentmonitorDTOS) {
+                        InstrumentmonitorVo build = InstrumentmonitorVo.builder()
+                                .instrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
+                                .instrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
+                                .highlimit(instrumentmonitorDTO.getHighlimit())
+                                .lowlimit(instrumentmonitorDTO.getLowlimit())
+                                .instrumentparamconfigno(instrumentmonitorDTO.getInstrumentparamconfigno())
+                                .saturation(instrumentmonitorDTO.getSaturation())
+                                .build();
+                        instrumentmonitorVOS.add(build);
+                    }
                 }
                 MonitorinstrumenttypeVo build1 = MonitorinstrumenttypeVo.builder()
                         .instrumenttypeid(monitorinstrumenttypeDTO.getInstrumenttypeid())
@@ -92,11 +100,13 @@ public class MonitorEquipmentApplication {
                 //获取设备有没有绑定探头信息
                MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
                 boolean deleteOrNot = true;
+                String instrumentno = "";
+                Integer instrumenttypeid = 888;
                 if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
                     deleteOrNot = false;
+                    instrumentno = monitorinstrumentDTO.getInstrumentno();
+                    instrumenttypeid = monitorinstrumentDTO.getInstrumenttypeid();
                 }
-                String instrumentno = monitorinstrumentDTO.getInstrumentno();
-                Integer instrumenttypeid = monitorinstrumentDTO.getInstrumenttypeid();
                 MonitorEquipmentVo build = MonitorEquipmentVo.builder()
                         .equipmentNo(res.getEquipmentNo())
                         .equipmentBrand(res.getEquipmentBrand())
@@ -110,7 +120,7 @@ public class MonitorEquipmentApplication {
                         .sn(res.getSn())
                         .sort(res.getSort())
                         .instrumentTypeName(res.getInstrumentTypeName())
-                        .instrumenttypeid(instrumenttypeid)
+                        .instrumenttypeid(instrumenttypeid==888?null:instrumenttypeid)
                         .instrumentno(instrumentno)
                         .warningTimeList(timeVoList)
                         .monitorinstrumenttypeDTO(build1)
@@ -123,8 +133,6 @@ public class MonitorEquipmentApplication {
        page.setRecords(list);
       return page;
    }
-
-
 
     /**
      * 添加设备信息
@@ -148,9 +156,9 @@ public class MonitorEquipmentApplication {
                 instrumentmonitorDTOS.forEach(res->{
                     boolean flag =  instrumentmonitorService.selectOne(res);
                     if(flag){
-                        instrumentmonitorService.insertInstrumentmonitorInfo(res);
-                    }else {
                         instrumentmonitorService.updateInstrumentmonitor(res);
+                    }else {
+                        instrumentmonitorService.insertInstrumentmonitorInfo(res);
                     }
                 });
             }
@@ -232,6 +240,21 @@ public class MonitorEquipmentApplication {
             });
         }
 
+        //6.插入探头参数表
+        if(CollectionUtils.isNotEmpty(instrumentmonitorDTOS)){
+            InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO();
+            List<InstrumentmonitorDTO> dtos = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
+            for (InstrumentmonitorDTO dto : dtos) {
+                instrumentparamconfigDTO.setInstrumentparamconfigno(dto.getInstrumentparamconfigno());
+                instrumentparamconfigDTO.setInstrumenttypeid(dto.getInstrumenttypeid());
+                instrumentparamconfigDTO.setLowlimit(dto.getLowlimit());
+                instrumentparamconfigDTO.setHighlimit(dto.getHighlimit());
+                instrumentparamconfigDTO.setInstrumentname(monitorEquipmentCommand.getEquipmentName()+"探头");
+                instrumentparamconfigDTO.setSaturation(dto.getSaturation());
+                instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
+            }
+        }
+
         //3.修改监控设备信息（monitorequipment）
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
                 .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
@@ -243,11 +266,11 @@ public class MonitorEquipmentApplication {
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
-
         //4.修改监控探头信息（monitorinstrument）
        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(monitorEquipmentCommand.getEquipmentNo());
        if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
-           monitorinstrumentDTO = monitorinstrumentDTO.setSn(monitorEquipmentCommand.getSn())
+           monitorinstrumentDTO = monitorinstrumentDTO
+                   .setSn(monitorEquipmentCommand.getSn())
                    .setChannel(monitorEquipmentCommand.getChannel())
                    .setInstrumentname(monitorEquipmentCommand.getEquipmentName() + "探头");
            monitorinstrumentService.updateMonitorinstrumentInfo(monitorinstrumentDTO);
@@ -275,10 +298,12 @@ public class MonitorEquipmentApplication {
            deleteWarningTimeList.forEach(res->monitorequipmentwarningtimeService.deleteInfo(res));
        }
 
-        //6.插入探头参数表
-
     }
 
+    /**
+     * 删除监控设备
+     * @param equipmentNo
+     */
     public void deleteMonitorEquipment(String equipmentNo) {
         Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setEquipmentno(equipmentNo));
         if(integer > 0){
@@ -292,6 +317,11 @@ public class MonitorEquipmentApplication {
         instrumentparamconfigService.deleteInfoByEno(monitorinstrumentDTO.getInstrumentno());
     }
 
+    /**
+     * 查询监控设备类型
+     * @param instrumenttypeid
+     * @return
+     */
     public List<MonitorinstrumenttypeVo> selectMonitorEquipmentType(String instrumenttypeid) {
         List<MonitorinstrumenttypeDTO> monitorinstrumenttypeDTOS = instrumentmonitorService.selectMonitorEquipmentType(instrumenttypeid);
         if (CollectionUtils.isNotEmpty(monitorinstrumenttypeDTOS)){
@@ -309,6 +339,7 @@ public class MonitorEquipmentApplication {
         }
         return null;
     }
+
 
     public List<InstrumentmonitorVo> buildInstrumentmonitorVO(List<InstrumentmonitorDTO> instrumentmonitorDTOS){
        if (CollectionUtils.isNotEmpty(instrumentmonitorDTOS)){
@@ -335,21 +366,20 @@ public class MonitorEquipmentApplication {
      * @return
      */
     public List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation() {
-
         List<MonitorinstrumenttypeVo> mitVo = new ArrayList<>();
         List<MonitorinstrumenttypeDTO> monitorinstrumenttypeVoList =  monitorinstrumenttypeService.seleclAll();
         for (MonitorinstrumenttypeDTO monitorinstrumenttypeDTO : monitorinstrumenttypeVoList) {
-
-
-
             List<InstrumentmonitorDTO> instrumentmonitorDTOS =  instrumentmonitorService.selectMonitorEquipmentList(monitorinstrumenttypeDTO.getInstrumenttypeid());
 
             List<InstrumentmonitorVo> instrumentmonitorVos = new ArrayList<>();
             instrumentmonitorDTOS.forEach(res->{
+                Integer instrumentconfigid = res.getInstrumentconfigid();
+                InstrumentconfigDTO instrumentconfig = instrumentconfigService.selectInfoByConfigid(instrumentconfigid);
                 InstrumentmonitorVo build1 = InstrumentmonitorVo.builder()
                         .instrumentconfigid(res.getInstrumentconfigid())
                         .instrumenttypeid(res.getInstrumenttypeid())
                         .lowlimit(res.getLowlimit())
+                        .instrumentconfigname(instrumentconfig.getInstrumentconfigname())
                         .highlimit(res.getHighlimit())
                         .build();
                 instrumentmonitorVos.add(build1);
@@ -389,6 +419,8 @@ public class MonitorEquipmentApplication {
                 instrumentmonitorDTO.setInstrumenttypeid(instrumentparamconfigDTO.getInstrumenttypeid());
                 instrumentmonitorDTO.setHighlimit(instrumentparamconfigDTO.getHighlimit());
                 instrumentmonitorDTO.setLowlimit(instrumentparamconfigDTO.getLowlimit());
+                instrumentmonitorDTO.setInstrumentparamconfigno(instrumentparamconfigDTO.getInstrumentparamconfigno());
+                instrumentmonitorDTO.setSaturation(instrumentparamconfigDTO.getSaturation());
                 list1.add(instrumentmonitorDTO);
                 map.put(monitorinstrumenttypeDTO,list1);
 
@@ -398,6 +430,8 @@ public class MonitorEquipmentApplication {
                 instrumentmonitorDTO.setInstrumenttypeid(instrumentparamconfigDTO.getInstrumenttypeid());
                 instrumentmonitorDTO.setHighlimit(instrumentparamconfigDTO.getHighlimit());
                 instrumentmonitorDTO.setLowlimit(instrumentparamconfigDTO.getLowlimit());
+                instrumentmonitorDTO.setInstrumentparamconfigno(instrumentparamconfigDTO.getInstrumentparamconfigno());
+                instrumentmonitorDTO.setSaturation(instrumentparamconfigDTO.getSaturation());
                 list.add(instrumentmonitorDTO);
                 map.put(monitorinstrumenttypeDTO,list);
             }

@@ -2,12 +2,12 @@ package com.hc.vo.equimenttype;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
-
-
 import java.math.BigDecimal;
 
 
@@ -55,5 +55,9 @@ public class InstrumentmonitorVo implements Serializable {
 	@ApiModelProperty(value="监控参数类型名称")
 	private String instrumentconfigname;
 
+    /**
+     * 监控参数编号(instrumentparamconfig表)
+     */
+    private String instrumentparamconfigno;
 }
 

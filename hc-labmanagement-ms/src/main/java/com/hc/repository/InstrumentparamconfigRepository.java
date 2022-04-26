@@ -33,4 +33,9 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
 
     List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo);
 
+    /**
+     * 更新探头配置信息
+     * @param instrumentparamconfigDTO
+     */
+    void updateInfo(InstrumentparamconfigDTO instrumentparamconfigDTO);
 }

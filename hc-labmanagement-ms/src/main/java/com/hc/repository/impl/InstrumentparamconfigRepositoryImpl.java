@@ -59,4 +59,15 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     public List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo) {
         return instrumentparamconfigDao.selectInstrumentparamconfigByEqNo(equipmentNo);
     }
+
+    /**
+     * 更新探头配置信息
+     *
+     * @param instrumentparamconfigDTO
+     */
+    @Override
+    public void updateInfo(InstrumentparamconfigDTO instrumentparamconfigDTO) {
+        InstrumentparamconfigPo instrumentparamconfigPo = BeanConverter.convert(instrumentparamconfigDTO, InstrumentparamconfigPo.class);
+        instrumentparamconfigDao.updateById(instrumentparamconfigPo);
+    }
 }
