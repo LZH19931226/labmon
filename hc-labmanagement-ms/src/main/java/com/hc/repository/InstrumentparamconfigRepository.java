@@ -2,6 +2,7 @@ package com.hc.repository;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
 
@@ -28,4 +29,8 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @param instrumentno
      */
     void deleteInfoByEno(String instrumentno);
+
+
+    List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo);
+
 }

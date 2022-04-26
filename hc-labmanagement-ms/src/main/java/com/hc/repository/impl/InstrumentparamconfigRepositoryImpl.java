@@ -2,6 +2,7 @@ package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.infrastructure.dao.InstrumentparamconfigDao;
 import com.hc.my.common.core.util.BeanConverter;
@@ -52,5 +53,10 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     @Override
     public void deleteInfoByEno(String instrumentno) {
         instrumentparamconfigDao.delete(Wrappers.lambdaQuery(new InstrumentparamconfigPo()).eq(InstrumentparamconfigPo::getInstrumentno,instrumentno));
+    }
+
+    @Override
+    public List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo) {
+        return instrumentparamconfigDao.selectInstrumentparamconfigByEqNo(equipmentNo);
     }
 }

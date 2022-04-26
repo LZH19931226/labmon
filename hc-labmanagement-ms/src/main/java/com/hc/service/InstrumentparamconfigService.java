@@ -1,6 +1,7 @@
 package com.hc.service;
 
 
+import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 
 import java.util.List;
@@ -33,5 +34,7 @@ public interface InstrumentparamconfigService{
      * @param instrumentno
      */
     void deleteInfoByEno(String instrumentno);
+
+    List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo);
 }
 
