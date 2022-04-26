@@ -25,6 +25,11 @@ public class InstrumentparamconfigVo implements Serializable {
 
 
     /**
+     * 设备编号
+     */
+    @ApiModelProperty(value="设备编号")
+    private String equipmentNo;
+    /**
      * 医院编号
      */
     @ApiModelProperty(value="医院编号")
@@ -53,6 +58,13 @@ public class InstrumentparamconfigVo implements Serializable {
      */
     @ApiModelProperty(value = "监控参数类型编码")
     private Integer instrumentconfigid;
+
+    /**
+     * 监控参数类型名称
+     */
+    @ApiModelProperty(value = "监控参数类型名称")
+    private String instrumentconfigname;
+
     /**
      * 探头名称
      */

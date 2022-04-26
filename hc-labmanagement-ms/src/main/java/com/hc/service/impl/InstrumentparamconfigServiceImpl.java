@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.repository.InstrumentparamconfigRepository;
 import com.hc.service.InstrumentparamconfigService;
@@ -33,5 +34,10 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     public List<InstrumentparamconfigDTO> slectInfo(String instrumentNo) {
         return instrumentparamconfigRepository.slectinfo(instrumentNo);
 
+    }
+
+    @Override
+    public List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo) {
+        return instrumentparamconfigRepository.selectInstrumentparamconfigByEqNo(equipmentNo);
     }
 }
