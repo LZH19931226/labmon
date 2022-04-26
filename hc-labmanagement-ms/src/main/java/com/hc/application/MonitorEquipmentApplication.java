@@ -89,7 +89,14 @@ public class MonitorEquipmentApplication {
                             .build();
                     timeVoList.add(build);
                 });
-
+                //获取设备有没有绑定探头信息
+               MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
+                boolean deleteOrNot = true;
+                if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
+                    deleteOrNot = false;
+                }
+                String instrumentno = monitorinstrumentDTO.getInstrumentno();
+                Integer instrumenttypeid = monitorinstrumentDTO.getInstrumenttypeid();
                 MonitorEquipmentVo build = MonitorEquipmentVo.builder()
                         .equipmentNo(res.getEquipmentNo())
                         .equipmentBrand(res.getEquipmentBrand())
@@ -103,8 +110,11 @@ public class MonitorEquipmentApplication {
                         .sn(res.getSn())
                         .sort(res.getSort())
                         .instrumentTypeName(res.getInstrumentTypeName())
+                        .instrumenttypeid(instrumenttypeid)
+                        .instrumentno(instrumentno)
                         .warningTimeList(timeVoList)
                         .monitorinstrumenttypeDTO(build1)
+                        .deleteOrNot(deleteOrNot)
                         .build();
                 list.add(build);
             });
@@ -235,12 +245,12 @@ public class MonitorEquipmentApplication {
 
 
         //4.修改监控探头信息（monitorinstrument）
-        List<MonitorinstrumentDTO> monitorinstrumentDTOList = monitorinstrumentService.selectMonitorByEno(monitorEquipmentCommand.getEquipmentNo());
-       if(CollectionUtils.isNotEmpty(monitorinstrumentDTOList)){
-               monitorinstrumentDTOList.forEach(res->{
-                   res.setSn(monitorEquipmentCommand.getSn()).setChannel(monitorEquipmentCommand.getChannel());
-                   monitorinstrumentService.updateMonitorinstrumentInfo(res);
-               });
+       MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(monitorEquipmentCommand.getEquipmentNo());
+       if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
+           monitorinstrumentDTO = monitorinstrumentDTO.setSn(monitorEquipmentCommand.getSn())
+                   .setChannel(monitorEquipmentCommand.getChannel())
+                   .setInstrumentname(monitorEquipmentCommand.getEquipmentName() + "探头");
+           monitorinstrumentService.updateMonitorinstrumentInfo(monitorinstrumentDTO);
        }
 
        //5.修改报警时间（monitorequipmentwarningtime）
@@ -264,9 +274,22 @@ public class MonitorEquipmentApplication {
        if(CollectionUtils.isNotEmpty(deleteWarningTimeList)){
            deleteWarningTimeList.forEach(res->monitorequipmentwarningtimeService.deleteInfo(res));
        }
+
+        //6.插入探头参数表
+
     }
 
-    public void deleteMonitorEquipment(String equipmentId) {
+    public void deleteMonitorEquipment(String equipmentNo) {
+        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setEquipmentno(equipmentNo));
+        if(integer > 0){
+            throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_DELETE.getMessage());
+        }
+        //删除探头表中的信息
+        monitorinstrumentService.deleteMonitorinstrumentInfo(equipmentNo);
+
+        //删除探头参数表中的信息
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
+        instrumentparamconfigService.deleteInfoByEno(monitorinstrumentDTO.getInstrumentno());
     }
 
     public List<MonitorinstrumenttypeVo> selectMonitorEquipmentType(String instrumenttypeid) {

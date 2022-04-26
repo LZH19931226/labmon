@@ -43,4 +43,14 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
 
         return BeanConverter.convert(instrumentparamconfigPoList,InstrumentparamconfigDTO.class);
     }
+
+    /**
+     * 删除探头参数信息
+     *
+     * @param instrumentno
+     */
+    @Override
+    public void deleteInfoByEno(String instrumentno) {
+        instrumentparamconfigDao.delete(Wrappers.lambdaQuery(new InstrumentparamconfigPo()).eq(InstrumentparamconfigPo::getInstrumentno,instrumentno));
+    }
 }

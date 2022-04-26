@@ -31,8 +31,8 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
      * @param startTime 开始时间
      */
     @Override
-    public void deleteInfo(String hospitalCode, Date startTime) {
-        userSchedulingDao.deleteInfo(hospitalCode,startTime);
+    public void deleteInfo(String hospitalCode, Date startTime ,Date endTime) {
+        userSchedulingDao.deleteInfo(hospitalCode,startTime,endTime);
     }
 
     /**

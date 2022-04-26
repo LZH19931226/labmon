@@ -13,8 +13,9 @@ public interface UserSchedulingRepository {
      * 根据医院编码和时间删除用户排班信息
      * @param hospitalCode 医院编码
      * @param startTime 开始时间
+     * @param endTime 结束时间
      */
-    void deleteInfo(String hospitalCode, Date startTime);
+    void deleteInfo(String hospitalCode, Date startTime,Date endTime);
 
     /**
      * 插入用户排班信息

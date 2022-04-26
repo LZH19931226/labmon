@@ -27,5 +27,11 @@ public interface InstrumentparamconfigService{
      * @return
      */
     List<InstrumentparamconfigDTO> slectInfo(String instrumentNo);
+
+    /**
+     * 删除探头参数信息
+     * @param instrumentno
+     */
+    void deleteInfoByEno(String instrumentno);
 }
 

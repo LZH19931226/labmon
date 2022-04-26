@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.dto.MonitorinstrumentDTO;
 import com.hc.po.MonitorinstrumentPo;
 
-import java.util.List;
-
 
 public interface MonitorinstrumentRepository extends IService <MonitorinstrumentPo>{
 
@@ -23,7 +21,7 @@ public interface MonitorinstrumentRepository extends IService <Monitorinstrument
      * @param equipmentNo 设备id
      * @return
      */
-    List<MonitorinstrumentDTO> selectMonitorByEno(String equipmentNo);
+    MonitorinstrumentDTO selectMonitorByEno(String equipmentNo);
 
     /**
      * 更新监控信息
@@ -38,5 +36,9 @@ public interface MonitorinstrumentRepository extends IService <Monitorinstrument
     void insertMonitorinstrumentInfo(MonitorinstrumentDTO monitorinstrumentDTO);
 
 
-
+    /**
+     * 删除监控探头信息
+     * @param equipmentNo
+     */
+    void deleteMonitorinstrumentInfo(String equipmentNo);
 }

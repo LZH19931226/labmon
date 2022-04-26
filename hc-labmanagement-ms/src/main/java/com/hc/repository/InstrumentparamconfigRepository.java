@@ -22,4 +22,10 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @return
      */
     List<InstrumentparamconfigDTO> slectinfo(String instrumentNo);
+
+    /**
+     * 删除探头参数信息
+     * @param instrumentno
+     */
+    void deleteInfoByEno(String instrumentno);
 }

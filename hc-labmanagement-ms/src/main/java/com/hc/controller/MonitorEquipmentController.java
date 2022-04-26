@@ -50,8 +50,8 @@ public class MonitorEquipmentController {
 
     @DeleteMapping("/{equipmentId}")
     @ApiOperation("删除设备")
-    public void deleteMonitorEquipment(@PathVariable("equipmentId") String equipmentId){
-        monitorEquipmentApplication.deleteMonitorEquipment(equipmentId);
+    public void deleteMonitorEquipment(@PathVariable("equipmentId") String equipmentNo){
+        monitorEquipmentApplication.deleteMonitorEquipment(equipmentNo);
     }
 
     @GetMapping("/selectMonitorEquipmentType")

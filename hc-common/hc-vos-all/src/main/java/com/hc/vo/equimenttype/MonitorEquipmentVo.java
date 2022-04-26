@@ -85,6 +85,12 @@ public class 	MonitorEquipmentVo  implements Serializable {
 	/** 仪器监控信息 */
 	private MonitorinstrumenttypeVo monitorinstrumenttypeDTO;
 
+	/** 探头编号 */
+	private String instrumentno;
+
+	/** 仪器类型id */
+	private Integer instrumenttypeid;
+
 	/** 是否可以删除 */
 	private boolean deleteOrNot;
 

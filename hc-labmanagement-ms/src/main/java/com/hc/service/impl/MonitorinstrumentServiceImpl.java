@@ -6,8 +6,6 @@ import com.hc.service.MonitorinstrumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
 
@@ -32,7 +30,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
      * @return
      */
     @Override
-    public List<MonitorinstrumentDTO> selectMonitorByEno(String equipmentNo) {
+    public MonitorinstrumentDTO selectMonitorByEno(String equipmentNo) {
         return monitorinstrumentRepository.selectMonitorByEno(equipmentNo);
     }
 
@@ -56,5 +54,13 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         monitorinstrumentRepository.insertMonitorinstrumentInfo(monitorinstrumentDTO);
     }
 
-
+    /**
+     * 删除监控探头信息
+     *
+     * @param equipmentNo
+     */
+    @Override
+    public void deleteMonitorinstrumentInfo(String equipmentNo) {
+        monitorinstrumentRepository.deleteMonitorinstrumentInfo(equipmentNo);
+    }
 }

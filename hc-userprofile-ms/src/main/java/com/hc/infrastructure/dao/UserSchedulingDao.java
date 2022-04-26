@@ -21,8 +21,8 @@ public interface UserSchedulingDao extends BaseMapper<UserSchedulingPo> {
      * @param hospitalCode 医院编码
      * @param startTime 开始时间
      */
-    @Delete("DELETE FROM userscheduling WHERE hospitalcode=#{hospitalCode} and starttime = #{startTime}")
-    void deleteInfo(@Param("hospitalCode") String hospitalCode,@Param("startTime") Date startTime);
+    @Delete("DELETE FROM userscheduling WHERE hospitalcode=#{hospitalCode} and starttime >= #{startTime} and starttime < #{endTime}")
+    void deleteInfo(@Param("hospitalCode") String hospitalCode,@Param("startTime") Date startTime,@Param("endTime")Date endTime);
 
     /**
      * 获取当月的排班信息

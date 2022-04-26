@@ -32,6 +32,15 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public List<InstrumentparamconfigDTO> slectInfo(String instrumentNo) {
         return instrumentparamconfigRepository.slectinfo(instrumentNo);
+    }
 
+    /**
+     * 删除探头参数信息
+     *
+     * @param instrumentno
+     */
+    @Override
+    public void deleteInfoByEno(String instrumentno) {
+        instrumentparamconfigRepository.deleteInfoByEno(instrumentno);
     }
 }

@@ -29,8 +29,9 @@ public class UserSchedulingServiceImpl implements UserSchedulingService {
         String hospitalCode = userScheduleCommand.getHospitalCode();
         Date startTime = userScheduleCommand.getStartTime();
         String createUser = userScheduleCommand.getCreateUser();
+        Date endTime = userScheduleCommand.getEndTime();
         List<UserSchedulingDto> userSchedulingDtoList = userScheduleCommand.getUserSchedulingDtoList();
-        userSchedulingRepository.deleteInfo(hospitalCode,startTime);
+        userSchedulingRepository.deleteInfo(hospitalCode,startTime,endTime);
         if(CollectionUtils.isNotEmpty(userSchedulingDtoList)){
             userSchedulingDtoList.forEach(res->{
                 res.setHospitalCode(hospitalCode);
