@@ -44,5 +44,12 @@ public interface MonitorequipmentwarningtimeService{
      * @return
      */
     List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHosCodeAndEno(String hospitalCode, String equipmentNo);
+
+    /**
+     * 获取报警时段
+     * @param equipmentNo
+     * @return
+     */
+    Integer selectWarningtimeByEno(String equipmentNo);
 }
 

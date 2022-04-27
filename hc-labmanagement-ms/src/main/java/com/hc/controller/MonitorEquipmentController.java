@@ -48,9 +48,9 @@ public class MonitorEquipmentController {
         monitorEquipmentApplication.updateMonitorEquipment(monitorEquipmentCommand);
     }
 
-    @DeleteMapping("/{equipmentId}")
+    @DeleteMapping("/{equipmentNo}")
     @ApiOperation("删除设备")
-    public void deleteMonitorEquipment(@PathVariable("equipmentId") String equipmentNo){
+    public void deleteMonitorEquipment(@PathVariable("equipmentNo") String equipmentNo){
         monitorEquipmentApplication.deleteMonitorEquipment(equipmentNo);
     }
 

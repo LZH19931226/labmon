@@ -68,4 +68,16 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
     public List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHosCodeAndEno(String hospitalCode, String equipmentNo) {
         return monitorequipmentwarningtimeRepository.selectWarningtimeByHosCodeAndEno(hospitalCode,equipmentNo);
     }
+
+    /**
+     * 获取报警时段
+     *
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public Integer selectWarningtimeByEno(String equipmentNo) {
+
+        return monitorequipmentwarningtimeRepository.selectWarningtimeByEno(equipmentNo);
+    }
 }
