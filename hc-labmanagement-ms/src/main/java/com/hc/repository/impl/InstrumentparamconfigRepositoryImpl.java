@@ -34,13 +34,13 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     /**
      * 获取仪器信息集合
      *
-     * @param instrumentNo
+     * @param instrumentNos
      * @return
      */
     @Override
-    public List<InstrumentparamconfigDTO> slectinfo(String instrumentNo) {
+    public List<InstrumentparamconfigDTO> slectinfo(List<String> instrumentNos) {
 
-        List<InstrumentparamconfigPo> instrumentparamconfigPoList = instrumentparamconfigDao.selectList(Wrappers.lambdaQuery(new InstrumentparamconfigPo()).eq(InstrumentparamconfigPo::getInstrumentno, instrumentNo));
+        List<InstrumentparamconfigPo> instrumentparamconfigPoList = instrumentparamconfigDao.selectList(Wrappers.lambdaQuery(new InstrumentparamconfigPo()).in(InstrumentparamconfigPo::getInstrumentno, instrumentNos));
 
         return BeanConverter.convert(instrumentparamconfigPoList,InstrumentparamconfigDTO.class);
     }

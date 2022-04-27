@@ -53,13 +53,19 @@ public class MonitorEquipmentApplication {
      * @return
      */
    public Page<MonitorEquipmentVo> getEquipmentInfoList(MonitorEquipmentCommand monitorEquipmentCommand) {
-       Page page = new Page(monitorEquipmentCommand.getPageCurrent(),monitorEquipmentCommand.getPageSize());
+       Page<MonitorEquipmentVo> page = new Page<>(monitorEquipmentCommand.getPageCurrent(),monitorEquipmentCommand.getPageSize());
        List<MonitorEquipmentDto> dtoList = monitorEquipmentService.getEquipmentInfoList(page,monitorEquipmentCommand);
        List<MonitorEquipmentVo> list = new ArrayList<>();
         if(!CollectionUtils.isEmpty(dtoList)){
+            List<String> instrumentNos = dtoList.stream().map(MonitorEquipmentDto::getInstrumentNo).collect(Collectors.toList());
+            List<InstrumentparamconfigDTO> instrumentparamconfigDTOLists = instrumentparamconfigService.slectInfo(instrumentNos);
+            Map<String, List<InstrumentparamconfigDTO>> instrumentNoMap = instrumentparamconfigDTOLists.stream().collect(Collectors.groupingBy(InstrumentparamconfigDTO::getInstrumentno));
+
+
+
             dtoList.forEach(res->{
                 String instrumentNo = res.getInstrumentNo();
-                List<InstrumentparamconfigDTO> instrumentparamconfigDTOList =  instrumentparamconfigService.slectInfo(instrumentNo);
+                List<InstrumentparamconfigDTO> instrumentparamconfigDTOList =  instrumentNoMap.get(instrumentNo);
                 //添加仪器信息集合
                 MonitorinstrumenttypeDTO  monitorinstrumenttypeDTO = mergeCollections(instrumentparamconfigDTOList);
                 List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();

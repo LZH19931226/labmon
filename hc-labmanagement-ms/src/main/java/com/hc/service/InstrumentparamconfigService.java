@@ -27,7 +27,7 @@ public interface InstrumentparamconfigService{
      * @param instrumentNo
      * @return
      */
-    List<InstrumentparamconfigDTO> slectInfo(String instrumentNo);
+    List<InstrumentparamconfigDTO> slectInfo(List<String> instrumentNos);
 
     /**
      * 删除探头参数信息

@@ -31,8 +31,8 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
      * @return
      */
     @Override
-    public List<InstrumentparamconfigDTO> slectInfo(String instrumentNo) {
-        return instrumentparamconfigRepository.slectinfo(instrumentNo);
+    public List<InstrumentparamconfigDTO> slectInfo(List<String> instrumentNos) {
+        return instrumentparamconfigRepository.slectinfo(instrumentNos);
     }
 
     /**
