@@ -120,5 +120,10 @@ public class InstrumentparamconfigVo implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+    /** 创建时间 */
+    private Date firsttime;
+
+    /** 设备名称 */
+    private String equipmentName;
 }
 

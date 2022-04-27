@@ -1,9 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="InstrumentparamconfigDao">
+<mapper namespace="com.hc.infrastructure.dao.InstrumentparamconfigDao">
 
+<select id="findInstrumentparamconfig" resultType="com.hc.dto.InstrumentparamconfigDTO">
 
+    SELECT
+        g.hospitalname,
+        e.equipmenttypename,
+        d.equipmentname,
+        b.sn,
+        a.instrumentname,
+        a.firsttime,
+        a.channel,
+        a.instrumentconfigid,
+        f.instrumentconfigname,
+        a.alarmtime,
+        a.lowlimit,
+        a.highlimit,
+        a.saturation,
+        a.warningphone,
+        b.hospitalcode,
+        a.instrumentno,
+        a.instrumentparamconfigNO instrumentparamconfigno
+    FROM instrumentparamconfig a
+             LEFT JOIN monitorinstrument b 		ON a.instrumentno = b.instrumentno
+             LEFT JOIN monitorinstrumenttype c ON c.instrumenttypeid = a.instrumenttypeid
+             LEFT JOIN monitorequipment d 			ON d.equipmentno = b.equipmentno
+             LEFT JOIN monitorequipmenttype e 	ON e.equipmenttypeid = d.equipmenttypeid
+             LEFT JOIN instrumentconfig f 			ON f.instrumentconfigid = a.instrumentconfigid
+             LEFT JOIN hospitalofreginfo g 		ON g.hospitalcode = d.hospitalcode
+    where 1=1
 
+    <if test= " hospitalCode != null and hospitalCode != '' ">
+        and g.hospitalcode = #{hospitalCode}
+    </if>
+    <if test="equipmentTypeName != null and equipmentTypeName != ''">
+        and e.equipmenttypename = #{equipmentTypeName}
+    </if>
+    <if test="instrumentname != null and instrumentname != ''">
+        and b.instrumentname = #{instrumentname}
+    </if>
+    <if test="sn != null and sn != ''">
+        and b.sn  = #{sn}
+    </if>
+
+</select>
 
 </mapper>

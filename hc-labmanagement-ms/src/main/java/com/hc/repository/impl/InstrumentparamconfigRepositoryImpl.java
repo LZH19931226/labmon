@@ -1,7 +1,9 @@
 package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.infrastructure.dao.InstrumentparamconfigDao;
@@ -69,5 +71,30 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     public void updateInfo(InstrumentparamconfigDTO instrumentparamconfigDTO) {
         InstrumentparamconfigPo instrumentparamconfigPo = BeanConverter.convert(instrumentparamconfigDTO, InstrumentparamconfigPo.class);
         instrumentparamconfigDao.updateById(instrumentparamconfigPo);
+    }
+
+    /**
+     * 删除探头信息
+     *
+     * @param instrumentparamconfigno
+     */
+    @Override
+    public void deleteInstrumentparamconfig(InstrumentparamconfigDTO instrumentparamconfigno) {
+        InstrumentparamconfigPo instrumentparamconfigPo = BeanConverter.convert(instrumentparamconfigno, InstrumentparamconfigPo.class);
+        instrumentparamconfigDao.deleteById(instrumentparamconfigPo);
+    }
+
+    /**
+     * 分页获取探头信息
+     *
+     * @param page
+     * @param instrumentparamconfigCommand
+     * @return
+     */
+    @Override
+    public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
+        return instrumentparamconfigDao.findInstrumentparamconfig(page,instrumentparamconfigCommand.getHospitalCode(),instrumentparamconfigCommand.getEquipmentTypeName(),
+                                                                    instrumentparamconfigCommand.getInstrumentname(), instrumentparamconfigCommand.getSn());
+
     }
 }

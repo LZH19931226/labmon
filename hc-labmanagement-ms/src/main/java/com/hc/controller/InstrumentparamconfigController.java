@@ -1,5 +1,6 @@
 package com.hc.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.InstrumentparamconfigApplication;
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
@@ -30,26 +31,26 @@ public class InstrumentparamconfigController {
     @PostMapping("/addinstrumentparamconfig")
     @ApiOperation("新增探头信息")
     public  void  addInstrumentparamconfig(@RequestBody InstrumentparamconfigCommand instrumentparamconfigCommand ){
-
+        instrumentparamconfigApplication.insertInstrumentparamconfig(instrumentparamconfigCommand);
     }
 
 
     @PostMapping("/updateinstrumentparamconfig")
     @ApiOperation("修改探头信息")
     public  void  updateInstrumentparamconfig(@RequestBody InstrumentparamconfigCommand instrumentparamconfigCommand ){
-
+        instrumentparamconfigApplication.editInstrumentparamconfig(instrumentparamconfigCommand);
     }
 
     @DeleteMapping("/{instrumentparamconfigno}")
     @ApiOperation("删除探头信息")
     public void deleteInstrumentparamconfig(@PathVariable("instrumentparamconfigno")String instrumentparamconfigno){
-
+        instrumentparamconfigApplication.removeInstrumentparamconfig(instrumentparamconfigno);
     }
 
     @PostMapping("/selectInstrumentparamconfig")
     @ApiOperation("查询探头信息")
-    public List<InstrumentparamconfigVo> selectInstrumentparamconfig(@RequestBody InstrumentparamconfigCommand instrumentparamconfigCommand){
-        return null;
+    public Page<InstrumentparamconfigVo> selectInstrumentparamconfig(@RequestBody InstrumentparamconfigCommand instrumentparamconfigCommand){
+        return instrumentparamconfigApplication.findInstrumentparamconfig(instrumentparamconfigCommand);
     }
 
     @GetMapping("/selectInstrumentparamconfigByEqNo")

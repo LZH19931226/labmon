@@ -94,5 +94,7 @@ public class 	MonitorEquipmentVo  implements Serializable {
 	/** 是否可以删除 */
 	private boolean deleteOrNot;
 
+	/** 通道 */
+	private String channel;
 }
 

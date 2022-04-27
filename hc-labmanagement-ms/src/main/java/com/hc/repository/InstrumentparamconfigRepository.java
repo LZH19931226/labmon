@@ -1,7 +1,9 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
@@ -38,4 +40,18 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @param instrumentparamconfigDTO
      */
     void updateInfo(InstrumentparamconfigDTO instrumentparamconfigDTO);
+
+    /**
+     * 删除探头信息
+     * @param instrumentparamconfigno
+     */
+    void deleteInstrumentparamconfig(InstrumentparamconfigDTO instrumentparamconfigno);
+
+    /**
+     * 分页获取探头信息
+     * @param page
+     * @param instrumentparamconfigCommand
+     * @return
+     */
+    List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand);
 }

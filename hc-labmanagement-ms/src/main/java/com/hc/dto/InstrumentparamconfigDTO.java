@@ -96,6 +96,25 @@ public class InstrumentparamconfigDTO implements Serializable {
     @ApiModelProperty(value = "")
     private BigDecimal saturation;
 
+    /** 医院编码 */
+    private String hospitalcode;
+
+    /** 医院名称 */
+    private String hospitalname;
+
+    /** 设备类型名称 */
+    private String equipmenttypename;
+
+    /** 设备名称 */
+    private String equipmentname;
+
+    /** sn */
+    private String sn;
+
+    /** 检测类型 */
+    private String instrumentconfigname;
+
+
 }
 
 
