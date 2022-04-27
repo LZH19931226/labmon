@@ -1,6 +1,8 @@
 package com.hc.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 
@@ -31,9 +33,10 @@ public interface InstrumentparamconfigService{
 
     /**
      * 删除探头参数信息
-     * @param instrumentno
+     * @param instrumentno 仪器id
      */
     void deleteInfoByEno(String instrumentno);
+
 
     List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo);
 
@@ -42,5 +45,19 @@ public interface InstrumentparamconfigService{
      * @param instrumentparamconfigDTO
      */
     void updateInfo(InstrumentparamconfigDTO instrumentparamconfigDTO);
+
+    /**
+     * 删除探头头信息
+     * @param setInstrumentparamconfigno
+     */
+    void deleteInfo(InstrumentparamconfigDTO setInstrumentparamconfigno);
+
+    /**
+     * 分页获取探头信息
+     * @param page
+     * @param instrumentparamconfigCommand
+     * @return
+     */
+    List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand);
 }
 

@@ -57,6 +57,10 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     /** 仪器id */
     private String instrumentNo;
 
+    /** 超时时段集合 */
     private List<WarningTimeVo> warningTimeList;
+
+    /** 管道 */
+    private String channel;
 
 }

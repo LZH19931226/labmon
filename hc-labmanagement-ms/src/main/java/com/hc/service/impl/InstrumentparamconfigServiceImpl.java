@@ -1,5 +1,7 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.repository.InstrumentparamconfigRepository;
@@ -58,5 +60,27 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public void updateInfo(InstrumentparamconfigDTO instrumentparamconfigDTO) {
         instrumentparamconfigRepository.updateInfo(instrumentparamconfigDTO);
+    }
+
+    /**
+     * 删除探头头信息
+     *
+     * @param instrumentparamconfigno
+     */
+    @Override
+    public void deleteInfo(InstrumentparamconfigDTO instrumentparamconfigno) {
+        instrumentparamconfigRepository.deleteInstrumentparamconfig(instrumentparamconfigno);
+    }
+
+    /**
+     * 分页获取探头信息
+     *
+     * @param page
+     * @param instrumentparamconfigCommand
+     * @return
+     */
+    @Override
+    public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
+        return instrumentparamconfigRepository.findInstrumentparamconfig(page,instrumentparamconfigCommand);
     }
 }

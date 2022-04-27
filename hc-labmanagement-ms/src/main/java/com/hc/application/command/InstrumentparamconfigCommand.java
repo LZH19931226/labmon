@@ -102,4 +102,14 @@ public class InstrumentparamconfigCommand {
      * 当前页
      */
     private Long pageCurrent;
+
+    /**
+     * 仪器id
+     */
+    private String instrumentNo;
+
+    /**
+     * 设备类型名称
+     */
+    private String equipmentTypeName;
 }

@@ -1,6 +1,8 @@
 package com.hc.infrastructure.dao;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.InstrumentconfigDTO;
+import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +31,10 @@ public interface InstrumentparamconfigDao extends BaseMapper<Instrumentparamconf
             "WHERE\n" +
             "\tt1.equipmentno = #{equipmentNo}")
     List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(@Param("equipmentNo") String equipmentNo);
+
+    List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page,
+                                                             @Param("hospitalCode") String hospitalCode,
+                                                             @Param("equipmentTypeName") String equipmentTypeName,
+                                                             @Param("instrumentname") String instrumentname,
+                                                             @Param("sn") String sn);
 }

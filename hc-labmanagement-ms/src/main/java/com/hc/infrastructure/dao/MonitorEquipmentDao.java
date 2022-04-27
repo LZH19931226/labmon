@@ -28,6 +28,7 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
     @Select("<script>" +
             "SELECT  " +
             "me.equipmentno equipmentNo, " +
+            "a.channel channel," +
             "h.hospitalname hospitalName, " +
             "h.hospitalcode hospitalCode," +
             "met.equipmenttypename equipmentTypeName, " +
@@ -43,7 +44,7 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
             "monitorequipment me " +
             "LEFT JOIN hospitalofreginfo h ON me.hospitalcode = h.hospitalcode " +
             "LEFT JOIN monitorequipmenttype met ON met.equipmenttypeid = me.equipmenttypeid " +
-            "LEFT JOIN (SELECT mi.equipmentno,mi.sn,mi.instrumentno,mit.instrumenttypename FROM monitorinstrument mi left JOIN monitorinstrumenttype mit ON mi.instrumenttypeid = mit.instrumenttypeid) a on a.equipmentno = me.equipmentno " +
+            "LEFT JOIN (SELECT mi.equipmentno,mi.sn,mi.instrumentno,mi.channel,mit.instrumenttypename FROM monitorinstrument mi left JOIN monitorinstrumenttype mit ON mi.instrumenttypeid = mit.instrumenttypeid) a on a.equipmentno = me.equipmentno " +
             "where 1=1 " +
             "<if test = 'hospitalCode != null and hospitalCode != \"\"' > " +
             "and h.hospitalcode = #{hospitalCode} " +
