@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.dto.UserRightDto;
 import com.hc.po.UserRightPo;
+import com.hc.vo.user.UserRightVo;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface UserRightRepository extends IService<UserRightPo> {
      * @param userRightCommand 用户权限命令
      * @return
      */
-    List<UserRightDto> findUserRightList(Page page, UserRightCommand userRightCommand);
+    List<UserRightDto> findUserRightList(Page<UserRightVo> page, UserRightCommand userRightCommand);
 
     /**
      * 插入用户权限信息

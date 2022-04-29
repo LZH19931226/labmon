@@ -3,6 +3,7 @@ package com.hc.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * @date 2022-04-18 15:27:01
  */
 @Data
+@Accessors(chain = true)
 @ApiModel(value = "instrumentmonitor")
 public class InstrumentmonitorDTO implements Serializable {
     private static final long serialVersionUID = 1L;

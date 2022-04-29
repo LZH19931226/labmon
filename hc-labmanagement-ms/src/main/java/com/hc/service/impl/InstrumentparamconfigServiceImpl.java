@@ -6,6 +6,7 @@ import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.repository.InstrumentparamconfigRepository;
 import com.hc.service.InstrumentparamconfigService;
+import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,7 +81,7 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
      * @return
      */
     @Override
-    public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
+    public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
         return instrumentparamconfigRepository.findInstrumentparamconfig(page,instrumentparamconfigCommand);
     }
 
@@ -95,5 +96,15 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public Integer selectCount(String instrumentNo, Integer instrumentConfigId, Integer instrumentTypeId) {
         return instrumentparamconfigRepository.selectCount(instrumentNo,instrumentConfigId,instrumentTypeId);
+    }
+
+    /**
+     * 批量删除探头信息
+     *
+     * @param instrumentParamConfigNos
+     */
+    @Override
+    public void deleteInfos(String[] instrumentParamConfigNos) {
+        instrumentparamconfigRepository.deleteInfos(instrumentParamConfigNos);
     }
 }

@@ -3,9 +3,11 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
+import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.service.InstrumentmonitorService;
 import com.hc.service.InstrumentparamconfigService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
@@ -32,6 +34,9 @@ public class InstrumentparamconfigApplication {
 
     @Autowired
     private MonitorinstrumentService monitorinstrumentService;
+
+    @Autowired
+    private InstrumentmonitorService instrumentmonitorService;
 
     /**
      * 通过设备no获取探头参数信息
@@ -62,12 +67,20 @@ public class InstrumentparamconfigApplication {
      * @param instrumentParamConfigCommand 探头信息参数
      */
     public void insertInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
+        //判断探头的检测类型是否存在
+        boolean flag = instrumentmonitorService.selectOne(new InstrumentmonitorDTO().setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
+                .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid()));
+        if(flag != true){
+            throw new IedsException("设备探头与检测类型不匹配");
+        }
 
+        //判断探头检测类型是否存在
         Integer i =  instrumentparamconfigService.selectCount(instrumentParamConfigCommand.getInstrumentNo(),
                 instrumentParamConfigCommand.getInstrumentconfigid(),instrumentParamConfigCommand.getInstrumenttypeid());
         if(i>0){
             throw new IedsException(MonitorinstrumentEnumCode.PROBE_INFORMATION_ALREADY_EXISTS.getMessage());
         }
+        //判断上限与下限逻辑
         int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
         if(compareTo>0){
             throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
@@ -110,17 +123,19 @@ public class InstrumentparamconfigApplication {
                 .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid())
                 .setWarningphone(instrumentParamConfigCommand.getWarningphone())
                 .setChannel(instrumentParamConfigCommand.getChannel())
-                .setSaturation(instrumentParamConfigCommand.getSaturation());
+                .setSaturation(instrumentParamConfigCommand.getSaturation())
+                .setCalibration(instrumentParamConfigCommand.getCalibration())
+                .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
     }
 
     /**
      * 清除探头信息
      *
-     * @param instrumentParamConfigNo 探头信息参数
+     * @param instrumentParamConfigNos 探头信息参数
      */
-    public void removeInstrumentParamConfig(String instrumentParamConfigNo) {
-        instrumentparamconfigService.deleteInfo(new InstrumentparamconfigDTO().setInstrumentparamconfigno(instrumentParamConfigNo));
+    public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
+        instrumentparamconfigService.deleteInfos(instrumentParamConfigNos);
     }
 
 

@@ -8,7 +8,7 @@
             t3.instrumentconfigid,
             t3.instrumentconfigname
             FROM
-            tmonitorinstrument t1
+            monitorinstrument t1
             LEFT JOIN instrumentmonitor t2 ON t1.instrumenttypeid = t2.instrumenttypeid
             LEFT JOIN instrumentconfig t3 ON t2.instrumentconfigid = t3.instrumentconfigid
             WHERE
@@ -51,8 +51,8 @@
     <if test= " hospitalCode != null and hospitalCode != '' ">
         and g.hospitalcode = #{hospitalCode}
     </if>
-    <if test="equipmentTypeName != null and equipmentTypeName != ''">
-        and e.equipmenttypename = #{equipmentTypeName}
+    <if test="equipmentTypeId!= null and equipmentTypeId != ''">
+        and e.equipmenttypeid = #{equipmentTypeId}
     </if>
     <if test="instrumentname != null and instrumentname != ''">
         and b.instrumentname = #{instrumentname}
@@ -60,7 +60,14 @@
     <if test="sn != null and sn != ''">
         and b.sn  = #{sn}
     </if>
+    </select>
 
-</select>
+
+    <delete id="deleteInfos" parameterType="Long">
+        delete from instrumentparamconfig where instrumentparamconfigNO in 
+        <foreach collection="array" item="instrumentParamConfigNos" open="(" separator="," close=")">
+        #{instrumentParamConfigNos}
+        </foreach>
+    </delete>
 
 </mapper>

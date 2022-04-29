@@ -8,6 +8,7 @@ import com.hc.my.common.core.constant.enums.UserRightEnumCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.UserRightRepository;
 import com.hc.service.UserRightService;
+import com.hc.vo.user.UserRightVo;
 import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +32,7 @@ public class UserRightServiceImpl implements UserRightService {
     private RedisTemplateUtil redisTemplateUtil;
 
     @Override
-    public List<UserRightDto> findUserRightList(Page page, UserRightCommand userRightCommand) {
+    public List<UserRightDto> findUserRightList(Page<UserRightVo> page, UserRightCommand userRightCommand) {
         return    userRightRepository.findUserRightList(page,userRightCommand);
     }
 

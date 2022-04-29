@@ -11,6 +11,7 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentPo;
 import com.hc.po.MonitorEquipmentWarningTimePo;
 import com.hc.repository.MonitorEquipmentRepository;
+import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.WarningTimeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -38,7 +39,7 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
      * @return
      */
     @Override
-    public List<MonitorEquipmentDto> getEquipmentInfoList(Page page, MonitorEquipmentCommand monitorEquipmentCommand) {
+    public List<MonitorEquipmentDto> getEquipmentInfoList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand) {
         List<MonitorEquipmentDto> monitorEquipmentDtoList =  monitorEquipmentDao.getEquipmentInfoList(page,
                 monitorEquipmentCommand.getHospitalCode(),
                 monitorEquipmentCommand.getEquipmentTypeId(),

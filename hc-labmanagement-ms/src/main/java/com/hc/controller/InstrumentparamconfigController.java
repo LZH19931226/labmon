@@ -43,8 +43,8 @@ public class InstrumentparamconfigController {
 
     @DeleteMapping("/{instrumentparamconfigno}")
     @ApiOperation("删除探头信息")
-    public void deleteInstrumentparamconfig(@PathVariable("instrumentparamconfigno")String instrumentparamconfigno){
-        instrumentparamconfigApplication.removeInstrumentParamConfig(instrumentparamconfigno);
+    public void deleteInstrumentparamconfig(@PathVariable("instrumentparamconfigno")String[] instrumentparamconfignos){
+        instrumentparamconfigApplication.removeInstrumentParamConfig(instrumentparamconfignos);
     }
 
     @PostMapping("/selectInstrumentparamconfig")
