@@ -3,7 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.UserRightApplication;
 import com.hc.appliction.command.UserRightCommand;
-import com.hc.vo.User.UserRightVo;
+import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

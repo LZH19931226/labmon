@@ -1,4 +1,4 @@
-package com.hc.appliction.command;
+package com.hc.command.labmanagement.hospital;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

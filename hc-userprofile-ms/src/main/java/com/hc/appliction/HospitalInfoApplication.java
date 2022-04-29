@@ -1,13 +1,13 @@
 package com.hc.appliction;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.appliction.command.HospitalCommand;
 import com.hc.appliction.command.UserScheduleCommand;
+import com.hc.command.labmanagement.hospital.HospitalCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserSchedulingDto;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.UserSchedulingService;
-import com.hc.vo.User.UserSchedulingVo;
+import com.hc.vo.user.UserSchedulingVo;
 import com.hc.vo.hospital.HospitalInfoVo;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;

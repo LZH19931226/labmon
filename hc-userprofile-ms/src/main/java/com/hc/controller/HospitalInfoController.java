@@ -2,9 +2,9 @@ package com.hc.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.HospitalInfoApplication;
-import com.hc.appliction.command.HospitalCommand;
 import com.hc.appliction.command.UserScheduleCommand;
-import com.hc.vo.User.UserSchedulingVo;
+import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.vo.user.UserSchedulingVo;
 import com.hc.vo.hospital.HospitalInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +27,7 @@ public class HospitalInfoController {
 
     @PostMapping("/findHospitalInfoList")
     @ApiOperation(value = "获取医院信息列表")
-    public Page<HospitalInfoVo> list(@RequestBody  HospitalCommand hospitalCommand){
+    public Page<HospitalInfoVo> list(@RequestBody HospitalCommand hospitalCommand){
         return hospitalInfoApplication.selectHospitalInfo(hospitalCommand, hospitalCommand.getPageSize(), hospitalCommand.getPageCurrent());
     }
 

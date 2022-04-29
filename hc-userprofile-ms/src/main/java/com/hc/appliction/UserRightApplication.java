@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.dto.UserRightDto;
 import com.hc.service.UserRightService;
-import com.hc.vo.User.UserRightVo;
+import com.hc.vo.user.UserRightVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

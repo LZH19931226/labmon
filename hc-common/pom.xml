@@ -33,6 +33,7 @@
 		<module>hc-common-web</module>
 		<module>hc-common-data</module>
 		<module>hc-common-redis</module>
+		<module>hc-common-api</module>
 		<module>hc-vos-all</module>
 	</modules>
 </project>

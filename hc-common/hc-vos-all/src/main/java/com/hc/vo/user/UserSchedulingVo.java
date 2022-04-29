@@ -1,4 +1,4 @@
-package com.hc.vo.User;
+package com.hc.vo.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

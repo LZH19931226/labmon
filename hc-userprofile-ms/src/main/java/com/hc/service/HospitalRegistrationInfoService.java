@@ -1,7 +1,7 @@
 package com.hc.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.appliction.command.HospitalCommand;
+import com.hc.command.labmanagement.hospital.HospitalCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 
 import java.util.List;

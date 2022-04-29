@@ -1,6 +1,8 @@
 package com.hc.service;
 
 
+import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
+
 /**
  * 系统操作日志表
  *
@@ -11,5 +13,6 @@ package com.hc.service;
 public interface OperationlogService{
 
 
+    void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand);
 }
 

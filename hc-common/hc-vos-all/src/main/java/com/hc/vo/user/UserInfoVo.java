@@ -1,4 +1,4 @@
-package com.hc.vo.User;
+package com.hc.vo.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package com.hc.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.appliction.command.HospitalCommand;
+import com.hc.command.labmanagement.hospital.HospitalCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.my.common.core.constant.enums.HospitalEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;

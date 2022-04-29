@@ -1,5 +1,8 @@
-package com.hc.appliction;
+package com.hc.application;
 
+import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
+import com.hc.service.OperationlogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -13,5 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class OperationlogApplication {
 
+    @Autowired
+    private OperationlogService operationlogService;
 
+    public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
+        operationlogService.addHospitalOperationlog(hospitalOperationLogCommand);
+    }
 }
