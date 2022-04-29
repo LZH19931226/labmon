@@ -114,7 +114,8 @@ public class InstrumentparamconfigDTO implements Serializable {
     /** 检测类型 */
     private String instrumentconfigname;
 
-
+    /** 探头类型名称 */
+    private String instrumenttypename;
 }
 
 

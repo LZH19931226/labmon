@@ -26,7 +26,7 @@ public interface InstrumentparamconfigService{
 
     /**
      * 仪器配置参数集合
-     * @param instrumentNo
+     * @param instrumentNos
      * @return
      */
     List<InstrumentparamconfigDTO> slectInfo(List<String> instrumentNos);
@@ -59,5 +59,14 @@ public interface InstrumentparamconfigService{
      * @return
      */
     List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand);
+
+    /**
+     * 查询探头信息是否已存在
+     * @param instrumentNo
+     * @param instrumentConfigId
+     * @param instrumentTypeId
+     * @return
+     */
+    Integer selectCount(String instrumentNo, Integer instrumentConfigId, Integer instrumentTypeId);
 }
 

@@ -125,5 +125,8 @@ public class InstrumentparamconfigVo implements Serializable {
 
     /** 设备名称 */
     private String equipmentName;
+
+    /**探头类型名称  */
+    private String instrumenttypename;
 }
 

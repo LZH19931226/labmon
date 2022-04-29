@@ -17,7 +17,7 @@ public class InstrumentparamconfigCommand {
     /**
      * 设备编号
      */
-    @ApiModelProperty(value="设备编号,新增时候使用")
+    @ApiModelProperty(value = "设备编号,新增时候使用")
     private String equipmentNo;
 
     /**
@@ -74,22 +74,23 @@ public class InstrumentparamconfigCommand {
     private BigDecimal saturation;
 
 
-
-
-    /** 下面这些用作查询使用
+    /**
+     * 下面这些用作查询使用
      * 设备类型编码
      */
-    @ApiModelProperty(value="设备类型编码")
+    @ApiModelProperty(value = "设备类型编码")
     private String equipmentTypeId;
 
     /**
      * 医院编号
      */
-    @ApiModelProperty(value="医院编号")
+    @ApiModelProperty(value = "医院编号")
     private String hospitalCode;
 
 
-    /** sn */
+    /**
+     * sn
+     */
     private String sn;
 
 

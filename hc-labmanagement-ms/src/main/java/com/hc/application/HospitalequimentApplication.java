@@ -43,17 +43,17 @@ public class HospitalequimentApplication {
 
     public Page<HospitalequimentVo> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         Page<HospitalequimentVo> page = new Page<>(hospitalEquimentTypeCommand.getPageCurrent(),hospitalEquimentTypeCommand.getPageSize());
-        List<HospitalequimentVo> hospitalequimentVos = new ArrayList<>();
-        List<HospitalequimentDTO> hospitalequimentDTOS = hospitalequimentService.selectHospitalEquimentType(page,hospitalEquimentTypeCommand);
-        if (CollectionUtils.isNotEmpty(hospitalequimentDTOS)) {
-            List<String> hospitalcodes = hospitalequimentDTOS.stream().map(HospitalequimentDTO::getHospitalcode).collect(Collectors.toList());
-            List<MonitorequipmentwarningtimeDTO> warningtimes  = monitorequipmentwarningtimeService.selectWarningtimeByHosCode(hospitalcodes);
+        List<HospitalequimentVo> hospitalEquipmentVos = new ArrayList<>();
+        List<HospitalequimentDTO> hospitalEquipmentList = hospitalequimentService.selectHospitalEquimentType(page,hospitalEquimentTypeCommand);
+        if (CollectionUtils.isNotEmpty(hospitalEquipmentList)) {
+            List<String> hospitalCodes = hospitalEquipmentList.stream().map(HospitalequimentDTO::getHospitalcode).collect(Collectors.toList());
+            List<MonitorequipmentwarningtimeDTO> warningTimes  = monitorequipmentwarningtimeService.selectWarningtimeByHosCode(hospitalCodes);
             Map<String, List<MonitorequipmentwarningtimeDTO>> timesMap = new  HashedMap();
-            if (CollectionUtils.isNotEmpty(warningtimes)){
-                 timesMap = warningtimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode));
+            if (CollectionUtils.isNotEmpty(warningTimes)){
+                 timesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode));
             }
             Map<String, List<MonitorequipmentwarningtimeDTO>> finalTimesMap = timesMap;
-            hospitalequimentDTOS.forEach(s->{
+            hospitalEquipmentList.forEach(s->{
                 String hospitalcode = s.getHospitalcode();
                 List<MonitorequipmentwarningtimeVo> workTimeBlock = new ArrayList<>();
                 if (!finalTimesMap.isEmpty()){
@@ -82,10 +82,10 @@ public class HospitalequimentApplication {
                         .timeouttime(s.getTimeouttime())
                         .workTimeBlock(workTimeBlock)
                         .build();
-                hospitalequimentVos.add(hosEqVo);
+                hospitalEquipmentVos.add(hosEqVo);
             });
         }
-        page.setRecords(hospitalequimentVos);
+        page.setRecords(hospitalEquipmentVos);
         return page;
     }
 

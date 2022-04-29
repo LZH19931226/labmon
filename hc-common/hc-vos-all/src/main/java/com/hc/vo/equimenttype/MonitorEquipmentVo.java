@@ -96,5 +96,8 @@ public class 	MonitorEquipmentVo  implements Serializable {
 
 	/** 通道 */
 	private String channel;
+
+	/** 饱和值 */
+	private String saturation;
 }
 

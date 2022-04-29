@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
-import com.hc.dto.MonitorinstrumentDTO;
 import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.service.InstrumentparamconfigService;
@@ -34,111 +33,137 @@ public class InstrumentparamconfigApplication {
     @Autowired
     private MonitorinstrumentService monitorinstrumentService;
 
-
-    public List<InstrumentparamconfigVo> selectInstrumentparamconfigByEqNo(String equipmentNo) {
-        List<InstrumentconfigDTO> instrumentconfigDTOS = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
-        if (CollectionUtils.isNotEmpty(instrumentconfigDTOS)) {
-            List<InstrumentparamconfigVo> instrumentparamconfigVos = new ArrayList<>();
-            instrumentconfigDTOS.forEach(s -> {
-                instrumentparamconfigVos.add(
+    /**
+     * 通过设备no获取探头参数信息
+     *
+     * @param equipmentNo 设备id
+     * @return
+     */
+    public List<InstrumentparamconfigVo> selectInstrumentParamConfigByEqNo(String equipmentNo) {
+        List<InstrumentconfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
+        if (CollectionUtils.isNotEmpty(instrumentConfigList)) {
+            List<InstrumentparamconfigVo> instrumentParamConfigVos = new ArrayList<>();
+            instrumentConfigList.forEach(s -> {
+                instrumentParamConfigVos.add(
                         InstrumentparamconfigVo.builder()
                                 .instrumentconfigid(s.getInstrumentconfigid())
                                 .instrumentconfigname(s.getInstrumentconfigname())
                                 .build()
                 );
             });
-            return instrumentparamconfigVos;
+            return instrumentParamConfigVos;
         }
         return null;
     }
 
     /**
      * 新增探头信息
-     * @param instrumentparamconfigCommand
+     *
+     * @param instrumentParamConfigCommand 探头信息参数
      */
-    public void insertInstrumentparamconfig(InstrumentparamconfigCommand instrumentparamconfigCommand) {
-        String sn = instrumentparamconfigCommand.getSn();
-        String hospitalCode = instrumentparamconfigCommand.getHospitalCode();
-        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn).setHospitalcode(hospitalCode));
-        if(integer>0){
-            throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_ADD_PROBE.getMessage());
+    public void insertInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
+
+        Integer i =  instrumentparamconfigService.selectCount(instrumentParamConfigCommand.getInstrumentNo(),
+                instrumentParamConfigCommand.getInstrumentconfigid(),instrumentParamConfigCommand.getInstrumenttypeid());
+        if(i>0){
+            throw new IedsException(MonitorinstrumentEnumCode.PROBE_INFORMATION_ALREADY_EXISTS.getMessage());
+        }
+        int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
+        if(compareTo>0){
+            throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
         }
         InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
-                .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-",""))
-                .setInstrumentno(instrumentparamconfigCommand.getInstrumentNo())
-                .setInstrumentconfigid(instrumentparamconfigCommand.getInstrumentconfigid())
-                .setInstrumentname(instrumentparamconfigCommand.getInstrumentname())
-                .setLowlimit(instrumentparamconfigCommand.getLowlimit())
-                .setHighlimit(instrumentparamconfigCommand.getHighlimit())
-                .setInstrumenttypeid(instrumentparamconfigCommand.getInstrumenttypeid())
-                .setWarningphone(instrumentparamconfigCommand.getWarningphone())
-                .setChannel(instrumentparamconfigCommand.getChannel())
+                .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""))
+                .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
+                .setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
+                .setInstrumentname(instrumentParamConfigCommand.getInstrumentname())
+                .setLowlimit(instrumentParamConfigCommand.getLowlimit())
+                .setHighlimit(instrumentParamConfigCommand.getHighlimit())
+                .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid())
+                .setWarningphone(instrumentParamConfigCommand.getWarningphone())
+                .setChannel(instrumentParamConfigCommand.getChannel())
+                .setAlarmtime(instrumentParamConfigCommand.getAlarmtime())
                 .setFirsttime(new Date())
-                .setSaturation(instrumentparamconfigCommand.getSaturation());
+                .setSaturation(instrumentParamConfigCommand.getSaturation());
+
         instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
     }
 
     /**
      * 修改探头信息
-     * @param instrumentparamconfigCommand
+     *
+     * @param instrumentParamConfigCommand 探头信息参数
      */
-    public void editInstrumentparamconfig(InstrumentparamconfigCommand instrumentparamconfigCommand) {
+    public void editInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
+        //计较上限值和下限值
+        int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
+        if(compareTo>=0){
+            throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
+        }
         InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
-                .setInstrumentparamconfigno(instrumentparamconfigCommand.getInstrumentparamconfigno())
-                .setInstrumentno(instrumentparamconfigCommand.getInstrumentNo())
-                .setInstrumentconfigid(instrumentparamconfigCommand.getInstrumentconfigid())
-                .setInstrumentname(instrumentparamconfigCommand.getInstrumentname())
-                .setLowlimit(instrumentparamconfigCommand.getLowlimit())
-                .setHighlimit(instrumentparamconfigCommand.getHighlimit())
-                .setInstrumenttypeid(instrumentparamconfigCommand.getInstrumenttypeid())
-                .setWarningphone(instrumentparamconfigCommand.getWarningphone())
-                .setChannel(instrumentparamconfigCommand.getChannel())
-                .setSaturation(instrumentparamconfigCommand.getSaturation());
+                .setInstrumentparamconfigno(instrumentParamConfigCommand.getInstrumentparamconfigno())
+                .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
+                .setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
+                .setInstrumentname(instrumentParamConfigCommand.getInstrumentname())
+                .setLowlimit(instrumentParamConfigCommand.getLowlimit())
+                .setHighlimit(instrumentParamConfigCommand.getHighlimit())
+                .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid())
+                .setWarningphone(instrumentParamConfigCommand.getWarningphone())
+                .setChannel(instrumentParamConfigCommand.getChannel())
+                .setSaturation(instrumentParamConfigCommand.getSaturation());
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
     }
 
     /**
      * 清除探头信息
-     * @param instrumentparamconfigno
+     *
+     * @param instrumentParamConfigNo 探头信息参数
      */
-    public void removeInstrumentparamconfig(String instrumentparamconfigno) {
-        instrumentparamconfigService.deleteInfo(new InstrumentparamconfigDTO().setInstrumentparamconfigno(instrumentparamconfigno));
+    public void removeInstrumentParamConfig(String instrumentParamConfigNo) {
+        instrumentparamconfigService.deleteInfo(new InstrumentparamconfigDTO().setInstrumentparamconfigno(instrumentParamConfigNo));
     }
 
 
     /**
      * 分页获取探头信息
-     * @param instrumentparamconfigCommand
+     *
+     * @param instrumentParamConfigCommand 探头信息参数
      * @return
      */
-    public Page<InstrumentparamconfigVo> findInstrumentparamconfig(InstrumentparamconfigCommand instrumentparamconfigCommand) {
-        Page page = new Page(instrumentparamconfigCommand.getPageCurrent(),instrumentparamconfigCommand.getPageSize());
-        List<InstrumentparamconfigDTO> instrumentparamconfigDTOS =  instrumentparamconfigService.findInstrumentparamconfig(page,instrumentparamconfigCommand);
+    public Page<InstrumentparamconfigVo> findInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
+        Page<InstrumentparamconfigVo> page = new Page<>(instrumentParamConfigCommand.getPageCurrent(), instrumentParamConfigCommand.getPageSize());
+        List<InstrumentparamconfigDTO> instrumentParamConfigList = instrumentparamconfigService.findInstrumentparamconfig(page, instrumentParamConfigCommand);
         List<InstrumentparamconfigVo> list = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(instrumentparamconfigDTOS)){
+        if (CollectionUtils.isNotEmpty(instrumentParamConfigList)) {
 
-            for (InstrumentparamconfigDTO configDTO : instrumentparamconfigDTOS) {
+            for (InstrumentparamconfigDTO configDTO : instrumentParamConfigList) {
                 InstrumentparamconfigVo build = InstrumentparamconfigVo
                         .builder()
+                        .instrumentparamconfigno(configDTO.getInstrumentparamconfigno())
                         .hospitalname(configDTO.getHospitalname())
                         .hospitalCode(configDTO.getHospitalcode())
                         .equipmentName(configDTO.getEquipmentname())
                         .equipmenttypename(configDTO.getEquipmenttypename())
                         .instrumentname(configDTO.getInstrumentname())
+                        .instrumentno(configDTO.getInstrumentno())
                         .sn(configDTO.getSn())
                         .firsttime(configDTO.getFirsttime())
                         .channel(configDTO.getChannel())
+                        .instrumentconfigid(configDTO.getInstrumentconfigid())
                         .instrumentconfigname(configDTO.getInstrumentconfigname())
+                        .instrumenttypeid(configDTO.getInstrumenttypeid())
+                        .instrumenttypename(configDTO.getInstrumenttypename())
                         .alarmtime(configDTO.getAlarmtime())
                         .lowlimit(configDTO.getLowlimit())
                         .highlimit(configDTO.getHighlimit())
                         .saturation(configDTO.getSaturation())
                         .warningphone(configDTO.getWarningphone())
+                        .calibration(configDTO.getCalibration() == null?"":configDTO.getCalibration())
                         .build();
                 list.add(build);
             }
         }
-       page.setRecords(list);
+        page.setRecords(list);
         return page;
     }
 }

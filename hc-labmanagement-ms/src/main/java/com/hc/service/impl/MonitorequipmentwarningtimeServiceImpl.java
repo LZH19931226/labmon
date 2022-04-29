@@ -80,4 +80,15 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
 
         return monitorequipmentwarningtimeRepository.selectWarningtimeByEno(equipmentNo);
     }
+
+    /**
+     * 获取超时集合
+     *
+     * @param equipmentNoList
+     * @return
+     */
+    @Override
+    public List<MonitorequipmentwarningtimeDTO> selectWarningtimeByEnoList(List<String> equipmentNoList) {
+        return monitorequipmentwarningtimeRepository.selectWarningtimeByEnoList(equipmentNoList);
+    }
 }

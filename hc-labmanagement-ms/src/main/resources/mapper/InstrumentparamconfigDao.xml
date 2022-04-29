@@ -3,6 +3,18 @@
 
 <mapper namespace="com.hc.infrastructure.dao.InstrumentparamconfigDao">
 
+    <select id="selectInstrumentparamconfigByEqNo" resultType="com.hc.dto.InstrumentconfigDTO">
+        SELECT
+            t3.instrumentconfigid,
+            t3.instrumentconfigname
+            FROM
+            tmonitorinstrument t1
+            LEFT JOIN instrumentmonitor t2 ON t1.instrumenttypeid = t2.instrumenttypeid
+            LEFT JOIN instrumentconfig t3 ON t2.instrumentconfigid = t3.instrumentconfigid
+            WHERE
+            t1.equipmentno = #{equipmentNo}
+    </select>
+
 <select id="findInstrumentparamconfig" resultType="com.hc.dto.InstrumentparamconfigDTO">
 
     SELECT
@@ -10,6 +22,10 @@
         e.equipmenttypename,
         d.equipmentname,
         b.sn,
+        a.instrumentno ,
+        a.instrumentconfigid,
+        a.instrumenttypeid,
+        c.instrumenttypename,
         a.instrumentname,
         a.firsttime,
         a.channel,
@@ -22,7 +38,8 @@
         a.warningphone,
         b.hospitalcode,
         a.instrumentno,
-        a.instrumentparamconfigNO instrumentparamconfigno
+        a.calibration,
+        a.instrumentparamconfigNO as instrumentparamconfigno
     FROM instrumentparamconfig a
              LEFT JOIN monitorinstrument b 		ON a.instrumentno = b.instrumentno
              LEFT JOIN monitorinstrumenttype c ON c.instrumenttypeid = a.instrumenttypeid
@@ -31,7 +48,6 @@
              LEFT JOIN instrumentconfig f 			ON f.instrumentconfigid = a.instrumentconfigid
              LEFT JOIN hospitalofreginfo g 		ON g.hospitalcode = d.hospitalcode
     where 1=1
-
     <if test= " hospitalCode != null and hospitalCode != '' ">
         and g.hospitalcode = #{hospitalCode}
     </if>
