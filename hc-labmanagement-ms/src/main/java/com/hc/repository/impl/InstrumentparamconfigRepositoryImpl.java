@@ -97,4 +97,21 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
                                                                     instrumentparamconfigCommand.getInstrumentname(), instrumentparamconfigCommand.getSn());
 
     }
+
+    /**
+     * 查询探头信息是否已存在
+     *
+     * @param instrumentNo
+     * @param instrumentConfigId
+     * @param instrumentTypeId
+     * @return
+     */
+    @Override
+    public Integer selectCount(String instrumentNo, Integer instrumentConfigId, Integer instrumentTypeId) {
+
+        return  instrumentparamconfigDao.selectCount(Wrappers.lambdaQuery(new InstrumentparamconfigPo())
+                .eq(InstrumentparamconfigPo::getInstrumentno,instrumentNo)
+                .eq(InstrumentparamconfigPo::getInstrumentconfigid,instrumentConfigId)
+                .eq(InstrumentparamconfigPo::getInstrumenttypeid,instrumentTypeId));
+    }
 }

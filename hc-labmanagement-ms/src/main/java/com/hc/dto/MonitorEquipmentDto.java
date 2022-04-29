@@ -54,6 +54,9 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     /** 监控设备 */
     private String instrumentTypeName;
 
+    /** 仪器类型id */
+    private String instrumentTypeId;
+
     /** 仪器id */
     private String instrumentNo;
 
@@ -63,4 +66,6 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     /** 管道 */
     private String channel;
 
+    /** 饱和值 */
+    private String saturation;
 }

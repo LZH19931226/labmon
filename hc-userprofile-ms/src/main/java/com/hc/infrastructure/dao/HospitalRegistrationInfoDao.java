@@ -52,6 +52,6 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
      * @param hospitalCode 医院编码
      * @return 医院设备对象
      */
-    @Select("select * from HospitalOfRegInfo where hospitalname = #{hospitalName}  and hospitalcode !=#{hospitalCode}")
+    @Select("select * from hospitalofreginfo where hospitalname = #{hospitalName}  and hospitalcode !=#{hospitalCode}")
     HospitalEquipmentPo selectHospitalName(@Param("hospitalName") String hospitalName, @Param("hospitalCode") String hospitalCode);
 }

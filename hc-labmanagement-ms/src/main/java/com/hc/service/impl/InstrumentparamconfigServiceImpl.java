@@ -29,7 +29,7 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     /**
      * 仪器配置参数集合
      *
-     * @param instrumentNo
+     * @param instrumentNos
      * @return
      */
     @Override
@@ -82,5 +82,18 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
         return instrumentparamconfigRepository.findInstrumentparamconfig(page,instrumentparamconfigCommand);
+    }
+
+    /**
+     * 查询探头信息是否已存在
+     *
+     * @param instrumentNo
+     * @param instrumentConfigId
+     * @param instrumentTypeId
+     * @return
+     */
+    @Override
+    public Integer selectCount(String instrumentNo, Integer instrumentConfigId, Integer instrumentTypeId) {
+        return instrumentparamconfigRepository.selectCount(instrumentNo,instrumentConfigId,instrumentTypeId);
     }
 }

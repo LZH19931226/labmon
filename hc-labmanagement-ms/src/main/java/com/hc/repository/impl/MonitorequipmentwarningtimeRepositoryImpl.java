@@ -72,4 +72,17 @@ public class MonitorequipmentwarningtimeRepositoryImpl extends ServiceImpl<Monit
         return monitorEquipmentWarningTimeDao.selectCount(Wrappers.lambdaQuery(new MonitorEquipmentWarningTimePo())
                 .eq(MonitorEquipmentWarningTimePo::getEquipmentId, equipmentNo));
     }
+
+    /**
+     * 获取超时集合
+     *
+     * @param equipmentNoList
+     * @return
+     */
+    @Override
+    public List<MonitorequipmentwarningtimeDTO> selectWarningtimeByEnoList(List<String> equipmentNoList) {
+        List<MonitorEquipmentWarningTimePo> timePoList = monitorEquipmentWarningTimeDao.selectList(Wrappers.lambdaQuery(new MonitorEquipmentWarningTimePo())
+                .in(MonitorEquipmentWarningTimePo::getEquipmentId, equipmentNoList));
+        return BeanConverter.convert(timePoList,MonitorequipmentwarningtimeDTO.class);
+    }
 }

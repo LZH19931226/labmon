@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hc.infrastructure.dao.MonitorinstrumentDao">
+<mapper namespace="com.hc.infrastructure.dao.MonitorEquipmentDao">
 
+    <select id="getEquipmentInfoList" resultType="com.hc.dto.MonitorEquipmentDto">
+        SELECT
+            me.equipmentno equipmentNo,
+            a.channel channel,
+            h.hospitalname hospitalName,
+            h.hospitalcode hospitalCode,
+            met.equipmenttypename equipmentTypeName,
+            met.equipmenttypeid equipmentTypeId,
+            me.equipmentname equipmentName,
+            a.sn,
+            a.instrumentno instrumentNo,
+            a.instrumenttypeid instrumentTypeId,
+            a.instrumenttypename instrumentTypeName,
+            me.equipmentbrand equipmentBrand,
+            me.clientvisible clientVisible,
+            me.alwayalarm alwaysAlarm
+        FROM
+            monitorequipment me
+                LEFT JOIN hospitalofreginfo h ON me.hospitalcode = h.hospitalcode
+                LEFT JOIN monitorequipmenttype met ON met.equipmenttypeid = me.equipmenttypeid
+                LEFT JOIN (SELECT mi.equipmentno,mi.sn,mi.instrumentno,mi.channel,mit.instrumenttypename,mi.instrumenttypeid FROM monitorinstrument mi
+                                                                                                                                      LEFT JOIN monitorinstrumenttype mit ON mi.instrumenttypeid = mit.instrumenttypeid ) a ON a.equipmentno = me.equipmentno
+        where 1=1
+        <if test = "hospitalCode != null and hospitalCode != ''" >
+        and h.hospitalcode = #{hospitalCode} 
+        </if>
+        <if test = "equipmentTypeId != null and equipmentTypeId != ''">
+        and met.equipmenttypeid = #{equipmentTypeId} 
+        </if> 
+        <if test ="equipmentName != null and equipmentName != '' ">
+        and me.equipmentname like concat("%",#{equipmentName},"%") 
+        </if>
+        <if test="clientVisible != null">
+        and me.clientvisible = #{clientVisible} 
+        </if>
+    </select>
 
 
 

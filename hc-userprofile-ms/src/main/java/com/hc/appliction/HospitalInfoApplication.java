@@ -18,6 +18,7 @@ import java.util.*;
 
 /**
  * 医院信息应用层
+ *
  * @author hc
  */
 @Component
@@ -28,19 +29,21 @@ public class HospitalInfoApplication {
 
     @Autowired
     private UserSchedulingService userSchedulingService;
+
     /**
      * 根据分页条件查询医院信息
+     *
      * @param hospitalCommand 医院传输对象
-     * @param pageSize      分页大小
-     * @param pageCurrent   当前页数
+     * @param pageSize        分页大小
+     * @param pageCurrent     当前页数
      * @return 分页视图对象
      */
     public Page<HospitalInfoVo> selectHospitalInfo(HospitalCommand hospitalCommand, Long pageSize, Long pageCurrent) {
-        Page<HospitalInfoVo> page = new Page<>(pageCurrent,pageSize);
-        List<HospitalRegistrationInfoDto> hospitalInfos = hospitalRegistrationInfoService.selectHospitalInfo( page, hospitalCommand);
+        Page<HospitalInfoVo> page = new Page<>(pageCurrent, pageSize);
+        List<HospitalRegistrationInfoDto> hospitalInfos = hospitalRegistrationInfoService.selectHospitalInfo(page, hospitalCommand);
         List<HospitalInfoVo> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(hospitalInfos)) {
-            hospitalInfos.forEach(res->{
+            hospitalInfos.forEach(res -> {
                 HospitalInfoVo build = HospitalInfoVo.builder()
                         .hospitalCode(res.getHospitalCode())
                         .hospitalFullName(res.getHospitalFullName())
@@ -57,6 +60,7 @@ public class HospitalInfoApplication {
 
     /**
      * 插入医院信息
+     *
      * @param hospitalCommand 医院视图对象
      * @return
      */
@@ -66,6 +70,7 @@ public class HospitalInfoApplication {
 
     /**
      * 更新医院信息
+     *
      * @param hospitalCommand
      */
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
@@ -74,6 +79,7 @@ public class HospitalInfoApplication {
 
     /**
      * 根据医院编码删除医院信息
+     *
      * @param hospitalCode
      */
     public void deleteHospitalInfoByCode(String hospitalCode) {
@@ -82,12 +88,13 @@ public class HospitalInfoApplication {
 
     /**
      * 获取医院名称列表
+     *
      * @return 医院名称集合
      */
     public List<HospitalInfoVo> selectHospitalNameList() {
-        List<HospitalRegistrationInfoDto> dtoList =  hospitalRegistrationInfoService.selectHospitalNameList();
+        List<HospitalRegistrationInfoDto> dtoList = hospitalRegistrationInfoService.selectHospitalNameList();
         List<HospitalInfoVo> list = new ArrayList<>();
-        dtoList.forEach(res->{
+        dtoList.forEach(res -> {
             HospitalInfoVo hospitalInfoVo = HospitalInfoVo.builder()
                     .hospitalFullName(res.getHospitalFullName()).build();
             list.add(hospitalInfoVo);
@@ -97,6 +104,7 @@ public class HospitalInfoApplication {
 
     /**
      * 保存排班
+     *
      * @param userScheduleCommand 用户排班对象
      */
     public void saveSchedule(UserScheduleCommand userScheduleCommand) {
@@ -105,15 +113,16 @@ public class HospitalInfoApplication {
 
     /**
      * 通过医院编码和月份信息查找用户当月的排班信息
+     *
      * @param hospitalCode 医院编码
-     * @param startMonth 开始月份
-     * @param endMonth 结束月份
+     * @param startMonth   开始月份
+     * @param endMonth     结束月份
      * @return 用户信息集合
      */
     public List<UserSchedulingVo> searchScByHosMon(String hospitalCode, String startMonth, String endMonth) {
-        List<UserSchedulingDto> userSchedulingDtoList = userSchedulingService.searchScByHosMon(hospitalCode,startMonth,endMonth);
+        List<UserSchedulingDto> userSchedulingDtoList = userSchedulingService.searchScByHosMon(hospitalCode, startMonth, endMonth);
         List<UserSchedulingVo> list = new ArrayList<>();
-        userSchedulingDtoList.forEach(res->{
+        userSchedulingDtoList.forEach(res -> {
             UserSchedulingVo build = UserSchedulingVo
                     .builder()
                     .hospitalCode(res.getHospitalCode())
@@ -134,18 +143,20 @@ public class HospitalInfoApplication {
 
     /**
      * 复制医院排班时间
+     *
      * @param hospitalCode 医院编号
-     * @param oldStartTime  旧开始时间
-     * @param oldEndTime 旧结束时间
+     * @param oldStartTime 旧开始时间
+     * @param oldEndTime   旧结束时间
      * @param newStartTime 新开始时间
-     * @param newEndTime 新结束时间
+     * @param newEndTime   新结束时间
      */
     public void editScheduleInfo(String hospitalCode, Date oldStartTime, Date oldEndTime, Date newStartTime, Date newEndTime) {
-        userSchedulingService.editScheduleInfo(hospitalCode,oldStartTime,oldEndTime,newStartTime,newEndTime);
+        userSchedulingService.editScheduleInfo(hospitalCode, oldStartTime, oldEndTime, newStartTime, newEndTime);
     }
 
     /**
      * 按代码查找本周排班信息
+     *
      * @param hospitalCode 医院编码
      * @return 用户排班集合
      */
@@ -154,8 +165,8 @@ public class HospitalInfoApplication {
         //元素合并
         List<UserSchedulingDto> listDto = mergeElements(userSchedulingDtoList);
         List<UserSchedulingVo> list = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(listDto)){
-            listDto.forEach(res->{
+        if (CollectionUtils.isNotEmpty(listDto)) {
+            listDto.forEach(res -> {
                 UserSchedulingVo build = UserSchedulingVo.builder()
                         .username(res.getUsername())
                         .userPhone(res.getUserPhone())
@@ -170,23 +181,24 @@ public class HospitalInfoApplication {
 
     /**
      * 将具有相同特性的元素合并
+     *
      * @param userSchedulingDtoList 用户排班信息集合
      * @return 合并后用户排班信息集合
      */
-    public List<UserSchedulingDto> mergeElements(List<UserSchedulingDto> userSchedulingDtoList){
+    public List<UserSchedulingDto> mergeElements(List<UserSchedulingDto> userSchedulingDtoList) {
         List<UserSchedulingDto> listDto = new ArrayList<>();
-        Map<String,UserSchedulingDto> map = new HashedMap();
-        if(CollectionUtils.isNotEmpty(userSchedulingDtoList)){
+        Map<String, UserSchedulingDto> map = new HashedMap();
+        if (CollectionUtils.isNotEmpty(userSchedulingDtoList)) {
             for (UserSchedulingDto user : userSchedulingDtoList) {
-                String str = ""+user.getUsername();
-                if(map.containsKey(str)){
+                String str = "" + user.getUsername();
+                if (map.containsKey(str)) {
                     Set<Integer> integerSet = map.get(str).getIntegerSet();
                     Set<Integer> integerSet1 = user.getIntegerSet();
                     integerSet1.addAll(integerSet);
                     user.setIntegerSet(integerSet1);
-                    map.put(str,user);
-                }else{
-                    map.put(str,user);
+                    map.put(str, user);
+                } else {
+                    map.put(str, user);
                 }
             }
             for (Map.Entry<String, UserSchedulingDto> stringUserSchedulingDtoEntry : map.entrySet()) {
