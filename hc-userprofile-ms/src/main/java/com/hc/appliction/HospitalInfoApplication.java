@@ -3,8 +3,13 @@ package com.hc.appliction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserSchedulingDto;
+import com.hc.labmanagent.OperationlogApi;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.struct.Context;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.UserSchedulingService;
 import com.hc.vo.user.UserSchedulingVo;
@@ -29,6 +34,9 @@ public class HospitalInfoApplication {
 
     @Autowired
     private UserSchedulingService userSchedulingService;
+
+    @Autowired
+    private OperationlogApi operationlogApi;
 
     /**
      * 根据分页条件查询医院信息
@@ -66,6 +74,13 @@ public class HospitalInfoApplication {
      */
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
+        operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand,
+                OperationLogEunm.HOSPITALMANAGENT.getMessage(), OperationLogEunmDerailEnum.ADD.getMessage()));
+    }
+
+    public HospitalOperationLogCommand buildHospitalOperationLogCommand(String userId,HospitalCommand hospitalCommand,String type,String operationType){
+        HospitalOperationLogCommand hospitalOperationLogCommand = new HospitalOperationLogCommand();
+        return hospitalOperationLogCommand;
     }
 
     /**

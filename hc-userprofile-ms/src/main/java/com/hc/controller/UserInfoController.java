@@ -2,6 +2,7 @@ package com.hc.controller;
 
 import com.hc.appliction.command.UserCommand;
 import com.hc.appliction.UserInfoApplication;
+import com.hc.vo.user.UserInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,10 +25,10 @@ public class UserInfoController {
     private UserInfoApplication userInfoApplication;
 
     @PostMapping("/userLogin")
-    @ApiOperation(value = "后台管理员登录")
-    public void userLogin(@ApiParam(name = "UserCommand", value = "用户登录对象", required = true)
+    @ApiOperation(value = "后台管理登录")
+    public UserInfoVo userLogin(@ApiParam(name = "UserCommand", value = "用户登录对象", required = true)
             @RequestBody UserCommand userCommand) {
-        userInfoApplication.userLogin(userCommand);
+       return userInfoApplication.userLogin(userCommand);
     }
 
     @PostMapping("/updatePwd")

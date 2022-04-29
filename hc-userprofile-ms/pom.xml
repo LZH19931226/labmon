@@ -47,6 +47,11 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 			<version>2.1.0.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>com.hc</groupId>
+			<artifactId>hc-labmanagment-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 

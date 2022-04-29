@@ -29,9 +29,10 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Override
     public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
-        String hospitalname = hospitalOperationLogCommand.getHospitalname();
-        String name = hospitalOperationLogCommand.getUsernames();
-        HospitalCommand oldHospitalInfo = hospitalOperationLogCommand.getOldHospitalCommand();
+        hospitalOperationLogCommand.getUserId()
+        String hospitalname =null;
+        String name = null;
+        HospitalCommand oldHospitalInfo =null;
         HospitalCommand nowHospitalInfo = hospitalOperationLogCommand.getNewHospitalCommand();
         String type = hospitalOperationLogCommand.getType();
         String operationType = hospitalOperationLogCommand.getOperationType();

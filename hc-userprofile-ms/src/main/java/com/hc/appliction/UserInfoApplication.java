@@ -1,7 +1,9 @@
 package com.hc.appliction;
 
 import com.hc.appliction.command.UserCommand;
+import com.hc.dto.UserBackDto;
 import com.hc.service.UserBackService;
+import com.hc.vo.user.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +21,12 @@ public class UserInfoApplication {
      * 用户登录
      * @param userCommand 用户信息
      */
-    public void userLogin(UserCommand userCommand) {
-        userBackService.userLogin(userCommand);
+    public UserInfoVo userLogin(UserCommand userCommand) {
+        UserBackDto userBackDto = userBackService.userLogin(userCommand);
+        return UserInfoVo.builder()
+                .username(userBackDto.getUsername())
+                .userid(userBackDto.getUserid())
+                .build();
     }
 
     /**
