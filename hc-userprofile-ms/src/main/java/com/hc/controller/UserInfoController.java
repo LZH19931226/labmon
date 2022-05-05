@@ -27,7 +27,7 @@ public class UserInfoController {
     @PostMapping("/userLogin")
     @ApiOperation(value = "后台管理登录")
     public UserInfoVo userLogin(@ApiParam(name = "UserCommand", value = "用户登录对象", required = true)
-            @RequestBody UserCommand userCommand) {
+            @RequestBody UserCommand userCommand) throws Exception {
        return userInfoApplication.userLogin(userCommand);
     }
 

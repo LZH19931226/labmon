@@ -1,14 +1,13 @@
 package com.hc.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 系统操作日志表
@@ -27,7 +26,7 @@ public class OperationlogPo  implements Serializable {
 	/**
 	 * ID
 	 */
-	@TableId(type = IdType.AUTO)
+	@TableId
 		private String logid;
 	/**
 	 * 用户ID

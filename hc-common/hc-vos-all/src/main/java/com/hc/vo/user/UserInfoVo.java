@@ -23,4 +23,7 @@ public class UserInfoVo {
     /**用户密码*/
     private String pwd;
 
+    /** 用户唯一标识 */
+    private String token;
+
 }

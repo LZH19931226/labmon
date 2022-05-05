@@ -44,4 +44,15 @@ public class UserBackServiceImpl implements UserBackService {
         UserBackPo userBackPo = BeanConverter.convert(userCommand,UserBackPo.class);
         userBackRepository.updatePassword(userBackPo);
     }
+
+    /**
+     * 根据用户id查询user信息
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserBackDto selectUserBackByUserId(String userId) {
+        return userBackRepository.selectUserBackByUserId(userId);
+    }
 }

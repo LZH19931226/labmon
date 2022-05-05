@@ -21,4 +21,11 @@ public interface UserBackService {
      * @param userBackDto 用户数据传输对象
      */
     void updatePassword(UserCommand userBackDto);
+
+    /**
+     * 根据用户id查询user信息
+     * @param userId
+     * @return
+     */
+    UserBackDto selectUserBackByUserId(String userId);
 }

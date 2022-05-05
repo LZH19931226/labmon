@@ -10,4 +10,5 @@ public class HospitalOperationLogCommand {
     private HospitalCommand newHospitalCommand;
     private String type;
     private String operationType;
+    private String username;
 }

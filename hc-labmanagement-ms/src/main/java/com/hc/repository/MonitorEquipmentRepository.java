@@ -35,4 +35,11 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      * @param monitorEquipmentDto
      */
     void updateMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto);
+
+    /**
+     *
+     * @param monitorEquipmentDto
+     * @return
+     */
+    Integer selectCount(MonitorEquipmentDto monitorEquipmentDto);
 }

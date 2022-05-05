@@ -26,29 +26,27 @@ public class OperationlogServiceImpl implements OperationlogService {
     private OperationlogdetailRepository operationlogdetailRepository;
 
 
-
     @Override
     public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
-        hospitalOperationLogCommand.getUserId();
-        String hospitalname =null;
-        String name = null;
-        HospitalCommand oldHospitalInfo =null;
+
+        String name = hospitalOperationLogCommand.getUsername();
+        HospitalCommand oldHospitalInfo = new HospitalCommand();
         HospitalCommand nowHospitalInfo = hospitalOperationLogCommand.getNewHospitalCommand();
+        String hospitalname = nowHospitalInfo.getHospitalName();
         String type = hospitalOperationLogCommand.getType();
         String operationType = hospitalOperationLogCommand.getOperationType();
 
-
         List<OperationlogdetailPo> operationlogdetails = new ArrayList<>();
         boolean flag = false;
-        String hospitalcode = null;
-        String hospitalcode1 = oldHospitalInfo.getHospitalCode();
-        String hospitalcode2 = nowHospitalInfo.getHospitalCode();
-        if (StringUtils.isNotEmpty(hospitalcode1)) {
-            hospitalcode = hospitalcode1;
-        }
-        if (StringUtils.isNotEmpty(hospitalcode2)) {
-            hospitalcode = hospitalcode2;
-        }
+//        String hospitalcode = null;
+//        String hospitalcode1 = oldHospitalInfo.getHospitalCode();
+//        String hospitalcode2 = nowHospitalInfo.getHospitalCode();
+//        if (StringUtils.isNotEmpty(hospitalcode1)) {
+//            hospitalcode = hospitalcode1;
+//        }
+//        if (StringUtils.isNotEmpty(hospitalcode2)) {
+//            hospitalcode = hospitalcode2;
+//        }
         String hospitalname1 = oldHospitalInfo.getHospitalName();//原名称
         String hospitalname2 = nowHospitalInfo.getHospitalName();//当前名称
         if (!StringUtils.equals(hospitalname1, hospitalname2)) {

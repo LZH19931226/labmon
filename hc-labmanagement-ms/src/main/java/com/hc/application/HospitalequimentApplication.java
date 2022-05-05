@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
+import com.hc.labmanagent.OperationlogApi;
 import com.hc.service.HospitalequimentService;
 import com.hc.service.MonitorequipmentwarningtimeService;
 import com.hc.vo.equimenttype.HospitalequimentVo;
@@ -32,10 +33,18 @@ public class HospitalequimentApplication {
     @Autowired
     private MonitorequipmentwarningtimeService monitorequipmentwarningtimeService;
 
-
+    @Autowired
+    private OperationlogApi operationlogApi;
+    /**
+     * 新增医院设备类型
+     * @param hospitalEquimentTypeCommand
+     */
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         hospitalequimentService.addHospitalEquimentType(hospitalEquimentTypeCommand);
+
     }
+
+
 
     public void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         hospitalequimentService.updateHospitalEquimentType(hospitalEquimentTypeCommand);

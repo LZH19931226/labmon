@@ -32,4 +32,11 @@ public interface MonitorEquipmentService {
      * @param monitorEquipmentDto
      */
     void updateMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto);
+
+    /**
+     * 查询监控设备个数
+     * @param monitorEquipmentDto
+     * @return
+     */
+    Integer selectCount(MonitorEquipmentDto monitorEquipmentDto);
 }

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.po.HospitalEquipmentPo;
 import com.hc.po.HospitalRegistrationInfoPo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,7 +13,6 @@ import java.util.List;
 /**
  * @author user
  */
-@Mapper
 public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistrationInfoPo> {
 
     /**

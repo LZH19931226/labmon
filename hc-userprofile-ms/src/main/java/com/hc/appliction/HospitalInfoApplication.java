@@ -5,19 +5,22 @@ import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
+import com.hc.dto.UserBackDto;
 import com.hc.dto.UserSchedulingDto;
 import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.service.HospitalRegistrationInfoService;
+import com.hc.service.UserBackService;
 import com.hc.service.UserSchedulingService;
-import com.hc.vo.user.UserSchedulingVo;
 import com.hc.vo.hospital.HospitalInfoVo;
+import com.hc.vo.user.UserSchedulingVo;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -37,6 +40,9 @@ public class HospitalInfoApplication {
 
     @Autowired
     private OperationlogApi operationlogApi;
+
+    @Autowired
+    private UserBackService userBackService;
 
     /**
      * 根据分页条件查询医院信息
@@ -75,11 +81,19 @@ public class HospitalInfoApplication {
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
         operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand,
-                OperationLogEunm.HOSPITALMANAGENT.getMessage(), OperationLogEunmDerailEnum.ADD.getMessage()));
+                OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode()));
     }
 
     public HospitalOperationLogCommand buildHospitalOperationLogCommand(String userId,HospitalCommand hospitalCommand,String type,String operationType){
         HospitalOperationLogCommand hospitalOperationLogCommand = new HospitalOperationLogCommand();
+        hospitalOperationLogCommand.setUserId(userId);
+        hospitalOperationLogCommand.setType(type);
+        hospitalOperationLogCommand.setOperationType(operationType);
+        hospitalOperationLogCommand.setNewHospitalCommand(hospitalCommand);
+        UserBackDto userBackDto =  userBackService.selectUserBackByUserId(userId);
+        if(!ObjectUtils.isEmpty(userBackDto)){
+            hospitalOperationLogCommand.setUsername(userBackDto.getUsername());
+        }
         return hospitalOperationLogCommand;
     }
 

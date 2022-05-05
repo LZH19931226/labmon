@@ -82,4 +82,15 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
         MonitorEquipmentPo monitorEquipmentPo = BeanConverter.convert(monitorEquipmentDto, MonitorEquipmentPo.class);
         monitorEquipmentDao.updateById(monitorEquipmentPo);
     }
+
+    /**
+     * @param monitorEquipmentDto
+     * @return
+     */
+    @Override
+    public Integer selectCount(MonitorEquipmentDto monitorEquipmentDto) {
+        return monitorEquipmentDao.selectCount(Wrappers.lambdaQuery(new MonitorEquipmentPo())
+                .eq(MonitorEquipmentPo::getEquipmentName, monitorEquipmentDto.getEquipmentName())
+                .eq(MonitorEquipmentPo::getHospitalCode, monitorEquipmentDto.getHospitalCode()));
+    }
 }
