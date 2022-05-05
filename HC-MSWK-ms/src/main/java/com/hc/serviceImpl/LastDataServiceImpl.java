@@ -1,7 +1,7 @@
 package com.hc.serviceImpl;
 
-import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorequipmentlastdata;
+import com.hc.po.Instrumentparamconfig;
+import com.hc.po.Monitorequipmentlastdata;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.mapper.InstrumentParamConfigMapper;
 import com.hc.mapper.MonitorInstrumentMapper;

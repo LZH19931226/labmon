@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.UserScheduLing;
+import com.hc.po.UserScheduLing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

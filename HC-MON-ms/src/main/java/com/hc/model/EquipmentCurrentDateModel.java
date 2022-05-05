@@ -2,7 +2,7 @@ package com.hc.model;
 
 import java.util.List;
 
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 
 import lombok.Getter;
 import lombok.Setter;

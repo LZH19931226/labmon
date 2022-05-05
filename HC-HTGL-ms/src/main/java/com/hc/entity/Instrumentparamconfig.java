@@ -1,4 +1,4 @@
-package com.hc.entity;
+package com.hc.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;

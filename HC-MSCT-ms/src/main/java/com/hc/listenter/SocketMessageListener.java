@@ -2,7 +2,7 @@ package com.hc.listenter;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.hc.mapper.*;
-import com.hc.entity.*;
+import com.hc.po.*;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.model.TimeoutEquipment;

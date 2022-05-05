@@ -1,7 +1,7 @@
 package com.hc.service;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Warningrecord;
+import com.hc.po.Warningrecord;
 import com.hc.model.NewWarningRecord;
 import com.hc.model.PushSetModel;
 import com.hc.model.ShowData;

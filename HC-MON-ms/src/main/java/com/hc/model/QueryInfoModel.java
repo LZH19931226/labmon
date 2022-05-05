@@ -1,6 +1,6 @@
 package com.hc.model;
 
-import com.hc.entity.Monitorequipmentlastdata1;
+import com.hc.po.Monitorequipmentlastdata1;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

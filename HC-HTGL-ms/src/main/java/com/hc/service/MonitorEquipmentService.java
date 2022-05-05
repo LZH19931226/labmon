@@ -1,9 +1,9 @@
 package com.hc.service;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Monitorequipment;
-import com.hc.entity.Monitorinstrument;
-import com.hc.entity.Monitorinstrumenttype;
+import com.hc.po.Monitorequipment;
+import com.hc.po.Monitorinstrument;
+import com.hc.po.Monitorinstrumenttype;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
 import com.hc.units.ApiResponse;

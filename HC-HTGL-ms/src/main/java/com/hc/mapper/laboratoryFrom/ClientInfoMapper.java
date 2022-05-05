@@ -1,6 +1,6 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Userright;
+import com.hc.po.Userright;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.ResponseModel.ClientInfoModel;
 import org.apache.ibatis.annotations.Mapper;

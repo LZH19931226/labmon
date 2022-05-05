@@ -1,8 +1,8 @@
 package com.hc.controller;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Monitorinstrument;
-import com.hc.entity.Repairinfo;
+import com.hc.po.Monitorinstrument;
+import com.hc.po.Repairinfo;
 import com.hc.service.RepairinfoService;
 import com.hc.units.ApiResponse;
 import io.swagger.annotations.Api;

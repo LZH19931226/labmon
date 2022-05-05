@@ -2,9 +2,9 @@ package com.hc.service.serviceimpl;
 
 import com.hc.infrastructure.dao.WarningRecordInfoDao;
 import com.hc.infrastructure.dao.WarningrecordSortDao;
-import com.hc.entity.Monitorequipmentlastdata;
-import com.hc.entity.WarningRecordInfo;
-import com.hc.entity.WarningrecordSort;
+import com.hc.po.Monitorequipmentlastdata;
+import com.hc.po.WarningRecordInfo;
+import com.hc.po.WarningrecordSort;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.WarningrecordInfoMapper;
 import com.hc.model.*;

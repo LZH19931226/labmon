@@ -1,6 +1,6 @@
 package com.hc.model;
 
-import com.hc.entity.MonitorEquipmentWarningTime;
+import com.hc.po.MonitorEquipmentWarningTime;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;

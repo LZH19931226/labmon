@@ -1,7 +1,7 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Instrumentparamconfig;
+import com.hc.po.Monitorinstrument;
 import com.hc.mapper.laboratoryMain.InstrumentparamConfigSetMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

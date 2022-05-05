@@ -1,7 +1,7 @@
 package com.hc.service;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Monitorequipmenttype;
+import com.hc.po.Monitorequipmenttype;
 import com.hc.model.RequestModel.EquipmentTypeInfoModel;
 import com.hc.model.ResponseModel.HospitalEquipmentTypeInfoModel;
 import com.hc.units.ApiResponse;

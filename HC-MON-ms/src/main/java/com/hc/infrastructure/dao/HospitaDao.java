@@ -1,7 +1,7 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Hospitalofreginfo;
-import com.hc.entity.IosFileEntity;
+import com.hc.po.Hospitalofreginfo;
+import com.hc.po.IosFileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

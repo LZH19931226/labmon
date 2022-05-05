@@ -1,9 +1,9 @@
 package com.hc.service.serviceimpl;
 
-import com.hc.entity.Hospitalofreginfo;
-import com.hc.entity.Operationlog;
-import com.hc.entity.Operationlogdetail;
-import com.hc.entity.Userright;
+import com.hc.po.Hospitalofreginfo;
+import com.hc.po.Operationlog;
+import com.hc.po.Operationlogdetail;
+import com.hc.po.Userright;
 import com.hc.mapper.laboratoryFrom.OperationlogdetaiMapper;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.EquipmentTypeInfoModel;

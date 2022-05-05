@@ -8,7 +8,7 @@ import com.hc.infrastructure.dao.InstrumentParamConfigDao;
 import com.hc.infrastructure.dao.MonitorEquipmentDao;
 import com.hc.infrastructure.dao.MonitorInstrumentDao;
 import com.hc.infrastructure.dao.MonitorInstrumentTypeDao;
-import com.hc.entity.*;
+import com.hc.po.*;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;

@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Operationlogdetail;
+import com.hc.po.Operationlogdetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

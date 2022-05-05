@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageRowBounds;
 import com.hc.infrastructure.dao.UserEquipmentRightDao;
-import com.hc.entity.Userequipmentright;
+import com.hc.po.Userequipmentright;
 import com.hc.mapper.laboratoryFrom.UserAuthorInfoMapper;
 import com.hc.model.RequestModel.UserauthorInfoModel;
 import com.hc.model.ResponseModel.UserAuthInfoModel;

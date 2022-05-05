@@ -2,7 +2,7 @@ package com.hc.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hc.entity.Instrumentmonitor;
+import com.hc.po.Instrumentmonitor;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

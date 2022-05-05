@@ -1,7 +1,7 @@
 package com.hc.service;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Hospitalofreginfo;
+import com.hc.po.Hospitalofreginfo;
 import com.hc.units.ApiResponse;
 
 import java.util.List;

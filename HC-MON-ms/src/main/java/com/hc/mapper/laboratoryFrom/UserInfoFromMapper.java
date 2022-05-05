@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
-import com.hc.entity.Userright;
+import com.hc.po.Userright;
 import com.hc.model.UserModel;
 
 /**

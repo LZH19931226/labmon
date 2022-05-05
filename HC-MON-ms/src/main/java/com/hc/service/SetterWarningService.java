@@ -1,6 +1,6 @@
 package com.hc.service;
 
-import com.hc.entity.Userright;
+import com.hc.po.Userright;
 import com.hc.model.ClientInfoModel;
 import com.hc.utils.ApiResponse;
 

@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Instrumentparamconfig;
+import com.hc.po.Instrumentparamconfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

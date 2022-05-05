@@ -1,4 +1,4 @@
-package com.hc.entity;
+package com.hc.po;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

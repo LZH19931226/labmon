@@ -1,7 +1,7 @@
 package com.hc.scheduledfuturethread;
 
 import com.hc.mapper.MonitorequipmentDao;
-import com.hc.entity.*;
+import com.hc.po.*;
 import com.hc.service.SendMesService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;

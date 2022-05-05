@@ -1,4 +1,4 @@
-package com.hc.entity;
+package com.hc.po;
 
 import java.io.Serializable;
 import java.util.Date;

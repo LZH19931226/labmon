@@ -1,7 +1,7 @@
 package com.hc.controller;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Hospitalofreginfo;
+import com.hc.po.Hospitalofreginfo;
 import com.hc.service.HospitalService;
 import com.hc.units.ApiResponse;
 import io.swagger.annotations.Api;

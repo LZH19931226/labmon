@@ -1,6 +1,6 @@
 package com.hc.config;
 
-import com.hc.entity.MonitorEquipmentWarningTime;
+import com.hc.po.MonitorEquipmentWarningTime;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.mapper.laboratoryFrom.MonitorEquipmentMapper;

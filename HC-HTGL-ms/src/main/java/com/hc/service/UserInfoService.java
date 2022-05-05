@@ -1,7 +1,7 @@
 package com.hc.service;
 
-import com.hc.entity.UserScheduLing;
-import com.hc.entity.Userback;
+import com.hc.po.UserScheduLing;
+import com.hc.po.Userback;
 import com.hc.model.RequestModel.UserScheduLingPostModel;
 import com.hc.units.ApiResponse;
 

@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.WarningrecordSort;
+import com.hc.po.WarningrecordSort;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

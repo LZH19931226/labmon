@@ -6,7 +6,7 @@ import com.github.pagehelper.PageRowBounds;
 import com.hc.config.RedisTemplateUtil;
 import com.hc.infrastructure.dao.HospitaDao;
 import com.hc.infrastructure.dao.InstrumentparamconfigDao;
-import com.hc.entity.*;
+import com.hc.po.*;
 import com.hc.mapper.laboratoryFrom.EquipmentInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentMonitorInfoMapper;
 import com.hc.mapper.laboratoryFrom.InstrumentParamConfigInfoMapper;

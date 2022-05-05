@@ -1,7 +1,7 @@
 package com.hc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hc.entity.Instrumentparamconfig;
+import com.hc.po.Instrumentparamconfig;
 
 
 /**

@@ -1,6 +1,6 @@
 package com.hc.serviceImpl;
 
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 import com.hc.model.CurrentData;
 import com.hc.service.CurrentDataService;
 import com.hc.utils.JsonUtil;

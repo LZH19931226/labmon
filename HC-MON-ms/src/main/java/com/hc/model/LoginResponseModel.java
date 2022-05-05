@@ -3,8 +3,8 @@ package com.hc.model;
 import java.util.List;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Monitorequipment;
-import com.hc.entity.Monitorupsrecord;
+import com.hc.po.Monitorequipment;
+import com.hc.po.Monitorupsrecord;
 import com.hc.utils.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;

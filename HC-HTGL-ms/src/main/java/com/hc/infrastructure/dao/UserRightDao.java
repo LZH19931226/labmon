@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Userright;
+import com.hc.po.Userright;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

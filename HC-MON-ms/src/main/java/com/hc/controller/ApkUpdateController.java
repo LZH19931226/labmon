@@ -1,7 +1,7 @@
 package com.hc.controller;
 
 
-import com.hc.entity.IosFileEntity;
+import com.hc.po.IosFileEntity;
 import com.hc.model.ApkCheck;
 import com.hc.service.ApkFileEntityService;
 import com.hc.utils.ApiResponse;

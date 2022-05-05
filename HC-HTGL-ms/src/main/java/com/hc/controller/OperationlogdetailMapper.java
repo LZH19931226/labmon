@@ -1,8 +1,8 @@
 package com.hc.controller;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Operationlog;
-import com.hc.entity.Operationlogdetail;
+import com.hc.po.Operationlog;
+import com.hc.po.Operationlogdetail;
 import com.hc.service.OperationlogService;
 import com.hc.units.ApiResponse;
 import io.swagger.annotations.Api;

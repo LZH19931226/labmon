@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

@@ -2,8 +2,8 @@ package com.hc.service.serviceimpl;
 
 import com.hc.infrastructure.dao.OperationlogDao;
 import com.hc.infrastructure.dao.OperationlogdetailDao;
-import com.hc.entity.Operationlog;
-import com.hc.entity.Operationlogdetail;
+import com.hc.po.Operationlog;
+import com.hc.po.Operationlogdetail;
 import com.hc.model.EquipmentInfoModel;
 import com.hc.model.InstrumentInfoModel;
 import com.hc.service.UpdateRecordService;

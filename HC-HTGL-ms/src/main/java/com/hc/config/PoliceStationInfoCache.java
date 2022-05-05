@@ -1,8 +1,8 @@
 package com.hc.config;
 
 import com.hc.infrastructure.dao.HospitalofreginfoDao;
-import com.hc.entity.Hospitalofreginfo;
-import com.hc.entity.Userright;
+import com.hc.po.Hospitalofreginfo;
+import com.hc.po.Userright;
 import com.hc.mapper.laboratoryFrom.ClientInfoMapper;
 import com.hc.units.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;

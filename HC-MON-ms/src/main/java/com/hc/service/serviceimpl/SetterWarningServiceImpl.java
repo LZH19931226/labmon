@@ -2,7 +2,7 @@ package com.hc.service.serviceimpl;
 
 import com.github.pagehelper.PageInfo;
 import com.hc.config.RedisTemplateUtil;
-import com.hc.entity.Userright;
+import com.hc.po.Userright;
 import com.hc.mapper.laboratoryFrom.UserInfoFromMapper;
 import com.hc.model.ClientInfoModel;
 import com.hc.service.SetterWarningService;

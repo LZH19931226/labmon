@@ -1,7 +1,7 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Hospitalequiment;
-import com.hc.entity.Hospitalofreginfo;
+import com.hc.po.Hospitalequiment;
+import com.hc.po.Hospitalofreginfo;
 import com.hc.model.AbnormalDataModel;
 import com.hc.model.ResponseModel.AlarmEquipmentInfo;
 import org.apache.ibatis.annotations.Mapper;

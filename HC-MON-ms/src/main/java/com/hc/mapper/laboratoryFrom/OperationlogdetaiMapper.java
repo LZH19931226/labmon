@@ -1,7 +1,7 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Operationlog;
-import com.hc.entity.Operationlogdetail;
+import com.hc.po.Operationlog;
+import com.hc.po.Operationlogdetail;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;

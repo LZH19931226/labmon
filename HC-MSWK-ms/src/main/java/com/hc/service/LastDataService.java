@@ -1,6 +1,6 @@
 package com.hc.service;
 
-import com.hc.entity.Monitorequipmentlastdata;
+import com.hc.po.Monitorequipmentlastdata;
 
 import java.util.Date;
 

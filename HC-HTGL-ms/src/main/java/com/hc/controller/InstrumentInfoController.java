@@ -1,7 +1,7 @@
 package com.hc.controller;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Monitorinstrumenttype;
+import com.hc.po.Monitorinstrumenttype;
 import com.hc.model.RequestModel.InstrumentInfoModel;
 import com.hc.model.RequestModel.InstrumentPageModel;
 import com.hc.model.ResponseModel.AllInstrumentInfoModel;

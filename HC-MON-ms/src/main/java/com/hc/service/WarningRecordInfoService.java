@@ -1,8 +1,8 @@
 package com.hc.service;
 
 
-import com.hc.entity.WarningRecordInfo;
-import com.hc.entity.WarningrecordSort;
+import com.hc.po.WarningRecordInfo;
+import com.hc.po.WarningrecordSort;
 import com.hc.model.CurveInfoModel;
 import com.hc.utils.ApiResponse;
 

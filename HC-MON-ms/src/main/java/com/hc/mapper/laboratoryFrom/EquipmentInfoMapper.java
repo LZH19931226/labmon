@@ -1,6 +1,6 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.*;
+import com.hc.po.*;
 import com.hc.model.*;
 import com.hc.model.ExcleInfoModel.*;
 import com.hc.model.ResponseModel.EquipmentConfigInfoModel;

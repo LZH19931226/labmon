@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Operationrecord;
+import com.hc.po.Operationrecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

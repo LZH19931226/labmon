@@ -1,7 +1,7 @@
 package com.hc.controller;
 
-import com.hc.entity.UserScheduLing;
-import com.hc.entity.Userback;
+import com.hc.po.UserScheduLing;
+import com.hc.po.Userback;
 import com.hc.model.RequestModel.UserScheduLingPostModel;
 import com.hc.service.UserInfoService;
 import com.hc.units.ApiResponse;

@@ -1,6 +1,6 @@
 package com.hc.service;
 
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 
 import java.util.Date;
 

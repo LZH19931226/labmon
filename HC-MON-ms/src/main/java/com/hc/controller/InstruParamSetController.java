@@ -1,7 +1,7 @@
 package com.hc.controller;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Instrumentparamconfig;
+import com.hc.po.Instrumentparamconfig;
 import com.hc.model.*;
 import com.hc.model.ResponseModel.InstrumentParamConfigInfos;
 import com.hc.service.InstrumentParamSetService;

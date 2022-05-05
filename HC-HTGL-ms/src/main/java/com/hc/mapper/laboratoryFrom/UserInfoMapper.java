@@ -1,6 +1,6 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Userback;
+import com.hc.po.Userback;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;

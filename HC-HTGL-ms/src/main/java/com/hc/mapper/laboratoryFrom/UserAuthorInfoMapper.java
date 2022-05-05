@@ -1,6 +1,6 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.UserScheduLing;
+import com.hc.po.UserScheduLing;
 import com.hc.model.ResponseModel.UserAuthInfoModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

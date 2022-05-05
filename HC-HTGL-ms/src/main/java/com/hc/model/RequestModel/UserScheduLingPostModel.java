@@ -1,7 +1,7 @@
 package com.hc.model.RequestModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.hc.entity.UserScheduLing;
+import com.hc.po.UserScheduLing;
 import lombok.Data;
 
 import java.time.LocalDateTime;

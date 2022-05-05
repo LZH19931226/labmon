@@ -1,7 +1,7 @@
 package com.hc.service;
 
-import com.hc.entity.Hospitalofreginfo;
-import com.hc.entity.Userright;
+import com.hc.po.Hospitalofreginfo;
+import com.hc.po.Userright;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.EquipmentTypeInfoModel;
 import com.hc.model.RequestModel.InstrumentInfoModel;

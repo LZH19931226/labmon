@@ -2,9 +2,9 @@ package com.hc.service.serviceimpl;
 
 import com.hc.infrastructure.dao.InstrumentParamConfigDao;
 import com.hc.infrastructure.dao.MonitorInstrumentDao;
-import com.hc.entity.Instrumentmonitor;
-import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Instrumentmonitor;
+import com.hc.po.Instrumentparamconfig;
+import com.hc.po.Monitorinstrument;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.service.BugInXXFService;
 import com.hc.units.ApiResponse;

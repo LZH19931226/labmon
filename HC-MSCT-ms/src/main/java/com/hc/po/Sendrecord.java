@@ -1,9 +1,8 @@
-package com.hc.entity;
+package com.hc.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Id;
 import java.util.Date;
 
 /**

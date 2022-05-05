@@ -1,7 +1,7 @@
 package com.hc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hc.entity.Sendrecord;
+import com.hc.po.Sendrecord;
 
 /**
  * Created by 15350 on 2020/2/8.

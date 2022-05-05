@@ -1,12 +1,12 @@
 package com.hc.mapper.laboratoryMain;
 
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
-import com.hc.entity.Instrumentparamconfig;
+import com.hc.po.Instrumentparamconfig;
 
 import java.util.List;
 

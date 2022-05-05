@@ -1,6 +1,6 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Monitorequipment;
+import com.hc.po.Monitorequipment;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.ResponseModel.MonitorEquipmentInfoModel;
 import org.apache.ibatis.annotations.Mapper;

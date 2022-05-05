@@ -1,9 +1,9 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Instrumentmonitor;
-import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorinstrument;
-import com.hc.entity.Monitorinstrumenttype;
+import com.hc.po.Instrumentmonitor;
+import com.hc.po.Instrumentparamconfig;
+import com.hc.po.Monitorinstrument;
+import com.hc.po.Monitorinstrumenttype;
 import com.hc.model.MapperModel.MonitorinstrumentModel;
 import com.hc.model.RequestModel.EquipmentInfoModel;
 import com.hc.model.RequestModel.InstrumentInfoModel;

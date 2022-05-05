@@ -2,7 +2,7 @@ package com.hc.controller;
 
 import com.github.pagehelper.Page;
 import com.hc.config.RedisTemplateUtil;
-import com.hc.entity.Userright;
+import com.hc.po.Userright;
 import com.hc.model.ClientInfoModel;
 import com.hc.service.SetterWarningService;
 import com.hc.utils.ApiResponse;

@@ -1,6 +1,6 @@
 package com.hc.controller;
 
-import com.hc.entity.UserScheduLing;
+import com.hc.po.UserScheduLing;
 import com.hc.mapper.UserScheduLingDao;
 import com.hc.my.common.core.util.DateUtils;
 import org.apache.commons.collections4.CollectionUtils;

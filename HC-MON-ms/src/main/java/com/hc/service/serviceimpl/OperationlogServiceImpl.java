@@ -2,8 +2,8 @@ package com.hc.service.serviceimpl;
 
 import com.hc.infrastructure.dao.OperationlogDao;
 import com.hc.infrastructure.dao.OperationlogdetailDao;
-import com.hc.entity.Operationlog;
-import com.hc.entity.Operationlogdetail;
+import com.hc.po.Operationlog;
+import com.hc.po.Operationlogdetail;
 import com.hc.mapper.laboratoryFrom.OperationlogdetaiMapper;
 import com.hc.service.OperationlogService;
 import org.springframework.beans.factory.annotation.Autowired;

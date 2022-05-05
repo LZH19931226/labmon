@@ -1,7 +1,7 @@
 package com.hc.service;
 
 
-import com.hc.entity.IosFileEntity;
+import com.hc.po.IosFileEntity;
 import com.hc.model.ApkCheck;
 import com.hc.utils.ApiResponse;
 import org.springframework.web.multipart.MultipartFile;

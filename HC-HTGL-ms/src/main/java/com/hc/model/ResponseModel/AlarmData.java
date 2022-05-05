@@ -1,6 +1,6 @@
 package com.hc.model.ResponseModel;
 
-import com.hc.entity.Monitorequipmentlastdata;
+import com.hc.po.Monitorequipmentlastdata;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

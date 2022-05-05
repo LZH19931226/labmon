@@ -1,7 +1,7 @@
 package com.hc.serviceImpl;
 
-import com.hc.entity.Monitorequipment;
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorequipment;
+import com.hc.po.Monitorinstrument;
 import com.hc.mapper.InstrumentMonitorInfoMapper;
 import com.hc.mapper.MonitorInstrumentMapper;
 import com.hc.model.MonitorinstrumentModel;

@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Hospitalofreginfo;
+import com.hc.po.Hospitalofreginfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

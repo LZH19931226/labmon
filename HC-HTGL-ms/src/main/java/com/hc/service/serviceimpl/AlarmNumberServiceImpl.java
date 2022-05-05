@@ -1,8 +1,8 @@
 package com.hc.service.serviceimpl;
 
 import com.hc.config.RedisTemplateUtil;
-import com.hc.entity.Monitorequipmentlastdata;
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorequipmentlastdata;
+import com.hc.po.Monitorinstrument;
 import com.hc.mapper.laboratoryFrom.MonitorInstrumentMapper;
 import com.hc.model.AbnormalDataModel;
 import com.hc.model.ResponseModel.AlarmData;

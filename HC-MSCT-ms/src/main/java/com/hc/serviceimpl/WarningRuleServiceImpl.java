@@ -1,6 +1,6 @@
 package com.hc.serviceimpl;
 
-import com.hc.entity.Hospitalofreginfo;
+import com.hc.po.Hospitalofreginfo;
 import com.hc.mapper.InstrumentparamconfigDao;
 import com.hc.mapper.WarningrecordDao;
 import com.hc.model.WarningModel;

@@ -1,6 +1,6 @@
 package com.hc.model;
 
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;

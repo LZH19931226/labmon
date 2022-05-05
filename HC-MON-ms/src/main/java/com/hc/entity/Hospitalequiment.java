@@ -1,4 +1,4 @@
-package com.hc.entity;
+package com.hc.po;
 
 import java.io.Serializable;
 import javax.persistence.*;

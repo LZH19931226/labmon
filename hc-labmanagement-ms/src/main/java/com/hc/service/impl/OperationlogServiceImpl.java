@@ -29,7 +29,7 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Override
     public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
-        hospitalOperationLogCommand.getUserId()
+        hospitalOperationLogCommand.getUserId();
         String hospitalname =null;
         String name = null;
         HospitalCommand oldHospitalInfo =null;

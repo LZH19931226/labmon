@@ -1,10 +1,10 @@
 package com.hc.serviceimpl;
 
-import com.hc.entity.Warningrecord;
+import com.hc.po.Warningrecord;
 import com.hc.mapper.InstrumentparamconfigDao;
 import com.hc.mapper.MonitorinstrumentDao;
 import com.hc.mapper.WarningrecordDao;
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 import com.hc.model.WarningDateModel;
 import com.hc.model.WarningModel;
 import com.hc.model.WarningMqModel;

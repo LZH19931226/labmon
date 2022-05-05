@@ -1,7 +1,7 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Hospitalequiment;
-import com.hc.entity.HospitalequimentKey;
+import com.hc.po.Hospitalequiment;
+import com.hc.po.HospitalequimentKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

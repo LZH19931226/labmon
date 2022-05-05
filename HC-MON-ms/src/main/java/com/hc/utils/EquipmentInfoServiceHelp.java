@@ -1,6 +1,6 @@
 package com.hc.utils;
 
-import com.hc.entity.Monitorequipmentlastdata;
+import com.hc.po.Monitorequipmentlastdata;
 import com.hc.model.CurveDataModel;
 import com.hc.model.CurveInfoModel;
 import com.hc.model.SeriesDataModel;

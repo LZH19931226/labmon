@@ -5,11 +5,10 @@ package com.hc.mapper;
  */
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hc.entity.Instrumentparamconfig;
-import com.hc.entity.Monitorequipment;
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Instrumentparamconfig;
+import com.hc.po.Monitorequipment;
+import com.hc.po.Monitorinstrument;
 import com.hc.model.MonitorinstrumentModel;
-import com.hc.model.TimeoutEquipment;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

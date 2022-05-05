@@ -7,7 +7,7 @@ import com.hc.config.RedisTemplateUtil;
 import com.hc.infrastructure.dao.HospitalEquipmentDao;
 import com.hc.infrastructure.dao.HospitalofreginfoDao;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
-import com.hc.entity.*;
+import com.hc.po.*;
 import com.hc.mapper.laboratoryFrom.HospitalEquipmentMapper;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.EquipmentTypeInfoModel;

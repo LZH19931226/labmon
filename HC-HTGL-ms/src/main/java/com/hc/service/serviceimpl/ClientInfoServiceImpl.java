@@ -6,7 +6,7 @@ import com.github.pagehelper.PageRowBounds;
 import com.hc.config.RedisTemplateUtil;
 import com.hc.infrastructure.dao.UserEquipmentRightDao;
 import com.hc.infrastructure.dao.UserRightDao;
-import com.hc.entity.Userright;
+import com.hc.po.Userright;
 import com.hc.mapper.laboratoryFrom.ClientInfoMapper;
 import com.hc.mapper.laboratoryFrom.OperationlogdetaiMapper;
 import com.hc.model.MapperModel.PageUserModel;

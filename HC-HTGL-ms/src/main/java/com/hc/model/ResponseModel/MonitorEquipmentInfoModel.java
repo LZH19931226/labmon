@@ -1,7 +1,7 @@
 package com.hc.model.ResponseModel;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.hc.entity.MonitorEquipmentWarningTime;
+import com.hc.po.MonitorEquipmentWarningTime;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;

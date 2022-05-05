@@ -1,7 +1,7 @@
 package com.hc.service;
 
-import com.hc.entity.Operationlog;
-import com.hc.entity.Operationlogdetail;
+import com.hc.po.Operationlog;
+import com.hc.po.Operationlogdetail;
 
 import java.util.List;
 

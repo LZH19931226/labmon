@@ -1,5 +1,6 @@
-package com.hc.entity;
+package com.hc.po;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -11,6 +12,7 @@ public class Monitorequipment implements Serializable {
     /**
      * 设备编号
      */
+    @TableId
     private String equipmentno;
 
     /**
@@ -37,6 +39,8 @@ public class Monitorequipment implements Serializable {
      * 是否显示
      */
     private Boolean clientvisible;
+
+
 
     private static final long serialVersionUID = 1L;
 

@@ -1,4 +1,4 @@
-package com.hc.entity;
+package com.hc.po;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

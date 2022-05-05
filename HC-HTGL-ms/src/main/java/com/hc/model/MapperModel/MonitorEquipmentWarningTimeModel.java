@@ -1,6 +1,6 @@
 package com.hc.model.MapperModel;
 
-import com.hc.entity.MonitorEquipmentWarningTime;
+import com.hc.po.MonitorEquipmentWarningTime;
 import lombok.Data;
 
 @Data

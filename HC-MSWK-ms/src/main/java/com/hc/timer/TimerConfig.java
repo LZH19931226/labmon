@@ -1,7 +1,7 @@
 package com.hc.timer;
 
-import com.hc.entity.Hospitalofreginfo;
-import com.hc.entity.Monitorequipmentlastdata;
+import com.hc.po.Hospitalofreginfo;
+import com.hc.po.Monitorequipmentlastdata;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.TimeoutEquipment;
 import com.hc.my.common.core.util.DateUtils;

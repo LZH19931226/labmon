@@ -1,8 +1,8 @@
 package com.hc.service;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Monitorequipment;
-import com.hc.entity.Monitorupsrecord;
+import com.hc.po.Monitorequipment;
+import com.hc.po.Monitorupsrecord;
 import com.hc.model.BatchModel;
 import com.hc.model.CurveInfoModel;
 import com.hc.model.QueryInfoModel;

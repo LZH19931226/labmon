@@ -1,9 +1,9 @@
 package com.hc.controller;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.WarningRecordInfo;
-import com.hc.entity.Warningrecord;
-import com.hc.entity.WarningrecordSort;
+import com.hc.po.WarningRecordInfo;
+import com.hc.po.Warningrecord;
+import com.hc.po.WarningrecordSort;
 import com.hc.model.CurveInfoModel;
 import com.hc.model.NewWarningRecord;
 import com.hc.model.PushSetModel;

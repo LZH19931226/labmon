@@ -1,6 +1,6 @@
 package com.hc.mapper.laboratoryFrom;
 
-import com.hc.entity.Monitorequipmenttype;
+import com.hc.po.Monitorequipmenttype;
 import com.hc.model.MapperModel.MonitorEquipmentWarningTimeModel;
 import com.hc.model.MapperModel.PageUserModel;
 import com.hc.model.RequestModel.EquipmentTypeInfoModel;

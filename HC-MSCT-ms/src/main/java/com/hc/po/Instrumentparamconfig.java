@@ -1,10 +1,8 @@
-package com.hc.entity;
+package com.hc.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,8 +13,6 @@ public class Instrumentparamconfig implements Serializable {
     /**
      * 监控参数编号
      */
-    @Id
-    @Column(name = "instrumentparamconfigNO")
     private String instrumentparamconfigno;
 
     /**
@@ -57,16 +53,12 @@ public class Instrumentparamconfig implements Serializable {
     /**
      * 推送消息时间
      */
-    private String pushtime;
+    private Date pushtime;
 
     /**
      * 报警时间
      */
-    private String warningtime;
-
-    private Integer alarmtime;
-
-    private Date firsttime;
+    private Date warningtime;
 
     private static final long serialVersionUID = 1L;
 

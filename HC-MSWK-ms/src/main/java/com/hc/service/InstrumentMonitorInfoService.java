@@ -1,6 +1,6 @@
 package com.hc.service;
 
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorinstrument;
 import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.bean.ParamaterModel;
 

@@ -1,8 +1,8 @@
 package com.hc.service;
 
 import com.github.pagehelper.Page;
-import com.hc.entity.Operationlog;
-import com.hc.entity.Operationlogdetail;
+import com.hc.po.Operationlog;
+import com.hc.po.Operationlogdetail;
 import com.hc.units.ApiResponse;
 
 import java.util.List;

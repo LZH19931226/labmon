@@ -1,7 +1,7 @@
 package com.hc.utils;
 
-import com.hc.entity.Monitorequipmentlastdata;
-import com.hc.entity.Monitorinstrument;
+import com.hc.po.Monitorequipmentlastdata;
+import com.hc.po.Monitorinstrument;
 import com.hc.model.InstrumentInfoModel;
 import com.hc.model.ShowModel;
 import com.hc.model.WarningMqModel;

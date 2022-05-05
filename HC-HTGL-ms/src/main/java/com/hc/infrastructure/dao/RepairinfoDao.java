@@ -1,6 +1,6 @@
 package com.hc.infrastructure.dao;
 
-import com.hc.entity.Repairinfo;
+import com.hc.po.Repairinfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

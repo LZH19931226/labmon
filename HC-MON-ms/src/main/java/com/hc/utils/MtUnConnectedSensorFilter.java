@@ -1,6 +1,6 @@
 package com.hc.utils;
 
-import com.hc.entity.Monitorequipmentlastdata;
+import com.hc.po.Monitorequipmentlastdata;
 import org.apache.commons.lang3.StringUtils;
 
 /**

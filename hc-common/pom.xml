@@ -35,5 +35,6 @@
 		<module>hc-common-redis</module>
 		<module>hc-common-api</module>
 		<module>hc-vos-all</module>
+		<module>hc-common-dynamic</module>
 	</modules>
 </project>
