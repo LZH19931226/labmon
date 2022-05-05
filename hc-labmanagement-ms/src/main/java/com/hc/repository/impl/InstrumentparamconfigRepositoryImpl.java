@@ -10,6 +10,7 @@ import com.hc.infrastructure.dao.InstrumentparamconfigDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentparamconfigPo;
 import com.hc.repository.InstrumentparamconfigRepository;
+import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -92,7 +93,7 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
      * @return
      */
     @Override
-    public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
+    public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
         return instrumentparamconfigDao.findInstrumentparamconfig(page,instrumentparamconfigCommand.getHospitalCode(),instrumentparamconfigCommand.getEquipmentTypeName(),
                                                                     instrumentparamconfigCommand.getInstrumentname(), instrumentparamconfigCommand.getSn());
 
@@ -113,5 +114,15 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
                 .eq(InstrumentparamconfigPo::getInstrumentno,instrumentNo)
                 .eq(InstrumentparamconfigPo::getInstrumentconfigid,instrumentConfigId)
                 .eq(InstrumentparamconfigPo::getInstrumenttypeid,instrumentTypeId));
+    }
+
+    /**
+     * 批量删除探头信息
+     *
+     * @param instrumentParamConfigNos
+     */
+    @Override
+    public void deleteInfos(String[] instrumentParamConfigNos) {
+        instrumentparamconfigDao.deleteInfos(instrumentParamConfigNos);
     }
 }

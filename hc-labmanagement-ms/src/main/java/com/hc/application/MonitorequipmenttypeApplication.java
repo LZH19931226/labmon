@@ -24,10 +24,10 @@ public class MonitorequipmenttypeApplication {
 
 
     public List<MonitorEquipmentTypeVo> getAllmonitorequipmentType() {
-        List<MonitorequipmenttypeDTO> monitorequipmenttypeDTOS = monitorequipmenttypeService.getAllmonitorequipmentType();
-        if (CollectionUtils.isNotEmpty(monitorequipmenttypeDTOS)) {
+        List<MonitorequipmenttypeDTO> monitorEquipmentTypeLists = monitorequipmenttypeService.getAllmonitorequipmentType();
+        if (CollectionUtils.isNotEmpty(monitorEquipmentTypeLists)) {
             List<MonitorEquipmentTypeVo> monitorequipmenttypeVoList = new ArrayList<>();
-            monitorequipmenttypeDTOS.forEach(s -> {
+            monitorEquipmentTypeLists.forEach(s -> {
                         monitorequipmenttypeVoList.add(
                                 MonitorEquipmentTypeVo.builder()
                                         .equipmentTypeId(s.getEquipmenttypeid())

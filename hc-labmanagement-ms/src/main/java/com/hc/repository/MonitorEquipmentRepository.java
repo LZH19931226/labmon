@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.po.MonitorEquipmentPo;
+import com.hc.vo.equimenttype.MonitorEquipmentVo;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      * @param monitorEquipmentCommand 监控设备参数
      * @return
      */
-    List<MonitorEquipmentDto> getEquipmentInfoList(Page page, MonitorEquipmentCommand monitorEquipmentCommand);
+    List<MonitorEquipmentDto> getEquipmentInfoList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand);
 
     /**
      * 插入监控设备信息

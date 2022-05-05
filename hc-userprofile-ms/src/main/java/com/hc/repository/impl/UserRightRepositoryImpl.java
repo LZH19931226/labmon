@@ -11,6 +11,7 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
 import com.hc.repository.UserRightRepository;
+import com.hc.vo.user.UserRightVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,7 +37,7 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
      * @return
      */
     @Override
-    public List<UserRightDto> findUserRightList(Page page, UserRightCommand userRightCommand) {
+    public List<UserRightDto> findUserRightList(Page<UserRightVo> page, UserRightCommand userRightCommand) {
         List<UserRightPo> poList = userRightDao.selectList(null);
         if(CollectionUtils.isNotEmpty(poList)){
             List<UserRightPo> collect = poList.stream().filter(res -> res.getNickname() == null || res.getNickname() == "").collect(Collectors.toList());

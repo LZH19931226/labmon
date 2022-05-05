@@ -7,6 +7,7 @@ import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
+import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @param instrumentparamconfigCommand
      * @return
      */
-    List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page, InstrumentparamconfigCommand instrumentparamconfigCommand);
+    List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page, InstrumentparamconfigCommand instrumentparamconfigCommand);
 
     /**
      * 查询探头信息是否已存在
@@ -63,4 +64,10 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @return
      */
     Integer selectCount(String instrumentNo, Integer instrumentConfigId, Integer instrumentTypeId);
+
+    /**
+     * 批量删除探头信息
+     * @param instrumentParamConfigNos
+     */
+    void deleteInfos(String[] instrumentParamConfigNos);
 }

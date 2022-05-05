@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
+import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,14 +33,21 @@ public interface InstrumentparamconfigDao extends BaseMapper<Instrumentparamconf
      * 分页查询探头参数配置信息
      * @param page
      * @param hospitalCode
-     * @param equipmentTypeName
+     * @param equipmentTypeId
      * @param instrumentname
      * @param sn
      * @return
      */
-    List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page page,
+    List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page,
                                                              @Param("hospitalCode") String hospitalCode,
-                                                             @Param("equipmentTypeName") String equipmentTypeName,
+                                                             @Param("equipmentTypeName") String equipmentTypeId,
                                                              @Param("instrumentname") String instrumentname,
                                                              @Param("sn") String sn);
+
+    /**
+     * 批量删除探头信息
+     * @param instrumentParamConfigNos
+     */
+    void deleteInfos(String[] instrumentParamConfigNos);
+
 }

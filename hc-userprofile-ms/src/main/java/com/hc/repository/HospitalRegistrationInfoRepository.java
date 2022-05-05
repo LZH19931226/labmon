@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.po.HospitalRegistrationInfoPo;
+import com.hc.vo.hospital.HospitalInfoVo;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface HospitalRegistrationInfoRepository extends IService<HospitalReg
      * @param hospitalCommand 医院信息数据传输对象
      * @return
      */
-    List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand);
+    List<HospitalRegistrationInfoDto> selectHospitalInfo(Page<HospitalInfoVo> page, HospitalCommand hospitalCommand);
 
     /**
      * 插入医院信息

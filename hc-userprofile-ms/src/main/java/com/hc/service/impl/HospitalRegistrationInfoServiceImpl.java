@@ -8,6 +8,7 @@ import com.hc.my.common.core.constant.enums.HospitalEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.HospitalRegistrationInfoRepository;
 import com.hc.service.HospitalRegistrationInfoService;
+import com.hc.vo.hospital.HospitalInfoVo;
 import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     private RedisTemplateUtil redisTemplateUtil;
 
     @Override
-    public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
+    public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page<HospitalInfoVo> page, HospitalCommand hospitalCommand) {
         return hospitalRegistrationInfoRepository.selectHospitalInfo(page, hospitalCommand);
     }
 
