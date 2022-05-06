@@ -55,6 +55,9 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             "and u.isuse  = #{isUse} " +
             "</if>" +
             "</script>")
-    List<UserRightDto> findUserRightList(Page page, @Param("hospitalName") String hospitalName, @Param("username") String username, @Param("phoneNum") String phoneNum, @Param("isUse") Long isUse);
+    List<UserRightDto> findUserRightList(Page page, @Param("hospitalName") String hospitalName,
+                                         @Param("username") String username,
+                                         @Param("phoneNum") String phoneNum,
+                                         @Param("isUse") Long isUse);
 
 }

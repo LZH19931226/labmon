@@ -39,4 +39,11 @@ public interface MonitorEquipmentService {
      * @return
      */
     Integer selectCount(MonitorEquipmentDto monitorEquipmentDto);
+
+    /**
+     *
+     * @param equipmentNo
+     * @return
+     */
+    MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo);
 }

@@ -131,4 +131,15 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
                 .eq(HospitalRegistrationInfoPo::getHospitalName, hospitalName));
         return BeanConverter.convert(hospitalRegistrationInfoPo,HospitalRegistrationInfoDto.class);
     }
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public HospitalRegistrationInfoDto findHospitalInfoByCode(String hospitalCode) {
+        HospitalRegistrationInfoPo hospitalRegistrationInfoPo = hospitalRegistrationInfoDao.selectOne(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
+                .eq(HospitalRegistrationInfoPo::getHospitalCode, hospitalCode));
+        return BeanConverter.convert(hospitalRegistrationInfoPo,HospitalRegistrationInfoDto.class);
+    }
 }

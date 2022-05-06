@@ -93,4 +93,14 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
                 .eq(MonitorEquipmentPo::getEquipmentName, monitorEquipmentDto.getEquipmentName())
                 .eq(MonitorEquipmentPo::getHospitalCode, monitorEquipmentDto.getHospitalCode()));
     }
+
+    /**
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo) {
+        MonitorEquipmentPo monitorEquipmentPo = monitorEquipmentDao.selectById(equipmentNo);
+        return BeanConverter.convert(monitorEquipmentPo,MonitorEquipmentDto.class);
+    }
 }

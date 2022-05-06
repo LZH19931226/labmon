@@ -48,4 +48,19 @@ public class HospitalequimentRepositoryImpl extends ServiceImpl<Hospitalequiment
     public List<HospitalequimentDTO> selectHospitalEquimentType(Page page, HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         return hospitalequimentDao.selectHospitalEquimentType(page,hospitalEquimentTypeCommand);
     }
+
+    /**
+     * 查询医院设备信息
+     *
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    @Override
+    public HospitalequimentDTO selectHospitalEquimentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
+        HospitalequimentPo hospitalequimentPo = hospitalequimentDao.selectOne(Wrappers.lambdaQuery(new HospitalequimentPo())
+                .eq(HospitalequimentPo::getEquipmenttypeid, equipmentTypeId)
+                .eq(HospitalequimentPo::getHospitalcode, hospitalCode));
+        return BeanConverter.convert(hospitalequimentPo,HospitalequimentDTO.class);
+    }
 }

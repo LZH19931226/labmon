@@ -62,4 +62,14 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public Integer selectCount(MonitorEquipmentDto monitorEquipmentDto) {
         return monitorEquipmentRepository.selectCount(monitorEquipmentDto);
     }
+
+    /**
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo) {
+
+        return monitorEquipmentRepository.selectMonitorEquipmentInfoByNo(equipmentNo);
+    }
 }

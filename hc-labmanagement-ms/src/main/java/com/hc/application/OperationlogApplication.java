@@ -1,5 +1,6 @@
 package com.hc.application;
 
+import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.service.OperationlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,9 @@ public class OperationlogApplication {
 
     public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
         operationlogService.addHospitalOperationlog(hospitalOperationLogCommand);
+    }
+
+    public void addHospitalEquipmentOperationLogCommand(HospitalEquipmentOperationLogCommand hospitalEquipmentOperationLogCommand) {
+        operationlogService.addHospitalEquipmentOperationLogCommand(hospitalEquipmentOperationLogCommand);
     }
 }

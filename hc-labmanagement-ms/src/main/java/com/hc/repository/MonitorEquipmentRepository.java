@@ -42,4 +42,11 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      * @return
      */
     Integer selectCount(MonitorEquipmentDto monitorEquipmentDto);
+
+    /**
+     *
+     * @param equipmentNo
+     * @return
+     */
+    MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo);
 }

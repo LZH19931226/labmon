@@ -24,5 +24,13 @@ public interface HospitalequimentService{
     List<HospitalequimentDTO> selectHospitalEquimentType(Page page,HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 
     void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid);
+
+    /**
+     * 查询医院设备信息
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    HospitalequimentDTO selectHospitalEquimentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
 }
 

@@ -3,6 +3,7 @@ package com.hc.appliction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
@@ -11,6 +12,7 @@ import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.struct.Context;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.UserBackService;
 import com.hc.service.UserSchedulingService;
@@ -20,6 +22,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.*;
@@ -78,6 +81,7 @@ public class HospitalInfoApplication {
      * @param hospitalCommand 医院视图对象
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
         operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand,
@@ -102,8 +106,12 @@ public class HospitalInfoApplication {
      *
      * @param hospitalCommand
      */
+    @Transactional(rollbackFor = Exception.class)
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
         hospitalRegistrationInfoService.editHospitalInfo(hospitalCommand);
+        HospitalOperationLogCommand hospitalOperationLogCommand = buildHospitalOperationLogCommand(Context.getUserId(), hospitalCommand,
+                OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
     }
 
     /**
@@ -111,6 +119,7 @@ public class HospitalInfoApplication {
      *
      * @param hospitalCode
      */
+    @Transactional(rollbackFor = Exception.class)
     public void deleteHospitalInfoByCode(String hospitalCode) {
         hospitalRegistrationInfoService.deleteHospitalInfoByCode(hospitalCode);
     }
@@ -235,5 +244,15 @@ public class HospitalInfoApplication {
             }
         }
         return listDto;
+    }
+
+    /**
+     * 通过医院code获取医院信息
+     * @param hospitalCode
+     * @return
+     */
+    public HospitalMadel findHospitalInfoByCode(String hospitalCode) {
+        HospitalRegistrationInfoDto hospitalRegistrationInfoDto = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
+       return BeanConverter.convert(hospitalRegistrationInfoDto,HospitalMadel.class);
     }
 }

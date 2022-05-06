@@ -10,3 +10,4 @@ spring:
       discovery:
         server-addr: 172.16.10.201:8848
         namespace: chenkai
+

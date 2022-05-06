@@ -53,4 +53,11 @@ public interface HospitalRegistrationInfoRepository extends IService<HospitalReg
      * @return
      */
     HospitalRegistrationInfoDto selectHospitalInfoByHospitalName(String hospitalName);
+
+    /**
+     *
+     * @param hospitalCode
+     * @return
+     */
+    HospitalRegistrationInfoDto findHospitalInfoByCode(String hospitalCode);
 }

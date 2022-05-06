@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.HospitalInfoApplication;
 import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
-import com.hc.vo.user.UserSchedulingVo;
+import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.vo.hospital.HospitalInfoVo;
+import com.hc.vo.user.UserSchedulingVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +84,10 @@ public class HospitalInfoController {
     @ApiOperation("获取本周的排班信息")
     public List<UserSchedulingVo> selectScheduleWeekByCode(@RequestParam("hospitalCode") String hospitalCode){
         return hospitalInfoApplication.selectScheduleWeekByCode(hospitalCode);
+    }
+
+    @GetMapping("/findHospitalInfo")
+    public HospitalMadel findHospitalInfo(@RequestParam(value = "hospitalCode") String hospitalCode){
+        return hospitalInfoApplication.findHospitalInfoByCode(hospitalCode);
     }
 }

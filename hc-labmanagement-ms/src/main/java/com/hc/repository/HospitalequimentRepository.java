@@ -20,4 +20,12 @@ public interface HospitalequimentRepository extends IService <HospitalequimentPo
     void updateHospitalEquiment(HospitalequimentDTO hospitalequimentDTO);
 
     List<HospitalequimentDTO> selectHospitalEquimentType(Page page,HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+
+    /**
+     * 查询医院设备信息
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    HospitalequimentDTO selectHospitalEquimentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
 }

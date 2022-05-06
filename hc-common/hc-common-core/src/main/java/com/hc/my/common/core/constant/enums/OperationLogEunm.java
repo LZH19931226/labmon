@@ -9,7 +9,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum OperationLogEunm {
-
+    DEVICE_MANAGEMENT("2","设备管理"),
+    DEVICE_TYPE_MANAGEMENT("1","设备类型管理"),
     HOSPITALMANAGENT("0", "医院管理");
     String code;
     String message;

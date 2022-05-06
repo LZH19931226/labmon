@@ -2,17 +2,25 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
+import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
-import com.hc.labmanagent.OperationlogApi;
+import com.hc.labmanagent.HospitalInfoApi;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.struct.Context;
 import com.hc.service.HospitalequimentService;
 import com.hc.service.MonitorequipmentwarningtimeService;
+import com.hc.service.OperationlogService;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import com.hc.vo.equimenttype.MonitorequipmentwarningtimeVo;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,24 +38,48 @@ public class HospitalequimentApplication {
 
     @Autowired
     private HospitalequimentService hospitalequimentService;
+
     @Autowired
     private MonitorequipmentwarningtimeService monitorequipmentwarningtimeService;
 
     @Autowired
-    private OperationlogApi operationlogApi;
+    private OperationlogService operationlogService;
+
+    @Autowired
+    private HospitalInfoApi hospitalInfoApi;
+
     /**
      * 新增医院设备类型
      * @param hospitalEquimentTypeCommand
      */
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         hospitalequimentService.addHospitalEquimentType(hospitalEquimentTypeCommand);
-
+        HospitalEquipmentOperationLogCommand build = build(Context.getUserId(),hospitalEquimentTypeCommand,
+                OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(),OperationLogEunmDerailEnum.ADD.getCode());
+        operationlogService.addHospitalEquipmentOperationLogCommand(build);
     }
 
+    private HospitalEquipmentOperationLogCommand build(String userId, HospitalEquimentTypeCommand hospitalEquimentTypeCommand, String type, String operationType) {
+        HospitalEquipmentOperationLogCommand logCommand = new HospitalEquipmentOperationLogCommand();
+        logCommand.setOperationType(operationType);
+        logCommand.setType(type);
+        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
+        if(!ObjectUtils.isEmpty(userInfo)){
+            logCommand.setUsername(userInfo.getUsername());
+        }
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalEquimentTypeCommand.getHospitalcode()).getResult();
+        if(!ObjectUtils.isEmpty(hospitalInfo)){
+            logCommand.setHospitalName(hospitalInfo.getHospitalName());
+        }
+        logCommand.setHospitalCode(hospitalEquimentTypeCommand.getHospitalcode());
+        return logCommand;
+    }
 
 
     public void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         hospitalequimentService.updateHospitalEquimentType(hospitalEquimentTypeCommand);
+        operationlogService.addHospitalEquipmentOperationLogCommand(build(Context.getUserId(),hospitalEquimentTypeCommand,
+                OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(),OperationLogEunmDerailEnum.EDIT.getCode()));
     }
 
     public Page<HospitalequimentVo> selectHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {

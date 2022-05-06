@@ -33,6 +33,7 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
     @Override
     public void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO) {
         monitorequipmentwarningtimeRepository.insetWarningtimeList(monitorequipmentwarningtimeDTO);
+
     }
 
 

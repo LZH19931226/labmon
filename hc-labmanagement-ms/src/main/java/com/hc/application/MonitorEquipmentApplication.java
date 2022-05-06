@@ -2,10 +2,18 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.command.labmanagement.hospital.MonitorEquipmentLogCommand;
+import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.constants.error.MonitorequipmentEnumErrorCode;
 import com.hc.dto.*;
+import com.hc.labmanagent.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.struct.Context;
 import com.hc.service.*;
 import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
@@ -16,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -48,6 +57,11 @@ public class MonitorEquipmentApplication {
     @Autowired
     private InstrumentconfigService instrumentconfigService;
 
+    @Autowired
+    private OperationlogService operationlogService;
+
+    @Autowired
+    private HospitalInfoApi hospitalInfoApi;
     /**
      * 分页获取监控设备信息
      *
@@ -244,6 +258,38 @@ public class MonitorEquipmentApplication {
                     .setAlarmtime(3);
             instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
         }
+
+        //更新日志表
+        MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), equipmentName, monitorEquipmentCommand,
+                OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
+        operationlogService.addMonitorEquipmentLogInfo(build);
+    }
+
+    private MonitorEquipmentLogInfoCommand build(String userId, String equipmentName, MonitorEquipmentCommand monitorEquipmentCommand, String Type, String operationType) {
+        MonitorEquipmentLogInfoCommand logInfoCommand = new MonitorEquipmentLogInfoCommand();
+        logInfoCommand.setType(Type);
+        logInfoCommand.setOperationType(operationType);
+        //根据医院code获取医院名称
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(monitorEquipmentCommand.getHospitalCode()).getResult();
+        if(!ObjectUtils.isEmpty(hospitalInfo)){
+            logInfoCommand.setHospitalName(hospitalInfo.getHospitalName());
+        }
+        //根据useid获取用户信息
+        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
+        if(!ObjectUtils.isEmpty(userInfo)){
+            logInfoCommand.setUsername(userInfo.getUsername());
+        }
+        //新增是设备no为空 修改时不为空
+        String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
+        if(!StringUtils.isEmpty(equipmentNo)){
+            logInfoCommand.setEquipmentNo(equipmentNo);
+        }
+        //设置最新的设备信息
+        MonitorEquipmentLogCommand monitorEquipmentCommand1 = new MonitorEquipmentLogCommand();
+        monitorEquipmentCommand1.setEquipmentName(equipmentName);
+        monitorEquipmentCommand1.setClientVisible(monitorEquipmentCommand.getClientVisible());
+        logInfoCommand.setMonitorEquipmentLogCommand(monitorEquipmentCommand1);
+        return logInfoCommand;
     }
 
     /**

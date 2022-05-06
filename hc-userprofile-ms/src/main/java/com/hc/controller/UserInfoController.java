@@ -1,17 +1,15 @@
 package com.hc.controller;
 
-import com.hc.appliction.command.UserCommand;
 import com.hc.appliction.UserInfoApplication;
+import com.hc.appliction.command.UserCommand;
+import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.vo.user.UserInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author hc
@@ -37,4 +35,8 @@ public class UserInfoController {
         userInfoApplication.updatePassword(userCommand);
     }
 
+    @GetMapping("/findUserInfo")
+    public UserBackModel findUserInfo(@RequestParam(value = "userid")String userid){
+        return userInfoApplication.findUserInfo(userid);
+    }
 }

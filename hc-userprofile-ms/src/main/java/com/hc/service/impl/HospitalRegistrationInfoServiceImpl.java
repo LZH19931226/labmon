@@ -84,4 +84,12 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
         return hospitalRegistrationInfoRepository.selectHospitalNameList();
     }
 
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public HospitalRegistrationInfoDto findHospitalInfoByCode(String hospitalCode) {
+        return hospitalRegistrationInfoRepository.findHospitalInfoByCode(hospitalCode);
+    }
 }

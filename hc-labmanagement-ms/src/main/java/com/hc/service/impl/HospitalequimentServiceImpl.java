@@ -166,4 +166,16 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         monitorEquipmentWarningTime.setEquipmentid(equipmenttypeid);
         return monitorEquipmentWarningTime;
     }
+
+    /**
+     * 查询医院设备信息
+     *
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    @Override
+    public HospitalequimentDTO selectHospitalEquimentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
+        return hospitalequimentRepository.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode,equipmentTypeId);
+    }
 }

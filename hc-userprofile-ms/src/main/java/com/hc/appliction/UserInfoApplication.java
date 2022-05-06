@@ -1,7 +1,9 @@
 package com.hc.appliction;
 
 import com.hc.appliction.command.UserCommand;
+import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.dto.UserBackDto;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.UserBackService;
 import com.hc.vo.user.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ public class UserInfoApplication {
 
     /**
      * 用户登录
+     *
      * @param userCommand 用户信息
      */
     public UserInfoVo userLogin(UserCommand userCommand) {
@@ -31,10 +34,21 @@ public class UserInfoApplication {
 
     /**
      * 修改密码
+     *
      * @param userCommand 用户信息
      */
     public void updatePassword(UserCommand userCommand) {
         userBackService.updatePassword(userCommand);
     }
 
+    /**
+     * 获取用户信息
+     *
+     * @param userid
+     * @return
+     */
+    public UserBackModel findUserInfo(String userid) {
+        UserBackDto userBackDto = userBackService.selectUserBackByUserId(userid);
+        return BeanConverter.convert(userBackDto, UserBackModel.class);
+    }
 }

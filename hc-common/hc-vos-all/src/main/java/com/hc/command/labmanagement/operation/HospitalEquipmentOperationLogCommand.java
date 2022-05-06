@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Data
 public class HospitalEquipmentOperationLogCommand {
+    private String hospitalCode;
     private String hospitalName;
+    private String equipmentTypeId;
     private String username;
     private HospitalEquimentTypeCommand hospitalEquimentTypeCommand;
     private String type;

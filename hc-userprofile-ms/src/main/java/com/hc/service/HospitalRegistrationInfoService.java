@@ -45,4 +45,10 @@ public interface HospitalRegistrationInfoService {
      */
     List<HospitalRegistrationInfoDto> selectHospitalNameList();
 
+    /**
+     *
+     * @param hospitalCode
+     * @return
+     */
+    HospitalRegistrationInfoDto findHospitalInfoByCode(String hospitalCode);
 }
