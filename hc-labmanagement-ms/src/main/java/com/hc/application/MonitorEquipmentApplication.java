@@ -2,6 +2,7 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.constants.error.MonitorequipmentEnumErrorCode;
 import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
 import com.hc.my.common.core.exception.IedsException;
@@ -170,6 +171,11 @@ public class MonitorEquipmentApplication {
         if (integer > 0) {
             throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_ADD_DEVICE.getMessage());
         }
+        String equipmentName = monitorEquipmentCommand.getEquipmentName();
+        Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+        if(integer1>0){
+            throw new IedsException(MonitorequipmentEnumErrorCode.DEVICE_NAME_ALREADY_EXISTS.getMessage());
+        }
 //        //根据探头信息和设备信息插入到instrumentmonitor表中
 //        MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
 //        if(!ObjectUtils.isEmpty(monitorinstrumenttypeDTO)){
@@ -247,6 +253,12 @@ public class MonitorEquipmentApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
+        String equipmentName = monitorEquipmentCommand.getEquipmentName();
+        String hospitalCode = monitorEquipmentCommand.getHospitalCode();
+        Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+        if(integer>0){
+            throw new IedsException(MonitorequipmentEnumErrorCode.DEVICE_NAME_ALREADY_EXISTS.getMessage());
+        }
 //        //1.同医院不可以有相同sn
 //        String sn = monitorEquipmentCommand.getSn();
 //        String code = monitorEquipmentCommand.getHospitalCode();

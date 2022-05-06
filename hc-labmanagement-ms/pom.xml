@@ -29,6 +29,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.hc</groupId>
+			<artifactId>hc-labmanagment-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hc</groupId>
 			<artifactId>hc-common-data</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

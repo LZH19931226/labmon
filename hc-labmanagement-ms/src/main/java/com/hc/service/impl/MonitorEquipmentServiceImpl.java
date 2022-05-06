@@ -53,4 +53,13 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public void updateMonitorEquipment(MonitorEquipmentDto monitorEquipmentDto) {
         monitorEquipmentRepository.updateMonitorEquipment(monitorEquipmentDto);
     }
+
+    /**
+     * @param monitorEquipmentDto
+     * @return
+     */
+    @Override
+    public Integer selectCount(MonitorEquipmentDto monitorEquipmentDto) {
+        return monitorEquipmentRepository.selectCount(monitorEquipmentDto);
+    }
 }

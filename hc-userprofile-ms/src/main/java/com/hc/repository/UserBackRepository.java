@@ -21,4 +21,11 @@ public interface UserBackRepository {
      * @param userBackPo 数据传输对象
      */
     void updatePassword(UserBackPo userBackPo);
+
+    /**
+     * 根据用户id查询user信息
+     * @param userId
+     * @return
+     */
+    UserBackDto selectUserBackByUserId(String userId);
 }

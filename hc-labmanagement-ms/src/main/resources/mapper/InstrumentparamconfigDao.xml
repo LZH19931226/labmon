@@ -51,11 +51,11 @@
     <if test= " hospitalCode != null and hospitalCode != '' ">
         and g.hospitalcode = #{hospitalCode}
     </if>
-    <if test="equipmentTypeId!= null and equipmentTypeId != ''">
+    <if test=" equipmentTypeId != null and equipmentTypeId != ''">
         and e.equipmenttypeid = #{equipmentTypeId}
     </if>
-    <if test="instrumentname != null and instrumentname != ''">
-        and b.instrumentname = #{instrumentname}
+    <if test="instrumentNo != null and instrumentNo != ''">
+        and b.instrumentno = #{instrumentNo}
     </if>
     <if test="sn != null and sn != ''">
         and b.sn  = #{sn}

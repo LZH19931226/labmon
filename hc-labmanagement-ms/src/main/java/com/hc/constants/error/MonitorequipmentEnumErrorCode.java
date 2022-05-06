@@ -15,6 +15,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum  MonitorequipmentEnumErrorCode {
-
-
+    DEVICE_NAME_ALREADY_EXISTS("设备名称已存在");
+    private String message;
 }

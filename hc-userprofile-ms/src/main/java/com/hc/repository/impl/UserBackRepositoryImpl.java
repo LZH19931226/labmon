@@ -63,4 +63,16 @@ public class UserBackRepositoryImpl implements UserBackRepository {
         }
         userBackDao.updateById(new UserBackPo().setUserid(userid).setPwd(pwd));
     }
+
+    /**
+     * 根据用户id查询user信息
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserBackDto selectUserBackByUserId(String userId) {
+        UserBackPo userBackPo = userBackDao.selectById(userId);
+        return BeanConverter.convert(userBackPo,UserBackDto.class);
+    }
 }

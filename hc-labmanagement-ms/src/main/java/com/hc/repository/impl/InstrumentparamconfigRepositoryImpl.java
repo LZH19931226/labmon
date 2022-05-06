@@ -94,8 +94,8 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
      */
     @Override
     public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
-        return instrumentparamconfigDao.findInstrumentparamconfig(page,instrumentparamconfigCommand.getHospitalCode(),instrumentparamconfigCommand.getEquipmentTypeName(),
-                                                                    instrumentparamconfigCommand.getInstrumentname(), instrumentparamconfigCommand.getSn());
+        return instrumentparamconfigDao.findInstrumentparamconfig(page,instrumentparamconfigCommand.getHospitalCode(),instrumentparamconfigCommand.getEquipmentTypeId(),
+                                                                    instrumentparamconfigCommand.getInstrumentNo(), instrumentparamconfigCommand.getSn());
 
     }
 

@@ -34,14 +34,14 @@ public interface InstrumentparamconfigDao extends BaseMapper<Instrumentparamconf
      * @param page
      * @param hospitalCode
      * @param equipmentTypeId
-     * @param instrumentname
+     * @param instrumentNo
      * @param sn
      * @return
      */
     List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page,
                                                              @Param("hospitalCode") String hospitalCode,
-                                                             @Param("equipmentTypeName") String equipmentTypeId,
-                                                             @Param("instrumentname") String instrumentname,
+                                                             @Param("equipmentTypeId") String equipmentTypeId,
+                                                             @Param("instrumentNo") String instrumentNo,
                                                              @Param("sn") String sn);
 
     /**
