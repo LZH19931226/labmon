@@ -1,15 +1,14 @@
 package com.hc.serviceImpl;
 
+import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.po.Instrumentparamconfig;
-import com.hc.po.Monitorequipmentlastdata;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.mapper.InstrumentParamConfigMapper;
 import com.hc.mapper.MonitorInstrumentMapper;
-import com.hc.mapper.MonitorequipmentlastdataMapper;
 import com.hc.service.LastDataService;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
-import com.hc.utils.TimeHelper;
 import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +33,7 @@ public class LastDataServiceImpl implements LastDataService {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
     @Autowired
-    private MonitorequipmentlastdataMapper monitorequipmentlastdataDao;
+    private MonitorequipmentlastdataRepository monitorequipmentlastdataDao;
     @Autowired
     private MessagePushService service;
     @Autowired
@@ -54,7 +52,6 @@ public class LastDataServiceImpl implements LastDataService {
     public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, Date time, String hospitalcode) {
         boolean flag = false;
         if (StringUtils.equals("H34", hospitalcode)) {
-            //澳门镜湖 五分钟上传频率
             flag = true;
         }
         //判断对象是否为空
@@ -77,13 +74,12 @@ public class LastDataServiceImpl implements LastDataService {
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(time);
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
-        monitorequipmentlastdata.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
         if (StringUtils.isEmpty(lastdata)) {
             //数据初次上传
             List<Instrumentparamconfig> instrumentparamconfigByEquipmentno = monitorInstrumentMapper.getInstrumentparamconfigByEquipmentno(equipmentno);
             if (instrumentparamconfigByEquipmentno != null & !instrumentparamconfigByEquipmentno.isEmpty()) {
                 //过滤为2的氧气探头
-                List<Instrumentparamconfig> collect = instrumentparamconfigByEquipmentno.stream().filter(s->s != null).filter(s -> s.getInstrumentconfigid() == 2).collect(Collectors.toList());
+                List<Instrumentparamconfig> collect = instrumentparamconfigByEquipmentno.stream().filter(s -> s != null).filter(s -> s.getInstrumentconfigid() == 2).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(collect)) {
                     collect.forEach(s -> {
                                 Date firsttime1 = s.getFirsttime();
@@ -97,61 +93,39 @@ public class LastDataServiceImpl implements LastDataService {
 
             }
 
-            monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
+            monitorequipmentlastdataDao.save(monitorequipmentlastdata);
             objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
-
         } else {
-            //       try {
-            // 判定是否是十分钟内的数据
             Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
-            double datePoor = TimeHelper.getDatePoor(time, monitorequipmentlastdata1.getInputdatetime());
-            log.info("当前设备：" + equipmentno + "时间间隔：" + String.valueOf(datePoor));
             if (flag) {
                 //澳门医院五分钟数据
-                if (datePoor > 4.8) {
-                    //数据插入
-                    log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
-                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
-                    monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
-                    service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
-                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
-                } else {
-                    //数据更新
-                    log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
-                    Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                    monitorequipmentlastdataDao.updateById(monitorequipmentlastdata2);
-                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
-                }
+                //数据插入
+                log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
+                monitorequipmentlastdataDao.save(monitorequipmentlastdata);
+                monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
+                service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
+                objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
             } else {
                 //其余医院十分钟
                 String equipmentlastdata = monitorequipmentlastdata1.getEquipmentlastdata();
                 if (StringUtils.isNotEmpty(equipmentlastdata)) {
                     //非空  直接 新增一条数据
-                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
+                    monitorequipmentlastdataDao.save(monitorequipmentlastdata);
                     objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
                     return;
                 }
-                if (datePoor > 9.7) {
-                    //数据插入
-                    log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
-                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata);
-                    monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
-                    //咸宁医学院判断
-                    if (StringUtils.equals(hospitalcode, "166ce81489f84901bdae7a470874df58")) {
-                        service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata));
-                    } else {
-                        service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
-                    }
-                    Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                    monitorequipmentlastdata2.setPkid(monitorequipmentlastdata.getPkid());
-                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
+                //数据插入
+                log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
+                monitorequipmentlastdataDao.save(monitorequipmentlastdata);
+                monitorequipmentlastdata1.setInputdatetime(monitorequipmentlastdata.getInputdatetime());
+                //咸宁医学院判断
+                if (StringUtils.equals(hospitalcode, "166ce81489f84901bdae7a470874df58")) {
+                    service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata));
                 } else {
-                    //数据更新
-                    log.info("数据更新,原始数据为:" + JsonUtil.toJson(monitorequipmentlastdata1));
-                    Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
-                    monitorequipmentlastdataDao.updateById(monitorequipmentlastdata2);
-                    objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
+                    service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
                 }
+                Monitorequipmentlastdata monitorequipmentlastdata2 = dataAdd(monitorequipmentlastdata1, monitorequipmentlastdata, equipmentTypeId, pc);
+                objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata2));
             }
 
 
@@ -201,14 +175,6 @@ public class LastDataServiceImpl implements LastDataService {
             monitorequipmentlastdata.setCurrentqcl(monitorequipmentlastdata1.getCurrentqcl());
         }
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrenttemperature())) {
-            // 当前地方温度要做比较
-//            if (tempMax(monitorequipmentlastdata.getCurrenttemperature(),monitorequipmentlastdata1.getCurrenttemperature(),typeid,pc)) {
-//                monitorequipmentlastdata.setCurrenttemperature(monitorequipmentlastdata1.getCurrenttemperature());
-//            }else {
-//                //新增一条数据
-//                monitorequipmentlastdata.setInputdatetime(monitorequipmentlastdata1.getInputdatetime());
-//                monitorequipmentlastdata.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-//            }
             monitorequipmentlastdata.setCurrenttemperature(monitorequipmentlastdata1.getCurrenttemperature());
         }
         if (StringUtils.isNotEmpty(monitorequipmentlastdata1.getCurrentvoc())) {
@@ -288,11 +254,11 @@ public class LastDataServiceImpl implements LastDataService {
             monitorequipmentlastdata.setVoltage(monitorequipmentlastdata1.getVoltage());
         }
         String current = monitorequipmentlastdata1.getCurrent();
-        if (StringUtils.isNotEmpty(current)){
+        if (StringUtils.isNotEmpty(current)) {
             monitorequipmentlastdata.setCurrent(current);
         }
         String power = monitorequipmentlastdata1.getPower();
-        if (StringUtils.isNotEmpty(power)){
+        if (StringUtils.isNotEmpty(power)) {
             monitorequipmentlastdata.setPower(power);
         }
         return monitorequipmentlastdata;

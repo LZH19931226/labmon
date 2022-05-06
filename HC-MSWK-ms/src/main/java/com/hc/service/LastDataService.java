@@ -1,6 +1,7 @@
 package com.hc.service;
 
-import com.hc.po.Monitorequipmentlastdata;
+
+import com.hc.clickhouse.po.Monitorequipmentlastdata;
 
 import java.util.Date;
 

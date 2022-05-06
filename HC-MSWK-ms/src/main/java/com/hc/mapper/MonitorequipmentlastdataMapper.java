@@ -6,7 +6,7 @@ import com.hc.po.Monitorequipmentlastdata;
 /**
  * Created by 16956 on 2018-08-09.
  */
-public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipmentlastdata> {
-
-
-}
+//public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipmentlastdata> {
+//
+//
+//}

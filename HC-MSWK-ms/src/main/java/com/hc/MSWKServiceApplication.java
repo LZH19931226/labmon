@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@MapperScan("com.hc.mapper")
+@MapperScan(value = {"com.hc.mapper","com.hc.clickhouse.mapper"})
 @EnableFeignClients
 public class MSWKServiceApplication {
 
