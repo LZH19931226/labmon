@@ -1,10 +1,24 @@
 package com.hc.application;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
+import com.hc.command.labmanagement.user.UserRightInfoCommand;
+import com.hc.dto.OperationlogDTO;
+import com.hc.my.common.core.constant.enums.OperationLogErrorEunm;
+import com.hc.my.common.core.exception.IedsException;
 import com.hc.service.OperationlogService;
+import com.hc.vo.backlog.OperationlogVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -19,12 +33,53 @@ public class OperationlogApplication {
 
     @Autowired
     private OperationlogService operationlogService;
-
+    @Transactional(rollbackFor = Exception.class)
     public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
         operationlogService.addHospitalOperationlog(hospitalOperationLogCommand);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void addHospitalEquipmentOperationLogCommand(HospitalEquipmentOperationLogCommand hospitalEquipmentOperationLogCommand) {
         operationlogService.addHospitalEquipmentOperationLogCommand(hospitalEquipmentOperationLogCommand);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void addUserRightLog(UserRightInfoCommand userRightInfoCommand) {
+        operationlogService.addUserRightLog(userRightInfoCommand);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Page<OperationlogVo> findAllLogInfo(OperationLogCommand operationLogCommand) {
+        Date begintime = operationLogCommand.getBegintime();
+        Date endtime = operationLogCommand.getEndtime();
+        if(ObjectUtils.isEmpty(begintime) || ObjectUtils.isEmpty(endtime)){
+            throw new IedsException(OperationLogErrorEunm.START_TIME_OR_END_TIME_CANNOT_BE_EMPTY.getCode());
+        }
+        if (endtime.before(begintime)) {
+            throw new IedsException(OperationLogErrorEunm.END_TIME_CANNOT_BE_EARLIER_THAN_START_TIME.getCode());
+        }
+        Long pageSize = operationLogCommand.getPageSize();
+        Long pageCurrent = operationLogCommand.getPageCurrent();
+        Page<OperationlogVo> page = new Page<>(pageCurrent,pageSize);
+        List<OperationlogDTO> operationlogDTO =  operationlogService.findAllLogInfo(page,operationLogCommand);
+        List<OperationlogVo> list = new ArrayList();
+        if(CollectionUtils.isNotEmpty(operationlogDTO)){
+            operationlogDTO.forEach(res->{
+                OperationlogVo build = OperationlogVo.builder()
+                        .opeartiontype(res.getOpeartiontype())
+                        .functionname(res.getFunctionname())
+                        .hospitalname(res.getHospitalname())
+                        .equipmentname(res.getEquipmentname())
+                        .username(res.getUsername())
+                        .operationtime(res.getOperationtime())
+                        .logid(res.getLogid())
+                        .build();
+                list.add(build);
+            });
+        }
+        page.setRecords(list);
+        return page;
+    }
+
+
 }

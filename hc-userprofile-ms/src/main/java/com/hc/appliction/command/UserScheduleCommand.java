@@ -38,7 +38,6 @@ public class UserScheduleCommand {
     private String createUser;
 
 
-
     /**
      * 医院名称
      */

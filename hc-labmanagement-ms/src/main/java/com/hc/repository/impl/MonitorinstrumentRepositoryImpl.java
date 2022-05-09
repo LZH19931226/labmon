@@ -72,6 +72,28 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
      */
     @Override
     public void deleteMonitorinstrumentInfo(String equipmentNo) {
-        monitorinstrumentDao.deleteById(equipmentNo);
+        monitorinstrumentDao.delete(Wrappers.lambdaQuery(new MonitorinstrumentPo()).eq(MonitorinstrumentPo::getEquipmentno,equipmentNo));
+    }
+
+    /**
+     * 通过探头信息查询监控信息
+     *
+     * @param instrumentno
+     * @return
+     */
+    @Override
+    public MonitorinstrumentDTO selectMonitorByIno(String instrumentno) {
+        MonitorinstrumentPo monitorinstrumentPo = monitorinstrumentDao.selectById(instrumentno);
+        return BeanConverter.convert(monitorinstrumentPo,MonitorinstrumentDTO.class);
+    }
+
+    /**
+     * 删除探头信息
+     *
+     * @param instrumentno
+     */
+    @Override
+    public void deleteMonitorinstrumentInfoByINo(String instrumentno) {
+        monitorinstrumentDao.deleteById(instrumentno);
     }
 }

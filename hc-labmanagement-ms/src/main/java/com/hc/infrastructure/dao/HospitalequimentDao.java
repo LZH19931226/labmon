@@ -20,5 +20,5 @@ import java.util.List;
 
 public interface HospitalequimentDao extends BaseMapper<HospitalequimentPo> {
 
-    List<HospitalequimentDTO> selectHospitalEquimentType(Page<HospitalInfoVo> page,@Param("hospitalEquimentTypeCommand") HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+    List<HospitalequimentDTO> selectHospitalEquimentType(Page<HospitalInfoVo> page, @Param("hospitalEquimentTypeCommand") HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 }

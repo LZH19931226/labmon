@@ -125,4 +125,16 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     public void deleteInfos(String[] instrumentParamConfigNos) {
         instrumentparamconfigDao.deleteInfos(instrumentParamConfigNos);
     }
+
+    /**
+     * 通过探头no查询探头信息
+     *
+     * @param instrumentparamconfigno
+     * @return
+     */
+    @Override
+    public InstrumentparamconfigDTO selectInstrumentparamconfigInfo(String instrumentparamconfigno) {
+        InstrumentparamconfigPo instrumentparamconfigPo = instrumentparamconfigDao.selectById(instrumentparamconfigno);
+        return BeanConverter.convert(instrumentparamconfigPo,InstrumentparamconfigDTO.class);
+    }
 }

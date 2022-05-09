@@ -84,16 +84,17 @@ public class HospitalInfoApplication {
     @Transactional(rollbackFor = Exception.class)
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
-        operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand,
+        operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),new HospitalCommand(),hospitalCommand,
                 OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode()));
     }
 
-    public HospitalOperationLogCommand buildHospitalOperationLogCommand(String userId,HospitalCommand hospitalCommand,String type,String operationType){
+    public HospitalOperationLogCommand buildHospitalOperationLogCommand(String userId,HospitalCommand oldHospitalCommand,HospitalCommand newHospitalCommand,String type,String operationType){
         HospitalOperationLogCommand hospitalOperationLogCommand = new HospitalOperationLogCommand();
         hospitalOperationLogCommand.setUserId(userId);
         hospitalOperationLogCommand.setType(type);
         hospitalOperationLogCommand.setOperationType(operationType);
-        hospitalOperationLogCommand.setNewHospitalCommand(hospitalCommand);
+        hospitalOperationLogCommand.setNewHospitalCommand(oldHospitalCommand);
+        hospitalOperationLogCommand.setOldHospitalCommand(newHospitalCommand);
         UserBackDto userBackDto =  userBackService.selectUserBackByUserId(userId);
         if(!ObjectUtils.isEmpty(userBackDto)){
             hospitalOperationLogCommand.setUsername(userBackDto.getUsername());
@@ -108,8 +109,12 @@ public class HospitalInfoApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
+        HospitalMadel hospitalInfo = findHospitalInfoByCode(hospitalCommand.getHospitalCode());
+        HospitalCommand hospitalCommand1 = BeanConverter.convert(hospitalInfo,HospitalCommand.class);
+
         hospitalRegistrationInfoService.editHospitalInfo(hospitalCommand);
-        HospitalOperationLogCommand hospitalOperationLogCommand = buildHospitalOperationLogCommand(Context.getUserId(), hospitalCommand,
+
+        HospitalOperationLogCommand hospitalOperationLogCommand = buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand1 ,hospitalCommand,
                 OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
     }

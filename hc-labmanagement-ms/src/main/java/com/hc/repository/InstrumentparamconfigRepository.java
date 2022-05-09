@@ -70,4 +70,11 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @param instrumentParamConfigNos
      */
     void deleteInfos(String[] instrumentParamConfigNos);
+
+    /**
+     * 通过探头no查询探头信息
+     * @param instrumentparamconfigno
+     * @return
+     */
+    InstrumentparamconfigDTO selectInstrumentparamconfigInfo(String instrumentparamconfigno);
 }

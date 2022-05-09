@@ -1,6 +1,6 @@
 package com.hc.command.labmanagement.operation;
 
-import com.hc.command.labmanagement.hospital.HospitalEquimentTypeCommand;
+import com.hc.command.labmanagement.hospital.HospitalEquimentTypeInfoCommand;
 import lombok.Data;
 
 @Data
@@ -9,7 +9,8 @@ public class HospitalEquipmentOperationLogCommand {
     private String hospitalName;
     private String equipmentTypeId;
     private String username;
-    private HospitalEquimentTypeCommand hospitalEquimentTypeCommand;
+    private HospitalEquimentTypeInfoCommand newHospitalEquimentTypeCommand;
+    private HospitalEquimentTypeInfoCommand oldHospitalEquimentTypeCommand;
     private String type;
     private String OperationType;
 }

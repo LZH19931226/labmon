@@ -14,5 +14,7 @@ public class MonitorEquipmentLogInfoCommand {
     private String type;
     private String operationType;
 
-    private MonitorEquipmentLogCommand  monitorEquipmentLogCommand;
+    private MonitorEquipmentLogCommand  newMonitorEquipmentLogCommand;
+    private MonitorEquipmentLogCommand  oldMonitorEquipmentLogCommand;
+
 }

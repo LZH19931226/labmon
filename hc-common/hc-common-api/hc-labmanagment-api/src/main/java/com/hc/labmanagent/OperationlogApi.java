@@ -1,6 +1,7 @@
 package com.hc.labmanagent;
 
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
+import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.my.common.core.bean.ApplicationName;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,4 +22,8 @@ public interface OperationlogApi {
 
     @PostMapping("/hospitalequimentType/addHospitalEquimentType")
     void addHospitalEquimentTypeLog(@RequestBody HospitalOperationLogCommand hospitalOperationLogCommand);
+
+    @PostMapping("/operationlog/addUserRightLogInfo")
+    void addUserRightLog(@RequestBody UserRightInfoCommand userRightInfoCommand);
+
 }

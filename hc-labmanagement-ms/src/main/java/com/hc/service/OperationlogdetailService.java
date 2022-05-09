@@ -1,6 +1,10 @@
 package com.hc.service;
 
 
+import com.hc.dto.OperationlogdetailDTO;
+
+import java.util.List;
+
 /**
  * 系统操作日志详细表
  *
@@ -10,6 +14,11 @@ package com.hc.service;
  */
 public interface OperationlogdetailService{
 
-
+    /**
+     * 通过id获取日志信息
+     * @param logId
+     * @return
+     */
+    List<OperationlogdetailDTO> getDetailedLogById(String logId);
 }
 

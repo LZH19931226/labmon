@@ -46,4 +46,10 @@ public interface MonitorEquipmentService {
      * @return
      */
     MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo);
+
+    /**
+     * 删除设备信息
+     * @param equipmentNo
+     */
+    void deleteMonitorEquipmentInfo(String equipmentNo);
 }

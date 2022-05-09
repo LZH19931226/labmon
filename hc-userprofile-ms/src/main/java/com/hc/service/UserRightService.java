@@ -38,4 +38,11 @@ public interface UserRightService {
      * @param userRightCommand 用户权限信息
      */
     void deleteUserRightInfo(UserRightCommand userRightCommand);
+
+    /**
+     * 查询用户信息
+     * @param userid
+     * @return
+     */
+    UserRightDto selectUserRightInfo(String userid);
 }
