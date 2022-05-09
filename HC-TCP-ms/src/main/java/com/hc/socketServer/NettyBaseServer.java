@@ -2,6 +2,8 @@ package com.hc.socketServer;
 
 
 import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,7 +45,7 @@ public class NettyBaseServer {
     		.option(ChannelOption.SO_SNDBUF, SEND_BUFFER_LENGTH)
             .option(ChannelOption.SO_BACKLOG, config.getBacklog())  
             .option(ChannelOption.SO_KEEPALIVE, config.isKeepAlive());  
-    	
+
     	return server;
 	}
 	
@@ -72,6 +74,6 @@ public class NettyBaseServer {
     
     @Bean
     public InetSocketAddress tcpPort(NettyConfigBean config){
-    	return new InetSocketAddress(config.getPort());
+    	return new InetSocketAddress(config.getIp(),config.getPort());
     }
 }
