@@ -131,4 +131,15 @@ public class UserRightServiceImpl implements UserRightService {
         }
 
     }
+
+    /**
+     * 查询用户信息
+     *
+     * @param userid
+     * @return
+     */
+    @Override
+    public UserRightDto selectUserRightInfo(String userid) {
+        return userRightRepository.selectUserRightInfo(userid);
+    }
 }

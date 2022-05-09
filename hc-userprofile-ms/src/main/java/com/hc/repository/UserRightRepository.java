@@ -47,4 +47,10 @@ public interface UserRightRepository extends IService<UserRightPo> {
      */
     void deleteUserRightInfo(String userid);
 
+    /**
+     * 查询用户信息
+     * @param userid
+     * @return
+     */
+    UserRightDto selectUserRightInfo(String userid);
 }

@@ -107,4 +107,15 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     public void deleteInfos(String[] instrumentParamConfigNos) {
         instrumentparamconfigRepository.deleteInfos(instrumentParamConfigNos);
     }
+
+    /**
+     * 通过探头no查询探头信息
+     *
+     * @param instrumentparamconfigno
+     * @return
+     */
+    @Override
+    public InstrumentparamconfigDTO selectInstrumentparamconfigInfo(String instrumentparamconfigno) {
+        return instrumentparamconfigRepository.selectInstrumentparamconfigInfo(instrumentparamconfigno);
+    }
 }

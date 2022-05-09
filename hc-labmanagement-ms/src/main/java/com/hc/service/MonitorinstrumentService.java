@@ -44,5 +44,18 @@ public interface MonitorinstrumentService{
      * @param equipmentNo
      */
     void deleteMonitorinstrumentInfo(String equipmentNo);
+
+    /**
+     * 通过探头信息查询监控信息
+     * @param instrumentno
+     * @return
+     */
+    MonitorinstrumentDTO selectMonitorByIno(String instrumentno);
+
+    /**
+     * 删除探头信息
+     * @param instrumentno
+     */
+    void deleteMonitorinstrumentInfoByINo(String instrumentno);
 }
 

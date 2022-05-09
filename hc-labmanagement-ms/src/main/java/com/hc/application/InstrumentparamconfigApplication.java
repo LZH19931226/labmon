@@ -2,18 +2,26 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
-import com.hc.dto.InstrumentconfigDTO;
-import com.hc.dto.InstrumentmonitorDTO;
-import com.hc.dto.InstrumentparamconfigDTO;
+import com.hc.command.labmanagement.hospital.InstrumentparamconfigLogCommand;
+import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
+import com.hc.dto.*;
+import com.hc.labmanagent.HospitalInfoApi;
+import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
-import com.hc.service.InstrumentmonitorService;
-import com.hc.service.InstrumentparamconfigService;
-import com.hc.service.MonitorinstrumentService;
+import com.hc.my.common.core.struct.Context;
+import com.hc.my.common.core.util.BeanConverter;
+import com.hc.service.*;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +46,17 @@ public class InstrumentparamconfigApplication {
     @Autowired
     private InstrumentmonitorService instrumentmonitorService;
 
+    @Autowired
+    private OperationlogService operationlogService;
+
+    @Autowired
+    private MonitorEquipmentService monitorEquipmentService;
+
+    @Autowired
+    private OperationlogApi operationlogApi;
+
+    @Autowired
+    private HospitalInfoApi hospitalInfoApi;
     /**
      * 通过设备no获取探头参数信息
      *
@@ -66,6 +85,7 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigCommand 探头信息参数
      */
+    @Transactional(rollbackFor = Exception.class)
     public void insertInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         //判断探头的检测类型是否存在
         boolean flag = instrumentmonitorService.selectOne(new InstrumentmonitorDTO().setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
@@ -98,8 +118,56 @@ public class InstrumentparamconfigApplication {
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime())
                 .setFirsttime(new Date())
                 .setSaturation(instrumentParamConfigCommand.getSaturation());
-
         instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
+
+        //添加日志信息
+        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                build(Context.getUserId(),
+                        new InstrumentparamconfigCommand(),
+                        instrumentParamConfigCommand,
+                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
+                        OperationLogEunmDerailEnum.ADD.getCode());
+        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
+    }
+
+
+    private InstrumentParamConfigInfoCommand build(String userId, InstrumentparamconfigCommand old, InstrumentparamconfigCommand newInfo, String type, String operationType) {
+        InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
+        //获取用户名称
+        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
+        if(!ObjectUtils.isEmpty(userId)){
+            infoCommand.setUsername(userInfo.getUsername());
+        }
+        //获取医院信息
+        String hospitalCode = newInfo.getHospitalCode();
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+        if(!ObjectUtils.isEmpty(hospitalInfo)){
+            infoCommand.setHospitalName(hospitalInfo.getHospitalName());
+        }
+        //获取设备信息
+        String equipmentNo = newInfo.getEquipmentNo();
+        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
+        if(!ObjectUtils.isEmpty(monitorEquipmentDto)){
+            infoCommand.setEquipmentName(monitorEquipmentDto.getEquipmentName());
+        }
+        infoCommand.setType(type);
+        infoCommand.setOperationType(operationType);
+        infoCommand.setInstrumentName(newInfo.getInstrumentname());
+        infoCommand.setInstrumentparamconfigno(newInfo.getInstrumentparamconfigno());
+        infoCommand.setInstrumentNo(newInfo.getInstrumentNo());
+        InstrumentparamconfigLogCommand logCommand = new InstrumentparamconfigLogCommand()
+                .setInstrumentparamconfigno(newInfo.getInstrumentparamconfigno())
+                .setSn(newInfo.getSn())
+                .setLowlimit(newInfo.getLowlimit())
+                .setHighlimit(newInfo.getHighlimit())
+                .setCalibration(newInfo.getCalibration())
+                .setChannel(newInfo.getChannel())
+                .setAlarmtime(newInfo.getAlarmtime())
+                .setWarningphone(newInfo.getWarningphone());
+        infoCommand.setNewInstrumentparamconfigLogCommand(logCommand);
+        InstrumentparamconfigLogCommand convert = BeanConverter.convert(old, InstrumentparamconfigLogCommand.class);
+        infoCommand.setOldInstrumentparamconfigLogCommand(convert);
+        return infoCommand;
     }
 
     /**
@@ -107,12 +175,20 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigCommand 探头信息参数
      */
+    @Transactional(rollbackFor = Exception.class)
     public void editInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         //计较上限值和下限值
         int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
         if(compareTo>=0){
             throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
         }
+
+        InstrumentparamconfigDTO dto =
+                instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
+        MonitorinstrumentDTO monitorinstrumentDTO
+                = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
+        dto.setSn(monitorinstrumentDTO.getSn());
+
         InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
                 .setInstrumentparamconfigno(instrumentParamConfigCommand.getInstrumentparamconfigno())
                 .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
@@ -127,6 +203,14 @@ public class InstrumentparamconfigApplication {
                 .setCalibration(instrumentParamConfigCommand.getCalibration())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
+
+        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                build(Context.getUserId(),
+                        BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
+                        instrumentParamConfigCommand,
+                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
+                        OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
     }
 
     /**
@@ -134,8 +218,10 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigNos 探头信息参数
      */
+    @Transactional(rollbackFor = Exception.class)
     public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
         instrumentparamconfigService.deleteInfos(instrumentParamConfigNos);
+
     }
 
 

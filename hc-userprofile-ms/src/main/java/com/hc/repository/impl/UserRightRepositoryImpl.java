@@ -102,5 +102,15 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         userRightDao.delete(Wrappers.lambdaQuery(new UserRightPo()).eq(UserRightPo::getUserid,userid));
     }
 
-
+    /**
+     * 查询用户信息
+     *
+     * @param userid
+     * @return
+     */
+    @Override
+    public UserRightDto selectUserRightInfo(String userid) {
+        UserRightPo userRightPo = userRightDao.selectById(userid);
+        return BeanConverter.convert(userRightPo,UserRightDto.class);
+    }
 }

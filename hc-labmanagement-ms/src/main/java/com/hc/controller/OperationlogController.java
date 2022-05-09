@@ -1,8 +1,12 @@
 package com.hc.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.OperationlogApplication;
+import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
+import com.hc.command.labmanagement.user.UserRightInfoCommand;
+import com.hc.vo.backlog.OperationlogVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +46,14 @@ public class OperationlogController {
         operationlogApplication.addHospitalEquipmentOperationLogCommand(hospitalEquipmentOperationLogCommand);
     }
 
+    @PostMapping("/addUserRightLogInfo")
+    @ApiOperation("新增用户")
+     public void addUserRightLog(@RequestBody UserRightInfoCommand userRightInfoCommand){
+        operationlogApplication.addUserRightLog(userRightInfoCommand);
+     }
 
+     @PostMapping("/findAllLogInfo")
+    public Page<OperationlogVo> getAllLogInfo(@RequestBody OperationLogCommand operationLogCommand){
+        return operationlogApplication.findAllLogInfo(operationLogCommand);
+    }
 }

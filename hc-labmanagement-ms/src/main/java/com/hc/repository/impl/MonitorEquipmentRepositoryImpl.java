@@ -103,4 +103,14 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
         MonitorEquipmentPo monitorEquipmentPo = monitorEquipmentDao.selectById(equipmentNo);
         return BeanConverter.convert(monitorEquipmentPo,MonitorEquipmentDto.class);
     }
+
+    /**
+     * 删除设备信息
+     *
+     * @param equipmentNo
+     */
+    @Override
+    public void deleteMonitorEquipmentInfo(String equipmentNo) {
+        monitorEquipmentDao.deleteById(equipmentNo);
+    }
 }

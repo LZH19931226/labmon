@@ -26,7 +26,7 @@ public class InstrumentparamconfigPo implements Serializable {
     /**
      * 监控参数编号
      */
-    @TableId()
+    @TableId
     @TableField(value = "instrumentparamconfigNO")
     private String instrumentparamconfigno;
     /**

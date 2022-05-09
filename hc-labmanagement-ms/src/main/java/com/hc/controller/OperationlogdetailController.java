@@ -1,9 +1,15 @@
 package com.hc.controller;
 
+import com.hc.application.OperationlogdetailApplication;
+import com.hc.vo.backlog.OperationlogdetailVo;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-
+import java.util.List;
 
 
 /**
@@ -18,5 +24,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/operationlogdetail")
 public class OperationlogdetailController {
 
+    @Autowired
+    private OperationlogdetailApplication operationlogdetailApplication;
 
+    @GetMapping("/getlogDeatil")
+    public List<OperationlogdetailVo> getDetailedLog(@RequestParam String logId){
+        return operationlogdetailApplication.getDetailedLogById(logId);
+    }
 }

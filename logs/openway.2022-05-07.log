@@ -1,0 +1,1144 @@
+2022-05-07 09:06:43.049 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-07 09:06:43.049 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-07 09:06:43.227 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3408a01c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 09:06:43.227 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3408a01c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 09:06:43.456 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-openway-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-07 09:06:43.456 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-openway-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-07 09:06:43.553 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-openway-ms-dev.yaml'}, NacosPropertySource {name='hc-openway-ms.yaml'}]}
+2022-05-07 09:06:43.553 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-openway-ms-dev.yaml'}, NacosPropertySource {name='hc-openway-ms.yaml'}]}
+2022-05-07 09:06:43.556 [restartedMain] INFO  com.hc.OpenwayMsApplication - The following profiles are active: dev
+2022-05-07 09:06:44.116 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2022-05-07 09:06:44.116 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2022-05-07 09:06:44.118 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2022-05-07 09:06:44.118 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2022-05-07 09:06:44.276 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-05-07 09:06:44.276 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-05-07 09:06:44.423 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=4b82b837-ca28-3b6d-8d6f-cd80c4d7825f
+2022-05-07 09:06:44.423 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=4b82b837-ca28-3b6d-8d6f-cd80c4d7825f
+2022-05-07 09:06:44.510 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3408a01c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 09:06:44.510 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3408a01c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 09:06:44.923 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 09:06:44.923 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 09:06:44.924 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 09:06:44.924 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 09:06:44.928 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 09:06:44.928 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 09:06:44.929 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 09:06:44.929 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2022-05-07 09:06:45.575 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-05-07 09:06:45.576 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-05-07 09:06:46.039 [restartedMain] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver - Exposing 22 endpoint(s) beneath base path '/actuator'
+2022-05-07 09:06:46.039 [restartedMain] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver - Exposing 22 endpoint(s) beneath base path '/actuator'
+2022-05-07 09:06:46.186 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-07 09:06:46.186 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-07 09:06:46.454 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-05-07 09:06:46.454 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-05-07 09:06:46.860 [restartedMain] INFO  o.s.boot.web.embedded.netty.NettyWebServer - Netty started on port(s): 10612
+2022-05-07 09:06:46.860 [restartedMain] INFO  o.s.boot.web.embedded.netty.NettyWebServer - Netty started on port(s): 10612
+2022-05-07 09:06:46.916 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, openway 172.16.10.39:10612 register finished
+2022-05-07 09:06:46.916 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, openway 172.16.10.39:10612 register finished
+2022-05-07 09:06:46.954 [restartedMain] INFO  com.hc.OpenwayMsApplication - Started OpenwayMsApplication in 4.465 seconds (JVM running for 5.713)
+2022-05-07 09:12:36.817 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:36.817 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:36.828 [reactor-http-nio-2] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-USERPROFILE-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 09:12:36.828 [reactor-http-nio-2] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-USERPROFILE-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 09:12:36.833 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 09:12:36.833 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 09:12:36.842 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:36.842 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:36.843 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-USERPROFILE-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[172.16.10.39:10614],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10614;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@50823b39
+2022-05-07 09:12:36.843 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-USERPROFILE-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[172.16.10.39:10614],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10614;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@50823b39
+2022-05-07 09:12:37.462 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:37.462 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:37.464 [reactor-http-nio-8] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 09:12:37.464 [reactor-http-nio-8] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 09:12:37.464 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 09:12:37.464 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 09:12:37.466 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:37.466 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:37.466 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.10.39:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@37aa9ab0
+2022-05-07 09:12:37.466 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.10.39:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@37aa9ab0
+2022-05-07 09:12:37.837 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:37.837 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:38.465 [PollingServerListUpdater-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:12:38.465 [PollingServerListUpdater-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 09:36:49.892 [reactor-http-nio-11] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0x7f74fbe7, L:0.0.0.0/0.0.0.0:63060 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+2022-05-07 09:36:49.892 [reactor-http-nio-11] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0x7f74fbe7, L:0.0.0.0/0.0.0.0:63060 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+2022-05-07 09:36:49.914 [reactor-http-nio-11] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [dee55a60] 500 Server Error for HTTP POST "/labmanagement/hospitalequimentType/updateHospitalEquimentType"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 09:36:49.914 [reactor-http-nio-11] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [dee55a60] 500 Server Error for HTTP POST "/labmanagement/hospitalequimentType/updateHospitalEquimentType"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 10:06:16.260 [reactor-http-nio-7] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [21f13593] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information: /172.16.10.39:10613
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+Caused by: java.net.ConnectException: Connection refused: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:327)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:336)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:685)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:632)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:549)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:511)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2022-05-07 10:06:16.260 [reactor-http-nio-7] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [21f13593] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information: /172.16.10.39:10613
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+Caused by: java.net.ConnectException: Connection refused: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:327)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:336)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:685)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:632)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:549)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:511)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2022-05-07 10:06:19.499 [reactor-http-nio-9] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [cf1c72f4] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information: /172.16.10.39:10613
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+Caused by: java.net.ConnectException: Connection refused: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:327)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:336)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:685)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:632)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:549)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:511)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2022-05-07 10:06:19.499 [reactor-http-nio-9] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [cf1c72f4] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information: /172.16.10.39:10613
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.resources.PooledConnectionProvider.acquire(PooledConnectionProvider.java:130)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+Caused by: java.net.ConnectException: Connection refused: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:327)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:336)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:685)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:632)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:549)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:511)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2022-05-07 14:08:51.734 [Thread-61] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-05-07 14:08:51.734 [Thread-61] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-05-07 14:08:51.751 [Thread-29] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-07 14:08:51.751 [Thread-29] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-07 14:08:51.821 [Thread-29] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-07 14:08:51.821 [Thread-29] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-07 14:09:17.323 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-07 14:09:17.323 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-07 14:09:17.549 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$63ec6f18] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 14:09:17.549 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$63ec6f18] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 14:09:18.002 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-openway-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-07 14:09:18.002 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-openway-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-07 14:09:18.012 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-openway-ms-dev.yaml'}, NacosPropertySource {name='hc-openway-ms.yaml'}]}
+2022-05-07 14:09:18.012 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-openway-ms-dev.yaml'}, NacosPropertySource {name='hc-openway-ms.yaml'}]}
+2022-05-07 14:09:18.015 [restartedMain] INFO  com.hc.OpenwayMsApplication - The following profiles are active: dev
+2022-05-07 14:09:18.632 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2022-05-07 14:09:18.632 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2022-05-07 14:09:18.635 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2022-05-07 14:09:18.635 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2022-05-07 14:09:18.923 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-05-07 14:09:18.923 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-05-07 14:09:19.159 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=4b82b837-ca28-3b6d-8d6f-cd80c4d7825f
+2022-05-07 14:09:19.159 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=4b82b837-ca28-3b6d-8d6f-cd80c4d7825f
+2022-05-07 14:09:19.309 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$63ec6f18] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 14:09:19.309 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$63ec6f18] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 14:09:19.869 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 14:09:19.869 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 14:09:19.869 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 14:09:19.869 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 14:09:19.874 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 14:09:19.874 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 14:09:19.874 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 14:09:19.874 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-05-07 14:09:20.300 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-05-07 14:09:20.520 [restartedMain] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver - Exposing 22 endpoint(s) beneath base path '/actuator'
+2022-05-07 14:09:20.520 [restartedMain] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver - Exposing 22 endpoint(s) beneath base path '/actuator'
+2022-05-07 14:09:20.600 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-07 14:09:20.600 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-07 14:09:20.719 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-05-07 14:09:20.719 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2022-05-07 14:09:22.250 [restartedMain] INFO  o.s.boot.web.embedded.netty.NettyWebServer - Netty started on port(s): 10612
+2022-05-07 14:09:22.250 [restartedMain] INFO  o.s.boot.web.embedded.netty.NettyWebServer - Netty started on port(s): 10612
+2022-05-07 14:09:22.395 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, openway 172.16.10.39:10612 register finished
+2022-05-07 14:09:22.395 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, openway 172.16.10.39:10612 register finished
+2022-05-07 14:09:23.363 [restartedMain] INFO  com.hc.OpenwayMsApplication - Started OpenwayMsApplication in 6.673 seconds (JVM running for 7.479)
+2022-05-07 14:09:52.635 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:52.635 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:52.648 [reactor-http-nio-2] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-USERPROFILE-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 14:09:52.648 [reactor-http-nio-2] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-USERPROFILE-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 14:09:52.653 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 14:09:52.653 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 14:09:52.662 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:52.662 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:52.664 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-USERPROFILE-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[172.16.10.39:10614],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10614;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@6edd6afc
+2022-05-07 14:09:52.664 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-USERPROFILE-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[172.16.10.39:10614],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10614;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@6edd6afc
+2022-05-07 14:09:53.662 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:53.662 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:54.185 [reactor-http-nio-4] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:54.185 [reactor-http-nio-4] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:54.186 [reactor-http-nio-4] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 14:09:54.186 [reactor-http-nio-4] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 14:09:54.187 [reactor-http-nio-4] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 14:09:54.187 [reactor-http-nio-4] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 14:09:54.188 [reactor-http-nio-4] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:54.188 [reactor-http-nio-4] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:54.188 [reactor-http-nio-4] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.10.39:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@4bc75b02
+2022-05-07 14:09:54.188 [reactor-http-nio-4] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.10.39:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@4bc75b02
+2022-05-07 14:09:55.191 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:09:55.191 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 14:11:50.180 [reactor-http-nio-1] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0xa7e21ef3, L:0.0.0.0/0.0.0.0:51298 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+2022-05-07 14:11:50.180 [reactor-http-nio-1] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0xa7e21ef3, L:0.0.0.0/0.0.0.0:51298 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+2022-05-07 14:11:50.213 [reactor-http-nio-1] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [27b07f06] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:11:50.213 [reactor-http-nio-1] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [27b07f06] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:14:10.249 [reactor-http-nio-3] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0x603a6a07, L:0.0.0.0/0.0.0.0:51410 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:14:10.249 [reactor-http-nio-3] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0x603a6a07, L:0.0.0.0/0.0.0.0:51410 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:14:10.251 [reactor-http-nio-3] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [6fee2e4c] 500 Server Error for HTTP POST "/labmanagement/instrumentparamconfig/updateinstrumentparamconfig"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:14:10.251 [reactor-http-nio-3] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [6fee2e4c] 500 Server Error for HTTP POST "/labmanagement/instrumentparamconfig/updateinstrumentparamconfig"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:18:09.310 [reactor-http-nio-8] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0x45bbcd61, L:0.0.0.0/0.0.0.0:53298 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:18:09.310 [reactor-http-nio-8] WARN  reactor.netty.http.client.HttpClientConnect - [id: 0x45bbcd61, L:0.0.0.0/0.0.0.0:53298 ! R:/172.16.10.39:10613] The connection observed an error
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:18:09.313 [reactor-http-nio-8] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [7f34c9ad] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 14:18:09.313 [reactor-http-nio-8] ERROR o.s.b.a.w.r.error.AbstractErrorWebExceptionHandler - [7f34c9ad] 500 Server Error for HTTP GET "/labmanagement/monitorequipmenttype/getAllmonitorequipmentType"
+reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Assembly trace from producer [reactor.core.publisher.MonoCreate] :
+	reactor.core.publisher.Mono.create(Mono.java:183)
+	reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+Error has been observed by the following operator(s):
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.create ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:296)
+	|_	Mono.retry ⇢ reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:333)
+	|_	Mono.flatMapMany ⇢ reactor.netty.http.client.HttpClientFinalizer.responseConnection(HttpClientFinalizer.java:85)
+	|_	Flux.then ⇢ org.springframework.cloud.gateway.filter.NettyRoutingFilter.filter(NettyRoutingFilter.java:202)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.filter(NettyWriteResponseFilter.java:64)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.doOnSuccessOrError ⇢ org.springframework.cloud.gateway.filter.GatewayMetricsFilter.filter(GatewayMetricsFilter.java:57)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.defer ⇢ org.springframework.cloud.gateway.handler.FilteringWebHandler$DefaultGatewayFilterChain.filter(FilteringWebHandler.java:113)
+	|_	Mono.then ⇢ org.springframework.web.reactive.result.SimpleHandlerAdapter.handle(SimpleHandlerAdapter.java:46)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:151)
+	|_	Mono.flatMap ⇢ org.springframework.web.reactive.DispatcherHandler.handle(DispatcherHandler.java:152)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.flatMap ⇢ org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter.filter(HttpTraceWebFilter.java:74)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+	|_	Mono.doOnSuccess ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.doOnError ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:83)
+	|_	Mono.compose ⇢ org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter.filter(MetricsWebFilter.java:75)
+	|_	Mono.defer ⇢ org.springframework.web.server.handler.DefaultWebFilterChain.filter(DefaultWebFilterChain.java:119)
+
+2022-05-07 15:26:11.003 [Thread-57] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-05-07 15:26:11.003 [Thread-57] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-05-07 15:26:11.014 [Thread-37] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-07 15:26:11.014 [Thread-37] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-07 15:26:11.017 [Thread-37] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-07 15:26:11.017 [Thread-37] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-07 15:26:16.877 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-07 15:26:16.877 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-07 15:26:17.141 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$550920aa] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 15:26:17.141 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$550920aa] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 15:26:17.355 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-openway-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-07 15:26:17.355 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-openway-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-07 15:26:17.365 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-openway-ms-dev.yaml'}, NacosPropertySource {name='hc-openway-ms.yaml'}]}
+2022-05-07 15:26:17.365 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-openway-ms-dev.yaml'}, NacosPropertySource {name='hc-openway-ms.yaml'}]}
+2022-05-07 15:26:17.369 [restartedMain] INFO  com.hc.OpenwayMsApplication - The following profiles are active: dev
+2022-05-07 15:26:17.936 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2022-05-07 15:26:17.936 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2022-05-07 15:26:17.938 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2022-05-07 15:26:17.938 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2022-05-07 15:26:18.102 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-05-07 15:26:18.102 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-05-07 15:26:18.214 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=4b82b837-ca28-3b6d-8d6f-cd80c4d7825f
+2022-05-07 15:26:18.214 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=4b82b837-ca28-3b6d-8d6f-cd80c4d7825f
+2022-05-07 15:26:18.296 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$550920aa] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 15:26:18.296 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$550920aa] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-07 15:26:18.733 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 15:26:18.733 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 15:26:18.733 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 15:26:18.733 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 15:26:18.737 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 15:26:18.737 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-07 15:26:18.737 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 15:26:18.737 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2022-05-07 15:26:19.271 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-05-07 15:26:19.272 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-05-07 15:26:19.593 [restartedMain] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver - Exposing 22 endpoint(s) beneath base path '/actuator'
+2022-05-07 15:26:19.593 [restartedMain] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver - Exposing 22 endpoint(s) beneath base path '/actuator'
+2022-05-07 15:26:19.749 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-07 15:26:19.749 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-07 15:26:19.983 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-07 15:26:19.983 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-07 15:26:20.566 [restartedMain] INFO  o.s.boot.web.embedded.netty.NettyWebServer - Netty started on port(s): 10612
+2022-05-07 15:26:20.566 [restartedMain] INFO  o.s.boot.web.embedded.netty.NettyWebServer - Netty started on port(s): 10612
+2022-05-07 15:26:20.644 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, openway 172.16.10.39:10612 register finished
+2022-05-07 15:26:20.644 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, openway 172.16.10.39:10612 register finished
+2022-05-07 15:26:20.654 [restartedMain] INFO  com.hc.OpenwayMsApplication - Started OpenwayMsApplication in 4.335 seconds (JVM running for 4.978)
+2022-05-07 16:36:43.960 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:36:43.960 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:36:43.977 [reactor-http-nio-2] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-USERPROFILE-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 16:36:43.977 [reactor-http-nio-2] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-USERPROFILE-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 16:36:43.983 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 16:36:43.983 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 16:36:43.993 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:36:43.993 [reactor-http-nio-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:36:43.995 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-USERPROFILE-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[172.16.10.39:10614],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10614;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@2457c0cb
+2022-05-07 16:36:43.995 [reactor-http-nio-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-USERPROFILE-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[172.16.10.39:10614],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10614;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@2457c0cb
+2022-05-07 16:36:44.997 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:36:44.997 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:43:53.619 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:43:53.619 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:43:53.621 [reactor-http-nio-8] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 16:43:53.621 [reactor-http-nio-8] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-05-07 16:43:53.621 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 16:43:53.621 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-05-07 16:43:53.622 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:43:53.622 [reactor-http-nio-8] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:43:53.623 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.10.39:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@70a4911f
+2022-05-07 16:43:53.623 [reactor-http-nio-8] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.10.39:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.10.39:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@70a4911f
+2022-05-07 16:43:54.631 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 16:43:54.631 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-05-07 17:44:03.775 [reactor-http-nio-12] ERROR o.s.web.server.adapter.HttpWebHandlerAdapter - [dc87463a] Error [java.io.IOException: 你的主机中的软件中止了一个已建立的连接。] for HTTP POST "/labmanagement/equipmentInfo/findEquipmentInfo", but ServerHttpResponse already committed (200 OK)
+2022-05-07 17:44:03.775 [reactor-http-nio-12] ERROR o.s.web.server.adapter.HttpWebHandlerAdapter - [dc87463a] Error [java.io.IOException: 你的主机中的软件中止了一个已建立的连接。] for HTTP POST "/labmanagement/equipmentInfo/findEquipmentInfo", but ServerHttpResponse already committed (200 OK)
+2022-05-07 17:48:12.244 [reactor-http-nio-7] ERROR o.s.web.server.adapter.HttpWebHandlerAdapter - [0234b95c] Error [java.io.IOException: 你的主机中的软件中止了一个已建立的连接。] for HTTP DELETE "/labmanagement/equipmentInfo/0b54cb9ac5404050adfbb31fa7a016aa", but ServerHttpResponse already committed (200 OK)
+2022-05-07 17:48:12.244 [reactor-http-nio-7] ERROR o.s.web.server.adapter.HttpWebHandlerAdapter - [0234b95c] Error [java.io.IOException: 你的主机中的软件中止了一个已建立的连接。] for HTTP DELETE "/labmanagement/equipmentInfo/0b54cb9ac5404050adfbb31fa7a016aa", but ServerHttpResponse already committed (200 OK)

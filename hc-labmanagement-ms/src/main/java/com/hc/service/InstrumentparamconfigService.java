@@ -75,5 +75,12 @@ public interface InstrumentparamconfigService{
      * @param instrumentParamConfigNo
      */
     void deleteInfos(String[] instrumentParamConfigNo);
+
+    /**
+     * 通过探头no查询探头信息
+     * @param instrumentparamconfigno
+     * @return
+     */
+    InstrumentparamconfigDTO selectInstrumentparamconfigInfo(String instrumentparamconfigno);
 }
 

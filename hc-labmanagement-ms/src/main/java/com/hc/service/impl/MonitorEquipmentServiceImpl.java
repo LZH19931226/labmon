@@ -72,4 +72,14 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
 
         return monitorEquipmentRepository.selectMonitorEquipmentInfoByNo(equipmentNo);
     }
+
+    /**
+     * 删除设备信息
+     *
+     * @param equipmentNo
+     */
+    @Override
+    public void deleteMonitorEquipmentInfo(String equipmentNo) {
+        monitorEquipmentRepository.deleteMonitorEquipmentInfo(equipmentNo);
+    }
 }

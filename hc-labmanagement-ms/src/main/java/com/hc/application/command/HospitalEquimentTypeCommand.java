@@ -3,10 +3,12 @@ package com.hc.application.command;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class HospitalEquimentTypeCommand {
     /**
      * 设备类型编码

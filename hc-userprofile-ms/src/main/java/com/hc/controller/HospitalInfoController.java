@@ -87,6 +87,7 @@ public class HospitalInfoController {
     }
 
     @GetMapping("/findHospitalInfo")
+    @ApiOperation("查询医院信息")
     public HospitalMadel findHospitalInfo(@RequestParam(value = "hospitalCode") String hospitalCode){
         return hospitalInfoApplication.findHospitalInfoByCode(hospitalCode);
     }
