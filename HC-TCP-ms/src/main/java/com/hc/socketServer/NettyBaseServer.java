@@ -74,6 +74,6 @@ public class NettyBaseServer {
     
     @Bean
     public InetSocketAddress tcpPort(NettyConfigBean config){
-    	return new InetSocketAddress(config.getIp(),config.getPort());
+    	return new InetSocketAddress(config.getPort());
     }
 }
