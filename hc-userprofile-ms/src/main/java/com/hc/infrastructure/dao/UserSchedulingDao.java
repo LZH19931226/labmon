@@ -45,8 +45,7 @@ public interface UserSchedulingDao extends BaseMapper<UserSchedulingPo> {
             ",userphone userPhone " +
             "from userscheduling where hospitalcode = #{hospitalCode} "+
             "<if test = 'startMonth.length() lt 8 and endMonth.length() lt 8'> "+
-            "and  DATE_FORMAT(starttime,'%Y-%m') &gt;= #{startMonth}" +
-            "and  DATE_FORMAT(endtime,'%Y-%m') &lt;= #{endMonth}" +
+            "and  DATE_FORMAT(starttime,'%Y-%m') = #{startMonth}" +
             "</if> " +
             "<if test = 'startMonth.length() gt 8 and endMonth.length() gt 8'> " +
             "and  DATE_FORMAT(starttime,'%Y-%m-%d') = #{startMonth} " +

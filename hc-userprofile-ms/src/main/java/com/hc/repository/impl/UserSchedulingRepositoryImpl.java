@@ -58,6 +58,8 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
      */
     @Override
     public List<UserSchedulingDto> searchScByHosMon(String hospitalCode, String startMonth, String endMonth) {
+        int length = startMonth.length();
+        int length1 = endMonth.length();
         return  userSchedulingDao.searchScByHosMon(hospitalCode,startMonth,endMonth);
     }
 
@@ -84,13 +86,13 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
             userSchedulingPo.setStartTime(newStartTime);
             userSchedulingPo.setEndTime(newEndTime);
             userSchedulingPo.setUsid(null);
-            Integer integer = userSchedulingDao.selectCount(Wrappers.lambdaQuery(new UserSchedulingPo())
-                    .eq(UserSchedulingPo::getHospitalCode, hospitalCode)
-                    .eq(UserSchedulingPo::getStartTime, newStartTime)
-                    .eq(UserSchedulingPo::getEndTime, newEndTime));
-            if(integer>0){
-                throw new IedsException(UserScheduleEnumCode.SCHEDULE_INFORMATION_EXISTS.getMessage());
-            }
+//            Integer integer = userSchedulingDao.selectCount(Wrappers.lambdaQuery(new UserSchedulingPo())
+//                    .eq(UserSchedulingPo::getHospitalCode, hospitalCode)
+//                    .eq(UserSchedulingPo::getStartTime, newStartTime)
+//                    .eq(UserSchedulingPo::getEndTime, newEndTime));
+//            if(integer>0){
+//                throw new IedsException(UserScheduleEnumCode.SCHEDULE_INFORMATION_EXISTS.getMessage());
+//            }
             userSchedulingDao.insert(userSchedulingPo);
         }
     }

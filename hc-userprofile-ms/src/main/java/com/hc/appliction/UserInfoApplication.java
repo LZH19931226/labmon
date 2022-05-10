@@ -1,13 +1,18 @@
 package com.hc.appliction;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserCommand;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.dto.UserBackDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.UserBackService;
 import com.hc.vo.user.UserInfoVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户信息申请
@@ -37,8 +42,8 @@ public class UserInfoApplication {
      *
      * @param userCommand 用户信息
      */
-    public void updatePassword(UserCommand userCommand) {
-        userBackService.updatePassword(userCommand);
+    public void UserInfo(UserCommand userCommand) {
+        userBackService.updateUserInfo(userCommand);
     }
 
     /**
@@ -50,5 +55,44 @@ public class UserInfoApplication {
     public UserBackModel findUserInfo(String userid) {
         UserBackDto userBackDto = userBackService.selectUserBackByUserId(userid);
         return BeanConverter.convert(userBackDto, UserBackModel.class);
+    }
+
+    /**
+     * 分页获取后台用户信息
+     * @param userCommand
+     * @return
+     */
+    public Page<UserInfoVo> findUserAllInfo(UserCommand userCommand) {
+        Page<UserInfoVo> page = new Page<>(userCommand.getPageCurrent(),userCommand.getPageSize());
+        List<UserBackDto> list = userBackService.findUserAllInfo(page,userCommand);
+        List<UserInfoVo> voList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(list)){
+            list.forEach(res->{
+                UserInfoVo build = UserInfoVo.builder()
+                        .userid(res.getUserid())
+                        .username(res.getUsername())
+                        .pwd(res.getPwd())
+                        .build();
+                voList.add(build);
+            });
+        }
+        page.setRecords(voList);
+        return page;
+    }
+
+    /**
+     * 删除用户信息
+     * @param userid
+     */
+    public void deleteUserInfo(Long[] userid) {
+        userBackService.deleteUserInfo(userid);
+    }
+
+    /**
+     * 新增后台用户信息
+     * @param userCommand
+     */
+    public void insertUserInfo(UserCommand userCommand) {
+        userBackService.insertUserInfo(userCommand);
     }
 }
