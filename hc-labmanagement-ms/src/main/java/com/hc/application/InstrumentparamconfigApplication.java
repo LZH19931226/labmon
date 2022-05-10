@@ -8,7 +8,6 @@ import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
 import com.hc.dto.*;
 import com.hc.labmanagent.HospitalInfoApi;
-import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
@@ -51,9 +50,6 @@ public class InstrumentparamconfigApplication {
 
     @Autowired
     private MonitorEquipmentService monitorEquipmentService;
-
-    @Autowired
-    private OperationlogApi operationlogApi;
 
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
@@ -221,9 +217,7 @@ public class InstrumentparamconfigApplication {
     @Transactional(rollbackFor = Exception.class)
     public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
         instrumentparamconfigService.deleteInfos(instrumentParamConfigNos);
-
     }
-
 
     /**
      * 分页获取探头信息

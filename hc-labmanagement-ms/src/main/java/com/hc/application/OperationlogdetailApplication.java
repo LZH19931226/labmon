@@ -23,6 +23,7 @@ public class OperationlogdetailApplication {
 
     @Autowired
     private OperationlogdetailService operationlogdetailService;
+
     /**
      * 获取详细日志
      * @param logId
@@ -43,7 +44,6 @@ public class OperationlogdetailApplication {
                         .build();
                 list.add(build);
             });
-
         }
         return list;
     }

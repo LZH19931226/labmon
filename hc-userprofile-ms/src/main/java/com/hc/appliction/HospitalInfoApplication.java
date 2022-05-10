@@ -126,7 +126,12 @@ public class HospitalInfoApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteHospitalInfoByCode(String hospitalCode) {
+        HospitalRegistrationInfoDto hospitalInfoByCode = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         hospitalRegistrationInfoService.deleteHospitalInfoByCode(hospitalCode);
+        HospitalCommand convert = BeanConverter.convert(hospitalInfoByCode, HospitalCommand.class);
+        HospitalOperationLogCommand hospitalOperationLogCommand =
+                buildHospitalOperationLogCommand(Context.getUserId(), convert, new HospitalCommand(), OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
+        operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
     }
 
     /**

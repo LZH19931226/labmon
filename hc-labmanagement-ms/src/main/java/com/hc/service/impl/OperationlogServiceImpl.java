@@ -211,6 +211,7 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetail.setFiledvalueprev(isenabl1);//历史值
             operationlogdetails.add(operationlogdetail);
         }
+
         String alwayalarm1 = oldHospitalInfo.getAlwaysAlarm();//是否全天报警
         String alwayalarm2 = nowHospitalInfo.getAlwaysAlarm();
         if (!StringUtils.equals(alwayalarm1, alwayalarm2)) {

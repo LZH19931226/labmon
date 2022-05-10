@@ -105,16 +105,13 @@ public class UserRightApplication {
      */
     public void updateUserRightInfo(UserRightCommand userRightCommand) {
         UserRightDto userRightDto = userRightService.selectUserRightInfo(userRightCommand.getUserid());
-
         userRightService.updateUserRightInfo(userRightCommand);
-
         UserRightLogCommand convert = BeanConverter.convert(userRightDto, UserRightLogCommand.class);
         UserRightInfoCommand build = build(Context.getUserId(),
                 convert,
                 userRightCommand,
                 OperationLogEunm.USER_INFO.getCode(),
                 OperationLogEunmDerailEnum.EDIT.getCode());
-
         operationlogApi.addUserRightLog(build);
     }
 
@@ -124,5 +121,10 @@ public class UserRightApplication {
      */
     public void deleteUserRightInfo(UserRightCommand userRightCommand) {
         userRightService.deleteUserRightInfo(userRightCommand);
+        UserRightDto userRightDto = userRightService.selectUserRightInfo(userRightCommand.getUserid());
+        UserRightLogCommand command = BeanConverter.convert(userRightDto, UserRightLogCommand.class);
+        UserRightInfoCommand build =
+                build(Context.getUserId(), command, new UserRightCommand(), OperationLogEunm.USER_INFO.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
+        operationlogApi.addUserRightLog(build);
     }
 }

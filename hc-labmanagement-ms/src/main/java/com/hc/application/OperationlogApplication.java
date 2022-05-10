@@ -33,6 +33,7 @@ public class OperationlogApplication {
 
     @Autowired
     private OperationlogService operationlogService;
+
     @Transactional(rollbackFor = Exception.class)
     public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
         operationlogService.addHospitalOperationlog(hospitalOperationLogCommand);

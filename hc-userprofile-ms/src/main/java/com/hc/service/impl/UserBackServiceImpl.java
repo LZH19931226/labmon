@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserCommand;
 import com.hc.dto.UserBackDto;
 import com.hc.my.common.core.constant.enums.UserEnumErrorCode;
@@ -8,15 +9,19 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserBackPo;
 import com.hc.repository.UserBackRepository;
 import com.hc.service.UserBackService;
+import com.hc.vo.user.UserInfoVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author hc
  */
 @Service
-public class UserBackServiceImpl implements UserBackService {
+public class UserBackServiceImpl  implements UserBackService {
 
     @Autowired
     private UserBackRepository userBackRepository;
@@ -36,13 +41,19 @@ public class UserBackServiceImpl implements UserBackService {
     }
 
     @Override
-    public void updatePassword(UserCommand userCommand) {
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUserInfo(UserCommand userCommand) {
         String userid = userCommand.getUserid();
         if(StringUtils.isBlank(userid)){
             throw new IedsException(UserEnumErrorCode.USERID_NOT_NULL.getMessage());
         }
+        String username = userCommand.getUsername();
+        Integer integer = userBackRepository.selectOne(username);
+        if(integer>1){
+            throw new IedsException(UserEnumErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
+        }
         UserBackPo userBackPo = BeanConverter.convert(userCommand,UserBackPo.class);
-        userBackRepository.updatePassword(userBackPo);
+        userBackRepository.updateUserInfo(userBackPo);
     }
 
     /**
@@ -54,5 +65,37 @@ public class UserBackServiceImpl implements UserBackService {
     @Override
     public UserBackDto selectUserBackByUserId(String userId) {
         return userBackRepository.selectUserBackByUserId(userId);
+    }
+
+    /**
+     * 分页获取后台人员信息
+     *
+     * @param page
+     * @param userCommand
+     * @return
+     */
+    @Override
+    public List<UserBackDto> findUserAllInfo(Page<UserInfoVo> page, UserCommand userCommand) {
+        return userBackRepository.findUserAllInfo(page,userCommand);
+    }
+
+    /**
+     * 删除用户信息
+     *
+     * @param userid
+     */
+    @Override
+    public void deleteUserInfo(Long[] userid) {
+        userBackRepository.deleteUserInfo(userid);
+    }
+
+    /**
+     * 新增用户信息
+     *
+     * @param userCommand
+     */
+    @Override
+    public void insertUserInfo(UserCommand userCommand) {
+        userBackRepository.insertUserInfo(userCommand);
     }
 }

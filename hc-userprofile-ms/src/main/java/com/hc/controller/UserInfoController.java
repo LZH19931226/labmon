@@ -1,5 +1,6 @@
 package com.hc.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.UserInfoApplication;
 import com.hc.appliction.command.UserCommand;
 import com.hc.command.labmanagement.model.UserBackModel;
@@ -22,21 +23,40 @@ public class UserInfoController {
     @Autowired
     private UserInfoApplication userInfoApplication;
 
+
+    @PostMapping("/findAllUserInfo")
+    @ApiOperation(value = "分页获取后台用户信息")
+    public Page<UserInfoVo> findUserAllInfo(@RequestBody UserCommand userCommand){
+       return   userInfoApplication.findUserAllInfo(userCommand);
+    }
+
     @PostMapping("/userLogin")
     @ApiOperation(value = "后台管理登录")
     public UserInfoVo userLogin(@ApiParam(name = "UserCommand", value = "用户登录对象", required = true)
-            @RequestBody UserCommand userCommand) throws Exception {
+            @RequestBody UserCommand userCommand)  {
        return userInfoApplication.userLogin(userCommand);
     }
 
-    @PostMapping("/updatePwd")
-    @ApiOperation(value = "更改用户密码")
-    public void updatePwd( @RequestBody UserCommand userCommand) {
-        userInfoApplication.updatePassword(userCommand);
+    @PutMapping("/updateUserInfo")
+    @ApiOperation(value = "修改后台管理信息")
+    public void updateUserInfo( @RequestBody UserCommand userCommand) {
+        userInfoApplication.UserInfo(userCommand);
+    }
+
+    @DeleteMapping("/deleteUserInfo")
+    @ApiOperation("删除后台用户信息")
+    public void remove(Long[] userid){
+        userInfoApplication.deleteUserInfo(userid);
     }
 
     @GetMapping("/findUserInfo")
     public UserBackModel findUserInfo(@RequestParam(value = "userid")String userid){
         return userInfoApplication.findUserInfo(userid);
     }
+
+    @PostMapping("/selectUserInfo")
+    public void addUserInfo(@RequestBody UserCommand userCommand){
+       userInfoApplication.insertUserInfo(userCommand);
+    }
+
 }
