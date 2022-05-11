@@ -77,4 +77,10 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @return
      */
     InstrumentparamconfigDTO selectInstrumentparamconfigInfo(String instrumentparamconfigno);
+
+    /**
+     * 查询探头参数配置信息
+     * @return
+     */
+    List<InstrumentparamconfigDTO> selectInstrumentparamconfigAllInfo();
 }

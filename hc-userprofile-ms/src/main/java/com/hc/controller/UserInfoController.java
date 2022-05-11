@@ -23,7 +23,6 @@ public class UserInfoController {
     @Autowired
     private UserInfoApplication userInfoApplication;
 
-
     @PostMapping("/findAllUserInfo")
     @ApiOperation(value = "分页获取后台用户信息")
     public Page<UserInfoVo> findUserAllInfo(@RequestBody UserCommand userCommand){
@@ -33,7 +32,7 @@ public class UserInfoController {
     @PostMapping("/userLogin")
     @ApiOperation(value = "后台管理登录")
     public UserInfoVo userLogin(@ApiParam(name = "UserCommand", value = "用户登录对象", required = true)
-            @RequestBody UserCommand userCommand)  {
+            @RequestBody UserCommand userCommand) {
        return userInfoApplication.userLogin(userCommand);
     }
 
@@ -43,9 +42,9 @@ public class UserInfoController {
         userInfoApplication.UserInfo(userCommand);
     }
 
-    @DeleteMapping("/deleteUserInfo")
+    @DeleteMapping("/{userid}")
     @ApiOperation("删除后台用户信息")
-    public void remove(Long[] userid){
+    public void remove(@PathVariable(value = "userid") String[] userid){
         userInfoApplication.deleteUserInfo(userid);
     }
 
@@ -54,7 +53,8 @@ public class UserInfoController {
         return userInfoApplication.findUserInfo(userid);
     }
 
-    @PostMapping("/selectUserInfo")
+    @PostMapping("/addUserInfo")
+    @ApiOperation("新增后台用户信息")
     public void addUserInfo(@RequestBody UserCommand userCommand){
        userInfoApplication.insertUserInfo(userCommand);
     }

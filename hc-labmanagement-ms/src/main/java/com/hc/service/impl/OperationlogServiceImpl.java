@@ -13,6 +13,7 @@ import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
 import com.hc.dto.OperationlogDTO;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
 import com.hc.repository.OperationlogRepository;
@@ -168,10 +169,17 @@ public class OperationlogServiceImpl implements OperationlogService {
 
         String name = hospitalOperationLogCommand.getUsername();
         HospitalCommand nowHospitalInfo = hospitalOperationLogCommand.getNewHospitalCommand();
-        String hospitalname = nowHospitalInfo.getHospitalName();
-        String type = hospitalOperationLogCommand.getType();
-        String operationType = hospitalOperationLogCommand.getOperationType();
         HospitalCommand oldHospitalInfo = hospitalOperationLogCommand.getOldHospitalCommand();
+        String operationType = hospitalOperationLogCommand.getOperationType();
+        String hospitalname = "";
+        if(StringUtils.equals(operationType, OperationLogEunmDerailEnum.REMOVE.getCode())){
+            hospitalname = oldHospitalInfo.getHospitalName();
+        }else{
+            hospitalname = nowHospitalInfo.getHospitalName();
+        }
+        String type = hospitalOperationLogCommand.getType();
+
+
 
         List<OperationlogdetailPo> operationlogdetails = new ArrayList<>();
         boolean flag = false;

@@ -39,7 +39,7 @@ public class OperationlogdetailApplication {
                         .filedcaption(res.getFiledcaption())
                         .filedname(res.getFiledname())
                         .filedvalue(res.getFiledvalue())
-                        .filedvalueprev(res.getFiledvalue())
+                        .filedvalueprev(res.getFiledvalueprev())
                         .comment(res.getComment())
                         .build();
                 list.add(build);

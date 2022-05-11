@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class UserBackServiceImpl  implements UserBackService {
      * @param userid
      */
     @Override
-    public void deleteUserInfo(Long[] userid) {
+    public void deleteUserInfo(String[] userid) {
         userBackRepository.deleteUserInfo(userid);
     }
 
@@ -96,6 +97,11 @@ public class UserBackServiceImpl  implements UserBackService {
      */
     @Override
     public void insertUserInfo(UserCommand userCommand) {
+        String username = userCommand.getUsername();
+        UserBackDto userBackDto = userBackRepository.selectUserBackByUsername(username);
+        if(!ObjectUtils.isEmpty(userBackDto)){
+            throw new IedsException(UserEnumErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
+        }
         userBackRepository.insertUserInfo(userCommand);
     }
 }

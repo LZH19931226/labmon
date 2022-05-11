@@ -65,4 +65,6 @@ public class HospitalCommand {
     @ApiModelProperty(value = "当前页")
     private Long pageCurrent;
 
+    /** 排序方式 */
+    private String orderBy;
 }

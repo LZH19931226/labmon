@@ -173,7 +173,8 @@ public class HospitalequimentApplication {
         HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode, equipmenttypeid);
         hospitalequimentService.deleteHospitalEquimentType(hospitalCode,equipmenttypeid);
         HospitalEquimentTypeCommand convert = BeanConverter.convert(hospitalequimentDTO, HospitalEquimentTypeCommand.class);
-//        build(Context.getUserId(),convert,new HospitalEquimentTypeCommand(),)
-
+        HospitalEquipmentOperationLogCommand build = build(Context.getUserId(), convert,
+                new HospitalEquimentTypeCommand(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode());
+        operationlogService.addHospitalEquipmentOperationLogCommand(build);
     }
 }

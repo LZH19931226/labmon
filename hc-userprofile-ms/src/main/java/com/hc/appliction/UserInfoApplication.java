@@ -84,7 +84,7 @@ public class UserInfoApplication {
      * 删除用户信息
      * @param userid
      */
-    public void deleteUserInfo(Long[] userid) {
+    public void deleteUserInfo(String[] userid) {
         userBackService.deleteUserInfo(userid);
     }
 

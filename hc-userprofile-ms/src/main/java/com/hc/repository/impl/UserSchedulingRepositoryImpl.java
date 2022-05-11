@@ -58,8 +58,6 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
      */
     @Override
     public List<UserSchedulingDto> searchScByHosMon(String hospitalCode, String startMonth, String endMonth) {
-        int length = startMonth.length();
-        int length1 = endMonth.length();
         return  userSchedulingDao.searchScByHosMon(hospitalCode,startMonth,endMonth);
     }
 

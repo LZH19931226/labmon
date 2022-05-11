@@ -137,4 +137,15 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
         InstrumentparamconfigPo instrumentparamconfigPo = instrumentparamconfigDao.selectById(instrumentparamconfigno);
         return BeanConverter.convert(instrumentparamconfigPo,InstrumentparamconfigDTO.class);
     }
+
+    /**
+     * 查询探头参数配置信息
+     *
+     * @return
+     */
+    @Override
+    public List<InstrumentparamconfigDTO> selectInstrumentparamconfigAllInfo() {
+        List<InstrumentparamconfigPo> instrumentparamconfigPos = instrumentparamconfigDao.selectList(null);
+        return BeanConverter.convert(instrumentparamconfigPos,InstrumentparamconfigDTO.class);
+    }
 }

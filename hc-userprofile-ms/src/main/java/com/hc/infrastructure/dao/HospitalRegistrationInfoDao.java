@@ -39,7 +39,7 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
             "</if>" +
             "<if  test = 'isEnable != null and isEnable != \"\" '> " +
             "and isenable = #{isEnable}"+
-            "</if>"+
+            "</if>" +
             "</script>")
     List<HospitalRegistrationInfoDto> selectListByHospital(Page page, @Param(value = "hospitalName") String hospitalName,
                                                            @Param(value = "isEnable") String isEnable);
