@@ -255,7 +255,8 @@ public class MonitorEquipmentApplication {
         logInfoCommand.setType(Type);
         logInfoCommand.setOperationType(operationType);
         //根据医院code获取医院名称
-        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(newMonitorEquipmentLogCommand.getHospitalCode()).getResult();
+        String hospitalCode = oldMonitorEquipmentLogCommand.getHospitalCode() != null ? oldMonitorEquipmentLogCommand.getHospitalCode() : newMonitorEquipmentLogCommand.getHospitalCode();
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
         if(!ObjectUtils.isEmpty(hospitalInfo)){
             logInfoCommand.setHospitalName(hospitalInfo.getHospitalName());
         }

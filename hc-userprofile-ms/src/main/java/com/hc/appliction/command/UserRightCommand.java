@@ -53,13 +53,17 @@ public class UserRightCommand {
     @ApiModelProperty(value = "超时联系人")
     private String timeout;
 
-    /** 报警方式 */
-    @ApiModelProperty(value = "报警方式")
+    /** 推送类型 */
+    @ApiModelProperty(value = "推送类型")
     private String deviceType;
 
     /** 超时警告 */
     @ApiModelProperty(value = "超时警告")
     private String timeoutWarning;
+
+    /** 报警方式 */
+    @ApiModelProperty(value = "报警方式")
+    private String reminders;
 
     /** 分页大小 */
     @ApiModelProperty(value = "分页大小")

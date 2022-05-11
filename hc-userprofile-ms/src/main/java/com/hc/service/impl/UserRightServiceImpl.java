@@ -111,7 +111,6 @@ public class UserRightServiceImpl implements UserRightService {
         List<UserRightDto> list = userRightRepository.selectHospitalInfoByCode(userRightCommand.getHospitalCode());
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         objectObjectObjectHashOperations.put("hospital:phonenum",userRightCommand.getHospitalCode(), JSON.toJSON(list));
-
     }
 
     /**

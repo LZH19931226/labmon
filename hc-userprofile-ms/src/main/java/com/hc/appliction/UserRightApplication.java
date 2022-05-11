@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
+import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserRightDto;
 import com.hc.labmanagent.OperationlogApi;
@@ -11,11 +12,13 @@ import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.UserBackService;
 import com.hc.service.UserRightService;
 import com.hc.vo.user.UserRightVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -36,6 +39,9 @@ public class UserRightApplication {
 
     @Autowired
     private  UserBackService userBackService;
+
+    @Autowired
+    private HospitalRegistrationInfoService hospitalRegistrationInfoService;
     /**
      * 根据分页信息查询用户权限信息
      * @param userRightCommand  用户权限命令
@@ -62,6 +68,7 @@ public class UserRightApplication {
                         .deviceType(res.getDeviceType())
                         .timeout(res.getTimeout()==null?"":res.getTimeout())
                         .timeoutWarning(res.getTimeoutWarning()==null?"":res.getTimeoutWarning())
+                        .reminders(res.getReminders()==null?"":res.getReminders())
                         .build();
                 list.add(result);
             });
@@ -86,11 +93,17 @@ public class UserRightApplication {
 
     private UserRightInfoCommand build(String userId, UserRightLogCommand oldInfo, UserRightCommand newInfo, String type, String operationType) {
         UserRightInfoCommand userRightInfoCommand = new UserRightInfoCommand();
+        //查询用户信息
         UserBackDto userBackDto = userBackService.selectUserBackByUserId(userId);
         if(!ObjectUtils.isEmpty(userBackDto)){
             userRightInfoCommand.setUsername(userBackDto.getUsername());
         }
-        userRightInfoCommand.setHospitalName(newInfo.getHospitalName());
+        //查询医院信息
+        String hospitalCode = oldInfo.getHospitalCode()==null?newInfo.getHospitalCode():oldInfo.getHospitalCode();
+        HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
+        if(!ObjectUtils.isEmpty(hospitalInfo)){
+            userRightInfoCommand.setHospitalName(hospitalInfo.getHospitalName());
+        }
         userRightInfoCommand.setType(type);
         userRightInfoCommand.setOperationType(operationType);
         UserRightLogCommand convert = BeanConverter.convert(newInfo, UserRightLogCommand.class);
@@ -119,9 +132,10 @@ public class UserRightApplication {
      * 删除用户信息
      * @param userRightCommand
      */
+    @Transactional(rollbackFor = Exception.class)
     public void deleteUserRightInfo(UserRightCommand userRightCommand) {
-        userRightService.deleteUserRightInfo(userRightCommand);
         UserRightDto userRightDto = userRightService.selectUserRightInfo(userRightCommand.getUserid());
+        userRightService.deleteUserRightInfo(userRightCommand);
         UserRightLogCommand command = BeanConverter.convert(userRightDto, UserRightLogCommand.class);
         UserRightInfoCommand build =
                 build(Context.getUserId(), command, new UserRightCommand(), OperationLogEunm.USER_INFO.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());

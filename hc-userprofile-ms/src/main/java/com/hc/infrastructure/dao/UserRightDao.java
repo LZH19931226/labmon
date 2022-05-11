@@ -39,7 +39,8 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             ",u.devicetype deviceType " +
             ",u.timeout timeout " +
             ",u.timeoutwarning timeoutWarning " +
-            "FROM userright u " +
+            ",u.reminders reminders " +
+            " FROM userright u " +
             "LEFT JOIN hospitalofreginfo h ON u.hospitalcode = h.hospitalcode "+
             "where 1=1" +
             "<if test = 'hospitalName !=null and hospitalName != \"\"'>" +

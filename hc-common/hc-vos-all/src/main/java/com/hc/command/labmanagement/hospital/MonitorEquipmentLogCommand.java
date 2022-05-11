@@ -17,6 +17,9 @@ public class MonitorEquipmentLogCommand {
      */
     private Long clientVisible;
 
-
+    /**
+     * 医院编码
+     */
+    private String hospitalCode;
 
 }

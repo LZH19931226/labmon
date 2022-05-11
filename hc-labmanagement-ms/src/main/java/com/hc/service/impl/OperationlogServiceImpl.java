@@ -102,30 +102,15 @@ public class OperationlogServiceImpl implements OperationlogService {
         }
         //是否可用
         Long isuse = oldUserRight.getIsUse();
-        if (null == isuse) {
-            isuse = 1L;
-        }
-
         Long isuse1 = nowUserRight.getIsUse();
-        if (null == isuse1) {
-            isuse1 = 1L;
-        }
 
-        if (isuse == isuse1) {
+        if (isuse != isuse1) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("isuse");
             operationlogdetail.setFiledcaption("用户是否可用");
-            if (isuse1==1L) {
-                operationlogdetail.setFiledvalue("1");//当前值
-            } else {
-                operationlogdetail.setFiledvalue("0");//当前值
-            }
-            if (isuse==1L) {
-                operationlogdetail.setFiledvalueprev("1");//历史值
-            } else {
-                operationlogdetail.setFiledvalueprev("0");//当前值
-            }
+            operationlogdetail.setFiledvalue(isuse1!=null?(isuse1==1L?"1":"0"):"0");
+            operationlogdetail.setFiledvalueprev(isuse!=null?(isuse==1L?"1":"0"):"0");
             operationlogdetail.setComment(username);
             operationlogdetails.add(operationlogdetail);
         }
@@ -292,19 +277,13 @@ public class OperationlogServiceImpl implements OperationlogService {
         }
         Integer timeouttime = oldEquipmentTypeInfo.getTimeoutTime();//超时报警时间间隔
         Integer timeouttime1 = nowEquipmentTypeInfo.getTimeoutTime();//超时报警时间间隔
-        if (timeouttime == null) {
-            timeouttime = 0;
-        }
-        if (timeouttime1 == null) {
-            timeouttime1 = 0;
-        }
-        if (timeouttime.equals(timeouttime1)) {
+        if (timeouttime != timeouttime1) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("timeouttime");
             operationlogdetail.setFiledcaption("超时报警时长");
-            operationlogdetail.setFiledvalue(timeouttime1.toString());//当前值
-            operationlogdetail.setFiledvalueprev(timeouttime.toString());//历史值
+            operationlogdetail.setFiledvalue(timeouttime1==null?null:timeouttime1.toString());//当前值
+            operationlogdetail.setFiledvalueprev(timeouttime==null?null:timeouttime.toString());//历史值
             operationlogdetails.add(operationlogdetail);
         }
         if (flag) {

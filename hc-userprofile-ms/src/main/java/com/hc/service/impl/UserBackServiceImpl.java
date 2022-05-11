@@ -41,6 +41,10 @@ public class UserBackServiceImpl  implements UserBackService {
         return userBackRepository.userLogin(userBackPo);
     }
 
+    /**
+     * 修改用户信息
+     * @param userCommand
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUserInfo(UserCommand userCommand) {

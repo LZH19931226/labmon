@@ -134,7 +134,7 @@ public class InstrumentparamconfigApplication {
             infoCommand.setUsername(userInfo.getUsername());
         }
         //获取医院信息
-        String hospitalCode = newInfo.getHospitalCode();
+        String hospitalCode =  old.getHospitalCode() != null ? old.getHospitalCode() : newInfo.getHospitalCode();
         HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
         if(!ObjectUtils.isEmpty(hospitalInfo)){
             infoCommand.setHospitalName(hospitalInfo.getHospitalName());

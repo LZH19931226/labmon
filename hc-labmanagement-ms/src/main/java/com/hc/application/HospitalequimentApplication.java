@@ -83,7 +83,8 @@ public class HospitalequimentApplication {
             logCommand.setUsername(userInfo.getUsername());
         }
         //获取医院信息
-        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(newHospitalEquipmentTypeCommand.getHospitalcode()).getResult();
+        String hospitalCode = oldHospitalEquipmentTypeCommand.getHospitalcode() != null ? oldHospitalEquipmentTypeCommand.getHospitalcode() : newHospitalEquipmentTypeCommand.getHospitalcode();
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
         if(!ObjectUtils.isEmpty(hospitalInfo)){
             logCommand.setHospitalName(hospitalInfo.getHospitalName());
         }
@@ -177,4 +178,5 @@ public class HospitalequimentApplication {
                 new HospitalEquimentTypeCommand(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode());
         operationlogService.addHospitalEquipmentOperationLogCommand(build);
     }
+
 }
