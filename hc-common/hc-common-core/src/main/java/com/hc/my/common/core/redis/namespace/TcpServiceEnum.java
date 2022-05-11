@@ -7,7 +7,9 @@ public enum TcpServiceEnum {
     //用于维护sn和通道关联关系
     TCPCLIENT("TCPCLIENT"),
     //用于维护通道和sn关联关系
-    SNCLIENT("SNCLIENT");
+    SNCLIENT("SNCLIENT"),
+    //用于维护SN最新信息
+    SNLIVEDATA("SNLIVEDATA");
 
 
 

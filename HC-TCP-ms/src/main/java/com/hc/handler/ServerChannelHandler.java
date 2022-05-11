@@ -101,15 +101,15 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
             paseData.forEach(snData -> {
                 String sn = snData.getSN();
                 String cmdid = snData.getCmdid();
-                //是否是心跳需要应答
-                checkIsHeartbeat(cmdid,ctx);
-                //sn是否是MT600
-                isMiansClient(sn, asShortText);
-                //将通道发送
                 snData.setChannelId(asShortText);
                 snData.setNowTime(new Date());
+                //是否是心跳需要应答
+                checkIsHeartbeat(sn,asShortText,cmdid,ctx);
+                //sn是否是MT600
+                isMiansClient(sn, asShortText);
+                //推送mq
                 randomPush(snData);
-                log.info("通道:{},推送给RabbitMQ的模型为:{}",dataStr,JsonUtil.toJson(snData));
+                log.info("通道:{},原始数据:{},推送给RabbitMQ的模型为:{}",asShortText,dataStr,JsonUtil.toJson(snData));
             });
         } catch (Exception e) {
             log.error("通道:{},数据接收异常:{}",ctx.channel().id().asShortText(),Hex.encodeHexString(receiveMsgBytes));
@@ -159,11 +159,13 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         }
     }
     //应答心跳包
-    public void checkIsHeartbeat(String cmdId,ChannelHandlerContext ctx){
+    public void checkIsHeartbeat(String sn,String channelId,String cmdId,ChannelHandlerContext ctx){
         if (StringUtils.equals(cmdId, EquipmentCommand.CMD88.getCmdId())) {
             //应答消息48 43 08 00 03 23
             nettyUtil.sendData(ctx, EquipmentCommand.HEART_RATE_RESPONSE.getCmdId());
+            log.info("sn号:{},通道:{},心跳包应答:{}",sn,channelId,EquipmentCommand.HEART_RATE_RESPONSE.getCmdId());
         }
     }
+
 
 }

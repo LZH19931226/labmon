@@ -55,11 +55,11 @@ public class DateUtils {
     /**
      * 解析时间
      *
-     * @param nowTime   当前时间 yyyy-mm-dd
+     * @param nowTime 当前时间 yyyy-mm-dd
      * @author liu
      */
     public static String paseDate(Date nowTime) {
-       return dateFormat.format(nowTime);
+        return dateFormat.format(nowTime);
 
     }
 
@@ -70,17 +70,17 @@ public class DateUtils {
 
     /**
      * 获取当前时间
+     *
      * @return
      */
-    public  String getNowDate(){
+    public String getNowDate() {
         return datetimeFormat.format(new Date());
     }
 
     /**
-     *
-     * @return  一个月以前的当前日期
+     * @return 一个月以前的当前日期
      */
-    public  String getCurrentDateTimeBeforeOneMonth(){
+    public String getCurrentDateTimeBeforeOneMonth() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         c.add(Calendar.MONTH, -1);
@@ -90,13 +90,20 @@ public class DateUtils {
 
     /**
      * 获取指定时间前一天
-     * @param day   指定时间
+     *
+     * @param day 指定时间
      * @author liu
      */
-    public static String getYesterday(Date day){
-        long ms = day.getTime() - 1*24*3600*1000L;
+    public static String getYesterday(Date day) {
+        long ms = day.getTime() - 1 * 24 * 3600 * 1000L;
         Date prevDay = new Date(ms);
         return dateFormat.format(prevDay);
+    }
+
+    //根据输入秒数,计算时间差
+    public static boolean calculateIntervalTime(Date nowTime, Date wornTime, int seconds) {
+        long timeInterval = (nowTime.getTime() - wornTime.getTime()) / (1000);
+        return timeInterval > seconds;
     }
 
     public static void main(String[] args) throws ParseException {
