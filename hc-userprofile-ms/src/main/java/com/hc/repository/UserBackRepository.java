@@ -53,11 +53,18 @@ public interface UserBackRepository{
      * 删除用户信息
      * @param userid
      */
-    void deleteUserInfo(Long[] userid);
+    void deleteUserInfo(String[] userid);
 
     /**
      * 新增后台信息
      * @param userCommand
      */
     void insertUserInfo(UserCommand userCommand);
+
+    /**
+     * 查询用户信息
+     * @param username 用户名
+     * @return
+     */
+    UserBackDto selectUserBackByUsername(String username);
 }

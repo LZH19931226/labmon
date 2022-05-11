@@ -82,5 +82,11 @@ public interface InstrumentparamconfigService{
      * @return
      */
     InstrumentparamconfigDTO selectInstrumentparamconfigInfo(String instrumentparamconfigno);
+
+    /**
+     * 查询所有的信息
+     * @return
+     */
+    List<InstrumentparamconfigDTO> selectInstrumentparamconfigAllInfo();
 }
 

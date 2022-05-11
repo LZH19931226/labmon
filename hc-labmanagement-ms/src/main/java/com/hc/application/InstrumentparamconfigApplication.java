@@ -22,10 +22,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 /**
@@ -216,7 +215,23 @@ public class InstrumentparamconfigApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
+        List<InstrumentparamconfigDTO> dtos = instrumentparamconfigService.selectInstrumentparamconfigAllInfo();
+        Map<String, InstrumentparamconfigDTO> collect = dtos.stream().collect(Collectors.toMap(InstrumentparamconfigDTO::getInstrumentparamconfigno, Function.identity()));
         instrumentparamconfigService.deleteInfos(instrumentParamConfigNos);
+
+        for (String instrumentParamConfigNo : instrumentParamConfigNos) {
+            InstrumentparamconfigDTO instrumentparamconfigDTO = collect.get(instrumentParamConfigNo);
+            if (!ObjectUtils.isEmpty(instrumentparamconfigDTO)) {
+
+                InstrumentParamConfigInfoCommand build = build(Context.getUserId()
+                        , BeanConverter.convert(instrumentparamconfigDTO, InstrumentparamconfigCommand.class)
+                        , new InstrumentparamconfigCommand()
+                        , OperationLogEunm.PROBE_MANAGEMENT.getCode()
+                        , OperationLogEunmDerailEnum.REMOVE.getCode());
+                operationlogService.addInstrumentparamconfig(build);
+
+            }
+        }
     }
 
     /**

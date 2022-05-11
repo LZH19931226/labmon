@@ -118,4 +118,14 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     public InstrumentparamconfigDTO selectInstrumentparamconfigInfo(String instrumentparamconfigno) {
         return instrumentparamconfigRepository.selectInstrumentparamconfigInfo(instrumentparamconfigno);
     }
+
+    /**
+     * 查询所有的信息
+     *
+     * @return
+     */
+    @Override
+    public List<InstrumentparamconfigDTO> selectInstrumentparamconfigAllInfo() {
+        return instrumentparamconfigRepository.selectInstrumentparamconfigAllInfo();
+    }
 }

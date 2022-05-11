@@ -388,10 +388,11 @@ public class MonitorEquipmentApplication {
         if (integer > 0) {
             monitorequipmentwarningtimeService.deleteInfo(new MonitorequipmentwarningtimeDTO().setEquipmentid(equipmentNo));
         }
-
-//        //删除探头参数表中的信息
-//        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
-//        instrumentparamconfigService.deleteInfoByEno(monitorinstrumentDTO.getInstrumentno());
+        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
+        MonitorEquipmentLogCommand convert = BeanConverter.convert(monitorEquipmentDto, MonitorEquipmentLogCommand.class);
+        MonitorEquipmentLogInfoCommand build =
+                build(Context.getUserId(), monitorEquipmentDto.getEquipmentName(), convert, new MonitorEquipmentCommand(), OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
+        operationlogService.addMonitorEquipmentLogInfo(build);
     }
 
     /**

@@ -93,8 +93,8 @@ public class HospitalInfoApplication {
         hospitalOperationLogCommand.setUserId(userId);
         hospitalOperationLogCommand.setType(type);
         hospitalOperationLogCommand.setOperationType(operationType);
-        hospitalOperationLogCommand.setNewHospitalCommand(oldHospitalCommand);
-        hospitalOperationLogCommand.setOldHospitalCommand(newHospitalCommand);
+        hospitalOperationLogCommand.setNewHospitalCommand(newHospitalCommand);
+        hospitalOperationLogCommand.setOldHospitalCommand(oldHospitalCommand);
         UserBackDto userBackDto =  userBackService.selectUserBackByUserId(userId);
         if(!ObjectUtils.isEmpty(userBackDto)){
             hospitalOperationLogCommand.setUsername(userBackDto.getUsername());
@@ -116,6 +116,7 @@ public class HospitalInfoApplication {
 
         HospitalOperationLogCommand hospitalOperationLogCommand = buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand1 ,hospitalCommand,
                 OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.EDIT.getCode());
+
         operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
     }
 
@@ -128,9 +129,11 @@ public class HospitalInfoApplication {
     public void deleteHospitalInfoByCode(String hospitalCode) {
         HospitalRegistrationInfoDto hospitalInfoByCode = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         hospitalRegistrationInfoService.deleteHospitalInfoByCode(hospitalCode);
+
         HospitalCommand convert = BeanConverter.convert(hospitalInfoByCode, HospitalCommand.class);
         HospitalOperationLogCommand hospitalOperationLogCommand =
-                buildHospitalOperationLogCommand(Context.getUserId(), convert, new HospitalCommand(), OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
+                buildHospitalOperationLogCommand(Context.getUserId(), convert, new HospitalCommand(),
+                        OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
     }
 

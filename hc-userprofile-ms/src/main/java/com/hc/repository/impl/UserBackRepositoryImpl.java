@@ -109,8 +109,8 @@ public class UserBackRepositoryImpl  implements UserBackRepository {
      * @param userid
      */
     @Override
-    public void deleteUserInfo(Long[] userid) {
-        List<Long> longs = Arrays.asList(userid);
+    public void deleteUserInfo(String[] userid) {
+        List<String> longs = Arrays.asList(userid);
         userBackDao.deleteBatchIds(longs);
     }
 
@@ -124,5 +124,17 @@ public class UserBackRepositoryImpl  implements UserBackRepository {
         String username = userCommand.getUsername();
         String pwd = userCommand.getPwd();
         userBackDao.insert(new UserBackPo().setUsername(username).setPwd(pwd));
+    }
+
+    /**
+     * 查询用户信息
+     *
+     * @param username 用户名
+     * @return
+     */
+    @Override
+    public UserBackDto selectUserBackByUsername(String username) {
+        UserBackPo userBackPo = userBackDao.selectOne(Wrappers.lambdaQuery(new UserBackPo()).eq(UserBackPo::getUsername, username));
+        return BeanConverter.convert(userBackPo,UserBackDto.class);
     }
 }

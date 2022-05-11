@@ -45,7 +45,7 @@ public interface UserBackService {
      * 删除用户信息
      * @param userid
      */
-    void deleteUserInfo(Long[] userid);
+    void deleteUserInfo(String[] userid);
 
     /**
      * 新增用户信息
