@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class UserRightApplication {
 
     @Autowired
     private HospitalRegistrationInfoService hospitalRegistrationInfoService;
+
     /**
      * 根据分页信息查询用户权限信息
      * @param userRightCommand  用户权限命令
@@ -59,7 +61,7 @@ public class UserRightApplication {
                         .hospitalCode(res.getHospitalCode())
                         .userid(res.getUserid())
                         .username(res.getUsername())
-                        .nickname(res.getNickname())
+                        .nickname(StringUtils.isEmpty(res.getNickname())?res.getUsername():res.getNickname())
                         .pwd(res.getPwd())
                         .hospitalName(res.getHospitalName())
                         .phoneNum(res.getPhoneNum())

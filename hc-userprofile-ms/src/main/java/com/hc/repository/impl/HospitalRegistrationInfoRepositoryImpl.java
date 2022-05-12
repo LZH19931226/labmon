@@ -44,7 +44,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
-        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalName(),hospitalCommand.getIsEnable());
+        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalCode(),hospitalCommand.getIsEnable());
     }
 
     /**
@@ -136,6 +136,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
     }
 
     /**
+     * 查询医院信息
      * @param hospitalCode
      * @return
      */

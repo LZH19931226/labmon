@@ -26,10 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class OperationlogServiceImpl implements OperationlogService {
@@ -40,23 +37,15 @@ public class OperationlogServiceImpl implements OperationlogService {
     @Autowired
     private OperationlogdetailRepository operationlogdetailRepository;
 
-
+    /**
+     * 添加用户日志信息
+     * @param userRightInfoCommand
+     */
     @Override
     public void addUserRightLog(UserRightInfoCommand userRightInfoCommand) {
         List<OperationlogdetailPo> operationlogdetails = new ArrayList<>();
         UserRightLogCommand nowUserRight = userRightInfoCommand.getNewUserRight();
         UserRightLogCommand oldUserRight = userRightInfoCommand.getOldUserRight();
-
-        String userid = null;
-        String userid1 = oldUserRight.getUserid();
-        String userid2 = nowUserRight.getUserid();
-        if (StringUtils.isNotEmpty(userid1)) {
-            userid = userid1;
-        }
-        if (StringUtils.isNotEmpty(userid2)) {
-            userid = userid2;
-        }
-
         boolean flag = false;
         //比对消息
         //用户名
@@ -104,7 +93,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         Long isuse = oldUserRight.getIsUse();
         Long isuse1 = nowUserRight.getIsUse();
 
-        if (isuse != isuse1) {
+        if (!Objects.equals(isuse, isuse1)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("isuse");
@@ -129,6 +118,20 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetails.add(operationlogdetail);
         }
 
+        //用户昵称
+        String nickname = oldUserRight.getNickname();
+        String nickname1 = nowUserRight.getNickname();
+        if(!StringUtils.equals(nickname,nickname1)){
+            flag = true;
+            OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
+            operationlogdetail.setFiledname("nickname");
+            operationlogdetail.setFiledcaption("用户昵称");
+            operationlogdetail.setFiledvalue(nickname1);//当前值
+            operationlogdetail.setFiledvalueprev(nickname);//历史值
+            operationlogdetail.setComment(username);
+            operationlogdetails.add(operationlogdetail);
+        }
+
         if (flag) {
             OperationlogPo operationlog = new OperationlogPo();
             operationlog.setFunctionname("人员管理");
@@ -149,6 +152,10 @@ public class OperationlogServiceImpl implements OperationlogService {
         }
     }
 
+    /**
+     * 添加医院日志信息
+     * @param hospitalOperationLogCommand
+     */
     @Override
     public void addHospitalOperationlog(HospitalOperationLogCommand hospitalOperationLogCommand) {
 
@@ -232,6 +239,10 @@ public class OperationlogServiceImpl implements OperationlogService {
         }
     }
 
+    /**
+     * 添加医院设备类型日志信息
+     * @param hospitalEquipmentOperationLogCommand
+     */
     @Override
     public void addHospitalEquipmentOperationLogCommand(HospitalEquipmentOperationLogCommand hospitalEquipmentOperationLogCommand) {
         List<OperationlogdetailPo> operationlogdetails = new ArrayList<>();
@@ -239,7 +250,6 @@ public class OperationlogServiceImpl implements OperationlogService {
         HospitalEquimentTypeInfoCommand nowEquipmentTypeInfo = hospitalEquipmentOperationLogCommand.getNewHospitalEquimentTypeCommand();
         HospitalEquimentTypeInfoCommand oldEquipmentTypeInfo = hospitalEquipmentOperationLogCommand.getOldHospitalEquimentTypeCommand();
         String operationType = hospitalEquipmentOperationLogCommand.getOperationType();
-
 
         String equipmenttypeid = oldEquipmentTypeInfo.getEquipmentTypeId();//设备类型原始值
         String equipmenttypeid1 = nowEquipmentTypeInfo.getEquipmentTypeId();//设备类型当前值
@@ -277,7 +287,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         }
         Integer timeouttime = oldEquipmentTypeInfo.getTimeoutTime();//超时报警时间间隔
         Integer timeouttime1 = nowEquipmentTypeInfo.getTimeoutTime();//超时报警时间间隔
-        if (timeouttime != timeouttime1) {
+        if (!Objects.equals(timeouttime, timeouttime1)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("timeouttime");
@@ -305,6 +315,10 @@ public class OperationlogServiceImpl implements OperationlogService {
         }
     }
 
+    /**
+     * 添加监控设备日志信息
+     * @param monitorEquipmentLogInfoCommand
+     */
     @Override
     public void addMonitorEquipmentLogInfo(MonitorEquipmentLogInfoCommand monitorEquipmentLogInfoCommand) {
         List<OperationlogdetailPo> operationlogdetails = new ArrayList<>();
@@ -328,28 +342,15 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetails.add(operationlogdetail);
         }
         Long clientvisible = oldEquipmentInfoModel.getClientVisible();//是否可用
-        if (null == clientvisible) {
-            clientvisible = 2L;
-        }
         Long clientvisible1 = nowEquipmentInfoModel.getClientVisible();//是否可用
-        if (null == clientvisible1) {
-            clientvisible1 = 2L;
-        }
-        if (!(clientvisible == clientvisible1)) {
+
+        if (!(Objects.equals(clientvisible, clientvisible1))) {
             flag = true;
-            String old = "可用";
-            String now = "可用";
-            if (clientvisible==2l) {
-                old = "不可用";
-            }
-            if (clientvisible1==2L) {
-                now = "不可用";
-            }
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("clientvisible");
             operationlogdetail.setFiledcaption("是否可用");
-            operationlogdetail.setFiledvalue(now);//当前值
-            operationlogdetail.setFiledvalueprev(old);//历史值
+            operationlogdetail.setFiledvalue(clientvisible1==null?"":clientvisible1.toString());//当前值
+            operationlogdetail.setFiledvalueprev(clientvisible==null?"":clientvisible.toString());//历史值
             operationlogdetails.add(operationlogdetail);
         }
         if (flag) {
@@ -404,9 +405,8 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetail.setComment(instrumentName);
             operationlogdetails.add(operationlogdetail);
         }
-
-        BigDecimal lowlimit = oldInstrumentInfoModel.getLowlimit();//最低限值
-
+        //最低限值
+        BigDecimal lowlimit = oldInstrumentInfoModel.getLowlimit();
         BigDecimal lowlimit1 = nowInstrumentInfoModel.getLowlimit();
         if (lowlimit != null && lowlimit1 != null) {
             if (lowlimit.compareTo(lowlimit1) != 0) {
@@ -433,9 +433,9 @@ public class OperationlogServiceImpl implements OperationlogService {
             }
             operationlogdetails.add(operationlogdetail);
         }
-
-        BigDecimal highlimit = oldInstrumentInfoModel.getHighlimit();//最高限值
-        BigDecimal highlimit1 = nowInstrumentInfoModel.getHighlimit();//最高限值（当前）
+        //最高限值
+        BigDecimal highlimit = oldInstrumentInfoModel.getHighlimit();
+        BigDecimal highlimit1 = nowInstrumentInfoModel.getHighlimit();
         if (highlimit != null && highlimit1 != null) {
             if (highlimit.compareTo(highlimit1) != 0) {
                 //值发生了改变
@@ -462,8 +462,8 @@ public class OperationlogServiceImpl implements OperationlogService {
             }
             operationlogdetails.add(operationlogdetail);
         }
-
-        String calibration = oldInstrumentInfoModel.getCalibration();//矫正正负值
+        //矫正正负值
+        String calibration = oldInstrumentInfoModel.getCalibration();
         String calibration1 = nowInstrumentInfoModel.getCalibration();
         if (!StringUtils.equals(calibration1, calibration)) {
             flag = true;
@@ -475,7 +475,8 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetail.setComment(instrumentName);
             operationlogdetails.add(operationlogdetail);
         }
-        String channel = oldInstrumentInfoModel.getChannel();//通道
+        //通道
+        String channel = oldInstrumentInfoModel.getChannel();
         String channel1 = nowInstrumentInfoModel.getChannel();
         if (!(StringUtils.isEmpty(channel) && StringUtils.isEmpty(channel1))) {
             if (!StringUtils.equals(channel, channel1)) {
@@ -489,25 +490,21 @@ public class OperationlogServiceImpl implements OperationlogService {
                 operationlogdetails.add(operationlogdetail);
             }
         }
-        Integer alarmtime = oldInstrumentInfoModel.getAlarmtime();//智能报警次数
-        if (alarmtime == null) {
-            alarmtime = 0;
-        }
+        //智能报警次数
+        Integer alarmtime = oldInstrumentInfoModel.getAlarmtime();
         Integer alarmtime1 = nowInstrumentInfoModel.getAlarmtime();
-        if (alarmtime1 == null) {
-            alarmtime1 = 0;
-        }
-        if (alarmtime != alarmtime1) {
+        if (!alarmtime.equals(alarmtime1)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("alarmtime");
             operationlogdetail.setFiledcaption("智能报警次数");
-            operationlogdetail.setFiledvalue(channel1);//当前值
-            operationlogdetail.setFiledvalueprev(channel);//历史值
+            operationlogdetail.setFiledvalue(alarmtime1.toString());//当前值
+            operationlogdetail.setFiledvalueprev(alarmtime.toString());//历史值
             operationlogdetail.setComment(instrumentName);
             operationlogdetails.add(operationlogdetail);
         }
-        String warningphone = oldInstrumentInfoModel.getWarningphone();//禁用启用报警
+        //禁用启用报警
+        String warningphone = oldInstrumentInfoModel.getWarningphone();
         String warningphone1 = nowInstrumentInfoModel.getWarningphone();
         if (!StringUtils.equals(warningphone1, warningphone)) {
             flag = true;
@@ -519,9 +516,10 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetail.setComment(instrumentName);
             operationlogdetails.add(operationlogdetail);
         }
+
         if (flag) {
             String hospitalName = instrumentparamconfigInfoCommand.getHospitalName();
-            String equipmentName = instrumentparamconfigInfoCommand.getEquipmentName();
+            String equipmentName = instrumentparamconfigInfoCommand.getInstrumentName().replaceAll("探头","");
             String username = instrumentparamconfigInfoCommand.getUsername();
             String type = instrumentparamconfigInfoCommand.getType();
             OperationlogPo operationlog = new OperationlogPo();
@@ -535,8 +533,13 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlog.setPlatform(type);
             addOperationLogInfo(operationlog, operationlogdetails);
         }
-
     }
+
+    /**
+     * 保存日志和详细日志的方法
+     * @param operationlog
+     * @param operationlogdetailPos
+     */
     public void addOperationLogInfo(OperationlogPo operationlog,List<OperationlogdetailPo> operationlogdetailPos){
         // 执行日志表插入操作
         operationlog.setLogid(UUID.randomUUID().toString().replaceAll("-", ""));

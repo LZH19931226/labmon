@@ -172,10 +172,13 @@ public class HospitalequimentApplication {
      */
     public void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid) {
         HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode, equipmenttypeid);
+
         hospitalequimentService.deleteHospitalEquimentType(hospitalCode,equipmenttypeid);
+
+        //添加日志信息
         HospitalEquimentTypeCommand convert = BeanConverter.convert(hospitalequimentDTO, HospitalEquimentTypeCommand.class);
         HospitalEquipmentOperationLogCommand build = build(Context.getUserId(), convert,
-                new HospitalEquimentTypeCommand(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode());
+                new HospitalEquimentTypeCommand(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogService.addHospitalEquipmentOperationLogCommand(build);
     }
 

@@ -72,26 +72,47 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
      */
     @Override
     public void editScheduleInfo(String hospitalCode, Date oldStartTime, Date oldEndTime, Date newStartTime, Date newEndTime) {
-        List<UserSchedulingPo> userSchedulingPos = userSchedulingDao.selectList(Wrappers.lambdaQuery(new UserSchedulingPo())
-                .eq(UserSchedulingPo::getHospitalCode, hospitalCode)
-                .eq(UserSchedulingPo::getStartTime, oldStartTime)
-                .eq(UserSchedulingPo::getEndTime, oldEndTime)
-        );
+//        List<UserSchedulingPo> userSchedulingPos = userSchedulingDao.selectList(Wrappers.lambdaQuery(new UserSchedulingPo())
+//                .eq(UserSchedulingPo::getHospitalCode, hospitalCode)
+//                .eq(UserSchedulingPo::getStartTime, oldStartTime)
+//                .eq(UserSchedulingPo::getEndTime, oldEndTime)
+//        );
+//        if(CollectionUtils.isEmpty(userSchedulingPos)){
+//            throw new IedsException(UserScheduleEnumCode.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
+//        }
+//        for (UserSchedulingPo userSchedulingPo : userSchedulingPos) {
+//            userSchedulingPo.setStartTime(newStartTime);
+//            userSchedulingPo.setEndTime(newEndTime);
+//            userSchedulingPo.setUsid(null);
+//            userSchedulingDao.insert(userSchedulingPo);
+//        }
+        //判断时间段是否统一
+        long time1 =  oldEndTime.getTime()-oldStartTime.getTime();
+        long time2 =  newEndTime.getTime()-newStartTime.getTime();
+        if(time1!=time2){
+            throw new IedsException(UserScheduleEnumCode.TIME_PERIOD_DISAGREE.getMessage());
+        }
+        List<UserSchedulingPo> userSchedulingPos = userSchedulingDao.selectTimePeriod( hospitalCode,oldStartTime,oldEndTime);
         if(CollectionUtils.isEmpty(userSchedulingPos)){
             throw new IedsException(UserScheduleEnumCode.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
         }
+        //计算新时间段与旧时间段差值
+        long days = newStartTime.getTime()-oldStartTime.getTime();
+
         for (UserSchedulingPo userSchedulingPo : userSchedulingPos) {
-            userSchedulingPo.setStartTime(newStartTime);
-            userSchedulingPo.setEndTime(newEndTime);
-            userSchedulingPo.setUsid(null);
-//            Integer integer = userSchedulingDao.selectCount(Wrappers.lambdaQuery(new UserSchedulingPo())
-//                    .eq(UserSchedulingPo::getHospitalCode, hospitalCode)
-//                    .eq(UserSchedulingPo::getStartTime, newStartTime)
-//                    .eq(UserSchedulingPo::getEndTime, newEndTime));
-//            if(integer>0){
-//                throw new IedsException(UserScheduleEnumCode.SCHEDULE_INFORMATION_EXISTS.getMessage());
-//            }
-            userSchedulingDao.insert(userSchedulingPo);
+
+                long start = userSchedulingPo.getStartTime().getTime() + days;
+                Date startDate = new Date();
+                startDate.setTime(start);
+
+                long end =  userSchedulingPo.getEndTime().getTime() + days;
+                Date endDate = new Date();
+                endDate.setTime(end);
+
+                userSchedulingPo.setStartTime(startDate);
+                userSchedulingPo.setEndTime(endDate);
+                userSchedulingPo.setUsid(null);
+                userSchedulingDao.insert(userSchedulingPo);
         }
     }
 

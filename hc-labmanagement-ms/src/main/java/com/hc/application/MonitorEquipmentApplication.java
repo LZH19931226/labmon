@@ -164,6 +164,7 @@ public class MonitorEquipmentApplication {
                         .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                         .deleteOrNot(deleteOrNot)
                         .channel(res.getChannel())
+                        .saturation(StringUtils.isEmpty(res.getSaturation()) ? "" : res.getSaturation())
                         .build();
                 list.add(build);
             });
@@ -354,7 +355,7 @@ public class MonitorEquipmentApplication {
                 instrumentparamconfigDTO.setInstrumentname(monitorEquipmentCommand.getEquipmentName() + "探头");
                 instrumentparamconfigDTO.setSaturation(dto.getSaturation());
                 instrumentparamconfigDTO.setAlarmtime(Integer.valueOf(monitorEquipmentCommand.getAlwaysAlarm()));
-
+                instrumentparamconfigDTO.setFirsttime(new Date());
                 instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
             }
         }

@@ -125,7 +125,15 @@ public class InstrumentparamconfigApplication {
         operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
     }
 
-
+    /**
+     * 构建InstrumentParamConfigInfoCommand对象
+     * @param userId
+     * @param old
+     * @param newInfo
+     * @param type
+     * @param operationType
+     * @return
+     */
     private InstrumentParamConfigInfoCommand build(String userId, InstrumentparamconfigCommand old, InstrumentparamconfigCommand newInfo, String type, String operationType) {
         InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
         //获取用户名称
@@ -134,8 +142,9 @@ public class InstrumentparamconfigApplication {
             infoCommand.setUsername(userInfo.getUsername());
         }
         //获取医院信息
-        String hospitalCode =  old.getHospitalCode() != null ? old.getHospitalCode() : newInfo.getHospitalCode();
-        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+        String instrumentNo =  old.getInstrumentNo() != null ? old.getInstrumentNo() : newInfo.getInstrumentNo();
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentNo);
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(monitorinstrumentDTO.getHospitalcode()).getResult();
         if(!ObjectUtils.isEmpty(hospitalInfo)){
             infoCommand.setHospitalName(hospitalInfo.getHospitalName());
         }
@@ -199,6 +208,7 @@ public class InstrumentparamconfigApplication {
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
 
+        //添加日志信息
         InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
                 build(Context.getUserId(),
                         BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
@@ -268,7 +278,8 @@ public class InstrumentparamconfigApplication {
                         .highlimit(configDTO.getHighlimit())
                         .saturation(configDTO.getSaturation())
                         .warningphone(configDTO.getWarningphone())
-                        .calibration(configDTO.getCalibration() == null?"":configDTO.getCalibration())
+                        .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
+                        .saturation(configDTO.getSaturation())
                         .build();
                 list.add(build);
             }

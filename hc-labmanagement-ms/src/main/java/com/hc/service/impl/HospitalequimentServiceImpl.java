@@ -144,6 +144,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
 
     @Override
     public void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid) {
+
         //判断医院底下是否还有设备,有设备则不允许删除设备类型
         List<MonitorEquipmentPo> equipment = monitorequipmentRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentPo())
                 .eq(MonitorEquipmentPo::getHospitalCode, hospitalCode)
@@ -155,6 +156,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         hospitalequimentRepository.remove(Wrappers.lambdaQuery(new HospitalequimentPo())
         .eq(HospitalequimentPo::getHospitalcode,hospitalCode)
         .eq(HospitalequimentPo::getEquipmenttypeid,equipmenttypeid));
+
     }
 
     public MonitorequipmentwarningtimeDTO  buildMonitorequipmentwarningtimeDTO(Date beginTime,Date endTime,String hospitalcode,String equipmenttypeid){
