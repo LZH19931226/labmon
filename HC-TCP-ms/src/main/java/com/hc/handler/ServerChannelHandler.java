@@ -37,7 +37,6 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     private MTOnlineBeanService service;
     @Autowired
     private MessagePushService msgservice;
-
     @Autowired
     private RedisTemplateUtil redisDao;
     @Autowired

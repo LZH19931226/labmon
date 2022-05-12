@@ -98,7 +98,6 @@ public class LastDataServiceImpl implements LastDataService {
         } else {
             Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
             if (flag) {
-                //澳门医院五分钟数据
                 //数据插入
                 log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
                 monitorequipmentlastdataDao.save(monitorequipmentlastdata);
@@ -106,7 +105,6 @@ public class LastDataServiceImpl implements LastDataService {
                 service.pushMessage4(JsonUtil.toJson(monitorequipmentlastdata1));
                 objectObjectObjectHashOperations.put("LASTDATA" + hospitalcode, equipmentno, JsonUtil.toJson(monitorequipmentlastdata));
             } else {
-                //其余医院十分钟
                 String equipmentlastdata = monitorequipmentlastdata1.getEquipmentlastdata();
                 if (StringUtils.isNotEmpty(equipmentlastdata)) {
                     //非空  直接 新增一条数据
