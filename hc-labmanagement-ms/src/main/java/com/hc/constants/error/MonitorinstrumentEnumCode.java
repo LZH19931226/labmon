@@ -1,6 +1,7 @@
-package com.hc.my.common.core.constant.enums;
+package com.hc.constants.error;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * 监控设备枚举类

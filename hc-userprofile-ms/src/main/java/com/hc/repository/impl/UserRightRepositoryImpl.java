@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.appliction.command.UserRightCommand;
+import com.hc.constant.UserEnumErrorCode;
 import com.hc.dto.UserRightDto;
 import com.hc.infrastructure.dao.UserRightDao;
-import com.hc.my.common.core.constant.enums.UserEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
@@ -36,16 +36,8 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
      */
     @Override
     public List<UserRightDto> findUserRightList(Page<UserRightVo> page, UserRightCommand userRightCommand) {
-//        List<UserRightPo> poList = userRightDao.selectList(null);
-//        if(CollectionUtils.isNotEmpty(poList)){
-//            List<UserRightPo> collect = poList.stream().filter(res -> StringUtils.isNotEmpty(res.getNickname())).collect(Collectors.toList());
-//            collect.forEach(res->{
-//                res.setNickname(res.getUsername());
-//                userRightDao.updateById(res);
-//            });
-//        }
-
-        return userRightDao.findUserRightList(page,userRightCommand.getHospitalName(),userRightCommand.getUsername(),userRightCommand.getPhoneNum(),userRightCommand.getIsUse());
+        String hospitalCode = userRightCommand.getHospitalCode();
+        return userRightDao.findUserRightList(page,hospitalCode,userRightCommand.getUsername(),userRightCommand.getPhoneNum(),userRightCommand.getIsUse());
     }
 
     /**

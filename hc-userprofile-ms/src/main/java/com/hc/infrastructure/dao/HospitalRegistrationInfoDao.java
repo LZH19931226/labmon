@@ -36,15 +36,15 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
             "timeout,update_time AS updateTime," +
             "update_by AS updateBy " +
             "FROM hospitalofreginfo where 1=1 " +
-            "<if test = 'hospitalCode != null  and hospitalCode != \"\"'> " +
-            "and hospitalcode = #{hospitalCode}" +
+            "<if test = 'hospitalName != null  and hospitalName != \"\"'> " +
+            "and hospitalname = #{hospitalName}" +
             "</if> " +
             "<if  test = 'isEnable != null and isEnable != \"\" '> " +
             "and isenable = #{isEnable}"+
             "</if>" +
             "</script>")
     List<HospitalRegistrationInfoDto> selectListByHospital(Page page,
-                                                           @Param(value = "hospitalCode") String hospitalCode,
+                                                           @Param(value = "hospitalName") String hospitalName,
                                                            @Param(value = "isEnable") String isEnable);
 
 

@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.constant.HospitalEnumErrorCode;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.infrastructure.dao.HospitalEquipmentDao;
 import com.hc.infrastructure.dao.HospitalRegistrationInfoDao;
-import com.hc.my.common.core.constant.enums.HospitalEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
@@ -44,7 +44,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
-        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalCode(),hospitalCommand.getIsEnable());
+        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalName(),hospitalCommand.getIsEnable());
     }
 
     /**

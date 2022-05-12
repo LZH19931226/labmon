@@ -1,4 +1,4 @@
-package com.hc.my.common.core.constant.enums;
+package com.hc.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

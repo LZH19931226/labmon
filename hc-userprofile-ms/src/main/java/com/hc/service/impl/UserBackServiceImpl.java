@@ -2,8 +2,8 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserCommand;
+import com.hc.constant.UserEnumErrorCode;
 import com.hc.dto.UserBackDto;
-import com.hc.my.common.core.constant.enums.UserEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserBackPo;

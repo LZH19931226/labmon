@@ -1,7 +1,7 @@
 package com.hc.my.common.core.struct;
 
-import com.hc.my.common.core.constant.enums.UserEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.struct.contextEnum.ContextEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,7 +19,7 @@ public class Context {
         HttpServletRequest request = getRequest();
         String userId = request.getHeader("userId");
         if(StringUtils.isBlank(userId)){
-            throw new IedsException(UserEnumErrorCode.NOT_LOGGED_IN.getMessage());
+            throw new IedsException(ContextEnum.NOT_LOGGED_IN.getMessage());
         }
         return userId;
     }
