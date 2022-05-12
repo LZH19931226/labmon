@@ -154,6 +154,8 @@ public class InstrumentparamconfigApplication {
         if(!ObjectUtils.isEmpty(monitorEquipmentDto)){
             infoCommand.setEquipmentName(monitorEquipmentDto.getEquipmentName());
         }
+        String equipmentName = monitorinstrumentDTO.getInstrumentname().replaceAll("探头", "");
+        infoCommand.setEquipmentName(equipmentName);
         infoCommand.setType(type);
         infoCommand.setOperationType(operationType);
         infoCommand.setInstrumentName(newInfo.getInstrumentname());

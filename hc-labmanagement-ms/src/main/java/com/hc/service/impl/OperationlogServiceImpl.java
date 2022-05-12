@@ -18,6 +18,7 @@ import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
 import com.hc.repository.OperationlogRepository;
 import com.hc.repository.OperationlogdetailRepository;
+import com.hc.service.MonitorinstrumentService;
 import com.hc.service.OperationlogService;
 import com.hc.vo.backlog.OperationlogVo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -36,6 +37,9 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Autowired
     private OperationlogdetailRepository operationlogdetailRepository;
+
+    @Autowired
+    private MonitorinstrumentService monitorinstrumentService;
 
     /**
      * 添加用户日志信息
@@ -381,16 +385,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         InstrumentparamconfigLogCommand oldInstrumentInfoModel = instrumentparamconfigInfoCommand.getOldInstrumentparamconfigLogCommand();
 
         String operationType = instrumentparamconfigInfoCommand.getOperationType();
-//        if(StringUtils.equals(operationType,OperationLogEunmDerailEnum.ADD.getCode())){
-//            oldInstrumentInfoModel = new InstrumentparamconfigLogCommand();
-//        }
-//        if(StringUtils.equals(operationType,OperationLogEunmDerailEnum.EDIT.getCode())){
-//            String instrumentparamconfigno = instrumentparamconfigInfoCommand.getInstrumentparamconfigno();
-//            InstrumentparamconfigDTO instrumentparamconfigDTO = instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentparamconfigno);
-//            oldInstrumentInfoModel =  BeanConverter.convert(instrumentparamconfigDTO,InstrumentparamconfigLogCommand.class);
-//            MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentparamconfigInfoCommand.getInstrumentNo());
-//            oldInstrumentInfoModel.setSn(monitorinstrumentDTO.getSn());
-//        }
+
         boolean flag = false;
         String sn = oldInstrumentInfoModel.getSn();
         String sn1 = nowInstrumentInfoModel.getSn();
@@ -493,13 +488,13 @@ public class OperationlogServiceImpl implements OperationlogService {
         //智能报警次数
         Integer alarmtime = oldInstrumentInfoModel.getAlarmtime();
         Integer alarmtime1 = nowInstrumentInfoModel.getAlarmtime();
-        if (!alarmtime.equals(alarmtime1)) {
+        if (!Objects.equals(alarmtime, alarmtime1)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("alarmtime");
             operationlogdetail.setFiledcaption("智能报警次数");
-            operationlogdetail.setFiledvalue(alarmtime1.toString());//当前值
-            operationlogdetail.setFiledvalueprev(alarmtime.toString());//历史值
+            operationlogdetail.setFiledvalue(String.valueOf(alarmtime1));//当前值
+            operationlogdetail.setFiledvalueprev(String.valueOf(alarmtime));//历史值
             operationlogdetail.setComment(instrumentName);
             operationlogdetails.add(operationlogdetail);
         }
@@ -519,7 +514,7 @@ public class OperationlogServiceImpl implements OperationlogService {
 
         if (flag) {
             String hospitalName = instrumentparamconfigInfoCommand.getHospitalName();
-            String equipmentName = instrumentparamconfigInfoCommand.getInstrumentName().replaceAll("探头","");
+            String equipmentName = instrumentparamconfigInfoCommand.getEquipmentName();
             String username = instrumentparamconfigInfoCommand.getUsername();
             String type = instrumentparamconfigInfoCommand.getType();
             OperationlogPo operationlog = new OperationlogPo();

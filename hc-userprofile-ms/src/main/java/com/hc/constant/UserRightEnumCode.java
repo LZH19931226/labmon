@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserRightEnumCode {
+    PHONE_NUMBER_FORMAT_IS_NOT_CORRECT("手机号格式不正确"),
     USE_ID_NOT_NULL("用户id不能为空"),
     USERNAME_NOT_NULL("用户名不能为空"),
     PWD_NOT_NULL("密码不能为空"),

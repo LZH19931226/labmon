@@ -31,6 +31,12 @@ public class UserRightServiceImpl implements UserRightService {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
 
+    /**
+     * 分页查询用户信息
+     * @param page  分页对象
+     * @param userRightCommand 用户权限命令
+     * @return
+     */
     @Override
     public List<UserRightDto> findUserRightList(Page<UserRightVo> page, UserRightCommand userRightCommand) {
         return    userRightRepository.findUserRightList(page,userRightCommand);
@@ -58,8 +64,8 @@ public class UserRightServiceImpl implements UserRightService {
         if (StringUtils.isBlank(pwd)) {
             throw new IedsException(UserRightEnumCode.PWD_NOT_NULL.getMessage());
         }
-        if (StringUtils.isBlank(phoneNum)) {
-            throw new IedsException(UserRightEnumCode.USER_PHONE_NOT_NULL.getMessage());
+        if(!phoneNum.matches("/^(13[0-9]|14[01456879]|15[0-3,5-9]|16[2567]|17[0-8]|18[0-9]|19[0-3,5-9])d{8}\n")){
+            throw new IedsException(UserRightEnumCode.PHONE_NUMBER_FORMAT_IS_NOT_CORRECT.getMessage());
         }
         if (StringUtils.isBlank(timeout)) {
             throw new IedsException(UserRightEnumCode.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
@@ -75,7 +81,6 @@ public class UserRightServiceImpl implements UserRightService {
         List<UserRightDto> list = userRightRepository.selectHospitalInfoByCode(userRightCommand.getHospitalCode());
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         objectObjectObjectHashOperations.put("hospital:phonenum",userRightCommand.getHospitalCode(), JSON.toJSON(list));
-
     }
 
     /**
@@ -100,8 +105,8 @@ public class UserRightServiceImpl implements UserRightService {
         if (StringUtils.isBlank(userRightCommand.getUserType())) {
             throw new IedsException(UserRightEnumCode.USER_ROLE_NOT_NULL.getMessage());
         }
-        if (StringUtils.isBlank(userRightCommand.getPhoneNum())) {
-            throw new IedsException(UserRightEnumCode.USER_PHONE_NOT_NULL.getMessage());
+        if(!userRightCommand.getPhoneNum().matches("^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}$")){
+            throw new IedsException(UserRightEnumCode.PHONE_NUMBER_FORMAT_IS_NOT_CORRECT.getMessage());
         }
         if (StringUtils.isBlank(userRightCommand.getTimeout())) {
             throw new IedsException(UserRightEnumCode.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());

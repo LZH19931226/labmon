@@ -91,7 +91,6 @@ public class MonitorEquipmentApplication {
                     monitorEquipmentWarningTimeDTOList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid));
 
             dtoList.forEach(res -> {
-
                 //添加仪器信息集合
                 String instrumentNo = res.getInstrumentNo();
                 List<InstrumentparamconfigDTO> instrumentParamConfigList = instrumentNoMap.get(instrumentNo);
