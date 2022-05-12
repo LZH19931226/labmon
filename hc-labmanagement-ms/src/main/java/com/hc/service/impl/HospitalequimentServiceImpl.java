@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.application.command.WorkTimeBlockCommand;
+import com.hc.constants.HospitalEnumErrorCode;
 import com.hc.constants.error.HospitalequimentEnumErrorCode;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
-import com.hc.my.common.core.constant.enums.HospitalEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalequimentPo;
@@ -144,6 +144,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
 
     @Override
     public void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid) {
+
         //判断医院底下是否还有设备,有设备则不允许删除设备类型
         List<MonitorEquipmentPo> equipment = monitorequipmentRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentPo())
                 .eq(MonitorEquipmentPo::getHospitalCode, hospitalCode)
@@ -155,6 +156,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         hospitalequimentRepository.remove(Wrappers.lambdaQuery(new HospitalequimentPo())
         .eq(HospitalequimentPo::getHospitalcode,hospitalCode)
         .eq(HospitalequimentPo::getEquipmenttypeid,equipmenttypeid));
+
     }
 
     public MonitorequipmentwarningtimeDTO  buildMonitorequipmentwarningtimeDTO(Date beginTime,Date endTime,String hospitalcode,String equipmenttypeid){

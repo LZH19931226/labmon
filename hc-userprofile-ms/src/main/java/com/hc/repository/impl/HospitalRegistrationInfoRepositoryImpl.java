@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.constant.HospitalEnumErrorCode;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.infrastructure.dao.HospitalEquipmentDao;
 import com.hc.infrastructure.dao.HospitalRegistrationInfoDao;
-import com.hc.my.common.core.constant.enums.HospitalEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
@@ -136,6 +136,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
     }
 
     /**
+     * 查询医院信息
      * @param hospitalCode
      * @return
      */

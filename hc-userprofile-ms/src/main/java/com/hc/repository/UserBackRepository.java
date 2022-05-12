@@ -22,7 +22,7 @@ public interface UserBackRepository{
     UserBackDto userLogin(UserBackPo userBackPo);
 
     /**
-     * 修改密码
+     * 修改用户信息
      * @param userBackPo 数据传输对象
      */
     void updateUserInfo(UserBackPo userBackPo);

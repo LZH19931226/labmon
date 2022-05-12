@@ -6,9 +6,9 @@ import com.hc.command.labmanagement.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
+import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.dto.*;
 import com.hc.labmanagent.HospitalInfoApi;
-import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
@@ -125,7 +125,15 @@ public class InstrumentparamconfigApplication {
         operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
     }
 
-
+    /**
+     * 构建InstrumentParamConfigInfoCommand对象
+     * @param userId
+     * @param old
+     * @param newInfo
+     * @param type
+     * @param operationType
+     * @return
+     */
     private InstrumentParamConfigInfoCommand build(String userId, InstrumentparamconfigCommand old, InstrumentparamconfigCommand newInfo, String type, String operationType) {
         InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
         //获取用户名称
@@ -134,8 +142,9 @@ public class InstrumentparamconfigApplication {
             infoCommand.setUsername(userInfo.getUsername());
         }
         //获取医院信息
-        String hospitalCode = newInfo.getHospitalCode();
-        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+        String instrumentNo =  old.getInstrumentNo() != null ? old.getInstrumentNo() : newInfo.getInstrumentNo();
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentNo);
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(monitorinstrumentDTO.getHospitalcode()).getResult();
         if(!ObjectUtils.isEmpty(hospitalInfo)){
             infoCommand.setHospitalName(hospitalInfo.getHospitalName());
         }
@@ -145,6 +154,8 @@ public class InstrumentparamconfigApplication {
         if(!ObjectUtils.isEmpty(monitorEquipmentDto)){
             infoCommand.setEquipmentName(monitorEquipmentDto.getEquipmentName());
         }
+        String equipmentName = monitorinstrumentDTO.getInstrumentname().replaceAll("探头", "");
+        infoCommand.setEquipmentName(equipmentName);
         infoCommand.setType(type);
         infoCommand.setOperationType(operationType);
         infoCommand.setInstrumentName(newInfo.getInstrumentname());
@@ -199,6 +210,7 @@ public class InstrumentparamconfigApplication {
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
 
+        //添加日志信息
         InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
                 build(Context.getUserId(),
                         BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
@@ -268,7 +280,8 @@ public class InstrumentparamconfigApplication {
                         .highlimit(configDTO.getHighlimit())
                         .saturation(configDTO.getSaturation())
                         .warningphone(configDTO.getWarningphone())
-                        .calibration(configDTO.getCalibration() == null?"":configDTO.getCalibration())
+                        .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
+                        .saturation(configDTO.getSaturation())
                         .build();
                 list.add(build);
             }

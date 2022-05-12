@@ -2,8 +2,8 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserCommand;
+import com.hc.constant.UserEnumErrorCode;
 import com.hc.dto.UserBackDto;
-import com.hc.my.common.core.constant.enums.UserEnumErrorCode;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserBackPo;
@@ -41,6 +41,10 @@ public class UserBackServiceImpl  implements UserBackService {
         return userBackRepository.userLogin(userBackPo);
     }
 
+    /**
+     * 修改用户信息
+     * @param userCommand
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUserInfo(UserCommand userCommand) {

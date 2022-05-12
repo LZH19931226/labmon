@@ -7,9 +7,9 @@ import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.constants.error.MonitorequipmentEnumErrorCode;
+import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.dto.*;
 import com.hc.labmanagent.HospitalInfoApi;
-import com.hc.my.common.core.constant.enums.MonitorinstrumentEnumCode;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
@@ -91,7 +91,6 @@ public class MonitorEquipmentApplication {
                     monitorEquipmentWarningTimeDTOList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid));
 
             dtoList.forEach(res -> {
-
                 //添加仪器信息集合
                 String instrumentNo = res.getInstrumentNo();
                 List<InstrumentparamconfigDTO> instrumentParamConfigList = instrumentNoMap.get(instrumentNo);
@@ -164,6 +163,7 @@ public class MonitorEquipmentApplication {
                         .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                         .deleteOrNot(deleteOrNot)
                         .channel(res.getChannel())
+                        .saturation(StringUtils.isEmpty(res.getSaturation()) ? "" : res.getSaturation())
                         .build();
                 list.add(build);
             });
@@ -255,7 +255,8 @@ public class MonitorEquipmentApplication {
         logInfoCommand.setType(Type);
         logInfoCommand.setOperationType(operationType);
         //根据医院code获取医院名称
-        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(newMonitorEquipmentLogCommand.getHospitalCode()).getResult();
+        String hospitalCode = oldMonitorEquipmentLogCommand.getHospitalCode() != null ? oldMonitorEquipmentLogCommand.getHospitalCode() : newMonitorEquipmentLogCommand.getHospitalCode();
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
         if(!ObjectUtils.isEmpty(hospitalInfo)){
             logInfoCommand.setHospitalName(hospitalInfo.getHospitalName());
         }
@@ -353,7 +354,7 @@ public class MonitorEquipmentApplication {
                 instrumentparamconfigDTO.setInstrumentname(monitorEquipmentCommand.getEquipmentName() + "探头");
                 instrumentparamconfigDTO.setSaturation(dto.getSaturation());
                 instrumentparamconfigDTO.setAlarmtime(Integer.valueOf(monitorEquipmentCommand.getAlwaysAlarm()));
-
+                instrumentparamconfigDTO.setFirsttime(new Date());
                 instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
             }
         }

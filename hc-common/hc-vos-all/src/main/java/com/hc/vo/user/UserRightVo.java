@@ -47,6 +47,8 @@ public class UserRightVo {
      */
     private String deviceType;
 
+    /** 报警方式 */
+    private String reminders;
     /**
      * 超时联系人
      */

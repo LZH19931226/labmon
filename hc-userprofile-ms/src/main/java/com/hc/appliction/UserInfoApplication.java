@@ -38,7 +38,7 @@ public class UserInfoApplication {
     }
 
     /**
-     * 修改密码
+     * 修改用户信息
      *
      * @param userCommand 用户信息
      */

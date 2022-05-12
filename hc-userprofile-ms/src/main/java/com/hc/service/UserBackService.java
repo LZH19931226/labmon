@@ -21,7 +21,7 @@ public interface UserBackService {
     UserBackDto userLogin(UserCommand userBackDto);
 
     /**
-     * 修改密码
+     * 修改用户信息
      * @param userBackDto 用户数据传输对象
      */
     void updateUserInfo(UserCommand userBackDto);

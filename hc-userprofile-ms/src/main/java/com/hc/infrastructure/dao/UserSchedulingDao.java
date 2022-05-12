@@ -74,4 +74,25 @@ public interface UserSchedulingDao extends BaseMapper<UserSchedulingPo> {
             " reminders, " +
             " userphone")
     List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode);
+
+    @Select("SELECT " +
+            "usid usid, " +
+            "createtime createTime, " +
+            "createuser createUser, " +
+            "endtime endTime, " +
+            "hospitalcode hospitalCode, " +
+            "reminders reminders, " +
+            "starttime startTime, " +
+            "userid userid, " +
+            "username username, " +
+            "userphone userPhone  " +
+            "FROM " +
+            "userscheduling  " +
+            "WHERE " +
+            "hospitalcode = #{hospitalCode}  " +
+            "AND DATE_FORMAT( starttime, '%Y-%m-%d %h:%M:%s' ) >= #{oldStartTime}  " +
+            "AND DATE_FORMAT( starttime, '%Y-%m-%d %h:%M:%s' ) < #{oldEndTime}  ")
+    List<UserSchedulingPo> selectTimePeriod( @Param("hospitalCode") String hospitalCode,
+                                             @Param("oldStartTime") Date oldStartTime,
+                                             @Param("oldEndTime") Date oldEndTime);
 }
