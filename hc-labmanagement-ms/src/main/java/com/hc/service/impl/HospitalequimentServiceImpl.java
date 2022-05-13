@@ -110,31 +110,6 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
             monitorequipmentwarningtimeRepository.removeByIds(deleteTimeBlockIds);
         }
 
-//        //更新缓存
-//        HospitalEquipmentTypeInfoModel hospitalEquipment = hospitalEquipmentMapper
-//                .selectEquipmentTypeByHospitalcodeAndEquipmenttypeid(equipmentTypeInfoModel.getHospitalcode(),
-//                        equipmentTypeInfoModel.getEquipmenttypeid());
-//        if(hospitalEquipment != null){
-//            MonitorEquipmentWarningTime monitorEquipmentWarningTime = new MonitorEquipmentWarningTime();
-//            monitorEquipmentWarningTime.setEquipmentid(hospitalEquipment.getEquipmenttypeid());
-//            monitorEquipmentWarningTime.setEquipmentcategory("TYPE");
-//            monitorEquipmentWarningTime.setHospitalcode(hospitalEquipment.getHospitalcode());
-//            Example<MonitorEquipmentWarningTime> timeExample = Example.of(monitorEquipmentWarningTime);
-//            List<MonitorEquipmentWarningTime> warningTimeDaoAll = monitorEquipmentWarningTimeDao.findAll(timeExample);
-//            hospitalEquipment.setWarningTimeList(warningTimeDaoAll);
-//            hospitalEquipment.setAlwayalarm(equipmentTypeInfoModel.getAlwayalarm());
-//            //同步探头名称到缓存
-//            String key = hospitalEquipment.getEquipmenttypeid()+"@"+ hospitalEquipment.getHospitalcode();
-//            Object o = redisTemplateUtil.boundHashOps("hospital:equipmenttype")
-//                    .get(key);
-//            //存在
-//            String o1 = (String) o;
-//            HospitalEquipmentTypeInfoModel monitorinstrumentObj = JsonUtil.toBean(o1, HospitalEquipmentTypeInfoModel.class);
-//            if (monitorinstrumentObj != null){
-//                redisTemplateUtil.boundHashOps("hospital:equipmenttype").put(key,JsonUtil.toJson(hospitalEquipment));
-//            }
-//        }
-
     }
 
     @Override

@@ -84,4 +84,15 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
     public void deleteMonitorinstrumentInfoByINo(String instrumentno) {
         monitorinstrumentRepository.deleteMonitorinstrumentInfoByINo(instrumentno);
     }
+
+    /**
+     * 查询探头信息
+     *
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public Integer findProbeInformationByEno(String equipmentNo) {
+        return monitorinstrumentRepository.findProbeInformationByEno(equipmentNo);
+    }
 }

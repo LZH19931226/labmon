@@ -52,6 +52,7 @@ public class InstrumentparamconfigApplication {
 
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
+
     /**
      * 通过设备no获取探头参数信息
      *
