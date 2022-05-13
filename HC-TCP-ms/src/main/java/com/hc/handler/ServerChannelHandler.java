@@ -10,6 +10,7 @@ import com.hc.socketServer.IotServer;
 import com.hc.util.JsonUtil;
 import com.hc.util.MathUtil;
 import com.hc.util.NettyUtil;
+import com.redis.device.SnDeviceReidsSync;
 import com.redis.util.RedisTemplateUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -38,9 +39,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private MessagePushService msgservice;
     @Autowired
-    private RedisTemplateUtil redisDao;
-    @Autowired
     private NettyUtil nettyUtil;
+    @Autowired
+    private SnDeviceReidsSync snDeviceReidsSync;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -103,15 +104,15 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 snData.setChannelId(asShortText);
                 snData.setNowTime(new Date());
                 //是否是心跳需要应答
-                checkIsHeartbeat(sn,asShortText,cmdid,ctx);
+                checkIsHeartbeat(sn, asShortText, cmdid, ctx);
                 //sn是否是MT600
                 isMiansClient(sn, asShortText);
                 //推送mq
                 randomPush(snData);
-                log.info("通道:{},原始数据:{},推送给RabbitMQ的模型为:{}",asShortText,dataStr,JsonUtil.toJson(snData));
+                log.info("通道:{},原始数据:{},推送给RabbitMQ的模型为:{}", asShortText, dataStr, JsonUtil.toJson(snData));
             });
         } catch (Exception e) {
-            log.error("通道:{},数据接收异常:{}",ctx.channel().id().asShortText(),Hex.encodeHexString(receiveMsgBytes));
+            log.error("通道:{},数据接收异常:{}", ctx.channel().id().asShortText(), Hex.encodeHexString(receiveMsgBytes));
         } finally {
             //从InBound里读取的ByteBuf要手动释放
             ReferenceCountUtil.release(msg);
@@ -144,25 +145,27 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
         //主动移除通道在redis里面
         String asShortText = ctx.channel().id().asShortText();
-        String sn = (String) redisDao.boundHashOps(TcpServiceEnum.SNCLIENT.getCode()).get(asShortText);
-        redisDao.boundHashOps(TcpServiceEnum.TCPCLIENT.getCode()).delete(sn);
-        redisDao.boundHashOps(TcpServiceEnum.SNCLIENT.getCode()).delete(asShortText);
+        String sn = snDeviceReidsSync.getSnBychannelId(asShortText);
+        if (StringUtils.isNotEmpty(sn)){
+            snDeviceReidsSync.deleteDeviceChannel(sn,asShortText);
+        }
     }
 
     //判断是否sn号为市电600或者1100sn号,是的话需要双向绑定通道缓存
     public void isMiansClient(String sn, String channeId) {
-        if (StringUtils.isNotEmpty(MathUtil.ruleMT(sn)))    {
+        if (StringUtils.isNotEmpty(MathUtil.ruleMT(sn))) {
             //将SN号和通道id一起绑定 存入redis
-            redisDao.boundHashOps(TcpServiceEnum.TCPCLIENT.getCode()).put(sn, channeId);
-            redisDao.boundHashOps(TcpServiceEnum.SNCLIENT.getCode()).put(channeId, sn);
+            snDeviceReidsSync.addDeviceChannel(sn,channeId);
+            snDeviceReidsSync.addChannelDevice(channeId,sn);
         }
     }
+
     //应答心跳包
-    public void checkIsHeartbeat(String sn,String channelId,String cmdId,ChannelHandlerContext ctx){
+    public void checkIsHeartbeat(String sn, String channelId, String cmdId, ChannelHandlerContext ctx) {
         if (StringUtils.equals(cmdId, EquipmentCommand.CMD88.getCmdId())) {
             //应答消息48 43 08 00 03 23
             nettyUtil.sendData(ctx, EquipmentCommand.HEART_RATE_RESPONSE.getCmdId());
-            log.info("sn号:{},通道:{},心跳包应答:{}",sn,channelId,EquipmentCommand.HEART_RATE_RESPONSE.getCmdId());
+            log.info("sn号:{},通道:{},心跳包应答:{}", sn, channelId, EquipmentCommand.HEART_RATE_RESPONSE.getCmdId());
         }
     }
 
