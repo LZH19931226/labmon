@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.po.MonitorEquipmentPo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.List;
  * 监控设备
  * @author hc
  */
-@Mapper
 public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
     /**
      * 分页查询设信息

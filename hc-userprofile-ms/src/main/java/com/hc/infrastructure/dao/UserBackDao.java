@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.UserBackDto;
 import com.hc.po.UserBackPo;
 import com.hc.vo.user.UserInfoVo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * @author hc
  */
-@Mapper
+
 public interface UserBackDao extends BaseMapper<UserBackPo> {
 
     @Select("<script> " +

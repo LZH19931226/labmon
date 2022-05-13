@@ -30,8 +30,6 @@ public class UserScheduleCommand {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-
-
     /**
      * 创建者
      */

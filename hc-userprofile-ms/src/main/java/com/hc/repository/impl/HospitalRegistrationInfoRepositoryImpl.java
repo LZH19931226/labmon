@@ -9,7 +9,6 @@ import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.infrastructure.dao.HospitalEquipmentDao;
 import com.hc.infrastructure.dao.HospitalRegistrationInfoDao;
 import com.hc.my.common.core.exception.IedsException;
-import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalEquipmentPo;
 import com.hc.po.HospitalRegistrationInfoPo;
@@ -62,7 +61,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         }
                  //设置操作时间
         infoPo.setUpdateTime(new Date())
-                .setUpdateBy(Context.getUserId())
                 //设置医院的UUID
                 .setHospitalCode(UUID.randomUUID().toString().replaceAll("-", ""))
                 //设置是否启用
@@ -84,7 +82,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_NAME_ALREADY_EXISTS.getCode());
         }
         HospitalRegistrationInfoPo convert = BeanConverter.convert(hospitalCommand, HospitalRegistrationInfoPo.class);
-        convert.setUpdateBy(Context.getUserId());
         convert.setUpdateTime(new Date());
         hospitalRegistrationInfoDao.updateById(convert);
     }

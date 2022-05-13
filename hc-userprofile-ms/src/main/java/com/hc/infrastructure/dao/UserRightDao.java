@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * @author hc
  */
-@Mapper
 public interface UserRightDao extends BaseMapper<UserRightPo>  {
     /**
      * 分页查询医院人员信息

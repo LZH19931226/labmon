@@ -6,19 +6,17 @@ import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 
- * 
+ *
+ *
  * @author liuzhihao
  * @email 1969994698@qq.com
  * @date 2022-04-18 15:27:01
  */
-@Mapper
 public interface InstrumentparamconfigDao extends BaseMapper<InstrumentparamconfigPo> {
 
 
