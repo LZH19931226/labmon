@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.hc</groupId>
-        <artifactId>HC-userprofile-ms</artifactId>
+        <artifactId>hc-common-api</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>hc-userprofile-api</artifactId>
