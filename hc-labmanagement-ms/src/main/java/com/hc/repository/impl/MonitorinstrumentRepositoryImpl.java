@@ -96,4 +96,15 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
     public void deleteMonitorinstrumentInfoByINo(String instrumentno) {
         monitorinstrumentDao.deleteById(instrumentno);
     }
+
+    /**
+     * 查询探头信息
+     *
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public Integer findProbeInformationByEno(String equipmentNo) {
+        return monitorinstrumentDao.findProbeInformationByEno(equipmentNo);
+    }
 }

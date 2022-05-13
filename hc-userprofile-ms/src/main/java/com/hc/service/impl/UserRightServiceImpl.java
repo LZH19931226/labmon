@@ -64,7 +64,7 @@ public class UserRightServiceImpl implements UserRightService {
         if (StringUtils.isBlank(pwd)) {
             throw new IedsException(UserRightEnumCode.PWD_NOT_NULL.getMessage());
         }
-        if(!phoneNum.matches("/^(13[0-9]|14[01456879]|15[0-3,5-9]|16[2567]|17[0-8]|18[0-9]|19[0-3,5-9])d{8}\n")){
+        if(!phoneNum.matches("^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}$")){
             throw new IedsException(UserRightEnumCode.PHONE_NUMBER_FORMAT_IS_NOT_CORRECT.getMessage());
         }
         if (StringUtils.isBlank(timeout)) {

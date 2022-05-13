@@ -54,4 +54,11 @@ public interface MonitorinstrumentRepository extends IService <Monitorinstrument
      * @param instrumentno
      */
     void deleteMonitorinstrumentInfoByINo(String instrumentno);
+
+    /**
+     * 查询探头信息
+     * @param equipmentNo
+     * @return
+     */
+    Integer findProbeInformationByEno(String equipmentNo);
 }

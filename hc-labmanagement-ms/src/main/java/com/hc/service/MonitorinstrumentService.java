@@ -4,7 +4,7 @@ package com.hc.service;
 import com.hc.dto.MonitorinstrumentDTO;
 
 /**
- * 
+ *
  *
  * @author liuzhihao
  * @email 1969994698@qq.com
@@ -57,5 +57,12 @@ public interface MonitorinstrumentService{
      * @param instrumentno
      */
     void deleteMonitorinstrumentInfoByINo(String instrumentno);
+
+    /**
+     * 查询探头信息
+     * @param equipmentNo
+     * @return
+     */
+    Integer findProbeInformationByEno(String equipmentNo);
 }
 
