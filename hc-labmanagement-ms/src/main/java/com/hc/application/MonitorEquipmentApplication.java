@@ -117,12 +117,11 @@ public class MonitorEquipmentApplication {
                                     .lowlimit(instrumentmonitorDTO.getLowlimit())
                                     .instrumentparamconfigno(instrumentmonitorDTO.getInstrumentparamconfigno())
                                     .instrumentconfigname(instrumentconfigDTO == null ? null : instrumentconfigDTO.getInstrumentconfigname())
-                                    .saturation(instrumentmonitorDTO.getSaturation()==null?new BigDecimal(0):instrumentmonitorDTO.getSaturation())
+                                    .saturation(instrumentmonitorDTO.getSaturation()==null ? new BigDecimal(0) : instrumentmonitorDTO.getSaturation())
                                     .build();
                             instrumentMonitorVos.add(build);
                         }
                     }
-
                     monitorinstrumenttypeVo = MonitorinstrumenttypeVo.builder()
                             .instrumenttypeid(monitorinstrumenttypeDTO.getInstrumenttypeid())
                             .instrumenttypename(monitorinstrumenttypeDTO.getInstrumenttypename())
@@ -217,7 +216,7 @@ public class MonitorEquipmentApplication {
 
         //插入监控探头信息
         MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO()
-                .setInstrumenttypeid(Integer.valueOf(monitorEquipmentCommand.getEquipmentTypeId()))
+                .setInstrumenttypeid(monitorEquipmentCommand.getMonitorinstrumenttypeDTO().getInstrumenttypeid())
                 .setEquipmentno(monitorEquipmentDto.getEquipmentNo())
                 .setInstrumentname(monitorEquipmentDto.getEquipmentName() + "探头")
                 .setSn(monitorEquipmentCommand.getSn())
@@ -248,6 +247,7 @@ public class MonitorEquipmentApplication {
                     .setInstrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
                     .setInstrumentname(monitorinstrumentDTO.getInstrumentname())
                     .setWarningphone("0")
+                    .setFirsttime(new Date())
                     .setHighlimit(instrumentmonitorDTO.getHighlimit())
                     .setLowlimit(instrumentmonitorDTO.getLowlimit())
                     .setInstrumentno(monitorinstrumentDTO.getInstrumentno())
@@ -265,12 +265,12 @@ public class MonitorEquipmentApplication {
 
     /**
      * 构建监控设备日志信息
-     * @param userId
-     * @param equipmentName
-     * @param oldMonitorEquipmentLogCommand
-     * @param newMonitorEquipmentLogCommand
-     * @param Type
-     * @param operationType
+     * @param userId 用户id
+     * @param equipmentName 设备名称
+     * @param oldMonitorEquipmentLogCommand 旧数据
+     * @param newMonitorEquipmentLogCommand 新数据
+     * @param Type 菜单类型
+     * @param operationType 操作类型
      * @return
      */
     private MonitorEquipmentLogInfoCommand build(String userId, String equipmentName,MonitorEquipmentLogCommand oldMonitorEquipmentLogCommand ,MonitorEquipmentCommand newMonitorEquipmentLogCommand, String Type, String operationType) {

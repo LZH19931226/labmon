@@ -82,6 +82,11 @@ public class MonitorEquipmentCommand {
     private String equipmentBrand;
 
     /**
+     * 探头检测类型id
+     */
+    private String instrumenttypeid;
+
+    /**
      * 报警时间段
      */
     private List<MonitorequipmentwarningtimeDTO> warningTimeList;

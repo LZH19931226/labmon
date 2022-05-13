@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.po.HospitalEquipmentPo;
 import com.hc.po.HospitalRegistrationInfoPo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,13 +13,12 @@ import java.util.List;
 /**
  * @author user
  */
-@Mapper
 public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistrationInfoPo> {
 
     /**
      * 查询医院信息列表
      * @param page  分页对象
-     * @param hospitalCode 医院编码
+     * @param hospitalName 医院编码
      * @param isEnable 是否启用
      * @return 医院信息传输对象集合
      */
@@ -37,7 +35,7 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
             "update_by AS updateBy " +
             "FROM hospitalofreginfo where 1=1 " +
             "<if test = 'hospitalName != null  and hospitalName != \"\"'> " +
-            "and hospitalname = #{hospitalName}" +
+            "and hospitalname like concat('%', #{hospitalName},'%')" +
             "</if> " +
             "<if  test = 'isEnable != null and isEnable != \"\" '> " +
             "and isenable = #{isEnable}"+

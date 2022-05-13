@@ -20,6 +20,7 @@ import com.hc.vo.equimenttype.HospitalequimentVo;
 import com.hc.vo.equimenttype.MonitorequipmentwarningtimeVo;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -84,9 +85,11 @@ public class HospitalequimentApplication {
         }
         //获取医院信息
         String hospitalCode = oldHospitalEquipmentTypeCommand.getHospitalcode() != null ? oldHospitalEquipmentTypeCommand.getHospitalcode() : newHospitalEquipmentTypeCommand.getHospitalcode();
-        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
-        if(!ObjectUtils.isEmpty(hospitalInfo)){
-            logCommand.setHospitalName(hospitalInfo.getHospitalName());
+        if(!StringUtils.isBlank(hospitalCode)){
+            HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+            if(!ObjectUtils.isEmpty(hospitalInfo)){
+                logCommand.setHospitalName(hospitalInfo.getHospitalName());
+            }
         }
         logCommand.setHospitalCode(newHospitalEquipmentTypeCommand.getHospitalcode());
         HospitalEquimentTypeInfoCommand command = BeanConverter.convert(oldHospitalEquipmentTypeCommand, HospitalEquimentTypeInfoCommand.class);

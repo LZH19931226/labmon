@@ -57,7 +57,7 @@ public class InstrumentparamconfigApplication {
      * 通过设备no获取探头参数信息
      *
      * @param equipmentNo 设备id
-     * @return
+     * @return 探头信息集合
      */
     public List<InstrumentparamconfigVo> selectInstrumentParamConfigByEqNo(String equipmentNo) {
         List<InstrumentconfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
@@ -86,7 +86,7 @@ public class InstrumentparamconfigApplication {
         //判断探头的检测类型是否存在
         boolean flag = instrumentmonitorService.selectOne(new InstrumentmonitorDTO().setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
                 .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid()));
-        if(flag != true){
+        if(!flag){
             throw new IedsException("设备探头与检测类型不匹配");
         }
 
@@ -96,6 +96,7 @@ public class InstrumentparamconfigApplication {
         if(i>0){
             throw new IedsException(MonitorinstrumentEnumCode.PROBE_INFORMATION_ALREADY_EXISTS.getMessage());
         }
+
         //判断上限与下限逻辑
         int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
         if(compareTo>0){
@@ -128,11 +129,11 @@ public class InstrumentparamconfigApplication {
 
     /**
      * 构建InstrumentParamConfigInfoCommand对象
-     * @param userId
-     * @param old
-     * @param newInfo
-     * @param type
-     * @param operationType
+     * @param userId 用户id
+     * @param old 旧信息
+     * @param newInfo 新信息
+     * @param type 菜单类型
+     * @param operationType 操作类型
      * @return
      */
     private InstrumentParamConfigInfoCommand build(String userId, InstrumentparamconfigCommand old, InstrumentparamconfigCommand newInfo, String type, String operationType) {
