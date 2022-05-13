@@ -12,6 +12,7 @@
     <description>hc 公共api类核心包</description>
     <modules>
         <module>hc-labmanagment-api</module>
+        <module>hc-labredis-api</module>
     </modules>
 
 

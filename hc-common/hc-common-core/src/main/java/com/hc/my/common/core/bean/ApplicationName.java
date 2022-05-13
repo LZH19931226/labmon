@@ -35,5 +35,9 @@ public class ApplicationName {
     public static final String TCP = "HC-TCP-ms";
 
 
+    /**
+     * redis
+     */
+    public static final String REDIS = "HC-LABREDIS-ms";
 
 }

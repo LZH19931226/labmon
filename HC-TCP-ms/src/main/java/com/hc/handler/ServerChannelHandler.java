@@ -3,25 +3,22 @@ package com.hc.handler;
 
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.my.common.core.probe.EquipmentCommand;
-import com.hc.my.common.core.redis.namespace.TcpServiceEnum;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
 import com.hc.socketServer.IotServer;
+import com.hc.tcp.TcpClientApi;
 import com.hc.util.JsonUtil;
 import com.hc.util.MathUtil;
 import com.hc.util.NettyUtil;
-import com.redis.device.SnDeviceReidsSync;
-import com.redis.util.RedisTemplateUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.util.ReferenceCountUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -32,8 +29,8 @@ import java.util.Random;
 
 @Component
 @Sharable
+@Slf4j
 public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
-    private static final Logger log = LoggerFactory.getLogger(ServerChannelHandler.class);
     @Autowired
     private MTOnlineBeanService service;
     @Autowired
@@ -41,7 +38,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private NettyUtil nettyUtil;
     @Autowired
-    private SnDeviceReidsSync snDeviceReidsSync;
+    private TcpClientApi tcpClientReidsSync;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -145,9 +142,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
         //主动移除通道在redis里面
         String asShortText = ctx.channel().id().asShortText();
-        String sn = snDeviceReidsSync.getSnBychannelId(asShortText);
+        String sn = tcpClientReidsSync.getSnBychannelId(asShortText);
         if (StringUtils.isNotEmpty(sn)){
-            snDeviceReidsSync.deleteDeviceChannel(sn,asShortText);
+            tcpClientReidsSync.deleteDeviceChannel(sn,asShortText);
         }
     }
 
@@ -155,8 +152,8 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     public void isMiansClient(String sn, String channeId) {
         if (StringUtils.isNotEmpty(MathUtil.ruleMT(sn))) {
             //将SN号和通道id一起绑定 存入redis
-            snDeviceReidsSync.addDeviceChannel(sn,channeId);
-            snDeviceReidsSync.addChannelDevice(channeId,sn);
+            tcpClientReidsSync.addDeviceChannel(sn,channeId);
+            tcpClientReidsSync.addChannelDevice(channeId,sn);
         }
     }
 

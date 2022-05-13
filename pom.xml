@@ -31,6 +31,7 @@
         <module>hc-labmon-ms</module>
         <module>hc-userprofile-ms</module>
         <module>hc-labmanagement-ms</module>
+        <module>hc-labredis-ms</module>
     </modules>
 
     <dependencyManagement>
