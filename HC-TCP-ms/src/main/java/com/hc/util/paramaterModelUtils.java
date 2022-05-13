@@ -1,5 +1,6 @@
 package com.hc.util;
 
+import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -21,8 +22,8 @@ public class paramaterModelUtils {
         // 二进制转10进制(占位符除外)
         int a = Integer.parseInt(hexadecimal.substring(1, hexadecimal.length()), 2);
         int b = 100;
-        Double f = (double) a / b;
-        return rule + f.toString();
+        double f = (double) a / b;
+        return rule + f;
     }
 
     public static String temperature10(String data) {
@@ -79,14 +80,7 @@ public class paramaterModelUtils {
     // 解析co2/02/湿度/VOC
     public static String gas(String data) {
         Integer a = Integer.parseInt(data, 16);
-        // ppb 转换 PPM要转化
-//        if (a > 100000) {
-//            return "A";
-//        }
-  //      int b = 100;
         return chu(a,"100");
-//        Double f = (double) a / b;
-//        return f.toString();
     }
     // 解析co2/02/湿度/VOC
     public static String gas10(String data) {
@@ -106,8 +100,8 @@ public class paramaterModelUtils {
 
     }
 
-    public static void  main(String atgs[]){
-        System.out.println(gas("4843a51a32303136303630303138f000f000f000f000f0000000000000004e23"));
+    public static void  main(String[] args){
+        System.out.println(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
 
     }
 }

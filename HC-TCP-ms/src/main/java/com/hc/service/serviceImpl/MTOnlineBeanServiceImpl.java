@@ -3,6 +3,7 @@ package com.hc.service.serviceImpl;
 import com.hc.bean.MTOnlineBean;
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.redis.util.RedisTemplateUtil;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.socketServer.IotServer;
@@ -55,7 +56,6 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 
     @Override
     public List<ParamaterModel> paseData(String data) {
-
         // 数据拆分 4843 开头后 加上异或长度 最后两位是否是23
         List<String> ruleone = MathUtil.ruleone(data);
         if (CollectionUtils.isEmpty(ruleone)) {
@@ -77,7 +77,6 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                 log.error("不存在该sn" + sn);
                 continue;
             }
-
             // 获取命令id
             String cmdid = cmd.substring(4, 6);
             paramaterModel.setSN(sn);
@@ -119,7 +118,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     // 湿度
                     String substring7 = cmd.substring(28, 32);
                     if (StringUtils.equalsAnyIgnoreCase(substring7,"ff00")){
-                        paramaterModel.setRH("B");
+                        paramaterModel.setRH(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     }else {
                         String gas6 = paramaterModelUtils.gas(substring7);
                         gas6 = CustomUtils.agreementAll(gas6, "0", "100");
@@ -128,16 +127,16 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     // 压力
                     String substring8 = cmd.substring(32, 36);
                     if (StringUtils.equalsAnyIgnoreCase(substring8,"ff00")){
-                        paramaterModel.setPRESS("B");
+                        paramaterModel.setPRESS(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     }else {
                         String electricity2 = electricity(substring8);
-                        electricity2 = CustomUtils.agreementAll(electricity2, "600", "1200");
+                        electricity2 = CustomUtils.agreementAll(electricity2, "300", "1250");
                         paramaterModel.setPRESS(electricity2);
                     }
                     // PM2.5
                     String substring9 = cmd.substring(36, 40);
                     if (StringUtils.equalsAnyIgnoreCase(substring9,"ff00")){
-                        paramaterModel.setPM25("B");
+                        paramaterModel.setPM25(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     }else {
                         String electricity3 = electricity(substring9);
                         electricity3 = CustomUtils.agreementAll(electricity3, "0", "500");
@@ -146,7 +145,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     // PM10
                     String substring10 = cmd.substring(40, 44);
                     if (StringUtils.equalsAnyIgnoreCase(substring10,"ff00")){
-                        paramaterModel.setPM10("B");
+                        paramaterModel.setPM10(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     }else {
                         String electricity4 = electricity(substring10);
                         electricity4 = CustomUtils.agreementAll(electricity4, "0", "500");
@@ -155,7 +154,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     // VOC
                     String substring11 = cmd.substring(44, 48);
                     if (StringUtils.equalsAnyIgnoreCase(substring11,"9C00")){
-                        paramaterModel.setVOC("B");
+                        paramaterModel.setVOC(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     }else {
                         String gas7 = paramaterModelUtils.gas(substring11);
                         gas7 = CustomUtils.agreementAll(gas7, "0", "200");
@@ -164,7 +163,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     // 甲醛
                     String substring12 = cmd.substring(48, 52);
                     if (StringUtils.equalsAnyIgnoreCase(substring12,"ff00")){
-                        paramaterModel.setOX("B");
+                        paramaterModel.setOX(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     }else {
                         String electricity5 = paramaterModelUtils.electricity2(substring12);
                         electricity5 = CustomUtils.agreementAll(electricity5, "0", "2");
@@ -177,7 +176,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     String wendu = cmd.substring(28, 32);
                     String pasetemperature = pasetemperature(wendu);
                     if (StringUtils.equals("-1.0",pasetemperature)) {
-                        pasetemperature = "A";
+                        pasetemperature = ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
                     }
                     paramaterModel.setTEMP(pasetemperature);
                     list.add(paramaterModel);
@@ -265,6 +264,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     list.add(paramaterModel91);
                     continue;
                 case "90":
+                    //已停产,维护以前老设备即可
                     ParamaterModel paramaterModel90 = cmdidParseUtils.pase90(cmd);
                     paramaterModel90.setSN(sn);
                     paramaterModel90.setCmdid(cmdid);
@@ -289,12 +289,12 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     list.add(paramaterModel94);
                     continue;
                 case "95":
-                    log.info("收到声光报警开启应答成功:" + sn);
-                    redisTemplateUtil.boundValueOps(sn + "lgtalarm").set("1");
+//                    log.info("收到声光报警开启应答成功:" + sn);
+//                    redisTemplateUtil.boundValueOps(sn + "lgtalarm").set("1");
                     continue;
                 case "96":
-                    log.info("收到声光报警关闭应答成功:" + sn);
-                    redisTemplateUtil.boundValueOps(sn + "lgtalarm").set("2");
+//                    log.info("收到声光报警关闭应答成功:" + sn);
+//                    redisTemplateUtil.boundValueOps(sn + "lgtalarm").set("2");
                     continue;
                 case "97":
                     ParamaterModel paramaterModel1 = cmdidParseUtils.pase97(cmd);

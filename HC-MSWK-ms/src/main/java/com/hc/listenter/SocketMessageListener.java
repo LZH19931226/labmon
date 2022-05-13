@@ -13,13 +13,10 @@ import com.hc.utils.JsonUtil;
 import com.redis.util.RedisTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.List;
 
@@ -62,16 +59,15 @@ public class SocketMessageListener {
     public void mswkMessage(String messageContent, String topic) {
         ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
         assert model != null;
-        if (repeatDatafilter(model)) {
-            return;
-        }
-        ;
         //MT500  MT600判断
         //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
-        //Monitorinstrument monitorinstrument = mtJudgeService.mtJudge(model);
         Monitorinstrument monitorinstrument = mtJudgeService.checkProbe(model);
         if (monitorinstrument == null) {
+            return;
+        }
+        //多个500数据重复上传问题,已经注册得设同步缓存
+        if (repeatDatafilter(model)) {
             return;
         }
         //执行数据写入 、 报警推送

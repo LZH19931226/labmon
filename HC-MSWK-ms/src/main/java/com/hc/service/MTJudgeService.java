@@ -8,8 +8,5 @@ import com.hc.my.common.core.bean.ParamaterModel;
  */
 public interface MTJudgeService {
 
-
-    Monitorinstrument mtJudge(ParamaterModel paramaterModel);
-
     Monitorinstrument checkProbe(ParamaterModel model);
 }

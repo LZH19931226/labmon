@@ -1,9 +1,12 @@
 package com.hc.my.common.core.constant.enums;
 
+import lombok.Getter;
+
 /**
  * 气流的枚举类
  * @author hc
  */
+@Getter
 public enum AirflowEnum {
     NORMAL_TO_EARLY_WARNING("正常->预警；(报警信息：有漏气倾向)"),
     ALERT_TO_NORMAL("预警->正常；(报警信息：恢复正常)"),
