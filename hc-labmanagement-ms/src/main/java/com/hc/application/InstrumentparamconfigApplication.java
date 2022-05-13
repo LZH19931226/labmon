@@ -8,7 +8,7 @@ import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.dto.*;
-import com.hc.labmanagent.HospitalInfoApi;
+import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;

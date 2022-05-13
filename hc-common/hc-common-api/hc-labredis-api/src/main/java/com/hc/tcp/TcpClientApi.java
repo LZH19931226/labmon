@@ -1,5 +1,6 @@
 package com.hc.tcp;
 
+import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,5 +19,5 @@ public interface TcpClientApi {
     void deleteDeviceChannel(@RequestParam("sn") String sn, @RequestParam("channelId") String channelId);
 
     @GetMapping("/tcpclient/getSnBychannelId")
-    String getSnBychannelId(@RequestParam("channelId") String channelId);
+    ApiResponse<String> getSnBychannelId(@RequestParam("channelId") String channelId);
 }

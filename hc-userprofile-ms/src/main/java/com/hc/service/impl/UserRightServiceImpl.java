@@ -9,11 +9,9 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.UserRightRepository;
 import com.hc.service.UserRightService;
 import com.hc.vo.user.UserRightVo;
-import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +26,7 @@ public class UserRightServiceImpl implements UserRightService {
     @Autowired
     private UserRightRepository userRightRepository;
 
-    @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
+
 
     /**
      * 分页查询用户信息
@@ -79,8 +76,6 @@ public class UserRightServiceImpl implements UserRightService {
         userRightRepository.insertUserRightInfo(userRightCommand);
         //将当前医院所有人员同步进redis
         List<UserRightDto> list = userRightRepository.selectHospitalInfoByCode(userRightCommand.getHospitalCode());
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.put("hospital:phonenum",userRightCommand.getHospitalCode(), JSON.toJSON(list));
     }
 
     /**
@@ -114,8 +109,6 @@ public class UserRightServiceImpl implements UserRightService {
         userRightRepository.updateUserRightInfo(userRightCommand);
         //更新redis信息
         List<UserRightDto> list = userRightRepository.selectHospitalInfoByCode(userRightCommand.getHospitalCode());
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.put("hospital:phonenum",userRightCommand.getHospitalCode(), JSON.toJSON(list));
     }
 
     /**
@@ -126,14 +119,6 @@ public class UserRightServiceImpl implements UserRightService {
     @Override
     public void deleteUserRightInfo(UserRightCommand userRightCommand) {
         userRightRepository.deleteUserRightInfo(userRightCommand.getUserid());
-        //更新redis用户信息
-        List<UserRightDto> list = userRightRepository.selectHospitalInfoByCode(userRightCommand.getHospitalCode());
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.put("hospital:phonenum",userRightCommand.getHospitalCode(), JSON.toJSON(list));
-        if (CollectionUtils.isNotEmpty(list)){
-            objectObjectObjectHashOperations.put("hospital:phonenum",userRightCommand.getHospitalCode(),JSON.toJSON(list));
-        }
-
     }
 
     /**

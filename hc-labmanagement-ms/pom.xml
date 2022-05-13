@@ -19,17 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.hc</groupId>
-			<artifactId>hc-common-redis</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.hc</groupId>
 			<artifactId>hc-common-web</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.hc</groupId>
-			<artifactId>hc-labmanagment-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -58,7 +48,18 @@
 			<artifactId>mybatisplus-plus</artifactId>
 			<version>1.5.1-RELEASE</version>
 		</dependency>
-    </dependencies>
+        <dependency>
+            <groupId>com.hc</groupId>
+            <artifactId>HC-userprofile-ms</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+		<dependency>
+			<groupId>com.hc</groupId>
+			<artifactId>hc-userprofile-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
 
 
 	<build>

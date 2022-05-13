@@ -5,16 +5,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 启动类
  * @author user
  */
-@SpringBootApplication()
+@SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan("com.hc.infrastructure.dao")
-@EnableSwagger2
 @EnableFeignClients
 public class HcUserProFileApplication {
 

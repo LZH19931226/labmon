@@ -8,7 +8,7 @@ import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
-import com.hc.labmanagent.HospitalInfoApi;
+import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.struct.Context;

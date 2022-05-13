@@ -1,6 +1,5 @@
 package com.hc.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
 import com.hc.constant.HospitalEnumErrorCode;
@@ -9,10 +8,8 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.HospitalRegistrationInfoRepository;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.vo.hospital.HospitalInfoVo;
-import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,8 +24,7 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     @Autowired
     private HospitalRegistrationInfoRepository hospitalRegistrationInfoRepository;
 
-    @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
+
 
     @Override
     public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page<HospitalInfoVo> page, HospitalCommand hospitalCommand) {
@@ -45,8 +41,6 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
         //添加同步缓存
         HospitalRegistrationInfoDto hospitalRegistrationInfoDto =
                 hospitalRegistrationInfoRepository.selectHospitalInfoByHospitalName(hospitalCommand.getHospitalName());
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.put("hospital:info",hospitalRegistrationInfoDto.getHospitalCode(), JSON.toJSON(hospitalRegistrationInfoDto));
     }
 
     @Override
@@ -63,9 +57,6 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
         //更新同步缓存
         HospitalRegistrationInfoDto hospitalRegistrationInfoDto =
                 hospitalRegistrationInfoRepository.selectHospitalInfoByHospitalName(hospitalCommand.getHospitalName());
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.delete("hospital:info",hospitalRegistrationInfoDto.getHospitalCode());
-        objectObjectObjectHashOperations.put("hospital:info",hospitalRegistrationInfoDto.getHospitalCode(), JSON.toJSON(hospitalRegistrationInfoDto));
     }
 
     @Override
@@ -74,9 +65,6 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_CODE_NOT_NULL.getCode());
         }
         hospitalRegistrationInfoRepository.deleteHospitalInfoByCode(hospitalCode);
-        //删除同步缓存
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        objectObjectObjectHashOperations.delete("hospital:info",hospitalCode);
     }
 
     @Override

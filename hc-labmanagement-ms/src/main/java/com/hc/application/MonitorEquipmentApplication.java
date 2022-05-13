@@ -10,7 +10,7 @@ import com.hc.constants.HospitalEnumErrorCode;
 import com.hc.constants.error.MonitorequipmentEnumErrorCode;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.dto.*;
-import com.hc.labmanagent.HospitalInfoApi;
+import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;

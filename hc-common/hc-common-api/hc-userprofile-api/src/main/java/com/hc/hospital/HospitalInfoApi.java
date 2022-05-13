@@ -1,4 +1,4 @@
-package com.hc.labmanagent;
+package com.hc.hospital;
 
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
