@@ -246,6 +246,7 @@ public class MonitorEquipmentApplication {
                     .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""))
                     .setInstrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
                     .setInstrumentname(monitorinstrumentDTO.getInstrumentname())
+                    .setChannel(monitorEquipmentCommand.getChannel())
                     .setWarningphone("0")
                     .setFirsttime(new Date())
                     .setHighlimit(instrumentmonitorDTO.getHighlimit())
@@ -271,7 +272,7 @@ public class MonitorEquipmentApplication {
      * @param newMonitorEquipmentLogCommand 新数据
      * @param Type 菜单类型
      * @param operationType 操作类型
-     * @return
+     * @return 监控设备日志信息
      */
     private MonitorEquipmentLogInfoCommand build(String userId, String equipmentName,MonitorEquipmentLogCommand oldMonitorEquipmentLogCommand ,MonitorEquipmentCommand newMonitorEquipmentLogCommand, String Type, String operationType) {
         MonitorEquipmentLogInfoCommand logInfoCommand = new MonitorEquipmentLogInfoCommand();
