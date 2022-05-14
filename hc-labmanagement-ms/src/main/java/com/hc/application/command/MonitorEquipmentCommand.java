@@ -38,6 +38,11 @@ public class MonitorEquipmentCommand {
     private String equipmentName;
 
     /**
+     * 探头id
+     */
+    private String instrumentno;
+
+    /**
      * 设备类型
      */
     private String equipmentNo;

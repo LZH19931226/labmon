@@ -16,6 +16,16 @@
 			<groupId>com.hc</groupId>
 			<artifactId>hc-userprofile-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.hc</groupId>
+					<artifactId>hc-common-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.hc</groupId>
+					<artifactId>hc-vos-all</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.hc</groupId>
@@ -46,14 +56,17 @@
             <groupId>com.hc</groupId>
             <artifactId>hc-vos-all</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.hc</groupId>
             <artifactId>hc-labmanagment-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
+		<dependency>
+			<groupId>com.hc</groupId>
+			<artifactId>hc-labredis-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
     </dependencies>
 
 

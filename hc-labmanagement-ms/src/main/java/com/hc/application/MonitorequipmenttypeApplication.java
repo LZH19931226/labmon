@@ -3,7 +3,7 @@ package com.hc.application;
 import com.hc.dto.MonitorequipmenttypeDTO;
 import com.hc.service.MonitorequipmenttypeService;
 import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

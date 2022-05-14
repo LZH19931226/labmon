@@ -9,9 +9,9 @@ import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.constants.HospitalEnumErrorCode;
 import com.hc.constants.error.MonitorequipmentEnumErrorCode;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
+import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
-import com.hc.labmanagent.SnDeviceRedisApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
@@ -23,7 +23,7 @@ import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
 import com.hc.vo.equimenttype.WarningTimeVo;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -421,7 +421,12 @@ public class MonitorEquipmentApplication {
                 OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
 
-        //更新redis缓存:判断sn是否被修改，如果是就需要先删除该sn的redis信息，重新put信息
+        //更新redis缓存
+        //判断sn是否被修改，如果是就需要先删除该sn的redis信息，重新put信息
+        String sn = judgeSnWhetherToModify(monitorEquipmentCommand);
+        if(!org.apache.commons.lang3.StringUtils.equals(sn,monitorEquipmentCommand.getSn())){
+            snDeviceRedisApi.deleteSnDeviceDto(sn);
+        }
         SnDeviceDto snDeviceDto = new SnDeviceDto();
         snDeviceDto.setEquipmentName(monitorEquipmentCommand.getEquipmentName())
                         .setSn(monitorEquipmentCommand.getSn())
@@ -430,6 +435,21 @@ public class MonitorEquipmentApplication {
                                                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                                                         .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand());
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
+    }
+
+    /**
+     * 判断sn是否被修改
+     * @param monitorEquipmentCommand
+     * @return
+     */
+    private String judgeSnWhetherToModify(MonitorEquipmentCommand monitorEquipmentCommand) {
+        String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
+        String sn = monitorEquipmentCommand.getSn();
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
+        if(!ObjectUtils.isEmpty(monitorinstrumentDTO) && !org.apache.commons.lang3.StringUtils.equals(monitorinstrumentDTO.getSn(),sn)){
+            sn = monitorinstrumentDTO.getSn();
+        }
+        return sn;
     }
 
     /**

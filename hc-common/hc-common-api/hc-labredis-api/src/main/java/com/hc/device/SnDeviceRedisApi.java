@@ -1,4 +1,4 @@
-package com.hc.labmanagent;
+package com.hc.device;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
