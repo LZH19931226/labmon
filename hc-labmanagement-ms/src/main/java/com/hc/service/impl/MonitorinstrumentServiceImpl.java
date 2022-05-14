@@ -95,4 +95,5 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
     public Integer findProbeInformationByEno(String equipmentNo) {
         return monitorinstrumentRepository.findProbeInformationByEno(equipmentNo);
     }
+
 }

@@ -57,10 +57,9 @@ public class HospitalequimentApplication {
      */
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         hospitalequimentService.addHospitalEquimentType(hospitalEquimentTypeCommand);
-        String operationType = OperationLogEunmDerailEnum.ADD.getCode();
-        String type = OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode();
+        //插入日志
         operationlogService.addHospitalEquipmentOperationLogCommand(build(Context.getUserId(),new HospitalEquimentTypeCommand(),hospitalEquimentTypeCommand,
-                type,"0"));
+                OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(),OperationLogEunmDerailEnum.ADD.getCode()));
     }
 
     /**

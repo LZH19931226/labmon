@@ -11,9 +11,11 @@ import com.hc.constants.error.MonitorequipmentEnumErrorCode;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
+import com.hc.labmanagent.SnDeviceRedisApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
@@ -67,6 +69,9 @@ public class MonitorEquipmentApplication {
 
     @Autowired
     private HospitalequimentService hospitalequimentService;
+
+    @Autowired
+    private SnDeviceRedisApi snDeviceRedisApi;
 
     /**
      * 分页获取监控设备信息
@@ -204,17 +209,19 @@ public class MonitorEquipmentApplication {
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_DEVICE_TYPE_DOES_NOT_EXIST.getCode());
         }
         //插入到monitorequipment表中
+        String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
                 .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
                 .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
                 .setClientVisible(monitorEquipmentCommand.getClientVisible())
                 .setEquipmentName(monitorEquipmentCommand.getEquipmentName())
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
-                .setEquipmentNo(UUID.randomUUID().toString().replaceAll("-", ""))
+                .setEquipmentNo(equipmentNo)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
         //插入监控探头信息
+        String instrumentNo = UUID.randomUUID().toString().replaceAll("-", "");
         MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO()
                 .setInstrumenttypeid(monitorEquipmentCommand.getMonitorinstrumenttypeDTO().getInstrumenttypeid())
                 .setEquipmentno(monitorEquipmentDto.getEquipmentNo())
@@ -223,7 +230,7 @@ public class MonitorEquipmentApplication {
                 .setChannel(monitorEquipmentCommand.getChannel())
                 //默认为3次
                 .setAlarmtime(3)
-                .setInstrumentno(UUID.randomUUID().toString().replaceAll("-", ""))
+                .setInstrumentno(instrumentNo)
                 .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
         monitorinstrumentService.insertMonitorinstrumentInfo(monitorinstrumentDTO);
 
@@ -262,6 +269,24 @@ public class MonitorEquipmentApplication {
         MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), equipmentName,new MonitorEquipmentLogCommand(), monitorEquipmentCommand,
                 OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
+
+        //存入redis
+        SnDeviceDto snDeviceDto = new SnDeviceDto()
+                        .setEquipmentNo(equipmentNo)
+                        .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
+                        .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
+                        .setEquipmentName(equipmentName)
+                        .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
+                        .setClientVisible(monitorEquipmentCommand.getClientVisible())
+                        .setInstrumentNo(instrumentNo)
+                        .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                        .setInstrumentName(monitorinstrumenttypeDTO.getInstrumenttypename())
+                        .setInstrumentTypeId(monitorinstrumenttypeDTO.getInstrumenttypeid().toString())
+                .setSn(monitorEquipmentCommand.getSn())
+                .setAlarmTime(3L)
+                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                .setChannel(monitorEquipmentCommand.getChannel());
+        snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
 
     /**
@@ -395,6 +420,16 @@ public class MonitorEquipmentApplication {
                 OperationLogEunm.DEVICE_MANAGEMENT.getCode(),
                 OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
+
+        //更新redis缓存:判断sn是否被修改，如果是就需要先删除该sn的redis信息，重新put信息
+        SnDeviceDto snDeviceDto = new SnDeviceDto();
+        snDeviceDto.setEquipmentName(monitorEquipmentCommand.getEquipmentName())
+                        .setSn(monitorEquipmentCommand.getSn())
+                                .setChannel(monitorEquipmentCommand.getChannel())
+                                        .setClientVisible(monitorEquipmentCommand.getClientVisible())
+                                                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                                                        .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand());
+        snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
 
     /**
@@ -422,11 +457,18 @@ public class MonitorEquipmentApplication {
         }
 
         //更新日志信息
-
         MonitorEquipmentLogCommand convert = BeanConverter.convert(monitorEquipmentDto, MonitorEquipmentLogCommand.class);
         MonitorEquipmentLogInfoCommand build =
                 build(Context.getUserId(), monitorEquipmentDto.getEquipmentName(), convert, new MonitorEquipmentCommand(), OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
+
+        //删除redis缓存
+        //通过设备eno查询设备sn信息
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
+        if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
+            snDeviceRedisApi.deleteSnDeviceDto(monitorinstrumentDTO.getSn());
+        }
+
     }
 
     /**

@@ -23,6 +23,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
 
     @Autowired
     private MonitorInstrumentMapper monitorInstrumentMapper;
+
     @Autowired
     private SnDeviceReidsSync snDeviceReidsSync;
 

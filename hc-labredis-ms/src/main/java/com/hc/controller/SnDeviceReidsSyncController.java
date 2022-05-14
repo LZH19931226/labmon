@@ -18,6 +18,7 @@ public class SnDeviceReidsSyncController {
     public void updateSnDeviceDtoSync(@RequestBody SnDeviceDto snDeviceDto){
         snDeviceReidsSyncApplocation.updateSnDeviceDtoSync(snDeviceDto);
     }
+
     @GetMapping("/getSnDeviceDto")
     @ApiOperation("获取设备缓存信息")
     public SnDeviceDto getSnDeviceDto(@RequestParam("sn") String sn){
