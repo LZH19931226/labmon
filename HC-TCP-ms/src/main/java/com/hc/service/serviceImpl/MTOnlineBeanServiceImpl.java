@@ -4,7 +4,6 @@ import com.hc.bean.MTOnlineBean;
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
-import com.redis.util.RedisTemplateUtil;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.socketServer.IotServer;
 import com.hc.util.*;
@@ -34,9 +33,6 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 
     @Autowired
     private NettyUtil netty;
-
-    @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
 
 
     @Override

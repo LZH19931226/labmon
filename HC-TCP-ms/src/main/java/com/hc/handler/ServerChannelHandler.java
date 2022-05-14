@@ -142,7 +142,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
         //主动移除通道在redis里面
         String asShortText = ctx.channel().id().asShortText();
-        String sn = tcpClientReidsSync.getSnBychannelId(asShortText);
+        String sn = tcpClientReidsSync.getSnBychannelId(asShortText).getResult();
         if (StringUtils.isNotEmpty(sn)){
             tcpClientReidsSync.deleteDeviceChannel(sn,asShortText);
         }

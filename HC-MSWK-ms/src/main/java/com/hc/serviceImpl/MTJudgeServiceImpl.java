@@ -1,5 +1,6 @@
 package com.hc.serviceImpl;
 
+import com.hc.device.SnDeviceRedisApi;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.po.Monitorinstrument;
 import com.hc.mapper.MonitorInstrumentMapper;
@@ -8,7 +9,6 @@ import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.MTJudgeService;
 import com.hc.utils.JsonUtil;
-import com.redis.tcp.SnDeviceReidsSync;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,13 @@ public class MTJudgeServiceImpl implements MTJudgeService {
     private MonitorInstrumentMapper monitorInstrumentMapper;
 
     @Autowired
-    private SnDeviceReidsSync snDeviceReidsSync;
+    private SnDeviceRedisApi snDeviceReidsSync;
 
     @Override
     public Monitorinstrument checkProbe(ParamaterModel model) {
         String sn = model.getSN();
         //先从缓存里面取,缓存里面取不出来再从数据库取,判断设备是否注册此处缓存需要后台管理做数据同步
-        SnDeviceDto snDeviceDto = snDeviceReidsSync.getSnDeviceDto(sn);
+        SnDeviceDto snDeviceDto = snDeviceReidsSync.getSnDeviceDto(sn).getResult();
         if (null==snDeviceDto){
             MonitorinstrumentModel monitorinstrumentModel = monitorInstrumentMapper.selectMonitorinstrumentInfoBySn(sn);
             if (null == monitorinstrumentModel) {

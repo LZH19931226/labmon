@@ -3,7 +3,6 @@ package com.hc.util;
 
 import com.hc.bean.MTOnlineBean;
 import com.hc.my.common.core.bean.ParamaterModel;
-import com.redis.util.RedisTemplateUtil;
 import com.hc.socketServer.IotServer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -13,7 +12,6 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,9 +25,6 @@ public class NettyUtil {
 
     private static final Logger log = LoggerFactory.getLogger(NettyUtil.class);
 
-
-    @Autowired
-    private RedisTemplateUtil redisDao;
 
     //private static ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -70,20 +65,20 @@ public class NettyUtil {
 //        String[] part = key.split("-");
 //        String cid = part[1];
 //        System.out.println(cid);
-        String string = (String) redisDao.boundValueOps(tid + ":" + MTOnlineBean.class.getSimpleName()).get();
-        for (Channel channel : IotServer.onlineChannels) {
-            if (channel.id().asShortText().equals(string)) {
-                return channel;
-            }
-        }
+//        String string = (String) redisDao.boundValueOps(tid + ":" + MTOnlineBean.class.getSimpleName()).get();
+//        for (Channel channel : IotServer.onlineChannels) {
+//            if (channel.id().asShortText().equals(string)) {
+//                return channel;
+//            }
+//        }
         return null;
     }
 
 
       public String getSnByCid(String cid){
-          Object o = redisDao.boundValueOps(cid + ":" + ParamaterModel.class.getSimpleName()).get();
-          String s = (String) o;
-          return  s;
+//          Object o = redisDao.boundValueOps(cid + ":" + ParamaterModel.class.getSimpleName()).get();
+//          String s = (String) o;
+          return  null;
       }
 //
 //    public Map<String,Object> getAllChannelMap(){
