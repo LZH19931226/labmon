@@ -269,19 +269,23 @@ public class MonitorEquipmentApplication {
         MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), equipmentName,new MonitorEquipmentLogCommand(), monitorEquipmentCommand,
                 OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
+        //存入redis
+        updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO);
+    }
 
+    public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO){
         //存入redis
         SnDeviceDto snDeviceDto = new SnDeviceDto()
-                        .setEquipmentNo(equipmentNo)
-                        .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
-                        .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
-                        .setEquipmentName(equipmentName)
-                        .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
-                        .setClientVisible(monitorEquipmentCommand.getClientVisible())
-                        .setInstrumentNo(instrumentNo)
-                        .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
-                        .setInstrumentName(monitorinstrumenttypeDTO.getInstrumenttypename())
-                        .setInstrumentTypeId(monitorinstrumenttypeDTO.getInstrumenttypeid().toString())
+                .setEquipmentNo(equipmentNo)
+                .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
+                .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
+                .setEquipmentName(equipmentName)
+                .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
+                .setClientVisible(monitorEquipmentCommand.getClientVisible())
+                .setInstrumentNo(instrumentNo)
+                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                .setInstrumentName(monitorinstrumenttypeDTO.getInstrumenttypename())
+                .setInstrumentTypeId(monitorinstrumenttypeDTO.getInstrumenttypeid().toString())
                 .setSn(monitorEquipmentCommand.getSn())
                 .setAlarmTime(3L)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())

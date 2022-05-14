@@ -63,12 +63,6 @@ public class LastDataServiceImpl implements LastDataService {
          * 根据equipmentno 获取设备类型ID
          */
         String equipmentTypeId = hospitalInfoMapper.getEquipmentTypeId(equipmentno);
-        String pc = "0";
-        if (StringUtils.equals(equipmentTypeId, "2")) {
-            pc = pyxPc;
-        } else if (StringUtils.equals(equipmentTypeId, "3")) {
-            pc = ydgPc;
-        }
         HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
         String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA" + hospitalcode, equipmentno);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
@@ -261,33 +255,6 @@ public class LastDataServiceImpl implements LastDataService {
         }
         return monitorequipmentlastdata;
     }
-
-//    public boolean tempMax(String temp, String temp1, String equipmentTypeid, String pc) {
-//        if (!StringUtils.equalsAny(equipmentTypeid, "2", "3")) {
-//            return true;
-//        }
-//
-//        if (StringUtils.isEmpty(temp) || StringUtils.isEmpty(temp1)) {
-//            return true;
-//        }
-//
-//        // 当上次记录信息和本次记录温度信息存在异常时，则返回false
-//        if (arrListt.contains(temp) || arrListt.contains(temp1)) {
-//            return true;
-//        }
-//        // 数字比较大小
-//        BigDecimal bigDecimal = new BigDecimal(temp);
-//        BigDecimal bigDecimal1 = new BigDecimal(temp1);
-//        BigDecimal abs = bigDecimal.subtract(bigDecimal1).abs();//返回两个差值的绝对值
-//        int i = abs.compareTo(new BigDecimal(pc));
-//        if (i == -1) {
-//            //当在差值范围内时候，则展示出来
-//            return true;
-//        }
-//
-//        return false;
-//    }
-
     // 判断对象是否为空方法：
     public boolean checkObjAllFieldsIsNull(Object object) {
         if (null == object) {

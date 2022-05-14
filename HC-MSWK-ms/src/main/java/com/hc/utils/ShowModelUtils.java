@@ -1,6 +1,7 @@
 package com.hc.utils;
 
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Monitorinstrument;
 import com.hc.model.InstrumentInfoModel;
 import com.hc.model.ShowModel;
@@ -295,23 +296,16 @@ public class ShowModelUtils {
     }
 
     /**
-     * 值校验
+     * 值校准
      *
      * @param o
      * @param data
      * @return
      */
     public String calibration(String o, String data) {
-
         InstrumentInfoModel instrumentInfoModel = JsonUtil.toBean(o, InstrumentInfoModel.class);
-        List<String> list = new ArrayList<String>();
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        list.add("D");
-        list.add("E");
-        list.add("F");
-        if (list.contains(data)) {
+        //如果是异常值则直接返回异常值
+        if (!RegularUtil.checkContainsNumbers(data)) {
             return data;
         }
         String calibration = instrumentInfoModel.getCalibration();
@@ -321,32 +315,9 @@ public class ShowModelUtils {
         //去除空
         String s = calibration.replaceAll(" ", "");
         try {
-
             return new BigDecimal(data).add(new BigDecimal(s)).toString();
         } catch (Exception e) {
             return data;
         }
-
-
     }
-
-
-    public void dataTimeOut(String equipmentno) {
-
-        HashOperations<Object, Object, Object> redisTemple = redisTemplateUtil.opsForHash();
-
-        redisTemple.put("timeOut", "equipmentno:" + equipmentno, TimeHelper.getCurrentTimes());
-//        if (redisTemple.hasKey("disable", "equipmentno:" + equipmentno)) {
-//            //表示当前设备之前禁用，现在数据重新上传，又启用了
-//            redisTemple.delete("disable", "equipmentno:" + equipmentno);
-//            //启用设备
-//            monitorequipmentDao.updateMonitorequipmentAble(equipmentno);
-//            // 报警通知
-//            //查询当前设备
-//            TimeoutEquipment one = monitorInstrumentMapper.getOne(equipmentno);
-//            one.setDisabletype("4");//解除报警
-//            messagePushService.pushMessage5(JsonUtil.toJson(one));
-//        }
-    }
-
 }
