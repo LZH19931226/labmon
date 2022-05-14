@@ -10,7 +10,6 @@ public enum LabManageMentServiceEnum {
     DEVICEINFO("DEVICEINFO");
 
 
-
     private String code;
 
     LabManageMentServiceEnum(String code){

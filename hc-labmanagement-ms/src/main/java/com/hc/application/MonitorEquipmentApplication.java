@@ -197,17 +197,20 @@ public class MonitorEquipmentApplication {
         if (integer > 0) {
             throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_ADD_DEVICE.getMessage());
         }
+
         //判断同医院设备名称是否有重复
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
         Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
         if(integer1>0){
             throw new IedsException(MonitorequipmentEnumErrorCode.DEVICE_NAME_ALREADY_EXISTS.getMessage());
         }
+
         //判断医院是否存在设备类型
         HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode, equipmentTypeId);
         if(ObjectUtils.isEmpty(hospitalequimentDTO)){
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_DEVICE_TYPE_DOES_NOT_EXIST.getCode());
         }
+
         //插入到monitorequipment表中
         String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
@@ -352,6 +355,9 @@ public class MonitorEquipmentApplication {
         if(integer>1){
             throw new IedsException(MonitorequipmentEnumErrorCode.DEVICE_NAME_ALREADY_EXISTS.getMessage());
         }
+        //用于redis判断sn是否修改
+        String sn = judgeSnWhetherToModify(monitorEquipmentCommand);
+        boolean flag =  org.apache.commons.lang3.StringUtils.equals(sn,monitorEquipmentCommand.getSn());
 
         //修改监控设备信息（monitorequipment）
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
@@ -427,17 +433,23 @@ public class MonitorEquipmentApplication {
 
         //更新redis缓存
         //判断sn是否被修改，如果是就需要先删除该sn的redis信息，重新put信息
-        String sn = judgeSnWhetherToModify(monitorEquipmentCommand);
-        if(!org.apache.commons.lang3.StringUtils.equals(sn,monitorEquipmentCommand.getSn())){
+        if(!flag){
             snDeviceRedisApi.deleteSnDeviceDto(sn);
         }
-        SnDeviceDto snDeviceDto = new SnDeviceDto();
-        snDeviceDto.setEquipmentName(monitorEquipmentCommand.getEquipmentName())
-                        .setSn(monitorEquipmentCommand.getSn())
-                                .setChannel(monitorEquipmentCommand.getChannel())
-                                        .setClientVisible(monitorEquipmentCommand.getClientVisible())
-                                                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
-                                                        .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand());
+        SnDeviceDto snDeviceDto = new SnDeviceDto()
+                .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
+                .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
+                .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
+                .setEquipmentName(equipmentName)
+                .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
+                .setClientVisible(monitorEquipmentCommand.getClientVisible())
+                .setInstrumentNo(monitorEquipmentCommand.getInstrumentno())
+                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                .setInstrumentName(monitorinstrumenttypeDTO.getInstrumenttypename())
+                .setInstrumentTypeId(monitorinstrumenttypeDTO.getInstrumenttypeid().toString())
+                .setSn(monitorEquipmentCommand.getSn())
+                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                .setChannel(monitorEquipmentCommand.getChannel());
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
 
@@ -451,7 +463,7 @@ public class MonitorEquipmentApplication {
         String sn = monitorEquipmentCommand.getSn();
         MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
         if(!ObjectUtils.isEmpty(monitorinstrumentDTO) && !org.apache.commons.lang3.StringUtils.equals(monitorinstrumentDTO.getSn(),sn)){
-            sn = monitorinstrumentDTO.getSn();
+           return monitorinstrumentDTO.getSn();
         }
         return sn;
     }
@@ -463,11 +475,15 @@ public class MonitorEquipmentApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteMonitorEquipment(String equipmentNo) {
+
         //判断设备是否有探头信息
         Integer integer1 = monitorinstrumentService.findProbeInformationByEno(equipmentNo);
         if (integer1>0) {
             throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_DELETE.getMessage());
         }
+
+        //通过设备eno查询设备sn信息,用于redis删除
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
 
         MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
         //删除探头表中的信息
@@ -487,8 +503,6 @@ public class MonitorEquipmentApplication {
         operationlogService.addMonitorEquipmentLogInfo(build);
 
         //删除redis缓存
-        //通过设备eno查询设备sn信息
-        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
         if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
             snDeviceRedisApi.deleteSnDeviceDto(monitorinstrumentDTO.getSn());
         }
