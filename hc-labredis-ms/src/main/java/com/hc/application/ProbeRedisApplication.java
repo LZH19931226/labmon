@@ -3,7 +3,7 @@ package com.hc.application;
 import cn.hutool.json.JSONUtil;
 import com.hc.config.RedisUtils;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
-import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -21,11 +21,11 @@ public class ProbeRedisApplication {
      * @return
      */
     public InstrumentInfoDto getProbeRedisInfo(String hospitalCode, String instrumentNo) {
-        Object instrumentInfoDto = redisUtils.hget("P" + hospitalCode, instrumentNo);
+        Object instrumentInfoDto = redisUtils.hget(LabManageMentServiceEnum.P.getCode() + hospitalCode, instrumentNo);
         if(ObjectUtils.isEmpty(instrumentInfoDto)){
             return null;
         }
-        return BeanConverter.convert(instrumentInfoDto,InstrumentInfoDto.class);
+       return JSONUtil.toBean((String) instrumentInfoDto, InstrumentInfoDto.class);
     }
 
     /**
@@ -33,7 +33,7 @@ public class ProbeRedisApplication {
      * @param instrumentInfoDto
      */
     public void addProbeRedisInfo(InstrumentInfoDto instrumentInfoDto) {
-        redisUtils.hset("P"+instrumentInfoDto.getHospitalCode(),instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
+        redisUtils.hset(LabManageMentServiceEnum.P.getCode()+instrumentInfoDto.getHospitalCode(),instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
     }
 
 
@@ -43,6 +43,6 @@ public class ProbeRedisApplication {
      * @param instrumentNo
      */
     public void removeProbeRedisInfo(String hospitalCode, String instrumentNo) {
-        redisUtils.hdel("P"+hospitalCode,instrumentNo);
+        redisUtils.hdel(hospitalCode,instrumentNo);
     }
 }

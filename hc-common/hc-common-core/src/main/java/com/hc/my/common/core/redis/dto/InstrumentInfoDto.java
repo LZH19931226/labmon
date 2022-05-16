@@ -51,4 +51,6 @@ public class InstrumentInfoDto {
     /** 校验正负值 */
     private String calibration;
 
+    /** 饱和值  */
+    private BigDecimal saturation;
 }

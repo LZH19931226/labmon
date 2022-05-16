@@ -94,4 +94,13 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
                 .eq(InstrumentmonitorPo::getInstrumenttypeid, instrumenttypeid));
         return BeanConverter.convert(instrumentmonitorPos,InstrumentmonitorDTO.class);
     }
+
+    /**
+     * 查询所有探头默认信息
+     */
+    @Override
+    public List<InstrumentmonitorDTO> selectMonitorEquipmentAll() {
+        List<InstrumentmonitorPo> instrumentmonitorPos = instrumentmonitorDao.selectList(null);
+        return BeanConverter.convert(instrumentmonitorPos,InstrumentmonitorDTO.class);
+    }
 }

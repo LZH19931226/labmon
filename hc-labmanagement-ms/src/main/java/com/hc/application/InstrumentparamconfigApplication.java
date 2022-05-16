@@ -14,6 +14,7 @@ import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
@@ -145,6 +146,7 @@ public class InstrumentparamconfigApplication {
     private void addProbeRedisInfo(MonitorinstrumentDTO monitorinstrumentDTO, InstrumentparamconfigCommand instrumentParamConfigCommand,String instrumentParamConfigNo) {
         InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto();
         instrumentInfoDto.setInstrumentNo(instrumentParamConfigCommand.getInstrumentNo())
+                .setSaturation(instrumentParamConfigCommand.getSaturation())
                 .setInstrumentName(instrumentParamConfigCommand.getInstrumentname())
                 .setEquipmentNo(monitorinstrumentDTO.getEquipmentno())
                 .setInstrumentTypeId(monitorinstrumentDTO.getInstrumenttypeid())
@@ -281,10 +283,8 @@ public class InstrumentparamconfigApplication {
 
             }
             //清除redis信息
-            removeProbeRedisInfo(instrumentparamconfigDTO.getInstrumentno(),instrumentparamconfigDTO.getInstrumentno()+":"+instrumentparamconfigDTO.getInstrumentconfigid());
+            removeProbeRedisInfo(LabManageMentServiceEnum.P.getCode() + instrumentparamconfigDTO.getInstrumentno(),instrumentparamconfigDTO.getInstrumentno()+":"+instrumentparamconfigDTO.getInstrumentconfigid());
         }
-
-
     }
 
     /**

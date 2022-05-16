@@ -39,4 +39,8 @@ public interface InstrumentmonitorRepository extends IService <Instrumentmonitor
      * @return
      */
     List<InstrumentmonitorDTO> selectMonitorEquipmentList(Integer instrumenttypeid);
+
+    /** 查询所有探头默认信息 */
+    List<InstrumentmonitorDTO> selectMonitorEquipmentAll();
+
 }
