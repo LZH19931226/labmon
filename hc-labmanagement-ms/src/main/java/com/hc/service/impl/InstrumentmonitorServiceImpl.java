@@ -61,4 +61,14 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
     public List<InstrumentmonitorDTO> selectMonitorEquipmentList(Integer instrumenttypeid) {
         return instrumentmonitorRepository.selectMonitorEquipmentList(instrumenttypeid);
     }
+
+    /**
+     * 查询所有探头默认配置
+     *
+     * @return
+     */
+    @Override
+    public List<InstrumentmonitorDTO> selectMonitorEquipmentAll() {
+        return instrumentmonitorRepository.selectMonitorEquipmentAll();
+    }
 }

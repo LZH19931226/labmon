@@ -7,7 +7,9 @@ public enum LabManageMentServiceEnum {
 
 
     //用于存储设备信息,feildkey为sn号,value为设备信息,包含设备时间段报警信息
-    DEVICEINFO("DEVICEINFO");
+    DEVICEINFO("DEVICEINFO"),
+    //用于存储探头信息，feildKey设备为探头表主键:监测类型主键
+    P("P");
 
 
     private String code;

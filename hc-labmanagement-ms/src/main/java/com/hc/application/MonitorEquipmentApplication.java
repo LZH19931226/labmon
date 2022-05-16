@@ -9,12 +9,14 @@ import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.constants.HospitalEnumErrorCode;
 import com.hc.constants.error.MonitorequipmentEnumErrorCode;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
+import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
@@ -32,6 +34,7 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -73,11 +76,14 @@ public class MonitorEquipmentApplication {
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
+
     /**
      * 分页获取监控设备信息
      *
      * @param monitorEquipmentCommand 监控设备参数
-     * @return
+     * @return 分页对象
      */
     public Page<MonitorEquipmentVo> getEquipmentInfoList(MonitorEquipmentCommand monitorEquipmentCommand) {
         Page<MonitorEquipmentVo> page = new Page<>(monitorEquipmentCommand.getPageCurrent(), monitorEquipmentCommand.getPageSize());
@@ -150,10 +156,7 @@ public class MonitorEquipmentApplication {
                 }
 
                 //获取设备有没有绑定探头信息
-                boolean deleteOrNot = true;
-                if (!ObjectUtils.isEmpty(instrumentNoMap.get(instrumentNo))) {
-                    deleteOrNot = false;
-                }
+                boolean deleteOrNot = ObjectUtils.isEmpty(instrumentNoMap.get(instrumentNo));
                 MonitorEquipmentVo build = MonitorEquipmentVo.builder()
                         .equipmentNo(res.getEquipmentNo())
                         .equipmentBrand(res.getEquipmentBrand())
@@ -225,10 +228,11 @@ public class MonitorEquipmentApplication {
 
         //插入监控探头信息
         String instrumentNo = UUID.randomUUID().toString().replaceAll("-", "");
+        String instrumentName = monitorEquipmentDto.getEquipmentName() + "探头";
         MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO()
                 .setInstrumenttypeid(monitorEquipmentCommand.getMonitorinstrumenttypeDTO().getInstrumenttypeid())
                 .setEquipmentno(monitorEquipmentDto.getEquipmentNo())
-                .setInstrumentname(monitorEquipmentDto.getEquipmentName() + "探头")
+                .setInstrumentname(instrumentName)
                 .setSn(monitorEquipmentCommand.getSn())
                 .setChannel(monitorEquipmentCommand.getChannel())
                 //默认为3次
@@ -248,7 +252,8 @@ public class MonitorEquipmentApplication {
             });
         }
 
-        //6.插入探头参数表
+        //插入探头参数表
+        List<InstrumentparamconfigDTO> probeList = new ArrayList<>();
         MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
         List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
         for (InstrumentmonitorDTO instrumentmonitorDTO : instrumentmonitorDTOS) {
@@ -265,6 +270,7 @@ public class MonitorEquipmentApplication {
                     .setInstrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
                     .setSaturation(instrumentmonitorDTO.getSaturation())
                     .setAlarmtime(3);
+            probeList.add(instrumentparamconfigDTO);
             instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
         }
 
@@ -272,10 +278,50 @@ public class MonitorEquipmentApplication {
         MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), equipmentName,new MonitorEquipmentLogCommand(), monitorEquipmentCommand,
                 OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
-        //存入redis
+
+        //设备信息存入redis
         updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO);
+
+        //探头信息存入redis
+        updateProbeRedisInfo(instrumentNo,instrumentName,equipmentNo,monitorEquipmentCommand,probeList);
     }
 
+    /**
+     * 更新探头reids缓存
+     * @param instrumentNo 探头id
+     * @param instrumentName 探头名称
+     * @param equipmentNo 设备id
+     * @param monitorEquipmentCommand 监控设备对象
+     * @param probeList 探头信息集合
+     */
+    private void updateProbeRedisInfo(String instrumentNo, String instrumentName, String equipmentNo, MonitorEquipmentCommand monitorEquipmentCommand, List<InstrumentparamconfigDTO> probeList) {
+        Integer instrumenttypeid = monitorEquipmentCommand.getMonitorinstrumenttypeDTO().getInstrumenttypeid();
+        for (InstrumentparamconfigDTO res : probeList) {
+            InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto();
+            instrumentInfoDto.setInstrumentNo(instrumentNo)
+                    .setInstrumentName(instrumentName)
+                    .setEquipmentNo(equipmentNo)
+                    .setInstrumentTypeId(instrumenttypeid)
+                    .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
+                    .setSn(monitorEquipmentCommand.getSn())
+                    .setAlarmTime(3)
+                    .setSaturation(res.getSaturation())
+                    .setInstrumentParamConfigNO(res.getInstrumentparamconfigno())
+                    .setInstrumentConfigId(res.getInstrumentconfigid())
+                    .setLowLimit(res.getLowlimit())
+                    .setHighLimit(res.getHighlimit());
+            probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
+        }
+    }
+
+    /**
+     * 更新sn设备的方法
+     * @param equipmentNo
+     * @param monitorEquipmentCommand
+     * @param equipmentName
+     * @param instrumentNo
+     * @param monitorinstrumenttypeDTO
+     */
     public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO){
         //存入redis
         SnDeviceDto snDeviceDto = new SnDeviceDto()
@@ -566,29 +612,45 @@ public class MonitorEquipmentApplication {
     @Transactional(rollbackFor = Exception.class)
     public List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation() {
         List<MonitorinstrumenttypeVo> mitVo = new ArrayList<>();
+        //查出所有的监控设备类型
         List<MonitorinstrumenttypeDTO> monitorinstrumenttypeVoList = monitorinstrumenttypeService.seleclAll();
-        for (MonitorinstrumenttypeDTO monitorinstrumenttypeDTO : monitorinstrumenttypeVoList) {
-            List<InstrumentmonitorDTO> instrumentmonitorDTOS = instrumentmonitorService.selectMonitorEquipmentList(monitorinstrumenttypeDTO.getInstrumenttypeid());
 
-            List<InstrumentmonitorVo> instrumentmonitorVos = new ArrayList<>();
-            instrumentmonitorDTOS.forEach(res -> {
-                Integer instrumentconfigid = res.getInstrumentconfigid();
-                InstrumentconfigDTO instrumentconfig = instrumentconfigService.selectInfoByConfigid(instrumentconfigid);
-                InstrumentmonitorVo build1 = InstrumentmonitorVo.builder()
-                        .instrumentconfigid(res.getInstrumentconfigid())
-                        .instrumenttypeid(res.getInstrumenttypeid())
-                        .lowlimit(res.getLowlimit())
-                        .instrumentconfigname(instrumentconfig.getInstrumentconfigname())
-                        .highlimit(res.getHighlimit())
+        //查询出所有的监控配置
+        List<InstrumentconfigDTO> instrumentconfigDTOS = instrumentconfigService.selectAllInfo();
+        Map<Integer, InstrumentconfigDTO> instrumentconfigMap = instrumentconfigDTOS.stream().collect(Collectors.toMap(InstrumentconfigDTO::getInstrumentconfigid, Function.identity()));
+
+
+        List<InstrumentmonitorDTO> list = instrumentmonitorService.selectMonitorEquipmentAll();
+        Map<Integer, List<InstrumentmonitorDTO>> instrumentmonitorMap = list.stream().collect(Collectors.groupingBy(InstrumentmonitorDTO::getInstrumenttypeid));
+
+        for (MonitorinstrumenttypeDTO monitorinstrumenttypeDTO : monitorinstrumenttypeVoList) {
+
+            if(instrumentmonitorMap.containsKey(monitorinstrumenttypeDTO.getInstrumenttypeid())){
+                List<InstrumentmonitorDTO> instrumentmonitorDTOS = instrumentmonitorMap.get(monitorinstrumenttypeDTO.getInstrumenttypeid());
+                List<InstrumentmonitorVo> instrumentmonitorVos = new ArrayList<>();
+                instrumentmonitorDTOS.forEach(res -> {
+                    Integer instrumentconfigid = res.getInstrumentconfigid();
+                    InstrumentconfigDTO instrumentconfig = new InstrumentconfigDTO();
+                    if(instrumentconfigMap.containsKey(instrumentconfigid)){
+                        instrumentconfig = instrumentconfigMap.get(instrumentconfigid);
+                    }
+                    InstrumentmonitorVo build1 = InstrumentmonitorVo.builder()
+                            .instrumentconfigid(res.getInstrumentconfigid())
+                            .instrumenttypeid(res.getInstrumenttypeid())
+                            .lowlimit(res.getLowlimit())
+                            .instrumentconfigname(instrumentconfig.getInstrumentconfigname())
+                            .highlimit(res.getHighlimit())
+                            .saturation(res.getSaturation())
+                            .build();
+                    instrumentmonitorVos.add(build1);
+                });
+                MonitorinstrumenttypeVo build = MonitorinstrumenttypeVo.builder()
+                        .instrumenttypeid(monitorinstrumenttypeDTO.getInstrumenttypeid())
+                        .instrumenttypename(monitorinstrumenttypeDTO.getInstrumenttypename())
+                        .instrumentmonitorVos(instrumentmonitorVos)
                         .build();
-                instrumentmonitorVos.add(build1);
-            });
-            MonitorinstrumenttypeVo build = MonitorinstrumenttypeVo.builder()
-                    .instrumenttypeid(monitorinstrumenttypeDTO.getInstrumenttypeid())
-                    .instrumenttypename(monitorinstrumenttypeDTO.getInstrumenttypename())
-                    .instrumentmonitorVos(instrumentmonitorVos)
-                    .build();
-            mitVo.add(build);
+                mitVo.add(build);
+            }
         }
 
         return mitVo;

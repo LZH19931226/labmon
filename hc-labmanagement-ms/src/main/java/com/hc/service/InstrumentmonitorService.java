@@ -7,7 +7,7 @@ import com.hc.dto.MonitorinstrumenttypeDTO;
 import java.util.List;
 
 /**
- * 
+ *
  *
  * @author liuzhihao
  * @email 1969994698@qq.com
@@ -44,5 +44,13 @@ public interface InstrumentmonitorService {
      * @return
      */
     List<InstrumentmonitorDTO> selectMonitorEquipmentList(Integer instrumenttypeid);
+
+
+    /**
+     * 查询所有探头默认配置
+     * @return
+     */
+    List<InstrumentmonitorDTO> selectMonitorEquipmentAll();
+
 }
 
