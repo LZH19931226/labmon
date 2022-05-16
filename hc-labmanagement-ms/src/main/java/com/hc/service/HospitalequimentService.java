@@ -8,7 +8,7 @@ import com.hc.dto.HospitalequimentDTO;
 import java.util.List;
 
 /**
- * 
+ *
  *
  * @author liuzhihao
  * @email 1969994698@qq.com
@@ -32,5 +32,12 @@ public interface HospitalequimentService{
      * @return
      */
     HospitalequimentDTO selectHospitalEquimentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
+
+    /**
+     * 查询医院的设备信息集合
+     * @param hospitalCode
+     * @return
+     */
+    List<HospitalequimentDTO> findHospitalEquipmentTypeByCode(String hospitalCode);
 }
 

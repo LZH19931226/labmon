@@ -45,4 +45,10 @@ public class UserRightInfoController {
         userRightApplication.deleteUserRightInfo(userRightCommand);
     }
 
+    @PostMapping("/userLogin")
+    @ApiOperation("用户登录")
+    public UserRightVo UserRightLogin(@RequestBody UserRightCommand userRightCommand ){
+        return userRightApplication.Login(userRightCommand);
+    }
+
 }

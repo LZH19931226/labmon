@@ -28,4 +28,11 @@ public interface HospitalequimentRepository extends IService <HospitalequimentPo
      * @return
      */
     HospitalequimentDTO selectHospitalEquimentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
+
+    /**
+     * 查询医院设备信息集合
+     * @param hospitalCode
+     * @return
+     */
+    List<HospitalequimentDTO> findHospitalEquipmentTypeByCode(String hospitalCode);
 }

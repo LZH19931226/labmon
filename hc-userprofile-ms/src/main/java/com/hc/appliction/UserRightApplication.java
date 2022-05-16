@@ -2,6 +2,7 @@ package com.hc.appliction;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
+import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
@@ -142,5 +143,35 @@ public class UserRightApplication {
         UserRightInfoCommand build =
                 build(Context.getUserId(), command, new UserRightCommand(), OperationLogEunm.USER_INFO.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogApi.addUserRightLog(build);
+    }
+
+    /**
+     * 用户登录
+     * @param userRightCommand
+     * @return
+     */
+    public UserRightVo Login(UserRightCommand userRightCommand) {
+        UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
+        UserRightVo userRightVoBuilder = null;
+        if(!ObjectUtils.isEmpty(userRightDto)){
+            String hospitalCode = userRightDto.getHospitalCode();
+            //查询医院信息
+            HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
+
+            //查询医院设备类型信息
+            List<HospitalEquipmentTypeModel> result = operationlogApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
+
+            userRightVoBuilder = UserRightVo.builder()
+                    .username(userRightDto.getUsername())
+                    .pwd(userRightDto.getPwd())
+                    .isUse(userRightCommand.getIsUse())
+                    .hospitalCode(userRightDto.getHospitalCode())
+                    .userid(userRightDto.getUserid())
+                    .phoneNum(userRightDto.getPhoneNum())
+                    .hospitalEquipmentTypeModels(result)
+                    .userType(userRightDto.getUserType())
+                    .hospitalName(hospitalInfo.getHospitalName()).build();
+        }
+        return userRightVoBuilder;
     }
 }

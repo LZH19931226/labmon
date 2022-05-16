@@ -7,12 +7,13 @@ import com.hc.po.HospitalequimentPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.vo.hospital.HospitalInfoVo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 /**
- * 
- * 
+ *
+ *
  * @author liuzhihao
  * @email 1969994698@qq.com
  * @date 2022-04-18 15:27:01
@@ -21,4 +22,13 @@ import java.util.List;
 public interface HospitalequimentDao extends BaseMapper<HospitalequimentPo> {
 
     List<HospitalequimentDTO> selectHospitalEquimentType(Page<HospitalInfoVo> page, @Param("hospitalEquimentTypeCommand") HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+
+    /**
+     * 查询医院设备信息
+     * @param hospitalCode 医院code
+     * @return
+     */
+    @Select("SELECT het.equipmenttypeid,het.equipmenttypename FROM hospitalequiment he LEFT JOIN monitorequipmenttype het " +
+            "ON het.equipmenttypeid = he.equipmenttypeid WHERE he.hospitalcode = #{hospitalCode} AND he.isvisible = '1' ")
+    List<HospitalequimentDTO> selectHospitalEquipmentInfo(String hospitalCode);
 }

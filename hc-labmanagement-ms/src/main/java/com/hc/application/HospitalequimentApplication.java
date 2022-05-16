@@ -3,6 +3,7 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.command.labmanagement.hospital.HospitalEquimentTypeInfoCommand;
+import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
@@ -184,4 +185,22 @@ public class HospitalequimentApplication {
         operationlogService.addHospitalEquipmentOperationLogCommand(build);
     }
 
+    /**
+     * 查询医院设备信息集合
+     * @param hospitalCode
+     * @return
+     */
+    public List<HospitalEquipmentTypeModel> findHospitalEquipmentTypeByCode(String hospitalCode) {
+        List<HospitalequimentDTO> dtoList =  hospitalequimentService.findHospitalEquipmentTypeByCode(hospitalCode);
+        List<HospitalEquipmentTypeModel> list = new ArrayList<>();
+        if(!ObjectUtils.isEmpty(dtoList)){
+            dtoList.forEach(res->{
+                HospitalEquipmentTypeModel model = new HospitalEquipmentTypeModel();
+                model.setEquipmentTypeId(res.getEquipmenttypeid())
+                      .setEquipmentTypeName(res.getEquipmenttypename());
+                list.add(model);
+            });
+        }
+        return list;
+    }
 }

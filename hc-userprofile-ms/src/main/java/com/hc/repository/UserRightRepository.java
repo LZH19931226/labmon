@@ -53,4 +53,11 @@ public interface UserRightRepository extends IService<UserRightPo> {
      * @return
      */
     UserRightDto selectUserRightInfo(String userid);
+
+    /**
+     * 查询用户信息
+     * @param userRightCommand
+     * @return
+     */
+    UserRightDto selectUserRight(UserRightCommand userRightCommand);
 }
