@@ -265,25 +265,24 @@ public class InstrumentparamconfigApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
+        if(!ObjectUtils.isEmpty(instrumentParamConfigNos)){
+            List<InstrumentparamconfigDTO> dos = instrumentparamconfigService.selectInstrumentparamconfigAllInfo();
+            Map<String, InstrumentparamconfigDTO> collect = dos.stream().collect(Collectors.toMap(InstrumentparamconfigDTO::getInstrumentparamconfigno, Function.identity()));
+            instrumentparamconfigService.deleteInfos(instrumentParamConfigNos);
 
-        List<InstrumentparamconfigDTO> dtos = instrumentparamconfigService.selectInstrumentparamconfigAllInfo();
-        Map<String, InstrumentparamconfigDTO> collect = dtos.stream().collect(Collectors.toMap(InstrumentparamconfigDTO::getInstrumentparamconfigno, Function.identity()));
-        instrumentparamconfigService.deleteInfos(instrumentParamConfigNos);
-
-        for (String instrumentParamConfigNo : instrumentParamConfigNos) {
-            InstrumentparamconfigDTO instrumentparamconfigDTO = collect.get(instrumentParamConfigNo);
-            if (!ObjectUtils.isEmpty(instrumentparamconfigDTO)) {
-
-                InstrumentParamConfigInfoCommand build = build(Context.getUserId()
-                        , BeanConverter.convert(instrumentparamconfigDTO, InstrumentparamconfigCommand.class)
-                        , new InstrumentparamconfigCommand()
-                        , OperationLogEunm.PROBE_MANAGEMENT.getCode()
-                        , OperationLogEunmDerailEnum.REMOVE.getCode());
-                operationlogService.addInstrumentparamconfig(build);
-
+            for (String instrumentParamConfigNo : instrumentParamConfigNos) {
+                InstrumentparamconfigDTO instrumentparamconfigDTO = collect.get(instrumentParamConfigNo);
+                if (!ObjectUtils.isEmpty(instrumentparamconfigDTO)) {
+                    InstrumentParamConfigInfoCommand build = build(Context.getUserId()
+                            , BeanConverter.convert(instrumentparamconfigDTO, InstrumentparamconfigCommand.class)
+                            , new InstrumentparamconfigCommand()
+                            , OperationLogEunm.PROBE_MANAGEMENT.getCode()
+                            , OperationLogEunmDerailEnum.REMOVE.getCode());
+                    operationlogService.addInstrumentparamconfig(build);
+                }
+                //清除redis信息
+                removeProbeRedisInfo(instrumentparamconfigDTO.getInstrumentno(),instrumentparamconfigDTO.getInstrumentno()+":"+instrumentparamconfigDTO.getInstrumentconfigid());
             }
-            //清除redis信息
-            removeProbeRedisInfo(LabManageMentServiceEnum.P.getCode() + instrumentparamconfigDTO.getInstrumentno(),instrumentparamconfigDTO.getInstrumentno()+":"+instrumentparamconfigDTO.getInstrumentconfigid());
         }
     }
 
@@ -295,7 +294,7 @@ public class InstrumentparamconfigApplication {
     private void removeProbeRedisInfo(String instrumentno, String str) {
         MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentno);
         String hospitalcode = monitorinstrumentDTO.getHospitalcode();
-        probeRedisApi.removeProbeRedisInfo(hospitalcode,str);
+        probeRedisApi.removeProbeRedisInfo(LabManageMentServiceEnum.P.getCode() + hospitalcode,str);
     }
 
 

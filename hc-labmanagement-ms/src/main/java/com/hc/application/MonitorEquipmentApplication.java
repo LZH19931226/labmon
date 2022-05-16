@@ -76,11 +76,14 @@ public class MonitorEquipmentApplication {
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
+
     /**
      * 分页获取监控设备信息
      *
      * @param monitorEquipmentCommand 监控设备参数
-     * @return
+     * @return 分页对象
      */
     public Page<MonitorEquipmentVo> getEquipmentInfoList(MonitorEquipmentCommand monitorEquipmentCommand) {
         Page<MonitorEquipmentVo> page = new Page<>(monitorEquipmentCommand.getPageCurrent(), monitorEquipmentCommand.getPageSize());
@@ -153,10 +156,7 @@ public class MonitorEquipmentApplication {
                 }
 
                 //获取设备有没有绑定探头信息
-                boolean deleteOrNot = true;
-                if (!ObjectUtils.isEmpty(instrumentNoMap.get(instrumentNo))) {
-                    deleteOrNot = false;
-                }
+                boolean deleteOrNot = ObjectUtils.isEmpty(instrumentNoMap.get(instrumentNo));
                 MonitorEquipmentVo build = MonitorEquipmentVo.builder()
                         .equipmentNo(res.getEquipmentNo())
                         .equipmentBrand(res.getEquipmentBrand())
@@ -252,7 +252,7 @@ public class MonitorEquipmentApplication {
             });
         }
 
-        //6.插入探头参数表
+        //插入探头参数表
         List<InstrumentparamconfigDTO> probeList = new ArrayList<>();
         MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
         List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
@@ -286,16 +286,13 @@ public class MonitorEquipmentApplication {
         updateProbeRedisInfo(instrumentNo,instrumentName,equipmentNo,monitorEquipmentCommand,probeList);
     }
 
-    @Autowired
-    private ProbeRedisApi probeRedisApi;
-
     /**
      * 更新探头reids缓存
-     * @param instrumentNo
-     * @param instrumentName
-     * @param equipmentNo
-     * @param monitorEquipmentCommand
-     * @param probeList
+     * @param instrumentNo 探头id
+     * @param instrumentName 探头名称
+     * @param equipmentNo 设备id
+     * @param monitorEquipmentCommand 监控设备对象
+     * @param probeList 探头信息集合
      */
     private void updateProbeRedisInfo(String instrumentNo, String instrumentName, String equipmentNo, MonitorEquipmentCommand monitorEquipmentCommand, List<InstrumentparamconfigDTO> probeList) {
         Integer instrumenttypeid = monitorEquipmentCommand.getMonitorinstrumenttypeDTO().getInstrumenttypeid();
@@ -308,6 +305,7 @@ public class MonitorEquipmentApplication {
                     .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
                     .setSn(monitorEquipmentCommand.getSn())
                     .setAlarmTime(3)
+                    .setSaturation(res.getSaturation())
                     .setInstrumentParamConfigNO(res.getInstrumentparamconfigno())
                     .setInstrumentConfigId(res.getInstrumentconfigid())
                     .setLowLimit(res.getLowlimit())
@@ -315,7 +313,6 @@ public class MonitorEquipmentApplication {
             probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
         }
     }
-
 
     /**
      * 更新sn设备的方法
