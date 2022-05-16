@@ -2,8 +2,10 @@ package com.hc.application;
 
 import cn.hutool.json.JSONUtil;
 import com.hc.config.RedisUtils;
+import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
+import com.hc.my.common.core.redis.namespace.MswkServiceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,5 +30,10 @@ public class SnDeviceReidsSyncApplocation {
 
     public void deleteSnDeviceDto(String sn) {
         redisUtils.hdel(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn);
+    }
+
+    public void updateSnCurrentInfo(MonitorequipmentlastdataDto monitorequipmentlastdataDto) {
+        redisUtils.hset(MswkServiceEnum.L.getCode()+monitorequipmentlastdataDto.getHospitalcode(),
+                monitorequipmentlastdataDto.getEquipmentno()+monitorequipmentlastdataDto.getCmdId(),JSONUtil.toJsonStr(monitorequipmentlastdataDto));
     }
 }

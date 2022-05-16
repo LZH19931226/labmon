@@ -146,38 +146,6 @@ public class SocketMessageListener {
 
     }
 
-    //监听当前值信息
-    @StreamListener(BaoJinMsg.EXCHANGE_NAME3)
-    public void onMessage4(String messageContent) {
-
-        Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(messageContent, Monitorequipmentlastdata.class);
-        LOGGER.info("当前值服务进来：" + messageContent);
-        //头天信息删除
-        //当前日期
-        Date inputdatetime = monitorequipmentlastdata.getInputdatetime();
-
-        String currentDate = TimeHelper.getDateString(inputdatetime);
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        String o = (String) objectObjectObjectHashOperations.get("equipmentno:lastdata", monitorequipmentlastdata.getEquipmentno() + ":" + currentDate);
-        List<Monitorequipmentlastdata> list = new ArrayList<Monitorequipmentlastdata>();
-        if (StringUtils.isEmpty(o)) {
-            //删除昨天的数据
-            String s = TimeHelper.dateDD();
-            String o1 = (String) objectObjectObjectHashOperations.get("equipmentno:lastdata", monitorequipmentlastdata.getEquipmentno() + ":" + s);
-            if (StringUtils.isNotEmpty(o1)) {
-                //删除
-                objectObjectObjectHashOperations.delete("equipmentno:lastdata", monitorequipmentlastdata.getEquipmentno() + ":" + s);
-            }
-            list.add(monitorequipmentlastdata);
-            objectObjectObjectHashOperations.put("equipmentno:lastdata", monitorequipmentlastdata.getEquipmentno() + ":" + currentDate, JsonUtil.toJson(list));
-        } else {
-            list = JsonUtil.toList(o, Monitorequipmentlastdata.class);
-            list.add(monitorequipmentlastdata);
-            objectObjectObjectHashOperations.put("equipmentno:lastdata", monitorequipmentlastdata.getEquipmentno() + ":" + currentDate, JsonUtil.toJson(list));
-        }
-
-
-    }
 
     public void msctMessage(String message) {
         WarningMqModel mQmodel = JsonUtil.toBean(message, WarningMqModel.class);

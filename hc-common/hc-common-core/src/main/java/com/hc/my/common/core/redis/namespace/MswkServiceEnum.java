@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum MswkServiceEnum {
 
-    //
-    xxx("xxx");
+    //缓存设备当前值
+    L("L");
 
 
 
