@@ -7,11 +7,13 @@ import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
+import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
@@ -52,6 +54,9 @@ public class InstrumentparamconfigApplication {
 
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
+
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
 
     /**
      * 通过设备no获取探头参数信息
@@ -102,8 +107,9 @@ public class InstrumentparamconfigApplication {
         if(compareTo>0){
             throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
         }
+        String instrumentParamConfigNo = UUID.randomUUID().toString().replaceAll("-", "");
         InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
-                .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""))
+                .setInstrumentparamconfigno(instrumentParamConfigNo)
                 .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
                 .setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
                 .setInstrumentname(instrumentParamConfigCommand.getInstrumentname())
@@ -125,6 +131,33 @@ public class InstrumentparamconfigApplication {
                         OperationLogEunm.PROBE_MANAGEMENT.getCode(),
                         OperationLogEunmDerailEnum.ADD.getCode());
         operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
+
+        //添加redis缓存信息
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
+        addProbeRedisInfo(monitorinstrumentDTO,instrumentParamConfigCommand,instrumentParamConfigNo);
+    }
+
+    /**
+     * 探头redis缓存
+     * @param monitorinstrumentDTO
+     * @param instrumentParamConfigCommand
+     */
+    private void addProbeRedisInfo(MonitorinstrumentDTO monitorinstrumentDTO, InstrumentparamconfigCommand instrumentParamConfigCommand,String instrumentParamConfigNo) {
+        InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto();
+        instrumentInfoDto.setInstrumentNo(instrumentParamConfigCommand.getInstrumentNo())
+                .setInstrumentName(instrumentParamConfigCommand.getInstrumentname())
+                .setEquipmentNo(monitorinstrumentDTO.getEquipmentno())
+                .setInstrumentTypeId(monitorinstrumentDTO.getInstrumenttypeid())
+                .setHospitalCode(instrumentParamConfigCommand.getHospitalCode())
+                .setSn(instrumentParamConfigCommand.getSn())
+                .setAlarmTime(instrumentParamConfigCommand.getAlarmtime())
+                .setInstrumentConfigId(instrumentParamConfigCommand.getInstrumentconfigid())
+                .setInstrumentParamConfigNO(instrumentParamConfigNo)
+                .setLowLimit(instrumentParamConfigCommand.getLowlimit())
+                .setHighLimit(instrumentParamConfigCommand.getHighlimit())
+                .setWarningPhone(instrumentParamConfigCommand.getWarningphone())
+                .setCalibration(instrumentParamConfigCommand.getCalibration());
+        probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
     }
 
     /**
@@ -191,10 +224,8 @@ public class InstrumentparamconfigApplication {
             throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
         }
 
-        InstrumentparamconfigDTO dto =
-                instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
-        MonitorinstrumentDTO monitorinstrumentDTO
-                = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
+        InstrumentparamconfigDTO dto =  instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
         dto.setSn(monitorinstrumentDTO.getSn());
 
         InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
@@ -220,6 +251,9 @@ public class InstrumentparamconfigApplication {
                         OperationLogEunm.PROBE_MANAGEMENT.getCode(),
                         OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
+
+        //更新redis缓存
+        addProbeRedisInfo(monitorinstrumentDTO,instrumentParamConfigCommand,instrumentParamConfigCommand.getInstrumentparamconfigno());
     }
 
     /**
@@ -229,6 +263,7 @@ public class InstrumentparamconfigApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
+
         List<InstrumentparamconfigDTO> dtos = instrumentparamconfigService.selectInstrumentparamconfigAllInfo();
         Map<String, InstrumentparamconfigDTO> collect = dtos.stream().collect(Collectors.toMap(InstrumentparamconfigDTO::getInstrumentparamconfigno, Function.identity()));
         instrumentparamconfigService.deleteInfos(instrumentParamConfigNos);
@@ -245,8 +280,24 @@ public class InstrumentparamconfigApplication {
                 operationlogService.addInstrumentparamconfig(build);
 
             }
+            //清除redis信息
+            removeProbeRedisInfo(instrumentparamconfigDTO.getInstrumentno(),instrumentparamconfigDTO.getInstrumentno()+":"+instrumentparamconfigDTO.getInstrumentconfigid());
         }
+
+
     }
+
+    /**
+     * 删除redis信息
+     * @param instrumentno
+     * @param str
+     */
+    private void removeProbeRedisInfo(String instrumentno, String str) {
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentno);
+        String hospitalcode = monitorinstrumentDTO.getHospitalcode();
+        probeRedisApi.removeProbeRedisInfo(hospitalcode,str);
+    }
+
 
     /**
      * 分页获取探头信息

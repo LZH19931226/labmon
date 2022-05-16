@@ -1,0 +1,796 @@
+2022-05-14 10:20:07.834 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 10:20:07.834 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 10:20:08.015 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$4db6367b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:20:08.015 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$4db6367b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:20:08.391 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 10:20:08.391 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 10:20:08.409 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 10:20:08.409 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 10:20:08.415 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 10:20:09.219 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 10:20:09.219 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 10:20:09.221 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 10:20:09.221 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 10:20:09.245 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14ms. Found 0 repository interfaces.
+2022-05-14 10:20:09.245 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14ms. Found 0 repository interfaces.
+2022-05-14 10:20:09.402 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 10:20:09.402 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 10:20:09.462 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$4db6367b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:20:09.462 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$4db6367b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:20:09.861 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 10:20:09.861 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 10:20:09.880 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 10:20:09.880 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 10:20:09.880 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 10:20:09.880 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 10:20:09.974 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 10:20:09.974 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 10:20:09.974 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1541 ms
+2022-05-14 10:20:09.974 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1541 ms
+2022-05-14 10:20:10.156 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 10:20:10.156 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 10:20:10.379 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:20:10.379 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:20:10.380 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:20:10.380 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:20:10.384 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:20:10.384 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:20:10.384 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:20:10.384 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:20:10.500 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:20:10.500 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:20:10.542 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 10:20:10.542 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 10:20:10.669 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 10:20:10.669 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 10:20:10.695 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 10:20:10.695 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 10:20:11.054 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 10:20:11.054 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 10:20:11.071 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 10:20:11.071 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 10:20:11.097 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 10:20:11.097 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 10:20:11.226 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 10:20:11.226 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 10:20:12.045 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 10:20:12.045 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 10:20:12.098 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 4.877 seconds (JVM running for 6.558)
+2022-05-14 10:22:07.303 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 10:22:07.303 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 10:22:07.306 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 10:22:07.306 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 10:22:07.307 [Thread-28] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:22:07.307 [Thread-28] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:22:07.322 [Thread-28] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 10:22:07.322 [Thread-28] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 10:22:11.848 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 10:22:11.848 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 10:22:12.048 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$24432f08] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:22:12.048 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$24432f08] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:22:12.232 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 10:22:12.232 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 10:22:12.238 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 10:22:12.238 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 10:22:12.241 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 10:22:13.010 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 10:22:13.010 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 10:22:13.011 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 10:22:13.011 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 10:22:13.034 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15ms. Found 0 repository interfaces.
+2022-05-14 10:22:13.034 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15ms. Found 0 repository interfaces.
+2022-05-14 10:22:13.195 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 10:22:13.195 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 10:22:13.250 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$24432f08] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:22:13.250 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$24432f08] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:22:13.588 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 10:22:13.588 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 10:22:13.604 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 10:22:13.604 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 10:22:13.604 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 10:22:13.604 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 10:22:13.695 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 10:22:13.695 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 10:22:13.695 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1446 ms
+2022-05-14 10:22:13.695 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1446 ms
+2022-05-14 10:22:13.852 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 10:22:13.852 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 10:22:14.085 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:22:14.085 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:22:14.085 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:22:14.085 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:22:14.088 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:22:14.088 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:22:14.088 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:22:14.088 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:22:14.189 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:22:14.189 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:22:14.223 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 10:22:14.223 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 10:22:14.338 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 10:22:14.338 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 10:22:14.362 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 10:22:14.362 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 10:22:14.659 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 10:22:14.659 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 10:22:14.674 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 10:22:14.674 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 10:22:14.701 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 10:22:14.701 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 10:22:14.859 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 10:22:14.859 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 10:22:14.885 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 10:22:14.885 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 10:22:14.920 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 3.575 seconds (JVM running for 4.184)
+2022-05-14 10:46:26.467 [Thread-24] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 10:46:26.467 [Thread-24] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 10:46:26.469 [Thread-24] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 10:46:26.469 [Thread-24] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 10:46:26.470 [Thread-24] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:46:26.470 [Thread-24] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:46:26.489 [Thread-24] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 10:46:26.489 [Thread-24] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 10:46:30.110 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 10:46:30.110 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 10:46:30.362 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3d85e531] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:46:30.362 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3d85e531] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:46:30.723 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 10:46:30.723 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 10:46:30.729 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 10:46:30.729 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 10:46:30.734 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 10:46:31.497 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 10:46:31.497 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 10:46:31.499 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 10:46:31.499 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 10:46:31.522 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15ms. Found 0 repository interfaces.
+2022-05-14 10:46:31.522 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15ms. Found 0 repository interfaces.
+2022-05-14 10:46:31.692 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 10:46:31.692 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 10:46:31.748 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3d85e531] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:46:31.748 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$3d85e531] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 10:46:32.133 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 10:46:32.133 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 10:46:32.160 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 10:46:32.160 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 10:46:32.161 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 10:46:32.161 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 10:46:32.276 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 10:46:32.276 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 10:46:32.276 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1531 ms
+2022-05-14 10:46:32.276 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1531 ms
+2022-05-14 10:46:32.439 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 10:46:32.439 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 10:46:32.655 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:46:32.655 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:46:32.655 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:46:32.655 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:46:32.659 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:46:32.659 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 10:46:32.659 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:46:32.659 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 10:46:32.763 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:46:32.763 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 10:46:32.835 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 10:46:32.835 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 10:46:32.954 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 10:46:32.954 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 10:46:32.977 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 10:46:32.977 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 10:46:33.332 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 10:46:33.332 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 10:46:33.346 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 10:46:33.346 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 10:46:33.373 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 10:46:33.373 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 10:46:33.524 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 10:46:33.524 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 10:46:33.552 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 10:46:33.552 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 10:46:33.587 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 3.979 seconds (JVM running for 4.714)
+2022-05-14 10:57:18.881 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 10:57:18.881 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 10:57:18.881 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 10:57:18.881 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 10:57:18.887 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2022-05-14 10:57:18.887 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2022-05-14 11:12:03.710 [http-nio-10619-exec-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 11:12:03.710 [http-nio-10619-exec-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 11:12:03.711 [http-nio-10619-exec-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2022-05-14 11:12:03.711 [http-nio-10619-exec-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2022-05-14 11:57:28.092 [Thread-25] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 11:57:28.092 [Thread-25] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 11:57:28.230 [Thread-25] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 11:57:28.230 [Thread-25] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 11:57:28.233 [Thread-25] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 11:57:28.233 [Thread-25] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 11:57:29.382 [Thread-25] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 11:57:29.382 [Thread-25] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 11:57:40.318 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 11:57:40.318 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 11:57:40.518 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$cc0db667] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 11:57:40.518 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$cc0db667] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 11:57:40.709 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 11:57:40.709 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 11:57:40.714 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 11:57:40.714 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 11:57:40.717 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 11:57:41.648 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 11:57:41.648 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 11:57:41.649 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 11:57:41.649 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 11:57:41.672 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14ms. Found 0 repository interfaces.
+2022-05-14 11:57:41.672 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14ms. Found 0 repository interfaces.
+2022-05-14 11:57:41.841 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 11:57:41.841 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 11:57:41.896 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$cc0db667] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 11:57:41.896 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$cc0db667] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 11:57:42.248 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 11:57:42.248 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 11:57:42.267 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 11:57:42.267 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 11:57:42.267 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 11:57:42.267 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 11:57:42.365 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 11:57:42.365 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 11:57:42.365 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1639 ms
+2022-05-14 11:57:42.365 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1639 ms
+2022-05-14 11:57:42.532 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 11:57:42.532 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 11:57:42.755 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 11:57:42.755 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 11:57:42.755 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 11:57:42.755 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 11:57:42.758 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 11:57:42.758 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 11:57:42.758 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 11:57:42.758 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 11:57:42.863 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 11:57:42.863 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 11:57:42.899 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 11:57:42.899 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 11:57:43.017 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 11:57:43.017 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 11:57:43.040 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 11:57:43.040 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 11:57:43.345 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 11:57:43.345 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 11:57:43.360 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 11:57:43.360 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 11:57:43.387 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 11:57:43.387 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 11:57:43.588 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 11:57:43.588 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 11:57:43.640 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 11:57:43.640 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 11:57:43.676 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 4.281 seconds (JVM running for 4.944)
+2022-05-14 12:05:51.125 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 12:05:51.125 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 12:05:51.128 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 12:05:51.128 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 12:05:51.129 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 12:05:51.129 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 12:05:51.149 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 12:05:51.149 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 12:07:18.477 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 12:07:18.477 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 12:07:18.870 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 12:07:18.870 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 12:07:19.213 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 12:07:19.213 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 12:07:19.219 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 12:07:19.219 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 12:07:19.222 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 12:07:20.165 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 12:07:20.165 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 12:07:20.167 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 12:07:20.167 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 12:07:20.192 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16ms. Found 0 repository interfaces.
+2022-05-14 12:07:20.192 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16ms. Found 0 repository interfaces.
+2022-05-14 12:07:20.391 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 12:07:20.391 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 12:07:20.455 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 12:07:20.455 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 12:07:20.841 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 12:07:20.841 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 12:07:20.858 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 12:07:20.858 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 12:07:20.859 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 12:07:20.859 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 12:07:20.960 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 12:07:20.960 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 12:07:20.960 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1728 ms
+2022-05-14 12:07:20.960 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1728 ms
+2022-05-14 12:07:21.172 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 12:07:21.172 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 12:07:21.448 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 12:07:21.448 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 12:07:21.449 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 12:07:21.449 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 12:07:21.453 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 12:07:21.453 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 12:07:21.453 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 12:07:21.453 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 12:07:21.598 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 12:07:21.598 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 12:07:21.666 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 12:07:21.666 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 12:07:21.834 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 12:07:21.834 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 12:07:21.874 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 12:07:21.874 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 12:07:22.425 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 12:07:22.425 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 12:07:22.453 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 12:07:22.453 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 12:07:22.493 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 12:07:22.493 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 12:07:22.746 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 12:07:22.746 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 12:07:22.782 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 12:07:22.782 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 12:07:22.844 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 4.922 seconds (JVM running for 5.701)
+2022-05-14 14:01:40.069 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 14:01:40.069 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 14:01:40.069 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 14:01:40.069 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 14:01:40.086 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 17 ms
+2022-05-14 14:01:40.086 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 17 ms
+2022-05-14 14:01:40.256 [http-nio-10619-exec-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 14:01:40.256 [http-nio-10619-exec-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 14:01:40.257 [http-nio-10619-exec-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2022-05-14 14:01:40.257 [http-nio-10619-exec-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2022-05-14 16:54:56.153 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 16:54:56.153 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 16:54:56.157 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 16:54:56.157 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 16:54:56.160 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:54:56.160 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:54:57.371 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 16:54:57.371 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 16:54:58.531 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:54:58.531 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:54:58.699 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 16:54:58.699 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 16:54:58.801 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 16:54:58.801 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 16:54:58.803 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 16:54:59.503 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 16:54:59.503 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 16:54:59.503 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 16:54:59.503 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 16:54:59.512 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 9ms. Found 0 repository interfaces.
+2022-05-14 16:54:59.512 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 9ms. Found 0 repository interfaces.
+2022-05-14 16:54:59.561 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 16:54:59.561 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=0e057a60-43e0-3cf2-9dcb-a75d0966d30b
+2022-05-14 16:54:59.578 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:54:59.578 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ea771840] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:54:59.668 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 16:54:59.668 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 16:54:59.669 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 16:54:59.669 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 16:54:59.669 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 16:54:59.669 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 16:54:59.693 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 16:54:59.693 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 16:54:59.693 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 884 ms
+2022-05-14 16:54:59.693 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 884 ms
+2022-05-14 16:54:59.724 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 16:54:59.724 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 16:54:59.848 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 16:54:59.848 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 16:54:59.848 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 16:54:59.848 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 16:54:59.880 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:54:59.880 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:54:59.893 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 16:54:59.893 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 16:54:59.965 [restartedMain] INFO  com.alibaba.nacos.client.naming - initializer namespace from System Property :null
+2022-05-14 16:54:59.965 [restartedMain] INFO  com.alibaba.nacos.client.naming - initializer namespace from System Property :null
+2022-05-14 16:54:59.965 [restartedMain] INFO  com.alibaba.nacos.client.naming - initializer namespace from System Environment :null
+2022-05-14 16:54:59.965 [restartedMain] INFO  com.alibaba.nacos.client.naming - initializer namespace from System Environment :null
+2022-05-14 16:54:59.965 [restartedMain] INFO  com.alibaba.nacos.client.naming - initializer namespace from System Property :null
+2022-05-14 16:54:59.965 [restartedMain] INFO  com.alibaba.nacos.client.naming - initializer namespace from System Property :null
+2022-05-14 16:54:59.969 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 16:54:59.969 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 16:54:59.980 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 16:54:59.980 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 16:55:00.114 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 16:55:00.114 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 16:55:00.115 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 16:55:00.115 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 16:55:00.120 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 16:55:00.120 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 16:55:00.147 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 16:55:00.147 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 16:55:00.148 [restartedMain] INFO  com.alibaba.nacos.client.naming - [BEAT] adding beat: {"cluster":"DEFAULT","ip":"172.16.10.39","metadata":{"preserved.register.source":"SPRING_CLOUD"},"period":5000,"port":10619,"scheduled":false,"serviceName":"DEFAULT_GROUP@@HC-LABREDIS-ms","stopped":false,"weight":1.0} to beat map.
+2022-05-14 16:55:00.148 [restartedMain] INFO  com.alibaba.nacos.client.naming - [BEAT] adding beat: {"cluster":"DEFAULT","ip":"172.16.10.39","metadata":{"preserved.register.source":"SPRING_CLOUD"},"period":5000,"port":10619,"scheduled":false,"serviceName":"DEFAULT_GROUP@@HC-LABREDIS-ms","stopped":false,"weight":1.0} to beat map.
+2022-05-14 16:55:00.149 [restartedMain] INFO  com.alibaba.nacos.client.naming - [REGISTER-SERVICE] chenkai registering service DEFAULT_GROUP@@HC-LABREDIS-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.10.39","ipDeleteTimeout":30000,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":10619,"weight":1.0}
+2022-05-14 16:55:00.149 [restartedMain] INFO  com.alibaba.nacos.client.naming - [REGISTER-SERVICE] chenkai registering service DEFAULT_GROUP@@HC-LABREDIS-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.10.39","ipDeleteTimeout":30000,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":10619,"weight":1.0}
+2022-05-14 16:55:00.152 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 16:55:00.152 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 16:55:00.185 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 1.969 seconds (JVM running for 17263.313)
+2022-05-14 16:55:00.187 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.201_8848-chenkai] [subscribe] hc-labredis-ms-dev.yaml+DEFAULT_GROUP+chenkai
+2022-05-14 16:55:00.187 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.201_8848-chenkai] [subscribe] hc-labredis-ms-dev.yaml+DEFAULT_GROUP+chenkai
+2022-05-14 16:55:00.187 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.201_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labredis-ms-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2022-05-14 16:55:00.187 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.201_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labredis-ms-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2022-05-14 16:55:00.188 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.201_8848-chenkai] [subscribe] hc-labredis-ms.yaml+DEFAULT_GROUP+chenkai
+2022-05-14 16:55:00.188 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.201_8848-chenkai] [subscribe] hc-labredis-ms.yaml+DEFAULT_GROUP+chenkai
+2022-05-14 16:55:00.188 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.201_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labredis-ms.yaml, group=DEFAULT_GROUP, cnt=1
+2022-05-14 16:55:00.188 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.201_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labredis-ms.yaml, group=DEFAULT_GROUP, cnt=1
+2022-05-14 16:55:00.189 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2022-05-14 16:55:00.189 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2022-05-14 16:55:19.161 [Thread-63] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 16:55:19.161 [Thread-63] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 16:55:19.161 [Thread-63] INFO  com.alibaba.nacos.client.naming - [BEAT] removing beat: DEFAULT_GROUP@@HC-LABREDIS-ms:172.16.10.39:10619 from beat map.
+2022-05-14 16:55:19.161 [Thread-63] INFO  com.alibaba.nacos.client.naming - [BEAT] removing beat: DEFAULT_GROUP@@HC-LABREDIS-ms:172.16.10.39:10619 from beat map.
+2022-05-14 16:55:19.161 [Thread-63] INFO  com.alibaba.nacos.client.naming - [DEREGISTER-SERVICE] chenkai deregistering service DEFAULT_GROUP@@HC-LABREDIS-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.10.39","ipDeleteTimeout":30000,"metadata":{},"port":10619,"weight":1.0}
+2022-05-14 16:55:19.161 [Thread-63] INFO  com.alibaba.nacos.client.naming - [DEREGISTER-SERVICE] chenkai deregistering service DEFAULT_GROUP@@HC-LABREDIS-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.10.39","ipDeleteTimeout":30000,"metadata":{},"port":10619,"weight":1.0}
+2022-05-14 16:55:19.165 [Thread-63] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 16:55:19.165 [Thread-63] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 16:55:19.166 [Thread-63] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:55:19.166 [Thread-63] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:55:19.167 [Thread-63] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 16:55:19.167 [Thread-63] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 16:56:05.078 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 16:56:05.078 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 16:56:05.423 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$81d3b3d9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:56:05.423 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$81d3b3d9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:56:05.786 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 16:56:05.786 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 16:56:05.796 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 16:56:05.796 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 16:56:05.801 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 16:56:07.265 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 16:56:07.265 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 16:56:07.270 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 16:56:07.270 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 16:56:07.330 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 40ms. Found 0 repository interfaces.
+2022-05-14 16:56:07.330 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 40ms. Found 0 repository interfaces.
+2022-05-14 16:56:07.592 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 16:56:07.592 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 16:56:07.674 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$81d3b3d9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:56:07.674 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$81d3b3d9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 16:56:08.164 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 16:56:08.164 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 16:56:08.193 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 16:56:08.193 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 16:56:08.193 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 16:56:08.193 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 16:56:08.312 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 16:56:08.312 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 16:56:08.312 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2494 ms
+2022-05-14 16:56:08.312 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2494 ms
+2022-05-14 16:56:08.521 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 16:56:08.521 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 16:56:08.975 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 16:56:08.975 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 16:56:08.975 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 16:56:08.975 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 16:56:08.983 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 16:56:08.983 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 16:56:08.983 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 16:56:08.983 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 16:56:09.155 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:56:09.155 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:56:09.200 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 16:56:09.200 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 16:56:09.336 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 16:56:09.336 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 16:56:09.365 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 16:56:09.365 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 16:56:09.702 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 16:56:09.702 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 16:56:09.719 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 16:56:09.719 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 16:56:09.750 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 16:56:09.750 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 16:56:09.916 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 16:56:09.916 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 16:56:09.944 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 16:56:09.944 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 16:56:09.978 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 5.588 seconds (JVM running for 6.34)
+2022-05-14 16:59:32.748 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 16:59:32.748 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 16:59:32.753 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 16:59:32.753 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 16:59:32.755 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:59:32.755 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 16:59:32.772 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 16:59:32.772 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 17:10:34.785 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:10:34.785 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:10:35.208 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30b22c2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:10:35.208 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30b22c2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:10:35.552 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:10:35.552 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:10:35.624 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:10:35.624 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:10:35.630 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 17:10:36.575 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:10:36.575 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:10:36.577 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:10:36.577 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:10:36.600 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15ms. Found 0 repository interfaces.
+2022-05-14 17:10:36.600 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15ms. Found 0 repository interfaces.
+2022-05-14 17:10:36.794 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:10:36.794 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:10:36.873 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30b22c2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:10:36.873 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d30b22c2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:10:37.275 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:10:37.275 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:10:37.294 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:10:37.294 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:10:37.294 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:10:37.294 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:10:37.407 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:10:37.407 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:10:37.407 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1762 ms
+2022-05-14 17:10:37.407 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1762 ms
+2022-05-14 17:10:37.597 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:10:37.597 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:10:37.919 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:10:37.919 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:10:37.919 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:10:37.919 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:10:37.924 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:10:37.924 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:10:37.924 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:10:37.924 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:10:38.081 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:10:38.081 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:10:38.135 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:10:38.135 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:10:38.293 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:10:38.293 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:10:38.326 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:10:38.326 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:10:38.795 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:10:38.795 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:10:38.814 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:10:38.814 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:10:38.876 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:10:38.876 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:10:39.063 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:10:39.063 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:10:39.104 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:10:39.104 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:10:39.161 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 5.266 seconds (JVM running for 5.889)
+2022-05-14 17:19:02.491 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 17:19:02.491 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 17:19:02.491 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 17:19:02.491 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 17:19:02.496 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2022-05-14 17:19:02.496 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2022-05-14 17:19:02.619 [http-nio-10619-exec-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 17:19:02.619 [http-nio-10619-exec-1] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 17:19:02.620 [http-nio-10619-exec-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2022-05-14 17:19:02.620 [http-nio-10619-exec-1] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2022-05-14 17:22:35.447 [http-nio-10619-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:22:35.447 [http-nio-10619-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:25:11.421 [http-nio-10619-exec-6] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:25:11.421 [http-nio-10619-exec-6] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:29:39.310 [Thread-27] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 17:29:39.310 [Thread-27] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 17:29:39.313 [Thread-27] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 17:29:39.313 [Thread-27] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 17:29:39.314 [Thread-27] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:29:39.314 [Thread-27] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:29:40.443 [Thread-27] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 17:29:40.443 [Thread-27] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 17:29:45.050 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:29:45.050 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:29:45.249 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f22694f0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:29:45.249 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f22694f0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:29:45.448 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:29:45.448 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:29:45.453 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:29:45.453 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:29:45.456 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 17:29:46.219 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:29:46.219 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:29:46.220 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:29:46.220 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:29:46.243 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14ms. Found 0 repository interfaces.
+2022-05-14 17:29:46.243 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14ms. Found 0 repository interfaces.
+2022-05-14 17:29:46.409 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:29:46.409 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:29:46.465 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f22694f0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:29:46.465 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$f22694f0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:29:46.803 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:29:46.803 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:29:46.821 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:29:46.821 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:29:46.821 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:29:46.821 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:29:46.911 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:29:46.911 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:29:46.911 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1446 ms
+2022-05-14 17:29:46.911 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1446 ms
+2022-05-14 17:29:47.072 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:29:47.072 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:29:47.290 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:29:47.290 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:29:47.290 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:29:47.290 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:29:47.293 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:29:47.293 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:29:47.293 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:29:47.293 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:29:47.393 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:29:47.393 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:29:47.428 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:29:47.428 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:29:47.545 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:29:47.545 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:29:47.569 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:29:47.569 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:29:47.890 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:29:47.890 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:29:47.904 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:29:47.904 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:29:47.931 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:29:47.931 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:29:48.082 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:29:48.082 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:29:48.110 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:29:48.110 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:29:48.154 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 3.602 seconds (JVM running for 4.222)
+2022-05-14 17:29:57.809 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 17:29:57.809 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 17:29:58.038 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 17:29:58.040 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:29:58.038 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 17:29:58.040 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:29:58.073 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 17:29:58.073 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 17:30:51.312 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:30:51.312 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:30:51.527 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$aaec0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:30:51.527 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$aaec0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:30:51.723 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:30:51.723 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:30:51.737 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:30:51.737 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:30:51.741 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 17:30:52.836 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:30:52.836 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:30:52.839 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:30:52.839 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:30:52.888 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 29ms. Found 0 repository interfaces.
+2022-05-14 17:30:52.888 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 29ms. Found 0 repository interfaces.
+2022-05-14 17:30:53.095 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:30:53.095 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:30:53.151 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$aaec0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:30:53.151 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$aaec0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:30:53.549 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:30:53.549 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:30:53.567 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:30:53.567 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:30:53.567 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:30:53.567 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:30:53.661 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:30:53.661 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:30:53.661 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1906 ms
+2022-05-14 17:30:53.661 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1906 ms
+2022-05-14 17:30:53.829 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:30:53.829 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:30:54.044 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:30:54.044 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:30:54.044 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:30:54.044 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:30:54.047 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:30:54.047 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:30:54.047 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:30:54.047 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:30:54.147 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:30:54.147 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:30:54.182 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:30:54.182 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:30:54.319 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:30:54.319 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:30:54.348 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:30:54.348 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:30:54.672 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:30:54.672 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:30:54.687 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:30:54.687 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:30:54.716 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:30:54.716 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:30:54.863 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:30:54.863 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:30:54.907 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:30:54.907 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:30:54.943 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 4.08 seconds (JVM running for 4.757)
+2022-05-14 17:32:04.897 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 17:32:04.897 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 17:32:04.897 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 17:32:04.897 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 17:32:04.903 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2022-05-14 17:32:04.903 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2022-05-14 17:32:04.920 [http-nio-10619-exec-1] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:32:04.920 [http-nio-10619-exec-1] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:33:12.564 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 17:33:12.564 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-05-14 17:33:12.568 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 17:33:12.568 [Thread-2] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-05-14 17:33:12.569 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:33:12.569 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:33:12.587 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 17:33:12.587 [Thread-2] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService
+2022-05-14 17:33:39.386 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:33:39.386 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 17:33:39.863 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d6faa093] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:33:39.863 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d6faa093] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:33:40.301 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:33:40.301 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labredis-ms.yaml', group: 'DEFAULT_GROUP'
+2022-05-14 17:33:40.310 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:33:40.310 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labredis-ms-dev.yaml'}, NacosPropertySource {name='hc-labredis-ms.yaml'}]}
+2022-05-14 17:33:40.316 [restartedMain] INFO  com.hc.HcLabredisMsApplication - The following profiles are active: dev
+2022-05-14 17:33:41.404 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:33:41.404 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 17:33:41.406 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:33:41.406 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2022-05-14 17:33:41.438 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 20ms. Found 0 repository interfaces.
+2022-05-14 17:33:41.438 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 20ms. Found 0 repository interfaces.
+2022-05-14 17:33:41.617 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:33:41.617 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=d0e067b4-3d03-3191-8980-9e06a298780a
+2022-05-14 17:33:41.678 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d6faa093] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:33:41.678 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d6faa093] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 17:33:42.098 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:33:42.098 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10619 (http)
+2022-05-14 17:33:42.116 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:33:42.117 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:33:42.116 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-14 17:33:42.117 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-05-14 17:33:42.217 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:33:42.217 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-14 17:33:42.218 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1886 ms
+2022-05-14 17:33:42.218 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1886 ms
+2022-05-14 17:33:42.407 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:33:42.407 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService
+2022-05-14 17:33:42.730 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:33:42.730 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:33:42.731 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:33:42.731 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:33:42.734 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:33:42.734 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-05-14 17:33:42.735 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:33:42.735 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-05-14 17:33:42.875 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:33:42.875 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-05-14 17:33:42.931 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:33:42.931 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-05-14 17:33:43.113 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:33:43.113 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-05-14 17:33:43.144 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:33:43.144 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-05-14 17:33:43.619 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:33:43.619 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-05-14 17:33:43.640 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:33:43.640 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-05-14 17:33:43.680 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:33:43.680 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-05-14 17:33:43.914 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:33:43.914 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10619 (http) with context path ''
+2022-05-14 17:33:43.951 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:33:43.951 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABREDIS-ms 172.16.10.39:10619 register finished
+2022-05-14 17:33:44.008 [restartedMain] INFO  com.hc.HcLabredisMsApplication - Started HcLabredisMsApplication in 5.235 seconds (JVM running for 6.58)
+2022-05-14 17:37:17.457 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 17:37:17.457 [http-nio-10619-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 17:37:17.458 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 17:37:17.458 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-05-14 17:37:17.465 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 7 ms
+2022-05-14 17:37:17.465 [http-nio-10619-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 7 ms
+2022-05-14 17:37:17.484 [http-nio-10619-exec-1] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:37:17.484 [http-nio-10619-exec-1] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:56:55.156 [http-nio-10619-exec-2] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:56:55.156 [http-nio-10619-exec-2] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:57:24.035 [http-nio-10619-exec-3] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:57:24.035 [http-nio-10619-exec-3] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:58:54.477 [http-nio-10619-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 17:58:54.477 [http-nio-10619-exec-5] WARN  o.s.w.s.m.support.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required String parameter 'hospitalCode' is not present]
+2022-05-14 18:01:59.860 [http-nio-10619-exec-4] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 18:01:59.860 [http-nio-10619-exec-4] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2022-05-14 18:01:59.861 [http-nio-10619-exec-4] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2022-05-14 18:01:59.861 [http-nio-10619-exec-4] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library

@@ -440,7 +440,7 @@ public class MonitorEquipmentApplication {
                 .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
                 .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
-                .setEquipmentName(equipmentName)
+                .setEquipmentName(monitorEquipmentCommand.getEquipmentName())
                 .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
                 .setClientVisible(monitorEquipmentCommand.getClientVisible())
                 .setInstrumentNo(monitorEquipmentCommand.getInstrumentno())
