@@ -2,6 +2,7 @@ package com.hc.device;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
+import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,4 +23,11 @@ public interface SnDeviceRedisApi {
 
     @GetMapping("/snDevice/deleteSnDeviceDto")
     void deleteSnDeviceDto(@RequestParam("sn")String sn);
+
+    @PostMapping("/snDevice/updateSnCurrentInfo")
+    @ApiOperation("新增更新设备当前值信息")
+    void  updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto);
+
+
+
 }

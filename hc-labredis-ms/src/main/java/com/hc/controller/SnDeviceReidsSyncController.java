@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.SnDeviceReidsSyncApplocation;
+import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,11 @@ public class SnDeviceReidsSyncController {
     public void deleteSnDeviceDto(@RequestParam("sn")String sn){
         snDeviceReidsSyncApplocation.deleteSnDeviceDto(sn);
     }
+
+    @PostMapping("/updateSnCurrentInfo")
+    @ApiOperation("新增更新设备当前值信息")
+    public void  updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto){
+        snDeviceReidsSyncApplocation.updateSnCurrentInfo(monitorequipmentlastdataDto);
+    }
+
 }

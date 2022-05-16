@@ -15,7 +15,6 @@ public interface BaoJinMsg {
 
 	String EXCHANGE_NAME2="BJMSCTB";
 
-	String EXCHANGE_NAME3 = "LASTDATA";
 
 
 	String EXCHANGE_NAME4 = "TIMEOUT";
@@ -33,8 +32,4 @@ public interface BaoJinMsg {
 
 	@Output(EXCHANGE_NAME2)
 	MessageChannel  getOutputChannel3();
-
-
-	@Output(EXCHANGE_NAME3)
-	MessageChannel  getOutputChannel4();
 }

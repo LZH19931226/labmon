@@ -1,18 +1,12 @@
-package com.hc.clickhouse.po;
+package com.hc.my.common.core.redis.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@TableName(value = "monitorequipmentlastdata")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Monitorequipmentlastdata implements Serializable {
+public class MonitorequipmentlastdataDto implements Serializable {
 
     private String cmdId;
     /**
@@ -189,6 +183,5 @@ public class Monitorequipmentlastdata implements Serializable {
      * 功率
      */
     private String power;
-
 
 }

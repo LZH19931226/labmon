@@ -38,13 +38,6 @@ public class MessagePushServiceImpl implements MessagePushService {
     }
 
     @Override
-    public boolean pushMessage4(String message) {
-        Message<String> build = MessageBuilder.withPayload(message).build();
-        return socketMessage.getOutputChannel4().send(build);
-
-    }
-
-    @Override
     public boolean pushMessage5(String message) {
         Message<String> build = MessageBuilder.withPayload(message).build();
         return socketMessage.getOutputChannel5().send(build);
