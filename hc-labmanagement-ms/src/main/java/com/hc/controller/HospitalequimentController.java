@@ -3,16 +3,18 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.HospitalequimentApplication;
 import com.hc.application.command.HospitalEquimentTypeCommand;
+import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 /**
- * 
+ *
  *
  * @author liuzhihao
  * @email 1969994698@qq.com
@@ -53,5 +55,8 @@ public class HospitalequimentController {
         hospitalequimentApplication.deleteHospitalEquimentType(hospitalCode,equipmenttypeid);
     }
 
-
+    @GetMapping("/findHospitalEuipmentTypeInfo")
+    public List<HospitalEquipmentTypeModel> findHospitalEquipmentTypeByCode(@RequestParam("hospitalCode")String hospitalCode){
+        return hospitalequimentApplication.findHospitalEquipmentTypeByCode(hospitalCode);
+    }
 }

@@ -1,6 +1,5 @@
 package com.hc.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.constant.UserRightEnumCode;
@@ -9,7 +8,6 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.UserRightRepository;
 import com.hc.service.UserRightService;
 import com.hc.vo.user.UserRightVo;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -130,5 +128,17 @@ public class UserRightServiceImpl implements UserRightService {
     @Override
     public UserRightDto selectUserRightInfo(String userid) {
         return userRightRepository.selectUserRightInfo(userid);
+    }
+
+    /**
+     * 查询用户信息
+     *
+     * @param userRightCommand
+     * @return
+     */
+    @Override
+    public UserRightDto selectUserRight(UserRightCommand userRightCommand) {
+
+        return userRightRepository.selectUserRight(userRightCommand);
     }
 }

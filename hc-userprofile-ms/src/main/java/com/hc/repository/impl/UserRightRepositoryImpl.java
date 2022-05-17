@@ -1,10 +1,12 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.constant.UserEnumErrorCode;
+import com.hc.constant.UserRightEnumCode;
 import com.hc.dto.UserRightDto;
 import com.hc.infrastructure.dao.UserRightDao;
 import com.hc.my.common.core.exception.IedsException;
@@ -12,6 +14,7 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
 import com.hc.repository.UserRightRepository;
 import com.hc.vo.user.UserRightVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -101,6 +104,28 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
     @Override
     public UserRightDto selectUserRightInfo(String userid) {
         UserRightPo userRightPo = userRightDao.selectById(userid);
+        return BeanConverter.convert(userRightPo,UserRightDto.class);
+    }
+
+    /**
+     * 查询用户信息
+     *
+     * @param userRightCommand
+     * @return
+     */
+    @Override
+    public UserRightDto selectUserRight(UserRightCommand userRightCommand) {
+        UserRightPo userRightPo = userRightDao.selectOne(Wrappers.lambdaQuery(new UserRightPo())
+                .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
+        if(ObjectUtils.isEmpty(userRightPo)){
+            throw new IedsException(UserRightEnumCode.USERNAME_NOT_EXIST.getMessage());
+        }
+        if(!StringUtils.equals(userRightPo.getPwd(),userRightCommand.getPwd())){
+            throw new IedsException(UserRightEnumCode.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
+        }
+        if(userRightPo.getIsUse() != 1L){
+            throw new IedsException(UserRightEnumCode.USER_NOT_ENABLED.getMessage());
+        }
         return BeanConverter.convert(userRightPo,UserRightDto.class);
     }
 }

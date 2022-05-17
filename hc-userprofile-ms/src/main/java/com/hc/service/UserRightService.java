@@ -45,4 +45,11 @@ public interface UserRightService {
      * @return
      */
     UserRightDto selectUserRightInfo(String userid);
+
+    /**
+     * 用户登录
+     * @param userRightCommand
+     * @return
+     */
+    UserRightDto selectUserRight(UserRightCommand userRightCommand);
 }

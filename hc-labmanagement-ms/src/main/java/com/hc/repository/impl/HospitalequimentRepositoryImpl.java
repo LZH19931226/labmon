@@ -63,4 +63,15 @@ public class HospitalequimentRepositoryImpl extends ServiceImpl<Hospitalequiment
                 .eq(HospitalequimentPo::getHospitalcode, hospitalCode));
         return BeanConverter.convert(hospitalequimentPo,HospitalequimentDTO.class);
     }
+
+    /**
+     * 查询医院设备信息集合
+     *
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<HospitalequimentDTO> findHospitalEquipmentTypeByCode(String hospitalCode) {
+        return hospitalequimentDao.selectHospitalEquipmentInfo(hospitalCode);
+    }
 }

@@ -155,4 +155,15 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     public HospitalequimentDTO selectHospitalEquimentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
         return hospitalequimentRepository.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode,equipmentTypeId);
     }
+
+    /**
+     * 查询医院的设备信息集合
+     *
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<HospitalequimentDTO> findHospitalEquipmentTypeByCode(String hospitalCode) {
+        return hospitalequimentRepository.findHospitalEquipmentTypeByCode(hospitalCode);
+    }
 }

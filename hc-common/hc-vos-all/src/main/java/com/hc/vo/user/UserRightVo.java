@@ -1,9 +1,12 @@
 package com.hc.vo.user;
 
+import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * 用户权限试图对象
@@ -58,4 +61,6 @@ public class UserRightVo {
      * 超时警告
      */
     private String timeoutWarning;
+
+    private List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModels;
 }
