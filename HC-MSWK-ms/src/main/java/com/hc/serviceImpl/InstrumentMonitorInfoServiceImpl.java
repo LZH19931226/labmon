@@ -8,7 +8,6 @@ import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Monitorinstrument;
-import com.hc.service.CurrentDataService;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.LastDataService;
 import com.hc.utils.JsonUtil;
@@ -34,8 +33,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
     @Autowired
     private LastDataService lastDataService;
-    @Autowired
-    private CurrentDataService currentDataService;
     @Autowired
     private ShowModelUtils showModelUtils;
     @Autowired
@@ -284,7 +281,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 if ("3".equals(model.getUPS()) || "4".equals(model.getUPS())) {
                     ups = "1";
                 }
-                currentDataService.getCurrentData(ups, monitorinstrument, "UPS", model.getNowTime());
                 monitorequipmentlastdata.setCurrentups(ups);
                 WarningMqModel warningMqModel7 = showModelUtils.procWarnModel(model.getUPS(), monitorinstrument, model.getNowTime(), 10, "市电");
                 list.add(warningMqModel7);
@@ -628,7 +624,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         if (RegularUtil.checkContainsNumbers(temp)) {
                             BigDecimal bigDecimal = new BigDecimal(temp);
                             double v1 = bigDecimal.doubleValue();
-                            if (v1 < -197.0) {
+                            if (v1 < -200.0) {
                                 monitorequipmentlastdata.setCurrenttemperature(ProbeOutlier.VALUE_IS_INVALID.getCode());
                             }
                         }
@@ -636,7 +632,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         if (RegularUtil.checkContainsNumbers(temp2)) {
                             BigDecimal bigDecimal = new BigDecimal(temp2);
                             double v1 = bigDecimal.doubleValue();
-                            if (v1 < -197.0) {
+                            if (v1 < -200.0) {
                                 monitorequipmentlastdata.setCurrenttemperature2(ProbeOutlier.VALUE_IS_INVALID.getCode());
                             }
                             warningMqModel97.setCurrentData1(model.getTEMP2());

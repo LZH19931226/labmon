@@ -7,7 +7,6 @@ import com.hc.po.Monitorinstrument;
 import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
