@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @FeignClient(value = ApplicationName.REDIS)
 public interface SnDeviceRedisApi {
 
@@ -26,8 +28,12 @@ public interface SnDeviceRedisApi {
     @ApiOperation("新增更新设备当前值信息")
     void  updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto);
 
-    @DeleteMapping("/deleteCurrentDataInfo")
+    @DeleteMapping("/snDevice/deleteCurrentDataInfo")
     @ApiOperation("删除设备当前值")
     void deleteCurrentInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo);
+
+    @GetMapping("/snDevice/getCurrentDataInfo")
+    @ApiOperation("获取设备当前值")
+    ApiResponse<List<MonitorequipmentlastdataDto>> getCurrentDataInfo(@RequestParam("hospitalCode")String hospitalCode, @RequestParam("equipmentNo")String equipmentNo);
 
 }
