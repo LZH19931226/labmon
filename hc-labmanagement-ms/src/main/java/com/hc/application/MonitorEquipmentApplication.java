@@ -551,6 +551,7 @@ public class MonitorEquipmentApplication {
         //删除redis缓存
         if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
             snDeviceRedisApi.deleteSnDeviceDto(monitorinstrumentDTO.getSn());
+            snDeviceRedisApi.deleteCurrentInfo(monitorinstrumentDTO.getHospitalcode(),monitorinstrumentDTO.getEquipmentno());
         }
 
     }

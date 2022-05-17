@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.po.HospitalequimentPo;
+import com.hc.vo.equimenttype.HospitalequimentVo;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface HospitalequimentRepository extends IService <HospitalequimentPo
 
     void updateHospitalEquiment(HospitalequimentDTO hospitalequimentDTO);
 
-    List<HospitalequimentDTO> selectHospitalEquimentType(Page page,HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+    List<HospitalequimentDTO> selectHospitalEquimentType(Page<HospitalequimentVo> page, HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 
     /**
      * 查询医院设备信息

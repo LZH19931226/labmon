@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/snDevice")
 public class SnDeviceReidsSyncController {
@@ -35,6 +37,18 @@ public class SnDeviceReidsSyncController {
     @ApiOperation("新增更新设备当前值信息")
     public void  updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto){
         snDeviceReidsSyncApplocation.updateSnCurrentInfo(monitorequipmentlastdataDto);
+    }
+
+    @GetMapping("/getCurrentDataInfo")
+    @ApiOperation("获取设备当前值")
+    public List<MonitorequipmentlastdataDto> getCurrentDataInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo){
+        return snDeviceReidsSyncApplocation.getCurrentInfo(hospitalCode,equipmentNo);
+    }
+
+    @DeleteMapping("/deleteCurrentDataInfo")
+    @ApiOperation("删除设备当前值")
+    public void deleteCurrentInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo){
+        snDeviceReidsSyncApplocation.remove(hospitalCode,equipmentNo);
     }
 
 }

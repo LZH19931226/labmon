@@ -4,6 +4,7 @@ package com.hc.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.dto.HospitalequimentDTO;
+import com.hc.vo.equimenttype.HospitalequimentVo;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface HospitalequimentService{
 
     void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 
-    List<HospitalequimentDTO> selectHospitalEquimentType(Page page,HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+    List<HospitalequimentDTO> selectHospitalEquimentType(Page<HospitalequimentVo> page, HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 
     void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid);
 

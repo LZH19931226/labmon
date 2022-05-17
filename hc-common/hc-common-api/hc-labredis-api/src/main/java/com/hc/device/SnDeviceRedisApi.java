@@ -6,10 +6,7 @@ import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(value = ApplicationName.REDIS)
 public interface SnDeviceRedisApi {
@@ -22,12 +19,15 @@ public interface SnDeviceRedisApi {
     ApiResponse<SnDeviceDto> getSnDeviceDto(@RequestParam("sn") String sn);
 
     @GetMapping("/snDevice/deleteSnDeviceDto")
+    @ApiOperation("删除设备信息缓存")
     void deleteSnDeviceDto(@RequestParam("sn")String sn);
 
     @PostMapping("/snDevice/updateSnCurrentInfo")
     @ApiOperation("新增更新设备当前值信息")
     void  updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto);
 
-
+    @DeleteMapping("/deleteCurrentDataInfo")
+    @ApiOperation("删除设备当前值")
+    void deleteCurrentInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo);
 
 }

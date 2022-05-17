@@ -1,11 +1,11 @@
 package com.hc.infrastructure.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.po.HospitalequimentPo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hc.vo.hospital.HospitalInfoVo;
+import com.hc.vo.equimenttype.HospitalequimentVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public interface HospitalequimentDao extends BaseMapper<HospitalequimentPo> {
 
-    List<HospitalequimentDTO> selectHospitalEquimentType(Page<HospitalInfoVo> page, @Param("hospitalEquimentTypeCommand") HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
+    List<HospitalequimentDTO> selectHospitalEquimentType(Page<HospitalequimentVo> page, @Param("hospitalEquimentTypeCommand") HospitalEquimentTypeCommand hospitalEquimentTypeCommand);
 
     /**
      * 查询医院设备信息
