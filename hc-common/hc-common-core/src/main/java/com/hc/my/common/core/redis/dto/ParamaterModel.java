@@ -93,4 +93,5 @@ public class ParamaterModel implements Serializable {
     //"通道id"
     private String channelId;
 
+    private String data;
 }

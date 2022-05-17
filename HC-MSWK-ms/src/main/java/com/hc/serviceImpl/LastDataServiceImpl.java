@@ -34,6 +34,7 @@ public class LastDataServiceImpl implements LastDataService {
         if (b) {
             return;
         }
+        monitorequipmentlastdata.setCmdId(cmdId);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(new Date());
         monitorequipmentlastdata.setHospitalcode(hospitalcode);

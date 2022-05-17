@@ -105,6 +105,7 @@ public class SocketMessageListener {
         if (null != snInfo) {
             //判断30秒内重复数据
             Date nowTime = snInfo.getNowTime();
+            String data1 = snInfo.getData();
             //大于30秒
             if (DateUtils.calculateIntervalTime(new Date(), nowTime, 30)) {
                 //大于30秒解决一个设备多个sn数据同步数据问题 相同命令
@@ -112,7 +113,7 @@ public class SocketMessageListener {
                 return false;
             }
             //小于30秒相同命令对比内容,内容一致不保存数据,不一致保存数据更新缓存
-            if (!data.equals(snInfo)) {
+            if (!data.getData().equals(data1)) {
                 tcpClientApi.addDeviceChannel(data);
             }
             log.info("sn数据相同命令上传间隔异常:{}",JsonUtil.toJson(data));

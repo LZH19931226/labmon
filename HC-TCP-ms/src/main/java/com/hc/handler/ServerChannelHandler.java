@@ -96,6 +96,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 String cmdid = snData.getCmdid();
                 snData.setChannelId(asShortText);
                 snData.setNowTime(new Date());
+                snData.setData(dataStr);
                 //是否是心跳需要应答
                 checkIsHeartbeat(sn, asShortText, cmdid, ctx);
                 //推送mq

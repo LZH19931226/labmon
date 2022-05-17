@@ -13,7 +13,7 @@ public class TcpClientReidsSyncController {
     @Autowired
     private TcpClientReidsSyncApplication tcpClientReidsSyncApplication;
 
-    @GetMapping("/addDeviceChannel")
+    @PostMapping("/addDeviceChannel")
     @ApiOperation("新增设备通道维护关系")
     public void addDeviceChannel(@RequestBody ParamaterModel paramaterModel) {
         tcpClientReidsSyncApplication.addDeviceChannel(paramaterModel);
