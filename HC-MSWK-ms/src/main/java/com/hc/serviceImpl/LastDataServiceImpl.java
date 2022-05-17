@@ -34,14 +34,14 @@ public class LastDataServiceImpl implements LastDataService {
         if (b) {
             return;
         }
-        monitorequipmentlastdata.setCmdId(cmdId);
+        monitorequipmentlastdata.setCmdid(cmdId);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(new Date());
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
         log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
-        monitorequipmentlastdataDao.save(monitorequipmentlastdata);
         //同步redis缓存
         snDeviceRedisApi.updateSnCurrentInfo(BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class));
+        monitorequipmentlastdataDao.save(monitorequipmentlastdata);
     }
     // 判断对象是否为空方法：
     public boolean checkObjAllFieldsIsNull(Object object) {

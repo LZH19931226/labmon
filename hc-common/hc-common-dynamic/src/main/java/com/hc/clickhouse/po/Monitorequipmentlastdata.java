@@ -14,7 +14,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class Monitorequipmentlastdata implements Serializable {
 
-    private String cmdId;
+    private long id;
+
+    private String cmdid;
     /**
      * 设备编号
      */
