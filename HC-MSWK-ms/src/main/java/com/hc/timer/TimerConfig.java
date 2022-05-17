@@ -1,21 +1,17 @@
 package com.hc.timer;
 
-import com.hc.po.Hospitalofreginfo;
 import com.hc.po.Monitorequipmentlastdata;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.TimeoutEquipment;
-import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
-import com.redis.util.RedisTemplateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +22,9 @@ import java.util.List;
  * Created by 15350 on 2019/10/8.
  */
 @Component
+@Slf4j
 public class TimerConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimerConfig.class);
-    @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
     @Autowired
     private HospitalInfoMapper hospitalInfoMapper;
     @Autowired
@@ -43,65 +37,39 @@ public class TimerConfig {
         if (CollectionUtils.isEmpty(timeoutEquipments)) {
             return;
         }
-        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-        LOGGER.info("设置超时设备:" + JsonUtil.toJson(timeoutEquipments));
         //过滤禁用报警的设备
+        //需要讨论下
         for (TimeoutEquipment timeoutEquipment : timeoutEquipments) {
-            String equipmentno = timeoutEquipment.getEquipmentno();
-            // 超时时间设置
-            Integer timeouttime = timeoutEquipment.getTimeouttime();
-            String hospitalcode = timeoutEquipment.getHospitalcode();
-            //忘记设置超时时间，则为空
-            if (timeouttime == null) {
-                continue;
-            }
-            //对报警区间进行判断
-            BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:info");
-            String o = (String) objectObjectObjectBoundHashOperations.get(hospitalcode);
-            if (StringUtils.isEmpty(o)) {
-                continue;
-            }
-            Hospitalofreginfo  hospitalofreginfo = JsonUtil.toBean(o, Hospitalofreginfo.class);
-            if (null==hospitalofreginfo){
-                continue;
-            }
-            String alwayalarm = hospitalofreginfo.getAlwayalarm();
-            //报警区间
-            if (!StringUtils.equals(alwayalarm, "1")) {
-                Date starttime = hospitalofreginfo.getBegintime();
-                Date endtime = hospitalofreginfo.getEndtime();
-                boolean b = DateUtils.isEffectiveDate(new Date(), starttime, endtime);
-                if (b) {
-                    continue;
-                }
-            }
-            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
-            if (StringUtils.isEmpty(lastdata)) {
-                continue;
-            }
-            Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
-            if (null==monitorequipmentlastdata){
-                continue;
-            }
-            Date timeOut = monitorequipmentlastdata.getInputdatetime();
-            // 时间对比
-            int datePoors = TimeHelper.getDatePoors(timeOut);
-            String time = time(datePoors, timeouttime);
-            if (StringUtils.isEmpty(time)) {
-                continue;
-            }
-            switch (time) {
-                case "2":
-                    // 超时报警
-                    timeoutEquipment.setDisabletype("2");
-                    timeoutEquipment.setTimeouttime(datePoors);
-                    String s = JsonUtil.toJson(timeoutEquipment);
-                    LOGGER.info("超时报警推送:{}", JsonUtil.toJson(timeoutEquipment));
-                    messagePushService.pushMessage5(s);
-                    break;
-                default:
-                    break;
-            }
+//            String equipmentno = timeoutEquipment.getEquipmentno();
+//            // 超时时间设置
+//            Integer timeouttime = timeoutEquipment.getTimeouttime();
+//            String hospitalcode = timeoutEquipment.getHospitalcode();
+//            //忘记设置超时时间，则为空
+//            if (timeouttime == null) {
+//                continue;
+//            }
+//            String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, equipmentno);
+//            if (StringUtils.isEmpty(lastdata)) {
+//                continue;
+//            }
+//            Monitorequipmentlastdata monitorequipmentlastdata = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
+//            if (null==monitorequipmentlastdata){
+//                continue;
+//            }
+//            Date timeOut = monitorequipmentlastdata.getInputdatetime();
+//            // 时间对比
+//            int datePoors = TimeHelper.getDatePoors(timeOut);
+//            String time = time(datePoors, timeouttime);
+//            if (StringUtils.isEmpty(time)) {
+//                continue;
+//            }
+//            if ("2".equals(time)) {// 超时报警
+//                timeoutEquipment.setDisabletype("2");
+//                timeoutEquipment.setTimeouttime(datePoors);
+//                String s = JsonUtil.toJson(timeoutEquipment);
+//                log.info("超时报警推送:{}", JsonUtil.toJson(timeoutEquipment));
+//                messagePushService.pushMessage5(s);
+//            }
 
         }
 
