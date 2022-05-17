@@ -3,7 +3,7 @@ package com.hc.serviceImpl;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.device.ProbeRedisApi;
 import com.hc.model.WarningMqModel;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.util.RegularUtil;
@@ -23,7 +23,6 @@ import org.springframework.util.ObjectUtils;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service

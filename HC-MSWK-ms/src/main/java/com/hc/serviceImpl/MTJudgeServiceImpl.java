@@ -5,7 +5,7 @@ import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.po.Monitorinstrument;
 import com.hc.mapper.MonitorInstrumentMapper;
 import com.hc.model.MonitorinstrumentModel;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.MTJudgeService;
 import com.hc.utils.JsonUtil;

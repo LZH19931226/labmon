@@ -5,12 +5,12 @@ import com.hc.my.common.core.util.DateUtils;
 import com.hc.po.Monitorinstrument;
 import com.hc.exchange.SocketMessage;
 import com.hc.model.WarningMqModel;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.MTJudgeService;
 import com.hc.service.MessagePushService;
+import com.hc.tcp.TcpClientApi;
 import com.hc.utils.JsonUtil;
-import com.redis.util.RedisTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,8 @@ public class SocketMessageListener {
     @Autowired
     private InstrumentMonitorInfoService instrumentMonitorInfoService;
     @Autowired
-    private RedisTemplateUtil redisDao;
+    private TcpClientApi tcpClientApi;
+
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME)
@@ -100,27 +101,25 @@ public class SocketMessageListener {
     public boolean repeatDatafilter(ParamaterModel data) {
         String sn = data.getSN();
         String cmdid = data.getCmdid();
-        Object o = redisDao.boundHashOps(TcpServiceEnum.SNLIVEDATA).get(sn + cmdid);
-        if (null != o) {
+        ParamaterModel snInfo = tcpClientApi.getSnBychannelId(sn, cmdid).getResult();
+        if (null != snInfo) {
             //判断30秒内重复数据
-            ParamaterModel snDateUsed = JsonUtil.toBean((String) o, ParamaterModel.class);
-            assert snDateUsed != null;
-            Date nowTime = snDateUsed.getNowTime();
+            Date nowTime = snInfo.getNowTime();
             //大于30秒
             if (DateUtils.calculateIntervalTime(new Date(), nowTime, 30)) {
                 //大于30秒解决一个设备多个sn数据同步数据问题 相同命令
-                redisDao.boundHashOps(TcpServiceEnum.SNLIVEDATA).put(sn + cmdid, data);
+                tcpClientApi.addDeviceChannel(data);
                 return false;
             }
             //小于30秒相同命令对比内容,内容一致不保存数据,不一致保存数据更新缓存
-            if (!data.equals(snDateUsed)) {
-                redisDao.boundHashOps(TcpServiceEnum.SNLIVEDATA).put(sn + cmdid, data);
+            if (!data.equals(snInfo)) {
+                tcpClientApi.addDeviceChannel(data);
             }
             log.info("sn数据相同命令上传间隔异常:{}",JsonUtil.toJson(data));
             return true;
         } else {
             //同步sn数据缓存
-            redisDao.boundHashOps(TcpServiceEnum.SNLIVEDATA).put(sn + cmdid, data);
+            tcpClientApi.addDeviceChannel(data);
             return false;
         }
     }

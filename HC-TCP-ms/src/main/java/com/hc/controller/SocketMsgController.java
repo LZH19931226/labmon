@@ -2,7 +2,7 @@ package com.hc.controller;
 
 import com.hc.bean.MTOnlineBean;
 import com.hc.my.common.core.bean.ApiResponse;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

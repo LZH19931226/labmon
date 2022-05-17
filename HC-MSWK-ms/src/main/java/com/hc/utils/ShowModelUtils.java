@@ -5,7 +5,7 @@ import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Monitorinstrument;
 import com.hc.model.WarningMqModel;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Component;

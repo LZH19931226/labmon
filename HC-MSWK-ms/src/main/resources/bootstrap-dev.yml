@@ -6,7 +6,7 @@ spring:
         file-extension: yaml
         prefix: hc-mswk-ms
         group: DEFAULT_GROUP
-        namespace: dev
+        namespace: liuzhihao
       discovery:
         server-addr: 172.16.10.201:8848
-        namespace: dev
+        namespace: liuzhihao

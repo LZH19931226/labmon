@@ -3,7 +3,7 @@ package com.hc.serviceImpl;
 import com.hc.po.Monitorequipment;
 import com.hc.po.Monitorinstrument;
 import com.hc.mapper.MonitorInstrumentMapper;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.utils.JsonUtil;
 import com.redis.util.RedisTemplateUtil;

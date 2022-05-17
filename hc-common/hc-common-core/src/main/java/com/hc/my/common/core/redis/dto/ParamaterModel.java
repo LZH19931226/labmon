@@ -1,9 +1,10 @@
-package com.hc.my.common.core.bean;
+package com.hc.my.common.core.redis.dto;
 
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
 
 @Data
 @EqualsAndHashCode
-public class ParamaterModel {
+public class ParamaterModel implements Serializable {
     //设备sn号"
     private String SN;
     //命令id"
@@ -87,7 +88,7 @@ public class ParamaterModel {
     private String current;
     //功率
     private String power;
-    //"时间"
+    //当前时间
     private Date nowTime;
     //"通道id"
     private String channelId;

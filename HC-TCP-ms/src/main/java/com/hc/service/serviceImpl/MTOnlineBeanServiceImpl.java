@@ -2,7 +2,7 @@ package com.hc.service.serviceImpl;
 
 import com.hc.bean.MTOnlineBean;
 import com.hc.my.common.core.bean.ApiResponse;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.socketServer.IotServer;

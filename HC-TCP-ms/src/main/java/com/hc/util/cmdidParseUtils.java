@@ -1,6 +1,6 @@
 package com.hc.util;
 
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;

@@ -1,14 +1,12 @@
 package com.hc.handler;
 
 
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.probe.EquipmentCommand;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
 import com.hc.socketServer.IotServer;
-import com.hc.tcp.TcpClientApi;
 import com.hc.util.JsonUtil;
-import com.hc.util.MathUtil;
 import com.hc.util.NettyUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -37,8 +35,6 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     private MessagePushService msgservice;
     @Autowired
     private NettyUtil nettyUtil;
-    @Autowired
-    private TcpClientApi tcpClientReidsSync;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -102,8 +98,6 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 snData.setNowTime(new Date());
                 //是否是心跳需要应答
                 checkIsHeartbeat(sn, asShortText, cmdid, ctx);
-                //sn是否是MT600
-                isMiansClient(sn, asShortText);
                 //推送mq
                 randomPush(snData);
                 log.info("通道:{},原始数据:{},推送给RabbitMQ的模型为:{}", asShortText, dataStr, JsonUtil.toJson(snData));
@@ -140,23 +134,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         IotServer.onlineChannels.remove(ctx.channel());
         //关闭通道
         ctx.close();
-        //主动移除通道在redis里面
-        String asShortText = ctx.channel().id().asShortText();
-        String sn = tcpClientReidsSync.getSnBychannelId(asShortText).getResult();
-        if (StringUtils.isNotEmpty(sn)){
-            tcpClientReidsSync.deleteDeviceChannel(sn,asShortText);
-        }
     }
-
-    //判断是否sn号为市电600或者1100sn号,是的话需要双向绑定通道缓存
-    public void isMiansClient(String sn, String channeId) {
-        if (StringUtils.isNotEmpty(MathUtil.ruleMT(sn))) {
-            //将SN号和通道id一起绑定 存入redis
-            tcpClientReidsSync.addDeviceChannel(sn,channeId);
-            tcpClientReidsSync.addChannelDevice(channeId,sn);
-        }
-    }
-
     //应答心跳包
     public void checkIsHeartbeat(String sn, String channelId, String cmdId, ChannelHandlerContext ctx) {
         if (StringUtils.equals(cmdId, EquipmentCommand.CMD88.getCmdId())) {

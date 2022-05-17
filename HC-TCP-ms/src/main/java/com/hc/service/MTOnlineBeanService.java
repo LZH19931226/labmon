@@ -2,7 +2,7 @@ package com.hc.service;
 
 import com.hc.bean.MTOnlineBean;
 import com.hc.my.common.core.bean.ApiResponse;
-import com.hc.my.common.core.bean.ParamaterModel;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 
 import java.util.List;
 

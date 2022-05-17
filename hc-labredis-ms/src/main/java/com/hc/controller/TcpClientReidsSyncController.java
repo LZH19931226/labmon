@@ -1,12 +1,10 @@
 package com.hc.controller;
 
 import com.hc.application.TcpClientReidsSyncApplication;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tcpclient")
@@ -17,27 +15,22 @@ public class TcpClientReidsSyncController {
 
     @GetMapping("/addDeviceChannel")
     @ApiOperation("新增设备通道维护关系")
-    public void addDeviceChannel(@RequestParam("sn") String sn, @RequestParam("channelId") String channelId) {
-        tcpClientReidsSyncApplication.addDeviceChannel(sn, channelId);
-    }
-
-    @GetMapping("/addChannelDevice")
-    @ApiOperation("新增通道设备维护关系")
-    public void addChannelDevice(@RequestParam("sn") String sn, @RequestParam("channelId") String channelId){
-        tcpClientReidsSyncApplication.addChannelDevice(sn,channelId);
+    public void addDeviceChannel(@RequestBody ParamaterModel paramaterModel) {
+        tcpClientReidsSyncApplication.addDeviceChannel(paramaterModel);
     }
 
     @GetMapping("/deleteDeviceChannel")
     @ApiOperation("删除通道设备维护关系")
-    public void deleteDeviceChannel(@RequestParam("sn") String sn, @RequestParam("channelId") String channelId){
-        tcpClientReidsSyncApplication.deleteDeviceChannel(sn,channelId);
+    public void deleteDeviceChannel(@RequestParam("sn") String sn, @RequestParam("cmdId") String cmdId){
+        tcpClientReidsSyncApplication.deleteDeviceChannel(sn,cmdId);
     }
 
     @GetMapping("/getSnBychannelId")
     @ApiOperation("通道获取sn号信息")
-    public String getSnBychannelId(@RequestParam("channelId") String channelId){
-        return tcpClientReidsSyncApplication.getSnBychannelId(channelId);
+    public ParamaterModel getSnBychannelId(@RequestParam("sn") String sn,@RequestParam("cmdId") String cmdId){
+        return tcpClientReidsSyncApplication.getSnBychannelId(sn+cmdId);
     }
+
 
 
 }

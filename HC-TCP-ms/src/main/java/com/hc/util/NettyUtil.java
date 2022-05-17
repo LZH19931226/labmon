@@ -1,8 +1,6 @@
 package com.hc.util;
 
 
-import com.hc.bean.MTOnlineBean;
-import com.hc.my.common.core.bean.ParamaterModel;
 import com.hc.socketServer.IotServer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

@@ -1,7 +1,9 @@
 package com.hc.application;
 
 
+import cn.hutool.json.JSONUtil;
 import com.hc.config.RedisUtils;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.redis.namespace.TcpServiceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,24 +15,20 @@ public class TcpClientReidsSyncApplication {
     private RedisUtils redisUtils;
 
 
-    public void addDeviceChannel(String sn, String channelId) {
-        redisUtils.hset(TcpServiceEnum.TCPCLIENT.getCode(),sn, channelId);
+    public void addDeviceChannel(ParamaterModel paramaterModel) {
+        redisUtils.hset(TcpServiceEnum.TCPCLIENT.getCode(),paramaterModel.getSN()+paramaterModel.getCmdid(), JSONUtil.toJsonStr(paramaterModel));
     }
 
-    public void addChannelDevice(String Sn, String channelId) {
-        redisUtils.hset(TcpServiceEnum.SNCLIENT.getCode(),channelId, Sn);
+    public void deleteDeviceChannel(String Sn, String cmdId) {
+        redisUtils.hdel(TcpServiceEnum.TCPCLIENT.getCode(),Sn+cmdId);
     }
 
-    public void deleteDeviceChannel(String Sn, String channelId) {
-        redisUtils.hdel(TcpServiceEnum.TCPCLIENT.getCode(),Sn);
-        redisUtils.hdel(TcpServiceEnum.SNCLIENT.getCode(),channelId);
-    }
 
-    public String getSnBychannelId(String channelId) {
-        Object o = redisUtils.hget(TcpServiceEnum.SNCLIENT.getCode(),channelId);
+    public ParamaterModel getSnBychannelId(String snCmdId) {
+        Object o = redisUtils.hget(TcpServiceEnum.TCPCLIENT.getCode(),snCmdId);
         if (null==o){
             return null;
         }
-        return (String) o;
+        return JSONUtil.toBean((String) o,ParamaterModel.class);
     }
 }
