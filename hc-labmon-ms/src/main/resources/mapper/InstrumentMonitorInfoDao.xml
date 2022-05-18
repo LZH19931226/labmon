@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.hc.infrastructure.dao.InstrumentMonitorInfoDao">
+
+    <select id="selectInstrumentMonitorInfoByEqNo"  resultType="com.hc.dto.InstrumentMonitorInfoDto" parameterType="java.util.List">
+        SELECT
+            e.equipmentno as equipmentno,
+            b.instrumenttypename as instrumenttypename,
+            c.instrumentconfigid as instrumentconfigid,
+            c.instrumentconfigname as instrumentconfigname,
+            a.lowlimit as lowlimit,
+            a.highlimit as highlimit,
+            a.saturation as saturation
+        FROM
+        instrumentparamconfig a
+        LEFT JOIN monitorinstrumenttype b ON a.instrumenttypeid = b.instrumenttypeid
+        LEFT JOIN instrumentconfig c ON a.instrumentconfigid = c.instrumentconfigid
+        LEFT JOIN monitorinstrument d ON a.instrumentno = d.instrumentno
+        LEFT JOIN monitorequipment e ON d.equipmentno = e.equipmentno
+        WHERE
+        e.equipmentno in
+        <foreach  collection="equipmentNoList" item="id" open="(" close=")" separator=","  index="index">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

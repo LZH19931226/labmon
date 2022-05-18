@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.infrastructure.dao.EquipmentInfoDao">
+
+    <select id="getSns" resultType="com.hc.dto.MonitorinstrumentDto">
+    select equipmentno,sn from monitorinstrument where equipmentno in
+    <foreach collection="equipmentNoList" item="id" open="(" close=")" separator="," index="index">
+        #{id}
+    </foreach>
+    </select>
+
+</mapper>
