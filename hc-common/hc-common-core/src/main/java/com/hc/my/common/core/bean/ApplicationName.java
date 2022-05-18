@@ -20,7 +20,7 @@ public class ApplicationName {
     /**
      * 网关服务
      */
-    public static final String OPENWAY = "openway";
+    public static final String OPENWAY = "HC-OPENWAY-ms";
 
 
     /**
