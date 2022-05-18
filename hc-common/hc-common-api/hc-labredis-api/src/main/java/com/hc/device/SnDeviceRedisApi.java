@@ -34,6 +34,7 @@ public interface SnDeviceRedisApi {
 
     @GetMapping("/snDevice/getCurrentDataInfo")
     @ApiOperation("获取设备当前值")
-    ApiResponse<List<MonitorequipmentlastdataDto>> getCurrentDataInfo(@RequestParam("hospitalCode")String hospitalCode, @RequestParam("equipmentNo")String equipmentNo);
+    ApiResponse<List<MonitorequipmentlastdataDto>> getCurrentDataInfo(@RequestParam("hospitalCode")String hospitalCode,
+                                                                      @RequestParam("equipmentNo")String equipmentNo);
 
 }
