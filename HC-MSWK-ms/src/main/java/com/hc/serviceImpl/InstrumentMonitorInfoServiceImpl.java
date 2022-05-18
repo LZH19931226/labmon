@@ -57,6 +57,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         String instrumentno = monitorinstrument.getInstrumentno();
         switch (cmdid) {
             case "85":
+                //先置空处理探头被删除情况
+                monitorequipmentlastdata.setCurrenttemperature(null);
+                monitorequipmentlastdata.setCurrentqc(null);
                 InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if (StringUtils.equals("04", substring)) {
                     if (StringUtils.isNotEmpty(model.getTEMP2()) && null!=probe) {
@@ -93,6 +96,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "87":
                 // CO2 O2 二氧化碳氧气
+                monitorequipmentlastdata.setCurrentcarbondioxide(null);
+                monitorequipmentlastdata.setCurrento2(null);
                 InstrumentInfoDto probeCO2 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":1").getResult();
                 InstrumentInfoDto probeO2 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 if (StringUtils.isNotEmpty(model.getCO2()) &&null != probeCO2) {
@@ -122,6 +127,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "8d":
                 //开关门记录
                 //查询是否存在开门量（报警信息探头）
+                monitorequipmentlastdata.setCurrentdoorstate(null);
                 InstrumentInfoDto dd = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":11").getResult();
                 if (StringUtils.isNotEmpty(model.getDOORZ()) && null!=dd) {
                     String DOOR;
@@ -141,6 +147,12 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "8e":
                 // 3 :VOC 8: PM2.5 9: PM10 12: 甲醛 6: 压力   5:湿度
+                monitorequipmentlastdata.setCurrentvoc(null);
+                monitorequipmentlastdata.setCurrentformaldehyde(null);
+                monitorequipmentlastdata.setCurrentpm10(null);
+                monitorequipmentlastdata.setCurrentpm25(null);
+                monitorequipmentlastdata.setCurrentairflow(null);
+                monitorequipmentlastdata.setCurrenthumidity(null);
                 InstrumentInfoDto voc = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":3").getResult();
                 InstrumentInfoDto pm25 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":8").getResult();
                 InstrumentInfoDto pm10 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":9").getResult();
@@ -190,6 +202,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "91":
                 // CO2 O2 温度
+                monitorequipmentlastdata.setCurrentcarbondioxide(null);
+                monitorequipmentlastdata.setCurrento2(null);
+                monitorequipmentlastdata.setCurrenttemperature(null);
                 InstrumentInfoDto o3 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":1").getResult();
                 InstrumentInfoDto o4 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 InstrumentInfoDto o5 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
@@ -214,6 +229,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "70":
                 //模拟500的温度
+                monitorequipmentlastdata.setCurrenttemperature(null);
                 InstrumentInfoDto o7 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if (null!=o7 && StringUtils.isNotEmpty(model.getTEMP())) {
                     String calibration = showModelUtils.calibration(o7, model.getTEMP());
@@ -224,6 +240,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "71":
                 //模拟500的co2
+                monitorequipmentlastdata.setCurrentcarbondioxide(null);
                 InstrumentInfoDto o6 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":1").getResult();
                 if (null!=o6 && StringUtils.isNotEmpty(model.getCO2())) {
                     String calibration = showModelUtils.calibration(o6, model.getCO2());
@@ -262,6 +279,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "75":
                 //模拟500 O2
+                monitorequipmentlastdata.setCurrento2(null);
                 InstrumentInfoDto o8 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 if (null!=o8) {
                     monitorequipmentlastdata.setCurrento2(model.getO2());
@@ -328,6 +346,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 list.add(warningMqModel11);
                 break;
             case "92":
+                monitorequipmentlastdata.setCurrentlefttemperature(null);
+                monitorequipmentlastdata.setCurrentrigthtemperature(null);
+                monitorequipmentlastdata.setCurrentairflow1(null);
                 InstrumentInfoDto left = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":23").getResult();
                 InstrumentInfoDto right = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":24").getResult();
                 InstrumentInfoDto airflow = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":25").getResult();
@@ -351,6 +372,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             // C60培养箱
             case "93":
+                monitorequipmentlastdata.setCurrento2(null);
                 InstrumentInfoDto yq = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                 WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");

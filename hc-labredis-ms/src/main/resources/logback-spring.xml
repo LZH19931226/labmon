@@ -58,13 +58,13 @@
     <!-- 也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root". -->
 
     <logger name="com.hc" level="INFO" additivity="false">
-        <appender-ref ref="FILE"/>
+<!--        <appender-ref ref="FILE"/>-->
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
+<!--        <appender-ref ref="FILE"/>-->
         <appender-ref ref="ASYNC"/>
     </root>
 
