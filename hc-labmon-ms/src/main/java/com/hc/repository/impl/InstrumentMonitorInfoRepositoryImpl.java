@@ -3,6 +3,7 @@ package com.hc.repository.impl;
 import com.hc.dto.InstrumentMonitorInfoDto;
 import com.hc.infrastructure.dao.InstrumentMonitorInfoDao;
 import com.hc.repository.InstrumentMonitorInfoRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,7 @@ public class InstrumentMonitorInfoRepositoryImpl implements InstrumentMonitorInf
      */
     @Override
     public List<InstrumentMonitorInfoDto> selectInstrumentMonitorInfoByEqNo(List<String> equipmentNoList) {
-        return instrumentMonitorInfoDao.selectInstrumentMonitorInfoByEqNo(equipmentNoList);
+        List<InstrumentMonitorInfoDto> instrumentMonitorInfoDtoList = instrumentMonitorInfoDao.selectInstrumentMonitorInfoByEqNo(equipmentNoList);
+        return CollectionUtils.isEmpty(instrumentMonitorInfoDtoList)?null:instrumentMonitorInfoDtoList;
     }
 }

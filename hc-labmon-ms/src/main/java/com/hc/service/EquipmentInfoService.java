@@ -18,4 +18,6 @@ public interface EquipmentInfoService {
     List<MonitorinstrumentDto> getSns(List<String> equipmentNoList);
 
     String getLowlimit(String equipmentNo);
+
+    List<MonitorinstrumentDto> getLowLimitList(List<String> equipmentNoList);
 }

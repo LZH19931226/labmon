@@ -4,6 +4,7 @@ import com.hc.dto.MonitorinstrumentDto;
 import com.hc.infrastructure.dao.EquipmentInfoDao;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.repository.EquipmentInfoRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,11 +30,18 @@ public class EquipmentInfoRepositoryImpl implements EquipmentInfoRepository {
 
     @Override
     public List<MonitorinstrumentDto> getSns(List<String> equipmentNoList) {
-        return equipmentInfoDao.getSns(equipmentNoList);
+        List<MonitorinstrumentDto> sns = equipmentInfoDao.getSns(equipmentNoList);
+        return CollectionUtils.isEmpty(sns)?null:sns;
     }
 
     @Override
     public String getLowlimit(String equipmentNo) {
         return equipmentInfoDao.getLowlimit(equipmentNo);
+    }
+
+    @Override
+    public List<MonitorinstrumentDto> getLowLimitList(List<String> equipmentNoList) {
+        List<MonitorinstrumentDto> list =  equipmentInfoDao.getLowLimitList(equipmentNoList);
+        return CollectionUtils.isEmpty(list)?null:list;
     }
 }

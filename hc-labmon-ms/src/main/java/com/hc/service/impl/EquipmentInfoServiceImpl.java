@@ -36,4 +36,9 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     public String getLowlimit(String equipmentNo) {
         return equipmentInfoRepository.getLowlimit(equipmentNo);
     }
+
+    @Override
+    public List<MonitorinstrumentDto> getLowLimitList(List<String> equipmentNoList) {
+        return equipmentInfoRepository.getLowLimitList(equipmentNoList);
+    }
 }

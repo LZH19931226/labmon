@@ -9,7 +9,6 @@ import com.hc.infrastructure.dao.UserSchedulingDao;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserSchedulingPo;
-import com.hc.repository.UserSchedulingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -72,20 +71,6 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
      */
     @Override
     public void editScheduleInfo(String hospitalCode, Date oldStartTime, Date oldEndTime, Date newStartTime, Date newEndTime) {
-//        List<UserSchedulingPo> userSchedulingPos = userSchedulingDao.selectList(Wrappers.lambdaQuery(new UserSchedulingPo())
-//                .eq(UserSchedulingPo::getHospitalCode, hospitalCode)
-//                .eq(UserSchedulingPo::getStartTime, oldStartTime)
-//                .eq(UserSchedulingPo::getEndTime, oldEndTime)
-//        );
-//        if(CollectionUtils.isEmpty(userSchedulingPos)){
-//            throw new IedsException(UserScheduleEnumCode.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
-//        }
-//        for (UserSchedulingPo userSchedulingPo : userSchedulingPos) {
-//            userSchedulingPo.setStartTime(newStartTime);
-//            userSchedulingPo.setEndTime(newEndTime);
-//            userSchedulingPo.setUsid(null);
-//            userSchedulingDao.insert(userSchedulingPo);
-//        }
         //判断时间段是否统一
         long time1 =  oldEndTime.getTime()-oldStartTime.getTime();
         long time2 =  newEndTime.getTime()-newStartTime.getTime();
@@ -125,7 +110,6 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
     public List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode) {
         List<UserSchedulingPo> userSchedulingPos =
                 userSchedulingDao.selectList(Wrappers.lambdaQuery(new UserSchedulingPo()).eq(UserSchedulingPo::getHospitalCode, hospitalCode));
-
         return CollectionUtils.isEmpty(userSchedulingPos) ? null :BeanConverter.convert(userSchedulingPos,UserSchedulingDto.class);
     }
 }
