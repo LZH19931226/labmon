@@ -63,7 +63,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if(!ObjectUtils.isEmpty(probe)){
                     if (StringUtils.equals("04", substring)) {
-                        if (StringUtils.isNotEmpty(model.getTEMP2()) && null!=probe) {
+                        if (StringUtils.isNotEmpty(model.getTEMP2())) {
                             String calibration = showModelUtils.calibration(probe, model.getTEMP2());
                             // 判断是否存在温度探头
                             monitorequipmentlastdata.setCurrenttemperature(calibration);

@@ -1,5 +1,6 @@
 package com.hc.listenter;
 
+import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.namespace.TcpServiceEnum;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.po.Monitorinstrument;
@@ -63,7 +64,7 @@ public class SocketMessageListener {
         //MT500  MT600判断
         //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
-        Monitorinstrument monitorinstrument = mtJudgeService.checkProbe(model);
+        SnDeviceDto monitorinstrument = mtJudgeService.checkProbe(model);
         if (monitorinstrument == null) {
             return;
         }
