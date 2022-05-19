@@ -10,4 +10,36 @@
     </foreach>
     </select>
 
+    <select id="getLowLimitList" resultType="com.hc.dto.MonitorinstrumentDto">
+        SELECT
+        m.*,
+        a.lowlimit
+        FROM
+        monitorinstrument m
+        LEFT JOIN (
+        SELECT
+            instrumentno,
+            lowlimit
+        FROM
+            instrumentparamconfig
+        WHERE
+            instrumentconfigid = '11'
+          AND instrumenttypeid IN ( 4, 6, 12, 13, 14 )) a ON m.instrumentno = a.instrumentno
+        where 1=1 AND m.equipmentno in
+        <foreach collection="equipmentNoList" item="eno" open="(" close=")" separator="," index="index">
+           #{eno}
+        </foreach>
+    </select>
+
+
+    <select id="getEquipmentInfoByCodeAndTypeId" resultType="com.hc.dto.MonitorEquipmentDto">
+        select
+         t1.*,
+         t2.sn
+        from monitorequipment t1
+          LEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno
+        WHERE t1.hospitalcode = #{hospitalCode}
+          AND t1.equipmenttypeid = #{equipmentTypeId}
+          AND t1.clientvisible = '1'
+    </select>
 </mapper>

@@ -9,6 +9,7 @@ import java.util.Map;
 @Data
 @Accessors(chain = true)
 public class MonitorinstrumentDto implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private String instrumentno;
@@ -22,6 +23,8 @@ public class MonitorinstrumentDto implements Serializable {
     private Integer instrumenttypeid;
 
     private String sn;
+
+    private String lowlimit;
 
     private CurrentInfoDto currentInfoDto;
 

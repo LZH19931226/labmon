@@ -64,4 +64,7 @@ public class InstrumentMonitorInfoDto implements Serializable {
 
     /** 医院id */
     private String hospitalcode;
+
+    /** sn */
+    private String sn;
 }
