@@ -1,16 +1,15 @@
 package com.hc.serviceImpl;
 
 import com.hc.device.SnDeviceRedisApi;
-import com.hc.my.common.core.redis.dto.SnDeviceDto;
-import com.hc.po.Monitorinstrument;
 import com.hc.mapper.MonitorInstrumentMapper;
 import com.hc.model.MonitorinstrumentModel;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
+import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.po.Monitorinstrument;
 import com.hc.service.MTJudgeService;
 import com.hc.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,14 @@ public class MTJudgeServiceImpl implements MTJudgeService {
             return BeanConverter.convert(monitorinstrumentModel,Monitorinstrument.class);
         }
         Monitorinstrument monitorinstrument = new Monitorinstrument();
-        BeanUtils.copyProperties(snDeviceDto,monitorinstrument);
+        monitorinstrument.setAlarmtime(snDeviceDto.getAlarmTime().intValue());
+        monitorinstrument.setChannel(snDeviceDto.getChannel());
+        monitorinstrument.setEquipmentno(snDeviceDto.getEquipmentNo());
+        monitorinstrument.setHospitalcode(snDeviceDto.getHospitalCode());
+        monitorinstrument.setInstrumentno(snDeviceDto.getInstrumentNo());
+        monitorinstrument.setInstrumenttypeid(Integer.valueOf(snDeviceDto.getInstrumentTypeId()));
+        monitorinstrument.setSn(snDeviceDto.getSn());
+        monitorinstrument.setInstrumentname(snDeviceDto.getInstrumentName());
         return monitorinstrument;
     }
 }
