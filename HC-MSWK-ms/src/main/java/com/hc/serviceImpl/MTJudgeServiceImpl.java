@@ -28,7 +28,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
     private SnDeviceRedisApi snDeviceReidsSync;
 
     @Override
-    public SnDeviceDto checkProbe(ParamaterModel model) {
+    public Monitorinstrument checkProbe(ParamaterModel model) {
         String sn = model.getSN();
         //先从缓存里面取,缓存里面取不出来再从数据库取,判断设备是否注册此处缓存需要后台管理做数据同步
         SnDeviceDto snDeviceDto = snDeviceReidsSync.getSnDeviceDto(sn).getResult();
@@ -45,8 +45,10 @@ public class MTJudgeServiceImpl implements MTJudgeService {
                 return null;
             }
             log.info("该设备同步缓存失败,数据库存在,缓存不存在:{}",JsonUtil.toJson(monitorinstrumentModel));
-            return snDeviceDto;
+            return BeanConverter.convert(monitorinstrumentModel,Monitorinstrument.class);
         }
-        return snDeviceDto;
+        Monitorinstrument monitorinstrument = new Monitorinstrument();
+        BeanUtils.copyProperties(snDeviceDto,monitorinstrument);
+        return monitorinstrument;
     }
 }

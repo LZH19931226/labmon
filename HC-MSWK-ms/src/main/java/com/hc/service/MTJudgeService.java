@@ -1,6 +1,5 @@
 package com.hc.service;
 
-import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.po.Monitorinstrument;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 
@@ -9,5 +8,5 @@ import com.hc.my.common.core.redis.dto.ParamaterModel;
  */
 public interface MTJudgeService {
 
-    SnDeviceDto checkProbe(ParamaterModel model);
+    Monitorinstrument checkProbe(ParamaterModel model);
 }
