@@ -10,8 +10,10 @@ import com.hc.po.Monitorinstrument;
 import com.hc.service.MTJudgeService;
 import com.hc.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Created by 16956 on 2018-08-21.
@@ -46,13 +48,22 @@ public class MTJudgeServiceImpl implements MTJudgeService {
             log.info("该设备同步缓存失败,数据库存在,缓存不存在:{}",JsonUtil.toJson(monitorinstrumentModel));
             return BeanConverter.convert(monitorinstrumentModel,Monitorinstrument.class);
         }
+
+        return objectConversion(snDeviceDto);
+    }
+
+    private Monitorinstrument objectConversion(SnDeviceDto snDeviceDto) {
+        if(ObjectUtils.isEmpty(snDeviceDto)){
+            return null;
+        }
+        String instrumentTypeId = snDeviceDto.getInstrumentTypeId();
         Monitorinstrument monitorinstrument = new Monitorinstrument();
         monitorinstrument.setAlarmtime(snDeviceDto.getAlarmTime().intValue());
         monitorinstrument.setChannel(snDeviceDto.getChannel());
         monitorinstrument.setEquipmentno(snDeviceDto.getEquipmentNo());
         monitorinstrument.setHospitalcode(snDeviceDto.getHospitalCode());
         monitorinstrument.setInstrumentno(snDeviceDto.getInstrumentNo());
-        monitorinstrument.setInstrumenttypeid(Integer.valueOf(snDeviceDto.getInstrumentTypeId()));
+        monitorinstrument.setInstrumenttypeid(StringUtils.isEmpty(instrumentTypeId)?null:Integer.valueOf(instrumentTypeId));
         monitorinstrument.setSn(snDeviceDto.getSn());
         monitorinstrument.setInstrumentname(snDeviceDto.getInstrumentName());
         return monitorinstrument;
