@@ -112,6 +112,9 @@ public class Monitorequipmentlastdata implements Serializable {
      */
     private String currentqcl;
 
+    /**
+     * 当前温度
+     */
     private String currenttemperature1;
     private String currenttemperature2;
 

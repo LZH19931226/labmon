@@ -51,4 +51,11 @@ public class SnDeviceReidsSyncController {
         snDeviceReidsSyncApplocation.remove(hospitalCode,equipmentNo);
     }
 
+    @GetMapping("/getTheCurrentValueOfTheDeviceInBatches")
+    @ApiOperation("批量获取设备当前值")
+    public  List<MonitorequipmentlastdataDto> getTheCurrentValueOfTheDeviceInBatches(@RequestParam("hospitalCode")String hospitalCode,
+                                                                                     @RequestParam("equipmentNoList")List<String> equipmentNoList){
+        return snDeviceReidsSyncApplocation.getTheCurrentValue(hospitalCode,equipmentNoList);
+    }
+
 }

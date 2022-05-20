@@ -3,6 +3,7 @@ package com.hc.application;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.TypeReference;
 import com.hc.config.RedisUtils;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -88,5 +91,43 @@ public class SnDeviceReidsSyncApplocation {
      */
     public void remove(String hospitalCode, String equipmentNo) {
         redisUtils.hdel(MswkServiceEnum.L.getCode() +hospitalCode,equipmentNo);
+    }
+
+    /**
+     * 批量获取设备当前值
+     * @param hospitalCode
+     * @param equipmentNo
+     */
+    public  List<MonitorequipmentlastdataDto> getTheCurrentValue(String hospitalCode, List<String> equipmentNo) {
+        if(equipmentNo == null || equipmentNo.size() == 0){
+            return null;
+        }
+        List<MonitorequipmentlastdataDto>  monitorequipmentlastdataDtos = new ArrayList<>();
+        for (String res: equipmentNo) {
+            List<MonitorequipmentlastdataDto> currentInfo = getCurrentInfo(hospitalCode, res);
+            if(org.apache.commons.collections.CollectionUtils.isNotEmpty(currentInfo)){
+                MonitorequipmentlastdataDto monitorequipmentlastdataDto= buildCurrentData(currentInfo);
+                monitorequipmentlastdataDtos.add(monitorequipmentlastdataDto);
+            }
+        }
+        return monitorequipmentlastdataDtos;
+    }
+
+    /**
+     * 构建监控设备最新的数据信息
+     * @param currentDataInfo
+     * @return
+     */
+    public MonitorequipmentlastdataDto buildCurrentData(List<MonitorequipmentlastdataDto> currentDataInfo){
+        if(org.apache.commons.collections.CollectionUtils.isEmpty(currentDataInfo)){
+            return null;
+        }
+        Map<String,Object> map = new HashMap<>();
+        for (MonitorequipmentlastdataDto monitorequipmentlastdataDto : currentDataInfo) {
+            Map<String,Object> map1 = JSON.parseObject(JSON.toJSONString(monitorequipmentlastdataDto),new TypeReference<Map<String,Object>>(){});
+            map.putAll(map1);
+        }
+        return JSON.parseObject(JSON.toJSONString(map), new TypeReference<MonitorequipmentlastdataDto>(){});
+
     }
 }

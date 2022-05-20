@@ -65,14 +65,15 @@ public class EquipmentInfoApplication {
         }
 
         //查询设备号当前的信息值
-        List<MonitorequipmentlastdataDto> resultList = new ArrayList<>();
-        for (String res : equipmentNoList) {
-            List<MonitorequipmentlastdataDto> currentDataInfo = snDeviceRedisApi.getCurrentDataInfo(hospitalCode, res).getResult();
-            if(CollectionUtils.isNotEmpty(currentDataInfo)){
-                MonitorequipmentlastdataDto monitorequipmentlastdataDto= listToObject(currentDataInfo);
-                resultList.add(monitorequipmentlastdataDto);
-            }
-        }
+        List<MonitorequipmentlastdataDto> resultList = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(hospitalCode,equipmentNoList).getResult();
+
+//        for (String res : equipmentNoList) {
+//            List<MonitorequipmentlastdataDto> currentDataInfo = snDeviceRedisApi.getCurrentDataInfo(hospitalCode, res).getResult();
+//            if(CollectionUtils.isNotEmpty(currentDataInfo)){
+//                MonitorequipmentlastdataDto monitorequipmentlastdataDto= listToObject(currentDataInfo);
+//                resultList.add(monitorequipmentlastdataDto);
+//            }
+//        }
         Map<String, List<MonitorequipmentlastdataDto>> resultMap = resultList.stream().collect(Collectors.groupingBy(MonitorequipmentlastdataDto::getEquipmentno));
 
         for (MonitorEquipmentDto monitorEquipmentDto : monitorEquipmentDtoList) {
