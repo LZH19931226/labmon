@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.hc.infrastructure.dao")
+@MapperScan(value = {"com.hc.infrastructure.dao","com.hc.clickhouse.mapper"})
 @EnableFeignClients
 public class HcLabMonMsApplication {
 

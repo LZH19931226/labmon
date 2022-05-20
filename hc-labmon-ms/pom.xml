@@ -24,7 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.hc</groupId>
-			<artifactId>hc-common-data</artifactId>
+			<artifactId>hc-common-dynamic</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
