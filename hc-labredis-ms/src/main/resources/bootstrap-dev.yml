@@ -6,9 +6,9 @@ spring:
         file-extension: yaml
         prefix: hc-labredis-ms
         group: DEFAULT_GROUP
-        namespace: liuzhihao
+        namespace: chenkai
       discovery:
         server-addr: 172.16.10.201:8848
-        namespace: liuzhihao
+        namespace: chenkai
 
 

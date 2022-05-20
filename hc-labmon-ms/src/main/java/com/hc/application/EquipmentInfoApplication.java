@@ -8,6 +8,7 @@ import com.hc.dto.InstrumentMonitorInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentMonitorInfoService;
@@ -16,7 +17,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -64,16 +67,12 @@ public class EquipmentInfoApplication {
             monitorEquipmentLowMap = monitorEquipmentLowLimitList.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
         }
 
+        EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
+        equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
+        equipmentInfoCommand.setHospitalCode(hospitalCode);
         //查询设备号当前的信息值
-        List<MonitorequipmentlastdataDto> resultList = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(hospitalCode,equipmentNoList).getResult();
+        List<MonitorequipmentlastdataDto> resultList = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
 
-//        for (String res : equipmentNoList) {
-//            List<MonitorequipmentlastdataDto> currentDataInfo = snDeviceRedisApi.getCurrentDataInfo(hospitalCode, res).getResult();
-//            if(CollectionUtils.isNotEmpty(currentDataInfo)){
-//                MonitorequipmentlastdataDto monitorequipmentlastdataDto= listToObject(currentDataInfo);
-//                resultList.add(monitorequipmentlastdataDto);
-//            }
-//        }
         Map<String, List<MonitorequipmentlastdataDto>> resultMap = resultList.stream().collect(Collectors.groupingBy(MonitorequipmentlastdataDto::getEquipmentno));
 
         for (MonitorEquipmentDto monitorEquipmentDto : monitorEquipmentDtoList) {

@@ -2,6 +2,7 @@ package com.hc.device;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
+import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import io.swagger.annotations.ApiOperation;
@@ -36,9 +37,7 @@ public interface SnDeviceRedisApi {
     @ApiOperation("获取设备当前值")
     ApiResponse<List<MonitorequipmentlastdataDto>> getCurrentDataInfo(@RequestParam("hospitalCode")String hospitalCode,
                                                                       @RequestParam("equipmentNo")String equipmentNo);
-
-    @GetMapping("/snDevice/getTheCurrentValueOfTheDeviceInBatches")
+    @PostMapping("/snDevice/getTheCurrentValueOfTheDeviceInBatches")
     @ApiOperation("批量获取设备当前值")
-    ApiResponse<List<MonitorequipmentlastdataDto>> getTheCurrentValueOfTheDeviceInBatches(@RequestParam("hospitalCode")String hospitalCode,
-                                                                             @RequestParam("equipmentNoList")List<String> equipmentNoList);
+    ApiResponse<List<MonitorequipmentlastdataDto>> getTheCurrentValueOfTheDeviceInBatches(@RequestBody EquipmentInfoCommand equipmentInfoCommand);
 }

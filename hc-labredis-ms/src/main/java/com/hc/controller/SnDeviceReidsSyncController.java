@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.SnDeviceReidsSyncApplocation;
+import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import io.swagger.annotations.ApiOperation;
@@ -51,11 +52,10 @@ public class SnDeviceReidsSyncController {
         snDeviceReidsSyncApplocation.remove(hospitalCode,equipmentNo);
     }
 
-    @GetMapping("/getTheCurrentValueOfTheDeviceInBatches")
+    @PostMapping("/getTheCurrentValueOfTheDeviceInBatches")
     @ApiOperation("批量获取设备当前值")
-    public  List<MonitorequipmentlastdataDto> getTheCurrentValueOfTheDeviceInBatches(@RequestParam("hospitalCode")String hospitalCode,
-                                                                                     @RequestParam("equipmentNoList")List<String> equipmentNoList){
-        return snDeviceReidsSyncApplocation.getTheCurrentValue(hospitalCode,equipmentNoList);
+    public  List<MonitorequipmentlastdataDto> getTheCurrentValueOfTheDeviceInBatches(@RequestBody EquipmentInfoCommand equipmentInfoCommand){
+        return snDeviceReidsSyncApplocation.getTheCurrentValue(equipmentInfoCommand);
     }
 
 }

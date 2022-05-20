@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.TypeReference;
 import com.hc.config.RedisUtils;
+import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
@@ -95,15 +96,15 @@ public class SnDeviceReidsSyncApplocation {
 
     /**
      * 批量获取设备当前值
-     * @param hospitalCode
-     * @param equipmentNo
      */
-    public  List<MonitorequipmentlastdataDto> getTheCurrentValue(String hospitalCode, List<String> equipmentNo) {
-        if(equipmentNo == null || equipmentNo.size() == 0){
+    public  List<MonitorequipmentlastdataDto> getTheCurrentValue(EquipmentInfoCommand equipmentInfoCommand) {
+        List<String> equipmentNoList = equipmentInfoCommand.getEquipmentNoList();
+        if(equipmentNoList == null || equipmentNoList.size() == 0){
             return null;
         }
+        String hospitalCode = equipmentInfoCommand.getHospitalCode();
         List<MonitorequipmentlastdataDto>  monitorequipmentlastdataDtos = new ArrayList<>();
-        for (String res: equipmentNo) {
+        for (String res: equipmentNoList) {
             List<MonitorequipmentlastdataDto> currentInfo = getCurrentInfo(hospitalCode, res);
             if(org.apache.commons.collections.CollectionUtils.isNotEmpty(currentInfo)){
                 MonitorequipmentlastdataDto monitorequipmentlastdataDto= buildCurrentData(currentInfo);
