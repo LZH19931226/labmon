@@ -1,5 +1,6 @@
 package com.hc.clickhouse.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,11 +31,6 @@ public class Monitorequipmentlastdata implements Serializable {
      * 医院编号
      */
     private String hospitalcode;
-
-    /**
-     * 设备最后数据
-     */
-    private String equipmentlastdata;
 
     /**
      * 当前温度
@@ -177,10 +173,12 @@ public class Monitorequipmentlastdata implements Serializable {
     /**
      * 左舱室湿度
      */
+    @TableField(value = "leftCompartmentHumidity")
     private String leftCompartmentHumidity;
     /**
      * 右舱室湿度
      */
+    @TableField(value = "rightCompartmentHumidity")
     private String rightCompartmentHumidity;
     /**
      * 电压

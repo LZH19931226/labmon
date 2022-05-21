@@ -16,6 +16,11 @@ public class MonitorEquipmentLastDataModel {
     private String equipmentno;
 
     /**
+     * 设备名称
+     * */
+    private String equipmentname;
+
+    /**
      * 记录时间
      */
     private Date inputdatetime;

@@ -26,13 +26,13 @@ public class MTJudgeServiceImpl implements MTJudgeService {
     private MonitorInstrumentMapper monitorInstrumentMapper;
 
     @Autowired
-    private SnDeviceRedisApi snDeviceReidsSync;
+    private SnDeviceRedisApi snDeviceRedisSync;
 
     @Override
     public Monitorinstrument checkProbe(ParamaterModel model) {
         String sn = model.getSN();
         //先从缓存里面取,缓存里面取不出来再从数据库取,判断设备是否注册此处缓存需要后台管理做数据同步
-        SnDeviceDto snDeviceDto = snDeviceReidsSync.getSnDeviceDto(sn).getResult();
+        SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
         if (null==snDeviceDto){
             MonitorinstrumentModel monitorinstrumentModel = monitorInstrumentMapper.selectMonitorinstrumentInfoBySn(sn);
             if (null == monitorinstrumentModel) {

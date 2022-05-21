@@ -1,17 +1,21 @@
 package com.hc.application;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.constants.LabMonEnumError;
 import com.hc.device.SnDeviceRedisApi;
+import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentMonitorInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentMonitorInfoService;
+import com.hc.util.EquipmentInfoServiceHelp;
+import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,9 @@ public class EquipmentInfoApplication {
 
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
+
+    @Autowired
+    private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
 
     /**
      * 查询所有设备当前值信息
@@ -70,6 +77,7 @@ public class EquipmentInfoApplication {
         EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
         equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
         equipmentInfoCommand.setHospitalCode(hospitalCode);
+
         //查询设备号当前的信息值
         List<MonitorequipmentlastdataDto> resultList = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
 
@@ -100,19 +108,24 @@ public class EquipmentInfoApplication {
     }
 
     /**
-     * 类型转化
-     * @param currentDataInfo
+     * 获取曲线信息，不包括曲线对比信息
+     * @param equipmentNo
+     * @param date
      * @return
      */
-    private MonitorequipmentlastdataDto listToObject(List<MonitorequipmentlastdataDto> currentDataInfo) {
-        if(CollectionUtils.isEmpty(currentDataInfo)){
-            return null;
+    public CurveInfoDto getCurveFirst(String equipmentNo, String date) {
+        //根据月份判断查询那一张表
+        MonitorEquipmentDto monitorEquipmentDto =  equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        //查询表信息
+        List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo);
+        if(CollectionUtils.isEmpty(lastDataModelList)){
+            throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
-        Map<String,Object> map = new HashMap<>();
-        for (MonitorequipmentlastdataDto monitorequipmentlastdataDto : currentDataInfo) {
-            Map<String,Object> map1 = JSON.parseObject(JSON.toJSONString(monitorequipmentlastdataDto),new TypeReference<Map<String,Object>>(){});
-            map.putAll(map1);
-        }
-        return JSON.parseObject(JSON.toJSONString(map), new TypeReference<MonitorequipmentlastdataDto>(){});
+        List<MonitorEquipmentLastDataModel> monitorEquipmentLastDataModels = BeanConverter.convert(lastDataModelList, MonitorEquipmentLastDataModel.class);
+        String equipmentName = monitorEquipmentDto.getEquipmentname();
+        monitorEquipmentLastDataModels.forEach(res->res.setEquipmentname(equipmentName));
+        CurveInfoDto curveFirst = EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataModels, new CurveInfoDto(), equipmentName);
+        return curveFirst;
     }
+
 }

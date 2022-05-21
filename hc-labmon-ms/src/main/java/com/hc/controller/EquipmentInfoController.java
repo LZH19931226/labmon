@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.EquipmentInfoApplication;
+import com.hc.dto.CurveInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,4 +27,9 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.findEquipmentCurrentData(hospitalCode,equipmentTypeId);
     }
 
+    @GetMapping("/getEuipmentCurveInfo")
+    public CurveInfoDto getCurveInfo( @RequestParam("equipmentNo")String equipmentNo,
+                                     @RequestParam("date")String date){
+        return equipmentInfoApplication.getCurveFirst(equipmentNo,date);
+    }
 }

@@ -2,6 +2,7 @@ package com.hc.service;
 
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
+import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
 
 import java.util.List;
 
@@ -20,4 +21,20 @@ public interface EquipmentInfoService {
     String getLowlimit(String equipmentNo);
 
     List<MonitorinstrumentDto> getLowLimitList(List<String> equipmentNoList);
+
+    /**
+     * 获取曲线表信息
+     * @param date 医院id
+     * @param equipmentNo 设备id
+     * @param tableName 查询的表名称
+     * @return
+     */
+    List<MonitorEquipmentLastDataModel> getCurveInfo(String date, String equipmentNo, String tableName);
+
+    /**
+     * 查询设备信息
+     * @param equipmentNo
+     * @return
+     */
+    MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
 }

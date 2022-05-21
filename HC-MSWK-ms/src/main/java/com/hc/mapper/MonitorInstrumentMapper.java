@@ -9,6 +9,7 @@ import com.hc.po.Instrumentparamconfig;
 import com.hc.po.Monitorequipment;
 import com.hc.po.Monitorinstrument;
 import com.hc.model.MonitorinstrumentModel;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -17,6 +18,8 @@ import java.util.List;
 /**
  * 探头
  */
+
+@Mapper
 public interface MonitorInstrumentMapper extends BaseMapper<Monitorinstrument> {
 
     @Select(" SELECT\n" +

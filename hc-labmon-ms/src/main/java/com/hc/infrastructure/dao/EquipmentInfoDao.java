@@ -3,6 +3,7 @@ package com.hc.infrastructure.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
+import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -27,4 +28,12 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
     String getLowlimit(@Param("equipmentNo") String equipmentNo);
 
     List<MonitorinstrumentDto> getLowLimitList(@Param("equipmentNoList") List<String> equipmentNoList);
+
+
+    List<MonitorEquipmentLastDataModel> getCurveInfo(@Param("date") String date,
+                                                     @Param("equipmentNo") String equipmentNo,
+                                                     @Param("tableName") String tableName);
+
+    @Select("select * from monitorequipment where equipmentno = #{equipmentNo}")
+    MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
 }
