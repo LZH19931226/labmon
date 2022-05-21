@@ -48,7 +48,7 @@ public class EquipmentInfoApplication {
      * 查询所有设备当前值信息
      * @param hospitalCode 医院id
      * @param equipmentTypeId 设备类型id
-     * @return 监控设备vo对象
+     * @return 监控设备集合
      */
     public List<MonitorEquipmentDto> findEquipmentCurrentData(String hospitalCode, String equipmentTypeId) {
 
@@ -109,23 +109,17 @@ public class EquipmentInfoApplication {
 
     /**
      * 获取曲线信息，不包括曲线对比信息
-     * @param equipmentNo
-     * @param date
-     * @return
+     * @param equipmentNo 设备id
+     * @param date 时间
+     * @return 曲线信息对象
      */
     public CurveInfoDto getCurveFirst(String equipmentNo, String date) {
-        //根据月份判断查询那一张表
-        MonitorEquipmentDto monitorEquipmentDto =  equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
-        //查询表信息
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo);
         if(CollectionUtils.isEmpty(lastDataModelList)){
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
         List<MonitorEquipmentLastDataModel> monitorEquipmentLastDataModels = BeanConverter.convert(lastDataModelList, MonitorEquipmentLastDataModel.class);
-        String equipmentName = monitorEquipmentDto.getEquipmentname();
-        monitorEquipmentLastDataModels.forEach(res->res.setEquipmentname(equipmentName));
-        CurveInfoDto curveFirst = EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataModels, new CurveInfoDto(), equipmentName);
-        return curveFirst;
+        return EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataModels, new CurveInfoDto());
     }
 
 }

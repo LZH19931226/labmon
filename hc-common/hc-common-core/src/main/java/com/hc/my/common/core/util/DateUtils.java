@@ -14,6 +14,7 @@ public class DateUtils {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat dateFormatHHmm = new SimpleDateFormat("HH:mm");
 
 
     /**
@@ -63,9 +64,25 @@ public class DateUtils {
 
     }
 
+    /**
+     * 解析时间
+     *
+     * @param nowTime 当前时间 yyyy-MM-dd HH:mm:ss
+     * @author liu
+     */
     public static String paseDatetime(Date nowTime) {
         return datetimeFormat.format(nowTime);
 
+    }
+
+    /**
+     * 解析时间
+     *
+     * @param nowTime 当前时间 HH:mm
+     * @author liu
+     */
+    public static String parseDatetime(Date nowTime){
+        return dateFormatHHmm.format(nowTime);
     }
 
     /**

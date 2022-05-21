@@ -3,22 +3,23 @@ package com.hc.util;
 import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.curvemodel.SeriesDataModel;
 import com.hc.dto.CurveInfoDto;
+import com.hc.my.common.core.util.DateUtils;
+import com.hc.my.common.core.util.RegularUtil;
 import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class EquipmentInfoServiceHelp {
 
-    private static List<String> exceptionData = Arrays.asList("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q");
+    private static Date defaultTime;
 
-    public static  CurveInfoDto getCurveFirst(List<MonitorEquipmentLastDataModel> lastDataModelList, CurveInfoDto curveInfoDto, String equipmentName ){
-        List<String> legend = new ArrayList<String>();
-        legend.add(equipmentName);
+    private final static int halfAnHour = 1000*60*30;
+
+    public static  CurveInfoDto getCurveFirst(List<MonitorEquipmentLastDataModel> lastDataModelList, CurveInfoDto curveInfoDto ){
         List<String> temp = new ArrayList<String>();
         List<String> tempTime = new ArrayList<String>();
         List<String> CO2 = new ArrayList<String>();
@@ -88,149 +89,156 @@ public class EquipmentInfoServiceHelp {
         List<String> rightCompartmentHumidity = new ArrayList<String>();
         List<String> rightCompartmentHumidityTime = new ArrayList<String>();
 
-        for (MonitorEquipmentLastDataModel lastDataModel : lastDataModelList) {
+        defaultTime=lastDataModelList.get(0).getInputdatetime();
+        for (int i = 0; i < lastDataModelList.size(); i++) {
+            MonitorEquipmentLastDataModel lastDataModel = lastDataModelList.get(i);
+            Date inputdatetime = lastDataModel.getInputdatetime();
+            Long aLong = inputdatetime.getTime()-defaultTime.getTime();
+            if( i != 0 && aLong < halfAnHour){
+                continue;
+            }
+            defaultTime = inputdatetime;
             //液氮罐是否存在差值
-            SimpleDateFormat dateFormats = new SimpleDateFormat("HH:mm");
-            String da = dateFormats.format(lastDataModel.getInputdatetime());
+            String da = DateUtils.parseDatetime(lastDataModel.getInputdatetime());
             if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperaturediff())) {
                 tempdiff.add(lastDataModel.getCurrenttemperaturediff());
                 tempdiffTime.add(da);
             }
             //培养箱气流有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentairflow1()) && !exceptionData.contains(lastDataModel.getCurrentairflow1())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentairflow1()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentairflow1())) {
                 airflow.add(lastDataModel.getCurrentairflow1());
                 airflowTime.add(da);
             }
             //是否存在左舱室温度
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentlefttemperature()) && !exceptionData.contains(lastDataModel.getCurrentlefttemperature())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentlefttemperature()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentlefttemperature())) {
                 lefttemp.add(lastDataModel.getCurrentlefttemperature());
                 lefttempTime.add(da);
             }
             //是否存在右舱室温度
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrigthtemperature()) && !exceptionData.contains(lastDataModel.getCurrentrigthtemperature())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrigthtemperature()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentrigthtemperature())) {
                 righttemp.add(lastDataModel.getCurrentrigthtemperature());
                 righttempTime.add(da);
             }
             //温度1有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature1()) && !exceptionData.contains(lastDataModel.getCurrenttemperature1())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature1()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature1())) {
                 temp1.add(lastDataModel.getCurrenttemperature1());
                 temp1Time.add(da);
             }
             //温度2有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature2()) && !exceptionData.contains(lastDataModel.getCurrenttemperature2())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature2()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature2())) {
                 temp2.add(lastDataModel.getCurrenttemperature2());
                 temp2Time.add(da);
             }
             //温度3有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature3()) && !exceptionData.contains(lastDataModel.getCurrenttemperature3())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature3()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature3())) {
                 temp3.add(lastDataModel.getCurrenttemperature3());
                 temp3Time.add(da);
             }
             //温度4有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature4()) && !exceptionData.contains(lastDataModel.getCurrenttemperature4())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature4()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature4())) {
                 temp4.add(lastDataModel.getCurrenttemperature4());
                 temp4Time.add(da);
             }
             //温度5有无值
-            if (!StringUtils.isEmpty(lastDataModel.getCurrenttemperature5()) && !exceptionData.contains(lastDataModel.getCurrenttemperature5())) {
+            if (!StringUtils.isEmpty(lastDataModel.getCurrenttemperature5()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature5())) {
                 temp5.add(lastDataModel.getCurrenttemperature5());
                 temp5Time.add(da);
             }
             //温度6有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature6()) && !exceptionData.contains(lastDataModel.getCurrenttemperature6())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature6()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature6())) {
                 temp6.add(lastDataModel.getCurrenttemperature6());
                 temp6Time.add(da);
             }
             //温度7有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature7()) && !exceptionData.contains(lastDataModel.getCurrenttemperature7())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature7()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature7())) {
                 temp7.add(lastDataModel.getCurrenttemperature7());
                 temp7Time.add(da);
             }
             //温度8有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature8()) && !exceptionData.contains(lastDataModel.getCurrenttemperature8())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature8()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature8())) {
                 temp8.add(lastDataModel.getCurrenttemperature8());
                 temp8Time.add(da);
             }
             //温度9有无值
-            if (!StringUtils.isEmpty(lastDataModel.getCurrenttemperature9()) && !exceptionData.contains(lastDataModel.getCurrenttemperature9())) {
+            if (!StringUtils.isEmpty(lastDataModel.getCurrenttemperature9()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature9())) {
                 temp9.add(lastDataModel.getCurrenttemperature9());
                 temp9Time.add(da);
             }
             //温度10有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature10()) && !exceptionData.contains(lastDataModel.getCurrenttemperature10())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature10()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature10())) {
                 temp10.add(lastDataModel.getCurrenttemperature10());
                 temp10Time.add(da);
             }
             //温度有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature()) && !exceptionData.contains(lastDataModel.getCurrenttemperature())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperature()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenttemperature())) {
                 temp.add(lastDataModel.getCurrenttemperature());
                 tempTime.add(da);
 
             }
             //CO2有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentcarbondioxide()) && !exceptionData.contains(lastDataModel.getCurrentcarbondioxide())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentcarbondioxide()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentcarbondioxide())) {
                 CO2.add(lastDataModel.getCurrentcarbondioxide());
                 CO2Time.add(da);
                 //}
             }
             //氧气有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrento2()) && !exceptionData.contains(lastDataModel.getCurrento2())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrento2()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrento2())) {
                 O2.add(lastDataModel.getCurrento2());
                 O2Time.add(da);
                 //}
             }
             //voc 有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentvoc()) && !exceptionData.contains(lastDataModel.getCurrentvoc())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentvoc()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentvoc())) {
                 VOC.add(lastDataModel.getCurrentvoc());
                 VOCTime.add(da);
             }
             //湿度有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrenthumidity()) && !exceptionData.contains(lastDataModel.getCurrenthumidity())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrenthumidity()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrenthumidity())) {
                 RH.add(lastDataModel.getCurrenthumidity());
                 RHTime.add(da);
             }
             //pm2.5有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm25()) && !exceptionData.contains(lastDataModel.getCurrentpm25())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm25()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentpm25())) {
                 PM25.add(lastDataModel.getCurrentpm25());
                 PM25Time.add(da);
             }
             //pm5有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm5()) && !exceptionData.contains(lastDataModel.getCurrentpm5())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm5()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentpm5())) {
                 PM5.add(lastDataModel.getCurrentpm5());
                 PM5Time.add(da);
             }
             //pm05有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm05()) && !exceptionData.contains(lastDataModel.getCurrentpm05())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm05()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentpm05())) {
                 PM05.add(lastDataModel.getCurrentpm05());
                 PM05Time.add(da);
             }
             //PM10有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm10()) && !exceptionData.contains(lastDataModel.getCurrentpm10())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentpm10()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentpm10())) {
                 PM10.add(lastDataModel.getCurrentpm10());
                 PM10Time.add(da);
             }
             //甲醛有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentformaldehyde()) && !exceptionData.contains(lastDataModel.getCurrentformaldehyde())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentformaldehyde()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentformaldehyde())) {
                 JQ.add(lastDataModel.getCurrentformaldehyde());
                 JQTime.add(da);
             }
             //压力有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentairflow()) && !exceptionData.contains(lastDataModel.getCurrentairflow())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentairflow()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentairflow())) {
                 PRESS.add(lastDataModel.getCurrentairflow());
                 PRESSTime.add(da);
             }
             //左盖板温度有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentleftcovertemperature()) && !exceptionData.contains(lastDataModel.getCurrentleftcovertemperature())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentleftcovertemperature()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentleftcovertemperature())) {
                 leftcovertemp.add(lastDataModel.getCurrentleftcovertemperature());
                 leftcovertempTime.add(da);
             }
             // 左底板温度有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentleftendtemperature()) && !exceptionData.contains(lastDataModel.getCurrentleftendtemperature())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentleftendtemperature()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentleftendtemperature())) {
                 leftendtemp.add(lastDataModel.getCurrentleftendtemperature());
                 leftendTime.add(da);
             }
             //左气流
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentleftairflow()) && !exceptionData.contains(lastDataModel.getCurrentleftairflow())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentleftairflow()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentleftairflow())) {
                 leftair.add(lastDataModel.getCurrentleftairflow());
                 leftairTime.add(da);
             }
@@ -240,28 +248,29 @@ public class EquipmentInfoServiceHelp {
                 rightcovertempTime.add(da);
             }
             //右底板温度
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrightendtemperature()) && !exceptionData.contains(lastDataModel.getCurrentrightendtemperature())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrightendtemperature()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentrightendtemperature())) {
                 rightendtemp.add(lastDataModel.getCurrentrightendtemperature());
                 rightendtempTime.add(da);
             }
             //右气流
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrightairflow()) && !exceptionData.contains(lastDataModel.getCurrentrightairflow())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrightairflow()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentrightairflow())) {
                 rightair.add(lastDataModel.getCurrentrightairflow());
                 rightairTime.add(da);
             }
             //N2 有无值
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentn2()) && !exceptionData.contains(lastDataModel.getCurrentn2())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentn2()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentn2())) {
                 n2.add(lastDataModel.getCurrentn2());
                 n2Time.add(da);
             }
-            if (StringUtils.isNotEmpty(lastDataModel.getLeftCompartmentHumidity())&& !exceptionData.contains(lastDataModel.getLeftCompartmentHumidity())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getLeftCompartmentHumidity())&& RegularUtil.checkContainsNumbers(lastDataModel.getLeftCompartmentHumidity())) {
                 leftCompartmentHumidity.add(lastDataModel.getLeftCompartmentHumidity());
                 leftCompartmentHumidityTime.add(da);
             }
-            if (StringUtils.isNotEmpty(lastDataModel.getRightCompartmentHumidity())&& !exceptionData.contains(lastDataModel.getRightCompartmentHumidity())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getRightCompartmentHumidity())&& RegularUtil.checkContainsNumbers(lastDataModel.getRightCompartmentHumidity())) {
                 rightCompartmentHumidity.add(lastDataModel.getRightCompartmentHumidity());
                 rightCompartmentHumidityTime.add(da);
             }
+
         }
         if (CollectionUtils.isNotEmpty(n2)) {
             CurveDataModel curveDataModel = generateCurveDataModel(n2,n2Time);

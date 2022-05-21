@@ -20,6 +20,12 @@ public class EquipmentInfoController {
     private EquipmentInfoApplication equipmentInfoApplication;
 
 
+    /**
+     * 查询所有设备当前值信息
+     * @param hospitalCode 医院code
+     * @param equipmentTypeId 设备类型id
+     * @return
+     */
     @GetMapping("/getEquipmentCurrentData")
     @ApiOperation("查询所有设备当前值信息")
     public List<MonitorEquipmentDto> getEquipmentCurrentData(@RequestParam("hospitalCode")String hospitalCode,
@@ -27,7 +33,14 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.findEquipmentCurrentData(hospitalCode,equipmentTypeId);
     }
 
+    /**
+     * 查询设备曲线值
+     * @param equipmentNo 设备id
+     * @param date 时间
+     * @return
+     */
     @GetMapping("/getEuipmentCurveInfo")
+    @ApiOperation("查询设备曲线值")
     public CurveInfoDto getCurveInfo( @RequestParam("equipmentNo")String equipmentNo,
                                      @RequestParam("date")String date){
         return equipmentInfoApplication.getCurveFirst(equipmentNo,date);
