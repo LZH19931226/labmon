@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.InstrumentparamconfigApplication;
 import com.hc.application.command.InstrumentparamconfigCommand;
+import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +14,7 @@ import java.util.List;
 
 
 /**
- * 
+ *
  *
  * @author liuzhihao
  * @email 1969994698@qq.com
@@ -33,7 +34,6 @@ public class InstrumentparamconfigController {
     public  void  addInstrumentparamconfig(@RequestBody InstrumentparamconfigCommand instrumentparamconfigCommand ){
         instrumentparamconfigApplication.insertInstrumentParamConfig(instrumentparamconfigCommand);
     }
-
 
     @PostMapping("/updateinstrumentparamconfig")
     @ApiOperation("修改探头信息")
@@ -57,5 +57,10 @@ public class InstrumentparamconfigController {
     @ApiOperation("通过设备id获取设备对应监测类型")
     public List<InstrumentparamconfigVo>  selectInstrumentparamconfigByEqNo(@RequestParam(value ="equipmentNo")String equipmentNo){
         return instrumentparamconfigApplication.selectInstrumentParamConfigByEqNo(equipmentNo);
+    }
+
+    @GetMapping("/getInstrumentMonitorInfo")
+    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo(){
+        return instrumentparamconfigApplication.selectInstrumentMonitorInfo();
     }
 }

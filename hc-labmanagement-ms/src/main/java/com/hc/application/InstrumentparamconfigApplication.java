@@ -18,6 +18,7 @@ import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
+import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,6 +153,7 @@ public class InstrumentparamconfigApplication {
                 .setInstrumentTypeId(monitorinstrumentDTO.getInstrumenttypeid())
                 .setHospitalCode(instrumentParamConfigCommand.getHospitalCode())
                 .setSn(instrumentParamConfigCommand.getSn())
+                .setEquipmentName(monitorinstrumentDTO.getEquipmentname())
                 .setAlarmTime(instrumentParamConfigCommand.getAlarmtime())
                 .setInstrumentConfigId(instrumentParamConfigCommand.getInstrumentconfigid())
                 .setInstrumentParamConfigNO(instrumentParamConfigNo)
@@ -340,5 +342,38 @@ public class InstrumentparamconfigApplication {
         }
         page.setRecords(list);
         return page;
+    }
+
+    /**
+     * 查询探头监控信息
+     * @return
+     */
+    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo() {
+        List<InstrumentmonitorDTO>  dtoList = instrumentmonitorService.selectInstrumentMonitorInfo();
+        if(CollectionUtils.isEmpty(dtoList)) return  null;
+        List<InstrumentmonitorVo> list = new ArrayList<>();
+        dtoList.forEach(res->{
+            InstrumentmonitorVo build = InstrumentmonitorVo.builder()
+                    .instrumentno(res.getInstrumentno())
+                    .equipmentname(res.getEquipmentname())
+                    .hospitalcode(res.getHospitalcode())
+                    .instrumenttypeid(res.getInstrumenttypeid())
+                    .instrumenttypename(res.getInstrumenttypename())
+                    .instrumentconfigid(res.getInstrumentconfigid())
+                    .instrumentconfigname(res.getInstrumentconfigname())
+                    .lowlimit(res.getLowlimit())
+                    .highlimit(res.getHighlimit())
+                    .alwayalarm(res.getAlwayalarm())
+                    .instrumentparamconfigno(res.getInstrumentparamconfigno())
+                    .pushtime(res.getPushtime())
+                    .warningtime(res.getWarningtime())
+                    .calibration(res.getCalibration())
+                    .alwayalarm(res.getAlwayalarm())
+                    .equipmentno(res.getEquipmentno())
+                    .warningphone(res.getWarningphone())
+                    .build();
+            list.add(build);
+        });
+        return list;
     }
 }

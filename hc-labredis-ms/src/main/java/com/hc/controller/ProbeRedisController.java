@@ -41,4 +41,12 @@ public class ProbeRedisController {
     public void removeProbeRedisInfo(@RequestParam("hospitalCode") String hospitalCode,@RequestParam("instrumentNo") String  instrumentNo){
         probeRedisApplication.removeProbeRedisInfo(hospitalCode,instrumentNo);
     }
+
+    /**
+     * 同步探头信息
+     */
+    @GetMapping("/probeRedisInfoCache")
+    public void probeRedisInfoCache(){
+        probeRedisApplication.probeRedisInfoCache();
+    }
 }

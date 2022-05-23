@@ -3,7 +3,6 @@ package com.hc.service;
 import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
 import com.hc.repository.InstrumentmonitorRepository;
-import com.hc.service.InstrumentmonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +69,15 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
     @Override
     public List<InstrumentmonitorDTO> selectMonitorEquipmentAll() {
         return instrumentmonitorRepository.selectMonitorEquipmentAll();
+    }
+
+    /**
+     * 查询探头监控的信息
+     *
+     * @return
+     */
+    @Override
+    public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo() {
+        return instrumentmonitorRepository.selectInstrumentMonitorInfo();
     }
 }

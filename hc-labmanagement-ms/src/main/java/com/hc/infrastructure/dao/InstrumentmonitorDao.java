@@ -17,4 +17,7 @@ import java.util.List;
 public interface InstrumentmonitorDao extends BaseMapper<InstrumentmonitorPo> {
 
     List<InstrumentmonitorDTO> selectMonitorEquipmentType(@Param("instrumenttypeid") String instrumenttypeid);
+
+    List<InstrumentmonitorDTO> selectInstrumentMonitorInfo();
+
 }

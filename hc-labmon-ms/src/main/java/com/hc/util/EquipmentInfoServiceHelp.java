@@ -2,24 +2,23 @@ package com.hc.util;
 
 import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.curvemodel.SeriesDataModel;
+import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.dto.CurveInfoDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.RegularUtil;
-import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class EquipmentInfoServiceHelp {
 
-    private static Date defaultTime;
 
-    private final static int halfAnHour = 1000*60*30;
 
-    public static  CurveInfoDto getCurveFirst(List<MonitorEquipmentLastDataModel> lastDataModelList, CurveInfoDto curveInfoDto ){
+    private  static int halfAnHour = 1000*60*30;
+
+    public static  CurveInfoDto getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto ){
         List<String> temp = new ArrayList<String>();
         List<String> tempTime = new ArrayList<String>();
         List<String> CO2 = new ArrayList<String>();
@@ -89,15 +88,17 @@ public class EquipmentInfoServiceHelp {
         List<String> rightCompartmentHumidity = new ArrayList<String>();
         List<String> rightCompartmentHumidityTime = new ArrayList<String>();
 
-        defaultTime=lastDataModelList.get(0).getInputdatetime();
+//        defaultTime=lastDataModelList.get(0).getInputdatetime();
         for (int i = 0; i < lastDataModelList.size(); i++) {
-            MonitorEquipmentLastDataModel lastDataModel = lastDataModelList.get(i);
-            Date inputdatetime = lastDataModel.getInputdatetime();
-            Long aLong = inputdatetime.getTime()-defaultTime.getTime();
-            if( i != 0 && aLong < halfAnHour){
-                continue;
-            }
-            defaultTime = inputdatetime;
+            Monitorequipmentlastdata lastDataModel = lastDataModelList.get(i);
+//            Date inputdatetime = lastDataModel.getInputdatetime();
+//            if(!ObjectUtils.isEmpty(inputdatetime)){
+//                long aLong = inputdatetime.getTime()-defaultTime.getTime();
+//                if( i != 0 && aLong < halfAnHour){
+//                    continue;
+//                }
+//                defaultTime = inputdatetime;
+//            }
             //液氮罐是否存在差值
             String da = DateUtils.parseDatetime(lastDataModel.getInputdatetime());
             if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperaturediff())) {

@@ -52,5 +52,10 @@ public interface InstrumentmonitorService {
      */
     List<InstrumentmonitorDTO> selectMonitorEquipmentAll();
 
+    /**
+     * 查询探头监控的信息
+     * @return
+     */
+    List<InstrumentmonitorDTO> selectInstrumentMonitorInfo();
 }
 

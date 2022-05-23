@@ -11,11 +11,9 @@ import com.hc.dto.MonitorinstrumentDto;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
-import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.util.EquipmentInfoServiceHelp;
-import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,11 +113,10 @@ public class EquipmentInfoApplication {
      */
     public CurveInfoDto getCurveFirst(String equipmentNo, String date) {
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo);
-        if(CollectionUtils.isEmpty(lastDataModelList)){
+        if(CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
-        List<MonitorEquipmentLastDataModel> monitorEquipmentLastDataModels = BeanConverter.convert(lastDataModelList, MonitorEquipmentLastDataModel.class);
-        return EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataModels, new CurveInfoDto());
+        return EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto());
     }
 
 }

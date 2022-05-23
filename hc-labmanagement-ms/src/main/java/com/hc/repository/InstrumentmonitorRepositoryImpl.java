@@ -7,7 +7,6 @@ import com.hc.dto.MonitorinstrumenttypeDTO;
 import com.hc.infrastructure.dao.InstrumentmonitorDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentmonitorPo;
-import com.hc.repository.InstrumentmonitorRepository;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -102,5 +101,15 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
     public List<InstrumentmonitorDTO> selectMonitorEquipmentAll() {
         List<InstrumentmonitorPo> instrumentmonitorPos = instrumentmonitorDao.selectList(null);
         return BeanConverter.convert(instrumentmonitorPos,InstrumentmonitorDTO.class);
+    }
+
+    /**
+     * 查询探头监控的信息
+     *
+     * @return
+     */
+    @Override
+    public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo() {
+        return instrumentmonitorDao.selectInstrumentMonitorInfo();
     }
 }

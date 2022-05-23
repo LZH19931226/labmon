@@ -24,4 +24,32 @@
         </if>
         ORDER BY t1.instrumenttypeid
     </select>
+
+
+    <select id="selectInstrumentMonitorInfo" resultType="com.hc.dto.InstrumentmonitorDTO">
+        SELECT
+            d.instrumentno,
+            e.equipmentname,
+            e.hospitalcode,
+            b.instrumenttypeid,
+            b.instrumenttypename,
+            c.instrumentconfigid,
+            c.instrumentconfigname,
+            a.lowlimit,
+            a.highlimit,
+            a.alarmtime,
+            a.instrumentparamconfigNO as instrumentparamconfigno,
+            a.pushtime,
+            a.warningtime,
+            a.calibration,
+            e.alwayalarm,
+            e.equipmentno,
+            ifnull( a.warningphone, '0' ) warningphone
+        FROM
+            instrumentparamconfig a
+                LEFT JOIN monitorinstrumenttype b ON a.instrumenttypeid = b.instrumenttypeid
+                LEFT JOIN instrumentconfig c ON a.instrumentconfigid = c.instrumentconfigid
+                LEFT JOIN monitorinstrument d ON a.instrumentno = d.instrumentno
+                LEFT JOIN monitorequipment e ON d.equipmentno = e.equipmentno
+    </select>
 </mapper>

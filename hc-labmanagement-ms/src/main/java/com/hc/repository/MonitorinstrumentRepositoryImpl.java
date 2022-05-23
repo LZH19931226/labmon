@@ -6,7 +6,6 @@ import com.hc.dto.MonitorinstrumentDTO;
 import com.hc.infrastructure.dao.MonitorinstrumentDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorinstrumentPo;
-import com.hc.repository.MonitorinstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -83,8 +82,7 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
      */
     @Override
     public MonitorinstrumentDTO selectMonitorByIno(String instrumentno) {
-        MonitorinstrumentPo monitorinstrumentPo = monitorinstrumentDao.selectById(instrumentno);
-        return BeanConverter.convert(monitorinstrumentPo,MonitorinstrumentDTO.class);
+        return  monitorinstrumentDao.selectMonitorInstrumentInfo(instrumentno);
     }
 
     /**
