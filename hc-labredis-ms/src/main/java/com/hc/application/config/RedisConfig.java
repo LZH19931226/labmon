@@ -1,4 +1,4 @@
-package com.hc.config;
+package com.hc.application.config;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

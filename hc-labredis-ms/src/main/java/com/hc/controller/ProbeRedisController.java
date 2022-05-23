@@ -79,4 +79,15 @@ public class ProbeRedisController {
     public void removeProbeWarnInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo){
         probeRedisApplication.removeProbeWarnInfo(hospitalCode,instrumentParamConfigNo);
     }
+
+    /**
+     * 判断探头报警记录是否存在
+     * @param hospitalCode 医院id
+     * @param instrumentParamConfigNo
+     * @return
+     */
+    @GetMapping("/hasKey")
+    public boolean hasKey(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo){
+        return   probeRedisApplication.hasKey(hospitalCode,instrumentParamConfigNo);
+    }
 }

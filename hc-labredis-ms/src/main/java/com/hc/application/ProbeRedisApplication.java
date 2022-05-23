@@ -4,7 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.hc.config.RedisUtils;
+import com.hc.application.config.RedisUtils;
 import com.hc.labmanagent.ProbeInfoApi;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,9 +104,8 @@ public class ProbeRedisApplication {
             probeWarnInfo.add(warningRecordDto);
             redisUtils.hset(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo,JSONUtil.toJsonStr(probeWarnInfo));
         }else {
-            List<WarningRecordDto> newList = new ArrayList<>();
-            newList.add(warningRecordDto);
-            redisUtils.hset(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo,JSONUtil.toJsonStr(newList));
+            List<WarningRecordDto> warningRecordDtoList = Collections.singletonList(warningRecordDto);
+            redisUtils.hset(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo,JSONUtil.toJsonStr(warningRecordDtoList));
         }
      }
 
@@ -120,4 +119,14 @@ public class ProbeRedisApplication {
              redisUtils.hdel(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo);
          }
      }
+
+    /**
+     * 判断报警记录是否存在
+     * @param hospitalCode
+     * @param instrumentParamConfigNo
+     * @return
+     */
+    public boolean hasKey(String hospitalCode, String instrumentParamConfigNo) {
+        return redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo);
+    }
 }

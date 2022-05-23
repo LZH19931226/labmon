@@ -12,15 +12,29 @@ import java.util.List;
 @FeignClient(value = ApplicationName.REDIS)
 public interface ProbeRedisApi {
 
+    /**
+     * 获取探头redis信息
+     * @param hospitalCode 医院id
+     * @param instrumentNo 探头id
+     * @return
+     */
     @GetMapping("/probe/findProbeRedisInfo")
     ApiResponse<InstrumentInfoDto>  getProbeRedisInfo(@RequestParam("hospitalCode") String hospitalCode ,@RequestParam("instrumentNo") String  instrumentNo);
 
+    /**
+     * 添加或修改探头redis信息
+     * @param instrumentInfoDto 探头信息
+     */
     @PostMapping("/probe/addProbeRedisInfo")
     void addProbeRedisInfo(@RequestBody InstrumentInfoDto instrumentInfoDto);
 
+    /**
+     * 移除探头缓存信息
+     * @param hospitalCode 医院id
+     * @param instrumentNo 探头id
+     */
     @GetMapping("/probe/deleteProbeRedisInfo")
     void removeProbeRedisInfo(@RequestParam("hospitalCode") String hospitalCode,@RequestParam("instrumentNo") String  instrumentNo);
-
 
     /**
      * 获取探头报警数据
@@ -28,7 +42,8 @@ public interface ProbeRedisApi {
      * @param instrumentParamConfigNo 检测信息id
      */
     @GetMapping("/probe/getProbeWarnInfo")
-    List<WarningRecordDto> getProbeWarnInfo(@RequestParam("hospitalCode")String hospitalCode, @RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
+    ApiResponse<List<WarningRecordDto>> getProbeWarnInfo(@RequestParam("hospitalCode")String hospitalCode,
+                                            @RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
 
     /**
      * 新增或修改报警记录信息
@@ -43,6 +58,17 @@ public interface ProbeRedisApi {
      * @param instrumentParamConfigNo 检测信息id
      */
     @DeleteMapping("/probe/removeProbeWarnInfo")
-    void removeProbeWarnInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
+    void removeProbeWarnInfo(@RequestParam("hospitalCode")String hospitalCode,
+                             @RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
+
+    /**
+     * 判断探头报警记录是否存在
+     * @param hospitalCode 医院id
+     * @param instrumentParamConfigNo 检测信息id
+     * @return
+     */
+    @GetMapping("/hasKey")
+     ApiResponse<Boolean> hasKey(@RequestParam("hospitalCode")String hospitalCode,
+                                 @RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
 }
 

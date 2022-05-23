@@ -2,7 +2,7 @@ package com.hc.application;
 
 
 import cn.hutool.json.JSONUtil;
-import com.hc.config.RedisUtils;
+import com.hc.application.config.RedisUtils;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.redis.namespace.TcpServiceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
