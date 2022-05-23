@@ -4,7 +4,6 @@ import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.dto.UserSchedulingDto;
 import com.hc.infrastructure.dao.UserSchedulingDao;
 import com.hc.repository.UserSchedulingRepository;
-import com.hc.service.UserSchedulingService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,10 +62,11 @@ public class UserSchedulingServiceImpl implements UserSchedulingService {
     public List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode) {
         List<UserSchedulingDto> userSchedulingDtoList = userSchedulingRepository.selectScheduleWeekByCode(hospitalCode);
         if(CollectionUtils.isNotEmpty(userSchedulingDtoList)){
+            //获取本周的日期集合
+            Map<String, Integer> theWeekDateList = getTheWeekDateList();
             for (UserSchedulingDto userSchedulingDto : userSchedulingDtoList) {
                 Set<Integer> set = new HashSet<>();
                 List<String> dateList = getDateList(userSchedulingDto.getStartTime(), userSchedulingDto.getEndTime());
-                Map<String, Integer> theWeekDateList = getTheWeekDateList();
                 Set<String> strings = getTheWeekDateList().keySet();
                 dateList.forEach(res->{
                     if(strings.contains(res)){

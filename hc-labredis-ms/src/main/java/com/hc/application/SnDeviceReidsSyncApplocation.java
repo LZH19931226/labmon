@@ -27,10 +27,19 @@ public class SnDeviceReidsSyncApplocation {
     @Autowired
     private RedisUtils redisUtils;
 
+    /**
+     * 添加或更新设备缓存信息
+     * @param snDeviceDto
+     */
     public void updateSnDeviceDtoSync(SnDeviceDto snDeviceDto) {
         redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),snDeviceDto.getSn(), JSONUtil.toJsonStr(snDeviceDto));
     }
 
+    /**
+     * 获取设备redis缓存信息
+     * @param sn
+     * @return
+     */
     public SnDeviceDto getSnDeviceDto(String sn) {
         Object snInfo = redisUtils.hget(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn);
         if (null==snInfo){
@@ -39,6 +48,10 @@ public class SnDeviceReidsSyncApplocation {
         return JSONUtil.toBean((String) snInfo,SnDeviceDto.class);
     }
 
+    /**
+     * 删除设备redis缓存信息
+     * @param sn
+     */
     public void deleteSnDeviceDto(String sn) {
         redisUtils.hdel(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn);
     }
@@ -129,6 +142,5 @@ public class SnDeviceReidsSyncApplocation {
             map.putAll(map1);
         }
         return JSON.parseObject(JSON.toJSONString(map), new TypeReference<MonitorequipmentlastdataDto>(){});
-
     }
 }
