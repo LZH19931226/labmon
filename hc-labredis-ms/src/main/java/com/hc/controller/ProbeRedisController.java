@@ -83,7 +83,7 @@ public class ProbeRedisController {
     /**
      * 判断探头报警记录是否存在
      * @param hospitalCode 医院id
-     * @param instrumentParamConfigNo
+     * @param instrumentParamConfigNo 检测信息id
      * @return
      */
     @GetMapping("/hasKey")

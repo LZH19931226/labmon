@@ -7,10 +7,11 @@ import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
- * 
+ *
  *
  * @author liuzhihao
  * @email 1969994698@qq.com
@@ -88,5 +89,12 @@ public interface InstrumentparamconfigService{
      * @return
      */
     List<InstrumentparamconfigDTO> selectInstrumentparamconfigAllInfo();
+
+    /**
+     * 更新最新一次的报警时间
+     * @param instrumentParamConfigNo 探头检测信息id
+     * @param warningTime 报警时间
+     */
+    void editWarningTime(String instrumentParamConfigNo, Date warningTime);
 }
 

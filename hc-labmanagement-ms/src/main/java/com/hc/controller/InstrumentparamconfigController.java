@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -62,5 +63,15 @@ public class InstrumentparamconfigController {
     @GetMapping("/getInstrumentMonitorInfo")
     public List<InstrumentmonitorVo> selectInstrumentMonitorInfo(){
         return instrumentparamconfigApplication.selectInstrumentMonitorInfo();
+    }
+
+    /**
+     * 更新最新一次的报警时间(用于每小时只报警一次)
+     * @param instrumentParamConfigNo 探头检测信息id
+     * @param warningTime 报警时间
+     */
+    @PutMapping("/editProbeWarningTime")
+    public void editWarningTime(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningTime") Date warningTime){
+        instrumentparamconfigApplication.editWarningTime(instrumentParamConfigNo,warningTime);
     }
 }

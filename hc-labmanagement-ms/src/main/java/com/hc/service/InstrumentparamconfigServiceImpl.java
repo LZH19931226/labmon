@@ -5,11 +5,11 @@ import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.repository.InstrumentparamconfigRepository;
-import com.hc.service.InstrumentparamconfigService;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -127,5 +127,16 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public List<InstrumentparamconfigDTO> selectInstrumentparamconfigAllInfo() {
         return instrumentparamconfigRepository.selectInstrumentparamconfigAllInfo();
+    }
+
+    /**
+     * 更新最新一次的报警时间
+     *
+     * @param instrumentParamConfigNo 探头检测信息id
+     * @param warningTime             报警时间
+     */
+    @Override
+    public void editWarningTime(String instrumentParamConfigNo, Date warningTime) {
+        instrumentparamconfigRepository.editWarningTime(instrumentParamConfigNo,warningTime);
     }
 }

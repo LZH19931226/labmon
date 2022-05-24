@@ -376,4 +376,13 @@ public class InstrumentparamconfigApplication {
         });
         return list;
     }
+
+    /**
+     * 更新最新一次的报警时间
+     * @param instrumentParamConfigNo 探头检测信息id
+     * @param warningTime 报警时间
+     */
+    public void editWarningTime(String instrumentParamConfigNo, Date warningTime) {
+        instrumentparamconfigService.editWarningTime(instrumentParamConfigNo,warningTime);
+    }
 }

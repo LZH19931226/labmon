@@ -9,11 +9,11 @@ import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.infrastructure.dao.InstrumentparamconfigDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentparamconfigPo;
-import com.hc.repository.InstrumentparamconfigRepository;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -147,5 +147,19 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     public List<InstrumentparamconfigDTO> selectInstrumentparamconfigAllInfo() {
         List<InstrumentparamconfigPo> instrumentparamconfigPos = instrumentparamconfigDao.selectList(null);
         return BeanConverter.convert(instrumentparamconfigPos,InstrumentparamconfigDTO.class);
+    }
+
+    /**
+     * 更新最新一次的报警时间
+     *
+     * @param instrumentParamConfigNo 探头检测信息id
+     * @param warningTime             报警时间
+     */
+    @Override
+    public void editWarningTime(String instrumentParamConfigNo, Date warningTime) {
+        InstrumentparamconfigPo instrumentparamconfigPo = new InstrumentparamconfigPo();
+        instrumentparamconfigPo.setInstrumentparamconfigno(instrumentParamConfigNo);
+        instrumentparamconfigPo.setWarningtime(warningTime);
+        instrumentparamconfigDao.updateById(instrumentparamconfigPo);
     }
 }
