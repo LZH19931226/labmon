@@ -67,4 +67,7 @@ public class HospitalCommand {
 
     /** 排序方式 */
     private String orderBy;
+
+    /** 时间间隔 */
+    private String timeInterval;
 }

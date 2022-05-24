@@ -62,4 +62,7 @@ public class HospitalRegistrationInfoPo implements Serializable {
     /** 修改人 */
     @TableField(value = "update_by")
     private String updateBy;
+
+    @TableField(value = "timeInterval")
+    private  String timeInterval;
 }

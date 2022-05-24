@@ -4,6 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum LabManageMentServiceEnum {
+    //医院信息（H+hospitalCode,HospitalCodeDto）
+    H("H"),
     //用户存放异常的探头数据(W+hospitalCode,instrumentParamConfigNo,WarningRecordDto)
     W("W"),
     //用于存储设备信息,feildkey为sn号,value为设备信息,包含设备时间段报警信息

@@ -1,4 +1,4 @@
-package com.hc.dto;
+package com.hc.my.common.core.redis.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -6,13 +6,11 @@ import lombok.experimental.Accessors;
 import java.util.Date;
 
 /**
- * 医院注册信息数据传输对象
- * @author user
+ * 用户存入redis的对象
  */
 @Data
 @Accessors(chain = true)
-public class HospitalRegistrationInfoDto {
-
+public class HospitalInfoDto {
     /** 医院编号 */
     private String hospitalCode;
 
