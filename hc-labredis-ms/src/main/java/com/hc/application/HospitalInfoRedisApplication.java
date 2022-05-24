@@ -34,5 +34,15 @@ public class HospitalInfoRedisApplication {
         redisUtils.set(LabManageMentServiceEnum.H.getCode()+hospitalInfoDto.getHospitalCode(), JSONUtil.toJsonStr(hospitalInfoDto));
     }
 
+    /**
+     * 移除医院缓存信息
+     * @param hospitalCode 医院id
+     */
+    public void removeHospitalRedisInfo(String hospitalCode) {
+        boolean flag = redisUtils.hasKey(LabManageMentServiceEnum.H.getCode() + hospitalCode);
+        if(flag){
+            redisUtils.del(LabManageMentServiceEnum.H.getCode()+hospitalCode);
+        }
+    }
 
 }

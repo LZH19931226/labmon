@@ -45,4 +45,6 @@ public class HospitalInfoVo implements Serializable {
     /** 更新时间 */
     private Date updateTime;
 
+    /** 时间间隔 */
+    private String timeInterval;
 }

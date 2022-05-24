@@ -17,7 +17,7 @@ public class HospitalInfoRedisController {
     private HospitalInfoRedisApplication hospitalInfoRedisApplication;
 
     /**
-     * 获取医院信息
+     * 获取医院缓存信息
      * @param hospitalCode 医院id
      * @return 医院信息
      */
@@ -26,8 +26,21 @@ public class HospitalInfoRedisController {
         return hospitalInfoRedisApplication.findHospitalInfo(hospitalCode);
     }
 
+    /**
+     * 新增医院缓存信息
+     * @param hospitalInfoDto 医院缓存对象
+     */
     @PostMapping("/insertHospitalRedisInfo")
     public void addHospitalRedisInfo(@RequestBody HospitalInfoDto hospitalInfoDto){
         hospitalInfoRedisApplication.addHospitalRedisInfo(hospitalInfoDto);
+    }
+
+    /**
+     * 移除医院缓存信息
+     * @param hospitalCode 医院id
+     */
+    @DeleteMapping("/removeHospitalRedisInfo")
+    public void removeHospitalRedisInfo(@RequestParam("hospitalCode")String hospitalCode){
+        hospitalInfoRedisApplication.removeHospitalRedisInfo(hospitalCode);
     }
 }

@@ -8,9 +8,11 @@ import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserSchedulingDto;
+import com.hc.hospital.HospitalRedisApi;
 import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.HospitalRegistrationInfoService;
@@ -47,6 +49,9 @@ public class HospitalInfoApplication {
     @Autowired
     private UserBackService userBackService;
 
+    @Autowired
+    private HospitalRedisApi hospitalRedisApi;
+
     /**
      * 根据分页条件查询医院信息
      *
@@ -67,6 +72,7 @@ public class HospitalInfoApplication {
                         .hospitalName(res.getHospitalName())
                         .isEnable(res.getIsEnable())
                         .updateTime(res.getUpdateTime())
+                        .timeInterval(res.getTimeInterval())
                         .build();
                 list.add(build);
             });
@@ -83,9 +89,16 @@ public class HospitalInfoApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
+        hospitalCommand.setUpdateTime(new Date());
+        hospitalCommand.setOrderBy(Context.getUserId());
+        hospitalCommand.setHospitalCode(UUID.randomUUID().toString().replaceAll("-", ""));
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
+        //添加日志信息
         operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),new HospitalCommand(),hospitalCommand,
                 OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode()));
+        //添加缓存信息
+        HospitalInfoDto hospitalInfoDto =  BeanConverter.convert(hospitalCommand, HospitalInfoDto.class);
+        hospitalRedisApi.addHospitalRedisInfo(hospitalInfoDto);
     }
 
     public HospitalOperationLogCommand buildHospitalOperationLogCommand(String userId,HospitalCommand oldHospitalCommand,HospitalCommand newHospitalCommand,String type,String operationType){
@@ -113,11 +126,14 @@ public class HospitalInfoApplication {
         HospitalCommand hospitalCommand1 = BeanConverter.convert(hospitalInfo,HospitalCommand.class);
 
         hospitalRegistrationInfoService.editHospitalInfo(hospitalCommand);
-
+        //添加日志信息
         HospitalOperationLogCommand hospitalOperationLogCommand = buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand1 ,hospitalCommand,
                 OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.EDIT.getCode());
-
         operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
+
+        //更新缓存信息
+        HospitalInfoDto hospitalInfoDto =  BeanConverter.convert(hospitalCommand,HospitalInfoDto.class);
+        hospitalRedisApi.addHospitalRedisInfo(hospitalInfoDto);
     }
 
     /**
@@ -130,11 +146,15 @@ public class HospitalInfoApplication {
         HospitalRegistrationInfoDto hospitalInfoByCode = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         hospitalRegistrationInfoService.deleteHospitalInfoByCode(hospitalCode);
 
+        //添加日志信息
         HospitalCommand convert = BeanConverter.convert(hospitalInfoByCode, HospitalCommand.class);
         HospitalOperationLogCommand hospitalOperationLogCommand =
                 buildHospitalOperationLogCommand(Context.getUserId(), convert, new HospitalCommand(),
                         OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
+
+        //移除缓存信息
+        hospitalRedisApi.removeHospitalRedisInfo(hospitalCode);
     }
 
     /**

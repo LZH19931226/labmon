@@ -26,7 +26,7 @@ public class HospitalCommand {
     private String hospitalName;
 
     /** 是否可用 */
-    @ApiModelProperty(value = "是否禁用")
+    @ApiModelProperty(value = "是否可用 0不可用 1可用")
     private String isEnable;
 
     /** 医院全称 */

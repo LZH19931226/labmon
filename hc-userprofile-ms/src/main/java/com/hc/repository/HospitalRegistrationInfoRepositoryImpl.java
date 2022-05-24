@@ -12,7 +12,6 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalEquipmentPo;
 import com.hc.po.HospitalRegistrationInfoPo;
-import com.hc.repository.HospitalRegistrationInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author hc
@@ -59,12 +57,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         if(null!=selectOne){
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_ALREADY_EXISTS.getCode());
         }
-                 //设置操作时间
-        infoPo.setUpdateTime(new Date())
-                //设置医院的UUID
-                .setHospitalCode(UUID.randomUUID().toString().replaceAll("-", ""))
-                //设置是否启用
-                .setIsEnable(hospitalCommand.getIsEnable());
        hospitalRegistrationInfoDao.insert(infoPo);
 
     }
@@ -104,7 +96,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         if(delete<=0){
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_INFO_DELETE_FAIL.getCode());
         }
-
     }
 
     /**
