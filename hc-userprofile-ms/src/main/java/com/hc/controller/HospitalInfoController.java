@@ -91,4 +91,13 @@ public class HospitalInfoController {
     public HospitalMadel findHospitalInfo(@RequestParam(value = "hospitalCode") String hospitalCode){
         return hospitalInfoApplication.findHospitalInfoByCode(hospitalCode);
     }
+
+    /**
+     * 查询医院id集合
+     * @return
+     */
+    @GetMapping("/findHospitalCodeList")
+    public List<String> findHospitalCodeList(){
+        return hospitalInfoApplication.selectHospitalCodeList();
+    }
 }

@@ -18,6 +18,6 @@ public interface InstrumentmonitorDao extends BaseMapper<InstrumentmonitorPo> {
 
     List<InstrumentmonitorDTO> selectMonitorEquipmentType(@Param("instrumenttypeid") String instrumenttypeid);
 
-    List<InstrumentmonitorDTO> selectInstrumentMonitorInfo();
+    List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode);
 
 }

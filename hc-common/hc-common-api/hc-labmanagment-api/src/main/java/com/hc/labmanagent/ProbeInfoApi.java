@@ -18,7 +18,7 @@ public interface ProbeInfoApi {
      * @return
      */
     @GetMapping("/instrumentparamconfig/getInstrumentMonitorInfo")
-    ApiResponse<List<InstrumentmonitorVo>> selectInstrumentMonitorInfo();
+    ApiResponse<List<InstrumentmonitorVo>> selectInstrumentMonitorInfo(@RequestParam("hospitalCode") String hospitalCode);
 
 
     /**

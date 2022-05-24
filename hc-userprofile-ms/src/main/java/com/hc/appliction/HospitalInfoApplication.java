@@ -288,4 +288,12 @@ public class HospitalInfoApplication {
         HospitalRegistrationInfoDto hospitalRegistrationInfoDto = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
        return BeanConverter.convert(hospitalRegistrationInfoDto,HospitalMadel.class);
     }
+
+    /**
+     * 获取医院code集合
+     * @return
+     */
+    public List<String> selectHospitalCodeList() {
+       return hospitalRegistrationInfoService.selectHospitalCodeList();
+    }
 }

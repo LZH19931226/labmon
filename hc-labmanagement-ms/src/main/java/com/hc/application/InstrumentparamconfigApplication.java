@@ -348,8 +348,8 @@ public class InstrumentparamconfigApplication {
      * 查询探头监控信息
      * @return
      */
-    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo() {
-        List<InstrumentmonitorDTO>  dtoList = instrumentmonitorService.selectInstrumentMonitorInfo();
+    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo(String hospitalCode) {
+        List<InstrumentmonitorDTO>  dtoList = instrumentmonitorService.selectInstrumentMonitorInfo(hospitalCode);
         if(CollectionUtils.isEmpty(dtoList)) return  null;
         List<InstrumentmonitorVo> list = new ArrayList<>();
         dtoList.forEach(res->{

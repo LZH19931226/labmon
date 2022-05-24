@@ -6,7 +6,6 @@ import com.hc.constant.HospitalEnumErrorCode;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.HospitalRegistrationInfoRepository;
-import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.vo.hospital.HospitalInfoVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +78,15 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     @Override
     public HospitalRegistrationInfoDto findHospitalInfoByCode(String hospitalCode) {
         return hospitalRegistrationInfoRepository.findHospitalInfoByCode(hospitalCode);
+    }
+
+    /**
+     * 获取医院code集合
+     *
+     * @return
+     */
+    @Override
+    public List<String> selectHospitalCodeList() {
+        return hospitalRegistrationInfoRepository.selectHospitalCodeList();
     }
 }

@@ -51,5 +51,6 @@
                 LEFT JOIN instrumentconfig c ON a.instrumentconfigid = c.instrumentconfigid
                 LEFT JOIN monitorinstrument d ON a.instrumentno = d.instrumentno
                 LEFT JOIN monitorequipment e ON d.equipmentno = e.equipmentno
+        where e.hospitalcode = #{hospitalCode}
     </select>
 </mapper>

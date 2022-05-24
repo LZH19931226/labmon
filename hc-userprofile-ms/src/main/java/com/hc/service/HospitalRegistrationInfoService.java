@@ -51,4 +51,10 @@ public interface HospitalRegistrationInfoService {
      * @return
      */
     HospitalRegistrationInfoDto findHospitalInfoByCode(String hospitalCode);
+
+    /**
+     * 获取医院code集合
+     * @return
+     */
+    List<String> selectHospitalCodeList();
 }

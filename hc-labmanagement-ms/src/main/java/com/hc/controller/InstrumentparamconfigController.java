@@ -60,8 +60,8 @@ public class InstrumentparamconfigController {
     }
 
     @GetMapping("/getInstrumentMonitorInfo")
-    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo(){
-        return instrumentparamconfigApplication.selectInstrumentMonitorInfo();
+    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo(@RequestParam String hospitalCode){
+        return instrumentparamconfigApplication.selectInstrumentMonitorInfo(hospitalCode);
     }
 
     /**

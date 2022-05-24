@@ -109,7 +109,7 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
      * @return
      */
     @Override
-    public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo() {
-        return instrumentmonitorDao.selectInstrumentMonitorInfo();
+    public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode) {
+        return instrumentmonitorDao.selectInstrumentMonitorInfo(hospitalCode);
     }
 }

@@ -134,4 +134,14 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
                 .eq(HospitalRegistrationInfoPo::getHospitalCode, hospitalCode));
         return BeanConverter.convert(hospitalRegistrationInfoPo,HospitalRegistrationInfoDto.class);
     }
+
+    /**
+     * 获取医院code集合
+     *
+     * @return
+     */
+    @Override
+    public List<String> selectHospitalCodeList() {
+        return hospitalRegistrationInfoDao.selectHospitalCodeList();
+    }
 }

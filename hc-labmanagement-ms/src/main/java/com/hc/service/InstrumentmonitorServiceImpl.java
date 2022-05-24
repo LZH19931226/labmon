@@ -77,7 +77,7 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
      * @return
      */
     @Override
-    public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo() {
-        return instrumentmonitorRepository.selectInstrumentMonitorInfo();
+    public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode) {
+        return instrumentmonitorRepository.selectInstrumentMonitorInfo(hospitalCode);
     }
 }

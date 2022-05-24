@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.hc.application.config.RedisUtils;
+import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.ProbeInfoApi;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
@@ -18,7 +19,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ProbeRedisApplication {
@@ -28,6 +28,9 @@ public class ProbeRedisApplication {
 
     @Autowired
     private ProbeInfoApi probeInfoApi;
+
+    @Autowired
+    private HospitalInfoApi hospitalInfoApi;
 
     /**
      * 获取医院探头缓存信息
@@ -65,16 +68,18 @@ public class ProbeRedisApplication {
      * 先删除在存入redis
      */
     public void probeRedisInfoCache() {
-        List<InstrumentmonitorVo> result = probeInfoApi.selectInstrumentMonitorInfo().getResult();
-        List<String> stringList = result.stream().map(InstrumentmonitorVo::getHospitalcode).collect(Collectors.toList());
-        stringList.forEach(res->{
+        List<String> hospitalCodeList = hospitalInfoApi.findHospitalCodeList();
+        for (String hospitalCode : hospitalCodeList) {
+            hospitalCodeList.forEach(res->{
                 if(redisUtils.hasKey(LabManageMentServiceEnum.P.getCode()+res)){
                     redisUtils.hdel(LabManageMentServiceEnum.P.getCode()+res);
                 }
-        });
-        List<InstrumentInfoDto> convert = BeanConverter.convert(result, InstrumentInfoDto.class);
-        for (InstrumentInfoDto instrumentInfoDto : convert) {
-            addProbeRedisInfo(instrumentInfoDto);
+            });
+            List<InstrumentmonitorVo> instrumentmonitorVos = probeInfoApi.selectInstrumentMonitorInfo(hospitalCode).getResult();
+            List<InstrumentInfoDto> convert = BeanConverter.convert(instrumentmonitorVos, InstrumentInfoDto.class);
+            for (InstrumentInfoDto instrumentInfoDto : convert) {
+                addProbeRedisInfo(instrumentInfoDto);
+            }
         }
     }
 

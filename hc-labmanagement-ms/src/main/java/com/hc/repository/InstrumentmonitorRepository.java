@@ -47,6 +47,6 @@ public interface InstrumentmonitorRepository extends IService <Instrumentmonitor
      * 查询探头监控的信息
      * @return
      */
-    List<InstrumentmonitorDTO> selectInstrumentMonitorInfo();
+    List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode);
 
 }
