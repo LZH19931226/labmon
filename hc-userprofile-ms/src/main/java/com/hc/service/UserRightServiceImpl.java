@@ -6,7 +6,6 @@ import com.hc.constant.UserRightEnumCode;
 import com.hc.dto.UserRightDto;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.UserRightRepository;
-import com.hc.service.UserRightService;
 import com.hc.vo.user.UserRightVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,5 +139,16 @@ public class UserRightServiceImpl implements UserRightService {
     public UserRightDto selectUserRight(UserRightCommand userRightCommand) {
 
         return userRightRepository.selectUserRight(userRightCommand);
+    }
+
+    /**
+     * 查询当前医院的所有人员
+     *
+     * @param hospitalCode 医院id
+     * @return 当前医院的所有人员集合
+     */
+    @Override
+    public List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode) {
+        return userRightRepository.findALLUserRightInfoByHospitalCode(hospitalCode);
     }
 }

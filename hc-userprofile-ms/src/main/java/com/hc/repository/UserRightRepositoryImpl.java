@@ -12,7 +12,6 @@ import com.hc.infrastructure.dao.UserRightDao;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
-import com.hc.repository.UserRightRepository;
 import com.hc.vo.user.UserRightVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,5 +126,17 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
             throw new IedsException(UserRightEnumCode.USER_NOT_ENABLED.getMessage());
         }
         return BeanConverter.convert(userRightPo,UserRightDto.class);
+    }
+
+    /**
+     * 查询当前医院的所有人员
+     *
+     * @param hospitalCode 医院id
+     * @return 当前医院的所有人员集合
+     */
+    @Override
+    public List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode) {
+        List<UserRightPo> poList = userRightDao.selectList(Wrappers.lambdaQuery(new UserRightPo()).eq(UserRightPo::getHospitalCode, hospitalCode));
+        return BeanConverter.convert(poList,UserRightDto.class);
     }
 }

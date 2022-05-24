@@ -20,6 +20,7 @@ import com.hc.vo.user.UserRightVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -173,5 +174,32 @@ public class UserRightApplication {
                     .hospitalName(hospitalInfo.getHospitalName()).build();
         }
         return userRightVoBuilder;
+    }
+
+    public List<UserRightVo> findALLUserRightInfo(String hospitalCode) {
+        List<UserRightDto> userRightDtoList =  userRightService.findALLUserRightInfoByHospitalCode(hospitalCode);
+        if(CollectionUtils.isEmpty(userRightDtoList)){
+            return null;
+        }
+        List<UserRightVo> list = new ArrayList<>();
+        for (UserRightDto userRightDto : userRightDtoList) {
+            UserRightVo build = UserRightVo.builder()
+                    .hospitalCode(userRightDto.getHospitalCode())
+                    .hospitalName(userRightDto.getHospitalName())
+                    .userType(userRightDto.getUserType())
+                    .timeoutWarning(userRightDto.getTimeoutWarning())
+                    .timeout(userRightDto.getTimeout())
+                    .reminders(userRightDto.getReminders())
+                    .deviceType(userRightDto.getDeviceType())
+                    .isUse(userRightDto.getIsUse())
+                    .phoneNum(userRightDto.getPhoneNum())
+                    .userid(userRightDto.getUserid())
+                    .username(userRightDto.getUsername())
+                    .nickname(userRightDto.getNickname())
+                    .pwd(userRightDto.getPwd())
+                    .build();
+            list.add(build);
+        }
+        return list;
     }
 }

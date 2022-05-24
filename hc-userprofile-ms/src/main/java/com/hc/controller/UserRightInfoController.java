@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 用户权限信息控制器
  * @author hc
@@ -51,4 +53,13 @@ public class UserRightInfoController {
         return userRightApplication.Login(userRightCommand);
     }
 
+    /**
+     * 查询当前医院所有的人员信息
+     * @param hospitalCode 医院id
+     * @return
+     */
+    @GetMapping("/getALLHospitalUserRightInfo")
+    public List<UserRightVo> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode){
+        return userRightApplication.findALLUserRightInfo(hospitalCode);
+    }
 }

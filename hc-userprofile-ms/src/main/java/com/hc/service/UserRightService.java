@@ -52,4 +52,11 @@ public interface UserRightService {
      * @return
      */
     UserRightDto selectUserRight(UserRightCommand userRightCommand);
+
+    /**
+     * 查询当前医院的所有人员
+     * @param hospitalCode 医院id
+     * @return 当前医院的所有人员集合
+     */
+    List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode);
 }
