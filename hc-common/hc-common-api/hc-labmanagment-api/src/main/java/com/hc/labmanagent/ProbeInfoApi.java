@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.List;
 
 @FeignClient(value = ApplicationName.LABMANAGENMENT)
@@ -21,6 +20,7 @@ public interface ProbeInfoApi {
     @GetMapping("/instrumentparamconfig/getInstrumentMonitorInfo")
     ApiResponse<List<InstrumentmonitorVo>> selectInstrumentMonitorInfo();
 
+
     /**
      * 更新最新一次的报警时间(用于每小时只报警一次)
      * @param instrumentParamConfigNo 探头检测信息id
@@ -28,5 +28,5 @@ public interface ProbeInfoApi {
      */
     @PutMapping("/instrumentparamconfig/editProbeWarningTime")
     void editWarningTime(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,
-                         @RequestParam("warningTime") Date warningTime);
+                         @RequestParam("warningTime") String warningTime);
 }

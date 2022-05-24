@@ -9,6 +9,8 @@ import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -131,12 +133,18 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
 
     /**
      * 更新最新一次的报警时间
-     *
-     * @param instrumentParamConfigNo 探头检测信息id
+     *  @param instrumentParamConfigNo 探头检测信息id
      * @param warningTime             报警时间
      */
     @Override
-    public void editWarningTime(String instrumentParamConfigNo, Date warningTime) {
-        instrumentparamconfigRepository.editWarningTime(instrumentParamConfigNo,warningTime);
+    public void editWarningTime(String instrumentParamConfigNo, String warningTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = sdf.parse(warningTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        instrumentparamconfigRepository.editWarningTime(instrumentParamConfigNo,date);
     }
 }

@@ -7,7 +7,6 @@ import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -95,6 +94,6 @@ public interface InstrumentparamconfigService{
      * @param instrumentParamConfigNo 探头检测信息id
      * @param warningTime 报警时间
      */
-    void editWarningTime(String instrumentParamConfigNo, Date warningTime);
+    void editWarningTime(String instrumentParamConfigNo, String warningTime);
 }
 

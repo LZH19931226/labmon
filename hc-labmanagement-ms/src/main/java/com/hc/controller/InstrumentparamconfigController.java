@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -71,7 +70,7 @@ public class InstrumentparamconfigController {
      * @param warningTime 报警时间
      */
     @PutMapping("/editProbeWarningTime")
-    public void editWarningTime(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningTime") Date warningTime){
+    public void editWarningTime(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningTime") String warningTime){
         instrumentparamconfigApplication.editWarningTime(instrumentParamConfigNo,warningTime);
     }
 }

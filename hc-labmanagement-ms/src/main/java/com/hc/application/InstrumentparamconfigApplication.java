@@ -382,7 +382,7 @@ public class InstrumentparamconfigApplication {
      * @param instrumentParamConfigNo 探头检测信息id
      * @param warningTime 报警时间
      */
-    public void editWarningTime(String instrumentParamConfigNo, Date warningTime) {
+    public void editWarningTime(String instrumentParamConfigNo, String warningTime){
         instrumentparamconfigService.editWarningTime(instrumentParamConfigNo,warningTime);
     }
 }
