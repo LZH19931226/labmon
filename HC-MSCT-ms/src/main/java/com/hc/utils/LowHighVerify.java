@@ -1,7 +1,7 @@
 package com.hc.utils;
 
 
-import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 
 import java.math.BigDecimal;
 
@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 public class LowHighVerify {
 
 
-    public static boolean verify(InstrumentMonitorInfoModel monitorInfoModel, String date) {
+    public static boolean verify(InstrumentInfoDto probe, String date) {
         BigDecimal bigDecimal = new BigDecimal(date);
-        BigDecimal low = monitorInfoModel.getLowlimit();
-        BigDecimal high = monitorInfoModel.getHighlimit();
-        Integer a = bigDecimal.compareTo(low);
-        Integer b = bigDecimal.compareTo(high);
-        if (a == -1 || b == 1) {
+        BigDecimal low = probe.getLowLimit();
+        BigDecimal high = probe.getHighLimit();
+        int a = bigDecimal.compareTo(low);
+        int b = bigDecimal.compareTo(high);
+        if (a < 0 || b > 0) {
             return true;
         }
         return false;

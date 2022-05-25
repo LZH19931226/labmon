@@ -13,6 +13,11 @@ public class TimeHelper {
     protected static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
     protected static SimpleDateFormat datetimeformat = new SimpleDateFormat("HH:mm");
     protected static SimpleDateFormat dateformats = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    protected static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public static String getNowDate(Date date){
+        return formatter.format(date);
+    }
 
 
     /**
@@ -27,27 +32,17 @@ public class TimeHelper {
     }
 
     public static double getDatePoorMin(Date endDate, Date nowDate) {
-
         double nd = 1000 * 60;
 // 获得两个时间的毫秒时间差异
-
         long diff = endDate.getTime() - nowDate.getTime();
-        double diffe = diff;
-
-
-        double s = diff / nd;
-
-// 计算差多少秒//输出结果
-
-// long sec = diff % nd % nh % nm / ns;
-
-        return s;
+        // 计算差多少秒//输出结果
+        return diff / nd;
 
     }
 
     public static void main(String[] args) throws InterruptedException {
         Date date = new Date();
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         double datePoor = getDatePoor(date, new Date());
         System.out.println(datePoor);
 

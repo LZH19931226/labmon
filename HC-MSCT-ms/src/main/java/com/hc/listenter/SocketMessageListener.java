@@ -1,7 +1,12 @@
 package com.hc.listenter;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.hc.device.SnDeviceRedisApi;
 import com.hc.mapper.*;
+import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
+import com.hc.my.common.core.redis.dto.SnDeviceDto;
+import com.hc.my.common.core.redis.dto.UserRightRedisDto;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.*;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.model.HospitalEquipmentTypeInfoModel;
@@ -11,10 +16,9 @@ import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.SendMesService;
 import com.hc.service.WarningService;
+import com.hc.user.UserRightInfoApi;
 import com.hc.utils.JsonUtil;
-import com.hc.utils.TimeHelper;
 import com.hc.utils.UnitCase;
-import com.redis.util.RedisTemplateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,8 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
@@ -38,8 +40,6 @@ public class SocketMessageListener {
     @Autowired
     private SendMesService sendMesService;
     @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
-    @Autowired
     private WarningService warningService;
     @Autowired
     private SendrecordDao sendrecordDao;
@@ -52,7 +52,9 @@ public class SocketMessageListener {
     @Autowired
     private MonitorequipmentDao monitorequipmentDao;
     @Autowired
-    private MonitorequipmentlastdataDao monitorequipmentlastdataDao;
+    private UserRightInfoApi userRightInfoApi;
+    @Autowired
+    private SnDeviceRedisApi snDeviceRedisSync;
 
     /**
      * 监听报警信息
@@ -149,6 +151,7 @@ public class SocketMessageListener {
 
     public void msctMessage(String message) {
         WarningMqModel mQmodel = JsonUtil.toBean(message, WarningMqModel.class);
+        assert mQmodel != null;
         Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
         WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
         if (ObjectUtils.isEmpty(model)) {
@@ -158,181 +161,171 @@ public class SocketMessageListener {
         String unit = UnitCase.caseUint(model.getUnit());
         String value = UnitCase.caseUint(model.getValue());
         String hospitalcode = model.getHospitalcode();
-        //不走排班逻辑,定制报警需求
-       // Boolean scIsTrue = warningRuleSend(model);
-        Boolean scIsTrue=true;
-        if (scIsTrue) {
-            boolean flag = false;
-            List<Userright> list = new ArrayList<>();
-            List<String> phones = new ArrayList<>();
-            //判断该医院当天是否有人员排班
-            Date date = new Date();
-            String today = DateUtils.paseDate(date);
-            List<UserScheduLing> userScByHosSt1 = userScheduLingDao.findUserScByHosSt(hospitalcode, today, DateUtils.getYesterday(date));
-            if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
-                List<UserScheduLing> lings = new ArrayList<>();
-                UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);
-                Date starttime = userScheduLing.getStarttime();
-                Date endtime = userScheduLing.getEndtime();
-                UserScheduLing userScheduLing1 = userScByHosSt1.get(0);
-                Date endtime1 = userScheduLing1.getEndtime();
-                //大于今天最晚时间不处理
-                //处于今天
-                if (date.compareTo(starttime) >= 0 && date.compareTo(endtime) <= 0) {
-                    lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
-                    //位于昨天
-                } else if (date.compareTo(starttime) < 0) {
-                    lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(endtime1) == 0).collect(Collectors.toList());
-                }
-                if (CollectionUtils.isNotEmpty(lings)) {
-                    for (UserScheduLing s : lings) {
-                        Userright userright = new Userright();
-                        //排班的人默认都是电话+短信
-                        userright.setReminders(null);
-                        String userphone = s.getUserphone();
-                        if (StringUtils.isNotEmpty(userphone)) {
-                            userright.setPhonenum(userphone);
-                            phones.add(userphone);
-                        }
-                        list.add(userright);
-                    }
-                }
+        //当前时间在报警的时间段内,开启警报信息
+        boolean warningTimeBlockRule = warningTimeBlockRule(monitorinstrument);
+        if (!warningTimeBlockRule) {
+            //当前时间不在报警时间段内, 不用报警.直接返回
+            LOGGER.info("当前时间不在报警时间段内, 不用报警.直接返回, 医院code :" + hospitalcode + " monitorinstrument " + monitorinstrument);
+            return;
+        }
+        //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
+        List<UserRightRedisDto> list =addUserScheduLing(hospitalcode);
+        if (CollectionUtils.isEmpty(list)){
+            return;
+        }
+
+        String pkid = model.getPkid();
+        warningrecordDao.updatePhone(pkid);
+
+        //获取电话
+        List<Sendrecord> list1 = new ArrayList<>();
+        for (UserRightRedisDto userright : list) {
+            String reminders = userright.getReminders();
+            String phonenum = userright.getPhoneNum();
+            //不报警
+            if (StringUtils.equals(reminders, "3") || StringUtils.isEmpty(phonenum)) {
+                continue;
             }
-            //当前时间在报警的时间段内,开启警报信息
-            boolean warningTimeBlockRule = warningTimeBlockRule(monitorinstrument);
-            if(!warningTimeBlockRule){
-                //当前时间不在报警时间段内, 不用报警.直接返回
-                LOGGER.info("当前时间不在报警时间段内, 不用报警.直接返回, 医院code :" + hospitalcode +" monitorinstrument "+monitorinstrument);
-                return;
-            }
-            BoundHashOperations<Object, Object, Object> hospitalphonenum = redisTemplateUtil.boundHashOps("hospital:phonenum");
-            String o = (String) hospitalphonenum.get(hospitalcode);
-            if (StringUtils.isEmpty(o)) {
-                LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
-                return;
-            }
-            //未排班的人
-            if (CollectionUtils.isEmpty(list)) {
-                list = JsonUtil.toList(o, Userright.class);
-            } else {
-                //有排班的人和未排班的人
-                if (CollectionUtils.isNotEmpty(phones)) {
-                    List<Userright> allusers = JsonUtil.toList(o, Userright.class);
-                    if (CollectionUtils.isNotEmpty(allusers)) {
-                        List<Userright> collect = allusers.stream().filter(s -> !phones.contains(s.getPhonenum())).collect(Collectors.toList());
-                        list.addAll(collect);
-                    }
-                }
-            }
-            String pkid = model.getPkid();
-            warningrecordDao.updatePhone(pkid);
-            //获取电话
-            List<Sendrecord> list1 = new ArrayList<>();
-            for (Userright userright : list) {
-                String reminders = userright.getReminders();
-                String phonenum = userright.getPhonenum();
-                //不报警
-                if (StringUtils.equals(reminders, "3") || StringUtils.isEmpty(phonenum)) {
-                    continue;
-                }
-                // 发送短信
-                flag = true;
-                if (StringUtils.isEmpty(reminders)) {
-                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
-                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
-                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
-                    list1.add(sendrecord);
-                    SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
-                    LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                    Sendrecord sendrecord1 = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "0");
-                    list1.add(sendrecord1);
-                } else if (StringUtils.equals(reminders, "1")) {
-                    LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
-                    sendMesService.callPhone(userright.getPhonenum(), equipmentname);
-                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "1");
-                    list1.add(sendrecord);
-                } else if (StringUtils.equals(reminders, "2")) {
-                    SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhonenum(), equipmentname, unit, value);
-                    LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                    Sendrecord sendrecord = producePhoneRecord(userright.getPhonenum(), hospitalcode, equipmentname, unit, "0");
-                    list1.add(sendrecord);
-                }
-            }
-            if (CollectionUtils.isNotEmpty(list1)) {
-                list1.forEach(s->{
-                    sendrecordDao.insert(s);
-                });
-            }
-            if (flag) {
-                //拨打电话
-                HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                String lastdata = (String) objectObjectObjectHashOperations.get("LASTDATA"+hospitalcode, monitorinstrument.getEquipmentno());
-                if (StringUtils.isNotEmpty(lastdata)) {
-                    //报警电话信息处理
-                    Monitorequipmentlastdata monitorequipmentlastdata1 = JsonUtil.toBean(lastdata, Monitorequipmentlastdata.class);
-                    monitorequipmentlastdata1.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-                    monitorequipmentlastdata1.setInputdatetime(new Date());
-                    monitorequipmentlastdata1.setEquipmentlastdata("1");
-                    monitorequipmentlastdataDao.insert(monitorequipmentlastdata1);
-                    objectObjectObjectHashOperations.put("LASTDATA"+hospitalcode, monitorinstrument.getEquipmentno(), JsonUtil.toJson(monitorequipmentlastdata1));
-                }
-                //友盟推送
-                sendMesService.sendYmMessage(model.getPkid());
+            if (StringUtils.isEmpty(reminders)) {
+                LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
+                list1.add(sendrecord);
+                SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentname, unit, value);
+                LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                Sendrecord sendrecord1 = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
+                list1.add(sendrecord1);
+            } else if (StringUtils.equals(reminders, "1")) {
+                LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
+                list1.add(sendrecord);
+            } else if (StringUtils.equals(reminders, "2")) {
+                SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentname, unit, value);
+                LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
+                list1.add(sendrecord);
             }
         }
+        if (CollectionUtils.isNotEmpty(list1)) {
+            list1.forEach(s -> {
+                sendrecordDao.insert(s);
+            });
+        }
+
     }
+
+    private List<UserRightRedisDto>  addUserScheduLing(String hospitalcode){
+        List<UserRightRedisDto> list = new ArrayList<>();
+        List<String> phones = new ArrayList<>();
+        Date date = new Date();
+        String today = DateUtils.paseDate(date);
+        List<UserScheduLing> userScByHosSt1 = userScheduLingDao.findUserScByHosSt(hospitalcode, today, DateUtils.getYesterday(date));
+        if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
+            List<UserScheduLing> lings = new ArrayList<>();
+            UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);
+            Date starttime = userScheduLing.getStarttime();
+            Date endtime = userScheduLing.getEndtime();
+            UserScheduLing userScheduLing1 = userScByHosSt1.get(0);
+            Date endtime1 = userScheduLing1.getEndtime();
+            //大于今天最晚时间不处理
+            //处于今天
+            if (date.compareTo(starttime) >= 0 && date.compareTo(endtime) <= 0) {
+                lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
+                //位于昨天
+            } else if (date.compareTo(starttime) < 0) {
+                lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(endtime1) == 0).collect(Collectors.toList());
+            }
+            if (CollectionUtils.isNotEmpty(lings)) {
+                for (UserScheduLing s : lings) {
+                    UserRightRedisDto userright = new UserRightRedisDto();
+                    //排班的人默认都是电话+短信
+                    userright.setReminders(null);
+                    String userphone = s.getUserphone();
+                    if (StringUtils.isNotEmpty(userphone)) {
+                        userright.setPhoneNum(userphone);
+                        phones.add(userphone);
+                    }
+                    list.add(userright);
+                }
+            }
+        }
+        List<UserRightRedisDto> users = userRightInfoApi.findALLUserRightInfoByHC(hospitalcode).getResult();
+        if (CollectionUtils.isEmpty(users)) {
+            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+            return null;
+        }
+        //未排班的人
+        if (CollectionUtils.isEmpty(list)) {
+            list.addAll(users);
+        } else {
+            //有排班的人和未排班的人
+            if (CollectionUtils.isNotEmpty(phones)) {
+                List<UserRightRedisDto> userRights = users.stream().filter(s -> !phones.contains(s.getPhoneNum())).collect(Collectors.toList());
+                list.addAll(userRights);
+            }
+        }
+        return list;
+    }
+
+
 
     /**
      * 报警时间段报警逻辑
-     *  1.去设备找是否全天报警.
-     *      Y : 根据设备和联系人方式直接发送警报
-     *      N : 查询时间段.判断当前时间是否在报警的区间内
-     *          Y : 报警
-     *          N : 不报警,设备没有配置时间段再根据设备类型找是否要报警
-     *              2.设备类型是否全天报警
-     *                  Y : 根据设备类型和联系人方式直接发送警报
-     *                  N : 查询时间段.判断当前时间是否在报警的区间内
+     * 1.去设备找是否全天报警.
+     * Y : 根据设备和联系人方式直接发送警报
+     * N : 查询时间段.判断当前时间是否在报警的区间内
+     * Y : 报警
+     * N : 不报警,设备没有配置时间段再根据设备类型找是否要报警
+     * 2.设备类型是否全天报警
+     * Y : 根据设备类型和联系人方式直接发送警报
+     * N : 查询时间段.判断当前时间是否在报警的区间内
      */
-    private boolean warningTimeBlockRule(Monitorinstrument monitorinstrument){
-        Object hospitalSN = redisTemplateUtil.boundHashOps("hospital:sn").get(monitorinstrument.getSn());
-        if(hospitalSN != null){
-            Monitorinstrument monitorinstrumentObj = JsonUtil.toBean((String) hospitalSN, Monitorinstrument.class);
+    private boolean warningTimeBlockRule(Monitorinstrument monitorinstrument) {
+
+        String sn = monitorinstrument.getSn();
+        SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
+
+        if (null!=snDeviceDto) {
+            Monitorinstrument monitorinstrumentObj = objectConversion(snDeviceDto);
             String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
             //全天报警
-            if("1".equals(eqipmentAlwayalarm)){
+            if ("1".equals(eqipmentAlwayalarm)) {
                 return true;
-            }else{
+            } else {
                 //当前设备有配置时段,但是当前时间不在时段内.不报警
-                if(!currentTimeInWarningBlock(monitorinstrumentObj)){
-                  return false;
-                  //没有配置报警时间区间
-                } else if(monitorinstrumentObj.getWarningTimeList() == null
-                        || monitorinstrumentObj.getWarningTimeList().isEmpty()){
+                if (!currentTimeInWarningBlock(monitorinstrumentObj)) {
+                    return false;
+                    //没有配置报警时间区间
+                } else if (monitorinstrumentObj.getWarningTimeList() == null
+                        || monitorinstrumentObj.getWarningTimeList().isEmpty()) {
                     //没有配置时间段,在设备类型查找
                     String equipmenttypeid = monitorinstrument.getEquipmenttypeid();
-                    if(StringUtils.isEmpty(equipmenttypeid)){
-                        String queryEquipmenttypeid = monitorequipmentDao.getByEquipmentno(monitorinstrument.getEquipmentno());
-                        if(StringUtils.isNotEmpty(queryEquipmenttypeid)) equipmenttypeid = queryEquipmenttypeid;
+                    if (StringUtils.isEmpty(equipmenttypeid)) {
+                        String queryEquipmenttypeid = snDeviceDto.getEquipmentTypeId();
+                        if (StringUtils.isNotEmpty(queryEquipmenttypeid)) equipmenttypeid = queryEquipmenttypeid;
                     }
+
                     Object equipmentTypeObject = redisTemplateUtil.boundHashOps("hospital:equipmenttype").get(
                             equipmenttypeid +
-                                    "@"+monitorinstrument.getHospitalcode());
+                                    "@" + monitorinstrument.getHospitalcode());
+
                     HospitalEquipmentTypeInfoModel equipmentTypeInfoModel =
-                            JsonUtil.toBean((String)equipmentTypeObject, HospitalEquipmentTypeInfoModel.class);
+                            JsonUtil.toBean((String) equipmentTypeObject, HospitalEquipmentTypeInfoModel.class);
                     String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
                     //设备类型全天报警,直接发送警报
-                    if("1".equals(alwayalarm)){
+                    if ("1".equals(alwayalarm)) {
                         return true;
-                    }else{
+                    } else {
                         //设备类型非全天报警
                         List<MonitorEquipmentWarningTime> warningTimeList = equipmentTypeInfoModel.getWarningTimeList();
-                        if(warningTimeList != null && !warningTimeList.isEmpty()){
+                        if (warningTimeList != null && !warningTimeList.isEmpty()) {
                             return currentTimeInWarningBlock(equipmentTypeInfoModel);
                         }
                     }
-                }else{
+                } else {
                     //根据时间段数据报警
-                    return currentTimeInWarningBlock(monitorinstrumentObj) ;
+                    return currentTimeInWarningBlock(monitorinstrumentObj);
                 }
             }
         }
@@ -341,38 +334,39 @@ public class SocketMessageListener {
 
     /**
      * 当前时间是否存在配置的时间段中
+     *
      * @param monitorinstrumentObj
      * @return
      */
-    private boolean currentTimeInWarningBlock(Object monitorinstrumentObj){
+    private boolean currentTimeInWarningBlock(Object monitorinstrumentObj) {
         Monitorinstrument ruleObj = new Monitorinstrument();
         List<MonitorEquipmentWarningTime> warningEquipmentTimeList = new ArrayList<MonitorEquipmentWarningTime>();
-        if(monitorinstrumentObj instanceof Monitorinstrument){
-            ruleObj = (Monitorinstrument)monitorinstrumentObj;
+        if (monitorinstrumentObj instanceof Monitorinstrument) {
+            ruleObj = (Monitorinstrument) monitorinstrumentObj;
             warningEquipmentTimeList = ruleObj.getWarningTimeList();
         }
 
-        if(monitorinstrumentObj instanceof HospitalEquipmentTypeInfoModel){
-            HospitalEquipmentTypeInfoModel equipmentRuleObj = (HospitalEquipmentTypeInfoModel)monitorinstrumentObj;
+        if (monitorinstrumentObj instanceof HospitalEquipmentTypeInfoModel) {
+            HospitalEquipmentTypeInfoModel equipmentRuleObj = (HospitalEquipmentTypeInfoModel) monitorinstrumentObj;
             warningEquipmentTimeList = equipmentRuleObj.getWarningTimeList();
         }
         Date nowDate = new Date();
         List<Date> nowTime = sameDate(nowDate);
         //设备类型配置时间区间,在设备类型里面拿时间进行比较
-        if(warningEquipmentTimeList != null && !warningEquipmentTimeList.isEmpty()){
+        if (warningEquipmentTimeList != null && !warningEquipmentTimeList.isEmpty()) {
             int successDate = 0;
-            for(int i = 0;i<warningEquipmentTimeList.size();i++){
+            for (int i = 0; i < warningEquipmentTimeList.size(); i++) {
                 MonitorEquipmentWarningTime item = warningEquipmentTimeList.get(i);
-                if(item != null){
+                if (item != null) {
                     Date begintime = item.getBegintime();
                     Date endtime = item.getEndtime();
                     List<Date> dateInterval = sameDate(begintime, endtime);
-                    if(isEffectiveDate(nowTime.get(0),dateInterval.get(0),dateInterval.get(1))){
+                    if (isEffectiveDate(nowTime.get(0), dateInterval.get(0), dateInterval.get(1))) {
                         successDate += 1;
                     }
                 }
             }
-            if(successDate == warningEquipmentTimeList.size()){
+            if (successDate == warningEquipmentTimeList.size()) {
                 //说明当前时间在时间区间内,可以发送短信或者拨电话
                 return true;
             }
@@ -383,19 +377,19 @@ public class SocketMessageListener {
     /**
      * 修改时间的年月日
      */
-    private List<Date> sameDate(Date... dates){
-        if(dates != null){
+    private List<Date> sameDate(Date... dates) {
+        if (dates != null) {
             Calendar nowCalendar = Calendar.getInstance();
             List<Date> dateList = new ArrayList<Date>();
-            for(int i=0;i<dates.length;i++){
+            for (int i = 0; i < dates.length; i++) {
                 Date date = dates[i];
-                if(date == null) continue;
+                if (date == null) continue;
                 nowCalendar.setTime(date);
-                nowCalendar.set(Calendar.YEAR,1970);
-                nowCalendar.set(Calendar.MONTH,12);
-                nowCalendar.set(Calendar.DAY_OF_MONTH,12);
+                nowCalendar.set(Calendar.YEAR, 1970);
+                nowCalendar.set(Calendar.MONTH, 12);
+                nowCalendar.set(Calendar.DAY_OF_MONTH, 12);
                 Date nowTime = nowCalendar.getTime();
-                dateList.add(i,nowTime);
+                dateList.add(i, nowTime);
             }
             return dateList;
         }
@@ -404,6 +398,7 @@ public class SocketMessageListener {
 
     /**
      * 当前时间是否在此时间区间内
+     *
      * @param nowTime
      * @param startTime
      * @param endTime
@@ -411,7 +406,7 @@ public class SocketMessageListener {
      */
     public boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
         if (nowTime.getTime() == startTime.getTime()
-                || nowTime.getTime() == endTime.getTime()){
+                || nowTime.getTime() == endTime.getTime()) {
             return true;
         }
 
@@ -444,7 +439,26 @@ public class SocketMessageListener {
         return sendrecord;
     }
 
-
+    private Monitorinstrument objectConversion(SnDeviceDto snDeviceDto) {
+        if(ObjectUtils.isEmpty(snDeviceDto)){
+            return null;
+        }
+        String instrumentTypeId = snDeviceDto.getInstrumentTypeId();
+        Monitorinstrument monitorinstrument = new Monitorinstrument();
+        monitorinstrument.setAlarmtime(snDeviceDto.getAlarmTime().intValue());
+        monitorinstrument.setChannel(snDeviceDto.getChannel());
+        monitorinstrument.setEquipmentno(snDeviceDto.getEquipmentNo());
+        monitorinstrument.setHospitalcode(snDeviceDto.getHospitalCode());
+        monitorinstrument.setInstrumentno(snDeviceDto.getInstrumentNo());
+        monitorinstrument.setInstrumenttypeid(StringUtils.isEmpty(instrumentTypeId)?null:Integer.valueOf(instrumentTypeId));
+        monitorinstrument.setSn(snDeviceDto.getSn());
+        monitorinstrument.setInstrumentname(snDeviceDto.getInstrumentName());
+        List<MonitorEquipmentWarningTimeDto> warningTimeList = snDeviceDto.getWarningTimeList();
+        if (CollectionUtils.isNotEmpty(warningTimeList)){
+            monitorinstrument.setWarningTimeList(BeanConverter.convert(warningTimeList,MonitorEquipmentWarningTime.class));
+        }
+        return monitorinstrument;
+    }
 //    /**
 //     * 浙妇保医院定制需求
 //     */
@@ -529,10 +543,10 @@ public class SocketMessageListener {
 //    }
 
 
-    public static void main(String[] args){
-        String username ="xiaoliu3";
+    public static void main(String[] args) {
+        String username = "xiaoliu3";
         String lastString = username.substring(username.length() - 1, username.length());
-        if (StringUtils.equalsAny(lastString, "1","2","3","4","5","6","7","8","9")) {
+        if (StringUtils.equalsAny(lastString, "1", "2", "3", "4", "5", "6", "7", "8", "9")) {
             System.out.println("sada");
 
         }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -51,5 +52,8 @@ public class SnDeviceDto implements Serializable {
 
     /** 管道 */
     private String channel;
+
+    /** 报警时段 */
+    private List<MonitorEquipmentWarningTimeDto> warningTimeList;
 
 }

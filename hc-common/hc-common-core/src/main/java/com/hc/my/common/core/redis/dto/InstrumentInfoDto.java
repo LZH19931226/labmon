@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Accessors(chain = true)
@@ -53,4 +54,7 @@ public class InstrumentInfoDto {
 
     /** 饱和值  */
     private BigDecimal saturation;
+
+    /** 最新报警时间  */
+    private Date  warningtime;
 }

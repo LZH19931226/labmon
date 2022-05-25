@@ -1,187 +1,115 @@
 package com.hc.serviceimpl;
 
-import com.hc.po.Hospitalofreginfo;
-import com.hc.mapper.InstrumentparamconfigDao;
-import com.hc.mapper.WarningrecordDao;
+import com.hc.device.ProbeRedisApi;
+import com.hc.hospital.HospitalRedisApi;
+import com.hc.labmanagent.ProbeInfoApi;
+import com.hc.my.common.core.redis.dto.HospitalInfoDto;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.WarningRecordDto;
 import com.hc.model.WarningModel;
-import com.hc.my.common.core.bean.InstrumentMonitorInfoModel;
 import com.hc.service.WarningRuleService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
-import com.redis.util.RedisTemplateUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 16956 on 2018-08-10.
  */
 @Service
+@Slf4j
 public class WarningRuleServiceImpl implements WarningRuleService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WarningRuleServiceImpl.class);
     @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
+    private ProbeRedisApi probeRedisApi;
     @Autowired
-    private InstrumentparamconfigDao instrumentparamconfigDao;
+    private ProbeInfoApi  probeInfoApi;
     @Autowired
-    private WarningrecordDao warningrecordDao;
-
+    private HospitalRedisApi hospitalRedisApi;
     /**
      * 进来的默认都是启用报警的
      * 先判断医院   、  在进行判断是否三次报警
      */
     @Override
-    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentMonitorInfoModel instrumentMonitorInfoModel, String remark) {
-        Date pushtime = instrumentMonitorInfoModel.getPushtime();
-        try {
-            Hospitalofreginfo hospitalofreginfo = new Hospitalofreginfo();
-            WarningModel warningModel = new WarningModel();
-            if (StringUtils.isNotEmpty(remark)) {
-                if (StringUtils.equals("市电异常",remark)) {
-                    warningModel.setPkid(pkid);
-                    warningModel.setValue(data);
-                    warningModel.setEquipmentname(instrumentMonitorInfoModel.getEquipmentname());
-                    warningModel.setUnit(instrumentMonitorInfoModel.getInstrumentconfigname());
-                    warningModel.setHospitalcode(hospitalcode);
-                    return warningModel;
-                }
+    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe, String remark) {
+        WarningModel warningModel = new WarningModel();
+        //市电是立即报警
+        if (StringUtils.isNotEmpty(remark)) {
+            if (StringUtils.equals("市电异常", remark)) {
+                warningModel.setPkid(pkid);
+                warningModel.setValue(data);
+                warningModel.setEquipmentname(probe.getEquipmentName());
+                warningModel.setUnit(probe.getInstrumentName());
+                warningModel.setHospitalcode(hospitalcode);
+                return warningModel;
             }
-
-            BoundHashOperations<Object, Object, Object> objectObjectObjectBoundHashOperations = redisTemplateUtil.boundHashOps("hospital:info");
-            String o = (String)objectObjectObjectBoundHashOperations.get(hospitalcode);
-            if (StringUtils.isNotEmpty(o)){
-                hospitalofreginfo = JsonUtil.toBean(o,Hospitalofreginfo.class);
-            }else{
-                LOGGER.info("不存在当前医院信息，医院编号："+hospitalcode);
+        }
+        //为满足三次报警次数不推送
+        Integer alarmtime = probe.getAlarmTime();
+        if (null == alarmtime) {
+            alarmtime = 3;
+        }
+        String instrumentParamConfigNO = probe.getInstrumentParamConfigNO();
+        List<WarningRecordDto> warningRecord = probeRedisApi.getProbeWarnInfo(hospitalcode, instrumentParamConfigNO).getResult();
+        //判断是否三次报警
+        if (CollectionUtils.isEmpty(warningRecord)) {
+            probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
+            log.info("当前设备产生报警记录但是还未报警通知:{}", JsonUtil.toJson(probe));
+            return null;
+        } else {
+            if (warningRecord.size()<alarmtime){
+                probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
+                log.info("当前设备产生报警记录但是还未报警通知:{}", JsonUtil.toJson(probe));
+                return null;
+            }else {
+                probeRedisApi.removeProbeRedisInfo(hospitalcode, instrumentParamConfigNO);
+                warningModel.setPkid(pkid);
+                warningModel.setValue(data);
+                warningModel.setEquipmentname(probe.getEquipmentName());
+                warningModel.setUnit(probe.getInstrumentName());
+                warningModel.setHospitalcode(hospitalcode);
+            }
+        }
+        Date warningtime = probe.getWarningtime();
+        if (null!=warningtime) {
+             //根据医院设置得报警时间间隔
+            HospitalInfoDto hospital = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+            String timeInterval = hospital.getTimeInterval();
+            if (StringUtils.isEmpty(timeInterval)){
+                //未设置间隔时间则默认是60分钟
+                timeInterval= "60";
+            }
+            double datePoorMin = TimeHelper.getDatePoorMin(warningtime, new Date());
+            if (datePoorMin > Double.parseDouble(timeInterval)) {
+                //可以报警
+                probeInfoApi.editWarningTime(instrumentParamConfigNO,TimeHelper.getNowDate(new Date()));
+                probe.setWarningtime(new Date());
+                //同步缓存
+                probeRedisApi.addProbeRedisInfo(probe);
+            } else {
                 return null;
             }
-            // 增加判断
-            //为满足三次报警次数不推送
-            Integer alarmtime = instrumentMonitorInfoModel.getAlarmtime();
-            //当前测试报警次数
-            LOGGER.info("设备名："+instrumentMonitorInfoModel.getEquipmentname() +"报警次数："+alarmtime);
-            if (alarmtime == null){
-                alarmtime = 3;
-            }
-            //判断医院是否为全天报警
-            if ("1".equals(hospitalofreginfo.getAlwayalarm())) {
-                //判断是否三次报警
-                redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).rightPush(data);
-                if (redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size() < alarmtime) {
-                    LOGGER.info("当前连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"设备名称:"+ instrumentMonitorInfoModel.getEquipmentname()+"监控类型："+instrumentMonitorInfoModel.getInstrumentconfigname()+"异常值："+data);
-                    return null;
-                } else {
-                    LOGGER.info("当前达到三次连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"设备名称:"+ instrumentMonitorInfoModel.getEquipmentname()+"监控类型："+instrumentMonitorInfoModel.getInstrumentconfigname()+"异常值："+data+"缓存对象："+JsonUtil.toJson(instrumentMonitorInfoModel));
-                    //全天报警
-                    //根据医院编号查询报警联系人电话号码
-                    //第三次报警
-                    redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                    //判断当前时间是否大于 pushtime  然后是否app推送
-                    //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
-                    if (null!=pushtime){
-                        int time = pushtime.compareTo(new Date());
-                        if (time>= 0){
-                           return null;
-                        }
-                    }
-                    warningModel.setPkid(pkid);
-                    warningModel.setValue(data);
-                    warningModel.setEquipmentname(instrumentMonitorInfoModel.getEquipmentname());
-                    warningModel.setUnit(instrumentMonitorInfoModel.getInstrumentconfigname());
-                    warningModel.setHospitalcode(hospitalcode);
-                }
-            } else {
-                //判断是否在当前禁用报警时间段内
-                Date starttime = hospitalofreginfo.getBegintime();
-                Date endtime = hospitalofreginfo.getEndtime();
-                Integer compareToStart = TimeHelper.dateHelp(new Date()).compareTo(TimeHelper.dateHelp(starttime));
-                Integer compareToEnd = TimeHelper.dateHelp(new Date()).compareTo(TimeHelper.dateHelp(endtime));
-                if (compareToStart == -1 || compareToEnd == 1) {
-                    //开始报警
-                    //全天报警
-                    //根据医院编号查询报警联系人电话号码.
-                    redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).rightPush(data);
-                    if (redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size() < alarmtime) {
-                        return null;
-                    } else {
-                        LOGGER.info("当前达到三次连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"异常值："+data);
-                        redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                        //判断当前时间是否大于 pushtime  然后是否app推送
-                        //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
-                        if (null!=pushtime){
-                            int time = pushtime.compareTo(new Date());
-                            if (time>= 0){
-                                return null;
-                            }
-                        }
-                        warningModel.setPkid(pkid);
-                        warningModel.setValue(data);
-                        warningModel.setEquipmentname(instrumentMonitorInfoModel.getEquipmentname());
-                        warningModel.setUnit(instrumentMonitorInfoModel.getInstrumentconfigname());
-                        warningModel.setHospitalcode(hospitalcode);
-                    }
-                } else {
-                    redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).rightPush(data);
-                    if (redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size() < alarmtime) {
-                        return null;
-                    } else {
-                        LOGGER.info("当前达到三次连续报警次数："+redisTemplateUtil.boundListOps(instrumentMonitorInfoModel.getInstrumentparamconfigNO()).size()+"异常值："+data);
-                        redisTemplateUtil.delete(instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                        //判断当前时间是否大于 pushtime  然后是否app推送
-                        //2021-09-07 若是设置了延迟报警时间这个时间点之前就不处理报警
-                        if (null!=pushtime){
-                            int time = pushtime.compareTo(new Date());
-                            if (time>= 0){
-                                return null;
-                            }
-                        }
-                        warningrecordDao.updatePhone(pkid);
-                    }
-                }
-            }
-            //半小时内不重复报警
-            if ( null != warningModel){
-                //判断半小时内是否报警
-                if (ObjectUtils.allNotNull(instrumentMonitorInfoModel.getWarningtime())){
-                    double poor = TimeHelper.getDatePoorMin(new Date(),instrumentMonitorInfoModel.getWarningtime());
-                    LOGGER.info("1小时内间隔不报警：时间"+ poor +"设备名称："+instrumentMonitorInfoModel.getEquipmentname());
-                    if (poor > 60){
-                        //可以报警
-                        instrumentparamconfigDao.updateWarnTime(new Date(),instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                        instrumentMonitorInfoModel.setWarningtime(new Date());
-                        //同步缓存
-                        LOGGER.info("同步时间缓存："+instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                        HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                        objectObjectObjectHashOperations.put("insprobe"+hospitalcode,instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(),JsonUtil.toJson(instrumentMonitorInfoModel));
-                    }else{
-
-                        return null;
-
-                    }
-                }else{
-                    LOGGER.info("不存在报警时间");
-                    instrumentparamconfigDao.updateWarnTime(new Date(),instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                    instrumentMonitorInfoModel.setWarningtime(new Date());
-                    //同步缓存
-                    LOGGER.info("同步时间缓存："+instrumentMonitorInfoModel.getInstrumentparamconfigNO());
-                    HashOperations<Object, Object, Object> objectObjectObjectHashOperations = redisTemplateUtil.opsForHash();
-                    objectObjectObjectHashOperations.put("insprobe"+hospitalcode,instrumentMonitorInfoModel.getInstrumentno() + ":" + instrumentMonitorInfoModel.getInstrumentconfigid(),JsonUtil.toJson(instrumentMonitorInfoModel));
-                }
-            }
-            LOGGER.info("推送去电话报警："+JsonUtil.toJson(warningModel)+"设备名称："+instrumentMonitorInfoModel.getEquipmentname());
-            return warningModel;
-        } catch (Exception e) {
-            LOGGER.error("报警规则异常：原因：" + e+JsonUtil.toJson(instrumentMonitorInfoModel));
-            return null;
+        } else {
+            probeInfoApi.editWarningTime(instrumentParamConfigNO,TimeHelper.getNowDate(new Date()));
+            probe.setWarningtime(new Date());
+            //同步缓存
+            probeRedisApi.addProbeRedisInfo(probe);
         }
+        return warningModel;
+    }
 
-
+    private WarningRecordDto buildProbeWarnInfo(String hospitalcode, String instrumentParamConfigNO, String value) {
+        WarningRecordDto warningRecordDto = new WarningRecordDto();
+        warningRecordDto.setInputdatetime(new Date());
+        warningRecordDto.setHospitalcode(hospitalcode);
+        warningRecordDto.setInstrumentparamconfigNO(instrumentParamConfigNO);
+        warningRecordDto.setWarningvalue(value);
+        return warningRecordDto;
     }
 }
