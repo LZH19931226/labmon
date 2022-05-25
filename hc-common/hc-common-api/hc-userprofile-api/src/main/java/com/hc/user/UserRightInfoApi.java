@@ -1,5 +1,6 @@
 package com.hc.user;
 
+import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,5 +18,5 @@ public interface UserRightInfoApi {
      * @return
      */
     @GetMapping("/userRight/getALLHospitalUserRightInfo")
-    List<UserRightRedisDto> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode);
+    ApiResponse<List<UserRightRedisDto>> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode);
 }
