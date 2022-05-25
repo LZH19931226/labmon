@@ -1,8 +1,13 @@
 package com.hc.listenter;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.hc.clickhouse.po.Warningrecord;
+import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.SnDeviceRedisApi;
+import com.hc.hospital.HospitalEquipmentTypeIdApi;
 import com.hc.mapper.*;
+import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
@@ -44,17 +49,17 @@ public class SocketMessageListener {
     @Autowired
     private SendrecordDao sendrecordDao;
     @Autowired
-    private WarningrecordDao warningrecordDao;
+    private WarningrecordRepository warningrecordRepository;
     @Autowired
     private UserrightDao userrightDao;
     @Autowired
     private UserScheduLingDao userScheduLingDao;
     @Autowired
-    private MonitorequipmentDao monitorequipmentDao;
-    @Autowired
     private UserRightInfoApi userRightInfoApi;
     @Autowired
     private SnDeviceRedisApi snDeviceRedisSync;
+    @Autowired
+    private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
 
     /**
      * 监听报警信息
@@ -173,10 +178,6 @@ public class SocketMessageListener {
         if (CollectionUtils.isEmpty(list)){
             return;
         }
-
-        String pkid = model.getPkid();
-        warningrecordDao.updatePhone(pkid);
-
         //获取电话
         List<Sendrecord> list1 = new ArrayList<>();
         for (UserRightRedisDto userright : list) {
@@ -213,6 +214,9 @@ public class SocketMessageListener {
             });
         }
 
+        //报警通知完毕之后,修改此条报警数据状态为已经推送
+        String pkid = model.getPkid();
+        warningrecordRepository.update(Wrappers.lambdaUpdate(new Warningrecord()).eq(Warningrecord::getPkid,pkid).set(Warningrecord::getIsphone,"1"));
     }
 
     private List<UserRightRedisDto>  addUserScheduLing(String hospitalcode){
@@ -284,10 +288,11 @@ public class SocketMessageListener {
     private boolean warningTimeBlockRule(Monitorinstrument monitorinstrument) {
 
         String sn = monitorinstrument.getSn();
+        String hospitalcode = monitorinstrument.getHospitalcode();
         SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
-
         if (null!=snDeviceDto) {
             Monitorinstrument monitorinstrumentObj = objectConversion(snDeviceDto);
+            assert monitorinstrumentObj != null;
             String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
             //全天报警
             if ("1".equals(eqipmentAlwayalarm)) {
@@ -305,13 +310,8 @@ public class SocketMessageListener {
                         String queryEquipmenttypeid = snDeviceDto.getEquipmentTypeId();
                         if (StringUtils.isNotEmpty(queryEquipmenttypeid)) equipmenttypeid = queryEquipmenttypeid;
                     }
-
-                    Object equipmentTypeObject = redisTemplateUtil.boundHashOps("hospital:equipmenttype").get(
-                            equipmenttypeid +
-                                    "@" + monitorinstrument.getHospitalcode());
-
-                    HospitalEquipmentTypeInfoModel equipmentTypeInfoModel =
-                            JsonUtil.toBean((String) equipmentTypeObject, HospitalEquipmentTypeInfoModel.class);
+                    HospitalEquipmentTypeInfoDto hosEqType = hospitalEquipmentTypeIdApi.findHospitalEquipmentTypeRedisInfo(hospitalcode, equipmenttypeid).getResult();
+                    HospitalEquipmentTypeInfoModel equipmentTypeInfoModel = BeanConverter.convert(hosEqType, HospitalEquipmentTypeInfoModel.class);
                     String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
                     //设备类型全天报警,直接发送警报
                     if ("1".equals(alwayalarm)) {

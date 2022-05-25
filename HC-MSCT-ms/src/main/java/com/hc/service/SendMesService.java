@@ -14,9 +14,6 @@ public interface SendMesService {
 
     SingleCallByTtsResponse callPhone(String phone, String equipmentname);
 
-
-    void sendYmMessage(String pkid);
-
     SingleCallByTtsResponse receivePhone(String phone);
     SendSmsResponse sendCode(String phonenum, String code);
 }

@@ -1,4 +1,4 @@
-package com.hc.po;
+package com.hc.clickhouse.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -10,9 +10,14 @@ import java.util.Date;
 @Data
 public class Warningrecord implements Serializable {
     /**
-     * pkid
+     *
      */
 
+    private long id;
+
+    /**
+     * uuid
+     */
     private String pkid;
 
     /**
@@ -23,7 +28,7 @@ public class Warningrecord implements Serializable {
     /**
      * 监控参数类型编码
      */
-    private String instrumentparamconfigNO;
+    private String instrumentparamconfigno;
 
     /**
      * 报警值
@@ -50,9 +55,9 @@ public class Warningrecord implements Serializable {
      */
     private String msgflag;
 
-    private String isPhone;
-
-    private static final long serialVersionUID = 1L;
+    private String isphone;
 
     private String equipmentno;
+
+
     }

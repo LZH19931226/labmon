@@ -5,15 +5,11 @@ import com.aliyuncs.dyvmsapi.model.v20170525.SingleCallByTtsResponse;
 import com.hc.Message.MoblieMessageUtil;
 import com.hc.Message.SingleCallByTtsUtils;
 import com.hc.service.SendMesService;
-import com.hc.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by 16956 on 2018-08-13.
@@ -55,17 +51,6 @@ public class SendMesServiceImpl implements SendMesService {
         SingleCallByTtsResponse singleCallByTtsResponse = singleCallByTtsUtils.sendSms(phone, equipmentname);
         log.info("拨打电话对象:{},响应值:{}",phone,singleCallByTtsResponse.getCode());
         return singleCallByTtsResponse;
-    }
-
-    @Override
-    @Async
-    public void sendYmMessage(String pkid) {
-        if (StringUtils.isNotEmpty(pkid)) {
-            //推送APP
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("pkid", pkid);
-            HttpUtil.get("http://www.sosum.net:8087/api-mon/api/insParamSet/sendMessage", map);
-        }
     }
 
     @Override
