@@ -82,10 +82,18 @@ public class HospitalequimentApplication {
     private HospitalEquipmentTypeInfoDto buildRedisInfo(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
 
         HospitalEquipmentTypeInfoDto result = new HospitalEquipmentTypeInfoDto();
-        result.setHospitalcode(hospitalEquimentTypeCommand.getHospitalcode());
-        result.setEquipmenttypeid(hospitalEquimentTypeCommand.getEquipmenttypeid());
-        result.setHospitalname(hospitalEquimentTypeCommand.getHospitalcode());
-        result.setEquipmenttypename(hospitalEquimentTypeCommand.getEquipmenttypeid());
+
+        String hospitalcode = hospitalEquimentTypeCommand.getHospitalcode();
+        String equipmenttypeid = hospitalEquimentTypeCommand.getEquipmenttypeid();
+        //查询设备信息
+        HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalcode, equipmenttypeid);
+        String hospitalname = hospitalequimentDTO.getHospitalname();
+        String equipmenttypename = hospitalequimentDTO.getEquipmenttypename();
+
+        result.setHospitalcode(hospitalcode);
+        result.setEquipmenttypeid(equipmenttypeid);
+        result.setHospitalname(hospitalname);
+        result.setEquipmenttypename(equipmenttypename);
         result.setIsvisible(hospitalEquimentTypeCommand.getIsvisible());
         result.setAlwayalarm(hospitalEquimentTypeCommand.getAlwayalarm());
 
@@ -93,6 +101,12 @@ public class HospitalequimentApplication {
         if(workTimeBlock != null && workTimeBlock.length !=0 ){
             List<WorkTimeBlockCommand> workTimeBlockCommands = Arrays.asList(workTimeBlock);
             List<MonitorEquipmentWarningTimeDto> convert = BeanConverter.convert(workTimeBlockCommands, MonitorEquipmentWarningTimeDto.class);
+            convert.forEach(res -> {
+                res.setEquipmentcategory("type");
+                res.setEquipmentid(hospitalEquimentTypeCommand.getEquipmenttypeid());
+                res.setHospitalcode(hospitalEquimentTypeCommand.getHospitalcode());
+            });
+
             result.setWarningTimeList(convert);
         }
         return result;
