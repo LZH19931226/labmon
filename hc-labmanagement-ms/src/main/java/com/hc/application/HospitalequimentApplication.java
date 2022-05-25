@@ -85,15 +85,8 @@ public class HospitalequimentApplication {
 
         String hospitalcode = hospitalEquimentTypeCommand.getHospitalcode();
         String equipmenttypeid = hospitalEquimentTypeCommand.getEquipmenttypeid();
-        //查询设备信息
-        HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalcode, equipmenttypeid);
-        String hospitalname = hospitalequimentDTO.getHospitalname();
-        String equipmenttypename = hospitalequimentDTO.getEquipmenttypename();
-
         result.setHospitalcode(hospitalcode);
         result.setEquipmenttypeid(equipmenttypeid);
-        result.setHospitalname(hospitalname);
-        result.setEquipmenttypename(equipmenttypename);
         result.setIsvisible(hospitalEquimentTypeCommand.getIsvisible());
         result.setAlwayalarm(hospitalEquimentTypeCommand.getAlwayalarm());
 

@@ -4,7 +4,6 @@ import cn.hutool.json.JSONUtil;
 import com.hc.application.config.RedisUtils;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
-import com.hc.my.common.core.util.BeanConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +22,7 @@ public class HospitalInfoRedisApplication {
      */
     public HospitalInfoDto findHospitalInfo(String hospitalCode) {
         Object o = redisUtils.get(LabManageMentServiceEnum.H.getCode() + hospitalCode);
-        return BeanConverter.convert((String)o,HospitalInfoDto.class);
+        return JSONUtil.toBean((String)o,HospitalInfoDto.class);
     }
 
     /**

@@ -4,7 +4,6 @@ import cn.hutool.json.JSONUtil;
 import com.hc.application.config.RedisUtils;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
-import com.hc.my.common.core.util.BeanConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class HospitalEquipmentTypeRedisApplication {
             return null;
         }
         Object o = redisUtils.hget(LabManageMentServiceEnum.E.getCode() + hospitalCode, hospitalEquipmentTypeId);
-        return BeanConverter.convert((String)o, HospitalEquipmentTypeInfoDto.class);
+        return JSONUtil.toBean((String) o, HospitalEquipmentTypeInfoDto.class);
     }
 
     /**
@@ -35,10 +34,15 @@ public class HospitalEquipmentTypeRedisApplication {
      * @param hospitalEquipmentTypeInfoModel 医院设备类型缓存信息
      */
     public void addHospitalEquipmentTypeRedisInfo(HospitalEquipmentTypeInfoDto hospitalEquipmentTypeInfoModel) {
-        if(!ObjectUtils.isEmpty(hospitalEquipmentTypeInfoModel)){
-            redisUtils.hset(LabManageMentServiceEnum.E.getCode() + hospitalEquipmentTypeInfoModel.getHospitalcode(),
-                    hospitalEquipmentTypeInfoModel.getEquipmenttypeid(), JSONUtil.toJsonStr(hospitalEquipmentTypeInfoModel));
+        if(ObjectUtils.isEmpty(hospitalEquipmentTypeInfoModel)){
+            return;
         }
+        String hospitalcode = hospitalEquipmentTypeInfoModel.getHospitalcode();
+        String equipmenttypeid = hospitalEquipmentTypeInfoModel.getEquipmenttypeid();
+        if(redisUtils.hHasKey(LabManageMentServiceEnum.E.getCode()+hospitalcode,equipmenttypeid) ){
+            redisUtils.hdel(LabManageMentServiceEnum.E.getCode()+hospitalcode,equipmenttypeid);
+        }
+        redisUtils.hset(LabManageMentServiceEnum.E.getCode()+hospitalcode,equipmenttypeid, JSONUtil.toJsonStr(hospitalEquipmentTypeInfoModel));
     }
 
     /**
