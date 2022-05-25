@@ -2,6 +2,7 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
+import com.hc.application.command.WorkTimeBlockCommand;
 import com.hc.command.labmanagement.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
@@ -9,9 +10,12 @@ import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.dto.HospitalequimentDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
+import com.hc.hospital.HospitalEquipmentTypeIdApi;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
+import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.HospitalequimentService;
@@ -27,6 +31,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -52,6 +57,9 @@ public class HospitalequimentApplication {
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
 
+    @Autowired
+    private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
+
     /**
      * 新增医院设备类型
      * @param hospitalEquimentTypeCommand 医院设备类型命令类
@@ -61,6 +69,33 @@ public class HospitalequimentApplication {
         //插入日志
         operationlogService.addHospitalEquipmentOperationLogCommand(build(Context.getUserId(),new HospitalEquimentTypeCommand(),hospitalEquimentTypeCommand,
                 OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(),OperationLogEunmDerailEnum.ADD.getCode()));
+        //存入redis
+        HospitalEquipmentTypeInfoDto hospitalEquipmentTypeInfoModel = buildRedisInfo(hospitalEquimentTypeCommand);
+        hospitalEquipmentTypeIdApi.addHospitalEquipmentTypeRedisInfo(hospitalEquipmentTypeInfoModel);
+    }
+
+    /**
+     * 构建设备类型缓存信息
+     * @param hospitalEquimentTypeCommand
+     * @return
+     */
+    private HospitalEquipmentTypeInfoDto buildRedisInfo(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
+
+        HospitalEquipmentTypeInfoDto result = new HospitalEquipmentTypeInfoDto();
+        result.setHospitalcode(hospitalEquimentTypeCommand.getHospitalcode());
+        result.setEquipmenttypeid(hospitalEquimentTypeCommand.getEquipmenttypeid());
+        result.setHospitalname(hospitalEquimentTypeCommand.getHospitalcode());
+        result.setEquipmenttypename(hospitalEquimentTypeCommand.getEquipmenttypeid());
+        result.setIsvisible(hospitalEquimentTypeCommand.getIsvisible());
+        result.setAlwayalarm(hospitalEquimentTypeCommand.getAlwayalarm());
+
+        WorkTimeBlockCommand[] workTimeBlock = hospitalEquimentTypeCommand.getWorkTimeBlock();
+        if(workTimeBlock != null && workTimeBlock.length !=0 ){
+            List<WorkTimeBlockCommand> workTimeBlockCommands = Arrays.asList(workTimeBlock);
+            List<MonitorEquipmentWarningTimeDto> convert = BeanConverter.convert(workTimeBlockCommands, MonitorEquipmentWarningTimeDto.class);
+            result.setWarningTimeList(convert);
+        }
+        return result;
     }
 
     /**
@@ -107,12 +142,17 @@ public class HospitalequimentApplication {
     public void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquipmentTypeCommand) {
         HospitalequimentDTO hospitalequimentDTO =
                 hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalEquipmentTypeCommand.getHospitalcode(), hospitalEquipmentTypeCommand.getEquipmenttypeid());
+
         hospitalequimentService.updateHospitalEquimentType(hospitalEquipmentTypeCommand);
+
         operationlogService.addHospitalEquipmentOperationLogCommand(
                 build(Context.getUserId()
                 ,BeanConverter.convert(hospitalequimentDTO,HospitalEquimentTypeCommand.class)
                 ,hospitalEquipmentTypeCommand,OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode()
                 ,OperationLogEunmDerailEnum.EDIT.getCode()));
+        //更新缓存信息
+        HospitalEquipmentTypeInfoDto hospitalEquipmentTypeInfoModel = buildRedisInfo(hospitalEquipmentTypeCommand);
+        hospitalEquipmentTypeIdApi.addHospitalEquipmentTypeRedisInfo(hospitalEquipmentTypeInfoModel);
     }
 
     /**
@@ -183,6 +223,9 @@ public class HospitalequimentApplication {
         HospitalEquipmentOperationLogCommand build = build(Context.getUserId(), convert,
                 new HospitalEquimentTypeCommand(), OperationLogEunm.DEVICE_TYPE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogService.addHospitalEquipmentOperationLogCommand(build);
+
+        //删除从缓存信息
+        hospitalEquipmentTypeIdApi.removeHospitalEquipmentTypeRedisInfo(hospitalCode,equipmenttypeid);
     }
 
     /**

@@ -1,11 +1,14 @@
 package com.hc.application;
 
+import cn.hutool.json.JSONUtil;
 import com.hc.application.config.RedisUtils;
-import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoModel;
+import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.util.BeanConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 @Component
 public class HospitalEquipmentTypeRedisApplication {
@@ -19,11 +22,34 @@ public class HospitalEquipmentTypeRedisApplication {
      * @param hospitalEquipmentTypeId 医院设备类型id
      * @return 医院设备类型缓存信息
      */
-    public HospitalEquipmentTypeInfoModel findHospitalEquipmentTypeRedisInfo(String hospitalCode, String hospitalEquipmentTypeId) {
+    public HospitalEquipmentTypeInfoDto findHospitalEquipmentTypeRedisInfo(String hospitalCode, String hospitalEquipmentTypeId) {
         if(!redisUtils.hHasKey(LabManageMentServiceEnum.E.getCode()+hospitalCode,hospitalEquipmentTypeId)){
             return null;
         }
         Object o = redisUtils.hget(LabManageMentServiceEnum.E.getCode() + hospitalCode, hospitalEquipmentTypeId);
-        return BeanConverter.convert((String)o,HospitalEquipmentTypeInfoModel.class);
+        return BeanConverter.convert((String)o, HospitalEquipmentTypeInfoDto.class);
+    }
+
+    /**
+     * 新增或修改医院设备类型缓存信息
+     * @param hospitalEquipmentTypeInfoModel 医院设备类型缓存信息
+     */
+    public void addHospitalEquipmentTypeRedisInfo(HospitalEquipmentTypeInfoDto hospitalEquipmentTypeInfoModel) {
+        if(!ObjectUtils.isEmpty(hospitalEquipmentTypeInfoModel)){
+            redisUtils.hset(LabManageMentServiceEnum.E.getCode() + hospitalEquipmentTypeInfoModel.getHospitalcode(),
+                    hospitalEquipmentTypeInfoModel.getEquipmenttypeid(), JSONUtil.toJsonStr(hospitalEquipmentTypeInfoModel));
+        }
+    }
+
+    /**
+     * 移除医院设备类型缓存信息
+     * @param hospitalCode 医院id
+     * @param hospitalEquipmentTypeId 医院设备类型id
+     */
+    public void removeHospitalEquipmentTypeRedisInfo(String hospitalCode, String hospitalEquipmentTypeId) {
+        if(StringUtils.isNotBlank(hospitalCode) && StringUtils.isNotBlank(hospitalEquipmentTypeId)
+                && redisUtils.hHasKey(LabManageMentServiceEnum.E.getCode()+hospitalCode,hospitalEquipmentTypeId) ){
+            redisUtils.hdel(LabManageMentServiceEnum.E.getCode()+hospitalCode,hospitalEquipmentTypeId);
+        }
     }
 }
