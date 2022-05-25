@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 用户医院缓存i休尼希
+ * 用户医院缓存控制层
  * @author hc
  */
 @RestController

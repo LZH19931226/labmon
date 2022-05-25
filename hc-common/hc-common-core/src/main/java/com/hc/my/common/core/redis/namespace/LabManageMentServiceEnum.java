@@ -4,6 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum LabManageMentServiceEnum {
+    //医院设备类型(E+hospitalCode,equipmentTypeId,HospitalEquipmentTypeInfoModel)
+    E("E"),
     //医院信息（H+hospitalCode,HospitalCodeDto）
     H("H"),
     //用户存放异常的探头数据(W+hospitalCode,instrumentParamConfigNo,WarningRecordDto)
