@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
+
 public abstract class AbstractComponentCollector<T> implements ApplicationListener<ApplicationContextEvent> {
 
     /**

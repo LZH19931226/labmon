@@ -2,7 +2,6 @@ package com.hc.appliction;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
-import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
@@ -11,6 +10,7 @@ import com.hc.dto.UserRightDto;
 import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.HospitalRegistrationInfoService;
@@ -158,10 +158,6 @@ public class UserRightApplication {
             String hospitalCode = userRightDto.getHospitalCode();
             //查询医院信息
             HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
-
-            //查询医院设备类型信息
-            List<HospitalEquipmentTypeModel> result = operationlogApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
-
             userRightVoBuilder = UserRightVo.builder()
                     .username(userRightDto.getUsername())
                     .pwd(userRightDto.getPwd())
@@ -169,37 +165,23 @@ public class UserRightApplication {
                     .hospitalCode(userRightDto.getHospitalCode())
                     .userid(userRightDto.getUserid())
                     .phoneNum(userRightDto.getPhoneNum())
-                    .hospitalEquipmentTypeModels(result)
                     .userType(userRightDto.getUserType())
                     .hospitalName(hospitalInfo.getHospitalName()).build();
         }
         return userRightVoBuilder;
     }
 
-    public List<UserRightVo> findALLUserRightInfo(String hospitalCode) {
+    /**
+     * 查询该医院的用户信息
+     * @param hospitalCode
+     * @return
+     */
+    public List<UserRightRedisDto> findALLUserRightInfo(String hospitalCode) {
         List<UserRightDto> userRightDtoList =  userRightService.findALLUserRightInfoByHospitalCode(hospitalCode);
         if(CollectionUtils.isEmpty(userRightDtoList)){
             return null;
         }
-        List<UserRightVo> list = new ArrayList<>();
-        for (UserRightDto userRightDto : userRightDtoList) {
-            UserRightVo build = UserRightVo.builder()
-                    .hospitalCode(userRightDto.getHospitalCode())
-                    .hospitalName(userRightDto.getHospitalName())
-                    .userType(userRightDto.getUserType())
-                    .timeoutWarning(userRightDto.getTimeoutWarning())
-                    .timeout(userRightDto.getTimeout())
-                    .reminders(userRightDto.getReminders())
-                    .deviceType(userRightDto.getDeviceType())
-                    .isUse(userRightDto.getIsUse())
-                    .phoneNum(userRightDto.getPhoneNum())
-                    .userid(userRightDto.getUserid())
-                    .username(userRightDto.getUsername())
-                    .nickname(userRightDto.getNickname())
-                    .pwd(userRightDto.getPwd())
-                    .build();
-            list.add(build);
-        }
-        return list;
+
+        return BeanConverter.convert(userRightDtoList,UserRightRedisDto.class);
     }
 }

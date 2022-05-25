@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.UserRightApplication;
 import com.hc.appliction.command.UserRightCommand;
+import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,7 +60,7 @@ public class UserRightInfoController {
      * @return
      */
     @GetMapping("/getALLHospitalUserRightInfo")
-    public List<UserRightVo> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode){
+    public List<UserRightRedisDto> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode){
         return userRightApplication.findALLUserRightInfo(hospitalCode);
     }
 }
