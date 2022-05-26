@@ -129,7 +129,6 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         if (!ObjectUtils.isEmpty(hospitalequiment)){
             throw  new IedsException(HospitalequimentEnumErrorCode.THE_DEVICE_HAS_AN_ALARM_PERIOD.getCode());
         }
-
         hospitalequimentRepository.remove(Wrappers.lambdaQuery(new HospitalequimentPo())
         .eq(HospitalequimentPo::getHospitalcode,hospitalCode)
         .eq(HospitalequimentPo::getEquipmenttypeid,equipmenttypeid));

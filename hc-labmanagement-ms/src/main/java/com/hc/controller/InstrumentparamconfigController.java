@@ -3,7 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.InstrumentparamconfigApplication;
 import com.hc.application.command.InstrumentparamconfigCommand;
-import com.hc.vo.equimenttype.InstrumentmonitorVo;
+import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,7 +60,7 @@ public class InstrumentparamconfigController {
     }
 
     @GetMapping("/getInstrumentMonitorInfo")
-    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo(@RequestParam String hospitalCode){
+    public List<InstrumentmonitorDto> selectInstrumentMonitorInfo(@RequestParam("hospitalCode") String hospitalCode){
         return instrumentparamconfigApplication.selectInstrumentMonitorInfo(hospitalCode);
     }
 
