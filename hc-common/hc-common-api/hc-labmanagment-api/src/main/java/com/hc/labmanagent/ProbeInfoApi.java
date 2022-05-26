@@ -2,7 +2,7 @@ package com.hc.labmanagent;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
-import com.hc.vo.equimenttype.InstrumentmonitorVo;
+import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,7 +18,7 @@ public interface ProbeInfoApi {
      * @return
      */
     @GetMapping("/instrumentparamconfig/getInstrumentMonitorInfo")
-    ApiResponse<List<InstrumentmonitorVo>> selectInstrumentMonitorInfo(@RequestParam("hospitalCode") String hospitalCode);
+    ApiResponse<List<InstrumentmonitorDto>> selectInstrumentMonitorInfo(@RequestParam("hospitalCode") String hospitalCode);
 
 
     /**

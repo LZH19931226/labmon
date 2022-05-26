@@ -8,12 +8,13 @@ import com.hc.application.config.RedisUtils;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.ProbeInfoApi;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.util.BeanConverter;
-import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -68,15 +69,16 @@ public class ProbeRedisApplication {
      * 先删除在存入redis
      */
     public void probeRedisInfoCache() {
-        List<String> hospitalCodeList = hospitalInfoApi.findHospitalCodeList();
+        List<String> hospitalCodeList = hospitalInfoApi.findHospitalCodeList().getResult();
         for (String hospitalCode : hospitalCodeList) {
-            hospitalCodeList.forEach(res->{
-                if(redisUtils.hasKey(LabManageMentServiceEnum.P.getCode()+res)){
-                    redisUtils.hdel(LabManageMentServiceEnum.P.getCode()+res);
-                }
-            });
-            List<InstrumentmonitorVo> instrumentmonitorVos = probeInfoApi.selectInstrumentMonitorInfo(hospitalCode).getResult();
-            List<InstrumentInfoDto> convert = BeanConverter.convert(instrumentmonitorVos, InstrumentInfoDto.class);
+            if(redisUtils.hasKey(LabManageMentServiceEnum.P.getCode()+hospitalCode)){
+                redisUtils.hDel(LabManageMentServiceEnum.P.getCode()+hospitalCode);
+            }
+            List<InstrumentmonitorDto> instrumentmonitorDtos = probeInfoApi.selectInstrumentMonitorInfo(hospitalCode).getResult();
+            if(CollectionUtils.isEmpty(instrumentmonitorDtos)){
+                continue;
+            }
+            List<InstrumentInfoDto> convert = BeanConverter.convert(instrumentmonitorDtos, InstrumentInfoDto.class);
             for (InstrumentInfoDto instrumentInfoDto : convert) {
                 addProbeRedisInfo(instrumentInfoDto);
             }

@@ -24,5 +24,5 @@ public interface HospitalInfoApi {
      * @return 医院id集合
      */
     @GetMapping("/hospitalInfo/findHospitalCodeList")
-    List<String> findHospitalCodeList();
+    ApiResponse<List<String>> findHospitalCodeList();
 }

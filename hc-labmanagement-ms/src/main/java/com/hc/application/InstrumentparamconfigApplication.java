@@ -14,11 +14,11 @@ import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
-import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -348,33 +348,11 @@ public class InstrumentparamconfigApplication {
      * 查询探头监控信息
      * @return
      */
-    public List<InstrumentmonitorVo> selectInstrumentMonitorInfo(String hospitalCode) {
+    public List<InstrumentmonitorDto> selectInstrumentMonitorInfo(String hospitalCode) {
         List<InstrumentmonitorDTO>  dtoList = instrumentmonitorService.selectInstrumentMonitorInfo(hospitalCode);
         if(CollectionUtils.isEmpty(dtoList)) return  null;
-        List<InstrumentmonitorVo> list = new ArrayList<>();
-        dtoList.forEach(res->{
-            InstrumentmonitorVo build = InstrumentmonitorVo.builder()
-                    .instrumentno(res.getInstrumentno())
-                    .equipmentname(res.getEquipmentname())
-                    .hospitalcode(res.getHospitalcode())
-                    .instrumenttypeid(res.getInstrumenttypeid())
-                    .instrumenttypename(res.getInstrumenttypename())
-                    .instrumentconfigid(res.getInstrumentconfigid())
-                    .instrumentconfigname(res.getInstrumentconfigname())
-                    .lowlimit(res.getLowlimit())
-                    .highlimit(res.getHighlimit())
-                    .alwayalarm(res.getAlwayalarm())
-                    .instrumentparamconfigno(res.getInstrumentparamconfigno())
-                    .pushtime(res.getPushtime())
-                    .warningtime(res.getWarningtime())
-                    .calibration(res.getCalibration())
-                    .alwayalarm(res.getAlwayalarm())
-                    .equipmentno(res.getEquipmentno())
-                    .warningphone(res.getWarningphone())
-                    .build();
-            list.add(build);
-        });
-        return list;
+        List<InstrumentmonitorDto> convert = BeanConverter.convert(dtoList, InstrumentmonitorDto.class);
+        return convert;
     }
 
     /**
