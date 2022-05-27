@@ -69,7 +69,7 @@ public class ProbeRedisApplication {
      * 先删除在存入redis
      */
     public void probeRedisInfoCache() {
-        List<String> hospitalCodeList = hospitalInfoApi.findHospitalCodeList();
+        List<String> hospitalCodeList = hospitalInfoApi.findHospitalCodeList().getResult();
         for (String hospitalCode : hospitalCodeList) {
             if(redisUtils.hasKey(LabManageMentServiceEnum.P.getCode()+hospitalCode)){
                 redisUtils.hDel(LabManageMentServiceEnum.P.getCode()+hospitalCode);
