@@ -150,9 +150,7 @@ public class SocketMessageListener {
         } catch (Exception e) {
             LOGGER.error("超时报警异常：" + e.getMessage());
         }
-
     }
-
 
     public void msctMessage(String message) {
         WarningMqModel mQmodel = JsonUtil.toBean(message, WarningMqModel.class);

@@ -31,5 +31,19 @@
             and t1.isvisible= #{hospitalEquimentTypeCommand.isvisible}
         </if>
     </select>
-
+    <select id="getAllHospitalEquipmentTypeInfo"   resultType="com.hc.dto.HospitalequimentDTO">
+        SELECT
+            t1.hospitalcode,
+            t3.hospitalname,
+            t2.equipmenttypeid,
+            t2.equipmenttypename,
+            t1.isvisible,
+            t1.alwayalarm,
+            t1.timeout,
+            t1.timeouttime
+        FROM
+            hospitalequiment t1
+                LEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid
+                LEFT JOIN hospitalofreginfo t3 ON t1.hospitalcode = t3.hospitalcode
+    </select>
 </mapper>

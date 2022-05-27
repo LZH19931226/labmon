@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.MonitorEquipmentApplication;
 import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
 import io.swagger.annotations.Api;
@@ -58,5 +59,11 @@ public class MonitorEquipmentController {
     @ApiOperation("获取设备所有监控类型")
     public  List<MonitorinstrumenttypeVo>  selectMonitorEquipmentType(@RequestParam(value = "instrumenttypeid",required = false) String instrumenttypeid){
          return monitorEquipmentApplication.selectMonitorEquipmentType(instrumenttypeid);
+    }
+
+    @GetMapping("/getAllMonitorEquipmentInfo")
+    @ApiOperation("获取所有的监控设备信息")
+    public List<SnDeviceDto> getAllMonitorEquipmentInfo(){
+        return monitorEquipmentApplication.getAllMonitorEquipmentInfo();
     }
 }

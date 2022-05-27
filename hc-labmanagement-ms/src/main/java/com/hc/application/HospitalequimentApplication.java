@@ -174,29 +174,35 @@ public class HospitalequimentApplication {
         if (CollectionUtils.isNotEmpty(hospitalEquipmentList)) {
             List<String> hospitalCodes = hospitalEquipmentList.stream().map(HospitalequimentDTO::getHospitalcode).collect(Collectors.toList());
             List<MonitorequipmentwarningtimeDTO> warningTimes  = monitorequipmentwarningtimeService.selectWarningtimeByHosCode(hospitalCodes);
-            Map<String, List<MonitorequipmentwarningtimeDTO>> timesMap = new  HashedMap();
+            Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> warningTimesMap = new  HashedMap();
             if (CollectionUtils.isNotEmpty(warningTimes)){
-                 timesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode));
+                warningTimesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode,Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid)));
             }
-            Map<String, List<MonitorequipmentwarningtimeDTO>> finalTimesMap = timesMap;
-            hospitalEquipmentList.forEach(s->{
+            Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>>  finalTimesMap = warningTimesMap;
+            for (HospitalequimentDTO s : hospitalEquipmentList) {
                 String hospitalcode = s.getHospitalcode();
+                String equipmenttypeid = s.getEquipmenttypeid();
                 List<MonitorequipmentwarningtimeVo> workTimeBlock = new ArrayList<>();
-                if (!finalTimesMap.isEmpty()){
-                    List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOS    = finalTimesMap.get(hospitalcode);
-                    if (CollectionUtils.isNotEmpty(monitorequipmentwarningtimeDTOS)){
-                        workTimeBlock = new ArrayList<>();
-                        List<MonitorequipmentwarningtimeVo> finalWorkTimeBlock = workTimeBlock;
-                        monitorequipmentwarningtimeDTOS.forEach(f->{
-                            MonitorequipmentwarningtimeVo time = MonitorequipmentwarningtimeVo.builder()
-                                    .timeblockid(f.getTimeblockid())
-                                    .begintime(f.getBegintime())
-                                    .endtime(f.getEndtime())
-                                    .build();
-                            finalWorkTimeBlock.add(time);
-                        });
+                if (!finalTimesMap.isEmpty() && finalTimesMap.containsKey(hospitalcode)){
+                    Map<String, List<MonitorequipmentwarningtimeDTO>> equipmentTypeIdMap = finalTimesMap.get(hospitalcode);
+                    if(equipmentTypeIdMap.containsKey(equipmenttypeid)){
+                        List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOS   = equipmentTypeIdMap.get(equipmenttypeid);
+                        if (CollectionUtils.isNotEmpty(monitorequipmentwarningtimeDTOS)){
+                            workTimeBlock = new ArrayList<>();
+                            List<MonitorequipmentwarningtimeVo> finalWorkTimeBlock = workTimeBlock;
+                            monitorequipmentwarningtimeDTOS.forEach(f->{
+                                MonitorequipmentwarningtimeVo time = MonitorequipmentwarningtimeVo.builder()
+                                        .timeblockid(f.getTimeblockid())
+                                        .begintime(f.getBegintime())
+                                        .endtime(f.getEndtime())
+                                        .build();
+                                finalWorkTimeBlock.add(time);
+                            });
+                        }
                     }
+
                 }
+
                 HospitalequimentVo hosEqVo = HospitalequimentVo.builder()
                         .hospitalcode(hospitalcode)
                         .hospitalname(s.getHospitalname())
@@ -209,7 +215,7 @@ public class HospitalequimentApplication {
                         .workTimeBlock(workTimeBlock)
                         .build();
                 hospitalEquipmentVos.add(hosEqVo);
-            });
+            }
         }
         page.setRecords(hospitalEquipmentVos);
         return page;
@@ -252,5 +258,41 @@ public class HospitalequimentApplication {
             });
         }
         return list;
+    }
+
+    /**
+     * 获取所有的医院设备信息
+     * @return
+     */
+    public List<HospitalEquipmentTypeInfoDto> getAllHospitalEquipmentTypeInfo() {
+        List<HospitalequimentDTO> hospitalEquipmentTypeList = hospitalequimentService.getAllHospitalEquipmentTypeInfo();
+        if(CollectionUtils.isEmpty(hospitalEquipmentTypeList)){
+            return null;
+        }
+        List<String> hospitalCodes = hospitalEquipmentTypeList.stream().map(HospitalequimentDTO::getHospitalcode).collect(Collectors.toList());
+        List<MonitorequipmentwarningtimeDTO> warningTimes  = monitorequipmentwarningtimeService.selectWarningtimeByHosCode(hospitalCodes);
+        //先以医院分组，再以设备类型分组
+        Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> warningTimesMap = new  HashedMap();
+        if(CollectionUtils.isNotEmpty(warningTimes)){
+            warningTimesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode, Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid)));
+        }
+        Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> hospitalCodeKeyMap = warningTimesMap;
+
+        List<HospitalEquipmentTypeInfoDto>  resultList = new ArrayList<>();
+        for (HospitalequimentDTO hospitalequimentDTO : hospitalEquipmentTypeList) {
+            HospitalEquipmentTypeInfoDto hospitalEquipmentTypeInfoDto = BeanConverter.convert(hospitalequimentDTO, HospitalEquipmentTypeInfoDto.class);
+            String hospitalCode = hospitalEquipmentTypeInfoDto.getHospitalcode();
+            String equipmentTypeId = hospitalEquipmentTypeInfoDto.getEquipmenttypeid();
+            if(StringUtils.equals("0",hospitalEquipmentTypeInfoDto.getAlwayalarm()) && hospitalCodeKeyMap.containsKey(hospitalCode)){
+               Map<String, List<MonitorequipmentwarningtimeDTO>> equipmentTypeIdMap = hospitalCodeKeyMap.get(hospitalCode);
+                if(equipmentTypeIdMap.containsKey(equipmentTypeId)){
+                    List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOS = equipmentTypeIdMap.get(equipmentTypeId);
+                    List<MonitorEquipmentWarningTimeDto> convert = BeanConverter.convert(monitorequipmentwarningtimeDTOS, MonitorEquipmentWarningTimeDto.class);
+                    hospitalEquipmentTypeInfoDto.setWarningTimeList(convert);
+                }
+           }
+           resultList.add(hospitalEquipmentTypeInfoDto);
+        }
+        return resultList;
     }
 }

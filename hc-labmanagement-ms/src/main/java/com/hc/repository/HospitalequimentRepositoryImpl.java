@@ -74,4 +74,9 @@ public class HospitalequimentRepositoryImpl extends ServiceImpl<Hospitalequiment
     public List<HospitalequimentDTO> findHospitalEquipmentTypeByCode(String hospitalCode) {
         return hospitalequimentDao.selectHospitalEquipmentInfo(hospitalCode);
     }
+
+    @Override
+    public List<HospitalequimentDTO> getAllHospitalEquipmentTypeInfo() {
+        return hospitalequimentDao.getAllHospitalEquipmentTypeInfo();
+    }
 }

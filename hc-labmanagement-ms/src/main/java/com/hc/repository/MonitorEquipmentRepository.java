@@ -55,4 +55,10 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      * @param equipmentNo
      */
     void deleteMonitorEquipmentInfo(String equipmentNo);
+
+    /**
+     * 获取所以有的设备信息
+     * @return
+     */
+    List<MonitorEquipmentDto> getAllMonitorEquipmentInfo();
 }

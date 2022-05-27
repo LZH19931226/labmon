@@ -43,4 +43,5 @@ public interface MonitorequipmentwarningtimeRepository extends IService <Monitor
      * @return
      */
     List<MonitorequipmentwarningtimeDTO> selectWarningtimeByEnoList(List<String> equipmentNoList);
+
 }

@@ -144,4 +144,14 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
     public List<String> selectHospitalCodeList() {
         return hospitalRegistrationInfoDao.selectHospitalCodeList();
     }
+
+    /**
+     * 获取所有的医院信息
+     * @return
+     */
+    @Override
+    public List<HospitalRegistrationInfoDto> getAllHospitalInfo() {
+        List<HospitalRegistrationInfoPo> hospitalRegistrationInfoPos = hospitalRegistrationInfoDao.selectList(null);
+        return BeanConverter.convert(hospitalRegistrationInfoPos,HospitalRegistrationInfoDto.class);
+    }
 }

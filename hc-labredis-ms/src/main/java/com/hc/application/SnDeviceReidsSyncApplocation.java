@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.TypeReference;
 import com.hc.application.config.RedisUtils;
+import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
@@ -27,6 +28,8 @@ public class SnDeviceReidsSyncApplocation {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Autowired
+    private MonitorEquipmentApi monitorEquipmentApi;
     /**
      * 添加或更新设备缓存信息
      * @param snDeviceDto
@@ -142,5 +145,21 @@ public class SnDeviceReidsSyncApplocation {
             map.putAll(map1);
         }
         return JSON.parseObject(JSON.toJSONString(map), new TypeReference<MonitorequipmentlastdataDto>(){});
+    }
+
+    /**
+     *  同步监控设备信息
+     */
+    public void MonitorEquipmentInfoCache() {
+        List<SnDeviceDto> snDeviceDtoList = monitorEquipmentApi.getAllMonitorEquipmentInfo().getResult();
+        if (CollectionUtils.isEmpty(snDeviceDtoList)) {
+            return;
+        }
+        //清除所有的sn设备信息
+        redisUtils.hDel(LabManageMentServiceEnum.DEVICEINFO.getCode());
+        for (SnDeviceDto snDeviceDto : snDeviceDtoList) {
+            String sn = snDeviceDto.getSn();
+            redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn,JSONUtil.toJsonStr(snDeviceDto));
+        }
     }
 }

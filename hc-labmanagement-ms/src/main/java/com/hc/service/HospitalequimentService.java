@@ -40,5 +40,11 @@ public interface HospitalequimentService{
      * @return
      */
     List<HospitalequimentDTO> findHospitalEquipmentTypeByCode(String hospitalCode);
+
+    /**
+     * 查询所有的医院设备信息
+     * @return
+     */
+    List<HospitalequimentDTO> getAllHospitalEquipmentTypeInfo();
 }
 

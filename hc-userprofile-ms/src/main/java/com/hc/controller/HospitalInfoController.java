@@ -5,6 +5,7 @@ import com.hc.appliction.HospitalInfoApplication;
 import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.command.labmanagement.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserSchedulingVo;
 import io.swagger.annotations.Api;
@@ -99,5 +100,14 @@ public class HospitalInfoController {
     @GetMapping("/findHospitalCodeList")
     public List<String> findHospitalCodeList(){
         return hospitalInfoApplication.selectHospitalCodeList();
+    }
+
+    /**
+     * 获取医院集合
+     * @return
+     */
+    @GetMapping("/getAllHospitalInfo")
+    public List<HospitalInfoDto> getAllHospitalInfo(){
+        return hospitalInfoApplication.getAllHospitalInfo();
     }
 }

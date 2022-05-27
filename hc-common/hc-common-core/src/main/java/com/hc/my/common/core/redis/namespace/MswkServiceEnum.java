@@ -8,8 +8,6 @@ public enum MswkServiceEnum {
     //缓存设备当前值
     L("L");
 
-
-
     private String code;
 
     MswkServiceEnum(String code){

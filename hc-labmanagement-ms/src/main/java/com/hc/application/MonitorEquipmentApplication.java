@@ -17,6 +17,7 @@ import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
@@ -26,6 +27,7 @@ import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
 import com.hc.vo.equimenttype.WarningTimeVo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -706,5 +708,40 @@ public class MonitorEquipmentApplication {
 
         }
         return monitorinstrumenttype;
+    }
+
+    /**
+     * 获取所有的监控设备信息
+     * @return
+     */
+    public List<SnDeviceDto> getAllMonitorEquipmentInfo() {
+        List<MonitorEquipmentDto> list =  monitorEquipmentService.getAllMonitorEquipmentInfo();
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        List<String> hospitalCodes = list.stream().map(MonitorEquipmentDto::getHospitalCode).collect(Collectors.toList());
+        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorequipmentwarningtimeService.selectWarningtimeByHospitalCode(hospitalCodes);
+
+        Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> warningTimeMap = new HashMap<>();
+        if (!CollectionUtils.isEmpty(warningTimeList)) {
+            warningTimeMap = warningTimeList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode, Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid)));
+        }
+        List<SnDeviceDto> snDeviceDtoList = new ArrayList<>();
+        for (MonitorEquipmentDto monitorEquipmentDto : list) {
+            SnDeviceDto snDeviceDto = BeanConverter.convert(monitorEquipmentDto, SnDeviceDto.class);
+            String hospitalCode = snDeviceDto.getHospitalCode();
+            String equipmentNo = snDeviceDto.getEquipmentNo();
+            String alwaysAlarm = snDeviceDto.getAlwaysAlarm();
+            if(MapUtils.isNotEmpty(warningTimeMap) && "0".equals(alwaysAlarm) && warningTimeMap.containsKey(hospitalCode)){
+                Map<String, List<MonitorequipmentwarningtimeDTO>> equipmentTypeIdMap = warningTimeMap.get(hospitalCode);
+                if(equipmentTypeIdMap.containsKey(equipmentNo)){
+                    List<MonitorequipmentwarningtimeDTO> monitorEquipmentWarningTimeDTOS = equipmentTypeIdMap.get(equipmentNo);
+                    List<MonitorEquipmentWarningTimeDto> dtos = BeanConverter.convert(monitorEquipmentWarningTimeDTOS, MonitorEquipmentWarningTimeDto.class);
+                    snDeviceDto.setWarningTimeList(dtos);
+                }
+            }
+            snDeviceDtoList.add(snDeviceDto);
+        }
+        return snDeviceDtoList;
     }
 }

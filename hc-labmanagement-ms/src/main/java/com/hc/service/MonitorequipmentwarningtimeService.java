@@ -6,7 +6,7 @@ import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import java.util.List;
 
 /**
- * 
+ *
  *
  * @author liuzhihao
  * @email 1969994698@qq.com
@@ -58,5 +58,13 @@ public interface MonitorequipmentwarningtimeService{
      * @return
      */
     List<MonitorequipmentwarningtimeDTO> selectWarningtimeByEnoList(List<String> equipmentNoList);
+
+
+    /**
+     * 查询所有的超时时段
+     * @param hospitalCodes
+     * @return
+     */
+    List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHospitalCode(List<String> hospitalCodes);
 }
 

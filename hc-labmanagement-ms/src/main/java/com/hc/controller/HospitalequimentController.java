@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.HospitalequimentApplication;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
+import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +48,6 @@ public class HospitalequimentController {
         return hospitalequimentApplication.selectHospitalEquimentType(hospitalEquimentTypeCommand);
     }
 
-
     @GetMapping("/deleteHospitalEquimentType")
     @ApiOperation("删除医院设备类型信息接口")
     public void deleteHospitalEquimentType(@RequestParam(name = "hospitalCode") String hospitalCode,
@@ -56,7 +56,14 @@ public class HospitalequimentController {
     }
 
     @GetMapping("/findHospitalEuipmentTypeInfo")
+    @ApiOperation("获取设备类型集合")
     public List<HospitalEquipmentTypeModel> findHospitalEquipmentTypeByCode(@RequestParam("hospitalCode")String hospitalCode){
         return hospitalequimentApplication.findHospitalEquipmentTypeByCode(hospitalCode);
+    }
+
+    @GetMapping("/getAllHospitalEquipmentTypeInfo")
+    @ApiOperation("获取所有的设备类型信息")
+    public List<HospitalEquipmentTypeInfoDto> getAllHospitalEquipmentTypeInfo(){
+        return hospitalequimentApplication.getAllHospitalEquipmentTypeInfo();
     }
 }

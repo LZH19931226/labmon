@@ -4,6 +4,7 @@ import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
+import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,4 +26,11 @@ public interface HospitalInfoApi {
      */
     @GetMapping("/hospitalInfo/findHospitalCodeList")
     ApiResponse<List<String>> findHospitalCodeList();
+
+    /**
+     * 获取医院集合
+     * @return
+     */
+    @GetMapping("/hospitalInfo/getAllHospitalInfo")
+    ApiResponse<List<HospitalInfoDto>> getAllHospitalInfo();
 }
