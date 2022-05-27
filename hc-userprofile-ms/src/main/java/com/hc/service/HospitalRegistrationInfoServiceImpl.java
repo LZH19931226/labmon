@@ -89,4 +89,9 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     public List<String> selectHospitalCodeList() {
         return hospitalRegistrationInfoRepository.selectHospitalCodeList();
     }
+
+    @Override
+    public List<HospitalRegistrationInfoDto> getAllHospitalInfo() {
+        return hospitalRegistrationInfoRepository.getAllHospitalInfo();
+    }
 }

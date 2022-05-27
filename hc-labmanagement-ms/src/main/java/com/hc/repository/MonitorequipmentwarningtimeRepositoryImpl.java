@@ -7,7 +7,6 @@ import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentWarningTimePo;
-import com.hc.repository.MonitorequipmentwarningtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

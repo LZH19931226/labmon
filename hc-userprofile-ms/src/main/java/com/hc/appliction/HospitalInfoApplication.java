@@ -296,4 +296,16 @@ public class HospitalInfoApplication {
     public List<String> selectHospitalCodeList() {
        return hospitalRegistrationInfoService.selectHospitalCodeList();
     }
+
+    /**
+     * 获取医院的所有信息
+     * @return
+     */
+    public List<HospitalInfoDto> getAllHospitalInfo() {
+        List<HospitalRegistrationInfoDto> list =  hospitalRegistrationInfoService.getAllHospitalInfo();
+        if(org.springframework.util.CollectionUtils.isEmpty(list)){
+                return null;
+        }
+        return BeanConverter.convert(list,HospitalInfoDto.class);
+    }
 }

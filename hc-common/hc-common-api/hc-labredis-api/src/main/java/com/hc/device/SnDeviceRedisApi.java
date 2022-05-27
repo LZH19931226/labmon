@@ -14,7 +14,9 @@ import java.util.List;
 @FeignClient(value = ApplicationName.REDIS)
 public interface SnDeviceRedisApi {
 
+
     @PostMapping("/snDevice/updateSnDeviceDtoSync")
+    @ApiOperation("新增,修改sn设备信息")
     void updateSnDeviceDtoSync(@RequestBody SnDeviceDto snDeviceDto);
 
     @GetMapping("/snDevice/getSnDeviceDto")

@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.repository.MonitorEquipmentRepository;
-import com.hc.service.MonitorEquipmentService;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,5 +80,10 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     @Override
     public void deleteMonitorEquipmentInfo(String equipmentNo) {
         monitorEquipmentRepository.deleteMonitorEquipmentInfo(equipmentNo);
+    }
+
+    @Override
+    public List<MonitorEquipmentDto> getAllMonitorEquipmentInfo() {
+        return monitorEquipmentRepository.getAllMonitorEquipmentInfo();
     }
 }

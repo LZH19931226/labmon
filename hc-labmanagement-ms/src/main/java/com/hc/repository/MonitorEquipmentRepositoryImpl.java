@@ -9,13 +9,9 @@ import com.hc.infrastructure.dao.MonitorEquipmentDao;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentPo;
-import com.hc.po.MonitorEquipmentWarningTimePo;
-import com.hc.repository.MonitorEquipmentRepository;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
-import com.hc.vo.equimenttype.WarningTimeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -45,19 +41,6 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
                 monitorEquipmentCommand.getEquipmentTypeId(),
                 monitorEquipmentCommand.getEquipmentName(),
                 monitorEquipmentCommand.getClientVisible());
-        if(CollectionUtils.isEmpty(monitorEquipmentDtoList)){
-            return null;
-        }
-        monitorEquipmentDtoList.forEach(res->{
-            List<MonitorEquipmentWarningTimePo> timePoList = monitorequipmentwarningtimeDao.selectList(Wrappers.lambdaQuery(new MonitorEquipmentWarningTimePo())
-                    .eq(MonitorEquipmentWarningTimePo::getHospitalCode, res.getHospitalCode())
-                    .eq(MonitorEquipmentWarningTimePo::getEquipmentId, res.getEquipmentNo())
-                    .eq(MonitorEquipmentWarningTimePo::getEquipmentCategory, "EQ"));
-            if(!CollectionUtils.isEmpty(timePoList)){
-                List<WarningTimeVo> convert = BeanConverter.convert(timePoList, WarningTimeVo.class);
-                res.setWarningTimeList(convert);
-            }
-        });
      return monitorEquipmentDtoList;
     }
 
@@ -112,5 +95,10 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
     @Override
     public void deleteMonitorEquipmentInfo(String equipmentNo) {
         monitorEquipmentDao.deleteById(equipmentNo);
+    }
+
+    @Override
+    public List<MonitorEquipmentDto> getAllMonitorEquipmentInfo() {
+        return monitorEquipmentDao.getAllMonitorEquipmentInfo();
     }
 }

@@ -5,7 +5,6 @@ import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentWarningTimePo;
 import com.hc.repository.MonitorequipmentwarningtimeRepository;
-import com.hc.service.MonitorequipmentwarningtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,5 +90,14 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
     @Override
     public List<MonitorequipmentwarningtimeDTO> selectWarningtimeByEnoList(List<String> equipmentNoList) {
         return monitorequipmentwarningtimeRepository.selectWarningtimeByEnoList(equipmentNoList);
+    }
+
+
+    @Override
+    public List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHospitalCode(List<String> hospitalCodes) {
+        List<MonitorEquipmentWarningTimePo> times = monitorequipmentwarningtimeRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentWarningTimePo())
+                .eq(MonitorEquipmentWarningTimePo::getEquipmentCategory, "EQ")
+                .in(MonitorEquipmentWarningTimePo::getHospitalCode, hospitalCodes));
+        return BeanConverter.convert(times,MonitorequipmentwarningtimeDTO.class);
     }
 }

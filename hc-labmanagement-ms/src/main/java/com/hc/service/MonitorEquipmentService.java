@@ -52,4 +52,10 @@ public interface MonitorEquipmentService {
      * @param equipmentNo
      */
     void deleteMonitorEquipmentInfo(String equipmentNo);
+
+    /**
+     * 获取所有的设备信息
+     * @return
+     */
+    List<MonitorEquipmentDto> getAllMonitorEquipmentInfo();
 }

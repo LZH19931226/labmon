@@ -2,18 +2,27 @@ package com.hc.application;
 
 import cn.hutool.json.JSONUtil;
 import com.hc.application.config.RedisUtils;
+import com.hc.labmanagent.HospitalEquipmentTypeApi;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class HospitalEquipmentTypeRedisApplication {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private HospitalEquipmentTypeApi hospitalEquipmentTypeApi;
 
     /**
      * 获取医院设备类型缓存信息
@@ -54,6 +63,26 @@ public class HospitalEquipmentTypeRedisApplication {
         if(StringUtils.isNotBlank(hospitalCode) && StringUtils.isNotBlank(hospitalEquipmentTypeId)
                 && redisUtils.hHasKey(LabManageMentServiceEnum.E.getCode()+hospitalCode,hospitalEquipmentTypeId) ){
             redisUtils.hdel(LabManageMentServiceEnum.E.getCode()+hospitalCode,hospitalEquipmentTypeId);
+        }
+    }
+
+    /**
+     * 同步所有的设备类型信息
+     */
+    public void hospitalEquipmentTypeRedisInfoCache() {
+        List<HospitalEquipmentTypeInfoDto> equipmentTypeInfoList = hospitalEquipmentTypeApi.getAllHospitalEquipmentTypeInfo().getResult();
+        if (CollectionUtils.isEmpty(equipmentTypeInfoList)) {
+            return;
+        }
+        //清除所有的医院设备信息
+        Set<String> hospitalCodeSet = equipmentTypeInfoList.stream().map(HospitalEquipmentTypeInfoDto::getHospitalcode).collect(Collectors.toSet());
+        hospitalCodeSet.forEach(hospitalCode->{
+            redisUtils.hDel(LabManageMentServiceEnum.E.getCode()+hospitalCode);
+        });
+        for (HospitalEquipmentTypeInfoDto hospitalEquipmentTypeInfoDto : equipmentTypeInfoList) {
+            String hospitalCode = hospitalEquipmentTypeInfoDto.getHospitalcode();
+            String equipmentTypeId = hospitalEquipmentTypeInfoDto.getEquipmenttypeid();
+            redisUtils.hset(LabManageMentServiceEnum.E.getCode()+hospitalCode,equipmentTypeId,JSONUtil.toJsonStr(hospitalEquipmentTypeInfoDto));
         }
     }
 }

@@ -2,6 +2,7 @@ package com.hc.controller;
 
 import com.hc.application.HospitalInfoRedisApplication;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class HospitalInfoRedisController {
      * @return 医院信息
      */
     @GetMapping("/findHospitalRedisInfo")
+    @ApiOperation("获取医院缓存信息")
     public HospitalInfoDto  findHospitalRedisInfo(@RequestParam("hospitalCode")String hospitalCode){
         return hospitalInfoRedisApplication.findHospitalInfo(hospitalCode);
     }
@@ -31,6 +33,7 @@ public class HospitalInfoRedisController {
      * @param hospitalInfoDto 医院缓存对象
      */
     @PostMapping("/insertHospitalRedisInfo")
+    @ApiOperation("新增医院缓存信息")
     public void addHospitalRedisInfo(@RequestBody HospitalInfoDto hospitalInfoDto){
         hospitalInfoRedisApplication.addHospitalRedisInfo(hospitalInfoDto);
     }
@@ -40,7 +43,17 @@ public class HospitalInfoRedisController {
      * @param hospitalCode 医院id
      */
     @DeleteMapping("/removeHospitalRedisInfo")
+    @ApiOperation("移除医院缓存信息")
     public void removeHospitalRedisInfo(@RequestParam("hospitalCode")String hospitalCode){
         hospitalInfoRedisApplication.removeHospitalRedisInfo(hospitalCode);
+    }
+
+    /**
+     * 同步医院信息
+     */
+    @GetMapping("/hospitalInfoCache")
+    @ApiOperation("同步医院信息")
+    public void hospitalInfoCache(){
+        hospitalInfoRedisApplication.hospitalInfoCache();
     }
 }
