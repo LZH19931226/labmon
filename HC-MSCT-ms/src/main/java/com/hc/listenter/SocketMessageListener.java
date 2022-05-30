@@ -443,7 +443,7 @@ public class SocketMessageListener {
         }
         String instrumentTypeId = snDeviceDto.getInstrumentTypeId();
         Monitorinstrument monitorinstrument = new Monitorinstrument();
-        monitorinstrument.setAlarmtime(snDeviceDto.getAlarmTime().intValue());
+        monitorinstrument.setAlwayalarm(snDeviceDto.getAlwaysAlarm());
         monitorinstrument.setChannel(snDeviceDto.getChannel());
         monitorinstrument.setEquipmentno(snDeviceDto.getEquipmentNo());
         monitorinstrument.setHospitalcode(snDeviceDto.getHospitalCode());
