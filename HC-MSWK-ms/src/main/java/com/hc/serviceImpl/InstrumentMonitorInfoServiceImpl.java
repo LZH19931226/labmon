@@ -1029,7 +1029,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         }
         if (!ObjectUtils.isEmpty(monitorequipmentlastdata)) {
             //从缓存中取数据
-            lastDataService.saveLastData(monitorequipmentlastdata, equipmentno, monitorinstrument.getHospitalcode(),cmdid);
+            lastDataService.saveLastData(monitorequipmentlastdata, equipmentno, monitorinstrument.getHospitalcode(),cmdid,sn);
         }
         return list;
     }

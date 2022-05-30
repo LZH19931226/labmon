@@ -28,12 +28,13 @@ public class LastDataServiceImpl implements LastDataService {
     private SnDeviceRedisApi snDeviceRedisApi;
 
     @Override
-    public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, String hospitalcode,String cmdId) {
+    public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, String hospitalcode,String cmdId,String sn) {
         //判断对象是否为空
         boolean b = checkObjAllFieldsIsNull(monitorequipmentlastdata);
         if (b) {
             return;
         }
+        monitorequipmentlastdata.setSn(sn);
         monitorequipmentlastdata.setCmdid(cmdId);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(new Date());
