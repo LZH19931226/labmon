@@ -8,7 +8,16 @@ import java.util.Date;
 @Data
 public class MonitorequipmentlastdataDto implements Serializable {
 
+    /**
+     * sn号
+     */
+    private String sn;
+
+    /**
+     * 命令id
+     */
     private String cmdId;
+
     /**
      * 设备编号
      */

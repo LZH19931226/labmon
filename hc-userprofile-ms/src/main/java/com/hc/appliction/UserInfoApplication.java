@@ -49,8 +49,8 @@ public class UserInfoApplication {
     /**
      * 获取用户信息
      *
-     * @param userid
-     * @return
+     * @param userid 用户id
+     * @return 用户信息
      */
     public UserBackModel findUserInfo(String userid) {
         UserBackDto userBackDto = userBackService.selectUserBackByUserId(userid);
@@ -59,8 +59,8 @@ public class UserInfoApplication {
 
     /**
      * 分页获取后台用户信息
-     * @param userCommand
-     * @return
+     * @param userCommand 用户参数对象
+     * @return 分页对象
      */
     public Page<UserInfoVo> findUserAllInfo(UserCommand userCommand) {
         Page<UserInfoVo> page = new Page<>(userCommand.getPageCurrent(),userCommand.getPageSize());
@@ -82,7 +82,7 @@ public class UserInfoApplication {
 
     /**
      * 删除用户信息
-     * @param userid
+     * @param userid 用户id
      */
     public void deleteUserInfo(String[] userid) {
         userBackService.deleteUserInfo(userid);
@@ -90,7 +90,7 @@ public class UserInfoApplication {
 
     /**
      * 新增后台用户信息
-     * @param userCommand
+     * @param userCommand 用户参数对象
      */
     public void insertUserInfo(UserCommand userCommand) {
         userBackService.insertUserInfo(userCommand);

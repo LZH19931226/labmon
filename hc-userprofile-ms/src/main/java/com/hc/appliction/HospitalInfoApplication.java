@@ -20,7 +20,6 @@ import com.hc.service.UserBackService;
 import com.hc.service.UserSchedulingService;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserSchedulingVo;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -85,7 +84,6 @@ public class HospitalInfoApplication {
      * 插入医院信息
      *
      * @param hospitalCommand 医院视图对象
-     * @return
      */
     @Transactional(rollbackFor = Exception.class)
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
@@ -118,7 +116,7 @@ public class HospitalInfoApplication {
     /**
      * 更新医院信息
      *
-     * @param hospitalCommand
+     * @param hospitalCommand 医院信息参数
      */
     @Transactional(rollbackFor = Exception.class)
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
@@ -139,7 +137,7 @@ public class HospitalInfoApplication {
     /**
      * 根据医院编码删除医院信息
      *
-     * @param hospitalCode
+     * @param hospitalCode 医院id
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteHospitalInfoByCode(String hospitalCode) {
@@ -258,7 +256,7 @@ public class HospitalInfoApplication {
      */
     public List<UserSchedulingDto> mergeElements(List<UserSchedulingDto> userSchedulingDtoList) {
         List<UserSchedulingDto> listDto = new ArrayList<>();
-        Map<String, UserSchedulingDto> map = new HashedMap();
+        Map<String, UserSchedulingDto> map = new HashMap<>();
         if (CollectionUtils.isNotEmpty(userSchedulingDtoList)) {
             for (UserSchedulingDto user : userSchedulingDtoList) {
                 String str = "" + user.getUsername();
@@ -281,8 +279,8 @@ public class HospitalInfoApplication {
 
     /**
      * 通过医院code获取医院信息
-     * @param hospitalCode
-     * @return
+     * @param hospitalCode 医院id
+     * @return 医院信息模型
      */
     public HospitalMadel findHospitalInfoByCode(String hospitalCode) {
         HospitalRegistrationInfoDto hospitalRegistrationInfoDto = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
@@ -291,7 +289,7 @@ public class HospitalInfoApplication {
 
     /**
      * 获取医院code集合
-     * @return
+     * @return 医院code集合
      */
     public List<String> selectHospitalCodeList() {
        return hospitalRegistrationInfoService.selectHospitalCodeList();
@@ -299,7 +297,7 @@ public class HospitalInfoApplication {
 
     /**
      * 获取医院的所有信息
-     * @return
+     * @return 医院信息集合
      */
     public List<HospitalInfoDto> getAllHospitalInfo() {
         List<HospitalRegistrationInfoDto> list =  hospitalRegistrationInfoService.getAllHospitalInfo();

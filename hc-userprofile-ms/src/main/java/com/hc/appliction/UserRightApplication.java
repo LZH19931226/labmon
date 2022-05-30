@@ -83,7 +83,7 @@ public class UserRightApplication {
 
     /**
      * 新增用户信息
-     * @param userRightCommand
+     * @param userRightCommand 用户参数对象
      */
     public void insertUserRightInfo(UserRightCommand userRightCommand) {
         userRightService.insertUserRightInfo(userRightCommand);
@@ -95,6 +95,15 @@ public class UserRightApplication {
         operationlogApi.addUserRightLog(userRightInfoCommand);
     }
 
+    /**
+     * 构建日志对象
+     * @param userId 用户id
+     * @param oldInfo 旧的用户对象
+     * @param newInfo 新的用户对象
+     * @param type 模块类型
+     * @param operationType 操作类型
+     * @return 用户日志信息对象
+     */
     private UserRightInfoCommand build(String userId, UserRightLogCommand oldInfo, UserRightCommand newInfo, String type, String operationType) {
         UserRightInfoCommand userRightInfoCommand = new UserRightInfoCommand();
         //查询用户信息
@@ -118,7 +127,7 @@ public class UserRightApplication {
 
     /**
      * 修改用户信息
-     * @param userRightCommand
+     * @param userRightCommand 用户参数
      */
     public void updateUserRightInfo(UserRightCommand userRightCommand) {
         UserRightDto userRightDto = userRightService.selectUserRightInfo(userRightCommand.getUserid());
@@ -134,7 +143,7 @@ public class UserRightApplication {
 
     /**
      * 删除用户信息
-     * @param userRightCommand
+     * @param userRightCommand 用户参数
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteUserRightInfo(UserRightCommand userRightCommand) {
@@ -148,8 +157,8 @@ public class UserRightApplication {
 
     /**
      * 用户登录
-     * @param userRightCommand
-     * @return
+     * @param userRightCommand 用户参数
+     * @return 用户视图对象
      */
     public UserRightVo Login(UserRightCommand userRightCommand) {
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
@@ -173,8 +182,8 @@ public class UserRightApplication {
 
     /**
      * 查询该医院的用户信息
-     * @param hospitalCode
-     * @return
+     * @param hospitalCode 医院id
+     * @return 用户缓存集合
      */
     public List<UserRightRedisDto> findALLUserRightInfo(String hospitalCode) {
         List<UserRightDto> userRightDtoList =  userRightService.findALLUserRightInfoByHospitalCode(hospitalCode);

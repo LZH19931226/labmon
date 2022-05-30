@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserCommand;
@@ -27,6 +27,11 @@ public class UserBackServiceImpl  implements UserBackService {
     @Autowired
     private UserBackRepository userBackRepository;
 
+    /**
+     * 用户登录
+     * @param userCommand 用户数据传输对象
+     * @return 用户对象
+     */
     @Override
     public UserBackDto userLogin(UserCommand userCommand) {
         String username = userCommand.getUsername();
@@ -43,7 +48,7 @@ public class UserBackServiceImpl  implements UserBackService {
 
     /**
      * 修改用户信息
-     * @param userCommand
+     * @param userCommand 用户参数
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -64,8 +69,8 @@ public class UserBackServiceImpl  implements UserBackService {
     /**
      * 根据用户id查询user信息
      *
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 用户信息
      */
     @Override
     public UserBackDto selectUserBackByUserId(String userId) {
@@ -75,9 +80,9 @@ public class UserBackServiceImpl  implements UserBackService {
     /**
      * 分页获取后台人员信息
      *
-     * @param page
-     * @param userCommand
-     * @return
+     * @param page 分页对象
+     * @param userCommand 用户参数对象
+     * @return 用户集合
      */
     @Override
     public List<UserBackDto> findUserAllInfo(Page<UserInfoVo> page, UserCommand userCommand) {
@@ -87,7 +92,7 @@ public class UserBackServiceImpl  implements UserBackService {
     /**
      * 删除用户信息
      *
-     * @param userid
+     * @param userid 用户id
      */
     @Override
     public void deleteUserInfo(String[] userid) {
@@ -97,7 +102,7 @@ public class UserBackServiceImpl  implements UserBackService {
     /**
      * 新增用户信息
      *
-     * @param userCommand
+     * @param userCommand 用户参数对象
      */
     @Override
     public void insertUserInfo(UserCommand userCommand) {

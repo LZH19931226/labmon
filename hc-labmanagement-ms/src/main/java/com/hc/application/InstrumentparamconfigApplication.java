@@ -299,7 +299,6 @@ public class InstrumentparamconfigApplication {
         probeRedisApi.removeProbeRedisInfo(LabManageMentServiceEnum.P.getCode() + hospitalcode,str);
     }
 
-
     /**
      * 分页获取探头信息
      *
@@ -351,8 +350,7 @@ public class InstrumentparamconfigApplication {
     public List<InstrumentmonitorDto> selectInstrumentMonitorInfo(String hospitalCode) {
         List<InstrumentmonitorDTO>  dtoList = instrumentmonitorService.selectInstrumentMonitorInfo(hospitalCode);
         if(CollectionUtils.isEmpty(dtoList)) return  null;
-        List<InstrumentmonitorDto> convert = BeanConverter.convert(dtoList, InstrumentmonitorDto.class);
-        return convert;
+        return BeanConverter.convert(dtoList, InstrumentmonitorDto.class);
     }
 
     /**

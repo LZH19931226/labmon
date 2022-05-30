@@ -24,16 +24,12 @@ import com.hc.service.OperationlogService;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import com.hc.vo.equimenttype.MonitorequipmentwarningtimeVo;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -83,10 +79,10 @@ public class HospitalequimentApplication {
 
         HospitalEquipmentTypeInfoDto result = new HospitalEquipmentTypeInfoDto();
 
-        String hospitalcode = hospitalEquimentTypeCommand.getHospitalcode();
-        String equipmenttypeid = hospitalEquimentTypeCommand.getEquipmenttypeid();
-        result.setHospitalcode(hospitalcode);
-        result.setEquipmenttypeid(equipmenttypeid);
+        String hospitalCode = hospitalEquimentTypeCommand.getHospitalcode();
+        String equipmentTypeId = hospitalEquimentTypeCommand.getEquipmenttypeid();
+        result.setHospitalcode(hospitalCode);
+        result.setEquipmenttypeid(equipmentTypeId);
         result.setIsvisible(hospitalEquimentTypeCommand.getIsvisible());
         result.setAlwayalarm(hospitalEquimentTypeCommand.getAlwayalarm());
 
@@ -174,7 +170,7 @@ public class HospitalequimentApplication {
         if (CollectionUtils.isNotEmpty(hospitalEquipmentList)) {
             List<String> hospitalCodes = hospitalEquipmentList.stream().map(HospitalequimentDTO::getHospitalcode).collect(Collectors.toList());
             List<MonitorequipmentwarningtimeDTO> warningTimes  = monitorequipmentwarningtimeService.selectWarningtimeByHosCode(hospitalCodes);
-            Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> warningTimesMap = new  HashedMap();
+            Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> warningTimesMap = new HashMap<>();
             if (CollectionUtils.isNotEmpty(warningTimes)){
                 warningTimesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode,Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid)));
             }
@@ -200,7 +196,6 @@ public class HospitalequimentApplication {
                             });
                         }
                     }
-
                 }
 
                 HospitalequimentVo hosEqVo = HospitalequimentVo.builder()
@@ -272,7 +267,7 @@ public class HospitalequimentApplication {
         List<String> hospitalCodes = hospitalEquipmentTypeList.stream().map(HospitalequimentDTO::getHospitalcode).collect(Collectors.toList());
         List<MonitorequipmentwarningtimeDTO> warningTimes  = monitorequipmentwarningtimeService.selectWarningtimeByHosCode(hospitalCodes);
         //先以医院分组，再以设备类型分组
-        Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> warningTimesMap = new  HashedMap();
+        Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>> warningTimesMap = new HashMap<>();
         if(CollectionUtils.isNotEmpty(warningTimes)){
             warningTimesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode, Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid)));
         }

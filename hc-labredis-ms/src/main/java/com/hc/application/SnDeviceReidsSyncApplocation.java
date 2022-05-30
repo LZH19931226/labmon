@@ -68,15 +68,19 @@ public class SnDeviceReidsSyncApplocation {
         List<MonitorequipmentlastdataDto>   monitorEquipmentLastDataDtoList =
                 getCurrentInfo(monitorequipmentlastdataDto.getHospitalcode(), monitorequipmentlastdataDto.getEquipmentno());
         if(CollectionUtils.isNotEmpty(monitorEquipmentLastDataDtoList)){
-            List<MonitorequipmentlastdataDto> removeList =
-                    monitorEquipmentLastDataDtoList.stream().filter(res -> res.getCmdId().equals(monitorequipmentlastdataDto.getCmdId())).collect(Collectors.toList());
+            String cmdId = monitorequipmentlastdataDto.getCmdId();
+            String sn = monitorequipmentlastdataDto.getSn();
+            List<MonitorequipmentlastdataDto> removeList = monitorEquipmentLastDataDtoList.stream()
+                            .filter(res -> res.getCmdId().equals(cmdId) && res.getSn().equals(sn))
+                            .collect(Collectors.toList());
             if(CollectionUtils.isNotEmpty(removeList)){
                 monitorEquipmentLastDataDtoList.removeAll(removeList);
             }
             monitorEquipmentLastDataDtoList.add(monitorequipmentlastdataDto);
             redisUtils.hset(MswkServiceEnum.L.getCode()+monitorequipmentlastdataDto.getHospitalcode(),
                     monitorequipmentlastdataDto.getEquipmentno(),JSONUtil.toJsonStr(monitorEquipmentLastDataDtoList));
-        }else {
+        }
+        else {
             List<MonitorequipmentlastdataDto> monitorList = new ArrayList<>();
             monitorList.add(monitorequipmentlastdataDto);
             redisUtils.hset(MswkServiceEnum.L.getCode()+monitorequipmentlastdataDto.getHospitalcode(),
@@ -161,5 +165,8 @@ public class SnDeviceReidsSyncApplocation {
             String sn = snDeviceDto.getSn();
             redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn,JSONUtil.toJsonStr(snDeviceDto));
         }
+        boolean b = redisUtils.hHasKey(LabManageMentServiceEnum.DEVICEINFO.getCode(), "1816120005");
+        System.out.println(b);
+
     }
 }

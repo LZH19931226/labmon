@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
@@ -6,6 +6,7 @@ import com.hc.constant.UserRightEnumCode;
 import com.hc.dto.UserRightDto;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.repository.UserRightRepository;
+import com.hc.service.UserRightService;
 import com.hc.vo.user.UserRightVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class UserRightServiceImpl implements UserRightService {
      * 分页查询用户信息
      * @param page  分页对象
      * @param userRightCommand 用户权限命令
-     * @return
+     * @return 用户信息集合
      */
     @Override
     public List<UserRightDto> findUserRightList(Page<UserRightVo> page, UserRightCommand userRightCommand) {
@@ -71,14 +72,12 @@ public class UserRightServiceImpl implements UserRightService {
             throw new IedsException(UserRightEnumCode.USER_ROLE_NOT_NULL.getMessage());
         }
         userRightRepository.insertUserRightInfo(userRightCommand);
-        //将当前医院所有人员同步进redis
-        List<UserRightDto> list = userRightRepository.selectHospitalInfoByCode(userRightCommand.getHospitalCode());
     }
 
     /**
      * 修改用户信息
      *
-     * @param userRightCommand 用户权限命令
+     * @param userRightCommand 用户参数对象
      */
     @Override
     public void updateUserRightInfo(UserRightCommand userRightCommand) {
@@ -104,14 +103,12 @@ public class UserRightServiceImpl implements UserRightService {
             throw new IedsException(UserRightEnumCode.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
         }
         userRightRepository.updateUserRightInfo(userRightCommand);
-        //更新redis信息
-        List<UserRightDto> list = userRightRepository.selectHospitalInfoByCode(userRightCommand.getHospitalCode());
     }
 
     /**
      * 删除用户信息
      *
-     * @param userRightCommand
+     * @param userRightCommand 用户参数对象
      */
     @Override
     public void deleteUserRightInfo(UserRightCommand userRightCommand) {
@@ -121,8 +118,8 @@ public class UserRightServiceImpl implements UserRightService {
     /**
      * 查询用户信息
      *
-     * @param userid
-     * @return
+     * @param userid 用户id
+     * @return 用户信息
      */
     @Override
     public UserRightDto selectUserRightInfo(String userid) {
@@ -132,8 +129,8 @@ public class UserRightServiceImpl implements UserRightService {
     /**
      * 查询用户信息
      *
-     * @param userRightCommand
-     * @return
+     * @param userRightCommand 用户参数对象
+     * @return 用户信息
      */
     @Override
     public UserRightDto selectUserRight(UserRightCommand userRightCommand) {

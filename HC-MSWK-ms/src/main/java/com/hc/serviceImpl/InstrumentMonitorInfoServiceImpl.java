@@ -51,6 +51,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
          *   数据插入到redis中，做超时设置： （需要做超时报警医院从redis里面获取）
          */
         String sn = model.getSN();
+
         List<WarningMqModel> list = new ArrayList<>();
         String cmdid = model.getCmdid();
         String substring = sn.substring(4, 6);

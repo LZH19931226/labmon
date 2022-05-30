@@ -63,7 +63,7 @@ public class OperationlogApplication {
         Long pageCurrent = operationLogCommand.getPageCurrent();
         Page<OperationlogVo> page = new Page<>(pageCurrent,pageSize);
         List<OperationlogDTO> operationlogDTO =  operationlogService.findAllLogInfo(page,operationLogCommand);
-        List<OperationlogVo> list = new ArrayList();
+        List<OperationlogVo> list = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(operationlogDTO)){
             operationlogDTO.forEach(res->{
                 OperationlogVo build = OperationlogVo.builder()

@@ -1,9 +1,10 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.dto.UserSchedulingDto;
 import com.hc.infrastructure.dao.UserSchedulingDao;
 import com.hc.repository.UserSchedulingRepository;
+import com.hc.service.UserSchedulingService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
