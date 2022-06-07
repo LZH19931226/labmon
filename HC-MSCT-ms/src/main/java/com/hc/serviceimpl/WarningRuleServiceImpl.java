@@ -3,16 +3,15 @@ package com.hc.serviceimpl;
 import com.hc.device.ProbeRedisApi;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.labmanagent.ProbeInfoApi;
+import com.hc.model.WarningModel;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
-import com.hc.model.WarningModel;
 import com.hc.service.WarningRuleService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +38,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     @Override
     public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe, String remark) {
         WarningModel warningModel = new WarningModel();
+        /*3.医院报警关联 如果是市电则直接报警*/
         //市电是立即报警
         if (StringUtils.isNotEmpty(remark)) {
             if (StringUtils.equals("市电异常", remark)) {
@@ -50,7 +50,8 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 return warningModel;
             }
         }
-        //为满足三次报警次数不推送
+        /*4.报警次数设置*/
+        //未满足三次报警次数不推送
         Integer alarmtime = probe.getAlarmTime();
         if (null == alarmtime) {
             alarmtime = 3;
@@ -67,8 +68,8 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
                 log.info("当前设备产生报警记录但是还未报警通知:{}", JsonUtil.toJson(probe));
                 return null;
-            }else {
-                probeRedisApi.removeProbeRedisInfo(hospitalcode, instrumentParamConfigNO);
+            }else {//这里已确认报警检测到异样已经有三次了
+//                probeRedisApi.removeProbeWarnInfo(hospitalcode, instrumentParamConfigNO);
                 warningModel.setPkid(pkid);
                 warningModel.setValue(data);
                 warningModel.setEquipmentname(probe.getEquipmentName());

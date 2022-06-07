@@ -6,7 +6,7 @@ spring:
         file-extension: yaml
         prefix: hc-msct-ms
         group: DEFAULT_GROUP
-        namespace: liuzhihao
+        namespace: chenkai
       discovery:
         server-addr: 172.16.10.204:8848
-        namespace: liuzhihao
+        namespace: chenkai
