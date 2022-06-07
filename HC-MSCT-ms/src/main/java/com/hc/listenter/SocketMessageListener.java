@@ -90,7 +90,6 @@ public class SocketMessageListener {
     public void onMessage3(String messageContent) {
         LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + ":" + messageContent);
         msctMessage(messageContent);
-
     }
 
     /**
@@ -217,6 +216,12 @@ public class SocketMessageListener {
         warningrecordRepository.update(Wrappers.lambdaUpdate(new Warningrecord()).eq(Warningrecord::getPkid,pkid).set(Warningrecord::getIsphone,"1"));
     }
 
+    /**
+     *  根据医院id获取用户集合
+     *   当有排班信息时，
+     * @param hospitalcode
+     * @return
+     */
     private List<UserRightRedisDto>  addUserScheduLing(String hospitalcode){
         List<UserRightRedisDto> list = new ArrayList<>();
         List<String> phones = new ArrayList<>();
@@ -284,7 +289,6 @@ public class SocketMessageListener {
      * N : 查询时间段.判断当前时间是否在报警的区间内
      */
     private boolean warningTimeBlockRule(Monitorinstrument monitorinstrument) {
-
         String sn = monitorinstrument.getSn();
         String hospitalcode = monitorinstrument.getHospitalcode();
         SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
@@ -297,8 +301,8 @@ public class SocketMessageListener {
                 return true;
             } else {
                 //当前设备有配置时段,但是当前时间不在时段内.不报警
-                if (!currentTimeInWarningBlock(monitorinstrumentObj)) {
-                    return false;
+                if (CollectionUtils.isNotEmpty(monitorinstrumentObj.getWarningTimeList())) {
+                    return !currentTimeInWarningBlock(monitorinstrumentObj);
                     //没有配置报警时间区间
                 } else if (monitorinstrumentObj.getWarningTimeList() == null
                         || monitorinstrumentObj.getWarningTimeList().isEmpty()) {

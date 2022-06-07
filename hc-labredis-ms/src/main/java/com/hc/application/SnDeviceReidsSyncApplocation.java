@@ -2,7 +2,6 @@ package com.hc.application;
 
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.TypeReference;
 import com.hc.application.config.RedisUtils;
 import com.hc.labmanagent.MonitorEquipmentApi;
@@ -14,12 +13,13 @@ import com.hc.my.common.core.redis.namespace.MswkServiceEnum;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -70,9 +70,22 @@ public class SnDeviceReidsSyncApplocation {
         if(CollectionUtils.isNotEmpty(monitorEquipmentLastDataDtoList)){
             String cmdId = monitorequipmentlastdataDto.getCmdId();
             String sn = monitorequipmentlastdataDto.getSn();
-            List<MonitorequipmentlastdataDto> removeList = monitorEquipmentLastDataDtoList.stream()
-                            .filter(res -> res.getCmdId().equals(cmdId) && res.getSn().equals(sn))
-                            .collect(Collectors.toList());
+            List<MonitorequipmentlastdataDto> removeList = new ArrayList<>();
+            for (MonitorequipmentlastdataDto dto : monitorEquipmentLastDataDtoList) {
+                boolean empty = StringUtils.isEmpty(dto.getSn());
+                if(empty){
+                    if(cmdId.equals(dto.getCmdId())){
+                        removeList.add(dto);
+                    }
+                }else {
+                    if(cmdId.equals(dto.getCmdId()) && sn.equals(dto.getSn())){
+                        removeList.add(dto);
+                    }
+                }
+            }
+//            List<MonitorequipmentlastdataDto> removeList = monitorEquipmentLastDataDtoList.stream()
+//                            .filter(res -> res.getCmdId().equals(cmdId))
+//                            .collect(Collectors.toList());
             if(CollectionUtils.isNotEmpty(removeList)){
                 monitorEquipmentLastDataDtoList.removeAll(removeList);
             }
@@ -95,13 +108,12 @@ public class SnDeviceReidsSyncApplocation {
      * @return
      */
     public List<MonitorequipmentlastdataDto> getCurrentInfo(String hospitalCode,String equipmentNo){
-        boolean flag = redisUtils.hHasKey(MswkServiceEnum.L.getCode() +hospitalCode,equipmentNo);
-        if(!flag){
+        Object lastData = redisUtils.hget(MswkServiceEnum.L.getCode() + hospitalCode, equipmentNo);
+        if(ObjectUtils.isEmpty(lastData)){
             return null;
         }
-        String string = redisUtils.hget(MswkServiceEnum.L.getCode() + hospitalCode, equipmentNo).toString();
-        JSONArray objects = JSON.parseArray(string);
-       return objects.toJavaList(MonitorequipmentlastdataDto.class);
+        cn.hutool.json.JSONArray objects = JSONUtil.parseArray(lastData);
+       return  objects.toList(MonitorequipmentlastdataDto.class);
 
     }
 
@@ -126,7 +138,7 @@ public class SnDeviceReidsSyncApplocation {
         List<MonitorequipmentlastdataDto>  monitorequipmentlastdataDtos = new ArrayList<>();
         for (String res: equipmentNoList) {
             List<MonitorequipmentlastdataDto> currentInfo = getCurrentInfo(hospitalCode, res);
-            if(org.apache.commons.collections.CollectionUtils.isNotEmpty(currentInfo)){
+            if(!CollectionUtils.isEmpty(currentInfo)){
                 MonitorequipmentlastdataDto monitorequipmentlastdataDto= buildCurrentData(currentInfo);
                 monitorequipmentlastdataDtos.add(monitorequipmentlastdataDto);
             }
@@ -165,8 +177,5 @@ public class SnDeviceReidsSyncApplocation {
             String sn = snDeviceDto.getSn();
             redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn,JSONUtil.toJsonStr(snDeviceDto));
         }
-        boolean b = redisUtils.hHasKey(LabManageMentServiceEnum.DEVICEINFO.getCode(), "1816120005");
-        System.out.println(b);
-
     }
 }

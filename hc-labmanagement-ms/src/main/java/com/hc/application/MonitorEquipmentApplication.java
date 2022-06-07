@@ -282,7 +282,7 @@ public class MonitorEquipmentApplication {
         operationlogService.addMonitorEquipmentLogInfo(build);
 
         //设备信息存入redis
-        updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO);
+        updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO,warningTimeList);
 
         //探头信息存入redis
         updateProbeRedisInfo(instrumentNo,instrumentName,equipmentNo,monitorEquipmentCommand,probeList);
@@ -324,7 +324,8 @@ public class MonitorEquipmentApplication {
      * @param instrumentNo
      * @param monitorinstrumenttypeDTO
      */
-    public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO){
+    public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO,List<MonitorequipmentwarningtimeDTO> warningTimeList){
+        List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
         //存入redis
         SnDeviceDto snDeviceDto = new SnDeviceDto()
                 .setEquipmentNo(equipmentNo)
@@ -340,7 +341,8 @@ public class MonitorEquipmentApplication {
                 .setSn(monitorEquipmentCommand.getSn())
                 .setAlarmTime(3L)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
-                .setChannel(monitorEquipmentCommand.getChannel());
+                .setChannel(monitorEquipmentCommand.getChannel())
+                .setWarningTimeList(warningTimeDTOs);
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
 
@@ -484,6 +486,7 @@ public class MonitorEquipmentApplication {
         if(!flag){
             snDeviceRedisApi.deleteSnDeviceDto(sn);
         }
+        List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
         SnDeviceDto snDeviceDto = new SnDeviceDto()
                 .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
@@ -497,7 +500,8 @@ public class MonitorEquipmentApplication {
                 .setInstrumentTypeId(monitorinstrumenttypeDTO.getInstrumenttypeid().toString())
                 .setSn(monitorEquipmentCommand.getSn())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
-                .setChannel(monitorEquipmentCommand.getChannel());
+                .setChannel(monitorEquipmentCommand.getChannel())
+                .setWarningTimeList(warningTimeDTOs);
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
 

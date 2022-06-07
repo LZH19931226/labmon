@@ -15,8 +15,7 @@ import java.util.List;
 public interface UserScheduLingDao extends BaseMapper<UserScheduLing> {
 
 
-    @Select(value = "SELECT * FROM userscheduling WHERE hospitalcode = #{hospitalcode}} AND( DATE_FORMAT( starttime, '%Y-%m-%d' ) = #{starttime}} or DATE_FORMAT( starttime, '%Y-%m-%d' ) = #{endtime}} ) " +
+    @Select(value = "SELECT * FROM userscheduling WHERE hospitalcode = #{hospitalcode} AND( DATE_FORMAT( starttime, '%Y-%m-%d' ) = #{starttime} or DATE_FORMAT( starttime, '%Y-%m-%d' ) = #{endtime} ) " +
             "ORDER BY starttime ")
     List<UserScheduLing> findUserScByHosSt(@Param("hospitalcode") String hospitalcode,@Param("starttime") String starttime,@Param("endtime") String endtime);
-
 }

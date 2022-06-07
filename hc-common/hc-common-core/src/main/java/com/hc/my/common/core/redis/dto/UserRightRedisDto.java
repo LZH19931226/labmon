@@ -81,7 +81,7 @@ public class UserRightRedisDto {
     private String userType;
 
     /**
-     * reminders
+     * 报警方式  空为电话和报警 1.为电话 2.短信 3.不报警
      */
     private String reminders;
 

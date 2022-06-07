@@ -47,6 +47,7 @@ public class WarningServiceImpl implements WarningService {
         }
         //温度  co2  o2 存在 ABCD
         String warningphone = probe.getWarningPhone();
+        /*1.判断该设备是否开启报警服务*/
         if (StringUtils.equals("0", warningphone)) {
             //不启用报警，直接过滤信息
             return null;
@@ -59,6 +60,7 @@ public class WarningServiceImpl implements WarningService {
         warningDateModel.setDate(date);
         Warningrecord warningrecord = new Warningrecord();
         warningrecord.setEquipmentno(equipmentno);
+        /*2.探头类型数据范围判断*/
         switch (instrumentconfigid) {
             case 1:
             case 2:
@@ -378,6 +380,5 @@ public class WarningServiceImpl implements WarningService {
             return null;
         }
         return warningModel;
-
     }
 }

@@ -14,7 +14,7 @@ public interface HospitalRedisApi {
      * @param hospitalCode 医院id
      * @return 医院信息
      */
-    @GetMapping("/hospitalRedis/findHospitalInfo")
+    @GetMapping("/hospitalRedis/findHospitalRedisInfo")
     ApiResponse<HospitalInfoDto> findHospitalRedisInfo(@RequestParam("hospitalCode")String hospitalCode);
 
     /**

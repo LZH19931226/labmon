@@ -87,9 +87,9 @@ public class EquipmentInfoApplication {
             if(CollectionUtils.isNotEmpty(monitorEquipmentDtos)){
                 monitorEquipmentDto.setSn(monitorEquipmentDtos.get(0).getSn());
             }
-            List<MonitorequipmentlastdataDto> monitorequipmentlastdataDtos = resultMap.get(equipmentNo);
-            if(CollectionUtils.isNotEmpty(monitorequipmentlastdataDtos)){
-                MonitorequipmentlastdataDto monitorequipmentlastdataDto = monitorequipmentlastdataDtos.get(0);
+            List<MonitorequipmentlastdataDto> monitorEquipmentLastDataDTOs = resultMap.get(equipmentNo);
+            if(CollectionUtils.isNotEmpty(monitorEquipmentLastDataDTOs)){
+                MonitorequipmentlastdataDto monitorequipmentlastdataDto = monitorEquipmentLastDataDTOs.get(0);
                 if(StringUtils.isNotBlank(monitorequipmentlastdataDto.getCurrentdoorstate())){
                     // 查找这个设备下开关量的最低值
                     String lowlimit = monitorEquipmentLowMap.get(equipmentNo).get(0).getLowlimit();
@@ -118,5 +118,4 @@ public class EquipmentInfoApplication {
         }
         return EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto());
     }
-
 }
