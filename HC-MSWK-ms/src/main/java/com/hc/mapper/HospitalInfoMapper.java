@@ -1,12 +1,12 @@
 package com.hc.mapper;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hc.po.Hospitalofreginfo;
 import com.hc.model.TimeoutEquipment;
+import com.hc.po.Hospitalofreginfo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 
 /**
@@ -28,7 +28,8 @@ public interface HospitalInfoMapper extends BaseMapper<Hospitalofreginfo> {
             "t3.hospitalcode,\n" +
             "t2.equipmentno,\n" +
             "t2.equipmentname,\n" +
-            "t1.timeouttime "+
+            "t1.timeouttime," +
+            "t2.equipmenttypeid  "+
             "FROM\n" +
             "\thospitalofreginfo t3\n" +
             "\tLEFT JOIN hospitalequiment t1 ON t3.hospitalcode = t1.hospitalcode\n" +

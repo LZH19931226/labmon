@@ -69,7 +69,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 log.info("当前设备产生报警记录但是还未报警通知:{}", JsonUtil.toJson(probe));
                 return null;
             }else {//这里已确认报警检测到异样已经有三次了
-//                probeRedisApi.removeProbeWarnInfo(hospitalcode, instrumentParamConfigNO);
+                probeRedisApi.removeProbeWarnInfo(hospitalcode, instrumentParamConfigNO);
                 warningModel.setPkid(pkid);
                 warningModel.setValue(data);
                 warningModel.setEquipmentname(probe.getEquipmentName());
