@@ -42,10 +42,9 @@ public class WarningServiceImpl implements WarningService {
         String hospitalcode = monitorinstrument.getHospitalcode();
         InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + instrumentconfigid).getResult();
         if (null == probe) {
-            log.info("探头信息不存在:{}", JsonUtil.toJson(monitorinstrument));
+            log.info("缓存探头信息不存在:{}", JsonUtil.toJson(monitorinstrument));
             return null;
         }
-        //温度  co2  o2 存在 ABCD
         String warningphone = probe.getWarningPhone();
         /*1.判断该设备是否开启报警服务*/
         if (StringUtils.equals("0", warningphone)) {

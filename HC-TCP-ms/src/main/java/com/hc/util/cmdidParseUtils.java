@@ -1374,4 +1374,19 @@ public class cmdidParseUtils {
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
     }
+
+    public static ParamaterModel paseAB(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+        String model = cmd.substring(28, 30);
+        paramaterModel.setModel(paramaterModelUtils.electricity(model));
+        String probe1Type = paramaterModelUtils.electricity(cmd.substring(30, 32));
+        if (StringUtils.equalsIgnoreCase(probe1Type,ProbeOutlier.X0.getCode())){
+
+        }
+
+
+
+
+        return paramaterModel;
+    }
 }

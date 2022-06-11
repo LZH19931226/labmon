@@ -24,6 +24,7 @@ import com.hc.service.WarningService;
 import com.hc.user.UserRightInfoApi;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.UnitCase;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -39,8 +40,8 @@ import java.util.stream.Collectors;
 
 @Component
 @EnableBinding(BaoJinMsg.class)
+@Slf4j
 public class SocketMessageListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SocketMessageListener.class);
 
     @Autowired
     private SendMesService sendMesService;
@@ -66,7 +67,7 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME)
     public void onMessage1(String messageContent) {
-        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME + ":" + messageContent);
+        log.info("从通道" + BaoJinMsg.EXCHANGE_NAME + ":" + messageContent);
         msctMessage(messageContent);
 
     }
@@ -77,7 +78,7 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME1)
     public void onMessage2(String messageContent) {
-        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME1 + ":" + JsonUtil.toJson(messageContent));
+        log.info("从通道" + BaoJinMsg.EXCHANGE_NAME1 + ":" + JsonUtil.toJson(messageContent));
         msctMessage(messageContent);
 
     }
@@ -88,7 +89,7 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME2)
     public void onMessage3(String messageContent) {
-        LOGGER.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + ":" + messageContent);
+        log.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + ":" + messageContent);
         msctMessage(messageContent);
     }
 
@@ -101,7 +102,7 @@ public class SocketMessageListener {
     public void onMessage5(String message) {
         try {
             TimeoutEquipment timeoutEquipment = JsonUtil.toBean(message, TimeoutEquipment.class);
-            LOGGER.info("进入超时报警队列：" + message);
+            log.info("进入超时报警队列：" + message);
             String hospitalcode = timeoutEquipment.getHospitalcode();
             // 根据hospitalcode查找设置超时报警的联系人
             List<Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
@@ -112,7 +113,7 @@ public class SocketMessageListener {
             String hospitalname = timeoutEquipment.getHospitalname();
             String disabletype = timeoutEquipment.getDisabletype();
             Integer timeouttime = timeoutEquipment.getTimeouttime();
-            LOGGER.info("进入超时报警队列联系人：" + JsonUtil.toJson(userrightByHospitalcodeAAndTimeout));
+            log.info("进入超时报警队列联系人：" + JsonUtil.toJson(userrightByHospitalcodeAAndTimeout));
             for (Userright userright : userrightByHospitalcodeAAndTimeout) {
                 String phonenum = userright.getPhonenum();
                 if (StringUtils.isEmpty(phonenum)) {
@@ -130,16 +131,16 @@ public class SocketMessageListener {
                     case "2":
                         // 超时报警
                         if (StringUtils.equals(timeoutwarning, "0")) {
-                            LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                            log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
                             sendMesService.callPhone(userright.getPhonenum(), equipmentname);
                             SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
-                            LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                            log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                         } else if (StringUtils.equals(timeoutwarning, "1")) {
-                            LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                            log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
                             sendMesService.callPhone(userright.getPhonenum(), equipmentname);
                         } else if (StringUtils.equals(timeoutwarning, "2")) {
                             SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
-                            LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                            log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                         }
                         break;
                     default:
@@ -147,7 +148,7 @@ public class SocketMessageListener {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("超时报警异常：" + e.getMessage());
+            log.error("超时报警异常:{}",e);
         }
     }
 
@@ -167,7 +168,7 @@ public class SocketMessageListener {
         boolean warningTimeBlockRule = warningTimeBlockRule(monitorinstrument);
         if (!warningTimeBlockRule) {
             //当前时间不在报警时间段内, 不用报警.直接返回
-            LOGGER.info("当前时间不在报警时间段内, 不用报警.直接返回, 医院code :" + hospitalcode + " monitorinstrument " + monitorinstrument);
+            log.info("当前时间不在报警时间段内,医院编号:{},数据模型:{}",hospitalcode,JsonUtil.toJson(monitorinstrument));
             return;
         }
         //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
@@ -185,22 +186,22 @@ public class SocketMessageListener {
                 continue;
             }
             if (StringUtils.isEmpty(reminders)) {
-                LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                log.info("拨打电话对象:{}",JsonUtil.toJson(userright));
                 sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
                 list1.add(sendrecord);
                 SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentname, unit, value);
-                LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 Sendrecord sendrecord1 = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
                 list1.add(sendrecord1);
             } else if (StringUtils.equals(reminders, "1")) {
-                LOGGER.info("拨打电话发送短信对象：" + JsonUtil.toJson(userright));
+                log.info("拨打电话对象:{}",JsonUtil.toJson(userright));
                 sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
                 list1.add(sendrecord);
             } else if (StringUtils.equals(reminders, "2")) {
                 SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentname, unit, value);
-                LOGGER.info("发送短信对象:" + JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                log.info("发送短信对象{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
                 list1.add(sendrecord);
             }
@@ -259,7 +260,7 @@ public class SocketMessageListener {
         }
         List<UserRightRedisDto> users = userRightInfoApi.findALLUserRightInfoByHC(hospitalcode).getResult();
         if (CollectionUtils.isEmpty(users)) {
-            LOGGER.info("查询不到当前医院用户信息,医院编号：" + hospitalcode);
+            log.info("查询不到当前医院用户信息,医院编号:{}" , hospitalcode);
             return null;
         }
         //未排班的人
