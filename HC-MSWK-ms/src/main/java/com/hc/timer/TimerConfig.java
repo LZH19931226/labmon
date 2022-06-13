@@ -1,22 +1,26 @@
 package com.hc.timer;
 
-import com.hc.po.Monitorequipmentlastdata;
+import com.alibaba.fastjson.JSON;
+import com.hc.device.SnDeviceRedisApi;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.TimeoutEquipment;
+import com.hc.model.TimeoutMessage;
+import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
+import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 15350 on 2019/10/8.
@@ -29,6 +33,9 @@ public class TimerConfig {
     private HospitalInfoMapper hospitalInfoMapper;
     @Autowired
     private MessagePushService messagePushService;
+    @Autowired
+    private SnDeviceRedisApi snDeviceRedisApi;
+
     //
     @Scheduled(cron = "0 0 * * * ?")
     public void Time() {
@@ -37,9 +44,80 @@ public class TimerConfig {
         if (CollectionUtils.isEmpty(timeoutEquipments)) {
             return;
         }
-        //过滤禁用报警的设备
+        Map<String, List<TimeoutEquipment>> map =
+                timeoutEquipments.stream().collect(Collectors.groupingBy(TimeoutEquipment::getHospitalcode));
+        Map<String, Map<String, Map<String, List<TimeoutEquipment>>>> timeoutEquipmentMap =
+                       timeoutEquipments.stream().collect(Collectors.groupingBy(TimeoutEquipment::getHospitalcode, Collectors.groupingBy(TimeoutEquipment::getEquipmenttypeid, Collectors.groupingBy(TimeoutEquipment::getEquipmentno))));
+        //先以医院分组
+        for (String hospitalCode : map.keySet()) {
+           List<TimeoutEquipment> codeList = map.get(hospitalCode);
+            if(CollectionUtils.isEmpty(codeList)){
+                continue;
+            }
+            Map<String, List<TimeoutEquipment>> equipmentTypeIdMap = codeList.stream().collect(Collectors.groupingBy(TimeoutEquipment::getEquipmenttypeid));
+            //再以医院设备类型分组
+            for (String equipmentTypeId : equipmentTypeIdMap.keySet()) {
+                List<TimeoutEquipment> equipmentList = equipmentTypeIdMap.get(equipmentTypeId);
+                List<String> equipmentNoList = equipmentList.stream().map(TimeoutEquipment::getEquipmentno).collect(Collectors.toList());
+                EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
+                equipmentInfoCommand.setHospitalCode(hospitalCode);
+                equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
+                List<MonitorequipmentlastdataDto> lastDataResult =
+                        snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
+                int count = 0;
+                List<TimeoutEquipment> timeoutList = new ArrayList<>();
+                //遍历当前医院当前设备类型下的所有设备
+                for (MonitorequipmentlastdataDto monitorequipmentlastdataDto : lastDataResult) {
+                    Date inputDateTime = monitorequipmentlastdataDto.getInputdatetime();
+                    String equipmentNo = monitorequipmentlastdataDto.getEquipmentno();
+                    if (timeoutEquipmentMap.get(hospitalCode)==null || timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId) ==null || timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo) ==null ) {
+                        continue;
+                    }
+                    List<TimeoutEquipment> timeoutEquipmentList = timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo);
+                    TimeoutEquipment timeoutEquipment = timeoutEquipmentList.get(0);
+                    Integer timeoutTime = timeoutEquipment.getTimeouttime();
+                    int datePoors = TimeHelper.getDatePoors(inputDateTime);
+                    String differenceTime = compareTime(inputDateTime, timeoutTime);
+                    if ("2".equals(differenceTime)) {
+                        count++;
+                        timeoutEquipment.setDisabletype("2");
+                        timeoutEquipment.setTimeouttime(datePoors);
+                        timeoutList.add(timeoutEquipment);
+                    }
+                }
+                if(count>0 && !CollectionUtils.isEmpty(timeoutList)){
+                    TimeoutMessage timeoutMessage = new TimeoutMessage();
+                    timeoutMessage.setInteger(count);
+                    timeoutMessage.setHospitalCode(hospitalCode);
+                    timeoutMessage.setEquipmentTypeId(equipmentTypeId);
+                    timeoutMessage.setTimeoutEquipmentList(timeoutList);
+                    String string = JSON.toJSONString(timeoutMessage);
+                    log.info("超时报警推送:{}", JsonUtil.toJson(string));
+                    messagePushService.pushMessage5(string);
+                }
+            }
+        }
+    }
+
+    /**
+     * 判断如何处理这条记录
+     *  当差值小于等于超时时长时不报警
+     *  @param date 数据最后上传时间
+     * @param timeoutTime 医院设置的超时时长
+     * @return
+     */
+    private String compareTime(Date date,Integer timeoutTime) {
+        Date currentTime = new Date();
+        long difference = currentTime.getTime() - date.getTime();
+        // 不超时报警
+        if (difference <= timeoutTime) {
+            return "1";
+        }
+        return "2";
+    }
+    //过滤禁用报警的设备
         //需要讨论下
-        for (TimeoutEquipment timeoutEquipment : timeoutEquipments) {
+//        for (TimeoutEquipment timeoutEquipment : timeoutEquipments) {
 //            String equipmentno = timeoutEquipment.getEquipmentno();
 //            // 超时时间设置
 //            Integer timeouttime = timeoutEquipment.getTimeouttime();
@@ -71,9 +149,8 @@ public class TimerConfig {
 //                messagePushService.pushMessage5(s);
 //            }
 
-        }
+//        }
 
-    }
 
     /**
      * 超时时间计算方式

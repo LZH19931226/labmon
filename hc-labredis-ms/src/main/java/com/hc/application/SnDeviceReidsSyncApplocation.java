@@ -130,20 +130,26 @@ public class SnDeviceReidsSyncApplocation {
      * 批量获取设备当前值
      */
     public  List<MonitorequipmentlastdataDto> getTheCurrentValue(EquipmentInfoCommand equipmentInfoCommand) {
+        String hospitalCode = equipmentInfoCommand.getHospitalCode();
         List<String> equipmentNoList = equipmentInfoCommand.getEquipmentNoList();
         if(equipmentNoList == null || equipmentNoList.size() == 0){
             return null;
         }
-        String hospitalCode = equipmentInfoCommand.getHospitalCode();
-        List<MonitorequipmentlastdataDto>  monitorequipmentlastdataDtos = new ArrayList<>();
-        for (String res: equipmentNoList) {
-            List<MonitorequipmentlastdataDto> currentInfo = getCurrentInfo(hospitalCode, res);
-            if(!CollectionUtils.isEmpty(currentInfo)){
-                MonitorequipmentlastdataDto monitorequipmentlastdataDto= buildCurrentData(currentInfo);
-                monitorequipmentlastdataDtos.add(monitorequipmentlastdataDto);
-            }
+        List<Object> objects = redisUtils.multiGet(MswkServiceEnum.L.getCode()+hospitalCode, equipmentNoList);
+        return parseList(objects);
+    }
+
+    public List<MonitorequipmentlastdataDto>  parseList(List<Object> objectList){
+        if(CollectionUtils.isEmpty(objectList)){
+            return null;
         }
-        return monitorequipmentlastdataDtos;
+        List<MonitorequipmentlastdataDto> list = new ArrayList<>();
+        for (Object object : objectList) {
+            List<MonitorequipmentlastdataDto> list1 = JSON.parseArray((String) object, MonitorequipmentlastdataDto.class);
+            MonitorequipmentlastdataDto monitorequipmentlastdataDto = buildCurrentData(list1);
+            list.add(monitorequipmentlastdataDto);
+        }
+        return list;
     }
 
     /**

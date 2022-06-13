@@ -19,4 +19,6 @@ public class TimeoutEquipment {
     private Integer timeouttime;
 
     private String disabletype;
+
+    private String equipmenttypeid;
 }
