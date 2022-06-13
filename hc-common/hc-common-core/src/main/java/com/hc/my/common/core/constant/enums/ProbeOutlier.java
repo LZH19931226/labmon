@@ -40,12 +40,7 @@ public enum ProbeOutlier {
     FFFFFFF0("fffffff0"),
     FFFFFFF1("fffffff1"),
     F1("f1"),
-    F0("f0"),
-    X0("0"),
-    X1("1"),
-    X2("2"),
-    X3("3"),
-    X4("4");
+    F0("f0");
 
     private String code;
 

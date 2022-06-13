@@ -102,6 +102,21 @@ public class ParamaterModel implements Serializable {
     private String model;
 
     /**
+     * mt310探头一模式
+     */
+    private String probe1model;
+
+    /**
+     * mt310探头二模式
+     */
+    private String probe2model;
+
+    /**
+     * mt310探头三模式
+     */
+    private String probe3model;
+
+    /**
      * 探头1温度
      */
     private String probeTemperature1;

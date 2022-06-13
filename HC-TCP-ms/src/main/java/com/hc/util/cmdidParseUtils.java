@@ -1380,9 +1380,8 @@ public class cmdidParseUtils {
         String model = cmd.substring(28, 30);
         paramaterModel.setModel(paramaterModelUtils.electricity(model));
         String probe1Type = paramaterModelUtils.electricity(cmd.substring(30, 32));
-        if (StringUtils.equalsIgnoreCase(probe1Type,ProbeOutlier.X0.getCode())){
+        paramaterModel.setProbe1model(probe1Type);
 
-        }
 
 
 
