@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 本类用于服务之间的传递
@@ -38,4 +39,13 @@ public class HospitalMadel {
     @ApiModelProperty(value = "结束时间")
     private Date endTime;
 
+    /**
+     * 时间间隔
+     */
+    private String timeInterval;
+
+    /**
+     * 医院对应得设备类型集合
+     */
+    private List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList;
 }
