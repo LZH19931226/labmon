@@ -192,4 +192,40 @@ public class MonitorequipmentlastdataDto implements Serializable {
      */
     private String power;
 
+    /**
+     * mt310模式
+     */
+    private String model;
+
+    /**
+     * mt310探头一模式
+     */
+    private String probe1model;
+
+    /**
+     * mt310探头二模式
+     */
+    private String probe2model;
+
+    /**
+     * mt310探头三模式
+     */
+    private String probe3model;
+
+
+    /**
+     * mt310探头一数据
+     */
+    private String probe1data;
+
+    /**
+     * mt310探头二数据
+     */
+    private String probe2data;
+
+    /**
+     * mt310探头三数据
+     */
+    private String probe3data;
+
 }

@@ -1027,6 +1027,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 }
                 break;
             case "ab":
+                monitorequipmentlastdata.setModel(model.getModel());
                 String probe1model = model.getProbe1model();
                 String probe1data = model.getProbe1data();
                 String probe2model = model.getProbe2model();
