@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -136,6 +137,11 @@ public class SnDeviceReidsSyncApplocation {
             return null;
         }
         List<Object> objects = redisUtils.multiGet(MswkServiceEnum.L.getCode()+hospitalCode, equipmentNoList);
+        List<Object> collect = objects.stream().filter(res -> ObjectUtils.isEmpty(res)).collect(Collectors.toList());
+        objects.removeAll(collect);
+        if(CollectionUtils.isEmpty(objects)){
+            return null;
+        }
         return parseList(objects);
     }
 
