@@ -1036,6 +1036,15 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String co24 = model.getCO2();
                 String o2 = model.getO2();
                 String voc3 = model.getVOC();
+                monitorequipmentlastdata.setProbe1data(probe1data);
+                monitorequipmentlastdata.setProbe1model(probe1model);
+                monitorequipmentlastdata.setProbe2data(probe2data);
+                monitorequipmentlastdata.setProbe2model(probe2model);
+                monitorequipmentlastdata.setProbe3data(probe3data);
+                monitorequipmentlastdata.setProbe3model(probe3model);
+                monitorequipmentlastdata.setCurrentcarbondioxide(co24);
+                monitorequipmentlastdata.setCurrento2(o2);
+                monitorequipmentlastdata.setCurrentvoc(voc3);
                 WarningMqModel probeWaringModel1;
                 if (StringUtils.equalsIgnoreCase(probe1model, ProbeOutlierMt310.THE_TEMPERATURE.getCode())){
                     probeWaringModel1 = showModelUtils.procWarnModel(probe1data, monitorinstrument, model.getNowTime(), 4, "温度");
