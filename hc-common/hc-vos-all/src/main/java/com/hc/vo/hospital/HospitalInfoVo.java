@@ -1,5 +1,6 @@
 package com.hc.vo.hospital;
 
+import com.hc.vo.equimenttype.HospitalequimentVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 医院信息视图对象
@@ -47,4 +49,6 @@ public class HospitalInfoVo implements Serializable {
 
     /** 时间间隔 */
     private String timeInterval;
+
+    private List<HospitalequimentVo> hospitalequimentVoList;
 }

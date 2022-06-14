@@ -2,12 +2,16 @@ package com.hc.application;
 
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
+import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
+import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.constants.LabMonEnumError;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentMonitorInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
+import com.hc.hospital.HospitalInfoApi;
+import com.hc.labmanagent.HospitalEquipmentTypeApi;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
@@ -18,6 +22,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +46,12 @@ public class EquipmentInfoApplication {
 
     @Autowired
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
+
+    @Autowired
+    private HospitalInfoApi hospitalInfoApi;
+
+    @Autowired
+    private HospitalEquipmentTypeApi hospitalEquipmentTypeApi;
 
     /**
      * 查询所有设备当前值信息
@@ -117,5 +128,22 @@ public class EquipmentInfoApplication {
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
         return EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto());
+    }
+
+    /**
+     * 获取医院信息
+     * @param hospitalCode
+     * @return
+     */
+    public HospitalMadel getHospitalInFO(String hospitalCode) {
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+        if(ObjectUtils.isEmpty(hospitalInfo)){
+            return null;
+        }
+        List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList = hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
+        if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeModelList)){
+            hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
+        }
+        return hospitalInfo;
     }
 }

@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.EquipmentInfoApplication;
+import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
 import io.swagger.annotations.ApiOperation;
@@ -44,5 +45,11 @@ public class EquipmentInfoController {
     public CurveInfoDto getCurveInfo( @RequestParam("equipmentNo")String equipmentNo,
                                      @RequestParam("date")String date){
         return equipmentInfoApplication.getCurveFirst(equipmentNo,date);
+    }
+
+    @GetMapping("findHospitalInfo")
+    @ApiOperation("查询医院信息")
+    public HospitalMadel getHospitalInFO(@RequestParam("hospitalCode")String hospitalCode){
+        return equipmentInfoApplication.getHospitalInFO(hospitalCode);
     }
 }
