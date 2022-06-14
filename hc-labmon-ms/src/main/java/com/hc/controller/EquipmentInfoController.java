@@ -47,7 +47,7 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.getCurveFirst(equipmentNo,date);
     }
 
-    @GetMapping("findHospitalInfo")
+    @GetMapping("/findHospitalInfo")
     @ApiOperation("查询医院信息")
     public HospitalMadel getHospitalInFO(@RequestParam("hospitalCode")String hospitalCode){
         return equipmentInfoApplication.getHospitalInFO(hospitalCode);

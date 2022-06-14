@@ -40,9 +40,12 @@ public class HospitalMadel {
     private Date endTime;
 
     /**
-     * 时间间隔
+     * 报警时间间隔
      */
     private String timeInterval;
+
+    /** 超时变红时长  */
+    private String timeoutRedDuration;
 
     /**
      * 医院对应得设备类型集合
