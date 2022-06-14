@@ -1,5 +1,6 @@
 package com.hc.util;
 
+import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import org.apache.commons.lang3.StringUtils;
@@ -1276,7 +1277,7 @@ public class cmdidParseUtils {
         String substring3 = cmd.substring(34, 36);
         if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.F0.getCode())) {
             paramaterModel.setCO2(ProbeOutlier.VALUE_IS_INVALID.getCode());
-        } else if (StringUtils.equalsIgnoreCase(substring3,  ProbeOutlier.F1.getCode())) {
+        } else if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.F1.getCode())) {
             paramaterModel.setCO2(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else {
             paramaterModel.setCO2(paramaterModelUtils.gas(substring3));
@@ -1300,7 +1301,7 @@ public class cmdidParseUtils {
             paramaterModel.setPRESS(paramaterModelUtils.electricity(substring5));
         }
         String substring6 = cmd.substring(44, 48);
-        if (StringUtils.equalsIgnoreCase(substring6,  ProbeOutlier.FFF0.getCode())) {
+        if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setPM25(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setPM25(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1308,7 +1309,7 @@ public class cmdidParseUtils {
             paramaterModel.setPM25(paramaterModelUtils.electricity(substring6));
         }
         String substring7 = cmd.substring(48, 52);
-        if (StringUtils.equalsIgnoreCase(substring7,  ProbeOutlier.FFF0.getCode())) {
+        if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setPM10(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setPM10(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1341,7 +1342,7 @@ public class cmdidParseUtils {
     public static ParamaterModel paseAA(String cmd, String sn, String cmdid) {
         ParamaterModel paramaterModel = new ParamaterModel();
         String currentData = cmd.substring(28, 36);
-        if (StringUtils.equalsIgnoreCase(currentData,ProbeOutlier.FFFFFFF0.getCode())) {
+        if (StringUtils.equalsIgnoreCase(currentData, ProbeOutlier.FFFFFFF0.getCode())) {
             //值无效
             paramaterModel.setCurrent(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(currentData, ProbeOutlier.FFFFFFF1.getCode())) {
@@ -1361,7 +1362,7 @@ public class cmdidParseUtils {
         String powerData = cmd.substring(40, 44);
         if (StringUtils.equalsIgnoreCase(powerData, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setPower(ProbeOutlier.VALUE_IS_INVALID.getCode());
-        } else if (StringUtils.equalsIgnoreCase(powerData,ProbeOutlier.FFF1.getCode())) {
+        } else if (StringUtils.equalsIgnoreCase(powerData, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setPower(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
         } else {
             paramaterModel.setPower(String.valueOf(Integer.parseInt(powerData, 16) / 10));
@@ -1381,11 +1382,75 @@ public class cmdidParseUtils {
         paramaterModel.setModel(paramaterModelUtils.electricity(model));
         String probe1Type = paramaterModelUtils.electricity(cmd.substring(30, 32));
         paramaterModel.setProbe1model(probe1Type);
+        String probe1Data = cmd.substring(32, 36);
+        if (probe1Data.equalsIgnoreCase(ProbeOutlierMt310.FFF0.name())) {
+            paramaterModel.setProbe1data(ProbeOutlierMt310.FFF0.getCode());
+        } else if (probe1Data.equalsIgnoreCase(ProbeOutlierMt310.FFF1.name())) {
+            paramaterModel.setProbe1data(ProbeOutlierMt310.FFF1.getCode());
+        } else if (probe1Data.equalsIgnoreCase(ProbeOutlierMt310.FFF2.name())) {
+            paramaterModel.setProbe1data(ProbeOutlierMt310.FFF2.getCode());
+        } else {
+            paramaterModel.setProbe1data(paramaterModelUtils.gas(probe1Data));
+        }
+        String probe2Type = paramaterModelUtils.electricity(cmd.substring(36, 38));
+        paramaterModel.setProbe2model(probe2Type);
+        String probe2Data = cmd.substring(38, 42);
+        if (probe2Data.equalsIgnoreCase(ProbeOutlierMt310.FFF0.name())) {
+            paramaterModel.setProbe2data(ProbeOutlierMt310.FFF0.getCode());
+        } else if (probe2Data.equalsIgnoreCase(ProbeOutlierMt310.FFF1.name())) {
+            paramaterModel.setProbe2data(ProbeOutlierMt310.FFF1.getCode());
+        } else if (probe2Data.equalsIgnoreCase(ProbeOutlierMt310.FFF2.name())) {
+            paramaterModel.setProbe2data(ProbeOutlierMt310.FFF2.getCode());
+        } else {
+            paramaterModel.setProbe2data(paramaterModelUtils.gas(probe2Data));
+        }
+        String probe3Type = paramaterModelUtils.electricity(cmd.substring(42, 44));
+        paramaterModel.setProbe3model(probe3Type);
+        String probe3Data = cmd.substring(44, 48);
+        if (probe3Data.equalsIgnoreCase(ProbeOutlierMt310.FFF0.name())) {
+            paramaterModel.setProbe3data(ProbeOutlierMt310.FFF0.getCode());
+        } else if (probe3Data.equalsIgnoreCase(ProbeOutlierMt310.FFF1.name())) {
+            paramaterModel.setProbe3data(ProbeOutlierMt310.FFF1.getCode());
+        } else if (probe3Data.equalsIgnoreCase(ProbeOutlierMt310.FFF2.name())) {
+            paramaterModel.setProbe3data(ProbeOutlierMt310.FFF2.getCode());
+        } else {
+            paramaterModel.setProbe3data(paramaterModelUtils.gas(probe3Data));
+        }
 
+        String probeO2 = cmd.substring(48, 52);
+        if (probeO2.equalsIgnoreCase(ProbeOutlierMt310.FFF0.name())) {
+            paramaterModel.setO2(ProbeOutlierMt310.FFF0.getCode());
+        } else if (probeO2.equalsIgnoreCase(ProbeOutlierMt310.FFF1.name())) {
+            paramaterModel.setO2(ProbeOutlierMt310.FFF1.getCode());
+        } else if (probeO2.equalsIgnoreCase(ProbeOutlierMt310.FFF2.name())) {
+            paramaterModel.setO2(ProbeOutlierMt310.FFF2.getCode());
+        } else {
+            paramaterModel.setO2(paramaterModelUtils.gas(probeO2));
+        }
 
+        String probeCO2 = cmd.substring(52, 56);
+        if (probeCO2.equalsIgnoreCase(ProbeOutlierMt310.FFF0.name())) {
+            paramaterModel.setCO2(ProbeOutlierMt310.FFF0.getCode());
+        } else if (probeO2.equalsIgnoreCase(ProbeOutlierMt310.FFF1.name())) {
+            paramaterModel.setCO2(ProbeOutlierMt310.FFF1.getCode());
+        } else if (probeO2.equalsIgnoreCase(ProbeOutlierMt310.FFF2.name())) {
+            paramaterModel.setCO2(ProbeOutlierMt310.FFF2.getCode());
+        } else {
+            paramaterModel.setCO2(paramaterModelUtils.gas(probeCO2));
+        }
 
-
-
+        String probeVOC = cmd.substring(56, 60);
+        if (probeVOC.equalsIgnoreCase(ProbeOutlierMt310.FFF0.name())) {
+            paramaterModel.setVOC(ProbeOutlierMt310.FFF0.getCode());
+        } else if (probeO2.equalsIgnoreCase(ProbeOutlierMt310.FFF1.name())) {
+            paramaterModel.setVOC(ProbeOutlierMt310.FFF1.getCode());
+        } else if (probeO2.equalsIgnoreCase(ProbeOutlierMt310.FFF2.name())) {
+            paramaterModel.setVOC(ProbeOutlierMt310.FFF2.getCode());
+        } else {
+            paramaterModel.setVOC(paramaterModelUtils.electricity(probeVOC));
+        }
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
         return paramaterModel;
     }
 }

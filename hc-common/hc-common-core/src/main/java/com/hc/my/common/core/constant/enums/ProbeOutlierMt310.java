@@ -17,7 +17,13 @@ public enum ProbeOutlierMt310 {
     //手动模式
     MANUAL_MODE("0"),
     //自动模式
-    AUTOMATIC_MODE("1");
+    AUTOMATIC_MODE("1"),
+
+    FFF0("未接传感器"),
+
+    FFF1("超量程"),
+
+    FFF2("值无效");
 
     private String code;
 

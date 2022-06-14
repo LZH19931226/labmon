@@ -95,7 +95,6 @@ public class ParamaterModel implements Serializable {
 
     private String data;
 
-
     /**
      * mt310模式
      */
@@ -116,63 +115,20 @@ public class ParamaterModel implements Serializable {
      */
     private String probe3model;
 
-    /**
-     * 探头1温度
-     */
-    private String probeTemperature1;
 
     /**
-     * 探头1二氧化碳
+     * mt310探头一数据
      */
-    private String probeCarbondioxide1;
+    private String probe1data;
 
     /**
-     * 探头1 O2
+     * mt310探头二数据
      */
-    private String probeOxygen1;
+    private String probe2data;
 
     /**
-     * 探头1湿度
+     * mt310探头三数据
      */
-    private String probehumidity1;
+    private String probe3data;
 
-    /**
-     * 探头2温度
-     */
-    private String probeTemperature2;
-
-    /**
-     * 探头2二氧化碳
-     */
-    private String probeCarbondioxide2;
-
-    /**
-     * 探头2 O2
-     */
-    private String probeOxygen2;
-
-    /**
-     * 探头2湿度
-     */
-    private String probehumidity2;
-
-    /**
-     * 探头3温度
-     */
-    private String probeTemperature3;
-
-    /**
-     * 探头3二氧化碳
-     */
-    private String probeCarbondioxide3;
-
-    /**
-     * 探头3 O2
-     */
-    private String probeOxygen3;
-
-    /**
-     * 探头3湿度
-     */
-    private String probehumidity3;
 }

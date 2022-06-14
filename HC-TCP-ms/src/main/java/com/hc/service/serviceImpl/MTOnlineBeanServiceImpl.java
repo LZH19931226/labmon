@@ -411,8 +411,9 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
         return list;
     }
 
-    public static void main(String args[]) {
-        cmdidParseUtils.pase91("48439110323035313036303031350b6c07e700303923");
+    public static void main(String[] args) {
+        ParamaterModel ab = cmdidParseUtils.paseAB("4843AB1A3232313433313030303101010E740217700301F40258025803E8BE23", "2214310001", "ab");
+        System.out.println(ab);
     }
 
 

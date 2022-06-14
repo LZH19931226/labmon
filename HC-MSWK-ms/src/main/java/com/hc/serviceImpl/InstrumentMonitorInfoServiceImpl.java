@@ -3,6 +3,7 @@ package com.hc.serviceImpl;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.device.ProbeRedisApi;
 import com.hc.model.WarningMqModel;
+import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
@@ -1024,6 +1025,55 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentqc(qc);
                     list.add(warningMqModel1);
                 }
+                break;
+            case "ab":
+                String probe1model = model.getProbe1model();
+                String probe1data = model.getProbe1data();
+                String probe2model = model.getProbe2model();
+                String probe2data = model.getProbe2data();
+                String probe3model = model.getProbe3model();
+                String probe3data = model.getProbe3data();
+                String co24 = model.getCO2();
+                String o2 = model.getO2();
+                String voc3 = model.getVOC();
+                WarningMqModel probeWaringModel1;
+                if (StringUtils.equalsIgnoreCase(probe1model, ProbeOutlierMt310.THE_TEMPERATURE.getCode())){
+                    probeWaringModel1 = showModelUtils.procWarnModel(probe1data, monitorinstrument, model.getNowTime(), 4, "温度");
+                }else if (StringUtils.equalsIgnoreCase(probe1model, ProbeOutlierMt310.HUMIDITY.getCode())){
+                    probeWaringModel1 = showModelUtils.procWarnModel(probe1data, monitorinstrument, model.getNowTime(), 5, "湿度");
+                }else  if (StringUtils.equalsIgnoreCase(probe1model, ProbeOutlierMt310.OXYGEN_CONCENTRATIONS.getCode())){
+                    probeWaringModel1 = showModelUtils.procWarnModel(probe1data, monitorinstrument, model.getNowTime(), 2, "氧气");
+                }else {
+                    probeWaringModel1 = showModelUtils.procWarnModel(probe1data, monitorinstrument, model.getNowTime(), 1, "二氧化碳");
+                }
+                list.add(probeWaringModel1);
+
+                WarningMqModel probeWaringModel2;
+                if (StringUtils.equalsIgnoreCase(probe2model, ProbeOutlierMt310.THE_TEMPERATURE.getCode())){
+                    probeWaringModel2 = showModelUtils.procWarnModel(probe2data, monitorinstrument, model.getNowTime(), 4, "温度");
+                }else if (StringUtils.equalsIgnoreCase(probe2model, ProbeOutlierMt310.HUMIDITY.getCode())){
+                    probeWaringModel2 = showModelUtils.procWarnModel(probe2data, monitorinstrument, model.getNowTime(), 5, "湿度");
+                }else  if (StringUtils.equalsIgnoreCase(probe2model, ProbeOutlierMt310.OXYGEN_CONCENTRATIONS.getCode())){
+                    probeWaringModel2 = showModelUtils.procWarnModel(probe2data, monitorinstrument, model.getNowTime(), 2, "氧气");
+                }else {
+                    probeWaringModel2 = showModelUtils.procWarnModel(probe2data, monitorinstrument, model.getNowTime(), 1, "二氧化碳");
+                }
+                list.add(probeWaringModel2);
+
+                WarningMqModel probeWaringModel3;
+                if (StringUtils.equalsIgnoreCase(probe3model, ProbeOutlierMt310.THE_TEMPERATURE.getCode())){
+                    probeWaringModel3 = showModelUtils.procWarnModel(probe3data, monitorinstrument, model.getNowTime(), 4, "温度");
+                }else if (StringUtils.equalsIgnoreCase(probe3model, ProbeOutlierMt310.HUMIDITY.getCode())){
+                    probeWaringModel3 = showModelUtils.procWarnModel(probe3data, monitorinstrument, model.getNowTime(), 5, "湿度");
+                }else  if (StringUtils.equalsIgnoreCase(probe3model, ProbeOutlierMt310.OXYGEN_CONCENTRATIONS.getCode())){
+                    probeWaringModel3 = showModelUtils.procWarnModel(probe3data, monitorinstrument, model.getNowTime(), 2, "氧气");
+                }else {
+                    probeWaringModel3 = showModelUtils.procWarnModel(probe3data, monitorinstrument, model.getNowTime(), 1, "二氧化碳");
+                }
+                list.add(probeWaringModel3);
+                list.add(showModelUtils.procWarnModel(o2, monitorinstrument, model.getNowTime(), 2, "氧气"));
+                list.add(showModelUtils.procWarnModel(co24, monitorinstrument, model.getNowTime(), 1, "二氧化碳"));
+                list.add(showModelUtils.procWarnModel(voc3, monitorinstrument, model.getNowTime(), 3, "VOC"));
                 break;
             default:
                 break;
