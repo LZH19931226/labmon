@@ -63,6 +63,11 @@ public class HospitalRegistrationInfoPo implements Serializable {
     @TableField(value = "update_by")
     private String updateBy;
 
+    /** 报警时间间隔 */
     @TableField(value = "timeInterval")
     private  String timeInterval;
+
+    /** 超时变红时长 */
+    @TableField(value = "timeout_red_duration")
+    private  String timeoutRedDuration;
 }

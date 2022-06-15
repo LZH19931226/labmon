@@ -46,9 +46,6 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
             throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_NOT_NULL.getCode());
         }
         hospitalRegistrationInfoRepository.insertHospitalInfo(hospitalCommand);
-        //添加同步缓存
-        HospitalRegistrationInfoDto hospitalRegistrationInfoDto =
-                hospitalRegistrationInfoRepository.selectHospitalInfoByHospitalName(hospitalCommand.getHospitalName());
     }
 
     /**

@@ -47,4 +47,7 @@ public class HospitalRegistrationInfoDto {
      * 时间间隔
      */
     private String timeInterval;
+
+    /** 超时变红时长 */
+    private  String timeoutRedDuration;
 }
