@@ -85,6 +85,8 @@ public class WarningServiceImpl implements WarningService {
             case 37:
             case 38:
             case 39:
+            case 42:
+            case 43:
                 //表示CO2  、氧气、温度  、 培养箱湿度
                 if (!RegularUtil.checkContainsNumbers(data)) {
                     //未接传感器

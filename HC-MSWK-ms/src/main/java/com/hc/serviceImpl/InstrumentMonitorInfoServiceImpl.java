@@ -1081,8 +1081,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     probeWaringModel3 = showModelUtils.procWarnModel(probe3data, monitorinstrument, model.getNowTime(), 1, "二氧化碳");
                 }
                 list.add(probeWaringModel3);
-                list.add(showModelUtils.procWarnModel(o2, monitorinstrument, model.getNowTime(), 2, "氧气"));
-                list.add(showModelUtils.procWarnModel(co24, monitorinstrument, model.getNowTime(), 1, "二氧化碳"));
+                list.add(showModelUtils.procWarnModel(o2, monitorinstrument, model.getNowTime(), 43, "氧气"));
+                list.add(showModelUtils.procWarnModel(co24, monitorinstrument, model.getNowTime(), 42, "二氧化碳"));
                 list.add(showModelUtils.procWarnModel(voc3, monitorinstrument, model.getNowTime(), 3, "VOC"));
                 break;
             default:
