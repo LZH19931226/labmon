@@ -6,10 +6,7 @@ import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.constants.LabMonEnumError;
 import com.hc.device.SnDeviceRedisApi;
-import com.hc.dto.CurveInfoDto;
-import com.hc.dto.InstrumentMonitorInfoDto;
-import com.hc.dto.MonitorEquipmentDto;
-import com.hc.dto.MonitorinstrumentDto;
+import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.HospitalEquipmentTypeApi;
 import com.hc.my.common.core.exception.IedsException;
@@ -135,7 +132,7 @@ public class EquipmentInfoApplication {
      * @param hospitalCode
      * @return
      */
-    public HospitalMadel getHospitalInFO(String hospitalCode) {
+    public HospitalMadel getHospitalInfO(String hospitalCode) {
         HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
         if(ObjectUtils.isEmpty(hospitalInfo)){
             return null;
@@ -145,5 +142,14 @@ public class EquipmentInfoApplication {
             hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
         }
         return hospitalInfo;
+    }
+
+    /**
+     * 获取当前市电信息
+     * @param hospitalCode
+     * @return
+     */
+    public MonitorUpsInfoDto getCurrentUpsInfo(String hospitalCode) {
+        return null;
     }
 }

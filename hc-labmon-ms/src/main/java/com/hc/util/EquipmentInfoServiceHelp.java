@@ -87,6 +87,33 @@ public class EquipmentInfoServiceHelp {
         List<String> leftCompartmentHumidityTime = new ArrayList<String>();
         List<String> rightCompartmentHumidity = new ArrayList<String>();
         List<String> rightCompartmentHumidityTime = new ArrayList<String>();
+        /* Mt310DC */
+        List<String> probe1Temp = new ArrayList<>();
+        List<String> probe1TempTime = new ArrayList<>();
+        List<String> probe1rh = new ArrayList<>();
+        List<String> probe1rhTime = new ArrayList<>();
+        List<String> probe1Co2 = new ArrayList<>();
+        List<String> probe1Co2Time = new ArrayList<>();
+        List<String> probe1O2 = new ArrayList<>();
+        List<String> probe1O2Time = new ArrayList<>();
+        List<String> probe2Temp = new ArrayList<>();
+        List<String> probe2TempTime = new ArrayList<>();
+        List<String> probe2rh = new ArrayList<>();
+        List<String> probe2rhTime = new ArrayList<>();
+        List<String> probe2Co2 = new ArrayList<>();
+        List<String> probe2Co2Time = new ArrayList<>();
+        List<String> probe2O2 = new ArrayList<>();
+        List<String> probe2O2Time = new ArrayList<>();
+        List<String> probe3Temp = new ArrayList<>();
+        List<String> probe3TempTime = new ArrayList<>();
+        List<String> probe3rh = new ArrayList<>();
+        List<String> probe3rhTime = new ArrayList<>();
+        List<String> probe3Co2 = new ArrayList<>();
+        List<String> probe3Co2Time = new ArrayList<>();
+        List<String> probe3O2 = new ArrayList<>();
+        List<String> probe3O2Time = new ArrayList<>();
+
+
 
 //        defaultTime=lastDataModelList.get(0).getInputdatetime();
         for (int i = 0; i < lastDataModelList.size(); i++) {
@@ -271,7 +298,72 @@ public class EquipmentInfoServiceHelp {
                 rightCompartmentHumidity.add(lastDataModel.getRightCompartmentHumidity());
                 rightCompartmentHumidityTime.add(da);
             }
-
+            if (StringUtils.isNotEmpty(lastDataModel.getProbe1model()) && RegularUtil.checkContainsNumbers(lastDataModel.getProbe1model())
+                && StringUtils.isNotEmpty(lastDataModel.getProbe1data()) && RegularUtil.checkContainsNumbers(lastDataModel.getProbe1data()))
+            {
+                switch (lastDataModel.getProbe1model()){
+                    case "1":
+                        probe1Temp.add(lastDataModel.getProbe1data());
+                        probe1TempTime.add(da);
+                        break;
+                    case "2":
+                        probe1rh.add(lastDataModel.getProbe1data());
+                        probe1rhTime.add(da);
+                        break;
+                    case "3":
+                        probe1Co2.add(lastDataModel.getProbe1data());
+                        probe1Co2Time.add(da);
+                        break;
+                    case "4":
+                        probe1O2.add(lastDataModel.getProbe1data());
+                        probe1O2Time.add(da);
+                        break;
+                }
+            }
+            if (StringUtils.isNotEmpty(lastDataModel.getProbe2model()) && RegularUtil.checkContainsNumbers(lastDataModel.getProbe2model())
+                    && StringUtils.isNotEmpty(lastDataModel.getProbe2data()) && RegularUtil.checkContainsNumbers(lastDataModel.getProbe2data()))
+            {
+                switch (lastDataModel.getProbe2model()){
+                    case "1":
+                        probe2Temp.add(lastDataModel.getProbe2data());
+                        probe2TempTime.add(da);
+                        break;
+                    case "2":
+                        probe2rh.add(lastDataModel.getProbe2data());
+                        probe2rhTime.add(da);
+                        break;
+                    case "3":
+                        probe2Co2.add(lastDataModel.getProbe2data());
+                        probe2Co2Time.add(da);
+                        break;
+                    case "4":
+                        probe2O2.add(lastDataModel.getProbe2data());
+                        probe2O2Time.add(da);
+                        break;
+                }
+            }
+            if (StringUtils.isNotEmpty(lastDataModel.getProbe3model()) && RegularUtil.checkContainsNumbers(lastDataModel.getProbe3model())
+                    && StringUtils.isNotEmpty(lastDataModel.getProbe3data()) && RegularUtil.checkContainsNumbers(lastDataModel.getProbe3data()))
+            {
+                switch (lastDataModel.getProbe3model()){
+                    case "1":
+                        probe3Temp.add(lastDataModel.getProbe3data());
+                        probe3TempTime.add(da);
+                        break;
+                    case "2":
+                        probe3rh.add(lastDataModel.getProbe3data());
+                        probe3rhTime.add(da);
+                        break;
+                    case "3":
+                        probe3Co2.add(lastDataModel.getProbe3data());
+                        probe3Co2Time.add(da);
+                        break;
+                    case "4":
+                        probe3O2.add(lastDataModel.getProbe3data());
+                        probe3O2Time.add(da);
+                        break;
+                }
+            }
         }
         if (CollectionUtils.isNotEmpty(n2)) {
             CurveDataModel curveDataModel = generateCurveDataModel(n2,n2Time);
@@ -408,6 +500,55 @@ public class EquipmentInfoServiceHelp {
         if (CollectionUtils.isNotEmpty(rightCompartmentHumidity)) {
             CurveDataModel curveDataModel = generateCurveDataModel(rightCompartmentHumidity, rightCompartmentHumidityTime);
             curveInfoDto.setRightCompartmentHumidity(curveDataModel);
+        }
+        /* mt310Dc */
+        if (CollectionUtils.isNotEmpty(probe1Temp)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1Temp, probe1TempTime);
+            curveInfoDto.setProbe1Temp(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe1rh)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1rh, probe1rhTime);
+            curveInfoDto.setProbe1rh(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe1Co2)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1Co2, probe1Co2Time);
+            curveInfoDto.setProbe1Co2(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe1O2)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1O2, probe1O2Time);
+            curveInfoDto.setProbe1O2(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe2Temp)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2Temp, probe2TempTime);
+            curveInfoDto.setProbe2Temp(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe2rh)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2rh, probe2rhTime);
+            curveInfoDto.setProbe2rh(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe2Co2)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2Co2, probe2Co2Time);
+            curveInfoDto.setProbe2Co2(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe2O2)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2O2, probe2O2Time);
+            curveInfoDto.setProbe2O2(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe3Temp)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3Temp, probe3TempTime);
+            curveInfoDto.setProbe3Temp(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe3rh)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3rh, probe3rhTime);
+            curveInfoDto.setProbe3rh(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe3Co2)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3Co2, probe3Co2Time);
+            curveInfoDto.setProbe3Co2(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(probe3O2)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3O2, probe3O2Time);
+            curveInfoDto.setProbe3O2(curveDataModel);
         }
         return curveInfoDto;
     }

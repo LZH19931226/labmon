@@ -4,6 +4,7 @@ import com.hc.application.EquipmentInfoApplication;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
+import com.hc.dto.MonitorUpsInfoDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,9 +48,19 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.getCurveFirst(equipmentNo,date);
     }
 
+    /**
+     * 查询医院信息
+     * @param hospitalCode
+     * @return
+     */
     @GetMapping("/findHospitalInfo")
     @ApiOperation("查询医院信息")
     public HospitalMadel getHospitalInFO(@RequestParam("hospitalCode")String hospitalCode){
-        return equipmentInfoApplication.getHospitalInFO(hospitalCode);
+        return equipmentInfoApplication.getHospitalInfO(hospitalCode);
+    }
+
+    @GetMapping("/findCurrentUpsInfo")
+    public MonitorUpsInfoDto getCurrentUpsInfo(@RequestParam("hospitalCode")String hospitalCode){
+        return equipmentInfoApplication.getCurrentUpsInfo(hospitalCode);
     }
 }

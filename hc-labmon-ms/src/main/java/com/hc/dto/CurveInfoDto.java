@@ -80,4 +80,33 @@ public class CurveInfoDto {
     private CurveDataModel leftCompartmentHumidity;
     @ApiModelProperty("右湿度")
     private CurveDataModel rightCompartmentHumidity;
+    /**
+     * mt310dc特殊探头
+     */
+    @ApiModelProperty("外置探头1温度")
+    private CurveDataModel probe1Temp;
+    @ApiModelProperty("外置探头1湿度")
+    private CurveDataModel probe1rh;
+    @ApiModelProperty("外置探头1co2浓度")
+    private CurveDataModel probe1Co2;
+    @ApiModelProperty("外置探头1o2浓度")
+    private CurveDataModel probe1O2;
+
+    @ApiModelProperty("外置探头2温度")
+    private CurveDataModel probe2Temp;
+    @ApiModelProperty("外置探头2湿度")
+    private CurveDataModel probe2rh;
+    @ApiModelProperty("外置探头2co2浓度")
+    private CurveDataModel probe2Co2;
+    @ApiModelProperty("外置探头2o2浓度")
+    private CurveDataModel probe2O2;
+
+    @ApiModelProperty("外置探头3温度")
+    private CurveDataModel probe3Temp;
+    @ApiModelProperty("外置探头3湿度")
+    private CurveDataModel probe3rh;
+    @ApiModelProperty("外置探头3co2浓度")
+    private CurveDataModel probe3Co2;
+    @ApiModelProperty("外置探头3o2浓度")
+    private CurveDataModel probe3O2;
 }
