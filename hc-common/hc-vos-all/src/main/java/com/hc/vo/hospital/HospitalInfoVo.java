@@ -50,5 +50,8 @@ public class HospitalInfoVo implements Serializable {
     /** 时间间隔 */
     private String timeInterval;
 
+    /** 超时变红时长 */
+    private String timeoutRedDuration;
+
     private List<HospitalequimentVo> hospitalequimentVoList;
 }

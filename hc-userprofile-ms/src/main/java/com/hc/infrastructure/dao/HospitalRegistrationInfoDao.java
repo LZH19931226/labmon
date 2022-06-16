@@ -33,7 +33,8 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
             "endtime endTime," +
             "timeout,update_time AS updateTime," +
             "timeInterval," +
-            "update_by AS updateBy " +
+            "update_by AS updateBy ," +
+            "timeout_red_duration as timeoutRedDuration " +
             "FROM hospitalofreginfo where 1=1 " +
             "<if test = 'hospitalName != null  and hospitalName != \"\"'> " +
             "and hospitalname like concat('%', #{hospitalName},'%')" +

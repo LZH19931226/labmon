@@ -72,6 +72,7 @@ public class HospitalInfoApplication {
                         .isEnable(res.getIsEnable())
                         .updateTime(res.getUpdateTime())
                         .timeInterval(res.getTimeInterval())
+                        .timeoutRedDuration(res.getTimeoutRedDuration())
                         .build();
                 list.add(build);
             });
