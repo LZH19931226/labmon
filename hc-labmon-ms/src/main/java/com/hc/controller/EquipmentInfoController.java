@@ -55,12 +55,17 @@ public class EquipmentInfoController {
      */
     @GetMapping("/findHospitalInfo")
     @ApiOperation("查询医院信息")
-    public HospitalMadel getHospitalInFO(@RequestParam("hospitalCode")String hospitalCode){
+    public HospitalMadel getHospitalInfO(@RequestParam("hospitalCode")String hospitalCode){
         return equipmentInfoApplication.getHospitalInfO(hospitalCode);
     }
 
+    /**
+     * 获取当前市电的值
+     * @param hospitalCode
+     * @return
+     */
     @GetMapping("/findCurrentUpsInfo")
-    public MonitorUpsInfoDto getCurrentUpsInfo(@RequestParam("hospitalCode")String hospitalCode){
+    public MonitorUpsInfoDto getCurrentUpsInfo(@RequestParam("hospitalCode") String hospitalCode){
         return equipmentInfoApplication.getCurrentUpsInfo(hospitalCode);
     }
 }

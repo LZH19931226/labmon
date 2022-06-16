@@ -9,6 +9,7 @@ import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.HospitalEquipmentTypeApi;
+import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
@@ -50,6 +51,9 @@ public class EquipmentInfoApplication {
     @Autowired
     private HospitalEquipmentTypeApi hospitalEquipmentTypeApi;
 
+    @Autowired
+    private MonitorEquipmentApi monitorEquipmentApi;
+
     /**
      * 查询所有设备当前值信息
      * @param hospitalCode 医院id
@@ -79,7 +83,6 @@ public class EquipmentInfoApplication {
         if(CollectionUtils.isNotEmpty(monitorEquipmentLowLimitList)){
             monitorEquipmentLowMap = monitorEquipmentLowLimitList.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
         }
-
         EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
         equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
         equipmentInfoCommand.setHospitalCode(hospitalCode);
@@ -137,6 +140,10 @@ public class EquipmentInfoApplication {
         if(ObjectUtils.isEmpty(hospitalInfo)){
             return null;
         }
+        String timeoutRedDuration = hospitalInfo.getTimeoutRedDuration();
+        if (StringUtils.isEmpty(timeoutRedDuration)) {
+            hospitalInfo.setTimeoutRedDuration("60");
+        }
         List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList = hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
         if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeModelList)){
             hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
@@ -146,10 +153,33 @@ public class EquipmentInfoApplication {
 
     /**
      * 获取当前市电信息
+     *  先获取当前医院所有的设备
+     *      再获取所有设备的获取当前值的信息
+     *          过滤掉没有ups的数据，取最新集合中的第一条数据
      * @param hospitalCode
      * @return
      */
     public MonitorUpsInfoDto getCurrentUpsInfo(String hospitalCode) {
-        return null;
+        List<String> equipmentNoList = monitorEquipmentApi.getEquipmentNoList(hospitalCode).getResult();
+        if(CollectionUtils.isEmpty(equipmentNoList)){
+          return null;
+        }
+        EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
+        equipmentInfoCommand.setHospitalCode(hospitalCode);
+        equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
+        List<MonitorequipmentlastdataDto> result = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
+        if (CollectionUtils.isEmpty(result)) {
+            return null;
+        }
+        List<MonitorequipmentlastdataDto> collect =
+                result.stream().filter(res -> StringUtils.isNotEmpty(res.getCurrentups())).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(collect)) {
+            return null;
+        }
+        MonitorequipmentlastdataDto monitorequipmentlastdataDto = collect.get(0);
+        String currentUps = monitorequipmentlastdataDto.getCurrentups();
+        MonitorUpsInfoDto monitorUpsInfoDto = new MonitorUpsInfoDto();
+        monitorUpsInfoDto.setUps(currentUps);
+        return monitorUpsInfoDto;
     }
 }
