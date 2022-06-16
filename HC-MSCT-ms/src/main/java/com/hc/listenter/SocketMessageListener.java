@@ -5,20 +5,22 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.SnDeviceRedisApi;
+import com.hc.exchange.BaoJinMsg;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
-import com.hc.mapper.*;
+import com.hc.mapper.SendrecordDao;
+import com.hc.mapper.UserScheduLingDao;
+import com.hc.mapper.UserrightDao;
+import com.hc.model.HospitalEquipmentTypeInfoModel;
+import com.hc.model.TimeoutEquipment;
+import com.hc.model.WarningModel;
+import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.BeanConverter;
-import com.hc.po.*;
-import com.hc.exchange.BaoJinMsg;
-import com.hc.model.HospitalEquipmentTypeInfoModel;
-import com.hc.model.TimeoutEquipment;
-import com.hc.model.WarningModel;
-import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.util.DateUtils;
+import com.hc.po.*;
 import com.hc.service.SendMesService;
 import com.hc.service.WarningService;
 import com.hc.user.UserRightInfoApi;
@@ -27,8 +29,6 @@ import com.hc.utils.UnitCase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -298,12 +298,12 @@ public class SocketMessageListener {
             assert monitorinstrumentObj != null;
             String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
             //全天报警
-            if ("1".equals(eqipmentAlwayalarm)) {
+            if (StringUtils.isEmpty(eqipmentAlwayalarm) || "1".equals(eqipmentAlwayalarm)) {
                 return true;
             } else {
                 //当前设备有配置时段,但是当前时间不在时段内.不报警
                 if (CollectionUtils.isNotEmpty(monitorinstrumentObj.getWarningTimeList())) {
-                    return !currentTimeInWarningBlock(monitorinstrumentObj);
+                    return currentTimeInWarningBlock(monitorinstrumentObj);
                     //没有配置报警时间区间
                 } else if (monitorinstrumentObj.getWarningTimeList() == null
                         || monitorinstrumentObj.getWarningTimeList().isEmpty()) {
