@@ -15,7 +15,6 @@ import com.hc.po.HospitalRegistrationInfoPo;
 import com.hc.repository.HospitalRegistrationInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
@@ -40,7 +39,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
      * @return
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
         return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalName(),hospitalCommand.getIsEnable());
     }
@@ -50,7 +48,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
      * @param hospitalCommand 医院信息数据传输对象
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         HospitalRegistrationInfoPo infoPo = BeanConverter.convert(hospitalCommand, HospitalRegistrationInfoPo.class);
         HospitalRegistrationInfoPo selectOne = hospitalRegistrationInfoDao.selectOne(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
@@ -67,7 +64,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
      * @param hospitalCommand 医院信息数据传输对象
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
         HospitalEquipmentPo hospitalEquipmentPo =
                 hospitalRegistrationInfoDao.selectHospitalName(hospitalCommand.getHospitalName(),hospitalCommand.getHospitalCode());
@@ -84,7 +80,6 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
      * @param hospitalCode 医院编码
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void deleteHospitalInfoByCode(String hospitalCode) {
         //判断医院有没有绑定的设备
         Integer integer = hospitalEquipmentDao.selectCount(Wrappers.lambdaQuery(new HospitalEquipmentPo())

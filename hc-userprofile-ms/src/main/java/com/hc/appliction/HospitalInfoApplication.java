@@ -90,7 +90,6 @@ public class HospitalInfoApplication {
         hospitalCommand.setUpdateTime(new Date());
         hospitalCommand.setOrderBy(Context.getUserId());
         hospitalCommand.setHospitalCode(UUID.randomUUID().toString().replaceAll("-", ""));
-        hospitalCommand.setTimeoutRedDuration("30");
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
         //添加日志信息
         operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),new HospitalCommand(),hospitalCommand,
