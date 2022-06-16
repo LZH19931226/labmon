@@ -66,4 +66,10 @@ public class MonitorEquipmentController {
     public List<SnDeviceDto> getAllMonitorEquipmentInfo(){
         return monitorEquipmentApplication.getAllMonitorEquipmentInfo();
     }
+
+    @GetMapping("/getHospitalUPS")
+    @ApiOperation("获取医院ups的设备no集合")
+    public List<String> getEquipmentNoList(@RequestParam("hospitalCode")String hospitalCode){
+        return monitorEquipmentApplication.getEquipmentNoList(hospitalCode);
+    }
 }

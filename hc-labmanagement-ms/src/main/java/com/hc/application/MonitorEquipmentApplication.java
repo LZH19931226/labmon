@@ -748,4 +748,17 @@ public class MonitorEquipmentApplication {
         }
         return snDeviceDtoList;
     }
+
+    /**
+     * 获取医院ups的设备no集合
+     * @param hospitalCode
+     * @return
+     */
+    public List<String> getEquipmentNoList(String hospitalCode) {
+        List<MonitorEquipmentDto> list = monitorEquipmentService.getEquipmentNoList(hospitalCode);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        return list.stream().map(MonitorEquipmentDto::getEquipmentNo).collect(Collectors.toList());
+    }
 }

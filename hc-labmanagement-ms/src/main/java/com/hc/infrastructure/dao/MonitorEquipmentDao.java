@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.po.MonitorEquipmentPo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -32,4 +33,13 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
      * @return
      */
     List<MonitorEquipmentDto> getAllMonitorEquipmentInfo();
+
+    /**
+     * 获取设备信息
+     * @param hospitalCode
+     * @return
+     */
+    @Select("select * FROM monitorequipment WHERE hospitalcode = #{hospitalCode} AND clientvisible = '1' AND equipmenttypeid = '6'")
+    List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode);
+
 }

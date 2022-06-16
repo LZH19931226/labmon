@@ -86,4 +86,14 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public List<MonitorEquipmentDto> getAllMonitorEquipmentInfo() {
         return monitorEquipmentRepository.getAllMonitorEquipmentInfo();
     }
+
+    /**
+     * 获取设备信息
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode) {
+        return monitorEquipmentRepository.getEquipmentNoList(hospitalCode);
+    }
 }

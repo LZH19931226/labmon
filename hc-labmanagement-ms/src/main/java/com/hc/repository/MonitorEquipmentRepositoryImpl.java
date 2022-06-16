@@ -101,4 +101,14 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
     public List<MonitorEquipmentDto> getAllMonitorEquipmentInfo() {
         return monitorEquipmentDao.getAllMonitorEquipmentInfo();
     }
+
+    /**
+     * 获取设备信息
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode) {
+        return monitorEquipmentDao.getEquipmentNoList(hospitalCode);
+    }
 }
