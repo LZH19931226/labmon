@@ -40,15 +40,14 @@ public class WarningRuleServiceImpl implements WarningRuleService {
         WarningModel warningModel = new WarningModel();
         /*3.医院报警关联 如果是市电则直接报警*/
         //市电是立即报警
-        if (StringUtils.isNotEmpty(remark)) {
-            if (StringUtils.equals("市电异常", remark)) {
-                warningModel.setPkid(pkid);
-                warningModel.setValue(data);
-                warningModel.setEquipmentname(probe.getEquipmentName());
-                warningModel.setUnit(probe.getInstrumentName());
-                warningModel.setHospitalcode(hospitalcode);
-                return warningModel;
-            }
+        Integer instrumentConfigId = probe.getInstrumentConfigId();
+        if( instrumentConfigId != null && instrumentConfigId.equals(10) && "1".equals(data) ){
+            warningModel.setPkid(pkid);
+            warningModel.setValue(data);
+            warningModel.setEquipmentname(probe.getEquipmentName());
+            warningModel.setUnit(probe.getInstrumentName());
+            warningModel.setHospitalcode(hospitalcode);
+            return warningModel;
         }
         /*4.报警次数设置*/
         //未满足三次报警次数不推送

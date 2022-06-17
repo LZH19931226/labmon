@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface UserrightDao extends BaseMapper<Userright> {
 
-    @Select("select  a from Userright a where a.hospitalcode=#{hospitalcode} and a.timeout = '1' ")
+    @Select("select  * from userright  where hospitalcode=#{hospitalcode} and timeout = '1' ")
     List<Userright> getUserrightByHospitalcodeAAndTimeout (@Param("hospitalcode") String hospitalcode);
 }
