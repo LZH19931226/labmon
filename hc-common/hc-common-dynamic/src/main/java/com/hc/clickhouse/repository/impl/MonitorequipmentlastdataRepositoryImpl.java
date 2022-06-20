@@ -20,6 +20,10 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
     @Override
     public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String date, String equipmentNo) {
       return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfo(date,equipmentNo);
-
     }
+
+  @Override
+  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String startTime, String endTime, String equipmentNo) {
+    return monitorequipmentlastdataMapper.getMonitorEquipmentLastData(startTime,endTime,equipmentNo);
+  }
 }

@@ -18,6 +18,8 @@ public enum ProbeOutlierMt310 {
     MANUAL_MODE("0"),
     //自动模式
     AUTOMATIC_MODE("1"),
+    //mt310的固定值
+    THREE_ONE("31"),
 
     FFF0("未接传感器"),
 

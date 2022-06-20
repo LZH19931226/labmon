@@ -2,6 +2,7 @@ package com.hc.controller;
 
 import com.hc.application.EquipmentInfoApplication;
 import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.command.labmanagement.model.QueryInfoModel;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorUpsInfoDto;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -44,8 +46,9 @@ public class EquipmentInfoController {
     @GetMapping("/getEuipmentCurveInfo")
     @ApiOperation("查询设备曲线值")
     public CurveInfoDto getCurveInfo( @RequestParam("equipmentNo")String equipmentNo,
-                                     @RequestParam("date")String date){
-        return equipmentInfoApplication.getCurveFirst(equipmentNo,date);
+                                     @RequestParam("date")String date,
+                                      @RequestParam("sn")String sn){
+        return equipmentInfoApplication.getCurveFirst(equipmentNo,date,sn);
     }
 
     /**
@@ -67,5 +70,34 @@ public class EquipmentInfoController {
     @GetMapping("/findCurrentUpsInfo")
     public MonitorUpsInfoDto getCurrentUpsInfo(@RequestParam("hospitalCode") String hospitalCode){
         return equipmentInfoApplication.getCurrentUpsInfo(hospitalCode);
+    }
+
+    /**
+     * 查询当前值信息
+     * @param equipmentNo
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @GetMapping("/findQueryInfo")
+    @ApiOperation("查询当前值信息")
+    public QueryInfoModel getQueryInfo(@RequestParam("equipmentNo") String equipmentNo,
+                                       @RequestParam("startTime") String startTime,
+                                       @RequestParam("endTime") String endTime){
+        return equipmentInfoApplication.getQueryInfo(equipmentNo,startTime,endTime);
+    }
+
+    /**
+     * 导出excel
+     * @param equipmentNo
+     * @param startDate
+     * @param endDate
+     * @param response
+     */
+    @GetMapping("/exportExcel")
+    @ApiOperation("导出为excel")
+    public void exportExcel(@RequestParam("equipmentNo") String equipmentNo, @RequestParam("startDate") String startDate,
+                            @RequestParam("endDate") String endDate,HttpServletResponse response){
+        equipmentInfoApplication.exportExcel(equipmentNo,startDate,endDate,response);
     }
 }

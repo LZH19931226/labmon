@@ -8,4 +8,7 @@ import java.util.List;
 public interface MonitorequipmentlastdataRepository extends IService<Monitorequipmentlastdata> {
 
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String date, String equipmentNo);
+
+    List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String startTime,String endTime, String equipmentNo);
+
 }

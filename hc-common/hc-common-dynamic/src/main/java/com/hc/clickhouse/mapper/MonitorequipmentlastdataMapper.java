@@ -12,4 +12,9 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
     @Select("select * from monitorequipmentlastdata where formatDateTime(inputdatetime,'%Y-%m-%d') = #{date} and equipmentno = #{equipmentNo}")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(@Param("date") String date,
                                                                    @Param("equipmentNo") String equipmentNo);
+
+    @Select("SELECT * FROM lab_mon.monitorequipmentlastdata WHERE formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M') BETWEEN  #{startTime}  AND  #{endTime} AND equipmentno  = #{equipmentNo}")
+    List<Monitorequipmentlastdata> getMonitorEquipmentLastData(@Param("startTime") String startTime,
+                                                                   @Param("endTime") String endTime,
+                                                                   @Param("equipmentNo") String equipmentNo);
 }

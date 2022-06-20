@@ -26,4 +26,12 @@ public interface MonitorEquipmentApi {
      */
     @GetMapping("/equipmentInfo/getHospitalUPS")
     ApiResponse<List<String>> getEquipmentNoList(@RequestParam("hospitalCode")String hospitalCode);
+
+    /**
+     * 查询设备信息
+     * @param equipmentNo
+     * @return
+     */
+    @GetMapping("/equipmentInfo/getMonitorEquipmentInfoByEno")
+    ApiResponse<SnDeviceDto> selectMonitorEquipmentInfoByEno(@RequestParam("equipmentNo")String equipmentNo);
 }

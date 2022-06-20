@@ -4,15 +4,20 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.command.labmanagement.model.QueryInfoModel;
 import com.hc.constants.LabMonEnumError;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.HospitalEquipmentTypeApi;
 import com.hc.labmanagent.MonitorEquipmentApi;
+import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
+import com.hc.my.common.core.redis.dto.SnDeviceDto;
+import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.FileUtil;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.util.EquipmentInfoServiceHelp;
@@ -22,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,14 +126,21 @@ public class EquipmentInfoApplication {
      * 获取曲线信息，不包括曲线对比信息
      * @param equipmentNo 设备id
      * @param date 时间
+     * @param sn sn号
      * @return 曲线信息对象
      */
-    public CurveInfoDto getCurveFirst(String equipmentNo, String date) {
+    public CurveInfoDto getCurveFirst(String equipmentNo, String date,String sn) {
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo);
         if(CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
-        return EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto());
+        boolean flag = false;
+        if(StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4,6))){
+            flag = true;
+        }
+        return flag ?
+                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList, new CurveInfoDto()):
+                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto());
     }
 
     /**
@@ -181,5 +194,46 @@ public class EquipmentInfoApplication {
         MonitorUpsInfoDto monitorUpsInfoDto = new MonitorUpsInfoDto();
         monitorUpsInfoDto.setUps(currentUps);
         return monitorUpsInfoDto;
+    }
+
+    /**
+     * 查询当前值信息
+     * @param equipmentNo
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public QueryInfoModel getQueryInfo(String equipmentNo, String startTime, String endTime ){
+        SnDeviceDto snDeviceDto =
+                monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
+        if (ObjectUtils.isEmpty(snDeviceDto)) {
+            return null;
+        }
+        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startTime, endTime, equipmentNo);
+        QueryInfoModel queryInfoModel = new QueryInfoModel();
+        queryInfoModel.setEquipmentName(snDeviceDto.getEquipmentName());
+        List<MonitorequipmentlastdataDto> convert = BeanConverter.convert(monitorEquipmentLastDataInfo, MonitorequipmentlastdataDto.class);
+        queryInfoModel.setMonitorEquipmentLastDataDTOList(convert);
+        return queryInfoModel;
+    }
+
+
+    public void exportExcel( String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
+            //1.查出设备的当前值
+        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
+        if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
+            return;
+        }
+        SnDeviceDto snDeviceDto =
+                monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
+        String type = null;
+        if (startDate.equals(endDate)) {
+            type = startDate;
+        } else {
+            type = startDate + "----" + endDate;
+        }
+        FileUtil.exportExcel(monitorEquipmentLastDataInfo,snDeviceDto.getEquipmentName()+"监控数据汇总","sheet1",Monitorequipmentlastdata.class,snDeviceDto.getEquipmentName()+type+"监控数据汇总.xlsx",response);
     }
 }
