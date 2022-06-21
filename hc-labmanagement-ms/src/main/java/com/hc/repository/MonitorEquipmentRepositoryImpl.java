@@ -111,4 +111,16 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
     public List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode) {
         return monitorEquipmentDao.getEquipmentNoList(hospitalCode);
     }
+
+    /**
+     * 查询设备信息
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public MonitorEquipmentDto selectMonitorEquipmentInfoByEno(String equipmentNo) {
+        MonitorEquipmentPo monitorEquipmentPo =
+                monitorEquipmentDao.selectOne(Wrappers.lambdaQuery(new MonitorEquipmentPo()).eq(MonitorEquipmentPo::getEquipmentNo,equipmentNo));
+        return BeanConverter.convert(monitorEquipmentPo,MonitorEquipmentDto.class);
+    }
 }

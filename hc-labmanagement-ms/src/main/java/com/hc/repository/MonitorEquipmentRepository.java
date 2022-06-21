@@ -68,4 +68,12 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      * @return
      */
     List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode);
+
+    /**
+     * 查询设备信息
+     * @param equipmentNo
+     * @return
+     */
+    MonitorEquipmentDto selectMonitorEquipmentInfoByEno(String equipmentNo);
+
 }

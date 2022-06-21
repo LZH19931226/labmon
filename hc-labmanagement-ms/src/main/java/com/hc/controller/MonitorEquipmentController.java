@@ -72,4 +72,16 @@ public class MonitorEquipmentController {
     public List<String> getEquipmentNoList(@RequestParam("hospitalCode")String hospitalCode){
         return monitorEquipmentApplication.getEquipmentNoList(hospitalCode);
     }
+
+    @GetMapping("/getMonitorEquipmentInfoByEno")
+    @ApiOperation("获取监控设备查询信息")
+    public SnDeviceDto selectMonitorEquipmentInfoByEno(@RequestParam("equipmentNo")String equipmentNo){
+        return monitorEquipmentApplication.selectMonitorEquipmentInfoByEno(equipmentNo);
+    }
+
+    @GetMapping("/getMonitorEquipmentInfoByHCode")
+    @ApiOperation("获取医院的设备信息")
+    public List<SnDeviceDto> getMonitorEquipmentInfoByHCode(@RequestParam("hospitalCode") String hospitalCode){
+        return monitorEquipmentApplication.getMonitorEquipmentInfoByHCode(hospitalCode);
+    }
 }

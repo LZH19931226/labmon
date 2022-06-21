@@ -761,4 +761,27 @@ public class MonitorEquipmentApplication {
         }
         return list.stream().map(MonitorEquipmentDto::getEquipmentNo).collect(Collectors.toList());
     }
+
+    /**
+     *
+     * @param equipmentNo
+     * @return
+     */
+    public SnDeviceDto selectMonitorEquipmentInfoByEno(String equipmentNo) {
+        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByEno(equipmentNo);
+        return BeanConverter.convert(monitorEquipmentDto,SnDeviceDto.class);
+    }
+
+    /**
+     * 获取医院的设备信息
+     * @param hospitalCode
+     * @return
+     */
+    public List<SnDeviceDto> getMonitorEquipmentInfoByHCode(String hospitalCode) {
+        List<MonitorEquipmentDto> monitorEquipmentDto = monitorEquipmentService.getEquipmentNoList(hospitalCode);
+        if (CollectionUtils.isEmpty(monitorEquipmentDto)) {
+            return null;
+        }
+        return BeanConverter.convert(monitorEquipmentDto,SnDeviceDto.class);
+    }
 }

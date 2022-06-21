@@ -65,4 +65,11 @@ public interface MonitorEquipmentService {
      * @return
      */
     List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode);
+
+    /**
+     * 查询监控设备信息
+     * @param equipmentNo
+     * @return
+     */
+    MonitorEquipmentDto selectMonitorEquipmentInfoByEno(String equipmentNo);
 }
