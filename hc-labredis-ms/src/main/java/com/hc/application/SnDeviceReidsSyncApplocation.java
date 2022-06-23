@@ -84,9 +84,6 @@ public class SnDeviceReidsSyncApplocation {
                     }
                 }
             }
-//            List<MonitorequipmentlastdataDto> removeList = monitorEquipmentLastDataDtoList.stream()
-//                            .filter(res -> res.getCmdId().equals(cmdId))
-//                            .collect(Collectors.toList());
             if(CollectionUtils.isNotEmpty(removeList)){
                 monitorEquipmentLastDataDtoList.removeAll(removeList);
             }
@@ -115,7 +112,6 @@ public class SnDeviceReidsSyncApplocation {
         }
         cn.hutool.json.JSONArray objects = JSONUtil.parseArray(lastData);
        return  objects.toList(MonitorequipmentlastdataDto.class);
-
     }
 
     /**

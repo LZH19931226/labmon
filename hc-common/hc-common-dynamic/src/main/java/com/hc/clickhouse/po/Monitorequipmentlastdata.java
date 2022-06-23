@@ -21,6 +21,12 @@ public class Monitorequipmentlastdata implements Serializable {
     private String sn;
 
     private String cmdid;
+
+    /**
+     * 设备名称
+     */
+    @Excel(name = "记录时间",orderNum = "0")
+    private String equipmentname;
     /**
      * 设备编号
      */
@@ -29,7 +35,7 @@ public class Monitorequipmentlastdata implements Serializable {
     /**
      * 记录时间
      */
-    @Excel(name = "记录时间",orderNum = "1",format = "yyyy-MM-ss HH:mm")
+    @Excel(name = "记录时间",orderNum = "1",format = "yyyy-MM-dd HH:mm")
     private Date inputdatetime;
 
     /**
@@ -241,19 +247,19 @@ public class Monitorequipmentlastdata implements Serializable {
     /**
      * mt310探头一模式
      */
-    @Excel(name = "mt310探头一模式",orderNum = "45",replace = {"温度_1","湿度_2","O2浓度_3","CO2 浓度_4"})
+    @Excel(name = "mt310探头一模式",orderNum = "45",replace = {"温度_1","湿度_2","O2浓度_3","CO2 浓度_4"," _null"})
     private String probe1model;
 
     /**
      * mt310探头二模式
      */
-    @Excel(name = "mt310探头二模式",orderNum = "47",replace = {"温度_1","湿度_2","O2浓度_3","CO2 浓度_4"})
+    @Excel(name = "mt310探头二模式",orderNum = "47",replace = {"温度_1","湿度_2","O2浓度_3","CO2 浓度_4"," _null"})
     private String probe2model;
 
     /**
      * mt310探头三模式
      */
-    @Excel(name = "mt310探头三模式",orderNum = "49",replace = {"温度_1","湿度_2","O2浓度_3","CO2 浓度_4"})
+    @Excel(name = "mt310探头三模式",orderNum = "49",replace = {"温度_1","湿度_2","O2浓度_3","CO2 浓度_4"," _null"})
     private String probe3model;
 
 

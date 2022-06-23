@@ -1,5 +1,8 @@
 package com.hc.application;
 
+import com.hc.application.ExcelMadel.HjExcleModel;
+import com.hc.application.ExcelMadel.OtherExcleModel;
+import com.hc.application.ExcelMadel.PyxExcleModel;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
@@ -17,6 +20,7 @@ import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.FileUtil;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentMonitorInfoService;
@@ -28,9 +32,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -219,21 +221,296 @@ public class EquipmentInfoApplication {
     }
 
 
-    public void exportExcel( String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
-            //1.查出设备的当前值
-        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
-                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
-        if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
+    public void exportExcel( String equipmentNo, String startDate, String endDate, HttpServletResponse response)
+    {
+            List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
+                    monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
+            if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
+                return;
+            }
+            SnDeviceDto snDeviceDto =
+                    monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
+            String type = null;
+            if (startDate.equals(endDate)) {
+                type = startDate;
+            } else {
+                type = startDate + "----" + endDate;
+            }
+            FileUtil.exportExcel(monitorEquipmentLastDataInfo,snDeviceDto.getEquipmentName()+"监控数据汇总","sheet1",Monitorequipmentlastdata.class,snDeviceDto.getEquipmentName()+type+"监控数据汇总.xlsx",response);
+    }
+
+    /**
+     * 时间点查询
+     * @param hospitalCode
+     * @param operationDate
+     * @param type
+     */
+    public void exportSingle(String hospitalCode, String operationDate, String type,HttpServletResponse response) {
+        //1.判断该医院有哪些设备类型
+        List<HospitalEquipmentTypeModel> result =
+                hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
+        if (CollectionUtils.isEmpty(result)) {
             return;
         }
-        SnDeviceDto snDeviceDto =
-                monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
-        String type = null;
-        if (startDate.equals(endDate)) {
-            type = startDate;
-        } else {
-            type = startDate + "----" + endDate;
+        String hospitalName = result.get(0).getHospitalName();
+        //获取医院的设备信息集合
+        List<SnDeviceDto> monitorInfo = monitorEquipmentApi.getMonitorEquipmentInfoByHCode(hospitalCode).getResult();
+        if (CollectionUtils.isEmpty(monitorInfo)) {
+            return;
         }
-        FileUtil.exportExcel(monitorEquipmentLastDataInfo,snDeviceDto.getEquipmentName()+"监控数据汇总","sheet1",Monitorequipmentlastdata.class,snDeviceDto.getEquipmentName()+type+"监控数据汇总.xlsx",response);
+        String equipmentName;
+        String hjs = "环境";
+        String pyxs = "培养箱";
+        String ydgs = "液氮罐";
+        String bxs = "冰箱";
+        String czts = "操作台";
+
+        if(StringUtils.equals(type,"month")){
+            Date date = DateUtils.parseDate(operationDate);
+            String startTime = DateUtils.getPreviousHourHHmm(date);
+            String endTime = DateUtils.dateReduceHHmm(date);
+            String yearMonth = DateUtils.getYearMonth(date);
+            List<Monitorequipmentlastdata> lastDateList =
+                    monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfoByPeriod(hospitalCode,startTime,endTime,yearMonth);
+            if(CollectionUtils.isEmpty(lastDateList)){
+                return;
+            }
+            Map<String, List<Monitorequipmentlastdata>> equipmentNoMap =
+                    lastDateList.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getEquipmentno));
+            List<List<?>> lists = new ArrayList<List<?>>();
+            List<String> sheetList = new ArrayList<String>();
+            List<String> titleList = new ArrayList<String>();
+            List<Class<?>> classList = new ArrayList<Class<?>>();
+            List<HjExcleModel> hjExcleModels = new ArrayList<HjExcleModel>();
+            List<PyxExcleModel> pyxExcleModels = new ArrayList<PyxExcleModel>();
+            //液氮罐
+            List<OtherExcleModel> otherExcleModels = new ArrayList<OtherExcleModel>();
+            //冰箱
+            List<OtherExcleModel> otherExcleModelone = new ArrayList<OtherExcleModel>();
+            //操作台
+            List<OtherExcleModel> otherExcleModeltwo= new ArrayList<OtherExcleModel>();
+            for (SnDeviceDto snDeviceDto : monitorInfo) {
+                String equipmentTypeId = snDeviceDto.getEquipmentTypeId();
+                if (StringUtils.isBlank(equipmentTypeId)) {
+                    continue;
+                }
+                equipmentName = snDeviceDto.getEquipmentName();
+                String equipmentNo = snDeviceDto.getEquipmentNo();
+                List<Monitorequipmentlastdata> list = new ArrayList<>();
+                if (!equipmentNoMap.containsKey(equipmentNo)) {
+                    continue;
+                }
+                list = equipmentNoMap.get(equipmentNo);
+                switch (equipmentTypeId) {
+                    case "1":
+                        List<HjExcleModel> hj = EquipmentInfoServiceHelp.getHj(list, equipmentName);
+                        if (CollectionUtils.isEmpty(hj)) {
+                            break;
+                        }
+                        if (CollectionUtils.isEmpty(hjExcleModels)) {
+                            hjExcleModels = hj;
+                        } else {
+                            hjExcleModels.addAll(hj);
+                        }
+                        break;
+                    case "2":
+                        List<PyxExcleModel> pyx = EquipmentInfoServiceHelp.getPyx(list, equipmentName);
+                        if (CollectionUtils.isEmpty(pyx)) {
+                            break;
+                        }
+                        if (CollectionUtils.isEmpty(pyxExcleModels)) {
+                            pyxExcleModels = pyx;
+                        } else {
+                            pyxExcleModels.addAll(pyx);
+                        }
+
+                        break;
+                    case "3":
+                        List<OtherExcleModel> other1 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
+                        if (CollectionUtils.isEmpty(other1)) break;
+                        if (CollectionUtils.isEmpty(otherExcleModels)) {
+                            otherExcleModels = other1;
+                        } else {
+                            otherExcleModels.addAll(other1);
+                        }
+                        break;
+                    case "4":
+                        List<OtherExcleModel> other2 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
+                        if (CollectionUtils.isEmpty(other2)) break;
+                        if (CollectionUtils.isEmpty(otherExcleModels)) {
+                            otherExcleModels = other2;
+                        } else {
+                            otherExcleModels.addAll(other2);
+                        }
+                        break;
+                    case "5":
+                        List<OtherExcleModel> other3 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
+                        if (CollectionUtils.isEmpty(other3)) break;
+                        if (CollectionUtils.isEmpty(otherExcleModels)) {
+                            otherExcleModels = other3;
+                        } else {
+                            otherExcleModels.addAll(other3);
+                            break;
+                        }
+                }
+            }
+            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(hjExcleModels)) {
+                sheetList.add(hjs);
+                titleList.add(hjs);
+                classList.add(HjExcleModel.class);
+                lists.add(hjExcleModels);
+            }
+            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(pyxExcleModels)) {
+                sheetList.add(pyxs);
+                titleList.add(pyxs);
+                classList.add(PyxExcleModel.class);
+                lists.add(pyxExcleModels);
+            }
+            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModels)) {
+                sheetList.add(ydgs);
+                titleList.add(ydgs);
+                classList.add(OtherExcleModel.class);
+                lists.add(otherExcleModels);
+
+            }
+            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModelone)) {
+                sheetList.add(bxs);
+                titleList.add(bxs);
+                classList.add(OtherExcleModel.class);
+                lists.add(otherExcleModelone);
+            }
+
+            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModeltwo)) {
+                sheetList.add(czts);
+                titleList.add(czts);
+                classList.add(OtherExcleModel.class);
+                lists.add(otherExcleModeltwo);
+            }
+            FileUtil.exportExcleUnSheets(lists, titleList, sheetList, classList,
+                    hospitalName+yearMonth+"监控数据.xls", response);
+            return;
+        }
+        Date date = DateUtils.parseDate(operationDate);
+        String startTime = DateUtils.getPreviousHourHHmmss(date);
+        String endTime = DateUtils.paseDateHHmmss(date);
+        String time = DateUtils.paseDate(date);
+        List<Monitorequipmentlastdata> lastDateList =
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfoByDate(hospitalCode,startTime,endTime,time);
+        if (CollectionUtils.isEmpty(lastDateList)) {
+            return;
+        }
+        Map<String, List<Monitorequipmentlastdata>> equipmentNoMap =
+                lastDateList.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getEquipmentno));
+
+        List<List<?>> lists = new ArrayList<List<?>>();
+        List<String> sheetList = new ArrayList<String>();
+        List<String> titleList = new ArrayList<String>();
+        List<Class<?>> classList = new ArrayList<Class<?>>();
+        List<HjExcleModel> hjExcleModels = new ArrayList<HjExcleModel>();
+        List<PyxExcleModel> pyxExcleModels= new ArrayList<PyxExcleModel>();
+        //液氮罐
+        List<OtherExcleModel> otherExcleModels = new ArrayList<OtherExcleModel>();
+        //冰箱
+        List<OtherExcleModel> otherExcleModelone = new ArrayList<OtherExcleModel>();
+        //操作台
+        List<OtherExcleModel> otherExcleModeltwo = new ArrayList<OtherExcleModel>();
+
+        for (SnDeviceDto snDeviceDto : monitorInfo) {
+            String equipmentTypeId = snDeviceDto.getEquipmentTypeId();
+            if (StringUtils.isBlank(equipmentTypeId)) {
+                continue;
+            }
+            String equipmentNo = snDeviceDto.getEquipmentNo();
+            if (!equipmentNoMap.containsKey(equipmentNo)) {
+                continue;
+            }
+            equipmentName = snDeviceDto.getEquipmentName();
+            List<Monitorequipmentlastdata> list = equipmentNoMap.get(equipmentNo);
+            switch (equipmentTypeId){
+                case "1":
+                    List<HjExcleModel> hj = EquipmentInfoServiceHelp.getHj(list, equipmentName);
+                    if (CollectionUtils.isEmpty(hj)) {
+                        break;
+                    }
+                    if (CollectionUtils.isEmpty(hjExcleModels)) {
+                        hjExcleModels = hj;
+                    } else {
+                        hjExcleModels.addAll(hj);
+                    }
+                    break;
+                case "2":
+                    List<PyxExcleModel> pyx = EquipmentInfoServiceHelp.getPyx(list, equipmentName);
+                    if (CollectionUtils.isEmpty(pyx)) {
+                        break;
+                    }
+                    if (CollectionUtils.isEmpty(pyxExcleModels)) {
+                        pyxExcleModels = pyx;
+                    } else {
+                        pyxExcleModels.addAll(pyx);
+                    }
+                    break;
+                case "3":
+                    List<OtherExcleModel> other1 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
+                    if (CollectionUtils.isEmpty(other1)) break;
+                    if (CollectionUtils.isEmpty(otherExcleModels)) {
+                        otherExcleModels = other1;
+                    } else {
+                        otherExcleModels.addAll(other1);
+                    }
+                    break;
+                case "4":
+                    List<OtherExcleModel> other2 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
+                    if (CollectionUtils.isEmpty(other2)) break;
+                    if (CollectionUtils.isEmpty(otherExcleModels)) {
+                        otherExcleModels = other2;
+                    } else {
+                        otherExcleModels.addAll(other2);
+                    }
+                    break;
+                case "5":
+                    List<OtherExcleModel> other3 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
+                    if (CollectionUtils.isEmpty(other3)) break;
+                    if (CollectionUtils.isEmpty(otherExcleModels)) {
+                        otherExcleModels = other3;
+                    } else {
+                        otherExcleModels.addAll(other3);
+                        break;
+                    }
+            }
+
+        }
+        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(hjExcleModels)) {
+            sheetList.add(hjs);
+            titleList.add(hjs);
+            classList.add(HjExcleModel.class);
+            lists.add(hjExcleModels);
+        }
+        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(pyxExcleModels)) {
+            sheetList.add(pyxs);
+            titleList.add(pyxs);
+            classList.add(PyxExcleModel.class);
+            lists.add(pyxExcleModels);
+        }
+        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModels)) {
+            sheetList.add(ydgs);
+            titleList.add(ydgs);
+            classList.add(OtherExcleModel.class);
+            lists.add(otherExcleModels);
+        }
+        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModelone)) {
+            sheetList.add(bxs);
+            titleList.add(bxs);
+            classList.add(OtherExcleModel.class);
+            lists.add(otherExcleModelone);
+        }
+
+        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModeltwo)) {
+            sheetList.add(czts);
+            titleList.add(czts);
+            classList.add(OtherExcleModel.class);
+            lists.add(otherExcleModeltwo);
+        }
+        FileUtil.exportExcleUnSheets(lists, titleList, sheetList, classList,
+                hospitalName+date+"号监控数据.xls", response);
     }
 }

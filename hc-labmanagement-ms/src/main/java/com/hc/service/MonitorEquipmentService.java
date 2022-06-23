@@ -72,4 +72,6 @@ public interface MonitorEquipmentService {
      * @return
      */
     MonitorEquipmentDto selectMonitorEquipmentInfoByEno(String equipmentNo);
+
+    List<MonitorEquipmentDto> getMonitorEquipmentInfoByHCode(String hospitalCode);
 }

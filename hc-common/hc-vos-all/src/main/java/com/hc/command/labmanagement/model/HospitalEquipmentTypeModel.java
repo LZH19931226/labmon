@@ -20,4 +20,9 @@ public class HospitalEquipmentTypeModel {
      */
     private String equipmentTypeName;
 
+    /**
+     * 医院名称
+     */
+    private String hospitalName;
+
 }

@@ -102,4 +102,8 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
         return monitorEquipmentRepository.selectMonitorEquipmentInfoByEno(equipmentNo);
     }
 
+    @Override
+    public List<MonitorEquipmentDto> getMonitorEquipmentInfoByHCode(String hospitalCode) {
+        return monitorEquipmentRepository.getMonitorEquipmentInfoByHCode(hospitalCode);
+    }
 }

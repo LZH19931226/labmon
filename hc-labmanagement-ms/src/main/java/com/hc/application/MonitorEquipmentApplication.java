@@ -778,7 +778,7 @@ public class MonitorEquipmentApplication {
      * @return
      */
     public List<SnDeviceDto> getMonitorEquipmentInfoByHCode(String hospitalCode) {
-        List<MonitorEquipmentDto> monitorEquipmentDto = monitorEquipmentService.getEquipmentNoList(hospitalCode);
+        List<MonitorEquipmentDto> monitorEquipmentDto = monitorEquipmentService.getMonitorEquipmentInfoByHCode(hospitalCode);
         if (CollectionUtils.isEmpty(monitorEquipmentDto)) {
             return null;
         }

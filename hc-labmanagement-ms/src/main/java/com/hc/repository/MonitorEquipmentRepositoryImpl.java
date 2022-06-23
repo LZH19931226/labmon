@@ -123,4 +123,11 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
                 monitorEquipmentDao.selectOne(Wrappers.lambdaQuery(new MonitorEquipmentPo()).eq(MonitorEquipmentPo::getEquipmentNo,equipmentNo));
         return BeanConverter.convert(monitorEquipmentPo,MonitorEquipmentDto.class);
     }
+
+    @Override
+    public List<MonitorEquipmentDto> getMonitorEquipmentInfoByHCode(String hospitalCode) {
+        List<MonitorEquipmentPo> monitorEquipmentPos =
+                monitorEquipmentDao.selectList(Wrappers.lambdaQuery(new MonitorEquipmentPo()).eq(MonitorEquipmentPo::getHospitalCode, hospitalCode));
+        return BeanConverter.convert(monitorEquipmentPos,MonitorEquipmentDto.class);
+    }
 }

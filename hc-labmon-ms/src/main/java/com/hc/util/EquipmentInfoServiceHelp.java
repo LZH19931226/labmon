@@ -1,5 +1,8 @@
 package com.hc.util;
 
+import com.hc.application.ExcelMadel.HjExcleModel;
+import com.hc.application.ExcelMadel.OtherExcleModel;
+import com.hc.application.ExcelMadel.PyxExcleModel;
 import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.curvemodel.SeriesDataModel;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
@@ -10,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EquipmentInfoServiceHelp {
@@ -601,5 +605,221 @@ public class EquipmentInfoServiceHelp {
             curveInfoDto.setProbe3O2(curveDataModel);
         }
         return curveInfoDto;
+    }
+
+    public static List<HjExcleModel> getHj(List<Monitorequipmentlastdata> list,String equipmentName) {
+        List<HjExcleModel> hjExcleModelList = new ArrayList<>();
+        for (Monitorequipmentlastdata sing : list) {
+            HjExcleModel hjExcleModel = new HjExcleModel();
+            Date inputdatetime = sing.getInputdatetime();
+            String currenttemperature = sing.getCurrenttemperature();
+            String currento2 = sing.getCurrento2();
+            String currentcarbondioxide = sing.getCurrentcarbondioxide();
+            String currentformaldehyde = sing.getCurrentformaldehyde();
+            String currenthumidity = sing.getCurrenthumidity();
+            String currentpm5 = sing.getCurrentpm5();
+            String currentpm05 = sing.getCurrentpm05();
+            String currentpm10 = sing.getCurrentpm10();
+            String currentpm25 = sing.getCurrentpm25();
+            String currentvoc = sing.getCurrentvoc();
+            String currentairflow = sing.getCurrentairflow();
+            if (StringUtils.isNotEmpty(currenttemperature)) {
+                hjExcleModel.setCurrenttemperature(currenttemperature);
+            }
+            if (StringUtils.isNotEmpty(currento2)) {
+                hjExcleModel.setCurrento2(currento2);
+            }
+            if (StringUtils.isNotEmpty(currentcarbondioxide)) {
+                hjExcleModel.setCurrentcarbondioxide(currentcarbondioxide);
+            }
+            if (StringUtils.isNotEmpty(currentformaldehyde)) {
+                hjExcleModel.setCurrentformaldehyde(currentformaldehyde);
+            }
+            if (StringUtils.isNotEmpty(currenthumidity)) {
+                hjExcleModel.setCurrenthumidity(currenthumidity);
+            }
+            if (StringUtils.isNotEmpty(currentpm5)) {
+                hjExcleModel.setCurrentpm5(currentpm5);
+            }
+            if (StringUtils.isNotEmpty(currentpm05)) {
+                hjExcleModel.setCurrentpm05(currentpm05);
+            }
+            if (StringUtils.isNotEmpty(currentpm10)) {
+                hjExcleModel.setCurrentpm10(currentpm10);
+            }
+            if (StringUtils.isNotEmpty(currentpm25)) {
+                hjExcleModel.setCurrentpm25(currentpm25);
+            }
+            if (StringUtils.isNotEmpty(currentvoc)) {
+                hjExcleModel.setCurrentvoc(currentvoc);
+            }
+            if (StringUtils.isNotEmpty(currentairflow)) {
+                hjExcleModel.setCurrentairflow(currentairflow);
+            }
+            hjExcleModel.setInputdatetime(inputdatetime);
+            hjExcleModel.setEquipmentname(equipmentName);
+            hjExcleModelList.add(hjExcleModel);
+        }
+
+        return hjExcleModelList;
+    }
+
+    public static List<PyxExcleModel> getPyx(List<Monitorequipmentlastdata> monitorequipmentlastdataList,String equipmentName) {
+        List<PyxExcleModel> hjExcleModelList = new ArrayList<>();
+        for (Monitorequipmentlastdata sing : monitorequipmentlastdataList) {
+            PyxExcleModel pyxExcleModel = new PyxExcleModel();
+            List<String> list = new ArrayList<String>();
+            list.add("A");
+            list.add("B");
+            list.add("C");
+            list.add("D");
+            list.add("E");
+            list.add("F");
+            Date inputdatetime = sing.getInputdatetime();
+            String currenttemperature = sing.getCurrenttemperature();
+            String currento2 = sing.getCurrento2();
+            String currentcarbondioxide = sing.getCurrentcarbondioxide();
+            String currenthumidity = sing.getCurrenthumidity();
+            String currentairflow1 = sing.getCurrentairflow1();
+            String currenttemperature1 = sing.getCurrenttemperature1();
+            String currenttemperature2 = sing.getCurrenttemperature2();
+            String currenttemperature3 = sing.getCurrenttemperature3();
+            String currenttemperature4 = sing.getCurrenttemperature4();
+            String currenttemperature5 = sing.getCurrenttemperature5();
+            String currenttemperature6 = sing.getCurrenttemperature6();
+            String currenttemperature7 = sing.getCurrenttemperature7();
+            String currenttemperature8 = sing.getCurrenttemperature8();
+            String currenttemperature9 = sing.getCurrenttemperature9();
+            String currenttemperature10 = sing.getCurrenttemperature10();
+            String currentleftcovertemperature = sing.getCurrentleftcovertemperature();
+            String currentrightcovertemperature = sing.getCurrentrightcovertemperature();
+            String currentleftendtemperature = sing.getCurrentleftendtemperature();
+            String currentrightendtemperature = sing.getCurrentrightendtemperature();
+            String currentlefttemperature = sing.getCurrentlefttemperature();
+            String currentrigthtemperature = sing.getCurrentrigthtemperature();
+            if (StringUtils.isNotEmpty(currenttemperature)) {
+                if (list.contains(currenttemperature)) {
+                    currenttemperature = "探头获取数据异常";
+                }
+                pyxExcleModel.setCurrenttemperature(currenttemperature);
+            }
+            if (StringUtils.isNotEmpty(currento2)) {
+                if (list.contains(currento2)) {
+                    currento2 = "探头获取数据异常";
+                }
+                pyxExcleModel.setCurrento2(currento2);
+            }
+            if (StringUtils.isNotEmpty(currentcarbondioxide)) {
+                if (list.contains(currentcarbondioxide)) {
+                    currentcarbondioxide = "探头获取数据异常";
+                }
+                pyxExcleModel.setCurrentcarbondioxide(currentcarbondioxide);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature1)) {
+                pyxExcleModel.setCurrenttemperature1(currenttemperature1);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature2)) {
+                pyxExcleModel.setCurrenttemperature2(currenttemperature2);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature3)) {
+                pyxExcleModel.setCurrenttemperature3(currenttemperature3);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature4)) {
+                pyxExcleModel.setCurrenttemperature4(currenttemperature4);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature5)) {
+                pyxExcleModel.setCurrenttemperature5(currenttemperature5);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature6)) {
+                pyxExcleModel.setCurrenttemperature6(currenttemperature6);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature7)) {
+                pyxExcleModel.setCurrenttemperature7(currenttemperature7);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature8)) {
+                pyxExcleModel.setCurrenttemperature8(currenttemperature8);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature9)) {
+                pyxExcleModel.setCurrenttemperature9(currenttemperature9);
+            }
+            if (StringUtils.isNotEmpty(currenttemperature10)) {
+                pyxExcleModel.setCurrenttemperature10(currenttemperature10);
+            }
+            if (StringUtils.isNotEmpty(currentleftcovertemperature)) {
+                pyxExcleModel.setCurrentleftcovertemperature(currentleftcovertemperature);
+            }
+            if (StringUtils.isNotEmpty(currentrightcovertemperature)) {
+                pyxExcleModel.setCurrentrightcovertemperature(currentrightcovertemperature);
+            }
+            if (StringUtils.isNotEmpty(currentleftendtemperature)) {
+                pyxExcleModel.setCurrentleftendtemperature(currentleftendtemperature);
+            }
+            if (StringUtils.isNotEmpty(currentrightendtemperature)) {
+                pyxExcleModel.setCurrentrightendtemperature(currentrightendtemperature);
+            }
+            if (StringUtils.isNotEmpty(currenthumidity)) {
+                pyxExcleModel.setCurrenthumidity(currenthumidity);
+            }
+            if (StringUtils.isNotEmpty(currentairflow1)) {
+                if (list.contains(currentairflow1)) {
+                    currentairflow1 = "设备获取数据异常";
+                }
+                pyxExcleModel.setCurrentairflow1(currentairflow1);
+            }
+            if (StringUtils.isNotEmpty(currentlefttemperature)) {
+                if (list.contains(currentlefttemperature)) {
+                    currentlefttemperature = "设备获取数据异常";
+                }
+                pyxExcleModel.setCurrentlefttemperature(currentlefttemperature);
+            }
+            if (StringUtils.isNotEmpty(currentrigthtemperature)) {
+                if (list.contains(currentrigthtemperature)) {
+                    currentrigthtemperature = "设备获取数据异常";
+                }
+                pyxExcleModel.setCurrentrigthtemperature(currentrigthtemperature);
+            }
+            if(StringUtils.isNotBlank(sing.getProbe1model()) || StringUtils.isNotBlank(sing.getProbe2model()) || StringUtils.isNotBlank(sing.getProbe3model())
+            || StringUtils.isNotBlank(sing.getProbe1data()) || StringUtils.isNotBlank(sing.getProbe2data()) || StringUtils.isNotBlank(sing.getProbe3data()) ){
+                pyxExcleModel.setModel(sing.getModel()==null?"":sing.getModel());
+                pyxExcleModel.setProbe1model(sing.getProbe1model());
+                pyxExcleModel.setProbe1data(sing.getProbe1data());
+                pyxExcleModel.setProbe2model(sing.getProbe2model());
+                pyxExcleModel.setProbe2data(sing.getProbe2data());
+                pyxExcleModel.setModel(sing.getProbe3model());
+                pyxExcleModel.setProbe3data(sing.getProbe3data());
+            }
+            pyxExcleModel.setInputdatetime(inputdatetime);
+            pyxExcleModel.setEquipmentname(equipmentName);
+            hjExcleModelList.add(pyxExcleModel);
+        }
+        return hjExcleModelList;
+    }
+
+    public static List<OtherExcleModel> getOther(List<Monitorequipmentlastdata> monitorequipmentlastdataList,String equipmentName) {
+        List<OtherExcleModel> excleModelList = new ArrayList<>();
+        for (Monitorequipmentlastdata sing : monitorequipmentlastdataList) {
+
+            OtherExcleModel otherExcleModel = new OtherExcleModel();
+            List<String> list = new ArrayList<String>();
+            list.add("A");
+            list.add("B");
+            list.add("C");
+            list.add("D");
+            list.add("E");
+            list.add("F");
+
+            Date inputdatetime = sing.getInputdatetime();
+            String currenttemperature = sing.getCurrenttemperature();
+            if (StringUtils.isNotEmpty(currenttemperature)) {
+                if (list.contains(currenttemperature)) {
+                    currenttemperature = "探头获取数据异常";
+                }
+                otherExcleModel.setCurrenttemperature(currenttemperature);
+            }
+            otherExcleModel.setInputdatetime(inputdatetime);
+            otherExcleModel.setEquipmentname(equipmentName);
+            excleModelList.add(otherExcleModel);
+        }
+        return excleModelList;
     }
 }

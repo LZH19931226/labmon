@@ -26,4 +26,14 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String startTime, String endTime, String equipmentNo) {
     return monitorequipmentlastdataMapper.getMonitorEquipmentLastData(startTime,endTime,equipmentNo);
   }
+
+  @Override
+  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByPeriod(String hospitalCode, String startTime, String endTime, String month) {
+    return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfoByPeriod(hospitalCode,startTime,endTime,month);
+  }
+
+  @Override
+  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByDate(String hospitalCode, String startTime, String endTime, String date) {
+    return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfoByDate(hospitalCode,startTime,endTime,date);
+  }
 }

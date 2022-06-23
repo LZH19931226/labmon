@@ -87,17 +87,19 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.getQueryInfo(equipmentNo,startTime,endTime);
     }
 
-    /**
-     * 导出excel
-     * @param equipmentNo
-     * @param startDate
-     * @param endDate
-     * @param response
-     */
     @GetMapping("/exportExcel")
-    @ApiOperation("导出为excel")
+    @ApiOperation("查询导出")
     public void exportExcel(@RequestParam("equipmentNo") String equipmentNo, @RequestParam("startDate") String startDate,
                             @RequestParam("endDate") String endDate,HttpServletResponse response){
         equipmentInfoApplication.exportExcel(equipmentNo,startDate,endDate,response);
+    }
+
+    @GetMapping("/exportSingle")
+    @ApiOperation("时间点导出")
+    public void exportSingle(@RequestParam("hospitalCode") String hospitalCode,
+                             @RequestParam("operationDate") String operationDate,
+                             @RequestParam(" ") String type,
+                             HttpServletResponse response){
+        equipmentInfoApplication.exportSingle(hospitalCode,operationDate,type,response);
     }
 }

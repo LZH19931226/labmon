@@ -81,6 +81,8 @@ public class FileUtil {
         defaultExport(list, fileName, response);
     }
 
+
+
     private static void defaultExport(List<?> list, Class<?> pojoClass, String fileName, HttpServletResponse response, ExportParams exportParams) {
         Workbook workbook = ExcelExportUtil.exportExcel(exportParams,pojoClass,list);
         if (workbook != null);
@@ -141,4 +143,20 @@ public class FileUtil {
         return list;
     }
 
+    public static void exportExcel( Map<String, List> map, String fileName, Class<?> pojoClass, HttpServletResponse response) {
+        List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
+        for (String sheetName : map.keySet()) {
+            ExportParams exportParams = new ExportParams(sheetName, sheetName);
+            Map<String, Object> titleMap = new HashMap<String, Object>();
+            titleMap.put("title", exportParams);
+            titleMap.put("data", map.get(sheetName));
+            titleMap.put("entity", pojoClass);
+            mapList.add(titleMap);
+        }
+        ExcelType type  = ExcelType.HSSF;
+        Workbook workbook = ExcelExportUtil.exportExcel(mapList,type);
+        if (workbook != null ) {
+            downLoadExcel(fileName,response,workbook);
+        }
+    }
 }

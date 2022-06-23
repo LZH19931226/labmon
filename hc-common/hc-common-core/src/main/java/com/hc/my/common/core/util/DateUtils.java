@@ -86,6 +86,15 @@ public class DateUtils {
     }
 
     /**
+     * 解析时间
+     * @param date
+     * @return  "HH:mm:ss"
+     */
+    public static String paseDateHHmmss(Date date) {
+        return simpleDateFormat.format(date);
+    }
+
+    /**
      * 获取当前时间
      *
      * @return
@@ -135,4 +144,72 @@ public class DateUtils {
         String nowDate = new DateUtils().getNowDate();
         System.out.println(nowDate);
     }
+
+    /**
+     * 以 yyyy-MM-dd HH:mm:ss 的格式解析String
+     * @param str
+     * @return
+     */
+    public static Date parseDate(String str){
+        Date date ;
+        try {
+            date = datetimeFormat.parse(str);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return date;
+    }
+
+    /**
+     * 获取前一个小时的时间
+     * @param date
+     * @return "HH-mm"
+     */
+    public static String getPreviousHourHHmm(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR_OF_DAY,-1);
+        Date time = cal.getTime();
+        return parseDatetime(time);
+    }
+
+    /**
+     * 获取前一个小时的时间
+     * @param date
+     * @return "HH:mm:ss"
+     */
+    public static String getPreviousHourHHmmss(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR_OF_DAY,-1);
+        Date time = cal.getTime();
+        return simpleDateFormat.format(time);
+    }
+
+    /**
+     *  转换日期格式
+     * @param date
+     * @return "HH-mm"
+     */
+    public static String dateReduceHHmm(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        Date time = cal.getTime();
+        return parseDatetime(time);
+    }
+
+    /**
+     * 获取时间的年月
+     * @param date
+     * @return
+     */
+    public static String getYearMonth(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int month = cal.get(Calendar.MONTH)+1;
+        int year = cal.get(Calendar.YEAR);
+        return month>9 ? year+"-"+month : year+"-0"+month;
+    }
+
 }

@@ -248,6 +248,7 @@ public class HospitalequimentApplication {
             dtoList.forEach(res->{
                 HospitalEquipmentTypeModel model = new HospitalEquipmentTypeModel();
                 model.setEquipmentTypeId(res.getEquipmenttypeid())
+                        .setHospitalName(res.getHospitalname())
                       .setEquipmentTypeName(res.getEquipmenttypename());
                 list.add(model);
             });

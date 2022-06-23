@@ -76,4 +76,6 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      */
     MonitorEquipmentDto selectMonitorEquipmentInfoByEno(String equipmentNo);
 
+
+    List<MonitorEquipmentDto> getMonitorEquipmentInfoByHCode(String hospitalCode);
 }
