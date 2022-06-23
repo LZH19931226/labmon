@@ -98,7 +98,7 @@ public class EquipmentInfoController {
     @ApiOperation("时间点导出")
     public void exportSingle(@RequestParam("hospitalCode") String hospitalCode,
                              @RequestParam("operationDate") String operationDate,
-                             @RequestParam(" ") String type,
+                             @RequestParam("type") String type,
                              HttpServletResponse response){
         equipmentInfoApplication.exportSingle(hospitalCode,operationDate,type,response);
     }
