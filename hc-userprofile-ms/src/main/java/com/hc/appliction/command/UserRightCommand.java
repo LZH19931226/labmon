@@ -72,4 +72,12 @@ public class UserRightCommand {
     /** 当前页 */
     @ApiModelProperty(value = "当前页")
     private Long pageCurrent;
+
+    /** 最新一次登录类型 */
+    @ApiModelProperty(value = "登录类型")
+    private String loginType;
+
+    /** 设备登录状况 是否是第一次登录 */
+    @ApiModelProperty(value = "设备登录状况")
+    private String loginStatus;
 }

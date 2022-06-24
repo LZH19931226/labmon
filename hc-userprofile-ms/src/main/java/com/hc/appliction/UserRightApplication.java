@@ -161,6 +161,16 @@ public class UserRightApplication {
      * @return 用户视图对象
      */
     public UserRightVo Login(UserRightCommand userRightCommand) {
+        //只有安卓才有双因子
+        //是双因子且非第一次登录放行
+        //是双因子是第一次登录不放行,查询是否注册过手机号,1.有手机号.调用验证码接口登录 2.无手机号给该用户注册手机号调用接口验证码放行
+        //非双因子放行
+
+
+
+
+
+
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
         UserRightVo userRightVoBuilder = null;
         if(!ObjectUtils.isEmpty(userRightDto)){
