@@ -246,7 +246,7 @@ public class EquipmentInfoApplication {
      * @param type
      */
     public void exportSingle(String hospitalCode, String operationDate, String type,HttpServletResponse response) {
-        //1.判断该医院有哪些设备类型
+        //判断该医院有哪些设备类型
         List<HospitalEquipmentTypeModel> result =
                 hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
         if (CollectionUtils.isEmpty(result)) {
@@ -354,40 +354,40 @@ public class EquipmentInfoApplication {
                         }
                 }
             }
-            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(hjExcleModels)) {
+            if (CollectionUtils.isNotEmpty(hjExcleModels)) {
                 sheetList.add(hjs);
                 titleList.add(hjs);
                 classList.add(HjExcleModel.class);
                 lists.add(hjExcleModels);
             }
-            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(pyxExcleModels)) {
+            if (CollectionUtils.isNotEmpty(pyxExcleModels)) {
                 sheetList.add(pyxs);
                 titleList.add(pyxs);
                 classList.add(PyxExcleModel.class);
                 lists.add(pyxExcleModels);
             }
-            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModels)) {
+            if (CollectionUtils.isNotEmpty(otherExcleModels)) {
                 sheetList.add(ydgs);
                 titleList.add(ydgs);
                 classList.add(OtherExcleModel.class);
                 lists.add(otherExcleModels);
 
             }
-            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModelone)) {
+            if (CollectionUtils.isNotEmpty(otherExcleModelone)) {
                 sheetList.add(bxs);
                 titleList.add(bxs);
                 classList.add(OtherExcleModel.class);
                 lists.add(otherExcleModelone);
             }
 
-            if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModeltwo)) {
+            if (CollectionUtils.isNotEmpty(otherExcleModeltwo)) {
                 sheetList.add(czts);
                 titleList.add(czts);
                 classList.add(OtherExcleModel.class);
                 lists.add(otherExcleModeltwo);
             }
             FileUtil.exportExcleUnSheets(lists, titleList, sheetList, classList,
-                    hospitalName+yearMonth+"监控数据.xls", response);
+                    hospitalName+yearMonth+"月监控数据.xls", response);
             return;
         }
         Date date = DateUtils.parseDate(operationDate);
@@ -479,38 +479,38 @@ public class EquipmentInfoApplication {
             }
 
         }
-        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(hjExcleModels)) {
+        if (CollectionUtils.isNotEmpty(hjExcleModels)) {
             sheetList.add(hjs);
             titleList.add(hjs);
             classList.add(HjExcleModel.class);
             lists.add(hjExcleModels);
         }
-        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(pyxExcleModels)) {
+        if (CollectionUtils.isNotEmpty(pyxExcleModels)) {
             sheetList.add(pyxs);
             titleList.add(pyxs);
             classList.add(PyxExcleModel.class);
             lists.add(pyxExcleModels);
         }
-        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModels)) {
+        if (CollectionUtils.isNotEmpty(otherExcleModels)) {
             sheetList.add(ydgs);
             titleList.add(ydgs);
             classList.add(OtherExcleModel.class);
             lists.add(otherExcleModels);
         }
-        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModelone)) {
+        if (CollectionUtils.isNotEmpty(otherExcleModelone)) {
             sheetList.add(bxs);
             titleList.add(bxs);
             classList.add(OtherExcleModel.class);
             lists.add(otherExcleModelone);
         }
 
-        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(otherExcleModeltwo)) {
+        if (CollectionUtils.isNotEmpty(otherExcleModeltwo)) {
             sheetList.add(czts);
             titleList.add(czts);
             classList.add(OtherExcleModel.class);
             lists.add(otherExcleModeltwo);
         }
         FileUtil.exportExcleUnSheets(lists, titleList, sheetList, classList,
-                hospitalName+date+"号监控数据.xls", response);
+                hospitalName+operationDate+"监控数据.xls", response);
     }
 }
