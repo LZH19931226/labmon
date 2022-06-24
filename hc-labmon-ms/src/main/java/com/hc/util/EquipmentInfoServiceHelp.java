@@ -490,12 +490,12 @@ public class EquipmentInfoServiceHelp {
                         probe1rhTime.add(da);
                         break;
                     case "3":
-                        probe1Co2.add(lastDataModel.getProbe1data());
-                        probe1Co2Time.add(da);
-                        break;
-                    case "4":
                         probe1O2.add(lastDataModel.getProbe1data());
                         probe1O2Time.add(da);
+                        break;
+                    case "4":
+                        probe1Co2.add(lastDataModel.getProbe1data());
+                        probe1Co2Time.add(da);
                         break;
                 }
             }
@@ -512,12 +512,12 @@ public class EquipmentInfoServiceHelp {
                         probe2rhTime.add(da);
                         break;
                     case "3":
-                        probe2Co2.add(lastDataModel.getProbe2data());
-                        probe2Co2Time.add(da);
-                        break;
-                    case "4":
                         probe2O2.add(lastDataModel.getProbe2data());
                         probe2O2Time.add(da);
+                        break;
+                    case "4":
+                        probe2Co2.add(lastDataModel.getProbe2data());
+                        probe2Co2Time.add(da);
                         break;
                 }
             }
@@ -534,12 +534,12 @@ public class EquipmentInfoServiceHelp {
                         probe3rhTime.add(da);
                         break;
                     case "3":
-                        probe3Co2.add(lastDataModel.getProbe3data());
-                        probe3Co2Time.add(da);
-                        break;
-                    case "4":
                         probe3O2.add(lastDataModel.getProbe3data());
                         probe3O2Time.add(da);
+                        break;
+                    case "4":
+                        probe3Co2.add(lastDataModel.getProbe3data());
+                        probe3Co2Time.add(da);
                         break;
                 }
             }
