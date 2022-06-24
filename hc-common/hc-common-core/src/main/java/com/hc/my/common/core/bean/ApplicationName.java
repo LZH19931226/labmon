@@ -40,4 +40,10 @@ public class ApplicationName {
      */
     public static final String REDIS = "HC-LABREDIS-ms";
 
+
+    /**
+     * msct
+     */
+    public static final String MSCT = "HC-MSCT-ms";
+
 }
