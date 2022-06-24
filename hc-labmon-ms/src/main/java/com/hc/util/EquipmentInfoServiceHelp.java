@@ -513,11 +513,11 @@ public class EquipmentInfoServiceHelp {
                         break;
                     case "3":
                         probe2O2.add(lastDataModel.getProbe2data());
-                        probe2Co2Time.add(da);
+                        probe2O2Time.add(da);
                         break;
                     case "4":
                         probe2Co2.add(lastDataModel.getProbe2data());
-                        probe2O2Time.add(da);
+                        probe2Co2Time.add(da);
                         break;
                 }
             }
@@ -535,11 +535,11 @@ public class EquipmentInfoServiceHelp {
                         break;
                     case "3":
                         probe3O2.add(lastDataModel.getProbe3data());
-                        probe3Co2Time.add(da);
+                        probe3O2Time.add(da);
                         break;
                     case "4":
                         probe3Co2.add(lastDataModel.getProbe3data());
-                        probe3O2Time.add(da);
+                        probe3Co2Time.add(da);
                         break;
                 }
             }
