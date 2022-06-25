@@ -10,6 +10,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserRightEnumCode {
+    THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER("账号未注册手机号"),
+    VERIFICATION_CODE_ERROR("验证码错误"),
+    VERIFICATION_CODE_HAS_EXPIRED("验证码已过期"),
+    VERIFICATION_CODE_MUST_BE_FILLED("验证码不能为空"),
+    MOBILE_NUMBER_CANNOT_BE_EMPTY("手机号不能为空"),
     USER_NOT_ENABLED("用户未启用,请联系管理员"),
     INCORRECT_USERNAME_OR_PASSWORD("用户名或密码不正确"),
     USERNAME_NOT_EXIST("用户名不存在"),

@@ -1,6 +1,6 @@
 package com.hc.command.labmanagement.operation;
 
-import com.hc.command.labmanagement.hospital.InstrumentparamconfigLogCommand;
+import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import lombok.Data;
 
 @Data

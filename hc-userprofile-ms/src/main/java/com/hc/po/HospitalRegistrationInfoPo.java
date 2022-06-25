@@ -70,4 +70,9 @@ public class HospitalRegistrationInfoPo implements Serializable {
     /** 超时变红时长 */
     @TableField(value = "timeout_red_duration")
     private  String timeoutRedDuration;
+
+    /**
+     * 是否设置因子登录1为设置空为未设置
+     */
+    private String factor;
 }

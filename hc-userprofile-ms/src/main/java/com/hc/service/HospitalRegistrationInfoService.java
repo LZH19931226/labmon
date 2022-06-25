@@ -1,7 +1,7 @@
 package com.hc.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.vo.hospital.HospitalInfoVo;
 

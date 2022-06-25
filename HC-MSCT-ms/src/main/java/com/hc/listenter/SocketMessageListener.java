@@ -1,5 +1,7 @@
 package com.hc.listenter;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.clickhouse.po.Warningrecord;
@@ -101,7 +103,12 @@ public class SocketMessageListener {
     @StreamListener(BaoJinMsg.EXCHANGE_NAME4)
     public void onMessage5(String message) {
         try {
-            TimeoutEquipment timeoutEquipment = JsonUtil.toBean(message, TimeoutEquipment.class);
+            JSONArray objects = JSONUtil.parseArray(message);
+            List<TimeoutEquipment> timeoutEquipmentList = JSONUtil.toList(objects, TimeoutEquipment.class);
+            if (CollectionUtils.isEmpty(timeoutEquipmentList)) {
+                return;
+            }
+            TimeoutEquipment timeoutEquipment = timeoutEquipmentList.get(0);
             log.info("进入超时报警队列：" + message);
             String hospitalcode = timeoutEquipment.getHospitalcode();
             // 根据hospitalcode查找设置超时报警的联系人

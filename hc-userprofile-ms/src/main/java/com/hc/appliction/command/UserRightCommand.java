@@ -77,7 +77,11 @@ public class UserRightCommand {
     @ApiModelProperty(value = "登录类型")
     private String loginType;
 
-    /** 设备登录状况 是否是第一次登录 */
+    /** 设备登录状况 是否是第一次登录 0为第一次登录 1为非第一次登录*/
     @ApiModelProperty(value = "设备登录状况")
     private String loginStatus;
+
+    /** 验证码 */
+    @ApiModelProperty (value = "验证码")
+    private String code;
 }

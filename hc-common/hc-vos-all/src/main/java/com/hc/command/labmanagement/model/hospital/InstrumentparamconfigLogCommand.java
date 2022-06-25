@@ -1,4 +1,4 @@
-package com.hc.command.labmanagement.hospital;
+package com.hc.command.labmanagement.model.hospital;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

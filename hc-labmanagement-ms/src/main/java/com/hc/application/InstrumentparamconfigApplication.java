@@ -2,7 +2,7 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
-import com.hc.command.labmanagement.hospital.InstrumentparamconfigLogCommand;
+import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;

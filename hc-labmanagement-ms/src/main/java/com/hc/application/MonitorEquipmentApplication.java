@@ -2,7 +2,7 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
-import com.hc.command.labmanagement.hospital.MonitorEquipmentLogCommand;
+import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;

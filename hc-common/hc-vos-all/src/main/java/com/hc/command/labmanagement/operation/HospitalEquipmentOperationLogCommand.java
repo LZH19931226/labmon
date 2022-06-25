@@ -1,6 +1,6 @@
 package com.hc.command.labmanagement.operation;
 
-import com.hc.command.labmanagement.hospital.HospitalEquimentTypeInfoCommand;
+import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import lombok.Data;
 
 @Data

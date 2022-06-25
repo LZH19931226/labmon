@@ -44,6 +44,11 @@ public class HospitalRegistrationInfoDto {
     private String updateBy;
 
     /**
+     * 是否设置因子登录1为设置空为未设置
+     */
+    private String factor;
+
+    /**
      * 时间间隔
      */
     private String timeInterval;

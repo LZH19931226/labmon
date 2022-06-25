@@ -3,7 +3,7 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.application.command.WorkTimeBlockCommand;
-import com.hc.command.labmanagement.hospital.HospitalEquimentTypeInfoCommand;
+import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;

@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.UserRightApplication;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
+import com.hc.phone.PhoneCodeApi;
 import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -23,6 +25,9 @@ public class UserRightInfoController {
 
     @Autowired
     private UserRightApplication userRightApplication;
+
+    @Autowired
+    private PhoneCodeApi phoneCodeApi;
 
     @PostMapping("/findUserRightInfoList")
     @ApiOperation("分页获取人员信息")
@@ -49,9 +54,21 @@ public class UserRightInfoController {
     }
 
     @PostMapping("/userLogin")
-    @ApiOperation("用户登录")
-    public UserRightVo UserRightLogin(@RequestBody UserRightCommand userRightCommand ){
-        return userRightApplication.Login(userRightCommand);
+    @ApiOperation("用户账号登录")
+    public UserRightVo UserRightLogin(@RequestBody UserRightCommand userRightCommand,HttpServletRequest httpServletRequest){
+        return userRightApplication.Login(userRightCommand,httpServletRequest);
+    }
+
+    @PostMapping("/userRightLoginByPhone")
+    @ApiOperation("手机号登录")
+    public UserRightVo userRightLoginByPhone(@RequestBody UserRightCommand userRightCommand){
+        return userRightApplication.userRightLoginByPhone(userRightCommand);
+    }
+
+    @GetMapping("/getPhoneCode")
+    @ApiOperation("获取手机验证码")
+    public void  getPhoneCode(@RequestParam("phoneNum")String phoneNum){
+        userRightApplication.getPhoneCode(phoneNum);
     }
 
     /**
@@ -63,4 +80,11 @@ public class UserRightInfoController {
     public List<UserRightRedisDto> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode){
         return userRightApplication.findALLUserRightInfo(hospitalCode);
     }
+
+    @PostMapping("/getPhoneCode")
+    @ApiOperation("手机验证登录")
+    public void selectPhoneCode(@RequestParam("phoneNum") String phoneNum){
+         userRightApplication.getPhoneCode(phoneNum);
+    }
+
 }

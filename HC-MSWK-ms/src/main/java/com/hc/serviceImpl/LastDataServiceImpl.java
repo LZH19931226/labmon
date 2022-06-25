@@ -41,7 +41,8 @@ public class LastDataServiceImpl implements LastDataService {
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
         log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
         //同步redis缓存
-        snDeviceRedisApi.updateSnCurrentInfo(BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class));
+        MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
+        snDeviceRedisApi.updateSnCurrentInfo(convert);
         monitorequipmentlastdataDao.save(monitorequipmentlastdata);
     }
     // 判断对象是否为空方法：

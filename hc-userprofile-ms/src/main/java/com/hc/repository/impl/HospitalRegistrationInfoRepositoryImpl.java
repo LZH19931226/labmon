@@ -3,7 +3,7 @@ package com.hc.repository.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.constant.HospitalEnumErrorCode;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.infrastructure.dao.HospitalEquipmentDao;

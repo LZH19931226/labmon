@@ -4,17 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.TimeoutEquipment;
-import com.hc.model.TimeoutMessage;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
-import com.hc.utils.TimeHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
+@EnableScheduling
 public class TimerConfig {
 
     @Autowired
@@ -37,7 +40,7 @@ public class TimerConfig {
     private SnDeviceRedisApi snDeviceRedisApi;
 
     //
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "30 * * * * ?")
     public void Time() {
         // 查询所有需要超时报警的设备
         List<TimeoutEquipment> timeoutEquipments = hospitalInfoMapper.getTimeoutEquipment();
@@ -54,9 +57,13 @@ public class TimerConfig {
             if(CollectionUtils.isEmpty(codeList)){
                 continue;
             }
-            Map<String, List<TimeoutEquipment>> equipmentTypeIdMap = codeList.stream().collect(Collectors.groupingBy(TimeoutEquipment::getEquipmenttypeid));
+            List<TimeoutEquipment> timeoutList = new ArrayList<>();
             //再以医院设备类型分组
+            Map<String, List<TimeoutEquipment>> equipmentTypeIdMap = codeList.stream().collect(Collectors.groupingBy(TimeoutEquipment::getEquipmenttypeid));
             for (String equipmentTypeId : equipmentTypeIdMap.keySet()) {
+                if (!equipmentTypeIdMap.containsKey(equipmentTypeId)) {
+                    continue;
+                }
                 List<TimeoutEquipment> equipmentList = equipmentTypeIdMap.get(equipmentTypeId);
                 List<String> equipmentNoList = equipmentList.stream().map(TimeoutEquipment::getEquipmentno).collect(Collectors.toList());
                 EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
@@ -64,37 +71,46 @@ public class TimerConfig {
                 equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
                 List<MonitorequipmentlastdataDto> lastDataResult =
                         snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
+                if(CollectionUtils.isEmpty(lastDataResult)){
+                   continue;
+                }
                 int count = 0;
-                List<TimeoutEquipment> timeoutList = new ArrayList<>();
-                //遍历当前医院当前设备类型下的所有设备
+                //遍历当前医院设备类型下的所有设备
                 for (MonitorequipmentlastdataDto monitorequipmentlastdataDto : lastDataResult) {
                     Date inputDateTime = monitorequipmentlastdataDto.getInputdatetime();
                     String equipmentNo = monitorequipmentlastdataDto.getEquipmentno();
-                    if (timeoutEquipmentMap.get(hospitalCode)==null || timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId) ==null || timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo) ==null ) {
+                    if (MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode)) || MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId))|| CollectionUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo)) ) {
                         continue;
                     }
                     List<TimeoutEquipment> timeoutEquipmentList = timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo);
+                    //equipmentNo是唯一键只会有一个
                     TimeoutEquipment timeoutEquipment = timeoutEquipmentList.get(0);
+                    //-------------当clientvisib的值为0时表示未开启超时报警-------------
+                    if (StringUtils.isNotEmpty(timeoutEquipment.getClientvisible()) && StringUtils.equals("0",timeoutEquipment.getClientvisible())) {
+                        continue;
+                    }
                     Integer timeoutTime = timeoutEquipment.getTimeouttime();
-                    int datePoors = TimeHelper.getDatePoors(inputDateTime);
                     String differenceTime = compareTime(inputDateTime, timeoutTime);
                     if ("2".equals(differenceTime)) {
                         count++;
-                        timeoutEquipment.setDisabletype("2");
-                        timeoutEquipment.setTimeouttime(datePoors);
                         timeoutList.add(timeoutEquipment);
                     }
                 }
-                if(count>0 && !CollectionUtils.isEmpty(timeoutList)){
-                    TimeoutMessage timeoutMessage = new TimeoutMessage();
-                    timeoutMessage.setInteger(count);
-                    timeoutMessage.setHospitalCode(hospitalCode);
-                    timeoutMessage.setEquipmentTypeId(equipmentTypeId);
-                    timeoutMessage.setTimeoutEquipmentList(timeoutList);
-                    String string = JSON.toJSONString(timeoutMessage);
-                    log.info("超时报警推送:{}", JsonUtil.toJson(string));
-                    messagePushService.pushMessage5(string);
-                }
+//                if(count>0 && !CollectionUtils.isEmpty(timeoutList)){
+//                    TimeoutMessage timeoutMessage = new TimeoutMessage();
+//                    timeoutMessage.setInteger(count);
+//                    timeoutMessage.setHospitalCode(hospitalCode);
+//                    timeoutMessage.setEquipmentTypeId(equipmentTypeId);
+//                    timeoutMessage.setTimeoutEquipmentList(timeoutList);
+//                    String string = JSON.toJSONString(timeoutMessage);
+//                    log.info("超时报警推送:{}", JsonUtil.toJson(string));
+//                    messagePushService.pushMessage5(string);
+//                }
+            }
+            if(CollectionUtils.isNotEmpty(timeoutList)){
+                String string = JSON.toJSONString(timeoutList);
+                log.info("超时报警推送:{}", JsonUtil.toJson(string));
+                messagePushService.pushMessage5(string);
             }
         }
     }
@@ -107,10 +123,15 @@ public class TimerConfig {
      * @return
      */
     private String compareTime(Date date,Integer timeoutTime) {
+        //如果开启超时未设置超时时长则默认为60分钟
+        if(ObjectUtils.isEmpty(timeoutTime)){
+            timeoutTime=60;
+        }
         Date currentTime = new Date();
         long difference = currentTime.getTime() - date.getTime();
+        long minute = difference / 1000 / 60;
         // 不超时报警
-        if (difference <= timeoutTime) {
+        if (minute <= timeoutTime) {
             return "1";
         }
         return "2";

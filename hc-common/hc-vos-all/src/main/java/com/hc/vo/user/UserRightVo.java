@@ -62,5 +62,10 @@ public class UserRightVo {
      */
     private String timeoutWarning;
 
+    /**
+     * 双验证登录 为空时不需要 为1时需要
+     */
+    private String twoFactorLogin;
+
     private List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModels;
 }

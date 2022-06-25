@@ -27,6 +27,7 @@ public interface HospitalInfoMapper extends BaseMapper<Hospitalofreginfo> {
             "t3.hospitalname,\n" +
             "t3.hospitalcode,\n" +
             "t2.equipmentno,\n" +
+            "t2.clientvisible," +
             "t2.equipmentname,\n" +
             "t1.timeouttime," +
             "t2.equipmenttypeid  "+

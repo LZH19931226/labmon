@@ -2,7 +2,7 @@ package com.hc.appliction;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserScheduleCommand;
-import com.hc.command.labmanagement.hospital.HospitalCommand;
+import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
