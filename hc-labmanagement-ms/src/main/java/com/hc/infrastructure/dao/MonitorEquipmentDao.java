@@ -39,7 +39,8 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
      * @param hospitalCode
      * @return
      */
-    @Select("select * FROM monitorequipment WHERE hospitalcode = #{hospitalCode} AND clientvisible = '1' AND equipmenttypeid = '6'")
-    List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode);
+    @Select("select * FROM monitorequipment WHERE hospitalcode = #{hospitalCode} AND clientvisible = '1' AND equipmenttypeid = #{equipmentTypeId}")
+    List<MonitorEquipmentDto> getEquipmentNoList(@Param("hospitalCode") String hospitalCode,
+                                                 @Param("equipmentTypeId")String equipmentTypeId);
 
 }

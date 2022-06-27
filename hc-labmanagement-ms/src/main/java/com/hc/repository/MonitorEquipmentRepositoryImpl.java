@@ -108,8 +108,8 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
      * @return
      */
     @Override
-    public List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode) {
-        return monitorEquipmentDao.getEquipmentNoList(hospitalCode);
+    public List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode,String equipmentTypeId) {
+        return monitorEquipmentDao.getEquipmentNoList(hospitalCode,equipmentTypeId);
     }
 
     /**

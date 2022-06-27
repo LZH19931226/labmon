@@ -93,8 +93,8 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
      * @return
      */
     @Override
-    public List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode) {
-        return monitorEquipmentRepository.getEquipmentNoList(hospitalCode);
+    public List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode,String equipmentTypeId) {
+        return monitorEquipmentRepository.getEquipmentNoList(hospitalCode,equipmentTypeId);
     }
 
     @Override

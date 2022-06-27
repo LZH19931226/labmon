@@ -68,8 +68,9 @@ public class EquipmentInfoController {
      * @return
      */
     @GetMapping("/findCurrentUpsInfo")
-    public MonitorUpsInfoDto getCurrentUpsInfo(@RequestParam("hospitalCode") String hospitalCode){
-        return equipmentInfoApplication.getCurrentUpsInfo(hospitalCode);
+    @ApiOperation("查询设备当前UPS")
+    public List<MonitorUpsInfoDto> getCurrentUpsInfo(@RequestParam("hospitalCode") String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
+        return equipmentInfoApplication.getCurrentUpsInfo(hospitalCode,equipmentTypeId);
     }
 
     /**

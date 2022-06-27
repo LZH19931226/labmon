@@ -754,12 +754,12 @@ public class MonitorEquipmentApplication {
      * @param hospitalCode
      * @return
      */
-    public List<String> getEquipmentNoList(String hospitalCode) {
-        List<MonitorEquipmentDto> list = monitorEquipmentService.getEquipmentNoList(hospitalCode);
+    public List<SnDeviceDto> getEquipmentNoList(String hospitalCode,String equipmentTypeId) {
+        List<MonitorEquipmentDto> list = monitorEquipmentService.getEquipmentNoList(hospitalCode,equipmentTypeId);
         if(CollectionUtils.isEmpty(list)){
             return null;
         }
-        return list.stream().map(MonitorEquipmentDto::getEquipmentNo).collect(Collectors.toList());
+        return BeanConverter.convert(list,SnDeviceDto.class);
     }
 
     /**

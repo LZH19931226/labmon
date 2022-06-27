@@ -26,6 +26,7 @@ import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -174,28 +175,45 @@ public class EquipmentInfoApplication {
      * @param hospitalCode
      * @return
      */
-    public MonitorUpsInfoDto getCurrentUpsInfo(String hospitalCode) {
-        List<String> equipmentNoList = monitorEquipmentApi.getEquipmentNoList(hospitalCode).getResult();
-        if(CollectionUtils.isEmpty(equipmentNoList)){
+    public List<MonitorUpsInfoDto>  getCurrentUpsInfo(String hospitalCode,String equipmentTypeId) {
+        List<SnDeviceDto> equipmentList = monitorEquipmentApi.getEquipmentNoList(hospitalCode,equipmentTypeId).getResult();
+        if(CollectionUtils.isEmpty(equipmentList)){
           return null;
         }
+        //获取equipmentNo的集合
+        List<String> equipmentNoList = equipmentList.stream().map(SnDeviceDto::getEquipmentNo).collect(Collectors.toList());
+        //以equipmentNo分组
+        Map<String, List<SnDeviceDto>> equipmentNoMap = equipmentList.stream().collect(Collectors.groupingBy(SnDeviceDto::getEquipmentNo));
         EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
         equipmentInfoCommand.setHospitalCode(hospitalCode);
         equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
-        List<MonitorequipmentlastdataDto> result = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
-        if (CollectionUtils.isEmpty(result)) {
+        List<MonitorequipmentlastdataDto> MonitorEquipmentLastDataList = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
+        if (CollectionUtils.isEmpty(MonitorEquipmentLastDataList)) {
             return null;
         }
-        List<MonitorequipmentlastdataDto> collect =
-                result.stream().filter(res -> StringUtils.isNotEmpty(res.getCurrentups())).collect(Collectors.toList());
-        if (CollectionUtils.isEmpty(collect)) {
+        Map<String, List<MonitorequipmentlastdataDto>> lastDateEquipmentNoMap =
+                MonitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(MonitorequipmentlastdataDto::getEquipmentno));
+        if (MapUtils.isEmpty(lastDateEquipmentNoMap)) {
             return null;
         }
-        MonitorequipmentlastdataDto monitorequipmentlastdataDto = collect.get(0);
-        String currentUps = monitorequipmentlastdataDto.getCurrentups();
-        MonitorUpsInfoDto monitorUpsInfoDto = new MonitorUpsInfoDto();
-        monitorUpsInfoDto.setUps(currentUps);
-        return monitorUpsInfoDto;
+        List<MonitorUpsInfoDto> upsInfoList = new ArrayList<>();
+        equipmentNoList.forEach(no->{
+            if (lastDateEquipmentNoMap.containsKey(no) && equipmentNoMap.containsKey(no)) {
+                MonitorUpsInfoDto monitorUpsInfoDto = new MonitorUpsInfoDto();
+                MonitorequipmentlastdataDto monitorequipmentlastdataDto = lastDateEquipmentNoMap.get(no).get(0);
+                monitorUpsInfoDto.setEquipmentNo(no);
+                SnDeviceDto snDeviceDto = equipmentNoMap.get(no).get(0);
+                monitorUpsInfoDto.setEquipmentName(snDeviceDto.getEquipmentName());
+                String currentUps = monitorequipmentlastdataDto.getCurrentups();
+                String voltage = monitorequipmentlastdataDto.getVoltage();
+                if (StringUtils.isNotBlank(currentUps)) monitorUpsInfoDto.setCurrentUps(currentUps);
+                if (StringUtils.isNotBlank(voltage)) monitorUpsInfoDto.setVoltage(voltage);
+                upsInfoList.add(monitorUpsInfoDto);
+            }
+        });
+        if(CollectionUtils.isEmpty(upsInfoList))
+            throw new IedsException(LabMonEnumError.NO_UTILITY_RECORD.getMessage());
+        return upsInfoList;
     }
 
     /**
@@ -223,20 +241,20 @@ public class EquipmentInfoApplication {
 
     public void exportExcel( String equipmentNo, String startDate, String endDate, HttpServletResponse response)
     {
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
-                    monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
-            if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
-                return;
-            }
-            SnDeviceDto snDeviceDto =
-                    monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
-            String type = null;
-            if (startDate.equals(endDate)) {
-                type = startDate;
-            } else {
-                type = startDate + "----" + endDate;
-            }
-            FileUtil.exportExcel(monitorEquipmentLastDataInfo,snDeviceDto.getEquipmentName()+"监控数据汇总","sheet1",Monitorequipmentlastdata.class,snDeviceDto.getEquipmentName()+type+"监控数据汇总.xlsx",response);
+        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
+        if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
+            return;
+        }
+        SnDeviceDto snDeviceDto =
+                monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
+        String type = null;
+        if (startDate.equals(endDate)) {
+            type = startDate;
+        } else {
+            type = startDate + "----" + endDate;
+        }
+        FileUtil.exportExcel(monitorEquipmentLastDataInfo,snDeviceDto.getEquipmentName()+"监控数据汇总","sheet1",Monitorequipmentlastdata.class,snDeviceDto.getEquipmentName()+type+"监控数据汇总.xlsx",response);
     }
 
     /**
@@ -323,7 +341,6 @@ public class EquipmentInfoApplication {
                         } else {
                             pyxExcleModels.addAll(pyx);
                         }
-
                         break;
                     case "3":
                         List<OtherExcleModel> other1 = EquipmentInfoServiceHelp.getOther(list, equipmentName);

@@ -69,8 +69,8 @@ public class MonitorEquipmentController {
 
     @GetMapping("/getHospitalUPS")
     @ApiOperation("获取医院ups的设备no集合")
-    public List<String> getEquipmentNoList(@RequestParam("hospitalCode")String hospitalCode){
-        return monitorEquipmentApplication.getEquipmentNoList(hospitalCode);
+    public List<SnDeviceDto> getEquipmentNoList(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
+        return monitorEquipmentApplication.getEquipmentNoList(hospitalCode,equipmentTypeId);
     }
 
     @GetMapping("/getMonitorEquipmentInfoByEno")

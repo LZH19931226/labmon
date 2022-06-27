@@ -62,9 +62,10 @@ public interface MonitorEquipmentService {
     /**
      * 获取设备信息
      * @param hospitalCode
+     * @param equipmentTypeId
      * @return
      */
-    List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode);
+    List<MonitorEquipmentDto> getEquipmentNoList(String hospitalCode ,String equipmentTypeId);
 
     /**
      * 查询监控设备信息
