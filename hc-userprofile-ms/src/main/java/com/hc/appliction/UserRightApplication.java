@@ -26,7 +26,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,7 +167,7 @@ public class UserRightApplication {
      * @param userRightCommand 用户参数
      * @return 用户视图对象
      */
-    public UserRightVo Login(UserRightCommand userRightCommand, HttpServletRequest httpServletRequest) {
+    public UserRightVo Login(UserRightCommand userRightCommand) {
         //1.判断账号密码是否正确
         //2.手机号是否注册
         //3.判断登录端是否安卓 3.1不是安卓 返回用户信息 3.2是安卓 go  3.2.1未设置双因子 go 3.2.1设置双因子 是否一次登录 是校验 不是 go
@@ -183,7 +182,7 @@ public class UserRightApplication {
         //查询医院信息
         HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         //未设置双因子的医院直接放行 设置了的医院在非app上登录直接放行
-        if (!"1".equals(hospitalInfo.getFactor()) || LoginTypeEnum.H5.getCode().equals(loginType)) {
+        if (!HospitalInfoEnum.ONE.getCode().equals(hospitalInfo.getFactor()) || LoginTypeEnum.H5.getCode().equals(loginType)) {
             return builder(userRightDto,hospitalInfo.getHospitalName());
         }
         //是在app上登录并且是非第一次登录 LoginStatus：0为第一次登录

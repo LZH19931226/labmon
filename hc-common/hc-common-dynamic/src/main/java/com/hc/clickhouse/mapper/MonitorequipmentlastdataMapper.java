@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipmentlastdata> {
 
-    @Select("select * from monitorequipmentlastdata where formatDateTime(inputdatetime,'%Y-%m-%d') = #{date} and equipmentno = #{equipmentNo}")
+    @Select("select * from monitorequipmentlastdata where formatDateTime(inputdatetime,'%Y-%m-%d') = #{date} and equipmentno = #{equipmentNo}  ORDER BY inputdatetime ASC ")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(@Param("date") String date,
                                                                    @Param("equipmentNo") String equipmentNo);
 

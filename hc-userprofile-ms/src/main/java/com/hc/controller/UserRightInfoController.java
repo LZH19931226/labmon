@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -55,8 +54,8 @@ public class UserRightInfoController {
 
     @PostMapping("/userLogin")
     @ApiOperation("用户账号登录")
-    public UserRightVo UserRightLogin(@RequestBody UserRightCommand userRightCommand,HttpServletRequest httpServletRequest){
-        return userRightApplication.Login(userRightCommand,httpServletRequest);
+    public UserRightVo UserRightLogin(@RequestBody UserRightCommand userRightCommand){
+        return userRightApplication.Login(userRightCommand);
     }
 
     @PostMapping("/userRightLoginByPhone")

@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserRightEnumCode {
-    THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER("账号未注册手机号"),
+    THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER("账号未绑定手机号"),
     VERIFICATION_CODE_ERROR("验证码错误"),
     VERIFICATION_CODE_HAS_EXPIRED("验证码已过期"),
     VERIFICATION_CODE_MUST_BE_FILLED("验证码不能为空"),
@@ -27,5 +27,5 @@ public enum UserRightEnumCode {
     NICKNAME_NOT_NULL("用户名称不能为空"),
     HOSPITAL_NAME_NOT_NULL("所属医院不能为空"),
     USER_PHONE_NOT_NULL("用户手机号不能为空");
-    private String message;
+    private final String message;
 }

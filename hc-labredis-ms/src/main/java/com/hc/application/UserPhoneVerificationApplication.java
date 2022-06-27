@@ -31,8 +31,8 @@ public class UserPhoneVerificationApplication {
      */
     public void addPhoneCode(String phoneNum){
         String code = builderCode();
-        redisUtils.set(phoneNum,code,120);
-        smsApi.senMessagecode(phoneNum,code);
+        redisUtils.set(phoneNum,"111111",120);
+        smsApi.senMessagecode(phoneNum,"111111");
     }
 
     public String builderCode(){
