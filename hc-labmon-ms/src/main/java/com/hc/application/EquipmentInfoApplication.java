@@ -282,7 +282,7 @@ public class EquipmentInfoApplication {
         String ydgs = "液氮罐";
         String bxs = "冰箱";
         String czts = "操作台";
-
+        //月
         if(StringUtils.equals(type,"month")){
             Date date = DateUtils.parseDate(operationDate);
             String startTime = DateUtils.getPreviousHourHHmm(date);
@@ -407,6 +407,7 @@ public class EquipmentInfoApplication {
                     hospitalName+yearMonth+"月监控数据.xls", response);
             return;
         }
+        //日
         Date date = DateUtils.parseDate(operationDate);
         String startTime = DateUtils.getPreviousHourHHmmss(date);
         String endTime = DateUtils.paseDateHHmmss(date);
@@ -520,7 +521,6 @@ public class EquipmentInfoApplication {
             classList.add(OtherExcleModel.class);
             lists.add(otherExcleModelone);
         }
-
         if (CollectionUtils.isNotEmpty(otherExcleModeltwo)) {
             sheetList.add(czts);
             titleList.add(czts);

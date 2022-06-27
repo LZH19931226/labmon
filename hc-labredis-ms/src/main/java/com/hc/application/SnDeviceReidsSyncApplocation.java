@@ -133,7 +133,7 @@ public class SnDeviceReidsSyncApplocation {
             return null;
         }
         List<Object> objects = redisUtils.multiGet(MswkServiceEnum.L.getCode()+hospitalCode, equipmentNoList);
-        List<Object> collect = objects.stream().filter(res -> ObjectUtils.isEmpty(res)).collect(Collectors.toList());
+        List<Object> collect = objects.stream().filter(ObjectUtils::isEmpty).collect(Collectors.toList());
         objects.removeAll(collect);
         if(CollectionUtils.isEmpty(objects)){
             return null;
