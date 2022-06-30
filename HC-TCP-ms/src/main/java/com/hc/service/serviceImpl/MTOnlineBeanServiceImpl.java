@@ -1,11 +1,8 @@
 package com.hc.service.serviceImpl;
 
-import com.hc.bean.MTOnlineBean;
-import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.service.MTOnlineBeanService;
-import com.hc.socketServer.IotServer;
 import com.hc.util.*;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +15,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static com.hc.util.cmdidParseUtils.paseAir;
 import static com.hc.util.cmdidParseUtils.pasetemperature;
@@ -36,19 +32,12 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 
 
     @Override
-    public ApiResponse<String> sendMsg(String MId, String cmd) {
-        try {
-            Channel channel = netty.getChannelByTid(MId);
-            log.info("该SN号绑定的通道id:" + channel.id().asShortText());
-            netty.sendData(channel, cmd);
-            log.info("向该通道" + channel.id().asShortText() + "发送的内容:" + cmd);
-        } catch (Exception e) {
-            log.error("该通道发送指令失败" + e);
-            return ApiResponse.fail("发送失败" + e);
-
-        }
-        return ApiResponse.success();
+    public void sendMsg(String sn, String cmdId,String message) {
+            Channel channel = netty.getChannelByTid(sn,cmdId);
+            netty.sendData(channel, message);
+            log.info("向该通道" + channel.id().asShortText() + "发送的内容:" + message);
     }
+
 
     @Override
     public List<ParamaterModel> paseData(String data) {
@@ -396,20 +385,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
     }
 
 
-    @Override
-    public List<MTOnlineBean> getall() {
-        List<MTOnlineBean> list = new ArrayList<>();
-        Set<Channel> sets = IotServer.onlineChannels;
-        for (Channel channel : sets) {
-            MTOnlineBean mtOnlineBean = new MTOnlineBean();
-            String channelId = channel.id().asShortText();
-            mtOnlineBean.setCid(channelId);
-            String snByCid = netty.getSnByCid(channelId);
-            mtOnlineBean.setTid(snByCid);
-            list.add(mtOnlineBean);
-        }
-        return list;
-    }
+
 
     public static void main(String[] args) {
         ParamaterModel ab = cmdidParseUtils.paseAB("4843AB1A3232313433313030303101010E740217700301F40258025803E8BE23", "2214310001", "ab");

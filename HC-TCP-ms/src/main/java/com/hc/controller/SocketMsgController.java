@@ -1,38 +1,27 @@
 package com.hc.controller;
 
-import com.hc.bean.MTOnlineBean;
-import com.hc.my.common.core.bean.ApiResponse;
-import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.service.MTOnlineBeanService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/tcp")
 public class SocketMsgController {
-	
+
 	@Autowired
-	private MTOnlineBeanService  service;
-	
+	private MTOnlineBeanService mtOnlineBeanService;
+
 	@GetMapping("/sendMsg")
-	public ApiResponse<String> sendMsg(String MId, String cmd){
-		return service.sendMsg(MId,cmd);
-	}
-	
-	@GetMapping("/cs")
-	private List<ParamaterModel> get(String data) {
-      return service.paseData(data);
+	@ApiOperation("暂时只支持mt600/mt1100设备查询对应服务器通道信息")
+	public void sendMsg(String MId, String cmd,String message){
+		mtOnlineBeanService.sendMsg(MId,cmd,message);
 	}
 
 
-	@GetMapping("/Channels")
-	private  List<MTOnlineBean> getll(){
-		return  service.getall();
-	}
 
 
 }
