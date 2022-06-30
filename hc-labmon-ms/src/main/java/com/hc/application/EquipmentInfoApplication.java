@@ -530,4 +530,21 @@ public class EquipmentInfoApplication {
         FileUtil.exportExcleUnSheets(lists, titleList, sheetList, classList,
                 hospitalName+operationDate+"监控数据.xls", response);
     }
+
+    /**
+     * 设备通过月份获取每个时间点数据
+     * @param equipmentNo
+     * @param time
+     * @return
+     */
+    public CurveInfoDto getCurveInfoByMonthTime(String equipmentNo, String time) {
+        //日
+        Date newDate = DateUtils.parseDate(time);
+        String startTime = DateUtils.getPreviousHourHHmmss(newDate);
+        String endTime = DateUtils.paseDateHHmmss(newDate);
+        String date = DateUtils.paseDate(newDate);
+        List<Monitorequipmentlastdata> lastDateList =
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfoByDate(equipmentNo,startTime,endTime,date);
+        return null;
+    }
 }

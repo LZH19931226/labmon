@@ -36,4 +36,11 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByDate(String hospitalCode, String startTime, String endTime, String date) {
     return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfoByDate(hospitalCode,startTime,endTime,date);
   }
+
+  @Override
+  public void batchInsert(List<Monitorequipmentlastdata> convert) {
+    monitorequipmentlastdataMapper.batchInsert(convert);
+  }
+
+
 }

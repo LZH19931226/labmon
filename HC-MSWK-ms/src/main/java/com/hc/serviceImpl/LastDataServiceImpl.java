@@ -43,7 +43,6 @@ public class LastDataServiceImpl implements LastDataService {
         //同步redis缓存
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
         snDeviceRedisApi.updateSnCurrentInfo(convert);
-        monitorequipmentlastdataDao.save(monitorequipmentlastdata);
     }
     // 判断对象是否为空方法：
     public boolean checkObjAllFieldsIsNull(Object object) {

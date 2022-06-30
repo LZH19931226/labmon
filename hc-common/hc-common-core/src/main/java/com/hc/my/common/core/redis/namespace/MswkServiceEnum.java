@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum MswkServiceEnum {
-
+    LAST_DATA("lastData"),
     //缓存设备当前值
     L("L");
 

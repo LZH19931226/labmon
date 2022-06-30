@@ -103,4 +103,10 @@ public class EquipmentInfoController {
                              HttpServletResponse response){
         equipmentInfoApplication.exportSingle(hospitalCode,operationDate,type,response);
     }
+
+    @GetMapping("/getCurveInfoByMonthTime")
+    @ApiOperation("设备通过月份获取每个时间点数据")
+    public CurveInfoDto getCurveInfoByMonthTime(@RequestParam("equipmentNo")String equipmentNo,@RequestParam("time")String time){
+        return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,time);
+    }
 }

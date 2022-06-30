@@ -97,6 +97,8 @@ public class SnDeviceReidsSyncApplocation {
             redisUtils.hset(MswkServiceEnum.L.getCode()+monitorequipmentlastdataDto.getHospitalcode(),
                     monitorequipmentlastdataDto.getEquipmentno(),JSONUtil.toJsonStr(monitorList));
         }
+        //将lastData数据存入redis
+        redisUtils.lSet(MswkServiceEnum.LAST_DATA.getCode(), JSON.toJSONString(monitorequipmentlastdataDto));
     }
 
     /**

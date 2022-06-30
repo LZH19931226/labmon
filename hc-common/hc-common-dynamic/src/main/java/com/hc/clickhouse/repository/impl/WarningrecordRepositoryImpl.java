@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.WarningrecordMapper;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 @DS("slave")
-@Service
+@Repository
 public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper, Warningrecord> implements WarningrecordRepository {
 
 }

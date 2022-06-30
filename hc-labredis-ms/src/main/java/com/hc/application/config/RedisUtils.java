@@ -579,5 +579,21 @@ public class RedisUtils {
         }
 
     }
+
+
+    /**
+     *  移除集合中的左边第一个元素,并返回当前元素
+     * @param key
+     * @return
+     */
+    public Object lLeftPop(String key){
+        try {
+            Object object = redisTemplate.opsForList().leftPop(key);
+            return object;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
 

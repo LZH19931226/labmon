@@ -1003,7 +1003,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "aa":
                 String current = model.getCurrent();
                 if (StringUtils.isNotEmpty(current)) {
-                    monitorequipmentlastdata.setCurrent(current);
+                    monitorequipmentlastdata.setQccurrent(current);
                     WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(current, monitorinstrument, model.getNowTime(), 40, "电流");
                     list.add(warningMqModel1);
                 }

@@ -14,4 +14,6 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByPeriod(String hospitalCode, String startTime, String endTime,String month);
 
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByDate(String hospitalCode, String startTime, String endTime, String date);
+
+    void batchInsert(List<Monitorequipmentlastdata> convert);
 }

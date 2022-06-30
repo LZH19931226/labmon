@@ -14,19 +14,13 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/sms")
 public class SmsController {
-	
+
 	@Autowired
 	private MoblieMessageUtil moblieMessageUtil;
-	
 
 	@GetMapping("/code")
 	@ApiOperation("短信验证码获取接口")
 	public void senMessagecode(@RequestParam("phonenum")String phontnum, @RequestParam("code")String code) {
 		 moblieMessageUtil.senCode(phontnum, code);
 	}
-
-
-
-
-
 }
