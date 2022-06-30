@@ -130,7 +130,7 @@ public class TimerConfig {
         long difference = currentTime.getTime() - date.getTime();
         long minute = difference / 1000 / 60;
         // 不超时报警
-        if (difference <= timeoutTime) {
+        if (minute <= timeoutTime) {
             return "1";
         }
         return "2";
