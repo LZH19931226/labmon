@@ -102,7 +102,6 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME4)
     public void onMessage5(String message) {
-        try {
             JSONArray objects = JSONUtil.parseArray(message);
             List<TimeoutEquipment> timeoutEquipmentList = JSONUtil.toList(objects, TimeoutEquipment.class);
             if (CollectionUtils.isEmpty(timeoutEquipmentList)) {
@@ -118,7 +117,6 @@ public class SocketMessageListener {
             }
             String equipmentname = timeoutEquipment.getEquipmentname();
             String hospitalname = timeoutEquipment.getHospitalname();
-            String disabletype = timeoutEquipment.getDisabletype();
             Integer timeouttime = timeoutEquipment.getTimeouttime();
             log.info("进入超时报警队列联系人：" + JsonUtil.toJson(userrightByHospitalcodeAAndTimeout));
             for (Userright userright : userrightByHospitalcodeAAndTimeout) {
@@ -134,8 +132,6 @@ public class SocketMessageListener {
                  * <option value="3">不报警</option>
                  */
                 String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
-                switch (disabletype) {
-                    case "2":
                         // 超时报警
                         if (StringUtils.equals(timeoutwarning, "0")) {
                             log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
@@ -150,13 +146,7 @@ public class SocketMessageListener {
                             log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                         }
                         break;
-                    default:
-                        break;
-                }
             }
-        } catch (Exception e) {
-            log.error("超时报警异常:{}",e);
-        }
     }
 
     public void msctMessage(String message) {

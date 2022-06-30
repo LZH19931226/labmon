@@ -150,8 +150,8 @@ public class MoblieMessageUtil {
         switch (unit) {
 
             case "超时":
-                request.setTemplateCode("SMS_175240648");
-                request.setTemplateParam("{\"hospitalname\":\"" + value + "\", \"equipmentname\":\"" + instrumentname + "\", \"ta\":\"" + time  + "\" }");
+                request.setTemplateCode("SMS_244475058");
+                request.setTemplateParam("{\"hospitalName\":\"" + value + "\", \"eqTypeName\":\"" + instrumentname + "\", \"count\":\"" + time  + "\" }");
                 break;
             case "禁用":
                 request.setTemplateCode("SMS_175070824");
