@@ -1,31 +1,25 @@
 package com.hc.Message;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.dyvmsapi.model.v20170525.*;
+import com.aliyuncs.dyvmsapi.model.v20170525.IvrCallRequest.MenuKeyMap;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.profile.IClientProfile;
+import com.hc.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.dyvmsapi.model.v20170525.IvrCallRequest;
-import com.aliyuncs.dyvmsapi.model.v20170525.IvrCallRequest.MenuKeyMap;
-import com.aliyuncs.dyvmsapi.model.v20170525.IvrCallResponse;
-import com.aliyuncs.dyvmsapi.model.v20170525.SingleCallByTtsRequest;
-import com.aliyuncs.dyvmsapi.model.v20170525.SingleCallByTtsResponse;
-import com.aliyuncs.dyvmsapi.model.v20170525.SingleCallByVoiceRequest;
-import com.aliyuncs.dyvmsapi.model.v20170525.SingleCallByVoiceResponse;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.profile.IClientProfile;
-import com.hc.utils.JsonUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SingleCallByTtsUtils {
-	
-	
+
+
 	private static final Logger log = LoggerFactory.getLogger(SingleCallByTtsUtils.class);
 
 
@@ -35,24 +29,24 @@ public class SingleCallByTtsUtils {
 	//短信API产品域名（接口地址固定，无需修改）
 	@Value("${CallBy.domain}")
 	private String domain;
-	
+
 	@Value("${CallBy.accessKeyId}")
 	private String accessKeyId;
-	
+
 	@Value("${CallBy.accessKeySecret}")
 	private String accessKeySecret;
-	
-	
+
+
 	//必填-被叫显号,可在语音控制台中找到所购买的显号
 	@Value("${CallBy.CalledShowNumber}")
 	private String CalledShowNumber;
-	// 
+	//
 	@Value("${CallBy.TtsID}")
 	private String TtsID;
-	
-	
-	
-	
+
+
+
+
 
 	 /**
        * 文本转语音外呼
@@ -75,7 +69,7 @@ public class SingleCallByTtsUtils {
         //必填-被叫显号,可在语音控制台中找到所购买的显号
         request.setCalledShowNumber(CalledShowNumber);
         //必填-被叫号码
-        request.setCalledNumber(mobile); 
+        request.setCalledNumber(mobile);
         //必填-Tts模板ID
         request.setTtsCode("TTS_184620316");
          //可选-当模板中存在变量时需要设置此值
@@ -98,6 +92,56 @@ public class SingleCallByTtsUtils {
 		}
         return singleCallByTtsResponse;
 	}
+
+
+    /**
+     * 文本转语音外呼
+     * @return
+     * @throws ClientException
+     */
+    public  SingleCallByTtsResponse sendSms2(String mobile,String hospitalName ,String eqTypeName)  {
+        //设置访问超时时间
+        System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
+        System.setProperty("sun.net.client.defaultReadTimeout", "10000");
+        //初始化acsClient 暂时不支持多region
+        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
+        try {
+            DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+        IAcsClient acsClient = new DefaultAcsClient(profile);
+        SingleCallByTtsRequest request = new SingleCallByTtsRequest();
+        //必填-被叫显号,可在语音控制台中找到所购买的显号
+        request.setCalledShowNumber(CalledShowNumber);
+        //必填-被叫号码
+        request.setCalledNumber(mobile);
+        //必填-Tts模板ID
+        request.setTtsCode("TTS_244300025");
+        //可选-当模板中存在变量时需要设置此值
+        request.setTtsParam("{\"hospitalName\":\"" + hospitalName + "\", \"eqTypeName\":\"" + eqTypeName + "\"}");
+//        //可选-音量 取值范围 0--200
+//        request.setVolume(100);
+//        //可选-播放次数
+//        request.setPlayTimes(3);
+//        //可选-外部扩展字段,此ID将在回执消息中带回给调用方
+//        request.setOutId("yourOutId");
+        //hint 此处可能会抛出异常，注意catch
+        SingleCallByTtsResponse singleCallByTtsResponse = null;
+        try {
+            log.info("语音发送的请求"+JsonUtil.toJson(request));
+            singleCallByTtsResponse = acsClient.getAcsResponse(request);
+            log.info("语音返回的请求"+JsonUtil.toJson(singleCallByTtsResponse));
+        } catch (ClientException e) {
+            log.error(e+"");
+        }
+        return singleCallByTtsResponse;
+    }
+
+
+
+
+
     /**
      * 文本转语音外呼 -- 回拨
      * @return
@@ -174,7 +218,7 @@ public class SingleCallByTtsUtils {
 
         return singleCallByVoiceResponse;
     }
-    
+
     /**
      * 交互式语音应答   Demo
      * @return
