@@ -20,11 +20,6 @@ public class Monitorequipmentlastdata implements Serializable {
     private String sn;
 
     private String cmdid;
-
-    /**
-     * 设备名称
-     */
-    private String equipmentname;
     /**
      * 设备编号
      */

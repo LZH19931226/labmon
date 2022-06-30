@@ -13,6 +13,8 @@ import com.hc.my.common.core.redis.namespace.MswkServiceEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-//@EnableScheduling
+@EnableScheduling
 @DS(value= "slave")
 public class TimerConfigure extends InsertBatchSomeColumn {
 
@@ -31,12 +33,9 @@ public class TimerConfigure extends InsertBatchSomeColumn {
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
 
     //每分钟执行一次
-//    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void Time(){
         long size = redisUtils.lGetListSize(MswkServiceEnum.LAST_DATA.getCode());
-        if(size<800){
-            return;
-        }
         if(size == 0) return;
         List<MonitorequipmentlastdataDto> list = new ArrayList<>();
         for (long i = 0; i < size; i++) {
