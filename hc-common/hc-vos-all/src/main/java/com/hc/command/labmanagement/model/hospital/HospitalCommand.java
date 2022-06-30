@@ -76,4 +76,7 @@ public class HospitalCommand {
 
     /** 是否开启声光报警是1否0 */
     private String soundLightAlarm;
+
+    /** 是否设置因子登录1为设置空为未设置 */
+    private String factor;
 }
