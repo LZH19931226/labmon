@@ -53,5 +53,15 @@ public class HospitalInfoVo implements Serializable {
     /** 超时变红时长 */
     private String timeoutRedDuration;
 
+    /**
+     * 是否设置因子登录1为设置空为未设置
+     */
+    private String factor;
+
+    /**
+     * 是否开启声光报警是1否0
+     */
+    private String soundLightAlarm;
+
     private List<HospitalequimentVo> hospitalequimentVoList;
 }

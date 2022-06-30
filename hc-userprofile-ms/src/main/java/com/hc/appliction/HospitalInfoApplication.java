@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -73,6 +74,8 @@ public class HospitalInfoApplication {
                         .updateTime(res.getUpdateTime())
                         .timeInterval(res.getTimeInterval())
                         .timeoutRedDuration(res.getTimeoutRedDuration())
+                        .factor(StringUtils.isEmpty(res.getFactor()) ? "0" : res.getFactor())
+                        .soundLightAlarm(StringUtils.isEmpty(res.getSoundLightAlarm())? "0" : res.getSoundLightAlarm())
                         .build();
                 list.add(build);
             });
@@ -91,6 +94,8 @@ public class HospitalInfoApplication {
         hospitalCommand.setUpdateTime(new Date());
         hospitalCommand.setOrderBy(Context.getUserId());
         hospitalCommand.setHospitalCode(UUID.randomUUID().toString().replaceAll("-", ""));
+        String timeInterval = hospitalCommand.getTimeInterval();
+        if(StringUtils.isEmpty(timeInterval)) timeInterval = "60";
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
         //添加日志信息
         operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),new HospitalCommand(),hospitalCommand,
