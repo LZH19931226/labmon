@@ -34,7 +34,9 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
             "timeout,update_time AS updateTime," +
             "timeInterval," +
             "update_by AS updateBy ," +
-            "timeout_red_duration as timeoutRedDuration " +
+            "timeout_red_duration as timeoutRedDuration, " +
+            "factor as factor, " +
+            "sound_light_alarm as soundLightAlarm " +
             "FROM hospitalofreginfo where 1=1 " +
             "<if test = 'hospitalName != null  and hospitalName != \"\"'> " +
             "and hospitalname like concat('%', #{hospitalName},'%')" +
@@ -54,7 +56,7 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
      * @param hospitalCode 医院编码
      * @return 医院设备对象
      */
-    @Select("select * from hospitalofreginfo where hospitalname = #{hospitalName}  and hospitalcode !=#{hospitalCode}")
+    @Select("select * from hospitalofreginfo where hospitalname = #{hospitalName}  and hospitalcode != #{hospitalCode}")
     HospitalEquipmentPo selectHospitalName(@Param("hospitalName") String hospitalName, @Param("hospitalCode") String hospitalCode);
 
     @Select("select hospitalcode from hospitalofreginfo")

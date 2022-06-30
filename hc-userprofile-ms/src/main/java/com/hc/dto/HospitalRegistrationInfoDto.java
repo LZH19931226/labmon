@@ -55,4 +55,9 @@ public class HospitalRegistrationInfoDto {
 
     /** 超时变红时长 */
     private  String timeoutRedDuration;
+
+    /**
+     * 是否开启声光报警是1否0
+     */
+    private String soundLightAlarm;
 }
