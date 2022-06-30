@@ -107,17 +107,34 @@ public class SocketMessageListener {
             if (CollectionUtils.isEmpty(timeoutEquipmentList)) {
                 return;
             }
-            TimeoutEquipment timeoutEquipment = timeoutEquipmentList.get(0);
+            String eqTypeName = "";
+            String count = "";
+            String hospitalName = timeoutEquipmentList.get(0).getHospitalname();
+             String hospitalcode = timeoutEquipmentList.get(0).getHospitalcode();
+             int size = timeoutEquipmentList.size();
+            for (int i = 0; i < size; i++) {
+                String equipmentTypeName = timeoutEquipmentList.get(i).getEquipmenttypename();
+                String count1 = timeoutEquipmentList.get(i).getCount();
+                if(StringUtils.isBlank(equipmentTypeName) || StringUtils.isBlank(count1)){
+                    return;
+                }
+                if(i == size-1){
+                    eqTypeName += equipmentTypeName;
+                    count += count1;
+                }else {
+                    eqTypeName+=equipmentTypeName+"/";
+                    count+=count1+"/";
+                }
+            }
+            if(StringUtils.isBlank(hospitalName) || StringUtils.isBlank(eqTypeName) || StringUtils.isBlank(count)){
+                return;
+            }
             log.info("进入超时报警队列：" + message);
-            String hospitalcode = timeoutEquipment.getHospitalcode();
             // 根据hospitalcode查找设置超时报警的联系人
             List<Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
             if (org.apache.commons.collections4.CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
                 return;
             }
-            String equipmentname = timeoutEquipment.getEquipmentname();
-            String hospitalname = timeoutEquipment.getHospitalname();
-            Integer timeouttime = timeoutEquipment.getTimeouttime();
             log.info("进入超时报警队列联系人：" + JsonUtil.toJson(userrightByHospitalcodeAAndTimeout));
             for (Userright userright : userrightByHospitalcodeAAndTimeout) {
                 String phonenum = userright.getPhonenum();
@@ -133,19 +150,18 @@ public class SocketMessageListener {
                  */
                 String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
                         // 超时报警
-                        if (StringUtils.equals(timeoutwarning, "0")) {
+                        if (StringUtils.isBlank(timeoutwarning)) {
                             log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                            sendMesService.callPhone(userright.getPhonenum(), equipmentname);
-                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
+                            sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
+                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
                             log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                         } else if (StringUtils.equals(timeoutwarning, "1")) {
                             log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                            sendMesService.callPhone(userright.getPhonenum(), equipmentname);
+                            sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
                         } else if (StringUtils.equals(timeoutwarning, "2")) {
-                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, equipmentname, "超时", hospitalname, timeouttime);
+                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
                             log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                         }
-                        break;
             }
     }
 

@@ -30,4 +30,6 @@ public class TimeoutEquipment {
      * 记录设备的数量
      */
     private String count;
+
+    private String equipmenttypename;
 }

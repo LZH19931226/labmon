@@ -1,15 +1,5 @@
 package com.hc.Message;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsRequest;
@@ -20,6 +10,14 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.hc.utils.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Component
@@ -126,7 +124,7 @@ public class MoblieMessageUtil {
 
 
 
-    public SendSmsResponse sendmsg1(String phontnum, String instrumentname, String unit, String value, int time) {
+    public SendSmsResponse sendmsg1(String phontnum, String instrumentname, String unit, String value, String time) {
         //通过手机号判断是否港澳台  "00"开头 港澳台
         boolean isLocalphone = !phontnum.startsWith("00");
 

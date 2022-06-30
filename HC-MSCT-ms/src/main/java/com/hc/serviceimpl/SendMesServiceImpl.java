@@ -32,7 +32,7 @@ public class SendMesServiceImpl implements SendMesService {
     }
 
     @Override
-    public SendSmsResponse sendMes1(String phonenum, String equipmentname, String unit, String value, int time) {
+    public SendSmsResponse sendMes1(String phonenum, String equipmentname, String unit, String value, String time) {
         SendSmsResponse sendmsg = moblieMessageUtil.sendmsg1(phonenum, equipmentname, unit, value,time);
 
         return sendmsg;
@@ -49,6 +49,13 @@ public class SendMesServiceImpl implements SendMesService {
     @Async
     public SingleCallByTtsResponse callPhone(String phone, String equipmentname) {
         SingleCallByTtsResponse singleCallByTtsResponse = singleCallByTtsUtils.sendSms(phone, equipmentname);
+        log.info("拨打电话对象:{},响应值:{}",phone,singleCallByTtsResponse.getCode());
+        return singleCallByTtsResponse;
+    }
+
+    @Override
+    public SingleCallByTtsResponse callPhone2(String phone, String hospitalName, String eqTypeName) {
+        SingleCallByTtsResponse singleCallByTtsResponse = singleCallByTtsUtils.sendSms2(phone, hospitalName, eqTypeName);
         log.info("拨打电话对象:{},响应值:{}",phone,singleCallByTtsResponse.getCode());
         return singleCallByTtsResponse;
     }
