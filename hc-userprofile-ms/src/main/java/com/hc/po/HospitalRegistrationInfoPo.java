@@ -79,5 +79,6 @@ public class HospitalRegistrationInfoPo implements Serializable {
     /**
      * 是否开启声光报警是1否0
      */
+    @TableField(value = "sound_light_alarm")
     private String soundLightAlarm;
 }
