@@ -31,6 +31,4 @@ public class TcpClientReidsSyncController {
         return tcpClientReidsSyncApplication.getSnBychannelId(sn+cmdId);
     }
 
-
-
 }

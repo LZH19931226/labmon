@@ -21,7 +21,7 @@ public interface MonitorEquipmentApi {
     ApiResponse<List<SnDeviceDto>> getAllMonitorEquipmentInfo();
 
     /**
-     * 获取医院ups的设备no集合
+     * 获取医院ups的设备信息
      * @param hospitalCode
      * @return
      */

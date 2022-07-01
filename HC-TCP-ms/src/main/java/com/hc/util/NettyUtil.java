@@ -1,9 +1,7 @@
 package com.hc.util;
 
 
-import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.socketServer.IotServer;
-import com.hc.tcp.TcpClientApi;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -11,7 +9,6 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -21,10 +18,6 @@ import java.net.Socket;
 @Component
 @Slf4j
 public class NettyUtil {
-
-      @Autowired
-      private TcpClientApi tcpClientApi;
-
 
 
     public void sendData(ChannelHandlerContext ctx, Object sendData) {
@@ -38,9 +31,7 @@ public class NettyUtil {
 
 
 
-    public Channel getChannelByTid(String sn,String cmdId) {
-        ParamaterModel paramaterModel = tcpClientApi.getSnBychannelId(sn, cmdId).getResult();
-        String channelId = paramaterModel.getChannelId();
+    public Channel getChannelByTid(String channelId) {
         for (Channel channel : IotServer.onlineChannels) {
             if (channel.id().asShortText().equals(channelId)) {
                 return channel;
@@ -48,13 +39,6 @@ public class NettyUtil {
         }
         return null;
     }
-
-
-      public String getSnByCid(String cid){
-//          Object o = redisDao.boundValueOps(cid + ":" + ParamaterModel.class.getSimpleName()).get();
-//          String s = (String) o;
-          return  null;
-      }
 
 
     private void writeDataByte(ChannelHandlerContext ctx, Object sendData) {

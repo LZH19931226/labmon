@@ -2,7 +2,9 @@ package com.hc.service.serviceImpl;
 
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
+import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.service.MTOnlineBeanService;
+import com.hc.tcp.TcpClientApi;
 import com.hc.util.*;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,14 +33,23 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
     @Autowired
     private NettyUtil netty;
 
+    @Autowired
+    private TcpClientApi tcpClientApi;
+
 
     @Override
-    public void sendMsg(String sn, String cmdId,String message) {
-            Channel channel = netty.getChannelByTid(sn,cmdId);
-            netty.sendData(channel, message);
-            log.info("向该通道" + channel.id().asShortText() + "发送的内容:" + message);
+    public void sendMsg(String sn, String message) {
+        String cmdId = SoundLightUtils.getCmdId(sn);
+        if(StringUtils.isBlank(cmdId))
+            return;
+        ParamaterModel paramaterModel = tcpClientApi.getSnBychannelId(sn, cmdId).getResult();
+        if(ObjectUtils.isEmpty(paramaterModel))
+            return;
+        String channelId = paramaterModel.getChannelId();
+        Channel channel = netty.getChannelByTid(channelId);
+        netty.sendData(channel, message);
+        log.info("向该通道" + channel.id().asShortText() + "发送的内容:" + message);
     }
-
 
     @Override
     public List<ParamaterModel> paseData(String data) {
@@ -102,54 +114,54 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     //48 43 8e 16 31393139313230303136 1572 03ef 0000 0001 00eb 005c aa23
                     // 湿度
                     String substring7 = cmd.substring(28, 32);
-                    if (StringUtils.equalsAnyIgnoreCase(substring7,"ff00")){
+                    if (StringUtils.equalsAnyIgnoreCase(substring7, "ff00")) {
                         paramaterModel.setRH(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
-                    }else {
+                    } else {
                         String gas6 = paramaterModelUtils.gas(substring7);
                         gas6 = CustomUtils.agreementAll(gas6, "0", "100");
                         paramaterModel.setRH(gas6);
                     }
                     // 压力
                     String substring8 = cmd.substring(32, 36);
-                    if (StringUtils.equalsAnyIgnoreCase(substring8,"ff00")){
+                    if (StringUtils.equalsAnyIgnoreCase(substring8, "ff00")) {
                         paramaterModel.setPRESS(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
-                    }else {
+                    } else {
                         String electricity2 = electricity(substring8);
                         electricity2 = CustomUtils.agreementAll(electricity2, "300", "1250");
                         paramaterModel.setPRESS(electricity2);
                     }
                     // PM2.5
                     String substring9 = cmd.substring(36, 40);
-                    if (StringUtils.equalsAnyIgnoreCase(substring9,"ff00")){
+                    if (StringUtils.equalsAnyIgnoreCase(substring9, "ff00")) {
                         paramaterModel.setPM25(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
-                    }else {
+                    } else {
                         String electricity3 = electricity(substring9);
                         electricity3 = CustomUtils.agreementAll(electricity3, "0", "500");
                         paramaterModel.setPM25(electricity3);
                     }
                     // PM10
                     String substring10 = cmd.substring(40, 44);
-                    if (StringUtils.equalsAnyIgnoreCase(substring10,"ff00")){
+                    if (StringUtils.equalsAnyIgnoreCase(substring10, "ff00")) {
                         paramaterModel.setPM10(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
-                    }else {
+                    } else {
                         String electricity4 = electricity(substring10);
                         electricity4 = CustomUtils.agreementAll(electricity4, "0", "500");
                         paramaterModel.setPM10(electricity4);
                     }
                     // VOC
                     String substring11 = cmd.substring(44, 48);
-                    if (StringUtils.equalsAnyIgnoreCase(substring11,"9C00")){
+                    if (StringUtils.equalsAnyIgnoreCase(substring11, "9C00")) {
                         paramaterModel.setVOC(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
-                    }else {
+                    } else {
                         String gas7 = paramaterModelUtils.gas(substring11);
                         gas7 = CustomUtils.agreementAll(gas7, "0", "200");
                         paramaterModel.setVOC(gas7);
                     }
                     // 甲醛
                     String substring12 = cmd.substring(48, 52);
-                    if (StringUtils.equalsAnyIgnoreCase(substring12,"ff00")){
+                    if (StringUtils.equalsAnyIgnoreCase(substring12, "ff00")) {
                         paramaterModel.setOX(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
-                    }else {
+                    } else {
                         String electricity5 = paramaterModelUtils.electricity2(substring12);
                         electricity5 = CustomUtils.agreementAll(electricity5, "0", "2");
                         paramaterModel.setOX(electricity5);
@@ -160,7 +172,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                 case "70":
                     String wendu = cmd.substring(28, 32);
                     String pasetemperature = pasetemperature(wendu);
-                    if (StringUtils.equals("-1.0",pasetemperature)) {
+                    if (StringUtils.equals("-1.0", pasetemperature)) {
                         pasetemperature = ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
                     }
                     paramaterModel.setTEMP(pasetemperature);
@@ -352,11 +364,11 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     list.add(paramaterModel16);
                     continue;
                 case "a5":
-                    ParamaterModel  paramaterModel17 = cmdidParseUtils.paseA5(cmd, sn, cmdid);
+                    ParamaterModel paramaterModel17 = cmdidParseUtils.paseA5(cmd, sn, cmdid);
                     list.add(paramaterModel17);
                     continue;
                 case "a6":
-                    ParamaterModel  paramaterModel18 = cmdidParseUtils.paseA6(cmd, sn, cmdid);
+                    ParamaterModel paramaterModel18 = cmdidParseUtils.paseA6(cmd, sn, cmdid);
                     list.add(paramaterModel18);
                     continue;
                 case "a7":
@@ -364,27 +376,25 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 //                    list.add(paramaterModel19);
                     continue;
                 case "a8":
-                    ParamaterModel  paramaterModel19 = cmdidParseUtils.paseA8(cmd, sn, cmdid);
+                    ParamaterModel paramaterModel19 = cmdidParseUtils.paseA8(cmd, sn, cmdid);
                     list.add(paramaterModel19);
                     continue;
                 case "aa":
-                    ParamaterModel  paramaterModel20 = cmdidParseUtils.paseAA(cmd, sn, cmdid);
+                    ParamaterModel paramaterModel20 = cmdidParseUtils.paseAA(cmd, sn, cmdid);
                     list.add(paramaterModel20);
                     continue;
                 case "ab":
-                    ParamaterModel  paramaterModel21 = cmdidParseUtils.paseAB(cmd, sn, cmdid);
+                    ParamaterModel paramaterModel21 = cmdidParseUtils.paseAB(cmd, sn, cmdid);
                     list.add(paramaterModel21);
                     continue;
-                 default:
-                     return null;
+                default:
+                    return null;
             }
 
         }
 
         return list;
     }
-
-
 
 
     public static void main(String[] args) {

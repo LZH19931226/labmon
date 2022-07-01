@@ -5,13 +5,13 @@ import com.hc.my.common.core.redis.dto.ParamaterModel;
 import java.util.List;
 
 public interface MTOnlineBeanService {
-	
+
 	/*
 	 * 向制定sn号的设备发送内容
 	 */
-    void sendMsg(String MId, String cmd,String message);
-    
-    
+    void sendMsg(String sn,String message);
+
+
     /*
        * 解析硬件上传数据
      */

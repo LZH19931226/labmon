@@ -22,9 +22,11 @@ import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
+import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.po.*;
 import com.hc.service.SendMesService;
 import com.hc.service.WarningService;
+import com.hc.tcp.SoundLightApi;
 import com.hc.user.UserRightInfoApi;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.UnitCase;
@@ -63,6 +65,8 @@ public class SocketMessageListener {
     private SnDeviceRedisApi snDeviceRedisSync;
     @Autowired
     private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
+    @Autowired
+    private SoundLightApi soundLightApi;
 
     /**
      * 监听报警信息
@@ -150,7 +154,7 @@ public class SocketMessageListener {
                  */
                 String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
                         // 超时报警
-                        if (StringUtils.isBlank(timeoutwarning)) {
+                        if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")){
                             log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
                             sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
                             SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
@@ -229,7 +233,8 @@ public class SocketMessageListener {
         String pkid = model.getPkid();
         warningrecordRepository.update(Wrappers.lambdaUpdate(new Warningrecord()).eq(Warningrecord::getPkid,pkid).set(Warningrecord::getIsphone,"1"));
         //如果该医院开启了声光报警则需要推送声光报警指令
-
+        String sn = monitorinstrument.getSn();
+        soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
     }
 
     /**

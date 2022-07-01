@@ -162,8 +162,6 @@ public class MoblieMessageUtil {
 
 
         }
-
-
         //hint 此处可能会抛出异常，注意catch
         SendSmsResponse sendSmsResponse = null;
         try {
