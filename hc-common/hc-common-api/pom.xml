@@ -15,6 +15,7 @@
         <module>hc-labredis-api</module>
         <module>hc-userprofile-api</module>
         <module>hc-msct-api</module>
+        <module>hc-tcp-api</module>
     </modules>
 
 

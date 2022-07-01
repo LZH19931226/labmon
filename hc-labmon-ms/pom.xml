@@ -62,7 +62,7 @@
         </dependency>
         <dependency>
             <groupId>com.hc</groupId>
-            <artifactId>tcp</artifactId>
+            <artifactId>hc-tcp-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
