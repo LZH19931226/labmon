@@ -228,6 +228,8 @@ public class SocketMessageListener {
         //报警通知完毕之后,修改此条报警数据状态为已经推送
         String pkid = model.getPkid();
         warningrecordRepository.update(Wrappers.lambdaUpdate(new Warningrecord()).eq(Warningrecord::getPkid,pkid).set(Warningrecord::getIsphone,"1"));
+        //如果该医院开启了声光报警则需要推送声光报警指令
+
     }
 
     /**

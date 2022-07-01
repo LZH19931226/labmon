@@ -17,8 +17,8 @@ public class SocketMsgController {
 
 	@GetMapping("/sendMsg")
 	@ApiOperation("暂时只支持mt600/mt1100设备查询对应服务器通道信息")
-	public void sendMsg(String MId, String cmd,String message){
-		mtOnlineBeanService.sendMsg(MId,cmd,message);
+	public void sendMsg(String sn, String cmd,String message){
+		mtOnlineBeanService.sendMsg(sn,cmd,message);
 	}
 
 
