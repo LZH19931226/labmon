@@ -152,8 +152,6 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         IotServer.onlineChannels.remove(ctx.channel());
         //关闭通道
         ctx.close();
-        //清理通道缓存
-        tcpClientApi.deleteChannelIdSn(ctx.channel().id().asShortText());
     }
     //应答心跳包
     public void checkIsHeartbeat(String sn, String channelId, String cmdId, ChannelHandlerContext ctx) {

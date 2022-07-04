@@ -35,7 +35,7 @@ public class TcpClientReidsSyncApplication {
     }
 
     public void saveChannelIdSn(String sn, String channelId) {
-        redisUtils.hset(TcpServiceEnum.CHANNELCLIENT.getCode(),channelId,sn);
+        redisUtils.hset(TcpServiceEnum.CHANNELCLIENT.getCode(),sn,channelId);
 
     }
 
