@@ -142,8 +142,8 @@ public class EquipmentInfoApplication {
             flag = true;
         }
         return flag ?
-                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList, new CurveInfoDto()):
-                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto());
+                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList, new CurveInfoDto(),false):
+                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto(),false);
     }
 
     /**
@@ -535,17 +535,25 @@ public class EquipmentInfoApplication {
      * 设备通过月份获取每个时间点数据
      * @param equipmentNo
      * @param operationDate
+     * @param sn
      * @return
      */
-    public CurveInfoDto getCurveInfoByMonthTime(String equipmentNo, String operationDate) {
+    public CurveInfoDto getCurveInfoByMonthTime(String equipmentNo, String operationDate,String sn) {
         //日
         Date newDate = DateUtils.parseDate(operationDate);
-        String startTime = DateUtils.getPreviousHourHHmmss(newDate);
-        String endTime = DateUtils.paseDateHHmmss(newDate);
-        String date = DateUtils.paseDate(newDate);
+        String startTime = DateUtils.getPreviousHourHHmm(newDate);
+        String endTime = DateUtils.parseDatetime(newDate);
+        String date = DateUtils.getYearMonth(newDate);
         List<Monitorequipmentlastdata> lastDateList =
-                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfoByDate(equipmentNo,startTime,endTime,date);
-        CurveInfoDto curveFirst = EquipmentInfoServiceHelp.getCurveFirst(lastDateList, new CurveInfoDto());
-        return null;
+                monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date);
+        if(CollectionUtils.isEmpty(lastDateList))
+            return null;
+        boolean flag = false;
+        if(StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4,6))){
+            flag = true;
+        }
+        return flag ?
+                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDateList, new CurveInfoDto(),true):
+                EquipmentInfoServiceHelp.getCurveFirst(lastDateList, new CurveInfoDto(),true);
     }
 }

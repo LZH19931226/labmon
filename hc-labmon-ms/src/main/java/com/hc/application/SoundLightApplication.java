@@ -4,6 +4,7 @@ import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.tcp.SoundLightApi;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,9 @@ public class SoundLightApplication {
     public void turnOff(String hospitalCode) {
         //通关医院id查询所有的
         List<SnDeviceDto> result = monitorEquipmentApi.getEquipmentNoList(hospitalCode, "6").getResult();
+        if (CollectionUtils.isEmpty(result)) {
+            return;
+        }
         for (SnDeviceDto snDeviceDto : result) {
             String sn = snDeviceDto.getSn();
             if(StringUtils.isBlank(sn)) continue;

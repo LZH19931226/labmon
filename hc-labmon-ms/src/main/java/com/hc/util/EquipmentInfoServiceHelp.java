@@ -19,7 +19,7 @@ import java.util.List;
 public class EquipmentInfoServiceHelp {
 
 
-    public static  CurveInfoDto getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto ){
+    public static  CurveInfoDto getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto ,boolean flag){
         List<String> temp = new ArrayList<String>();
         List<String> tempTime = new ArrayList<String>();
         List<String> CO2 = new ArrayList<String>();
@@ -104,6 +104,9 @@ public class EquipmentInfoServiceHelp {
 //            }
             //液氮罐是否存在差值
             String da = DateUtils.parseDatetime(lastDataModel.getInputdatetime());
+            if(flag){
+                da = DateUtils.paseDate(lastDataModel.getInputdatetime());
+            }
             if (StringUtils.isNotEmpty(lastDataModel.getCurrenttemperaturediff())) {
                 tempdiff.add(lastDataModel.getCurrenttemperaturediff());
                 tempdiffTime.add(da);
@@ -425,7 +428,7 @@ public class EquipmentInfoServiceHelp {
         return  curveDataModel;
     }
 
-    public static CurveInfoDto getCurveFirstByMT300DC(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto) {
+    public static CurveInfoDto getCurveFirstByMT300DC(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto,boolean flag) {
         List<String> probe1Temp = new ArrayList<>();
         List<String> probe1TempTime = new ArrayList<>();
         List<String> probe1rh = new ArrayList<>();
@@ -460,6 +463,9 @@ public class EquipmentInfoServiceHelp {
         {
             Monitorequipmentlastdata lastDataModel = lastDataModelList.get(i);
             String da = DateUtils.parseDatetime(lastDataModel.getInputdatetime());
+            if(flag){
+                da = DateUtils.paseDate(lastDataModel.getInputdatetime());
+            }
             //CO2有无值
             if (StringUtils.isNotEmpty(lastDataModel.getCurrentcarbondioxide()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentcarbondioxide())) {
                 CO2.add(lastDataModel.getCurrentcarbondioxide());
