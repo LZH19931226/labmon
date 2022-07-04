@@ -4,7 +4,6 @@ package com.hc.timer;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.mybatisplus.extension.injector.methods.additional.InsertBatchSomeColumn;
 import com.hc.application.config.RedisUtils;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
@@ -24,7 +23,7 @@ import java.util.List;
 @Slf4j
 @EnableScheduling
 @DS(value= "slave")
-public class TimerConfigure extends InsertBatchSomeColumn {
+public class TimerConfigure  {
 
     @Autowired
     private RedisUtils redisUtils;

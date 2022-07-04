@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.TimeoutEquipment;
+import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.service.MessagePushService;
@@ -88,7 +89,7 @@ public class TimerConfig {
                     //equipmentNo是唯一键只会有一个
                     TimeoutEquipment equipment = timeoutEquipmentList.get(0);
                     //-------------当clientvisib的值为0时表示未开启超时报警-------------
-                    if (StringUtils.isNotEmpty(equipment.getClientvisible()) && StringUtils.equals("0",equipment.getClientvisible())) {
+                    if (StringUtils.isNotEmpty(equipment.getClientvisible()) && !StringUtils.equals(DictEnum.TURN_ON.getCode(),equipment.getClientvisible())) {
                         continue;
                     }
                     Integer timeoutTime = equipment.getTimeouttime();
@@ -98,7 +99,6 @@ public class TimerConfig {
                             timeoutEquipment = equipment;
                         }
                         count++;
-
                     }
                 }
                 if(!ObjectUtils.isEmpty(timeoutEquipment)){

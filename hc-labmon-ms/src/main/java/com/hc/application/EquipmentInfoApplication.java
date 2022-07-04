@@ -534,17 +534,18 @@ public class EquipmentInfoApplication {
     /**
      * 设备通过月份获取每个时间点数据
      * @param equipmentNo
-     * @param time
+     * @param operationDate
      * @return
      */
-    public CurveInfoDto getCurveInfoByMonthTime(String equipmentNo, String time) {
+    public CurveInfoDto getCurveInfoByMonthTime(String equipmentNo, String operationDate) {
         //日
-        Date newDate = DateUtils.parseDate(time);
+        Date newDate = DateUtils.parseDate(operationDate);
         String startTime = DateUtils.getPreviousHourHHmmss(newDate);
         String endTime = DateUtils.paseDateHHmmss(newDate);
         String date = DateUtils.paseDate(newDate);
         List<Monitorequipmentlastdata> lastDateList =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfoByDate(equipmentNo,startTime,endTime,date);
+        CurveInfoDto curveFirst = EquipmentInfoServiceHelp.getCurveFirst(lastDateList, new CurveInfoDto());
         return null;
     }
 }

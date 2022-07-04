@@ -9,6 +9,7 @@ import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
+import com.hc.hospital.HospitalRedisApi;
 import com.hc.mapper.SendrecordDao;
 import com.hc.mapper.UserScheduLingDao;
 import com.hc.mapper.UserrightDao;
@@ -16,10 +17,8 @@ import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.model.TimeoutEquipment;
 import com.hc.model.WarningModel;
 import com.hc.model.WarningMqModel;
-import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
-import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
-import com.hc.my.common.core.redis.dto.SnDeviceDto;
-import com.hc.my.common.core.redis.dto.UserRightRedisDto;
+import com.hc.my.common.core.constant.enums.DictEnum;
+import com.hc.my.common.core.redis.dto.*;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.SoundLightUtils;
@@ -67,6 +66,8 @@ public class SocketMessageListener {
     private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
     @Autowired
     private SoundLightApi soundLightApi;
+    @Autowired
+    private HospitalRedisApi hospitalRedisApi;
 
     /**
      * 监听报警信息
@@ -199,10 +200,10 @@ public class SocketMessageListener {
             String reminders = userright.getReminders();
             String phonenum = userright.getPhoneNum();
             //不报警
-            if (StringUtils.equals(reminders, "3") || StringUtils.isEmpty(phonenum)) {
+            if (StringUtils.equals(reminders,DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
                 continue;
             }
-            if (StringUtils.isEmpty(reminders)) {
+            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(),reminders)) {
                 log.info("拨打电话对象:{}",JsonUtil.toJson(userright));
                 sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
@@ -211,12 +212,12 @@ public class SocketMessageListener {
                 log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 Sendrecord sendrecord1 = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
                 list1.add(sendrecord1);
-            } else if (StringUtils.equals(reminders, "1")) {
+            } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
                 log.info("拨打电话对象:{}",JsonUtil.toJson(userright));
                 sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
                 list1.add(sendrecord);
-            } else if (StringUtils.equals(reminders, "2")) {
+            } else if (StringUtils.equals(reminders,DictEnum.SMS.getCode())) {
                 SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentname, unit, value);
                 log.info("发送短信对象{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
@@ -233,8 +234,11 @@ public class SocketMessageListener {
         String pkid = model.getPkid();
         warningrecordRepository.update(Wrappers.lambdaUpdate(new Warningrecord()).eq(Warningrecord::getPkid,pkid).set(Warningrecord::getIsphone,"1"));
         //如果该医院开启了声光报警则需要推送声光报警指令
-        String sn = monitorinstrument.getSn();
-        soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
+        HospitalInfoDto result = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+        if(StringUtils.isBlank(result.getSoundLightAlarm()) || !StringUtils.equals(result.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
+            String sn = monitorinstrument.getSn();
+            soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
+        }
     }
 
     /**
@@ -318,7 +322,7 @@ public class SocketMessageListener {
             assert monitorinstrumentObj != null;
             String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
             //全天报警
-            if (StringUtils.isEmpty(eqipmentAlwayalarm) || "1".equals(eqipmentAlwayalarm)) {
+            if (StringUtils.isEmpty(eqipmentAlwayalarm) || DictEnum.TURN_ON.getCode().equals(eqipmentAlwayalarm)) {
                 return true;
             } else {
                 //当前设备有配置时段,但是当前时间不在时段内.不报警
@@ -337,7 +341,7 @@ public class SocketMessageListener {
                     HospitalEquipmentTypeInfoModel equipmentTypeInfoModel = BeanConverter.convert(hosEqType, HospitalEquipmentTypeInfoModel.class);
                     String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
                     //设备类型全天报警,直接发送警报
-                    if ("1".equals(alwayalarm)) {
+                    if (DictEnum.TURN_ON.getCode().equals(alwayalarm)) {
                         return true;
                     } else {
                         //设备类型非全天报警
