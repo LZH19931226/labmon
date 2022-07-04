@@ -20,5 +20,12 @@ public interface TcpClientApi {
     void deleteDeviceChannel(@RequestParam("sn") String sn, @RequestParam("cmdId") String cmdId);
 
     @GetMapping("/tcpclient/getSnBychannelId")
-    ApiResponse<ParamaterModel> getSnBychannelId(@RequestParam("sn") String sn,@RequestParam("cmdId") String cmdId);
+    ApiResponse<ParamaterModel> getSnBychannelId(@RequestParam("sn") String sn, @RequestParam("cmdId") String cmdId);
+
+    @GetMapping("/tcpclient/saveChannelIdSn")
+    void saveChannelIdSn(@RequestParam("sn") String sn, @RequestParam("channelId") String channelId);
+
+    @GetMapping("/tcpclient/deleteChannelIdSn")
+    void deleteChannelIdSn(@RequestParam("channelId") String channelId);
+
 }

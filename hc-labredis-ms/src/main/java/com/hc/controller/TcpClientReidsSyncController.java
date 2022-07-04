@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/tcpclient")
 public class TcpClientReidsSyncController {
@@ -30,5 +32,24 @@ public class TcpClientReidsSyncController {
     public ParamaterModel getSnBychannelId(@RequestParam("sn") String sn,@RequestParam("cmdId") String cmdId){
         return tcpClientReidsSyncApplication.getSnBychannelId(sn+cmdId);
     }
+
+    @GetMapping("/saveChannelIdSn")
+    @ApiOperation("保存通道sn号信息")
+    public void saveChannelIdSn(@RequestParam("sn") String sn,@RequestParam("channelId") String channelId){
+         tcpClientReidsSyncApplication.saveChannelIdSn(sn,channelId);
+    }
+
+    @GetMapping("/deleteChannelIdSn")
+    @ApiOperation("删除通道sn关联信息")
+    public void deleteChannelIdSn(@RequestParam("channelId") String channelId){
+        tcpClientReidsSyncApplication.deleteChannelIdSn(channelId);
+    }
+
+    @GetMapping("/getAllClientInfo")
+    @ApiOperation("获取通道缓存最新sn信息")
+    public Map<Object,Object>  getAllClientInfo(){
+          return  tcpClientReidsSyncApplication.getAllClientInfo();
+    }
+
 
 }

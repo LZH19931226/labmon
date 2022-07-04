@@ -8,6 +8,8 @@ import com.hc.my.common.core.redis.namespace.TcpServiceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class TcpClientReidsSyncApplication {
 
@@ -30,5 +32,18 @@ public class TcpClientReidsSyncApplication {
             return null;
         }
         return JSONUtil.toBean((String) o,ParamaterModel.class);
+    }
+
+    public void saveChannelIdSn(String sn, String channelId) {
+        redisUtils.hset(TcpServiceEnum.CHANNELCLIENT.getCode(),channelId,sn);
+
+    }
+
+    public void deleteChannelIdSn(String channelId) {
+        redisUtils.hdel(TcpServiceEnum.CHANNELCLIENT.getCode(),channelId);
+    }
+
+    public Map<Object, Object> getAllClientInfo() {
+        return redisUtils.hmget(TcpServiceEnum.CHANNELCLIENT.getCode());
     }
 }

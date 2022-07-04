@@ -6,7 +6,9 @@ import com.hc.my.common.core.probe.EquipmentCommand;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
 import com.hc.socketServer.IotServer;
+import com.hc.tcp.TcpClientApi;
 import com.hc.util.JsonUtil;
+import com.hc.util.MathUtil;
 import com.hc.util.NettyUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -35,6 +37,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     private MessagePushService msgservice;
     @Autowired
     private NettyUtil nettyUtil;
+    @Autowired
+    private TcpClientApi tcpClientApi;
+
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -99,6 +104,8 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 snData.setData(dataStr);
                 //是否是心跳需要应答
                 checkIsHeartbeat(sn, asShortText, cmdid, ctx);
+                //判断sn是否是mt600/mt1100,需要缓存通道与sn的关联
+                saveChannelIdSn(snData);
                 //推送mq
                 randomPush(snData);
                 log.info("通道:{},原始数据:{},推送给RabbitMQ的模型为:{}", asShortText, dataStr, JsonUtil.toJson(snData));
@@ -108,6 +115,14 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         } finally {
             //从InBound里读取的ByteBuf要手动释放
             ReferenceCountUtil.release(msg);
+        }
+    }
+
+    public void saveChannelIdSn(ParamaterModel snData){
+        String sn = snData.getSN();
+        String channelId = snData.getChannelId();
+        if (StringUtils.isNotEmpty(MathUtil.ruleMT(sn))){
+            tcpClientApi.saveChannelIdSn(sn,channelId);
         }
     }
 
@@ -135,6 +150,8 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         IotServer.onlineChannels.remove(ctx.channel());
         //关闭通道
         ctx.close();
+        //清理通道缓存
+        tcpClientApi.deleteChannelIdSn(ctx.channel().id().asShortText());
     }
     //应答心跳包
     public void checkIsHeartbeat(String sn, String channelId, String cmdId, ChannelHandlerContext ctx) {
