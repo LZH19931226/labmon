@@ -3,6 +3,7 @@ package com.hc.util;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
+import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,6 @@ public class cmdidParseUtils {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(cmdidParseUtils.class);
 
     public static String paseAir(String co2) {
-
         if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.F000.getCode())) {
             return ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
         } else
@@ -34,7 +34,6 @@ public class cmdidParseUtils {
 
 
     public static String paseAir10(String co2) {
-
         if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FFF0.getCode())) {
             return ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode();
         } else {

@@ -1,6 +1,7 @@
 package com.hc.util;
 
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
+import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -8,6 +9,9 @@ import java.math.BigDecimal;
 public class paramaterModelUtils {
     // 解析温度
     public static String temperature(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         String rule = "";
         // 16进制转2进制每一位都要转然后拼接
         String hexadecima11 = MathUtil.hexadecimal(data.substring(0, 1));
@@ -27,6 +31,9 @@ public class paramaterModelUtils {
     }
 
     public static String temperature10(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         String rule = "";
         // 16进制转2进制每一位都要转然后拼接
         String hexadecima11 = MathUtil.hexadecimal(data.substring(0, 1));
@@ -48,6 +55,9 @@ public class paramaterModelUtils {
 
     // 解析电量/市电/开门记录/压力/PM2.5/PM10/甲醛
     public static String electricity(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         // 16进制转10进制
         int parseInt1 = Integer.parseInt(data, 16);
         return String.valueOf(parseInt1);
@@ -56,6 +66,9 @@ public class paramaterModelUtils {
 
     // MT400甲醛
     public static String electricity2(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         // 16进制转10进制
         Integer a = Integer.parseInt(data, 16);
    //     int b = 1000;
@@ -67,8 +80,11 @@ public class paramaterModelUtils {
 
     // MT400 pm2.5 pm5.0
     public static String electricity1(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         // 16进制转10进制
-        Integer a = Integer.parseInt(data, 16);
+        int a = Integer.parseInt(data, 16);
       //  int b = 10;
         return new BigDecimal(a).multiply(new BigDecimal("10")).toString();
 //        Double f = (double) a * b;
@@ -79,11 +95,17 @@ public class paramaterModelUtils {
 
     // 解析co2/02/湿度/VOC
     public static String gas(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         Integer a = Integer.parseInt(data, 16);
         return chu(a,"100");
     }
     // 解析co2/02/湿度/VOC
     public static String gas10(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         Integer a = Integer.parseInt(data, 16);
         // ppb 转换 PPM要转化
 //        if (a > 100000) {

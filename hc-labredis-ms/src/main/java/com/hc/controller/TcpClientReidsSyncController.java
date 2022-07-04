@@ -51,5 +51,10 @@ public class TcpClientReidsSyncController {
           return  tcpClientReidsSyncApplication.getAllClientInfo();
     }
 
+    @GetMapping("/deleteHashKey")
+    @ApiOperation("删除指定hashkey里面所有数据")
+    public void deleteHashKey(@RequestParam("hashKey") String hashKey){
+        tcpClientReidsSyncApplication.deleteHashKey(hashKey);
+    }
 
 }

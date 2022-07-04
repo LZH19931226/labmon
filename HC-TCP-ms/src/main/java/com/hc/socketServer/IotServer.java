@@ -7,6 +7,8 @@ import java.net.InetSocketAddress;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import com.hc.my.common.core.redis.namespace.TcpServiceEnum;
+import com.hc.tcp.TcpClientApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class IotServer {
 	private ServerBootstrap server;
 	@Autowired
 	private InetSocketAddress tcpSocket;
+	@Autowired
+	private TcpClientApi tcpClientApi;
 	
 	private Channel serverChannel;
 	//在线通道列表
@@ -41,15 +45,14 @@ public class IotServer {
 	
 	@PostConstruct
 	public void start() throws Exception{
+		//删除之前所有缓存得通道信息
+		tcpClientApi.deleteHashKey(TcpServiceEnum.CHANNELCLIENT.getCode());
 		log.info("启动服务器 " + tcpSocket);
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try{
-					serverChannel = server.bind(tcpSocket).sync().channel().closeFuture().sync().channel();	
-				}catch(Exception e){
-					log.info(e+"");
-				}
+		new Thread(() -> {
+			try{
+				serverChannel = server.bind(tcpSocket).sync().channel().closeFuture().sync().channel();
+			}catch(Exception e){
+				log.info(e+"");
 			}
 		}).start();
 	}

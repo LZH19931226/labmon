@@ -28,4 +28,7 @@ public interface TcpClientApi {
     @GetMapping("/tcpclient/deleteChannelIdSn")
     void deleteChannelIdSn(@RequestParam("channelId") String channelId);
 
+    @GetMapping("/tcpclient/deleteHashKey")
+    void deleteHashKey(@RequestParam("hashKey") String hashKey);
+
 }

@@ -115,6 +115,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         } finally {
             //从InBound里读取的ByteBuf要手动释放
             ReferenceCountUtil.release(msg);
+            closeChannel(ctx);
         }
     }
 

@@ -46,4 +46,8 @@ public class TcpClientReidsSyncApplication {
     public Map<Object, Object> getAllClientInfo() {
         return redisUtils.hmget(TcpServiceEnum.CHANNELCLIENT.getCode());
     }
+
+    public void deleteHashKey(String hashKey) {
+        redisUtils.hDel(hashKey);
+    }
 }

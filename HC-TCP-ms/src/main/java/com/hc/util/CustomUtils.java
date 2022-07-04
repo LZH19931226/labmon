@@ -1,6 +1,7 @@
 package com.hc.util;
 
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
+import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -16,6 +17,9 @@ public class CustomUtils {
      * @return
      */
     public static String tem85(String data, String sn) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+             return data;
+        }
         String substring = sn.substring(4, 6);
         if (StringUtils.equalsAny(substring, "02", "17", "18", "19", "05")) {
             //MT200  -200 -- 40
