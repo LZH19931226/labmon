@@ -31,4 +31,7 @@ public interface TcpClientApi {
     @GetMapping("/tcpclient/deleteHashKey")
     void deleteHashKey(@RequestParam("hashKey") String hashKey);
 
+    @GetMapping("/tcpclient/getChannelId")
+    @ApiOperation("获取通道信息")
+    ApiResponse<String> getChannelId(@RequestParam("sn")String channelId);
 }

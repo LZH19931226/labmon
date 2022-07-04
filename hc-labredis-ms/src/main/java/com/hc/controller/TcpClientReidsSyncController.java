@@ -57,4 +57,9 @@ public class TcpClientReidsSyncController {
         tcpClientReidsSyncApplication.deleteHashKey(hashKey);
     }
 
+    @GetMapping("/getChannelId")
+    @ApiOperation("获取通道信息")
+    public String getChannelId(@RequestParam("sn")String sn){
+        return tcpClientReidsSyncApplication.getChannelId(sn);
+    }
 }

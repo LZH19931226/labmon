@@ -1,8 +1,7 @@
 package com.hc.service.serviceImpl;
 
-import com.hc.my.common.core.exception.IedsException;
-import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.tcp.TcpClientApi;
@@ -40,16 +39,14 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 
     @Override
     public void sendMsg(String sn, String message) {
-        String cmdId = SoundLightUtils.getCmdId(sn);
-        if(StringUtils.isBlank(cmdId))
+        String channelId = tcpClientApi.getChannelId(sn).getResult();
+        if (StringUtils.isBlank(channelId)) {
             return;
-        ParamaterModel paramaterModel = tcpClientApi.getSnBychannelId(sn, cmdId).getResult();
-        if(ObjectUtils.isEmpty(paramaterModel))
-            return;
-        String channelId = paramaterModel.getChannelId();
+        }
         Channel channel = netty.getChannelByTid(channelId);
         if(ObjectUtils.isEmpty(channel)){
-           throw new IedsException(SoundLightUtils.PIPE_INFORMATION_NOT_FOUND);
+          log.error(SoundLightUtils.PIPE_INFORMATION_NOT_FOUND+"sn为："+sn);
+          return;
         }
         netty.sendData(channel, message);
         log.info("向该通道" + channel.id().asShortText() + "发送的内容:" + message);

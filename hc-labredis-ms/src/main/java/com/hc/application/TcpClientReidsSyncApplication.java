@@ -50,4 +50,9 @@ public class TcpClientReidsSyncApplication {
     public void deleteHashKey(String hashKey) {
         redisUtils.hDel(hashKey);
     }
+
+    public String getChannelId(String sn) {
+        Object object = redisUtils.hget(TcpServiceEnum.CHANNELCLIENT.getCode(),sn);
+        return (String)object;
+    }
 }
