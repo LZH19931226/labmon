@@ -42,5 +42,8 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
     monitorequipmentlastdataMapper.batchInsert(convert);
   }
 
-
+  @Override
+  public List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(String equipmentNo, String startTime, String endTime, String date) {
+    return monitorequipmentlastdataMapper.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date);
+  }
 }

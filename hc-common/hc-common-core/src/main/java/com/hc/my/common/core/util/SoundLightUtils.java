@@ -17,6 +17,11 @@ public class SoundLightUtils {
     public static final String TURN_ON_ROUND_LIGHT_COMMAND = "484315001E23";
 
     /**
+     *
+     */
+    public static final String PIPE_INFORMATION_NOT_FOUND = "未找到管道信息";
+
+    /**
      * 获取cmdid
      * @param sn
      * @return

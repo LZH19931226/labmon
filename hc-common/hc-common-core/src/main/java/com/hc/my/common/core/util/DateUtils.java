@@ -212,4 +212,20 @@ public class DateUtils {
         return month>9 ? year+"-"+month : year+"-0"+month;
     }
 
+    /**
+     * 将时间转化为 yyyy-MM-dd 类型
+     * @param time
+     * @return
+     */
+    public static Date getYearMonthDate(Date time)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(time);
+        int month = cal.get(Calendar.MONTH)+1;
+        int year = cal.get(Calendar.YEAR);
+        int date = cal.get(Calendar.HOUR_OF_DAY);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year,month,date);
+        return calendar.getTime();
+    }
 }

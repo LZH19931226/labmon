@@ -1,5 +1,6 @@
 package com.hc.service.serviceImpl;
 
+import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.util.SoundLightUtils;
@@ -47,6 +48,9 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
             return;
         String channelId = paramaterModel.getChannelId();
         Channel channel = netty.getChannelByTid(channelId);
+        if(ObjectUtils.isEmpty(channel)){
+           throw new IedsException(SoundLightUtils.PIPE_INFORMATION_NOT_FOUND);
+        }
         netty.sendData(channel, message);
         log.info("向该通道" + channel.id().asShortText() + "发送的内容:" + message);
     }

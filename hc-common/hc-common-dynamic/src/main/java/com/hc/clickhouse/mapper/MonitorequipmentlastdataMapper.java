@@ -128,4 +128,30 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
             "</script>")
     void batchInsert(@Param("converts") List<Monitorequipmentlastdata> converts);
 
+    @Select("SELECT \n" +
+            "DISTINCT (*) \n" +
+            "FROM \n" +
+            "lab_mon.monitorequipmentlastdata t1\n" +
+            "inner JOIN\n" +
+            "(\t\n" +
+            "SELECT \n" +
+            "\tMAX(inputdatetime) as time\n" +
+            "FROM    \n" +
+            "    lab_mon.monitorequipmentlastdata\n" +
+            "WHERE \n" +
+            "\tformatDateTime(inputdatetime ,'%H:%M')  BETWEEN  #{startTime} and  #{endTime} \n" +
+            "AND \n" +
+            "\tequipmentno  = #{equipmentNo}\n" +
+            "AND \n" +
+            "\tformatDateTime(inputdatetime ,'%Y-%m') = #{month}\n" +
+            "GROUP BY \n" +
+            "\tformatDateTime(inputdatetime ,'%Y-%m-%d')\n" +
+            ") t2 ON  t1.inputdatetime  = t2.time\n" +
+            "WHERE \n" +
+            "t1.equipmentno  = #{equipmentNo}\n" +
+            "ORDER BY inputdatetime ASC ")
+    List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(@Param("equipmentNo") String equipmentNo,
+                                                            @Param("startTime") String startTime,
+                                                            @Param("endTime") String endTime,
+                                                            @Param("month") String month);
 }
