@@ -23,10 +23,10 @@ public class SoundLightUtils {
      */
     public static String getCmdId(String sn) {
         String subStr = sn.substring(4, 6);
-        if(StringUtils.equals("32",subStr)){
-            return "a4";
+        if(StringUtils.equals("11",subStr)){
+            return "88";
         }
-        return "88";
+        return "a4";
     }
 
 }

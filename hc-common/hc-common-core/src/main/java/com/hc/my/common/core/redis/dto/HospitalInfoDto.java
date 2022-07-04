@@ -45,4 +45,15 @@ public class HospitalInfoDto {
      * 时间间隔
      */
     private String timeInterval;
+
+    /**
+     * 是否设置因子登录1为设置了
+     */
+    private String factor;
+
+    /**
+     * 是否开启了声光报警1为开
+     */
+    private String soundLightAlarm;
+
 }
