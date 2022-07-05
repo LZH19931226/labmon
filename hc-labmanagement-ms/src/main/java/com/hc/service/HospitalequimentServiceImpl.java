@@ -21,7 +21,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,15 +123,9 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         if (CollectionUtils.isNotEmpty(equipment)){
             throw  new IedsException(HospitalequimentEnumErrorCode.DEVICES_EXIST_UNDER_THIS_DEVICE_TYPE.getCode());
         }
-        //判断该医院该设备类型是不是被绑定过
-        HospitalequimentDTO hospitalequiment =hospitalequimentRepository.selectHospitalEquiment(hospitalCode,equipmenttypeid);
-        if (!ObjectUtils.isEmpty(hospitalequiment)){
-            throw  new IedsException(HospitalequimentEnumErrorCode.THE_DEVICE_HAS_AN_ALARM_PERIOD.getCode());
-        }
         hospitalequimentRepository.remove(Wrappers.lambdaQuery(new HospitalequimentPo())
         .eq(HospitalequimentPo::getHospitalcode,hospitalCode)
         .eq(HospitalequimentPo::getEquipmenttypeid,equipmenttypeid));
-
     }
 
     public MonitorequipmentwarningtimeDTO  buildMonitorequipmentwarningtimeDTO(Date beginTime,Date endTime,String hospitalcode,String equipmenttypeid){
