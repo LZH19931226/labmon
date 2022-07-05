@@ -107,9 +107,8 @@ public class EquipmentInfoController {
     @GetMapping("/getCurveInfoByMonthTime")
     @ApiOperation("设备通过月份获取每个时间点数据")
     public CurveInfoDto getCurveInfoByMonthTime(@RequestParam("equipmentNo")String equipmentNo,
-                                                @RequestParam("operationDate")String operationDate ,
-                                                @RequestParam("sn")String sn){
-        return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,operationDate,sn);
+                                                @RequestParam("operationDate")String operationDate){
+        return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,operationDate);
     }
 
 }

@@ -535,10 +535,9 @@ public class EquipmentInfoApplication {
      * 设备通过月份获取每个时间点数据
      * @param equipmentNo
      * @param operationDate
-     * @param sn
      * @return
      */
-    public CurveInfoDto getCurveInfoByMonthTime(String equipmentNo, String operationDate,String sn) {
+    public CurveInfoDto getCurveInfoByMonthTime(String equipmentNo, String operationDate) {
         //日
         Date newDate = DateUtils.parseDate(operationDate);
         String startTime = DateUtils.getPreviousHourHHmm(newDate);
@@ -548,6 +547,7 @@ public class EquipmentInfoApplication {
                 monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date);
         if(CollectionUtils.isEmpty(lastDateList))
             return null;
+        String sn = lastDateList.get(0).getSn();
         boolean flag = false;
         if(StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4,6))){
             flag = true;
