@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.MonitorequipmentlastdataMapper;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
+import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,10 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   @Override
   public List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(String equipmentNo, String startTime, String endTime, String date) {
     return monitorequipmentlastdataMapper.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date);
+  }
+
+  @Override
+  public List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName) {
+    return monitorequipmentlastdataMapper.getWarningCurveData(equipmentNo,startTime,endTime,instrumentConfigName);
   }
 }

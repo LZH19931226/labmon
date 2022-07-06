@@ -76,7 +76,6 @@ public class SocketMessageListener {
     public void onMessage1(String messageContent) {
         log.info("从通道" + BaoJinMsg.EXCHANGE_NAME + ":" + messageContent);
         msctMessage(messageContent);
-
     }
 
 

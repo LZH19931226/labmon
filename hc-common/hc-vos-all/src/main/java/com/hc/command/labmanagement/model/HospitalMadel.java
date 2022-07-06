@@ -48,6 +48,11 @@ public class HospitalMadel {
     private String timeoutRedDuration;
 
     /**
+     * 是否开启声光报警是1否0
+     */
+    private String soundLightAlarm;
+
+    /**
      * 医院对应得设备类型集合
      */
     private List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList;

@@ -8,4 +8,11 @@ import com.hc.clickhouse.po.Warningrecord;
 public interface WarningrecordRepository extends IService<Warningrecord> {
 
     IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page);
+
+    /**
+     * 修改Isphone的值
+     * @param pkid
+     * @param isPhone
+     */
+    void updateIsPhoneInfo(String pkid, String isPhone);
 }
