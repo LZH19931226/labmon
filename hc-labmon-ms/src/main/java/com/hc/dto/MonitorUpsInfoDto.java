@@ -29,4 +29,9 @@ public class MonitorUpsInfoDto  implements Serializable {
      * 设备名称
      */
     private String equipmentName;
+
+    /**
+     * sn号
+     */
+    private String sn;
 }

@@ -206,6 +206,7 @@ public class EquipmentInfoApplication {
                 monitorUpsInfoDto.setEquipmentName(snDeviceDto.getEquipmentName());
                 String currentUps = monitorequipmentlastdataDto.getCurrentups();
                 String voltage = monitorequipmentlastdataDto.getVoltage();
+                monitorUpsInfoDto.setSn(monitorequipmentlastdataDto.getSn());
                 if (StringUtils.isNotBlank(currentUps)) monitorUpsInfoDto.setCurrentUps(currentUps);
                 if (StringUtils.isNotBlank(voltage)) monitorUpsInfoDto.setVoltage(voltage);
                 upsInfoList.add(monitorUpsInfoDto);

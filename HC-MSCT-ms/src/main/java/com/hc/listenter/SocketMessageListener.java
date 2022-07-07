@@ -182,6 +182,12 @@ public class SocketMessageListener {
         String unit = UnitCase.caseUint(model.getUnit());
         String value = UnitCase.caseUint(model.getValue());
         String hospitalcode = model.getHospitalcode();
+        HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+        if (null == hospitalInfoDto){
+            log.info("医院信息不存在:{}",hospitalcode);
+            return;
+        }
+        String hospitalName = hospitalInfoDto.getHospitalName();
         //当前时间在报警的时间段内,开启警报信息
         boolean warningTimeBlockRule = warningTimeBlockRule(monitorinstrument);
         if (!warningTimeBlockRule) {
@@ -199,6 +205,7 @@ public class SocketMessageListener {
         for (UserRightRedisDto userright : list) {
             String reminders = userright.getReminders();
             String phonenum = userright.getPhoneNum();
+
             //不报警
             if (StringUtils.equals(reminders,DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
                 continue;
@@ -234,8 +241,7 @@ public class SocketMessageListener {
         String pkid = model.getPkid();
         warningrecordRepository.update(Wrappers.lambdaUpdate(new Warningrecord()).eq(Warningrecord::getPkid,pkid).set(Warningrecord::getIsphone,"1"));
         //如果该医院开启了声光报警则需要推送声光报警指令
-        HospitalInfoDto result = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
-        if(StringUtils.isBlank(result.getSoundLightAlarm()) || !StringUtils.equals(result.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
+        if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
             String sn = monitorinstrument.getSn();
             soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
         }
