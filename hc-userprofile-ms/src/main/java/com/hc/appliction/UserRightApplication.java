@@ -80,6 +80,7 @@ public class UserRightApplication {
                         .timeout(res.getTimeout()==null?"":res.getTimeout())
                         .timeoutWarning(res.getTimeoutWarning()==null?"":res.getTimeoutWarning())
                         .reminders(res.getReminders()==null?"":res.getReminders())
+                        .role(res.getRole() == null?"":res.getRole())
                         .build();
                 list.add(result);
             });

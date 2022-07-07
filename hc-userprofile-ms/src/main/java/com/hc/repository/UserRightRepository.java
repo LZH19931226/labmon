@@ -23,7 +23,7 @@ public interface UserRightRepository extends IService<UserRightPo> {
     List<UserRightDto> findUserRightList(Page<UserRightVo> page, UserRightCommand userRightCommand);
 
     /**
-     * 插入用户权限信息
+     * 插入用户信息
      * @param userRightCommand 用户
      */
     void insertUserRightInfo(UserRightCommand userRightCommand);

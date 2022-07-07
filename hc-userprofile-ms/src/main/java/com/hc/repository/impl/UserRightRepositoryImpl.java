@@ -44,7 +44,7 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
     }
 
     /**
-     * 插入用户权限信息
+     * 插入用户信息
      *
      * @param userRightCommand 用户
      */
@@ -58,7 +58,6 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
-
     }
 
     /**
