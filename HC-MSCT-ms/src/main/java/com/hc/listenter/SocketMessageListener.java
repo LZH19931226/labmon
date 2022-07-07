@@ -205,6 +205,11 @@ public class SocketMessageListener {
         for (UserRightRedisDto userright : list) {
             String reminders = userright.getReminders();
             String phonenum = userright.getPhoneNum();
+            String role = userright.getRole();
+            //1为运维后台人员
+            if (StringUtils.isNotEmpty(role)&&StringUtils.equals(role,"1")){
+                equipmentname=hospitalName+equipmentname;
+            }
             //不报警
             if (StringUtils.equals(reminders,DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
                 continue;
