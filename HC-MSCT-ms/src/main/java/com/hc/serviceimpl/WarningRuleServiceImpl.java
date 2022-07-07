@@ -85,7 +85,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 //未设置间隔时间则默认是60分钟
                 timeInterval= "60";
             }
-            double datePoorMin = TimeHelper.getDatePoorMin(warningtime, new Date());
+            double datePoorMin = TimeHelper.getDatePoorMin(warningtime);
             if (datePoorMin > Double.parseDouble(timeInterval)) {
                 //可以报警
                 probeInfoApi.editWarningTime(instrumentParamConfigNO,TimeHelper.getNowDate(new Date()));

@@ -84,4 +84,7 @@ public class UserRightCommand {
     /** 验证码 */
     @ApiModelProperty (value = "验证码")
     private String code;
+
+    @ApiModelProperty(value = "用户权限 1为后台用户 其他为普通用户")
+    private String role;
 }

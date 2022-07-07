@@ -38,7 +38,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 
 
     @Override
-    public void sendMsg(String sn, String message) {
+    public void  sendMsg(String sn, String message) {
         String channelId = tcpClientApi.getChannelId(sn).getResult();
         if (StringUtils.isBlank(channelId)) {
             return;

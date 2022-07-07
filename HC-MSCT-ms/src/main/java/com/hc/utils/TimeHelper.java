@@ -31,10 +31,16 @@ public class TimeHelper {
 
     }
 
-    public static double getDatePoorMin(Date endDate, Date nowDate) {
+    /**
+     * 获取与指定时间的差值
+     * @param endDate
+     * @return
+     */
+    public static double getDatePoorMin(Date endDate) {
         double nd = 1000 * 60;
-// 获得两个时间的毫秒时间差异
-        long diff = endDate.getTime() - nowDate.getTime();
+        // 获得两个时间的毫秒时间差异
+        Date nowDate = new Date();
+        long diff = nowDate.getTime() - endDate.getTime();
         // 计算差多少秒//输出结果
         return diff / nd;
 
