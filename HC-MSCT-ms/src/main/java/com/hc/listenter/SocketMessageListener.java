@@ -154,19 +154,19 @@ public class SocketMessageListener {
                  * <option value="3">不报警</option>
                  */
                 String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
-                        // 超时报警
-                        if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")){
-                            log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                            sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
-                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
-                            log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                        } else if (StringUtils.equals(timeoutwarning, "1")) {
-                            log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                            sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
-                        } else if (StringUtils.equals(timeoutwarning, "2")) {
-                            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
-                            log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                        }
+                // 超时报警
+                if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")){
+                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
+                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
+                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                } else if (StringUtils.equals(timeoutwarning, "1")) {
+                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
+                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
+                } else if (StringUtils.equals(timeoutwarning, "2")) {
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
+                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                }
             }
     }
 
@@ -205,7 +205,6 @@ public class SocketMessageListener {
         for (UserRightRedisDto userright : list) {
             String reminders = userright.getReminders();
             String phonenum = userright.getPhoneNum();
-
             //不报警
             if (StringUtils.equals(reminders,DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
                 continue;
@@ -236,10 +235,9 @@ public class SocketMessageListener {
                 sendrecordDao.insert(s);
             });
         }
-
         //报警通知完毕之后,修改此条报警数据状态为已经推送
         String pkid = model.getPkid();
-        warningrecordRepository.update(Wrappers.lambdaUpdate(new Warningrecord()).eq(Warningrecord::getPkid,pkid).set(Warningrecord::getIsphone,"1"));
+        warningrecordRepository.updateIsPhoneInfo(pkid,"1");
         //如果该医院开启了声光报警则需要推送声光报警指令
         if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
             String sn = monitorinstrument.getSn();

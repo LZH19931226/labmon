@@ -115,4 +115,10 @@ public class UserRightPo {
      */
     @TableField(value = "timeoutwarning")
     private String timeoutWarning;
+
+    /**
+     * 用户权限
+     */
+    @TableField(value = "role")
+    private String role;
 }

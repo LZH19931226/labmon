@@ -1,0 +1,431 @@
+2022-06-24 09:06:06.272 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10h38m9s994ms306µs).
+2022-06-24 09:44:47.350 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-06-24 09:44:47.359 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-06-24 09:44:47.360 [Thread-28] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-06-24 09:45:03.905 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-06-24 09:45:04.190 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$73ecf1dd] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:04.465 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmon-ms.yaml', group: 'DEFAULT_GROUP'
+2022-06-24 09:45:04.479 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmon-ms-dev.yaml'}, NacosPropertySource {name='hc-labmon-ms.yaml'}]}
+2022-06-24 09:45:05.999 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-06-24 09:45:06.357 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=50c4fdf0-07dc-30d7-a7e6-07f89a26b1b3
+2022-06-24 09:45:06.627 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$57d2eee0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:06.683 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.datasource.dynamic-com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:06.690 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration$$EnhancerBySpringCGLIB$$c1615fb1] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:06.716 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelParser' of type [com.baomidou.dynamic.datasource.spel.DynamicDataSourceSpelParser] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:06.722 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelResolver' of type [com.baomidou.dynamic.datasource.spel.DefaultDynamicDataSourceSpelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:06.730 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDatasourceAnnotationAdvisor' of type [com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:06.731 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$73ecf1dd] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:07.380 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10620 (http)
+2022-06-24 09:45:07.426 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-06-24 09:45:07.427 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-06-24 09:45:07.828 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-06-24 09:45:07.828 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 3323 ms
+2022-06-24 09:45:08.027 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 09:45:08.027 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * This driver is DEPRECATED. Please use [com.clickhouse.jdbc.ClickHouseDriver] instead.  *
+2022-06-24 09:45:08.027 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * Also everything in package [ru.yandex.clickhouse] will be removed starting from 0.4.0. *
+2022-06-24 09:45:08.027 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 09:45:08.030 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 初始共加载 2 个数据源
+2022-06-24 09:45:08.030 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 slave 成功
+2022-06-24 09:45:08.031 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 master 成功
+2022-06-24 09:45:08.031 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 当前的默认数据源是单数据源，数据源名为master
+2022-06-24 09:45:08.240 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-06-24 09:45:08.245 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-06-24 09:45:08.587 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-06-24 09:45:08.884 [restartedMain] ERROR com.baomidou.mybatisplus.core.MybatisConfiguration - mapper[com.hc.infrastructure.dao.EquipmentInfoDao.getEquipmentInfoByCodeAndTypeId] is ignored, because it exists, maybe from xml file
+2022-06-24 09:45:09.778 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-06-24 09:45:10.380 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 09:45:10.380 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 09:45:10.385 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 09:45:10.385 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 09:45:10.839 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-06-24 09:45:11.011 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-06-24 09:45:11.036 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-06-24 09:45:11.541 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-06-24 09:45:11.556 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-06-24 09:45:11.590 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-06-24 09:45:11.938 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10620 (http) with context path ''
+2022-06-24 09:45:11.980 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMON-ms 172.16.4.2:10620 register finished
+2022-06-24 09:45:49.473 [Thread-34] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-06-24 09:45:49.479 [Thread-34] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-06-24 09:45:49.480 [Thread-34] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-06-24 09:45:58.890 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-06-24 09:45:59.198 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$4bf8fd01] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:45:59.459 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmon-ms.yaml', group: 'DEFAULT_GROUP'
+2022-06-24 09:45:59.500 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmon-ms-dev.yaml'}, NacosPropertySource {name='hc-labmon-ms.yaml'}]}
+2022-06-24 09:46:01.669 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-06-24 09:46:02.116 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=50c4fdf0-07dc-30d7-a7e6-07f89a26b1b3
+2022-06-24 09:46:02.244 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2fdefa04] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:46:02.292 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.datasource.dynamic-com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:46:02.296 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration$$EnhancerBySpringCGLIB$$996d6ad5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:46:02.316 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelParser' of type [com.baomidou.dynamic.datasource.spel.DynamicDataSourceSpelParser] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:46:02.319 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelResolver' of type [com.baomidou.dynamic.datasource.spel.DefaultDynamicDataSourceSpelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:46:02.328 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDatasourceAnnotationAdvisor' of type [com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:46:02.330 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$4bf8fd01] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 09:46:02.967 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10620 (http)
+2022-06-24 09:46:03.013 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-06-24 09:46:03.014 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-06-24 09:46:03.232 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-06-24 09:46:03.232 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 3687 ms
+2022-06-24 09:46:03.433 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 09:46:03.433 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * This driver is DEPRECATED. Please use [com.clickhouse.jdbc.ClickHouseDriver] instead.  *
+2022-06-24 09:46:03.433 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * Also everything in package [ru.yandex.clickhouse] will be removed starting from 0.4.0. *
+2022-06-24 09:46:03.433 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 09:46:03.437 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 初始共加载 2 个数据源
+2022-06-24 09:46:03.438 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 slave 成功
+2022-06-24 09:46:03.438 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 master 成功
+2022-06-24 09:46:03.438 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 当前的默认数据源是单数据源，数据源名为master
+2022-06-24 09:46:03.733 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-06-24 09:46:03.740 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-06-24 09:46:04.085 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-06-24 09:46:04.279 [restartedMain] ERROR com.baomidou.mybatisplus.core.MybatisConfiguration - mapper[com.hc.infrastructure.dao.EquipmentInfoDao.getEquipmentInfoByCodeAndTypeId] is ignored, because it exists, maybe from xml file
+2022-06-24 09:46:05.040 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-06-24 09:46:05.800 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 09:46:05.800 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 09:46:05.807 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 09:46:05.807 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 09:46:05.969 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-06-24 09:46:06.129 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-06-24 09:46:06.153 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-06-24 09:46:06.498 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-06-24 09:46:06.511 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-06-24 09:46:06.541 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-06-24 09:46:06.714 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10620 (http) with context path ''
+2022-06-24 09:46:06.745 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMON-ms 172.16.4.2:10620 register finished
+2022-06-24 09:49:00.408 [http-nio-10620-exec-2] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-06-24 09:49:00.408 [http-nio-10620-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-06-24 09:49:00.414 [http-nio-10620-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2022-06-24 09:49:00.698 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:00.710 [http-nio-10620-exec-1] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-USERPROFILE-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-06-24 09:49:00.714 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-06-24 09:49:00.743 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:00.744 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-USERPROFILE-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-USERPROFILE-ms,current list of Servers=[172.16.4.2:10614],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.4.2:10614;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@65b91d04
+2022-06-24 09:49:00.798 [http-nio-10620-exec-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABREDIS-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:00.799 [http-nio-10620-exec-2] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABREDIS-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABREDIS-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-06-24 09:49:00.800 [http-nio-10620-exec-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-06-24 09:49:00.805 [http-nio-10620-exec-2] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABREDIS-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:00.806 [http-nio-10620-exec-2] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABREDIS-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABREDIS-ms,current list of Servers=[172.16.4.2:10619],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.4.2:10619;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@45407296
+2022-06-24 09:49:01.145 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:01.146 [http-nio-10620-exec-1] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-06-24 09:49:01.147 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-06-24 09:49:01.153 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:01.154 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.4.2:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.4.2:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@66493cf6
+2022-06-24 09:49:01.447 [http-nio-10620-exec-3] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2022-06-24 09:49:01.731 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-USERPROFILE-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:01.808 [PollingServerListUpdater-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABREDIS-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:01.864 [http-nio-10620-exec-3] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2022-06-24 09:49:02.149 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 09:49:02.188 [http-nio-10620-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 当前时间未找到数据]
+2022-06-24 09:49:45.505 [http-nio-10620-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 当前时间未找到数据]
+2022-06-24 09:51:15.948 [http-nio-10620-exec-2] ERROR o.a.c.c.C.[.[localhost].[/].[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.RuntimeException: com.netflix.client.ClientException: Load balancer does not have available server for client: HC-USERPROFILE-ms] with root cause
+com.netflix.client.ClientException: Load balancer does not have available server for client: HC-USERPROFILE-ms
+	at com.netflix.loadbalancer.LoadBalancerContext.getServerFromLoadBalancer(LoadBalancerContext.java:483)
+	at com.netflix.loadbalancer.reactive.LoadBalancerCommand$1.call(LoadBalancerCommand.java:184)
+	at com.netflix.loadbalancer.reactive.LoadBalancerCommand$1.call(LoadBalancerCommand.java:180)
+	at rx.Observable.unsafeSubscribe(Observable.java:10327)
+	at rx.internal.operators.OnSubscribeConcatMap.call(OnSubscribeConcatMap.java:94)
+	at rx.internal.operators.OnSubscribeConcatMap.call(OnSubscribeConcatMap.java:42)
+	at rx.Observable.unsafeSubscribe(Observable.java:10327)
+	at rx.internal.operators.OperatorRetryWithPredicate$SourceSubscriber$1.call(OperatorRetryWithPredicate.java:127)
+	at rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.enqueue(TrampolineScheduler.java:73)
+	at rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.schedule(TrampolineScheduler.java:52)
+	at rx.internal.operators.OperatorRetryWithPredicate$SourceSubscriber.onNext(OperatorRetryWithPredicate.java:79)
+	at rx.internal.operators.OperatorRetryWithPredicate$SourceSubscriber.onNext(OperatorRetryWithPredicate.java:45)
+	at rx.internal.util.ScalarSynchronousObservable$WeakSingleProducer.request(ScalarSynchronousObservable.java:276)
+	at rx.Subscriber.setProducer(Subscriber.java:209)
+	at rx.internal.util.ScalarSynchronousObservable$JustOnSubscribe.call(ScalarSynchronousObservable.java:138)
+	at rx.internal.util.ScalarSynchronousObservable$JustOnSubscribe.call(ScalarSynchronousObservable.java:129)
+	at rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:48)
+	at rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:30)
+	at rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:48)
+	at rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:30)
+	at rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:48)
+	at rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:30)
+	at rx.Observable.subscribe(Observable.java:10423)
+	at rx.Observable.subscribe(Observable.java:10390)
+	at rx.observables.BlockingObservable.blockForSingle(BlockingObservable.java:443)
+	at rx.observables.BlockingObservable.single(BlockingObservable.java:340)
+	at com.netflix.client.AbstractLoadBalancerAwareClient.executeWithLoadBalancer(AbstractLoadBalancerAwareClient.java:112)
+	at org.springframework.cloud.openfeign.ribbon.LoadBalancerFeignClient.execute(LoadBalancerFeignClient.java:83)
+	at feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:108)
+	at feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:78)
+	at feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:103)
+	at com.sun.proxy.$Proxy121.findHospitalInfo(Unknown Source)
+	at com.hc.application.EquipmentInfoApplication.getHospitalInfO(EquipmentInfoApplication.java:154)
+	at com.hc.controller.EquipmentInfoController.getHospitalInfO(EquipmentInfoController.java:62)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:104)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:892)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1039)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:942)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1005)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:897)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:645)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:882)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:750)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:490)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:853)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2022-06-24 09:51:16.128 [http-nio-10620-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 当前时间未找到数据]
+2022-06-24 09:52:20.479 [http-nio-10620-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 当前时间未找到数据]
+2022-06-24 09:52:42.528 [http-nio-10620-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hc.my.common.core.exception.IedsException: 当前时间未找到数据]
+2022-06-24 10:35:19.723 [Thread-48] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-06-24 10:35:19.756 [Thread-31] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-06-24 10:35:19.763 [Thread-31] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-06-24 10:35:19.765 [Thread-31] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-06-24 10:35:28.406 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-06-24 10:35:28.660 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$81413d3f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:29.032 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmon-ms.yaml', group: 'DEFAULT_GROUP'
+2022-06-24 10:35:29.041 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmon-ms-dev.yaml'}, NacosPropertySource {name='hc-labmon-ms.yaml'}]}
+2022-06-24 10:35:30.220 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-06-24 10:35:30.472 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=50c4fdf0-07dc-30d7-a7e6-07f89a26b1b3
+2022-06-24 10:35:30.553 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$65273a42] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:30.575 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.datasource.dynamic-com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:30.576 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration$$EnhancerBySpringCGLIB$$ceb5ab13] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:30.586 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelParser' of type [com.baomidou.dynamic.datasource.spel.DynamicDataSourceSpelParser] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:30.587 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelResolver' of type [com.baomidou.dynamic.datasource.spel.DefaultDynamicDataSourceSpelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:30.592 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDatasourceAnnotationAdvisor' of type [com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:30.593 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$81413d3f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 10:35:31.053 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10620 (http)
+2022-06-24 10:35:31.073 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-06-24 10:35:31.074 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-06-24 10:35:31.175 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-06-24 10:35:31.175 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2114 ms
+2022-06-24 10:35:31.270 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 10:35:31.270 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * This driver is DEPRECATED. Please use [com.clickhouse.jdbc.ClickHouseDriver] instead.  *
+2022-06-24 10:35:31.270 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * Also everything in package [ru.yandex.clickhouse] will be removed starting from 0.4.0. *
+2022-06-24 10:35:31.270 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 10:35:31.271 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 初始共加载 2 个数据源
+2022-06-24 10:35:31.271 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 slave 成功
+2022-06-24 10:35:31.271 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 master 成功
+2022-06-24 10:35:31.271 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 当前的默认数据源是单数据源，数据源名为master
+2022-06-24 10:35:31.365 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-06-24 10:35:31.366 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-06-24 10:35:31.462 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-06-24 10:35:31.554 [restartedMain] ERROR com.baomidou.mybatisplus.core.MybatisConfiguration - mapper[com.hc.infrastructure.dao.EquipmentInfoDao.getEquipmentInfoByCodeAndTypeId] is ignored, because it exists, maybe from xml file
+2022-06-24 10:35:31.796 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-06-24 10:35:32.179 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 10:35:32.179 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 10:35:32.182 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 10:35:32.182 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 10:35:32.288 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-06-24 10:35:32.444 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-06-24 10:35:32.476 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-06-24 10:35:32.791 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-06-24 10:35:32.807 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-06-24 10:35:32.836 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-06-24 10:35:33.017 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10620 (http) with context path ''
+2022-06-24 10:35:33.165 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMON-ms 172.16.4.2:10620 register finished
+2022-06-24 10:50:16.372 [http-nio-10620-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-06-24 10:50:16.372 [http-nio-10620-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-06-24 10:50:16.379 [http-nio-10620-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 7 ms
+2022-06-24 10:50:16.677 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 10:50:16.691 [http-nio-10620-exec-1] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-06-24 10:50:16.696 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-06-24 10:50:19.084 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@763e8dca
+2022-06-24 10:50:19.091 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 10:50:25.554 [http-nio-10620-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2022-06-24 10:50:25.659 [http-nio-10620-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2022-06-24 11:00:42.932 [HikariPool-2 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=3m12s647ms317µs500ns).
+2022-06-24 11:00:42.932 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m8s356ms933µs500ns).
+2022-06-24 11:01:56.329 [Thread-50] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-06-24 11:01:56.331 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-06-24 11:01:56.335 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-06-24 11:01:56.335 [Thread-28] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-06-24 11:02:02.920 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-06-24 11:02:03.164 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$95284517] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:03.569 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmon-ms.yaml', group: 'DEFAULT_GROUP'
+2022-06-24 11:02:03.579 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmon-ms-dev.yaml'}, NacosPropertySource {name='hc-labmon-ms.yaml'}]}
+2022-06-24 11:02:04.817 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-06-24 11:02:05.080 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=50c4fdf0-07dc-30d7-a7e6-07f89a26b1b3
+2022-06-24 11:02:05.157 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$790e421a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:05.180 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.datasource.dynamic-com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:05.182 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration$$EnhancerBySpringCGLIB$$e29cb2eb] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:05.191 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelParser' of type [com.baomidou.dynamic.datasource.spel.DynamicDataSourceSpelParser] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:05.192 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelResolver' of type [com.baomidou.dynamic.datasource.spel.DefaultDynamicDataSourceSpelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:05.197 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDatasourceAnnotationAdvisor' of type [com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:05.198 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$95284517] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:02:05.642 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10620 (http)
+2022-06-24 11:02:05.662 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-06-24 11:02:05.662 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-06-24 11:02:05.761 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-06-24 11:02:05.761 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2156 ms
+2022-06-24 11:02:05.852 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 11:02:05.852 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * This driver is DEPRECATED. Please use [com.clickhouse.jdbc.ClickHouseDriver] instead.  *
+2022-06-24 11:02:05.852 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * Also everything in package [ru.yandex.clickhouse] will be removed starting from 0.4.0. *
+2022-06-24 11:02:05.852 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 11:02:05.853 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 初始共加载 2 个数据源
+2022-06-24 11:02:05.853 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 slave 成功
+2022-06-24 11:02:05.853 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 master 成功
+2022-06-24 11:02:05.853 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 当前的默认数据源是单数据源，数据源名为master
+2022-06-24 11:02:05.941 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-06-24 11:02:05.942 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-06-24 11:02:06.042 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-06-24 11:02:06.134 [restartedMain] ERROR com.baomidou.mybatisplus.core.MybatisConfiguration - mapper[com.hc.infrastructure.dao.EquipmentInfoDao.getEquipmentInfoByCodeAndTypeId] is ignored, because it exists, maybe from xml file
+2022-06-24 11:02:06.375 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-06-24 11:02:06.750 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 11:02:06.750 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 11:02:06.754 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 11:02:06.754 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 11:02:06.861 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-06-24 11:02:07.004 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-06-24 11:02:07.026 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-06-24 11:02:07.327 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-06-24 11:02:07.340 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-06-24 11:02:07.367 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-06-24 11:02:07.539 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10620 (http) with context path ''
+2022-06-24 11:02:07.568 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMON-ms 172.16.4.2:10620 register finished
+2022-06-24 11:02:59.576 [http-nio-10620-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-06-24 11:02:59.576 [http-nio-10620-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-06-24 11:02:59.584 [http-nio-10620-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 8 ms
+2022-06-24 11:02:59.893 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 11:02:59.907 [http-nio-10620-exec-1] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-06-24 11:02:59.911 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-06-24 11:02:59.942 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 11:02:59.944 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.4.2:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.4.2:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@40cb4f30
+2022-06-24 11:03:00.136 [http-nio-10620-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2022-06-24 11:03:00.241 [http-nio-10620-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2022-06-24 11:03:00.914 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 11:06:02.584 [Thread-41] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-06-24 11:06:02.587 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-06-24 11:06:02.594 [Thread-28] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-06-24 11:06:02.595 [Thread-28] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-06-24 11:06:08.537 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-06-24 11:06:08.777 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d3882282] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:09.162 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmon-ms.yaml', group: 'DEFAULT_GROUP'
+2022-06-24 11:06:09.173 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmon-ms-dev.yaml'}, NacosPropertySource {name='hc-labmon-ms.yaml'}]}
+2022-06-24 11:06:10.288 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-06-24 11:06:10.550 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=50c4fdf0-07dc-30d7-a7e6-07f89a26b1b3
+2022-06-24 11:06:10.630 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b76e1f85] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:10.653 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.datasource.dynamic-com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:10.654 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration' of type [com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration$$EnhancerBySpringCGLIB$$20fc9056] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:10.663 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelParser' of type [com.baomidou.dynamic.datasource.spel.DynamicDataSourceSpelParser] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:10.665 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDataSourceSpelResolver' of type [com.baomidou.dynamic.datasource.spel.DefaultDynamicDataSourceSpelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:10.669 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dynamicDatasourceAnnotationAdvisor' of type [com.baomidou.dynamic.datasource.aop.DynamicDataSourceAnnotationAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:10.670 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$d3882282] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-06-24 11:06:11.080 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10620 (http)
+2022-06-24 11:06:11.099 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-06-24 11:06:11.099 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-06-24 11:06:11.195 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-06-24 11:06:11.195 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1993 ms
+2022-06-24 11:06:11.282 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 11:06:11.282 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * This driver is DEPRECATED. Please use [com.clickhouse.jdbc.ClickHouseDriver] instead.  *
+2022-06-24 11:06:11.282 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - * Also everything in package [ru.yandex.clickhouse] will be removed starting from 0.4.0. *
+2022-06-24 11:06:11.282 [restartedMain] WARN  ru.yandex.clickhouse.ClickHouseDriver - ******************************************************************************************
+2022-06-24 11:06:11.283 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 初始共加载 2 个数据源
+2022-06-24 11:06:11.283 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 slave 成功
+2022-06-24 11:06:11.283 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 添加数据源 master 成功
+2022-06-24 11:06:11.283 [restartedMain] INFO  c.b.dynamic.datasource.DynamicRoutingDataSource - 当前的默认数据源是单数据源，数据源名为master
+2022-06-24 11:06:11.374 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-06-24 11:06:11.375 [restartedMain] WARN  com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2022-06-24 11:06:11.464 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-06-24 11:06:11.541 [restartedMain] ERROR com.baomidou.mybatisplus.core.MybatisConfiguration - mapper[com.hc.infrastructure.dao.EquipmentInfoDao.getEquipmentInfoByCodeAndTypeId] is ignored, because it exists, maybe from xml file
+2022-06-24 11:06:11.787 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-06-24 11:06:12.159 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 11:06:12.159 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 11:06:12.163 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-06-24 11:06:12.163 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-06-24 11:06:12.275 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-06-24 11:06:12.422 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-06-24 11:06:12.445 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-06-24 11:06:12.752 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-06-24 11:06:12.766 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-06-24 11:06:12.791 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-06-24 11:06:12.963 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10620 (http) with context path ''
+2022-06-24 11:06:12.994 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMON-ms 172.16.4.2:10620 register finished
+2022-06-24 11:09:19.469 [http-nio-10620-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-06-24 11:09:19.470 [http-nio-10620-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-06-24 11:09:19.475 [http-nio-10620-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2022-06-24 11:09:23.824 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 11:09:23.837 [http-nio-10620-exec-1] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMANAGEMENT-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2022-06-24 11:09:23.841 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
+2022-06-24 11:09:23.886 [http-nio-10620-exec-1] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 11:09:23.887 [http-nio-10620-exec-1] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMANAGEMENT-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMANAGEMENT-ms,current list of Servers=[172.16.4.2:10613],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:172.16.4.2:10613;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@30abb7e7
+2022-06-24 11:09:24.061 [http-nio-10620-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2022-06-24 11:09:24.165 [http-nio-10620-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2022-06-24 11:09:24.850 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMANAGEMENT-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2022-06-24 11:18:37.301 [HikariPool-2 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=1m11s300ms164µs200ns).
+2022-06-24 11:18:37.301 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=54s838ms379µs500ns).
+2022-06-24 13:08:35.955 [HikariPool-2 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=44m27s894ms487µs500ns).
+2022-06-24 13:08:35.955 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=44m27s894ms516µs200ns).
+2022-06-24 13:08:35.978 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:35.978 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:35.979 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:35.979 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:35.979 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:35.979 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:35.983 [HikariPool-2 connection adder] INFO  ru.yandex.clickhouse.ClickHouseStatementImpl - Error during connection to ru.yandex.clickhouse.settings.ClickHouseProperties@3ebf8a87, reporting failure to data source, message: No route to host: connect
+2022-06-24 13:08:35.983 [HikariPool-2 connection adder] INFO  ru.yandex.clickhouse.ClickHouseStatementImpl - Error sql: select timezone(), version()
+FORMAT TabSeparatedWithNamesAndTypes
+2022-06-24 13:08:36.249 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:36.249 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:36.250 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:36.250 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:36.250 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:36.250 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:36.251 [HikariPool-2 connection adder] INFO  ru.yandex.clickhouse.ClickHouseStatementImpl - Error during connection to ru.yandex.clickhouse.settings.ClickHouseProperties@39c7c6a7, reporting failure to data source, message: No route to host: connect
+2022-06-24 13:08:36.251 [HikariPool-2 connection adder] INFO  ru.yandex.clickhouse.ClickHouseStatementImpl - Error sql: select timezone(), version()
+FORMAT TabSeparatedWithNamesAndTypes
+2022-06-24 13:08:36.628 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:36.628 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:36.629 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:36.629 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:36.629 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - I/O exception (java.net.NoRouteToHostException) caught when processing request to {}->http://172.16.10.201:8123: No route to host: connect
+2022-06-24 13:08:36.629 [HikariPool-2 connection adder] INFO  org.apache.http.impl.execchain.RetryExec - Retrying request to {}->http://172.16.10.201:8123
+2022-06-24 13:08:36.630 [HikariPool-2 connection adder] INFO  ru.yandex.clickhouse.ClickHouseStatementImpl - Error during connection to ru.yandex.clickhouse.settings.ClickHouseProperties@11ed11c5, reporting failure to data source, message: No route to host: connect
+2022-06-24 13:08:36.630 [HikariPool-2 connection adder] INFO  ru.yandex.clickhouse.ClickHouseStatementImpl - Error sql: select timezone(), version()
+FORMAT TabSeparatedWithNamesAndTypes
+2022-06-24 18:03:59.390 [Thread-45] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
+2022-06-24 18:03:59.451 [Thread-27] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-06-24 18:03:59.459 [Thread-27] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-06-24 18:03:59.462 [Thread-27] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'

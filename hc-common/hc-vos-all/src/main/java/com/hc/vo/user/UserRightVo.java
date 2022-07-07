@@ -67,5 +67,10 @@ public class UserRightVo {
      */
     private String twoFactorLogin;
 
+    /**
+     * 用户权限
+     */
+    private String role;
+
     private List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModels;
 }

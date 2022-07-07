@@ -7,14 +7,23 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.WarningrecordMapper;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @DS("slave")
 @Repository
 public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper, Warningrecord> implements WarningrecordRepository {
 
+    @Autowired
+    private WarningrecordMapper warningrecordMapper;
+
     @Override
     public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page) {
         return page(page);
+    }
+
+    @Override
+    public void updateIsPhoneInfo(String pkid, String isPhone) {
+        warningrecordMapper.updateIsPhoneInfo(pkid,isPhone);
     }
 }

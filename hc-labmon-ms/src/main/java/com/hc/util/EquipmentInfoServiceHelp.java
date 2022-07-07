@@ -828,4 +828,5 @@ public class EquipmentInfoServiceHelp {
         }
         return excleModelList;
     }
+
 }

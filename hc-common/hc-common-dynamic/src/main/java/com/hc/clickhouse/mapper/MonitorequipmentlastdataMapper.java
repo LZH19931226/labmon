@@ -2,6 +2,7 @@ package com.hc.clickhouse.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -154,4 +155,11 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
                                                             @Param("startTime") String startTime,
                                                             @Param("endTime") String endTime,
                                                             @Param("month") String month);
+
+
+    @Select("SELECT  inputdatetime,${instrumentConfigName}  FROM lab_mon.monitorequipmentlastdata WHERE  equipmentno  = #{equipmentNo}  AND  formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN #{startTime} AND #{endTime}" )
+    List<MonitorequipmentlastdataDto> getWarningCurveData(@Param("equipmentNo") String equipmentNo,
+                                                          @Param("startTime") String startTime,
+                                                          @Param("endTime") String endTime,
+                                                          @Param("instrumentConfigName") String instrumentConfigName);
 }

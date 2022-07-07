@@ -2,6 +2,7 @@ package com.hc.clickhouse.repository;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     void batchInsert(List<Monitorequipmentlastdata> convert);
 
     List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(String equipmentNo, String startTime, String endTime, String date);
+
+    List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName);
 }

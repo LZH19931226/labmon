@@ -74,6 +74,9 @@ public class UserScheduLing {
      */
     private String reminders;
 
-
+    /**
+     * 用户权限 1为后台用户 其他的为普通用户
+     */
+    private String role;
 
 }

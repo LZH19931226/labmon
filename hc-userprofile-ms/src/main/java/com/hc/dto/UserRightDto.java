@@ -98,4 +98,9 @@ public class UserRightDto extends UserRightPo {
      * 超时警告
      */
     private String timeoutWarning;
+
+    /**
+     * 用户权限 1为后台用户 其他为普通用户
+     */
+    private String role;
 }

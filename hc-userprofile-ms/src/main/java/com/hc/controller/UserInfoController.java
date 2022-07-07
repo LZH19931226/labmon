@@ -49,6 +49,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/findUserInfo")
+    @ApiOperation("获取用户信息")
     public UserBackModel findUserInfo(@RequestParam(value = "userid")String userid){
         return userInfoApplication.findUserInfo(userid);
     }
