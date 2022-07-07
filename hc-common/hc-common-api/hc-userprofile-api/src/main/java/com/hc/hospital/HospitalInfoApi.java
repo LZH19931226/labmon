@@ -2,9 +2,11 @@ package com.hc.hospital;
 
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.model.UserSchedulingModel;
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,4 +35,13 @@ public interface HospitalInfoApi {
      */
     @GetMapping("/hospitalInfo/getAllHospitalInfo")
     ApiResponse<List<HospitalInfoDto>> getAllHospitalInfo();
+
+    /**
+     * 获取当天的排班人员
+     * @param hospitalCode
+     * @return
+     */
+    @GetMapping("/hospitalInfo/findHospitalScheduleInfo")
+    @ApiOperation("获取当天的排班人员")
+    ApiResponse<List<UserSchedulingModel>> getHospitalScheduleInfo(@RequestParam("hospitalCode") String hospitalCode);
 }

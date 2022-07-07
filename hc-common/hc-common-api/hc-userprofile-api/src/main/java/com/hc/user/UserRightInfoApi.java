@@ -19,4 +19,6 @@ public interface UserRightInfoApi {
      */
     @GetMapping("/userRight/getALLHospitalUserRightInfo")
     ApiResponse<List<UserRightRedisDto>> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode);
+
+
 }

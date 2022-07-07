@@ -1,22 +1,12 @@
-package com.hc.po;
+package com.hc.command.labmanagement.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
-/**
- * @author LiuZhiHao
- * @date 2020/7/31 14:41
- * 描述:
- **/
-@TableName(value = "userscheduling")
 @Data
-public class UserScheduLing {
+public class UserSchedulingModel {
 
-    @TableId(type = IdType.AUTO)
     private int usid;
 
     /**
@@ -72,6 +62,4 @@ public class UserScheduLing {
      * 创建者
      */
     private String reminders;
-
-
 }

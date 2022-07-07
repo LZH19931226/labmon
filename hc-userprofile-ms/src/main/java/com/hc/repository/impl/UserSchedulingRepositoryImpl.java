@@ -113,4 +113,9 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
                 userSchedulingDao.selectList(Wrappers.lambdaQuery(new UserSchedulingPo()).eq(UserSchedulingPo::getHospitalCode, hospitalCode));
         return CollectionUtils.isEmpty(userSchedulingPos) ? null :BeanConverter.convert(userSchedulingPos,UserSchedulingDto.class);
     }
+
+    @Override
+    public List<UserSchedulingDto> getHospitalScheduleInfo(String hospitalCode, String startTime, String endTime) {
+        return userSchedulingDao.getHospitalScheduleInfo(hospitalCode,startTime,endTime);
+    }
 }

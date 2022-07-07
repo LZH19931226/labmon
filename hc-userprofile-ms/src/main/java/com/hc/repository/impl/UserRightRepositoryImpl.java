@@ -9,6 +9,7 @@ import com.hc.constant.UserEnumErrorCode;
 import com.hc.constant.UserRightEnumCode;
 import com.hc.dto.UserRightDto;
 import com.hc.infrastructure.dao.UserRightDao;
+import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
@@ -136,7 +137,7 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
      */
     @Override
     public List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode) {
-        List<UserRightPo> poList = userRightDao.selectList(Wrappers.lambdaQuery(new UserRightPo()).eq(UserRightPo::getHospitalCode, hospitalCode));
+        List<UserRightPo> poList = userRightDao.selectList(Wrappers.lambdaQuery(new UserRightPo()).eq(UserRightPo::getHospitalCode, hospitalCode).eq(UserRightPo::getIsUse, DictEnum.TURN_ON.getCode()));
         return BeanConverter.convert(poList,UserRightDto.class);
     }
 }

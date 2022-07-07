@@ -94,4 +94,9 @@ public interface UserSchedulingDao extends BaseMapper<UserSchedulingPo> {
     List<UserSchedulingPo> selectTimePeriod( @Param("hospitalCode") String hospitalCode,
                                              @Param("oldStartTime") Date oldStartTime,
                                              @Param("oldEndTime") Date oldEndTime);
+
+    @Select("SELECT * FROM userscheduling WHERE hospitalcode = #{hospitalCode} AND( DATE_FORMAT( starttime, '%Y-%m-%d' ) = #{starttime} or DATE_FORMAT( starttime, '%Y-%m-%d' ) = #{endtime} ) ORDER BY starttime ")
+    List<UserSchedulingDto> getHospitalScheduleInfo(@Param("hospitalCode") String hospitalCode,
+                                                 @Param("starttime") String today,
+                                                 @Param("endtime") String yesterday);
 }

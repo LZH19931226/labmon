@@ -3,8 +3,9 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.HospitalInfoApplication;
 import com.hc.appliction.command.UserScheduleCommand;
-import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.command.labmanagement.model.UserSchedulingModel;
+import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserSchedulingVo;
@@ -109,5 +110,16 @@ public class HospitalInfoController {
     @GetMapping("/getAllHospitalInfo")
     public List<HospitalInfoDto> getAllHospitalInfo(){
         return hospitalInfoApplication.getAllHospitalInfo();
+    }
+
+    /**
+     * 获取当天的排班人员
+     * @param hospitalCode
+     * @return
+     */
+    @GetMapping("/findHospitalScheduleInfo")
+    @ApiOperation("获取当天的排班人员")
+    public List<UserSchedulingModel> getHospitalScheduleInfo(@RequestParam("hospitalCode") String hospitalCode){
+        return hospitalInfoApplication.getHospitalScheduleInfo(hospitalCode);
     }
 }

@@ -2,6 +2,7 @@ package com.hc.clickhouse.repository.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.WarningrecordMapper;
@@ -19,7 +20,7 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
 
     @Override
     public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page) {
-        return page(page);
+        return page(page, Wrappers.lambdaQuery(new Warningrecord()).orderByDesc(Warningrecord::getInputdatetime));
     }
 
     @Override

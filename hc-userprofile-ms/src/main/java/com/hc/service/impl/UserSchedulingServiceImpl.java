@@ -84,6 +84,10 @@ public class UserSchedulingServiceImpl implements UserSchedulingService {
         return userSchedulingDtoList;
     }
 
+    @Override
+    public List<UserSchedulingDto> getHospitalScheduleInfo(String hospitalCode, String today, String yesterday) {
+        return userSchedulingRepository.getHospitalScheduleInfo(hospitalCode,today,yesterday);
+    }
 
     /**
      * 获取本周的日期集合

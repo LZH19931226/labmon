@@ -43,5 +43,5 @@ public interface UserSchedulingService {
     List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode);
 
 
-
+    List<UserSchedulingDto> getHospitalScheduleInfo(String hospitalCode, String today, String yesterday);
 }

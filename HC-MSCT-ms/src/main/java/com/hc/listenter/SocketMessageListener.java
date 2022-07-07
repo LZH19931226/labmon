@@ -3,12 +3,12 @@ package com.hc.listenter;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
+import com.hc.command.labmanagement.model.UserSchedulingModel;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
+import com.hc.hospital.HospitalInfoApi;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.mapper.SendrecordDao;
 import com.hc.mapper.UserScheduLingDao;
@@ -20,7 +20,6 @@ import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.redis.dto.*;
 import com.hc.my.common.core.util.BeanConverter;
-import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.po.*;
 import com.hc.service.SendMesService;
@@ -68,6 +67,8 @@ public class SocketMessageListener {
     private SoundLightApi soundLightApi;
     @Autowired
     private HospitalRedisApi hospitalRedisApi;
+    @Autowired
+    private HospitalInfoApi hospitalInfoApi;
 
     /**
      * 监听报警信息
@@ -146,7 +147,6 @@ public class SocketMessageListener {
                 if (StringUtils.isEmpty(phonenum)) {
                     continue;
                 }
-
                 /**
                  * <option value="0">电话+短信</option>
                  * <option value="1">电话</option>
@@ -206,9 +206,10 @@ public class SocketMessageListener {
             String reminders = userright.getReminders();
             String phonenum = userright.getPhoneNum();
             String role = userright.getRole();
+            String equipmentName = equipmentname;
             //1为运维后台人员
             if (StringUtils.isNotEmpty(role)&&StringUtils.equals(role,"1")){
-                equipmentname=hospitalName+equipmentname;
+                equipmentName = hospitalName + equipmentname;
             }
             //不报警
             if (StringUtils.equals(reminders,DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
@@ -216,22 +217,22 @@ public class SocketMessageListener {
             }
             if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(),reminders)) {
                 log.info("拨打电话对象:{}",JsonUtil.toJson(userright));
-                sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
-                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
+                sendMesService.callPhone(userright.getPhoneNum(), equipmentName);
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
                 list1.add(sendrecord);
-                SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentname, unit, value);
+                SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentName, unit, value);
                 log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                Sendrecord sendrecord1 = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
+                Sendrecord sendrecord1 = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
                 list1.add(sendrecord1);
             } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
                 log.info("拨打电话对象:{}",JsonUtil.toJson(userright));
-                sendMesService.callPhone(userright.getPhoneNum(), equipmentname);
-                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "1");
+                sendMesService.callPhone(userright.getPhoneNum(), equipmentName);
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
                 list1.add(sendrecord);
             } else if (StringUtils.equals(reminders,DictEnum.SMS.getCode())) {
-                SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentname, unit, value);
+                SendSmsResponse sendSmsResponse = sendMesService.sendMes(userright.getPhoneNum(), equipmentName, unit, value);
                 log.info("发送短信对象{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentname, unit, "0");
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
                 list1.add(sendrecord);
             }
         }
@@ -260,8 +261,8 @@ public class SocketMessageListener {
         List<UserRightRedisDto> list = new ArrayList<>();
         List<String> phones = new ArrayList<>();
         Date date = new Date();
-        String today = DateUtils.paseDate(date);
-        List<UserScheduLing> userScByHosSt1 = userScheduLingDao.findUserScByHosSt(hospitalcode, today, DateUtils.getYesterday(date));
+        List<UserSchedulingModel> userSchedulingModels = hospitalInfoApi.getHospitalScheduleInfo(hospitalcode).getResult();
+        List<UserScheduLing> userScByHosSt1 = BeanConverter.convert(userSchedulingModels,UserScheduLing.class);
         if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
             List<UserScheduLing> lings = new ArrayList<>();
             UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);

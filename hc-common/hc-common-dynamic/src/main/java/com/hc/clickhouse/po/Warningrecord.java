@@ -59,6 +59,4 @@ public class Warningrecord implements Serializable {
 
     private String equipmentno;
 
-    private String info;
-
 }

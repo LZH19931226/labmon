@@ -2,8 +2,9 @@ package com.hc.appliction;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserScheduleCommand;
-import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
+import com.hc.command.labmanagement.model.UserSchedulingModel;
+import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
@@ -15,6 +16,7 @@ import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.UserBackService;
 import com.hc.service.UserSchedulingService;
@@ -311,5 +313,32 @@ public class HospitalInfoApplication {
                 return null;
         }
         return BeanConverter.convert(list,HospitalInfoDto.class);
+    }
+
+    /**
+     * 获取当天的排班信息
+     * @param hospitalCode
+     * @return
+     */
+    public List<UserSchedulingModel> getHospitalScheduleInfo(String hospitalCode) {
+        Date date = new Date();
+        String today = DateUtils.paseDate(date);
+        List<UserSchedulingDto> hospitalScheduleInfo = userSchedulingService.getHospitalScheduleInfo(hospitalCode, today, DateUtils.getYesterday(date));
+        List<UserSchedulingModel> list = new ArrayList<>();
+        hospitalScheduleInfo.forEach(res->{
+            UserSchedulingModel userSchedulingModel = new UserSchedulingModel();
+            userSchedulingModel.setUsid(Math.toIntExact(res.getUsid()));
+            userSchedulingModel.setUserphone(res.getUserPhone());
+            userSchedulingModel.setUsername(res.getUsername());
+            userSchedulingModel.setUserid(res.getUserid());
+            userSchedulingModel.setStarttime(res.getStartTime());
+            userSchedulingModel.setReminders(res.getReminders());
+            userSchedulingModel.setHospitalcode(res.getHospitalCode());
+            userSchedulingModel.setEndtime(res.getEndTime());
+            userSchedulingModel.setCreateuser(res.getCreateUser());
+            userSchedulingModel.setCreatetime(res.getCreateTime());
+            list.add(userSchedulingModel);
+        });
+        return list;
     }
 }
