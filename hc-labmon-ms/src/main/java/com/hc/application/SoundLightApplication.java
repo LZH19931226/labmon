@@ -36,21 +36,23 @@ public class SoundLightApplication {
         }
         for (SnDeviceDto snDeviceDto : result) {
             String sn = snDeviceDto.getSn();
-            if(StringUtils.isBlank(sn)) continue;
+            if(StringUtils.isBlank(sn)) {
+                continue;
+            }
             soundLightApi.sendMsg(sn, SoundLightUtils.TURN_OFF_ROUND_LIGHT_COMMAND);
         }
     }
 
     /**
      * 获取医院的信息
-     * @param hospitalCode
-     * @return
+     * @param hospitalCode 医院id
+     * @return 结果
      */
     public HospitalInfoDto getHospitalInfo(String hospitalCode) {
         HospitalInfoDto hospitalInfoDto = hospitalInfoService.selectOne(hospitalCode);
         String soundLightAlarm = hospitalInfoDto.getSoundLightAlarm();
         if(StringUtils.isBlank(soundLightAlarm)){
-            soundLightAlarm = "0";
+            hospitalInfoDto.setSoundLightAlarm("0");
         }
         return hospitalInfoDto;
     }
