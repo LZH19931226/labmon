@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.UserRightDto;
 import com.hc.po.UserRightPo;
 import com.hc.vo.user.UserRightVo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -39,6 +38,7 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             ",u.timeout timeout " +
             ",u.timeoutwarning timeoutWarning " +
             ",u.reminders reminders " +
+            ",u.role role " +
             " FROM userright u " +
             "LEFT JOIN hospitalofreginfo h ON u.hospitalcode = h.hospitalcode "+
             "where 1=1" +
