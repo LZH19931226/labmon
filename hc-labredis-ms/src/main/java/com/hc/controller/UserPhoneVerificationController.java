@@ -28,7 +28,7 @@ public class UserPhoneVerificationController {
 
     @GetMapping("/addPhoneCode")
     @ApiOperation("生成手机验证码")
-    public void addPhoneCode(@RequestParam("phoneNum")String phoneNum){
-         userPhoneVerificationApplication.addPhoneCode(phoneNum);
+    public void addPhoneCode(@RequestParam("phoneNum")String phoneNum ,@RequestParam("code")String code){
+         userPhoneVerificationApplication.addPhoneCode(phoneNum,code);
     }
 }

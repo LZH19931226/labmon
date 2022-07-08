@@ -9,6 +9,7 @@ import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserRightDto;
 import com.hc.labmanagent.OperationlogApi;
+import com.hc.msct.sms.SmsApi;
 import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
@@ -51,7 +52,8 @@ public class UserRightApplication {
     @Autowired
     private PhoneCodeApi phoneCodeApi;
 
-
+    @Autowired
+    private SmsApi smsApi;
 
     /**
      * 根据分页信息查询用户权限信息
@@ -238,9 +240,15 @@ public class UserRightApplication {
      * @return
      */
     public void getPhoneCode(String phoneNum) {
-        phoneCodeApi.addPhoneCode(phoneNum);
+        String code = builderCode();
+        code = "111111";
+        phoneCodeApi.addPhoneCode(phoneNum,code);
+        smsApi.senMessagecode(phoneNum,code);
     }
 
+    public String builderCode(){
+        return (Math.random() + "").substring(2, 2 + 6);
+    }
     /**
      * 手机号登录
      * @param userRightCommand

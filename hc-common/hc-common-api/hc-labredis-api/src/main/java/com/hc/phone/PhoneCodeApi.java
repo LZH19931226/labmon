@@ -7,6 +7,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * @author hc
+ */
 @FeignClient(name = ApplicationName.REDIS)
 public interface PhoneCodeApi {
 
@@ -16,5 +19,5 @@ public interface PhoneCodeApi {
 
     @GetMapping("/phone/addPhoneCode")
     @ApiOperation("生成手机验证码")
-    void addPhoneCode(@RequestParam("phoneNum")String phoneNum);
+    void addPhoneCode(@RequestParam("phoneNum")String phoneNum ,@RequestParam("code")String code);
 }
