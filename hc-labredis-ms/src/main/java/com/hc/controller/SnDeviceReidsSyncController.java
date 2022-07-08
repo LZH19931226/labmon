@@ -93,7 +93,7 @@ public class SnDeviceReidsSyncController {
     }
 
     /**
-     * 探头监控设备信息
+     * 同步监控设备信息
      */
     @GetMapping("/monitorEquipmentInfoCache")
     @ApiOperation("同步监控设备信息")

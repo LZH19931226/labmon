@@ -345,7 +345,9 @@ public class SocketMessageListener {
                     String equipmenttypeid = monitorinstrument.getEquipmenttypeid();
                     if (StringUtils.isEmpty(equipmenttypeid)) {
                         String queryEquipmenttypeid = snDeviceDto.getEquipmentTypeId();
-                        if (StringUtils.isNotEmpty(queryEquipmenttypeid)) equipmenttypeid = queryEquipmenttypeid;
+                        if (StringUtils.isNotEmpty(queryEquipmenttypeid)) {
+                            equipmenttypeid = queryEquipmenttypeid;
+                        }
                     }
                     HospitalEquipmentTypeInfoDto hosEqType = hospitalEquipmentTypeIdApi.findHospitalEquipmentTypeRedisInfo(hospitalcode, equipmenttypeid).getResult();
                     HospitalEquipmentTypeInfoModel equipmentTypeInfoModel = BeanConverter.convert(hosEqType, HospitalEquipmentTypeInfoModel.class);
@@ -420,7 +422,9 @@ public class SocketMessageListener {
             List<Date> dateList = new ArrayList<Date>();
             for (int i = 0; i < dates.length; i++) {
                 Date date = dates[i];
-                if (date == null) continue;
+                if (date == null) {
+                    continue;
+                }
                 nowCalendar.setTime(date);
                 nowCalendar.set(Calendar.YEAR, 1970);
                 nowCalendar.set(Calendar.MONTH, 12);

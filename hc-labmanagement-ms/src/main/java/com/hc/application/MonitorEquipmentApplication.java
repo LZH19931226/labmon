@@ -307,6 +307,7 @@ public class MonitorEquipmentApplication {
                     .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
                     .setSn(monitorEquipmentCommand.getSn())
                     .setAlarmTime(3)
+                    .setEquipmentName(monitorEquipmentCommand.getEquipmentName())
                     .setSaturation(res.getSaturation())
                     .setInstrumentParamConfigNO(res.getInstrumentparamconfigno())
                     .setInstrumentConfigId(res.getInstrumentconfigid())

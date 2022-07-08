@@ -349,7 +349,9 @@ public class InstrumentparamconfigApplication {
      */
     public List<InstrumentmonitorDto> selectInstrumentMonitorInfo(String hospitalCode) {
         List<InstrumentmonitorDTO>  dtoList = instrumentmonitorService.selectInstrumentMonitorInfo(hospitalCode);
-        if(CollectionUtils.isEmpty(dtoList)) return  null;
+        if(CollectionUtils.isEmpty(dtoList)) {
+            return  null;
+        }
         return BeanConverter.convert(dtoList, InstrumentmonitorDto.class);
     }
 
