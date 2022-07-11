@@ -24,4 +24,13 @@ public class CurveDataModel {
     private List<String> seriess;
     @ApiModelProperty("设备名称")
     private String eqName;
+
+    /**
+     * 数据集合的最大值
+     */
+    private Double maxNum;
+    /**
+     * 数据集合的最小值
+     */
+    private Double mixNum;
 }

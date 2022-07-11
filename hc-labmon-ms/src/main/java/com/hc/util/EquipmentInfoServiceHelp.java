@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 public class EquipmentInfoServiceHelp {
@@ -250,7 +251,7 @@ public class EquipmentInfoServiceHelp {
                 leftairTime.add(da);
             }
             //右盖板温度
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrightcovertemperature())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentrightcovertemperature()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentrightcovertemperature())) {
                 rightcovertemp.add(lastDataModel.getCurrentrightcovertemperature());
                 rightcovertempTime.add(da);
             }
@@ -422,10 +423,27 @@ public class EquipmentInfoServiceHelp {
         curveDataModel.setXaxis(listtime);
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(listdata);
+        List<Double> list =  getMaxMinNum(listdata);
+        assert list != null;
+        curveDataModel.setMaxNum(list.get(0));
+        curveDataModel.setMixNum(list.get(1));
         List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
         seriesDataModelList.add(seriesDataModel);
         curveDataModel.setSeries(seriesDataModelList);
         return  curveDataModel;
+    }
+
+    private static List<Double> getMaxMinNum(List<String> dataList) {
+        if(CollectionUtils.isEmpty(dataList)) {
+            return null;
+        }
+        DoubleSummaryStatistics doubleSummaryStatistics = dataList.stream().mapToDouble(Double::parseDouble).summaryStatistics();
+        double max = doubleSummaryStatistics.getMax();
+        double min = doubleSummaryStatistics.getMin();
+        List<Double> list = new ArrayList<>();
+        list.add(max);
+        list.add(min);
+        return list;
     }
 
     public static CurveInfoDto getCurveFirstByMT300DC(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto,boolean flag) {
