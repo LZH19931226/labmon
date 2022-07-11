@@ -1,8 +1,6 @@
 package com.hc.timer;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.hc.application.config.RedisUtils;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.device.SnDeviceRedisApi;
@@ -48,8 +46,6 @@ public class TimerConfig {
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
-    @Autowired
-    private RedisUtils redisUtils;
 
     @Autowired
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
@@ -153,15 +149,16 @@ public class TimerConfig {
     //每分钟执行一次
     @Scheduled(cron = "0 */1 * * * ?")
     public void Timing(){
-        long size = redisUtils.lGetListSize(MswkServiceEnum.LAST_DATA.getCode());
+        Long size = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode()).getResult();
         if(size == 0) {
             return;
         }
         List<MonitorequipmentlastdataDto> list = new ArrayList<>();
         for (long i = 0; i < size; i++) {
-            Object object = redisUtils.lLeftPop(MswkServiceEnum.LAST_DATA.getCode());
-            MonitorequipmentlastdataDto monitorequipmentlastdataDto = JSON.parseObject((String)object, new TypeReference<MonitorequipmentlastdataDto>(){});
-            list.add(monitorequipmentlastdataDto);
+            MonitorequipmentlastdataDto monitorequipmentlastdataDto = snDeviceRedisApi.getLeftPopLastData(MswkServiceEnum.LAST_DATA.getCode()).getResult();
+            if(null!=monitorequipmentlastdataDto){
+                list.add(monitorequipmentlastdataDto);
+            }
         }
         List<Monitorequipmentlastdata> convert = BeanConverter.convert(list, Monitorequipmentlastdata.class);
         monitorequipmentlastdataRepository.batchInsert(convert);

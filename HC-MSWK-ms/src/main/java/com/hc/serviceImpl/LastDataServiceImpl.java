@@ -1,7 +1,6 @@
 package com.hc.serviceImpl;
 
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
-import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
@@ -22,8 +21,7 @@ import java.util.Date;
 @Slf4j
 public class LastDataServiceImpl implements LastDataService {
 
-    @Autowired
-    private MonitorequipmentlastdataRepository monitorequipmentlastdataDao;
+
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
