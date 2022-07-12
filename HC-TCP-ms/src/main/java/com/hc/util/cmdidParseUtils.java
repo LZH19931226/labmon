@@ -185,9 +185,14 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         // 二氧化碳
         String co2 = cmd.substring(28, 32);
-        String s = paseAir(co2);
-        s = CustomUtils.agreementAll(s, "0", "0.5");
-        paramaterModel.setCO2(s);
+        //二氧化碳超出量程值无效
+        if (StringUtils.equalsIgnoreCase(co2,"028C")){
+            paramaterModel.setCO2(ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode());
+        }else {
+            String s = paseAir(co2);
+            s = CustomUtils.agreementAll(s, "0", "0.5");
+            paramaterModel.setCO2(s);
+        }
         // 氧气
         String o2 = cmd.substring(32, 36);
         // 若未接 O2 传感器，该值为 0xF000
