@@ -25,22 +25,28 @@ public interface SnDeviceRedisApi {
 
     @GetMapping("/snDevice/deleteSnDeviceDto")
     @ApiOperation("删除设备信息缓存")
-    void deleteSnDeviceDto(@RequestParam("sn")String sn);
+    void deleteSnDeviceDto(@RequestParam("sn") String sn);
 
     @PostMapping("/snDevice/updateSnCurrentInfo")
     @ApiOperation("新增更新设备当前值信息")
-    void  updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto);
+    void updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto);
 
     @DeleteMapping("/snDevice/deleteCurrentDataInfo")
     @ApiOperation("删除设备当前值")
-    void deleteCurrentInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo);
+    void deleteCurrentInfo(@RequestParam("hospitalCode") String hospitalCode, @RequestParam("equipmentNo") String equipmentNo);
 
     @GetMapping("/snDevice/getCurrentDataInfo")
     @ApiOperation("获取设备当前值")
-    ApiResponse<List<MonitorequipmentlastdataDto>> getCurrentDataInfo(@RequestParam("hospitalCode")String hospitalCode,
-                                                                      @RequestParam("equipmentNo")String equipmentNo);
+    ApiResponse<List<MonitorequipmentlastdataDto>> getCurrentDataInfo(@RequestParam("hospitalCode") String hospitalCode,
+                                                                      @RequestParam("equipmentNo") String equipmentNo);
 
     @PostMapping("/snDevice/getTheCurrentValueOfTheDeviceInBatches")
     @ApiOperation("批量获取设备当前值")
     ApiResponse<List<MonitorequipmentlastdataDto>> getTheCurrentValueOfTheDeviceInBatches(@RequestBody EquipmentInfoCommand equipmentInfoCommand);
+
+    @GetMapping("/snDevice//getLastDataListSize")
+    ApiResponse<Long> getLastDataListSize(@RequestParam("listCode") String listCode);
+
+    @GetMapping("/snDevice//getLeftPopLastData")
+    ApiResponse<MonitorequipmentlastdataDto> getLeftPopLastData(@RequestParam("listCode") String listCode);
 }

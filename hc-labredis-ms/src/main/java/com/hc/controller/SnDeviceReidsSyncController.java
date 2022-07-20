@@ -102,4 +102,17 @@ public class SnDeviceReidsSyncController {
     }
 
 
+    @GetMapping("/getLastDataListSize")
+    @ApiOperation("获取批量缓存设备数据缓存数组长度")
+    public Long getLastDataListSize(@RequestParam("listCode")String listCode){
+        return snDeviceReidsSyncApplocation.getLastDataListSize(listCode);
+    }
+
+    @GetMapping("/getLeftPopLastData")
+    @ApiOperation("从当前值数组缓存获取数据并移除")
+    public MonitorequipmentlastdataDto getLeftPopLastData(@RequestParam("listCode")String listCode){
+        return  snDeviceReidsSyncApplocation.getLeftPopLastData(listCode);
+    }
+
+
 }

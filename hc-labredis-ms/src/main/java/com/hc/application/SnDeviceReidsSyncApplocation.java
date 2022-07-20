@@ -188,4 +188,16 @@ public class SnDeviceReidsSyncApplocation {
             redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn,JSONUtil.toJsonStr(snDeviceDto));
         }
     }
+
+    public Long getLastDataListSize(String listCode) {
+           return  redisUtils.lGetListSize(listCode);
+    }
+
+    public MonitorequipmentlastdataDto getLeftPopLastData(String listCode) {
+        Object object = redisUtils.lLeftPop(listCode);
+        if (null==object){
+           return  null;
+        }
+       return JSON.parseObject((String)object, new TypeReference<MonitorequipmentlastdataDto>(){});
+    }
 }

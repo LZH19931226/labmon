@@ -46,16 +46,6 @@
             <artifactId>hc-labredis-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.hc</groupId>
-            <artifactId>hc-labredis-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hc</groupId>
-            <artifactId>hc-labredis-ms</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>

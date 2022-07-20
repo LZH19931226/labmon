@@ -53,7 +53,7 @@ public class CustomUtils {
     public static String agreementAll(String data, String lowData, String highData) {
         boolean comparison = comparison(data, lowData, highData);
         if (comparison) {
-            return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.name();
+            return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode();
         }
         return data;
     }
