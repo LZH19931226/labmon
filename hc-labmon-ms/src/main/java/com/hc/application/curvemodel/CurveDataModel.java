@@ -32,5 +32,5 @@ public class CurveDataModel {
     /**
      * 数据集合的最小值
      */
-    private String mixNum;
+    private String minNum;
 }

@@ -13,10 +13,7 @@ import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EquipmentInfoServiceHelp {
 
@@ -425,11 +422,22 @@ public class EquipmentInfoServiceHelp {
         curveDataModel.setXaxis(listtime);
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(listdata);
-        curveDataModel.setMixNum("");
-        curveDataModel.setMaxNum("");
-        if(CollectionUtils.isNotEmpty(list) && list.get(0) != null){
+        if (CollectionUtils.isNotEmpty(list)) {
             curveDataModel.setMaxNum(list.get(0).getHighlimit()+"");
-            curveDataModel.setMixNum(list.get(0).getLowlimit()+"");
+            curveDataModel.setMinNum(list.get(0).getLowlimit()+"");
+        }else {
+            OptionalDouble max = listdata.stream().mapToDouble(Double::parseDouble).max();
+            if (max.isPresent()) {
+                curveDataModel.setMaxNum(max.getAsDouble()+"");
+            }else {
+                curveDataModel.setMaxNum("");
+            }
+            OptionalDouble min = listdata.stream().mapToDouble(Double::parseDouble).min();
+            if (min.isPresent()) {
+                curveDataModel.setMinNum(min.getAsDouble()+"");
+            }else {
+                curveDataModel.setMinNum("");
+            }
         }
         List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
         seriesDataModelList.add(seriesDataModel);
