@@ -24,6 +24,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class WarningInfoApplication {
@@ -59,8 +60,9 @@ public class WarningInfoApplication {
      */
     public CurveInfoDto getWarningCurveData(String pkId ,String startTime,String endTime ) {
         Warningrecord warningrecord = warningrecordRepository.getOne(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getPkid, pkId));
-        if(ObjectUtils.isEmpty(warningrecord))
+        if(ObjectUtils.isEmpty(warningrecord)) {
             return null;
+        }
         String equipmentNo = warningrecord.getEquipmentno();
         String instrumentParamConfigNo = warningrecord.getInstrumentparamconfigno();
         InstrumentParamConfigDto instrumentParamConfigDto = instrumentParamConfigRepository.getProbeInfo(instrumentParamConfigNo);
@@ -69,10 +71,11 @@ public class WarningInfoApplication {
         if (StringUtils.isNotBlank(instrumentConfigName) && StringUtils.equalsAnyIgnoreCase(instrumentConfigName,"QC","UPS","DOOR","voltage")){
             throw  new IedsException("市电,电量无曲线");
         }
+        Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigRepository.getInstrumentParamConfigByENo(equipmentNo);
         String configName = changeInstrumentConfigName(instrumentConfigName);
         List<MonitorequipmentlastdataDto> lastDataList = monitorequipmentlastdataRepository.getWarningCurveData(equipmentNo,startTime,endTime,configName);
         List<Monitorequipmentlastdata> monitorEquipmentLastDataList = BeanConverter.convert(lastDataList, Monitorequipmentlastdata.class);
-        return EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataList, new CurveInfoDto(), false);
+        return EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataList, map, false);
     }
 
     private String changeInstrumentConfigName(String instrumentconfigname) {

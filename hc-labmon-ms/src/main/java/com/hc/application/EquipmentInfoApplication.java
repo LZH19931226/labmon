@@ -24,6 +24,7 @@ import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.FileUtil;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentMonitorInfoService;
+import com.hc.service.InstrumentParamConfigService;
 import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -49,10 +50,13 @@ public class EquipmentInfoApplication {
     private InstrumentMonitorInfoService instrumentMonitorInfoService;
 
     @Autowired
-    private SnDeviceRedisApi snDeviceRedisApi;
+    private InstrumentParamConfigService instrumentParamConfigService;
 
     @Autowired
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
+
+    @Autowired
+    private SnDeviceRedisApi snDeviceRedisApi;
 
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
@@ -126,7 +130,7 @@ public class EquipmentInfoApplication {
     }
 
     /**
-     * 获取曲线信息，不包括曲线对比信息
+     * 获取曲线信息
      * @param equipmentNo 设备id
      * @param date 时间
      * @param sn sn号
@@ -137,13 +141,14 @@ public class EquipmentInfoApplication {
         if(CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
+        Map<String,List<InstrumentParamConfigDto>>  map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
         boolean flag = false;
         if(StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4,6))){
             flag = true;
         }
         return flag ?
-                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList, new CurveInfoDto(),false):
-                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList, new CurveInfoDto(),false);
+                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList,map,false):
+                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList,map,false);
     }
 
     /**
@@ -187,12 +192,12 @@ public class EquipmentInfoApplication {
         EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
         equipmentInfoCommand.setHospitalCode(hospitalCode);
         equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
-        List<MonitorequipmentlastdataDto> MonitorEquipmentLastDataList = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
-        if (CollectionUtils.isEmpty(MonitorEquipmentLastDataList)) {
+        List<MonitorequipmentlastdataDto> monitorEquipmentLastDataList = snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
+        if (CollectionUtils.isEmpty(monitorEquipmentLastDataList)) {
             return null;
         }
         Map<String, List<MonitorequipmentlastdataDto>> lastDateEquipmentNoMap =
-                MonitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(MonitorequipmentlastdataDto::getEquipmentno));
+                monitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(MonitorequipmentlastdataDto::getEquipmentno));
         if (MapUtils.isEmpty(lastDateEquipmentNoMap)) {
             return null;
         }
@@ -207,13 +212,18 @@ public class EquipmentInfoApplication {
                 String currentUps = monitorequipmentlastdataDto.getCurrentups();
                 String voltage = monitorequipmentlastdataDto.getVoltage();
                 monitorUpsInfoDto.setSn(monitorequipmentlastdataDto.getSn());
-                if (StringUtils.isNotBlank(currentUps)) monitorUpsInfoDto.setCurrentUps(currentUps);
-                if (StringUtils.isNotBlank(voltage)) monitorUpsInfoDto.setVoltage(voltage);
+                if (StringUtils.isNotBlank(currentUps)) {
+                    monitorUpsInfoDto.setCurrentUps(currentUps);
+                }
+                if (StringUtils.isNotBlank(voltage)) {
+                    monitorUpsInfoDto.setVoltage(voltage);
+                }
                 upsInfoList.add(monitorUpsInfoDto);
             }
         });
-        if(CollectionUtils.isEmpty(upsInfoList))
+        if(CollectionUtils.isEmpty(upsInfoList)) {
             throw new IedsException(LabMonEnumError.NO_UTILITY_RECORD.getMessage());
+        }
         return upsInfoList;
     }
 
@@ -345,7 +355,9 @@ public class EquipmentInfoApplication {
                         break;
                     case "3":
                         List<OtherExcleModel> other1 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
-                        if (CollectionUtils.isEmpty(other1)) break;
+                        if (CollectionUtils.isEmpty(other1)) {
+                            break;
+                        }
                         if (CollectionUtils.isEmpty(otherExcleModels)) {
                             otherExcleModels = other1;
                         } else {
@@ -354,7 +366,9 @@ public class EquipmentInfoApplication {
                         break;
                     case "4":
                         List<OtherExcleModel> other2 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
-                        if (CollectionUtils.isEmpty(other2)) break;
+                        if (CollectionUtils.isEmpty(other2)) {
+                            break;
+                        }
                         if (CollectionUtils.isEmpty(otherExcleModels)) {
                             otherExcleModels = other2;
                         } else {
@@ -363,13 +377,17 @@ public class EquipmentInfoApplication {
                         break;
                     case "5":
                         List<OtherExcleModel> other3 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
-                        if (CollectionUtils.isEmpty(other3)) break;
+                        if (CollectionUtils.isEmpty(other3)) {
+                            break;
+                        }
                         if (CollectionUtils.isEmpty(otherExcleModels)) {
                             otherExcleModels = other3;
                         } else {
                             otherExcleModels.addAll(other3);
                             break;
                         }
+                    default:
+                        break;
                 }
             }
             if (CollectionUtils.isNotEmpty(hjExcleModels)) {
@@ -470,7 +488,9 @@ public class EquipmentInfoApplication {
                     break;
                 case "3":
                     List<OtherExcleModel> other1 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
-                    if (CollectionUtils.isEmpty(other1)) break;
+                    if (CollectionUtils.isEmpty(other1)) {
+                        break;
+                    }
                     if (CollectionUtils.isEmpty(otherExcleModels)) {
                         otherExcleModels = other1;
                     } else {
@@ -479,7 +499,9 @@ public class EquipmentInfoApplication {
                     break;
                 case "4":
                     List<OtherExcleModel> other2 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
-                    if (CollectionUtils.isEmpty(other2)) break;
+                    if (CollectionUtils.isEmpty(other2)) {
+                        break;
+                    }
                     if (CollectionUtils.isEmpty(otherExcleModels)) {
                         otherExcleModels = other2;
                     } else {
@@ -488,13 +510,17 @@ public class EquipmentInfoApplication {
                     break;
                 case "5":
                     List<OtherExcleModel> other3 = EquipmentInfoServiceHelp.getOther(list, equipmentName);
-                    if (CollectionUtils.isEmpty(other3)) break;
+                    if (CollectionUtils.isEmpty(other3)) {
+                        break;
+                    }
                     if (CollectionUtils.isEmpty(otherExcleModels)) {
                         otherExcleModels = other3;
                     } else {
                         otherExcleModels.addAll(other3);
                         break;
                     }
+                default:
+                    break;
             }
 
         }
@@ -546,15 +572,17 @@ public class EquipmentInfoApplication {
         String date = DateUtils.getYearMonth(newDate);
         List<Monitorequipmentlastdata> lastDateList =
                 monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date);
-        if(CollectionUtils.isEmpty(lastDateList))
+        if(CollectionUtils.isEmpty(lastDateList)) {
             return null;
+        }
+        Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
         String sn = lastDateList.get(0).getSn();
         boolean flag = false;
         if(StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4,6))){
             flag = true;
         }
         return flag ?
-                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDateList, new CurveInfoDto(),true):
-                EquipmentInfoServiceHelp.getCurveFirst(lastDateList, new CurveInfoDto(),true);
+                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDateList,map,true):
+                EquipmentInfoServiceHelp.getCurveFirst(lastDateList,map,true);
     }
 }

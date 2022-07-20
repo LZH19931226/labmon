@@ -1,7 +1,13 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.dto.InstrumentParamConfigDto;
 
-public interface InstrumentParamConfigRepository {
+import java.util.List;
+import java.util.Map;
+
+public interface InstrumentParamConfigRepository extends IService<InstrumentParamConfigDto> {
     InstrumentParamConfigDto getProbeInfo(String instrumentParamConfigNo);
+
+    Map<String, List<InstrumentParamConfigDto>> getInstrumentParamConfigByENo(String equipmentNo);
 }

@@ -28,9 +28,9 @@ public class CurveDataModel {
     /**
      * 数据集合的最大值
      */
-    private Double maxNum;
+    private String maxNum;
     /**
      * 数据集合的最小值
      */
-    private Double mixNum;
+    private String mixNum;
 }

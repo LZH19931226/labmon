@@ -7,6 +7,7 @@ import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.curvemodel.SeriesDataModel;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.dto.CurveInfoDto;
+import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -14,13 +15,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Map;
 
 public class EquipmentInfoServiceHelp {
 
 
-    public static  CurveInfoDto getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto ,boolean flag){
+    public static  CurveInfoDto getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList , Map<String,List<InstrumentParamConfigDto>> map,boolean flag){
         List<String> temp = new ArrayList<String>();
         List<String> tempTime = new ArrayList<String>();
         List<String> CO2 = new ArrayList<String>();
@@ -279,174 +280,169 @@ public class EquipmentInfoServiceHelp {
                 rightCompartmentHumidityTime.add(da);
             }
         }
+        CurveInfoDto curveInfoDto = new CurveInfoDto();
         if (CollectionUtils.isNotEmpty(n2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(n2,n2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(n2,n2Time,map.get("N2"));
             curveInfoDto.setN2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftcovertemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(leftcovertemp,leftcovertempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(leftcovertemp,leftcovertempTime,map.get("LEFTTEMP"));
             curveInfoDto.setLeftcovertemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftendtemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(leftendtemp,leftendTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(leftendtemp,leftendTime,map.get("RIGHTTEMP"));
             curveInfoDto.setLeftendtemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftair)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(leftair,leftairTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(leftair,leftairTime,map.get("左气流"));
             curveInfoDto.setLeftair(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(rightcovertemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(rightcovertemp,rightcovertempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(rightcovertemp,rightcovertempTime,map.get("RIGHTCOVERTEMP"));
             curveInfoDto.setRightcovertemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(rightendtemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(rightendtemp, rightendtempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(rightendtemp, rightendtempTime,map.get("RIGHTENDTEMP"));
             curveInfoDto.setRightendtemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(rightair)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(rightair, rightairTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(rightair, rightairTime,map.get("右气流"));
             curveInfoDto.setRightair(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(tempdiff)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(tempdiff, tempdiffTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(tempdiff, tempdiffTime,map.get("DIFFTEMP"));
             curveInfoDto.setDifftemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(airflow)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(airflow, airflowTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(airflow, airflowTime,map.get("气流"));
             curveInfoDto.setAirflow(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(lefttemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(lefttemp, lefttempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(lefttemp, lefttempTime,map.get("LEFTTEMP"));
             curveInfoDto.setLefttemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(righttemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(righttemp, righttempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(righttemp, righttempTime,map.get("RIGHTTEMP"));
             curveInfoDto.setRighttemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp1)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp1, temp1Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp1, temp1Time,map.get("TEMP1"));
             curveInfoDto.setTemp1(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp2, temp2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp2, temp2Time,map.get("TEMP2"));
             curveInfoDto.setTemp2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp3)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp3, temp3Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp3, temp3Time,map.get("TEMP3"));
             curveInfoDto.setTemp3(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp4)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp4, temp4Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp4, temp4Time,map.get("TEMP4"));
             curveInfoDto.setTemp4(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp5)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp5, temp5Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp5, temp5Time,map.get("TEMP5"));
             curveInfoDto.setTemp5(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp6)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp6, temp6Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp6, temp6Time,map.get("TEMP6"));
             curveInfoDto.setTemp6(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp7)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp7, temp7Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp7, temp7Time,map.get("TEMP7"));
             curveInfoDto.setTemp7(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp8)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp8, temp8Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp8, temp8Time,map.get("TEMP8"));
             curveInfoDto.setTemp8(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp9)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp9, temp9Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp9, temp9Time,map.get("TEMP9"));
             curveInfoDto.setTemp9(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp10)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp10, temp10Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp10, temp10Time,map.get("TEMP10"));
             curveInfoDto.setTemp10(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(temp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(temp, tempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(temp, tempTime,map.get("TEMP"));
             curveInfoDto.setTemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(CO2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(CO2, CO2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(CO2, CO2Time,map.get("CO2"));
             curveInfoDto.setCo2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(O2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(O2, O2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(O2, O2Time,map.get("O2"));
             curveInfoDto.setO2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(VOC)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(VOC, VOCTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(VOC, VOCTime,map.get("VOC"));
             curveInfoDto.setVoc(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(RH)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(RH, RHTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(RH, RHTime,map.get("RH"));
             curveInfoDto.setRh(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM25)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(PM25, PM25Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM25, PM25Time,map.get("PM2.5"));
             curveInfoDto.setPm25(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM5)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(PM5, PM5Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM5, PM5Time,map.get("PM5"));
             curveInfoDto.setPm5(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM05)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(PM05, PM05Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM05, PM05Time,map.get("PM0.5"));
             curveInfoDto.setPm05(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PM10)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(PM10, PM10Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(PM10, PM10Time,map.get("PM10"));
             curveInfoDto.setPm10(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(JQ)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(JQ, JQTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(JQ, JQTime,map.get("甲醛"));
             curveInfoDto.setJq(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(PRESS)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(PRESS, PRESSTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(PRESS, PRESSTime,map.get("PRESS"));
             curveInfoDto.setPress(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftCompartmentHumidity)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(leftCompartmentHumidity, leftCompartmentHumidityTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(leftCompartmentHumidity, leftCompartmentHumidityTime,map.get("leftCompartmentHumidity"));
             curveInfoDto.setLeftCompartmentHumidity(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(rightCompartmentHumidity)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(rightCompartmentHumidity, rightCompartmentHumidityTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(rightCompartmentHumidity, rightCompartmentHumidityTime,map.get("rightCompartmentHumidity"));
             curveInfoDto.setRightCompartmentHumidity(curveDataModel);
         }
         return curveInfoDto;
     }
 
-    private static  CurveDataModel generateCurveDataModel(List<String> listdata, List<String> listtime){
+    private static  CurveDataModel generateCurveDataModel(List<String> listdata, List<String> listtime,List<InstrumentParamConfigDto> list){
         CurveDataModel curveDataModel = new CurveDataModel();
         curveDataModel.setXaxis(listtime);
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(listdata);
-        List<Double> list =  getMaxMinNum(listdata);
-        assert list != null;
-        curveDataModel.setMaxNum(list.get(0));
-        curveDataModel.setMixNum(list.get(1));
+        if(CollectionUtils.isNotEmpty(list) && list.get(0) != null){
+            curveDataModel.setMaxNum(list.get(0).getHighlimit()+"");
+            curveDataModel.setMixNum(list.get(0).getLowlimit()+"");
+        }
         List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();
         seriesDataModelList.add(seriesDataModel);
         curveDataModel.setSeries(seriesDataModelList);
         return  curveDataModel;
     }
 
-    private static List<Double> getMaxMinNum(List<String> dataList) {
-        if(CollectionUtils.isEmpty(dataList)) {
-            return null;
-        }
-        DoubleSummaryStatistics doubleSummaryStatistics = dataList.stream().mapToDouble(Double::parseDouble).summaryStatistics();
-        double max = doubleSummaryStatistics.getMax();
-        double min = doubleSummaryStatistics.getMin();
-        List<Double> list = new ArrayList<>();
-        list.add(max);
-        list.add(min);
-        return list;
-    }
-
-    public static CurveInfoDto getCurveFirstByMT300DC(List<Monitorequipmentlastdata> lastDataModelList, CurveInfoDto curveInfoDto,boolean flag) {
+    /**
+     *
+     * @param lastDataModelList LASTDATA集合
+     * @param map  MAP集合 K为设备检测得名称（co2，O2等） v为对应得上下值
+     * @param flag  改变时间返回值得类型
+     * @return
+     */
+    public static CurveInfoDto getCurveFirstByMT300DC(List<Monitorequipmentlastdata> lastDataModelList, Map<String,List<InstrumentParamConfigDto>> map, boolean flag) {
         List<String> probe1Temp = new ArrayList<>();
         List<String> probe1TempTime = new ArrayList<>();
         List<String> probe1rh = new ArrayList<>();
@@ -568,64 +564,65 @@ public class EquipmentInfoServiceHelp {
                 }
             }
         }
+        CurveInfoDto curveInfoDto = new CurveInfoDto();
         if (CollectionUtils.isNotEmpty(CO2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(CO2, CO2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(CO2, CO2Time,map.get("CO2"));
             curveInfoDto.setCo2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(O2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(O2, O2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(O2, O2Time,map.get("O2"));
             curveInfoDto.setO2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(VOC)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(VOC, VOCTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(VOC, VOCTime,map.get("VOC"));
             curveInfoDto.setVoc(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe1Temp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe1Temp, probe1TempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1Temp, probe1TempTime,map.get("TEMP"));
             curveInfoDto.setProbe1Temp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe1rh)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe1rh, probe1rhTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1rh, probe1rhTime,map.get("RH"));
             curveInfoDto.setProbe1rh(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe1Co2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe1Co2, probe1Co2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1Co2, probe1Co2Time,map.get("CO2"));
             curveInfoDto.setProbe1Co2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe1O2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe1O2, probe1O2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe1O2, probe1O2Time,map.get("O2"));
             curveInfoDto.setProbe1O2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe2Temp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe2Temp, probe2TempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2Temp, probe2TempTime,map.get("TEMP"));
             curveInfoDto.setProbe2Temp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe2rh)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe2rh, probe2rhTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2rh, probe2rhTime,map.get("RH"));
             curveInfoDto.setProbe2rh(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe2Co2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe2Co2, probe2Co2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2Co2, probe2Co2Time,map.get("CO2"));
             curveInfoDto.setProbe2Co2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe2O2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe2O2, probe2O2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe2O2, probe2O2Time,map.get("O2"));
             curveInfoDto.setProbe2O2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe3Temp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe3Temp, probe3TempTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3Temp, probe3TempTime,map.get("TEMP"));
             curveInfoDto.setProbe3Temp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe3rh)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe3rh, probe3rhTime);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3rh, probe3rhTime,map.get("RH"));
             curveInfoDto.setProbe3rh(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe3Co2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe3Co2, probe3Co2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3Co2, probe3Co2Time,map.get("CO2"));
             curveInfoDto.setProbe3Co2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(probe3O2)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(probe3O2, probe3O2Time);
+            CurveDataModel curveDataModel = generateCurveDataModel(probe3O2, probe3O2Time,map.get("O2"));
             curveInfoDto.setProbe3O2(curveDataModel);
         }
         return curveInfoDto;
