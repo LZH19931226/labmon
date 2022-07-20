@@ -425,6 +425,8 @@ public class EquipmentInfoServiceHelp {
         curveDataModel.setXaxis(listtime);
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(listdata);
+        curveDataModel.setMixNum("");
+        curveDataModel.setMaxNum("");
         if(CollectionUtils.isNotEmpty(list) && list.get(0) != null){
             curveDataModel.setMaxNum(list.get(0).getHighlimit()+"");
             curveDataModel.setMixNum(list.get(0).getLowlimit()+"");
