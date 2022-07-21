@@ -56,8 +56,6 @@ public class SocketMessageListener {
     @Autowired
     private UserrightDao userrightDao;
     @Autowired
-    private UserScheduLingDao userScheduLingDao;
-    @Autowired
     private UserRightInfoApi userRightInfoApi;
     @Autowired
     private SnDeviceRedisApi snDeviceRedisSync;

@@ -27,6 +27,7 @@ public class Warningrecord implements Serializable {
 
     /**
      * 监控参数类型编码
+     *
      */
     private String instrumentparamconfigno;
 
