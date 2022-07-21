@@ -55,4 +55,8 @@ public class MonitorEquipmentPo implements Serializable {
     /** 全天警报 1=开启 0=关闭 */
     @TableField(value = "alwayalarm")
     private String alwaysAlarm;
+
+    /** 设备状态 */
+    @TableField(value = "state")
+    private String state;
 }

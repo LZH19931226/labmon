@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,6 +16,7 @@ import com.hc.po.MonitorEquipmentWarningTimePo;
 import com.hc.repository.HospitalequimentRepository;
 import com.hc.repository.MonitorEquipmentRepository;
 import com.hc.repository.MonitorequipmentwarningtimeRepository;
+import com.hc.service.HospitalequimentService;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

@@ -1,10 +1,11 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentWarningTimePo;
 import com.hc.repository.MonitorequipmentwarningtimeRepository;
+import com.hc.service.MonitorequipmentwarningtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

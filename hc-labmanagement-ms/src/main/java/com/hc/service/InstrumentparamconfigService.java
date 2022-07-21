@@ -95,5 +95,12 @@ public interface InstrumentparamconfigService{
      * @param warningTime 报警时间
      */
     void editWarningTime(String instrumentParamConfigNo, String warningTime);
+
+    /**
+     * 查询状态为1的数量
+     * @param instrumentNo
+     * @return
+     */
+    int selectProbeStateCount(String instrumentNo);
 }
 

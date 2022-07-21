@@ -1,4 +1,4 @@
-package com.hc.repository;
+package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -6,12 +6,13 @@ import com.hc.dto.MonitorinstrumentDTO;
 import com.hc.infrastructure.dao.MonitorinstrumentDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorinstrumentPo;
+import com.hc.repository.MonitorinstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class MonitorinstrumentRepositoryImpl extends ServiceImpl<MonitorinstrumentDao,MonitorinstrumentPo> implements MonitorinstrumentRepository  {
+public class MonitorinstrumentRepositoryImpl extends ServiceImpl<MonitorinstrumentDao,MonitorinstrumentPo> implements MonitorinstrumentRepository {
 
     @Autowired
     private MonitorinstrumentDao monitorinstrumentDao;

@@ -68,4 +68,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
 
     /** 饱和值 */
     private String saturation;
+
+    /** 设备状态 */
+    private String state;
 }

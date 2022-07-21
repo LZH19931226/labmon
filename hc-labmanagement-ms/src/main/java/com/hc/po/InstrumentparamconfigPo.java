@@ -86,5 +86,10 @@ public class InstrumentparamconfigPo implements Serializable {
      */
     private BigDecimal saturation;
 
+    /**
+     * 设备状态
+     */
+    private String state;
+
 }
 

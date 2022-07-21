@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.hc.dto.MonitorinstrumentDTO;
 import com.hc.repository.MonitorinstrumentRepository;

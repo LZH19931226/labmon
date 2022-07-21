@@ -14,7 +14,12 @@ import java.math.BigDecimal;
  */
 public class LowHighVerify {
 
-
+    /**
+     * 判断 date是否在probe中的最高值和最低值之中
+     * @param probe
+     * @param date
+     * @return
+     */
     public static boolean verify(InstrumentInfoDto probe, String date) {
         BigDecimal bigDecimal = new BigDecimal(date);
         BigDecimal low = probe.getLowLimit();

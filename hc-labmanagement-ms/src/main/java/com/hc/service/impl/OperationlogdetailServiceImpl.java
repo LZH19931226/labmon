@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.hc.dto.OperationlogdetailDTO;
 import com.hc.repository.OperationlogdetailRepository;

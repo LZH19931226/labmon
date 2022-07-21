@@ -1,5 +1,6 @@
-package com.hc.service;
+package com.hc.service.impl;
 
+import com.hc.service.EquipmenttypeService;
 import org.springframework.stereotype.Service;
 
 @Service

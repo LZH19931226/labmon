@@ -1,4 +1,4 @@
-package com.hc.repository;
+package com.hc.repository.impl;
 
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -7,6 +7,7 @@ import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentWarningTimePo;
+import com.hc.repository.MonitorequipmentwarningtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * @author hc
  */
 @Repository
-public class MonitorequipmentwarningtimeRepositoryImpl extends ServiceImpl<MonitorEquipmentWarningTimeDao,MonitorEquipmentWarningTimePo> implements MonitorequipmentwarningtimeRepository  {
+public class MonitorequipmentwarningtimeRepositoryImpl extends ServiceImpl<MonitorEquipmentWarningTimeDao,MonitorEquipmentWarningTimePo> implements MonitorequipmentwarningtimeRepository {
 
     @Autowired
     private MonitorEquipmentWarningTimeDao monitorEquipmentWarningTimeDao;

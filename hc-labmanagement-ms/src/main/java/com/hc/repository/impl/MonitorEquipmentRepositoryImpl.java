@@ -1,4 +1,4 @@
-package com.hc.repository;
+package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +9,7 @@ import com.hc.infrastructure.dao.MonitorEquipmentDao;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentPo;
+import com.hc.repository.MonitorEquipmentRepository;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

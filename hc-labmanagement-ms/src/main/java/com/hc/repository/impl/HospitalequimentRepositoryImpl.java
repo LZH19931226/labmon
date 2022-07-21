@@ -1,4 +1,4 @@
-package com.hc.repository;
+package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,6 +8,7 @@ import com.hc.dto.HospitalequimentDTO;
 import com.hc.infrastructure.dao.HospitalequimentDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalequimentPo;
+import com.hc.repository.HospitalequimentRepository;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

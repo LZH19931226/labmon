@@ -91,4 +91,5 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      * @param warningTime 报警时间
      */
     void editWarningTime(String instrumentParamConfigNo, Date warningTime);
+
 }

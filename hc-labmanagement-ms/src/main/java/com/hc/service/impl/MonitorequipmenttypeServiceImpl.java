@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.hc.dto.MonitorequipmenttypeDTO;
 import com.hc.my.common.core.util.BeanConverter;

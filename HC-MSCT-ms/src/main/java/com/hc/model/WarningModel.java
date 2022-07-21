@@ -24,5 +24,8 @@ public class WarningModel {
     private String value;
     @ApiModelProperty("设备名称")
     private String equipmentname;
-
+    /**
+     *探头信息id
+     */
+    private String instrumentparamconfigNO;
 }

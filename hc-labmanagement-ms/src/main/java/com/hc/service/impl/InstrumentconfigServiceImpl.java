@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.repository.InstrumentconfigRepository;

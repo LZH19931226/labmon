@@ -1,4 +1,4 @@
-package com.hc.repository;
+package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +9,7 @@ import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.infrastructure.dao.InstrumentparamconfigDao;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentparamconfigPo;
+import com.hc.repository.InstrumentparamconfigRepository;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,7 @@ import java.util.List;
 
 
 @Repository
-public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<InstrumentparamconfigDao,InstrumentparamconfigPo> implements InstrumentparamconfigRepository  {
+public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<InstrumentparamconfigDao,InstrumentparamconfigPo> implements InstrumentparamconfigRepository {
 
     @Autowired
     private InstrumentparamconfigDao instrumentparamconfigDao;
@@ -162,4 +163,5 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
         instrumentparamconfigPo.setWarningtime(warningTime);
         instrumentparamconfigDao.updateById(instrumentparamconfigPo);
     }
+
 }

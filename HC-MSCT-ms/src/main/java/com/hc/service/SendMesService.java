@@ -17,4 +17,5 @@ public interface SendMesService {
 
     SingleCallByTtsResponse receivePhone(String phone);
     SendSmsResponse sendCode(String phonenum, String code);
+
 }

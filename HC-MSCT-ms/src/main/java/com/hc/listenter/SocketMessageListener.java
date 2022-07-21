@@ -11,17 +11,19 @@ import com.hc.hospital.HospitalEquipmentTypeIdApi;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.mapper.SendrecordDao;
-import com.hc.mapper.UserScheduLingDao;
 import com.hc.mapper.UserrightDao;
 import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.model.TimeoutEquipment;
 import com.hc.model.WarningModel;
 import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
+import com.hc.my.common.core.constant.enums.SysConstants;
+import com.hc.my.common.core.esm.EquipmentState;
 import com.hc.my.common.core.redis.dto.*;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.po.*;
+import com.hc.service.MessageSendService;
 import com.hc.service.SendMesService;
 import com.hc.service.WarningService;
 import com.hc.tcp.SoundLightApi;
@@ -56,8 +58,6 @@ public class SocketMessageListener {
     @Autowired
     private UserrightDao userrightDao;
     @Autowired
-    private UserScheduLingDao userScheduLingDao;
-    @Autowired
     private UserRightInfoApi userRightInfoApi;
     @Autowired
     private SnDeviceRedisApi snDeviceRedisSync;
@@ -69,7 +69,8 @@ public class SocketMessageListener {
     private HospitalRedisApi hospitalRedisApi;
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
-
+    @Autowired
+    private MessageSendService messageSendService;
     /**
      * 监听报警信息
      */
@@ -249,6 +250,15 @@ public class SocketMessageListener {
             String sn = monitorinstrument.getSn();
             soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
         }
+        //将设备状态信息推送到mq
+        EquipmentState equipmentState = new EquipmentState();
+        equipmentState.setState(SysConstants.IN_ALARM);
+        equipmentState.setEquipmentNo(monitorinstrument.getEquipmentno());
+        equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
+        equipmentState.setInstrumentConfigNo(model.getInstrumentparamconfigNO());
+        String json = JsonUtil.toJson(equipmentState);
+        messageSendService.send(json);
+        log.info("推送报警设备状态{}",JsonUtil.toJson(json));
     }
 
     /**

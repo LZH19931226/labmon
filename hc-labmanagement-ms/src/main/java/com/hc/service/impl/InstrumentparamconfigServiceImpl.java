@@ -1,10 +1,13 @@
-package com.hc.service;
+package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
+import com.hc.po.InstrumentparamconfigPo;
 import com.hc.repository.InstrumentparamconfigRepository;
+import com.hc.service.InstrumentparamconfigService;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -146,5 +149,18 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
             e.printStackTrace();
         }
         instrumentparamconfigRepository.editWarningTime(instrumentParamConfigNo,date);
+    }
+
+    /**
+     * 查询状态为1的数量
+     *
+     * @param instrumentNo
+     * @return
+     */
+    @Override
+    public int selectProbeStateCount(String instrumentNo) {
+        return instrumentparamconfigRepository.count(Wrappers.lambdaQuery(new InstrumentparamconfigPo())
+                .eq(InstrumentparamconfigPo::getInstrumentno,instrumentNo)
+                .eq(InstrumentparamconfigPo::getState,"1"));
     }
 }

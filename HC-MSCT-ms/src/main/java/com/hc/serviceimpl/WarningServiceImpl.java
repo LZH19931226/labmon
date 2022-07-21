@@ -3,12 +3,15 @@ package com.hc.serviceimpl;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.ProbeRedisApi;
-import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
-import com.hc.my.common.core.util.RegularUtil;
-import com.hc.po.Monitorinstrument;
 import com.hc.model.WarningDateModel;
 import com.hc.model.WarningModel;
 import com.hc.model.WarningMqModel;
+import com.hc.my.common.core.constant.enums.SysConstants;
+import com.hc.my.common.core.esm.EquipmentState;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.util.RegularUtil;
+import com.hc.po.Monitorinstrument;
+import com.hc.service.MessageSendService;
 import com.hc.service.WarningRuleService;
 import com.hc.service.WarningService;
 import com.hc.utils.JsonUtil;
@@ -33,6 +36,8 @@ public class WarningServiceImpl implements WarningService {
     private WarningrecordRepository warningrecordDao;
     @Autowired
     private WarningRuleService warningRuleService;
+    @Autowired
+    private MessageSendService messageSendService;
 
     @Override
     public WarningModel produceWarn(WarningMqModel warningMqModel, Monitorinstrument monitorinstrument, Date date, Integer instrumentconfigid, String unit) {
@@ -51,7 +56,7 @@ public class WarningServiceImpl implements WarningService {
             //不启用报警，直接过滤信息
             return null;
         }
-        WarningModel warningModel;
+        WarningModel warningModel = new WarningModel();
         String equipmentname = probe.getEquipmentName();
         String instrumentparamconfigNO = probe.getInstrumentParamConfigNO();
         String equipmentno = probe.getEquipmentNo();
@@ -59,6 +64,7 @@ public class WarningServiceImpl implements WarningService {
         warningDateModel.setDate(date);
         Warningrecord warningrecord = new Warningrecord();
         warningrecord.setEquipmentno(equipmentno);
+        warningModel.setInstrumentparamconfigNO(instrumentparamconfigNO);
         /*2.探头类型数据范围判断*/
         switch (instrumentconfigid) {
             case 1:
@@ -378,6 +384,15 @@ public class WarningServiceImpl implements WarningService {
         } else {
             //未产生报警记录，正常值情况，就删除
             probeRedisApi.removeProbeRedisInfo(hospitalcode, instrumentparamconfigNO);
+            //将设备状态信息推送到mq
+            EquipmentState equipmentState = new EquipmentState();
+            equipmentState.setInstrumentConfigNo(instrumentparamconfigNO);
+            equipmentState.setEquipmentNo(equipmentno);
+            equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
+            equipmentState.setState(SysConstants.NORMAL);
+            String json = JsonUtil.toJson(equipmentState);
+            log.info("推送报警设备状态{}",JsonUtil.toJson(json));
+            messageSendService.send(json);
             return null;
         }
         return warningModel;

@@ -116,6 +116,9 @@ public class InstrumentparamconfigDTO implements Serializable {
 
     /** 探头类型名称 */
     private String instrumenttypename;
+
+    /** 探头状态 0为正常 1为报警中*/
+    private String state;
 }
 
 
