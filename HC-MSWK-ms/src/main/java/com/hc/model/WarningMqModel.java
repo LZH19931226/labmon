@@ -20,4 +20,5 @@ public class WarningMqModel {
     private Date date;
     private Integer instrumentconfigid;
     private String unit;
+    private String sn;
 }

@@ -27,4 +27,5 @@ public class WarningMqModel {
     private Integer instrumentconfigid;
     @ApiModelProperty("监控类型名称")
     private String unit;
+    private String sn;
 }

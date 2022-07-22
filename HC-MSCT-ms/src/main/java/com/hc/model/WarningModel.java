@@ -28,4 +28,8 @@ public class WarningModel {
      *探头信息id
      */
     private String instrumentparamconfigNO;
+
+    private String instrumentConfigId;
+
+    private String sn;
 }

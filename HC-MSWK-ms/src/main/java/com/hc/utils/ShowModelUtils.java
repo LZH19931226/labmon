@@ -30,6 +30,7 @@ public class ShowModelUtils {
         warningMqModel.setInstrumentconfigid(instrumentconfigid);
         warningMqModel.setMonitorinstrument(monitorinstrument);
         warningMqModel.setUnit(unit);
+        warningMqModel.setSn(monitorinstrument.getSn());
         return warningMqModel;
     }
 

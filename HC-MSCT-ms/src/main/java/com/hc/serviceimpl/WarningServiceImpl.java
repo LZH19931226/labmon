@@ -51,6 +51,7 @@ public class WarningServiceImpl implements WarningService {
             return null;
         }
         String warningphone = probe.getWarningPhone();
+        Integer instrumentConfigId = probe.getInstrumentConfigId();
         /*1.判断该设备是否开启报警服务*/
         if (StringUtils.equals("0", warningphone)) {
             //不启用报警，直接过滤信息
@@ -65,6 +66,8 @@ public class WarningServiceImpl implements WarningService {
         Warningrecord warningrecord = new Warningrecord();
         warningrecord.setEquipmentno(equipmentno);
         warningModel.setInstrumentparamconfigNO(instrumentparamconfigNO);
+        warningModel.setInstrumentConfigId(instrumentConfigId+"");
+        warningModel.setSn(warningMqModel.getSn());
         /*2.探头类型数据范围判断*/
         switch (instrumentconfigid) {
             case 1:
@@ -390,6 +393,9 @@ public class WarningServiceImpl implements WarningService {
             equipmentState.setEquipmentNo(equipmentno);
             equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
             equipmentState.setState(SysConstants.NORMAL);
+            equipmentState.setInstrumentConfigId(instrumentConfigId+"");
+            equipmentState.setHospitalCode(hospitalcode);
+            equipmentState.setSn(warningMqModel.getSn());
             String json = JsonUtil.toJson(equipmentState);
             log.info("推送报警设备状态{}",JsonUtil.toJson(json));
             messageSendService.send(json);

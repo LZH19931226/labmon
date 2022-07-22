@@ -29,4 +29,16 @@ public class EquipmentState {
      */
     private String instrumentConfigNo;
 
+    /**
+     * 监控参数类型编码
+     */
+    private String instrumentConfigId;
+
+    /**
+     * 医院ID
+     */
+    private String hospitalCode;
+
+    private String sn;
+
 }

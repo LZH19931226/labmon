@@ -256,6 +256,9 @@ public class SocketMessageListener {
         equipmentState.setEquipmentNo(monitorinstrument.getEquipmentno());
         equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
         equipmentState.setInstrumentConfigNo(model.getInstrumentparamconfigNO());
+        equipmentState.setInstrumentConfigId(model.getInstrumentConfigId());
+        equipmentState.setHospitalCode(hospitalcode);
+        equipmentState.setSn(model.getSn());
         String json = JsonUtil.toJson(equipmentState);
         messageSendService.send(json);
         log.info("推送报警设备状态{}",JsonUtil.toJson(json));

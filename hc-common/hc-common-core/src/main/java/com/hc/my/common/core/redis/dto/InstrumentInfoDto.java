@@ -57,4 +57,7 @@ public class InstrumentInfoDto {
 
     /** 最新报警时间  */
     private Date  warningtime;
+
+    /** 设备探头状态 */
+    private String state;
 }

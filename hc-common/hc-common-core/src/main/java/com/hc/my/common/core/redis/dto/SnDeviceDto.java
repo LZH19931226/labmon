@@ -56,4 +56,7 @@ public class SnDeviceDto implements Serializable {
     /** 报警时段 */
     private List<MonitorEquipmentWarningTimeDto> warningTimeList;
 
+    /** 设备状态 0为正常 1为报警中 */
+    private String state;
+
 }
