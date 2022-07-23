@@ -241,13 +241,12 @@ public class UserRightApplication {
      */
     public void getPhoneCode(String phoneNum) {
         String code = builderCode();
-        code = "111111";
         phoneCodeApi.addPhoneCode(phoneNum,code);
         smsApi.senMessagecode(phoneNum,code);
     }
 
     public String builderCode(){
-        return (Math.random() + "").substring(2, 2 + 6);
+        return (Math.random() + "").substring(2, 8);
     }
     /**
      * 手机号登录
