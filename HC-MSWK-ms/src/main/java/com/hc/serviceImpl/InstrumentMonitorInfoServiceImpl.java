@@ -7,6 +7,7 @@ import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.InstrumentMonitorInfoService;
@@ -23,13 +24,12 @@ import org.springframework.util.ObjectUtils;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoService {
 
-
-    private static final Logger log = LoggerFactory.getLogger(InstrumentMonitorInfoServiceImpl.class);
     DecimalFormat df = new DecimalFormat("######0.00");
 
     @Autowired
@@ -45,6 +45,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         Monitorequipmentlastdata monitorequipmentlastdata = new Monitorequipmentlastdata();
         String equipmentno = monitorinstrument.getEquipmentno();
         String hospitalcode = monitorinstrument.getHospitalcode();
+        String instrumentno = monitorinstrument.getInstrumentno();
+
         if (StringUtils.isEmpty(equipmentno) || StringUtils.isEmpty(monitorinstrument.getInstrumentno())) {
             return null;
         }
@@ -55,8 +57,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
         List<WarningMqModel> list = new ArrayList<>();
         String cmdid = model.getCmdid();
-        String substring = sn.substring(4, 6);
-        String instrumentno = monitorinstrument.getInstrumentno();
+        String snType = sn.substring(4, 6);
         switch (cmdid) {
             case "85":
                 //先置空处理探头被删除情况
@@ -64,29 +65,29 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrentqc(null);
                 InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if(!ObjectUtils.isEmpty(probe)){
-                    if (StringUtils.equals("04", substring)) {
-                        if (StringUtils.isNotEmpty(model.getTEMP2()) && null!=probe) {
+                    if (StringUtils.equals("04", snType)) {
+                        if (StringUtils.isNotEmpty(model.getTEMP2())) {
                             String calibration = showModelUtils.calibration(probe, model.getTEMP2());
                             // 判断是否存在温度探头
                             monitorequipmentlastdata.setCurrenttemperature(calibration);
+                            BuildProbeInfoDto(hospitalcode,equipmentno,calibration,"currenttemperature");
                             //执行报警服务
                             WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                             list.add(warningMqModel);
-                        } else {
-                            log.error("当前设备探头未同步至redis缓存：" + JsonUtil.toJson(model));
                         }
                     } else {
-                        if (StringUtils.isNotEmpty(model.getTEMP()) && null!=probe) {
+                        if (StringUtils.isNotEmpty(model.getTEMP())) {
                             String calibration = showModelUtils.calibration(probe, model.getTEMP());
                             if (!StringUtils.equalsAny(calibration, "0", "0.00", "0.0")) {
                                 monitorequipmentlastdata.setCurrenttemperature(calibration);
+
                                 WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                                 list.add(warningMqModel);
                             }
                         }
                     }
                     if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
-                        if (StringUtils.endsWithAny(substring, "02", "18")) {
+                        if (StringUtils.endsWithAny(snType, "02", "18")) {
                             //液氮罐锁电量
                             monitorequipmentlastdata.setCurrentqcl(model.getQC());
                         } else {
@@ -1097,6 +1098,16 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
     public String chu(Double a, String b) {
         return new BigDecimal(a).divide(new BigDecimal(b), 2, BigDecimal.ROUND_HALF_UP).toString();
+    }
+
+    public void  BuildProbeInfoDto(String hospitalCode, String equipmentNo,  String value, String probeEName){
+        ProbeInfoDto probeInfoDto =  new ProbeInfoDto();
+        probeInfoDto.setInputTime(new Date());
+        probeInfoDto.setHospitalCode(hospitalCode);
+        probeInfoDto.setEquipmentNo(equipmentNo);
+        probeInfoDto.setValue(value);
+        probeInfoDto.setProbeEName(probeEName);
+        //调用redis缓存
     }
 }
 

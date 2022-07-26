@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 @Accessors(chain = true)
+//后台管理探头缓存对象
 public class InstrumentInfoDto {
 
     /** 设备名称 */
