@@ -64,5 +64,5 @@ public class HospitalEquimentTypeCommand {
 
     /** 当前页 */
     @ApiModelProperty(value = "当前页")
-    private Long pageCurrent;
+        private Long pageCurrent;
 }

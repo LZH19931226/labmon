@@ -95,7 +95,6 @@ public class HospitalequimentApplication {
                 res.setEquipmentid(hospitalEquimentTypeCommand.getEquipmenttypeid());
                 res.setHospitalcode(hospitalEquimentTypeCommand.getHospitalcode());
             });
-
             result.setWarningTimeList(convert);
         }
         return result;
@@ -208,6 +207,7 @@ public class HospitalequimentApplication {
                         .timeout(s.getTimeout())
                         .timeouttime(s.getTimeouttime())
                         .workTimeBlock(workTimeBlock)
+                        .orderno(s.getOrderno())
                         .build();
                 hospitalEquipmentVos.add(hosEqVo);
             }
@@ -248,6 +248,7 @@ public class HospitalequimentApplication {
             dtoList.forEach(res->{
                 HospitalEquipmentTypeModel model = new HospitalEquipmentTypeModel();
                 model.setEquipmentTypeId(res.getEquipmenttypeid())
+                        .setOrderno(res.getOrderno().toString())
                         .setHospitalName(res.getHospitalname())
                       .setEquipmentTypeName(res.getEquipmenttypename());
                 list.add(model);
