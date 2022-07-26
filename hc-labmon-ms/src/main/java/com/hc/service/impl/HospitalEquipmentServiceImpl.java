@@ -1,0 +1,26 @@
+package com.hc.service.impl;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.hc.dto.HospitalEquipmentDto;
+import com.hc.repository.HospitalEquipmentRepository;
+import com.hc.service.HospitalEquipmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class HospitalEquipmentServiceImpl implements HospitalEquipmentService {
+
+    @Autowired
+    private HospitalEquipmentRepository hospitalEquipmentRepository;
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<HospitalEquipmentDto> selectHospitalEquipmentInfo(String hospitalCode) {
+        return hospitalEquipmentRepository.list(Wrappers.lambdaQuery(new HospitalEquipmentDto()).eq(HospitalEquipmentDto::getHospitalCode,hospitalCode));
+    }
+}

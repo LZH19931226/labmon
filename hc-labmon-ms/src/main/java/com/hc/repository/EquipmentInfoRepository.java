@@ -1,12 +1,13 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
 
 import java.util.List;
 
-public interface EquipmentInfoRepository {
+public interface EquipmentInfoRepository extends IService<MonitorEquipmentDto> {
 
     /**
      * 查询所有设备当前值信息
@@ -37,4 +38,6 @@ public interface EquipmentInfoRepository {
      * @return
      */
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
+
+    List<MonitorEquipmentDto> getEquipmentInfoByHospitalCode(String hospitalCode);
 }

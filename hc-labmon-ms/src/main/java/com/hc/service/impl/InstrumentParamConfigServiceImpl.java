@@ -19,4 +19,13 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     public Map<String, List<InstrumentParamConfigDto>> getInstrumentParamConfigByENo(String equipmentNo) {
         return instrumentParamConfigRepository.getInstrumentParamConfigByENo(equipmentNo);
     }
+
+    /**
+     * @param eNoList
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList) {
+        return instrumentParamConfigRepository.getInstrumentParamConfigByENoList(eNoList);
+    }
 }

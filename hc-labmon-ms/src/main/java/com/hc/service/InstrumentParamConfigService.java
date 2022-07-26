@@ -8,4 +8,6 @@ import java.util.Map;
 public interface InstrumentParamConfigService {
 
     Map<String, List<InstrumentParamConfigDto>> getInstrumentParamConfigByENo(String equipmentNo);
+
+    List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList);
 }

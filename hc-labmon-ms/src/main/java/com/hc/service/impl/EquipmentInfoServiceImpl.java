@@ -66,4 +66,21 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     public MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo) {
         return equipmentInfoRepository.getEquipmentInfoByNo(equipmentNo);
     }
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentInfoByHospitalCode(String hospitalCode) {
+        return equipmentInfoRepository.getEquipmentInfoByHospitalCode(hospitalCode);
+    }
+
+    /**
+     * @param result
+     */
+    @Override
+    public void update(List<MonitorEquipmentDto> result) {
+        equipmentInfoRepository.updateBatchById(result);
+    }
 }

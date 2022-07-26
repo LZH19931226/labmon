@@ -29,4 +29,13 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
         List<InstrumentParamConfigDto> list = instrumentParamConfigDao.getInstrumentParamConfigByENo(equipmentNo);
         return list.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentconfigname));
     }
+
+    /**
+     * @param eNoList
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList) {
+        return instrumentParamConfigDao.getInstrumentParamConfigByENoList(eNoList);
+    }
 }

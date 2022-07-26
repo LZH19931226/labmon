@@ -3,6 +3,7 @@ package com.hc.infrastructure.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.dto.InstrumentParamConfigDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface InstrumentParamConfigDao extends BaseMapper<InstrumentParamConf
             "LEFT JOIN instrumentconfig t3 ON t1.instrumentconfigid = t3.instrumentconfigid\n" +
             "WHERE t2.equipmentno = #{equipmentNo}")
     List<InstrumentParamConfigDto> getInstrumentParamConfigByENo(String equipmentNo);
+
+    List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(@Param("eNoList") List<String> eNoList);
 }

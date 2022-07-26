@@ -36,4 +36,5 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
 
     @Select("select * from monitorequipment where equipmentno = #{equipmentNo}")
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
+
 }

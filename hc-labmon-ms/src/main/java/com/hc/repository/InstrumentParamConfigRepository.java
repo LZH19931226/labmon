@@ -10,4 +10,6 @@ public interface InstrumentParamConfigRepository extends IService<InstrumentPara
     InstrumentParamConfigDto getProbeInfo(String instrumentParamConfigNo);
 
     Map<String, List<InstrumentParamConfigDto>> getInstrumentParamConfigByENo(String equipmentNo);
+
+    List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList);
 }

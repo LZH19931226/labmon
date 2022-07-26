@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.hc.infrastructure.dao.InstrumentParamConfigDao">
-
+    <select id="getInstrumentParamConfigByENoList" resultType="com.hc.dto.InstrumentParamConfigDto">
+        SELECT
+            t3.equipmentno,
+            t1.*
+        FROM
+            instrumentparamconfig t1
+                LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
+                LEFT JOIN monitorequipment t3 ON t2.equipmentno = t3.equipmentno
+        WHERE
+            t3.equipmentno in
+            <foreach collection="eNoList" item="eNo" open="(" separator="," close=")" index="index">
+                #{eNo}
+            </foreach>
+    </select>
 
 </mapper>

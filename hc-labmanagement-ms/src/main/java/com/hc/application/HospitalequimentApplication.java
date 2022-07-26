@@ -250,7 +250,7 @@ public class HospitalequimentApplication {
                 model.setEquipmentTypeId(res.getEquipmenttypeid())
                         .setOrderno(res.getOrderno().toString())
                         .setHospitalName(res.getHospitalname())
-                      .setEquipmentTypeName(res.getEquipmenttypename());
+                     .setEquipmentTypeName(res.getEquipmenttypename());
                 list.add(model);
             });
         }

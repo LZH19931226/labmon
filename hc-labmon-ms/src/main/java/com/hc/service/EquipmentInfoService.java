@@ -37,4 +37,9 @@ public interface EquipmentInfoService {
      * @return
      */
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
+
+
+    List<MonitorEquipmentDto> getEquipmentInfoByHospitalCode(String hospitalCode);
+
+    void update(List<MonitorEquipmentDto> result);
 }
