@@ -39,5 +39,5 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
 
     @Select("select t1.*,t2.sn from monitorequipment t1 left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno where t1.hospitalcode = #{hospitalCode} and t1.equipmenttypeid = #{equipmentTypeId}")
-    List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, String hospitalCode, String equipmentTypeId);
+    List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, @Param("hospitalCode") String hospitalCode,@Param("equipmentTypeId") String equipmentTypeId);
 }

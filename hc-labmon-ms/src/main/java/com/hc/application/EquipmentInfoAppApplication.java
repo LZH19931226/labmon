@@ -143,9 +143,6 @@ public class EquipmentInfoAppApplication {
         probeRedisCommand.setENoList(enoList);
         //批量获取设备对应探头当前值信息
         Map<String, List<ProbeInfoDto>> result = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
-        if(result == null){
-            return null;
-        }
         List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
         //遍历设备信息
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
