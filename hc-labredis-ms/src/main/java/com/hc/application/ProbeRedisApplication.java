@@ -9,6 +9,7 @@ import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.ProbeInfoApi;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.util.BeanConverter;
@@ -18,8 +19,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class ProbeRedisApplication {
@@ -136,4 +139,54 @@ public class ProbeRedisApplication {
     public boolean hasKey(String hospitalCode, String instrumentParamConfigNo) {
         return redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo);
     }
+
+    /**
+     * 获取探头当前值信息
+     * @param hospitalCode 医院id
+     * @param equipmentNo 设备id
+     * @return
+     */
+    public List<ProbeInfoDto> getCurrentProbeValueInfo(String hospitalCode, String equipmentNo) {
+        Object obj = redisUtils.hget(hospitalCode, equipmentNo);
+        if(ObjectUtils.isEmpty(obj)){
+            return null;
+        }
+        return JSON.parseObject((String) JSONObject.toJSON(obj), new TypeReference<List<ProbeInfoDto>>(){});
+    }
+
+    /**
+     * 新增或更新探头当前值信息
+     * @param probeInfoDto
+     */
+    public void addCurrentProbeValueInfo(ProbeInfoDto probeInfoDto) {
+        if (ObjectUtils.isEmpty(probeInfoDto)) {
+            return;
+        }
+        String hospitalCode = probeInfoDto.getHospitalCode();
+        String equipmentNo = probeInfoDto.getEquipmentNo();
+        Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
+        if(redisUtils.hHasKey(hospitalCode,equipmentNo)){
+            Object object = redisUtils.hget(hospitalCode, equipmentNo);
+            List<ProbeInfoDto> probeInfoDTO = JSON.parseObject((String) JSONObject.toJSON(object), new TypeReference<List<ProbeInfoDto>>(){});
+            if (!CollectionUtils.isEmpty(probeInfoDTO)) {
+                List<ProbeInfoDto> removeList = new ArrayList<>();
+                for (ProbeInfoDto infoDto : probeInfoDTO) {
+                    Integer configId = infoDto.getInstrumentConfigId();
+                    if(Objects.equals(configId, instrumentConfigId)){
+                        removeList.add(infoDto);
+                    }
+                }
+                if(!CollectionUtils.isEmpty(removeList)){
+                    probeInfoDTO.removeAll(removeList);
+                }
+                probeInfoDTO.add(probeInfoDto);
+                redisUtils.hset(hospitalCode,equipmentNo,JSONUtil.toJsonStr(probeInfoDTO));
+            }
+        }else {
+            List<ProbeInfoDto> probeInfoDTO = new ArrayList<>();
+            probeInfoDTO.add(probeInfoDto);
+            redisUtils.hset(hospitalCode,equipmentNo,JSONUtil.toJsonStr(probeInfoDTO));
+        }
+    }
+
 }

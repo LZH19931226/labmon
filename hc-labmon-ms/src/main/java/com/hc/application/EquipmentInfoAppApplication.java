@@ -36,10 +36,16 @@ public class EquipmentInfoAppApplication {
         }
         //补全数据库数据
         completionData(hospitalCode);
+        List<MonitorEquipmentDto> equipmentInfoByHospitalCode = equipmentInfoService.getEquipmentInfoByHospitalCode(hospitalCode);
+        Map<String, List<MonitorEquipmentDto>> collect = equipmentInfoByHospitalCode.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
         Map<String,HospitalEquipmentDto> map = new HashMap<>();
         for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
             String equipmentTypeId = equipmentDto.getEquipmentTypeId();
             //通过医院id和设备id查询出
+            List<MonitorEquipmentDto> list = collect.get(equipmentTypeId);
+            if (CollectionUtils.isEmpty(list)) {
+                continue;
+            }
             List<MonitorEquipmentDto> equipmentInfoByCodeAndTypeId = equipmentInfoService.getEquipmentInfoByCodeAndTypeId(hospitalCode, equipmentTypeId);
             int totalNum = equipmentInfoByCodeAndTypeId.size();
             long alarmNum = equipmentInfoByCodeAndTypeId.stream().filter(res -> Objects.equals(res.getState(), SysConstants.IN_ALARM)).count();
@@ -60,6 +66,9 @@ public class EquipmentInfoAppApplication {
      */
     private void completionData(String hospitalCode) {
         List<MonitorEquipmentDto> list =  equipmentInfoService.getEquipmentInfoByHospitalCode(hospitalCode);
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         List<String> eNoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
         List<InstrumentParamConfigDto> configDtoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(eNoList);
         if (CollectionUtils.isEmpty(configDtoList)) {
