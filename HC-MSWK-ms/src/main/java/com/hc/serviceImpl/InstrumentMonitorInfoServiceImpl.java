@@ -4,20 +4,17 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.device.ProbeRedisApi;
 import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
-import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
-import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
+import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.LastDataService;
-import com.hc.utils.JsonUtil;
 import com.hc.utils.ShowModelUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -1199,20 +1196,28 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String voltage1 = model.getVoltage();
                 if (StringUtils.isNotEmpty(voltage1)) {
                     monitorequipmentlastdata.setVoltage(voltage1);
-
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.VOLTAGE.getInstrumentConfigId(),current,
+                            CurrentProbeInfoEnum.VOLTAGE.getProbeEName());
                     WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(voltage1, monitorinstrument, model.getNowTime(), 39, "电压");
                     list.add(warningMqModel1);
                 }
                 String power = model.getPower();
                 if (StringUtils.isNotEmpty(power)) {
                     monitorequipmentlastdata.setPower(power);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.POWER.getInstrumentConfigId(),current,
+                            CurrentProbeInfoEnum.POWER.getProbeEName());
                     WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(power, monitorinstrument, model.getNowTime(), 41, "功率");
                     list.add(warningMqModel1);
                 }
                 String qc = model.getQC();
                 if (StringUtils.isNotEmpty(qc)) {
-                    WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                     monitorequipmentlastdata.setCurrentqc(qc);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),current,
+                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                    WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                     list.add(warningMqModel1);
                 }
                 break;
