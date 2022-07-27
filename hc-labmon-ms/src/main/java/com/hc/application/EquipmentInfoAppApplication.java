@@ -29,7 +29,7 @@ public class EquipmentInfoAppApplication {
     @Autowired
     private InstrumentParamConfigService instrumentParamConfigService;
 
-    public Map<String,HospitalEquipmentDto> getEquipmentNum(String hospitalCode) {
+    public List<HospitalEquipmentDto> getEquipmentNum(String hospitalCode) {
         //查出医院的设备类型
         List<HospitalEquipmentDto> hospitalEquipmentDto =  hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
         if (CollectionUtils.isEmpty(hospitalEquipmentDto)) {
@@ -39,7 +39,7 @@ public class EquipmentInfoAppApplication {
         completionData(hospitalCode);
         List<MonitorEquipmentDto> equipmentInfoByHospitalCode = equipmentInfoService.getEquipmentInfoByHospitalCode(hospitalCode);
         Map<String, List<MonitorEquipmentDto>> collect = equipmentInfoByHospitalCode.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
-        Map<String,HospitalEquipmentDto> map = new HashMap<>();
+        List<HospitalEquipmentDto> dtoList = new ArrayList<>();
         for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
             String equipmentTypeId = equipmentDto.getEquipmentTypeId();
             //通过医院id和设备id查询出
@@ -53,9 +53,9 @@ public class EquipmentInfoAppApplication {
             equipmentDto.setAlarmNum(String.valueOf(alarmNum));
             equipmentDto.setNormalNum(String.valueOf(normalNum));
             equipmentDto.setTotalNum(String.valueOf(totalNum));
-            map.put(equipmentTypeId,equipmentDto);
+            dtoList.add(equipmentDto);
         }
-        return map;
+        return dtoList;
     }
 
     /**

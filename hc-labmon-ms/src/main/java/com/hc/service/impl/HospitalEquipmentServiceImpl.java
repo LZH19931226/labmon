@@ -1,6 +1,5 @@
 package com.hc.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.dto.HospitalEquipmentDto;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.service.HospitalEquipmentService;
@@ -21,6 +20,6 @@ public class HospitalEquipmentServiceImpl implements HospitalEquipmentService {
      */
     @Override
     public List<HospitalEquipmentDto> selectHospitalEquipmentInfo(String hospitalCode) {
-        return hospitalEquipmentRepository.list(Wrappers.lambdaQuery(new HospitalEquipmentDto()).eq(HospitalEquipmentDto::getHospitalCode,hospitalCode));
+        return hospitalEquipmentRepository.selectHospitalEquipmentInfo(hospitalCode);
     }
 }

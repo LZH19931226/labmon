@@ -71,5 +71,4 @@ public class MonitorEquipmentDto implements Serializable {
     @TableField(value = "state")
     private String state;
 
-
 }
