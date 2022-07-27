@@ -1,5 +1,6 @@
 package com.hc.application;
 
+import com.hc.constants.LabMonEnumError;
 import com.hc.dto.HospitalEquipmentDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentDto;
@@ -32,7 +33,7 @@ public class EquipmentInfoAppApplication {
         //查出医院的设备类型
         List<HospitalEquipmentDto> hospitalEquipmentDto =  hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
         if (CollectionUtils.isEmpty(hospitalEquipmentDto)) {
-           throw new IedsException("该医院没有绑定信息");
+           throw new IedsException(LabMonEnumError.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
         }
         //补全数据库数据
         completionData(hospitalCode);
@@ -46,10 +47,9 @@ public class EquipmentInfoAppApplication {
             if (CollectionUtils.isEmpty(list)) {
                 continue;
             }
-            List<MonitorEquipmentDto> equipmentInfoByCodeAndTypeId = equipmentInfoService.getEquipmentInfoByCodeAndTypeId(hospitalCode, equipmentTypeId);
-            int totalNum = equipmentInfoByCodeAndTypeId.size();
-            long alarmNum = equipmentInfoByCodeAndTypeId.stream().filter(res -> Objects.equals(res.getState(), SysConstants.IN_ALARM)).count();
-            long normalNum = equipmentInfoByCodeAndTypeId.stream().filter(res -> StringUtils.isBlank(res.getState()) || SysConstants.NORMAL.equals(res.getState())).count();
+            int totalNum = list.size();
+            long alarmNum = list.stream().filter(res -> Objects.equals(res.getState(), SysConstants.IN_ALARM)).count();
+            long normalNum = list.stream().filter(res -> StringUtils.isBlank(res.getState()) || SysConstants.NORMAL.equals(res.getState())).count();
             equipmentDto.setAlarmNum(String.valueOf(alarmNum));
             equipmentDto.setNormalNum(String.valueOf(normalNum));
             equipmentDto.setTotalNum(String.valueOf(totalNum));

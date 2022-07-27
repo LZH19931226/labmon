@@ -3,6 +3,7 @@ package com.hc.device;
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -67,8 +68,24 @@ public interface ProbeRedisApi {
      * @param instrumentParamConfigNo 检测信息id
      * @return
      */
-    @GetMapping("/hasKey")
+    @GetMapping("/probe/hasKey")
      ApiResponse<Boolean> hasKey(@RequestParam("hospitalCode")String hospitalCode,
                                  @RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
+
+    /**
+     * 获取探头当天值
+     * @param hospitalCode 医院id
+     * @param equipmentNo 设备id
+     * @return
+     */
+    @GetMapping("/probe/getProbeCurrentInfo")
+    ApiResponse<List<ProbeInfoDto>> getCurrentProbeValueInfo(@RequestParam("hospitalCode")String hospitalCode, @RequestParam("equipmentNo")String equipmentNo);
+
+    /**
+     * 添加或更新探头当前值
+     * @param probeInfoDto 探头当前值对象
+     */
+    @PostMapping("/probe/addProbeCurrentInfo")
+    void addCurrentProbeValueInfo(@RequestBody ProbeInfoDto probeInfoDto);
 }
 
