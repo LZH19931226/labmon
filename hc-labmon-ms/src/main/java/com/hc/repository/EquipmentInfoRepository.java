@@ -1,5 +1,6 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
@@ -40,4 +41,13 @@ public interface EquipmentInfoRepository extends IService<MonitorEquipmentDto> {
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
 
     List<MonitorEquipmentDto> getEquipmentInfoByHospitalCode(String hospitalCode);
+
+    /**
+     * 分页获取设备编号
+     * @param page
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, String hospitalCode, String equipmentTypeId);
 }

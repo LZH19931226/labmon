@@ -1,6 +1,7 @@
 package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.infrastructure.dao.EquipmentInfoDao;
@@ -81,5 +82,14 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
         return equipmentInfoDao.selectList(Wrappers.lambdaQuery(new MonitorEquipmentDto()).eq(MonitorEquipmentDto::getHospitalcode,hospitalCode));
     }
 
-
+    /**
+     * @param page
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, String hospitalCode, String equipmentTypeId) {
+        return equipmentInfoDao.getEquipmentInfoByPage(page,hospitalCode,equipmentTypeId);
+    }
 }

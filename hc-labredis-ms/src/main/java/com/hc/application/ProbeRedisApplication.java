@@ -7,6 +7,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.hc.application.config.RedisUtils;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.ProbeInfoApi;
+import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
@@ -19,10 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class ProbeRedisApplication {
@@ -189,4 +187,23 @@ public class ProbeRedisApplication {
         }
     }
 
+    public Map<String,List<ProbeInfoDto>> getTheCurrentValueOfTheProbeInBatches(ProbeRedisCommand probeRedisCommand) {
+        String hospitalCode = probeRedisCommand.getHospitalCode();
+        List<String> eNoList = probeRedisCommand.getENoList();
+        List<Object> objects = redisUtils.multiGet(hospitalCode, eNoList);
+        if (CollectionUtils.isEmpty(objects)) {
+            return null;
+        }
+        Map<String,List<ProbeInfoDto>> map = new HashMap<>();
+        for (int i = 0; i < objects.size(); i++) {
+            if(!StringUtils.isEmpty(objects.get(i))){
+                List<ProbeInfoDto> list = JSON.parseObject((String) JSON.toJSON(objects.get(i)), new TypeReference<List<ProbeInfoDto>>() {});
+                if(!CollectionUtils.isEmpty(list)){
+                    String equipmentNo = list.get(0).getEquipmentNo();
+                    map.put(equipmentNo,list);
+                }
+            }
+        }
+        return map;
+    }
 }

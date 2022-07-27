@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.ProbeRedisApplication;
+import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/probe")
@@ -113,4 +115,9 @@ public class ProbeRedisController {
         probeRedisApplication.addCurrentProbeValueInfo(probeInfoDto);
     }
 
+    @PostMapping("/getProbeInBatches")
+    @ApiOperation("批量获取探头当前值")
+    public Map<String,List<ProbeInfoDto>> getTheCurrentValueOfTheProbeInBatches(@RequestBody ProbeRedisCommand probeRedisCommand){
+        return probeRedisApplication.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand);
+    }
 }

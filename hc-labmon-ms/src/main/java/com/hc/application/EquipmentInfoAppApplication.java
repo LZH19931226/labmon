@@ -1,11 +1,17 @@
 package com.hc.application;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.ProbeCommand;
 import com.hc.constants.LabMonEnumError;
+import com.hc.device.ProbeRedisApi;
 import com.hc.dto.HospitalEquipmentDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentDto;
+import com.hc.dto.ProbeCurrentInfoDto;
 import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.redis.command.ProbeRedisCommand;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.HospitalEquipmentService;
 import com.hc.service.InstrumentParamConfigService;
@@ -29,6 +35,14 @@ public class EquipmentInfoAppApplication {
     @Autowired
     private InstrumentParamConfigService instrumentParamConfigService;
 
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
+
+    /**
+     * 获取app首页设备数量
+     * @param hospitalCode
+     * @return
+     */
     public List<HospitalEquipmentDto> getEquipmentNum(String hospitalCode) {
         //查出医院的设备类型
         List<HospitalEquipmentDto> hospitalEquipmentDto =  hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
@@ -110,5 +124,55 @@ public class EquipmentInfoAppApplication {
         if (CollectionUtils.isNotEmpty(result)) {
             equipmentInfoService.update(result);
         }
+    }
+
+    /**
+     *
+     * @param probeCommand
+     * @return
+     */
+    public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(ProbeCommand probeCommand) {
+        String hospitalCode = probeCommand.getHospitalCode();
+        String equipmentTypeId = probeCommand.getEquipmentTypeId();
+        Page<ProbeCurrentInfoDto> page = new Page<>(probeCommand.getPageCurrent(),probeCommand.getPageSize());
+        //分页查询设备信息
+        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page,hospitalCode,equipmentTypeId);
+        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
+        probeRedisCommand.setHospitalCode(hospitalCode);
+        probeRedisCommand.setENoList(enoList);
+        //批量获取设备对应探头当前值信息
+        Map<String, List<ProbeInfoDto>> result = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
+        if(result == null){
+            return null;
+        }
+        List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
+        //遍历设备信息
+        for (MonitorEquipmentDto monitorEquipmentDto : list) {
+            String equipmentname = monitorEquipmentDto.getEquipmentname();
+            String equipmentno = monitorEquipmentDto.getEquipmentno();
+            String sn = monitorEquipmentDto.getSn();
+            List<ProbeInfoDto> probeInfoDtoList = null;
+            if (result.containsKey(equipmentno)) {
+                probeInfoDtoList = result.get(equipmentno);
+            }
+            Date maxDate = null;
+            if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
+                List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
+                maxDate = Collections.max(collect);
+            }
+            ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
+            probeInfo.setEquipmentName(equipmentname);
+            probeInfo.setSn(sn);
+            if(maxDate!=null){
+                probeInfo.setInputTime(maxDate);
+            }
+            if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
+                probeInfo.setProbeInfoDtoList(probeInfoDtoList);
+            }
+            probeCurrentInfoDtos.add(probeInfo);
+        }
+        page.setRecords(probeCurrentInfoDtos);
+        return page;
     }
 }

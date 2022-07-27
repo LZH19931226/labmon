@@ -2,13 +2,16 @@ package com.hc.device;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
+import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient(value = ApplicationName.REDIS)
 public interface ProbeRedisApi {
@@ -87,5 +90,9 @@ public interface ProbeRedisApi {
      */
     @PostMapping("/probe/addProbeCurrentInfo")
     void addCurrentProbeValueInfo(@RequestBody ProbeInfoDto probeInfoDto);
+
+    @PostMapping("/probe/getProbeInBatches")
+    @ApiOperation("批量获取探头当前值")
+    ApiResponse<Map<String,List<ProbeInfoDto>>> getTheCurrentValueOfTheProbeInBatches(@RequestBody ProbeRedisCommand probeRedisCommand);
 }
 
