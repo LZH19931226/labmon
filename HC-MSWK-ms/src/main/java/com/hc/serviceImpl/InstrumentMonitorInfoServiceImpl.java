@@ -684,6 +684,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String airflow2 = model.getAirflow();
                 if (StringUtils.isNotEmpty(airflow2)) {
                     monitorequipmentlastdata.setCurrentairflow1(airflow2);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getInstrumentConfigId(),airflow2,
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName());
                     //只有airFlow 是 I M O才报警生成报警模型
                     if (StringUtils.equalsAnyIgnoreCase(airflow2, "I", "M", "O")) {
                         WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(airflow2, monitorinstrument, model.getNowTime(), 25, "气流");
@@ -695,12 +698,23 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "99":// 澳门镜湖 有线十舱室培养箱
                 //一路温度
                 if (StringUtils.isNotEmpty(model.getTEMP())) {
-                    showModelUtils.Temp1(list, monitorinstrument, model, equipmentno, model.getTEMP(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature1(model.getTEMP());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getInstrumentConfigId(),model.getTEMP(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName());
+                    WarningMqModel warningTempModel = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 13, "一路温度");
+                    list.add(warningTempModel);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP2())) {
-                    showModelUtils.Temp2(list, monitorinstrument, model, equipmentno, model.getTEMP2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(),model.getTEMP(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                    WarningMqModel warningTemp2Model = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 14, "二路温度");
+                    list.add(warningTemp2Model);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP3())) {
+
                     showModelUtils.Temp3(list, monitorinstrument, model, equipmentno, model.getTEMP3(), model.getNowTime(), monitorequipmentlastdata);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP4())) {
@@ -1176,12 +1190,16 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String current = model.getCurrent();
                 if (StringUtils.isNotEmpty(current)) {
                     monitorequipmentlastdata.setQccurrent(current);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.QCCURRENT.getInstrumentConfigId(),current,
+                            CurrentProbeInfoEnum.QCCURRENT.getProbeEName());
                     WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(current, monitorinstrument, model.getNowTime(), 40, "电流");
                     list.add(warningMqModel1);
                 }
                 String voltage1 = model.getVoltage();
                 if (StringUtils.isNotEmpty(voltage1)) {
                     monitorequipmentlastdata.setVoltage(voltage1);
+
                     WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(voltage1, monitorinstrument, model.getNowTime(), 39, "电压");
                     list.add(warningMqModel1);
                 }

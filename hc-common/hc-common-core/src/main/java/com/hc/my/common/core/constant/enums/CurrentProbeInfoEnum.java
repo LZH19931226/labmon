@@ -55,8 +55,8 @@ public enum CurrentProbeInfoEnum {
     CURRENTPM5(27,"currentpm5",""),
     //当前PM0.5
     CURRENTPM05(28,"currentpm05",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
+    //电流
+    QCCURRENT(40,"qccurrent",""),
     //当前O2
     CURRENTO2(2,"O2",""),
     //当前O2

@@ -35,13 +35,6 @@ public class ShowModelUtils {
         return warningMqModel;
     }
 
-    public void Temp(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model, String data,Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature(data);
-        //执行报警服务
-        WarningMqModel warningMqModel97 = procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
-        list.add(warningMqModel97);
-    }
-
     public void CO2(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
         monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
         WarningMqModel warningMqModel = procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
