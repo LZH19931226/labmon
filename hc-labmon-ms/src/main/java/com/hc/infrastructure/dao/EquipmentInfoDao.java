@@ -1,6 +1,7 @@
 package com.hc.infrastructure.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
@@ -36,4 +37,7 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
 
     @Select("select * from monitorequipment where equipmentno = #{equipmentNo}")
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
+
+    @Select("select t1.*,t2.sn from monitorequipment t1 left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno where t1.hospitalcode = #{hospitalCode} and t1.equipmenttypeid = #{equipmentTypeId}")
+    List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, @Param("hospitalCode") String hospitalCode,@Param("equipmentTypeId") String equipmentTypeId);
 }

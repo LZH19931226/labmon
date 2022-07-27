@@ -1,5 +1,8 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.infrastructure.dao.EquipmentInfoDao;
 import com.hc.dto.MonitorEquipmentDto;
@@ -12,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class EquipmentInfoRepositoryImpl implements EquipmentInfoRepository {
+public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,MonitorEquipmentDto> implements EquipmentInfoRepository {
 
     @Autowired
     private EquipmentInfoDao equipmentInfoDao;
@@ -68,5 +71,25 @@ public class EquipmentInfoRepositoryImpl implements EquipmentInfoRepository {
     @Override
     public MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo) {
         return equipmentInfoDao.getEquipmentInfoByNo(equipmentNo);
+    }
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentInfoByHospitalCode(String hospitalCode) {
+        return equipmentInfoDao.selectList(Wrappers.lambdaQuery(new MonitorEquipmentDto()).eq(MonitorEquipmentDto::getHospitalcode,hospitalCode));
+    }
+
+    /**
+     * @param page
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, String hospitalCode, String equipmentTypeId) {
+        return equipmentInfoDao.getEquipmentInfoByPage(page,hospitalCode,equipmentTypeId);
     }
 }

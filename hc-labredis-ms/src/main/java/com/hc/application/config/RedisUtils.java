@@ -171,7 +171,6 @@ public class RedisUtils {
 //        return redisTemplate.opsForHash().multiGet(key, hashKeys);
 //        redisTemplate.opsForHash().multiGet(key, hashKeys);
         return redisTemplate.boundHashOps(key).multiGet(hashKeys);
-
     }
 
     /**

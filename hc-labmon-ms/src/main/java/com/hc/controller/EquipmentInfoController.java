@@ -111,4 +111,5 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,operationDate);
     }
 
+
 }

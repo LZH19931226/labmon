@@ -1,13 +1,16 @@
 package com.hc.controller;
 
 import com.hc.application.ProbeRedisApplication;
+import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/probe")
@@ -98,5 +101,23 @@ public class ProbeRedisController {
     @ApiOperation("判断探头报警记录是否存在")
     public boolean hasKey(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo){
         return   probeRedisApplication.hasKey(hospitalCode,instrumentParamConfigNo);
+    }
+
+    @GetMapping("/getProbeCurrentInfo")
+    @ApiOperation("获取探头当前值信息")
+    public List<ProbeInfoDto> getCurrentProbeValueInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo){
+        return probeRedisApplication.getCurrentProbeValueInfo(hospitalCode,equipmentNo);
+    }
+
+    @PostMapping("/addProbeCurrentInfo")
+    @ApiOperation("添加或更新探头当前值")
+    public void addCurrentProbeValueInfo(@RequestBody ProbeInfoDto probeInfoDto){
+        probeRedisApplication.addCurrentProbeValueInfo(probeInfoDto);
+    }
+
+    @PostMapping("/getProbeInBatches")
+    @ApiOperation("批量获取探头当前值")
+    public Map<String,List<ProbeInfoDto>> getTheCurrentValueOfTheProbeInBatches(@RequestBody ProbeRedisCommand probeRedisCommand){
+        return probeRedisApplication.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand);
     }
 }

@@ -248,6 +248,7 @@ public class UserRightApplication {
     public String builderCode(){
         return (Math.random() + "").substring(2, 8);
     }
+
     /**
      * 手机号登录
      * @param userRightCommand

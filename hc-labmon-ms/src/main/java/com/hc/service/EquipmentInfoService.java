@@ -1,5 +1,6 @@
 package com.hc.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
@@ -37,4 +38,18 @@ public interface EquipmentInfoService {
      * @return
      */
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
+
+
+    List<MonitorEquipmentDto> getEquipmentInfoByHospitalCode(String hospitalCode);
+
+    void update(List<MonitorEquipmentDto> result);
+
+    /**
+     * 分页获取设备编号
+     * @param page
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, String hospitalCode, String equipmentTypeId);
 }

@@ -86,6 +86,9 @@ public class InstrumentParamConfigDto  implements Serializable {
     /** 设备名称 */
     private String equipmentname;
 
+    /** 设备id */
+    private String equipmentno;
+
     /** sn */
     private String sn;
 
@@ -94,4 +97,7 @@ public class InstrumentParamConfigDto  implements Serializable {
 
     /** 探头类型名称 */
     private String instrumenttypename;
+
+    /** 探头状态 */
+    private String state;
 }

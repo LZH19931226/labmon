@@ -87,4 +87,5 @@
            and a.equipmentno = #{equipmentNo}
         order by b.inputdatetime
     </select>
+
 </mapper>
