@@ -2,6 +2,7 @@ package com.hc.utils;
 
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Monitorinstrument;
 import com.hc.model.WarningMqModel;
@@ -34,7 +35,7 @@ public class ShowModelUtils {
         return warningMqModel;
     }
 
-    public void Temp(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
+    public void Temp(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model, String data,Monitorequipmentlastdata monitorequipmentlastdata) {
         monitorequipmentlastdata.setCurrenttemperature(data);
         //执行报警服务
         WarningMqModel warningMqModel97 = procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
@@ -160,4 +161,6 @@ public class ShowModelUtils {
             return data;
         }
     }
+
+
 }

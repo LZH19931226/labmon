@@ -3,6 +3,7 @@ package com.hc.serviceImpl;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.device.ProbeRedisApi;
 import com.hc.model.WarningMqModel;
+import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
@@ -60,9 +61,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         String snType = sn.substring(4, 6);
         switch (cmdid) {
             case "85":
-                //先置空处理探头被删除情况
-                monitorequipmentlastdata.setCurrenttemperature(null);
-                monitorequipmentlastdata.setCurrentqc(null);
                 InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if(!ObjectUtils.isEmpty(probe)){
                     if (StringUtils.equals("04", snType)) {
@@ -70,7 +68,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             String calibration = showModelUtils.calibration(probe, model.getTEMP2());
                             // 判断是否存在温度探头
                             monitorequipmentlastdata.setCurrenttemperature(calibration);
-                            BuildProbeInfoDto(hospitalcode,equipmentno,calibration,"currenttemperature");
+                            BuildProbeInfoDto(hospitalcode,equipmentno,
+                                    CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),calibration,
+                                    CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                             //执行报警服务
                             WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                             list.add(warningMqModel);
@@ -80,41 +80,53 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             String calibration = showModelUtils.calibration(probe, model.getTEMP());
                             if (!StringUtils.equalsAny(calibration, "0", "0.00", "0.0")) {
                                 monitorequipmentlastdata.setCurrenttemperature(calibration);
-
+                                BuildProbeInfoDto(hospitalcode,equipmentno,
+                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),calibration,
+                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                                 WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                                 list.add(warningMqModel);
                             }
                         }
                     }
                     if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
+                        String qc = model.getQC();
                         if (StringUtils.endsWithAny(snType, "02", "18")) {
                             //液氮罐锁电量
-                            monitorequipmentlastdata.setCurrentqcl(model.getQC());
+                            monitorequipmentlastdata.setCurrentqcl(qc);
+                            BuildProbeInfoDto(hospitalcode,equipmentno,
+                                    CurrentProbeInfoEnum.CURRENTQCL.getInstrumentConfigId(),qc,
+                                    CurrentProbeInfoEnum.CURRENTQCL.getProbeEName());
                         } else {
                             //常规液氮罐电量
-                            monitorequipmentlastdata.setCurrentqc(model.getQC());
+                            monitorequipmentlastdata.setCurrentqc(qc);
+                            BuildProbeInfoDto(hospitalcode,equipmentno,
+                                    CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),qc,
+                                    CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
                         }
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                         list.add(warningMqModel);
                     }
                 }
-
                 break;
             case "87":
                 // CO2 O2 二氧化碳氧气
-                monitorequipmentlastdata.setCurrentcarbondioxide(null);
-                monitorequipmentlastdata.setCurrento2(null);
                 InstrumentInfoDto probeCO2 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":1").getResult();
                 InstrumentInfoDto probeO2 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 if (StringUtils.isNotEmpty(model.getCO2()) && null != probeCO2) {
                     String calibration = showModelUtils.calibration(probeCO2, model.getCO2());
                     monitorequipmentlastdata.setCurrentcarbondioxide(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getO2()) && null!=probeO2) {
                     String calibration = showModelUtils.calibration(probeO2, model.getO2());
                     monitorequipmentlastdata.setCurrento2(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(warningMqModel);
                 }
@@ -126,6 +138,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         ups = "0";//市电正常
                     }
                     monitorequipmentlastdata.setCurrentups(ups);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(),ups,
+                            CurrentProbeInfoEnum.CURRENTUPS.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(ups, monitorinstrument, model.getNowTime(), 10, "市电");
                     list.add(warningMqModel);
                 }
@@ -133,7 +148,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "8d":
                 //开关门记录
                 //查询是否存在开门量（报警信息探头）
-                monitorequipmentlastdata.setCurrentdoorstate(null);
                 InstrumentInfoDto dd = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":11").getResult();
                 if (StringUtils.isNotEmpty(model.getDOORZ()) && !ObjectUtils.isEmpty(dd)) {
                     String DOOR;
@@ -145,6 +159,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         //表示开门
                     }
                     monitorequipmentlastdata.setCurrentdoorstate(DOOR);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId(),DOOR,
+                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
                     list.add(warningMqModel);
                 } else {
@@ -153,12 +170,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "8e":
                 // 3 :VOC 8: PM2.5 9: PM10 12: 甲醛 6: 压力   5:湿度
-                monitorequipmentlastdata.setCurrentvoc(null);
-                monitorequipmentlastdata.setCurrentformaldehyde(null);
-                monitorequipmentlastdata.setCurrentpm10(null);
-                monitorequipmentlastdata.setCurrentpm25(null);
-                monitorequipmentlastdata.setCurrentairflow(null);
-                monitorequipmentlastdata.setCurrenthumidity(null);
                 InstrumentInfoDto voc = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":3").getResult();
                 InstrumentInfoDto pm25 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":8").getResult();
                 InstrumentInfoDto pm10 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":9").getResult();
@@ -168,24 +179,36 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 if (StringUtils.isNotEmpty(model.getVOC()) && null!=voc) {
                     String calibration = showModelUtils.calibration(voc, model.getVOC());
                     monitorequipmentlastdata.setCurrentvoc(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTVOC.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTVOC.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 3, "空气质量");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getOX()) && null!=jq) {
                     String calibration = showModelUtils.calibration(jq, model.getOX());
                     monitorequipmentlastdata.setCurrentformaldehyde(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 12, "甲醛");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getPM10()) && null!=pm10) {
                     String calibration = showModelUtils.calibration(pm10, model.getPM10());
                     monitorequipmentlastdata.setCurrentpm10(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTPM10.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTPM10.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 9, "PM10");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getPM25()) && null!=pm25) {
                     String calibration = showModelUtils.calibration(pm25, model.getPM25());
                     monitorequipmentlastdata.setCurrentpm25(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTPM25.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTPM25.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 8, "PM2.5");
                     list.add(warningMqModel);
                 }
@@ -193,6 +216,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     String calibration = showModelUtils.calibration(yl, model.getPRESS());
                     if (!StringUtils.equalsAny(calibration, "0.0", "0.00", "0")) {
                         monitorequipmentlastdata.setCurrentairflow(calibration);
+                        BuildProbeInfoDto(hospitalcode,equipmentno,
+                                CurrentProbeInfoEnum.CURRENTAIRFLOW.getInstrumentConfigId(),calibration,
+                                CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName());
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 6, "压力");
                         list.add(warningMqModel);
                     }
@@ -201,6 +227,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     String calibration = showModelUtils.calibration(sd, model.getRH());
                     if (!StringUtils.equalsAny(calibration, "0", "0.0", "0.00")) {
                         monitorequipmentlastdata.setCurrenthumidity(calibration);
+                        BuildProbeInfoDto(hospitalcode,equipmentno,
+                                CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(),calibration,
+                                CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
                         WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 5, "湿度");
                         list.add(warningMqModel);
                     }
@@ -208,38 +237,46 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "91":
                 // CO2 O2 温度
-                monitorequipmentlastdata.setCurrentcarbondioxide(null);
-                monitorequipmentlastdata.setCurrento2(null);
-                monitorequipmentlastdata.setCurrenttemperature(null);
                 InstrumentInfoDto o3 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":1").getResult();
                 InstrumentInfoDto o4 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 InstrumentInfoDto o5 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if (StringUtils.isNotEmpty(model.getCO2()) && !ObjectUtils.isEmpty(o3)) {
                     String calibration = showModelUtils.calibration(o3, model.getCO2());
                     monitorequipmentlastdata.setCurrentcarbondioxide(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getO2()) && !ObjectUtils.isEmpty(o4)) {
                     String calibration = showModelUtils.calibration(o4, model.getO2());
                     monitorequipmentlastdata.setCurrento2(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP()) &&  !ObjectUtils.isEmpty(o5)) {
                     String calibration = showModelUtils.calibration(o5, model.getTEMP());
                     monitorequipmentlastdata.setCurrenttemperature(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(warningMqModel);
                 }
                 break;
             case "70":
                 //模拟500的温度
-                monitorequipmentlastdata.setCurrenttemperature(null);
                 InstrumentInfoDto o7 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if ( !ObjectUtils.isEmpty(o7) && StringUtils.isNotEmpty(model.getTEMP())) {
                     String calibration = showModelUtils.calibration(o7, model.getTEMP());
                     monitorequipmentlastdata.setCurrenttemperature(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(warningMqModel);
                 }
@@ -251,6 +288,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 if ( !ObjectUtils.isEmpty(o6) && StringUtils.isNotEmpty(model.getCO2())) {
                     String calibration = showModelUtils.calibration(o6, model.getCO2());
                     monitorequipmentlastdata.setCurrentcarbondioxide(calibration);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),calibration,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
                     WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(warningMqModel1);
                 }
@@ -258,6 +298,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "72":
                 //模拟500的RH
                 monitorequipmentlastdata.setCurrenthumidity(model.getRH());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(),model.getRH(),
+                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
                 WarningMqModel warningMqModel2 = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度");
                 list.add(warningMqModel2);
                 break;
@@ -269,6 +312,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     voc1 = chu(integer, "1000");
                 }
                 monitorequipmentlastdata.setCurrentvoc(voc1);
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTVOC.getInstrumentConfigId(),voc1,
+                        CurrentProbeInfoEnum.CURRENTVOC.getProbeEName());
                 WarningMqModel warningMqModel3 = showModelUtils.procWarnModel(voc1, monitorinstrument, model.getNowTime(), 3, "空气质量");
                 list.add(warningMqModel3);
                 break;
@@ -280,6 +326,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     integer2 = integer2 * 100;
                 }
                 monitorequipmentlastdata.setCurrentpm25(Double.toString(integer2));
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTPM25.getInstrumentConfigId(),Double.toString(integer2),
+                        CurrentProbeInfoEnum.CURRENTPM25.getProbeEName());
                 WarningMqModel warningMqModel4 = showModelUtils.procWarnModel(Double.toString(integer2), monitorinstrument, model.getNowTime(), 8, "PM2.5");
                 list.add(warningMqModel4);
                 break;
@@ -289,6 +338,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 InstrumentInfoDto o8 = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 if ( !ObjectUtils.isEmpty(o8)) {
                     monitorequipmentlastdata.setCurrento2(model.getO2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),model.getO2(),
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
                     WarningMqModel warningMqModel5 = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(warningMqModel5);
                 }
@@ -296,6 +348,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "76":
                 //模拟500 QC
                 monitorequipmentlastdata.setCurrentqc(model.getQC());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),model.getQC(),
+                        CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
                 WarningMqModel warningMqModel6 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                 list.add(warningMqModel6);
                 break;
@@ -306,6 +361,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     ups = "1";
                 }
                 monitorequipmentlastdata.setCurrentups(ups);
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(),ups,
+                        CurrentProbeInfoEnum.CURRENTUPS.getProbeEName());
                 WarningMqModel warningMqModel7 = showModelUtils.procWarnModel(model.getUPS(), monitorinstrument, model.getNowTime(), 10, "市电");
                 list.add(warningMqModel7);
                 break;
@@ -320,6 +378,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         //表示有报警信息
                     }
                     monitorequipmentlastdata.setCurrentdoorstate(DOOR);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId(),DOOR,
+                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getProbeEName());
                     WarningMqModel warningMqModel8 = showModelUtils.procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
                     list.add(warningMqModel8);
                 }
@@ -327,6 +388,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "79":
                 //模拟500 OX
                 monitorequipmentlastdata.setCurrentformaldehyde(model.getOX());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(),model.getOX(),
+                        CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
                 WarningMqModel warningMqModel9 = showModelUtils.procWarnModel(model.getOX(), monitorinstrument, model.getNowTime(), 12, "甲醛");
                 list.add(warningMqModel9);
                 break;
@@ -337,6 +401,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     v = v * 100;
                 }
                 monitorequipmentlastdata.setCurrentpm10(Double.toString(v));
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTPM10.getInstrumentConfigId(),Double.toString(v),
+                        CurrentProbeInfoEnum.CURRENTPM10.getProbeEName());
                 WarningMqModel warningMqModel10 = showModelUtils.procWarnModel(Double.toString(v), monitorinstrument, model.getNowTime(), 9, "PM10");
                 list.add(warningMqModel10);
                 break;
@@ -348,50 +415,68 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     integer1 = integer1 * 100;
                 }
                 monitorequipmentlastdata.setCurrentairflow(Double.toString(integer1));
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTAIRFLOW.getInstrumentConfigId(),Double.toString(integer1),
+                        CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName());
                 WarningMqModel warningMqModel11 = showModelUtils.procWarnModel(Double.toString(integer1), monitorinstrument, model.getNowTime(), 6, "压力");
                 list.add(warningMqModel11);
                 break;
             case "92":
-                monitorequipmentlastdata.setCurrentlefttemperature(null);
-                monitorequipmentlastdata.setCurrentrigthtemperature(null);
-                monitorequipmentlastdata.setCurrentairflow1(null);
                 InstrumentInfoDto left = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":23").getResult();
                 InstrumentInfoDto right = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":24").getResult();
                 InstrumentInfoDto airflow = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":25").getResult();
                 if (StringUtils.isNotEmpty(model.getTEMP()) &&  !ObjectUtils.isEmpty(left)) {
                     monitorequipmentlastdata.setCurrentlefttemperature(model.getTEMP());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getInstrumentConfigId(),model.getTEMP(),
+                            CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 23, "左舱室温度");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP2()) &&  !ObjectUtils.isEmpty(right)) {
-                    //    calibration(right,)
                     monitorequipmentlastdata.setCurrentrigthtemperature(model.getTEMP2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getInstrumentConfigId(),model.getTEMP2(),
+                            CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 24, "右舱室温度");
                     list.add(warningMqModel);
                 }
                 if (StringUtils.isNotEmpty(model.getAirflow()) &&  !ObjectUtils.isEmpty(airflow)) {
-                    // 气流的值 除以100
                     monitorequipmentlastdata.setCurrentairflow1(model.getAirflow());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getInstrumentConfigId(),model.getAirflow(),
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName());
                     WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getAirflow(), monitorinstrument, model.getNowTime(), 25, "气流");
                     list.add(warningMqModel);
                 }
                 break;
             // C60培养箱
             case "93":
-                monitorequipmentlastdata.setCurrento2(null);
                 InstrumentInfoDto yq = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":2").getResult();
                 monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),model.getTEMP(),
+                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                 WarningMqModel warningMqModel = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                 list.add(warningMqModel);
                 if (StringUtils.isNotEmpty(model.getO2()) && null!=yq) {
                     monitorequipmentlastdata.setCurrento2(model.getO2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),model.getO2(),
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
                     WarningMqModel warningMqModel1 = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(warningMqModel1);
                 }
                 monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),model.getCO2(),
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
                 WarningMqModel warningMqModel22 = showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
                 list.add(warningMqModel22);
                 monitorequipmentlastdata.setCurrenthumidity(model.getRH());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(),model.getRH(),
+                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
                 WarningMqModel warningMqModel23 = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "RH");
                 list.add(warningMqModel23);
                 break;
@@ -404,6 +489,27 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3());
                 monitorequipmentlastdata.setCurrenttemperature4(model.getTEMP4());
                 monitorequipmentlastdata.setCurrenttemperature5(model.getTEMP5());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),model.getO2(),
+                        CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),model.getCO2(),
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getInstrumentConfigId(),model.getTEMP(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(),model.getTEMP2(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(),model.getTEMP3(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getInstrumentConfigId(),model.getTEMP4(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getInstrumentConfigId(),model.getTEMP5(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName());
                 WarningMqModel warningMqModel8 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 13, "一路温度");
                 WarningMqModel warningMqModel16 = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 14, "二路温度");
                 WarningMqModel warningMqModel19 = showModelUtils.procWarnModel(model.getTEMP3(), monitorinstrument, model.getNowTime(), 15, "三路温度");
@@ -421,11 +527,23 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "90":
                 monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());  //液氮罐温度
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),model.getTEMP(),
+                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                 WarningMqModel warningMqMode90 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                 list.add(warningMqMode90);
                 monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());// 室温
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(),model.getTEMP2(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
                 monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3()); // 壁温
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(),model.getTEMP3(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
                 monitorequipmentlastdata.setCurrentqc(model.getQC());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),model.getQC(),
+                        CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
                 WarningMqModel warningMqModel90 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                 list.add(warningMqModel90);
                 if (RegularUtil.checkContainsNumbers(model.getTEMP2()) && RegularUtil.checkContainsNumbers(model.getTEMP3())) {
@@ -437,6 +555,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     String format = df.format(f1);
                     monitorequipmentlastdata.setCurrenttemperaturediff(format);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getInstrumentConfigId(),format,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getProbeEName());
                     WarningMqModel warningMqModel900 = showModelUtils.procWarnModel(format, monitorinstrument, model.getNowTime(), 26, "温差");
                     list.add(warningMqModel900);
                 }
@@ -446,11 +567,17 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 if (StringUtils.isNotEmpty(model.getTEMP())) {
                     //首先确定有值，然后确定是非双探头才存值
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),model.getTEMP(),
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     if (RegularUtil.checkContainsNumbers(model.getTEMP())) {
                         if (StringUtils.isNotEmpty(model.getTEMP2())) {
                             if (!RegularUtil.checkContainsNumbers(model.getTEMP4()) || Math.abs(new Double(model.getTEMP()) - new Double(model.getTEMP4())) > 3) {
                                 monitorequipmentlastdata.setCurrenttemperature(ProbeOutlier.VALUE_IS_INVALID.getCode());
+                                BuildProbeInfoDto(hospitalcode,equipmentno,
+                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),ProbeOutlier.VALUE_IS_INVALID.getCode(),
+                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                             }
                             warningMqModel97.setCurrentData1(model.getTEMP4());
                         }
@@ -458,8 +585,17 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     list.add(warningMqModel97);
                 }
                 monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());// 室温
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(),model.getTEMP2(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
                 monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3()); // 壁温
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(),model.getTEMP3(),
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
                 monitorequipmentlastdata.setCurrentqcl(model.getQC());
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTQCL.getInstrumentConfigId(),model.getQC(),
+                        CurrentProbeInfoEnum.CURRENTQCL.getProbeEName());
                 WarningMqModel warningMqModel99 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "锁电量");
                 list.add(warningMqModel99);
                 if (RegularUtil.checkContainsNumbers(model.getTEMP2()) && RegularUtil.checkContainsNumbers(model.getTEMP3())) {
@@ -471,6 +607,9 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     String format = df.format(f1);
                     monitorequipmentlastdata.setCurrenttemperaturediff(format);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getInstrumentConfigId(),format,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getProbeEName());
                     WarningMqModel warningMqModel900 = showModelUtils.procWarnModel(format, monitorinstrument, model.getNowTime(), 26, "温差");
                     list.add(warningMqModel900);
                 }
@@ -478,35 +617,67 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "97":
                 // 判断是否存在温度探头
                 if (StringUtils.isNotEmpty(model.getTEMP())) {
-                    showModelUtils.Temp(list, monitorinstrument, model, equipmentno, model.getTEMP(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),model.getTEMP(),
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                    //执行报警服务
+                    WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
+                    list.add(warningMqModel97);
                 }
-
                 // CO2
                 if (StringUtils.isNotEmpty(model.getCO2())) {
-                    showModelUtils.CO2(list, monitorinstrument, model, equipmentno, model.getCO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),model.getCO2(),
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                    WarningMqModel warningCO2Model = showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
+                    list.add(warningCO2Model);
                 }
-
                 // O2
                 if (StringUtils.isNotEmpty(model.getO2())) {
-                    showModelUtils.O2(list, monitorinstrument, model, equipmentno, model.getO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrento2(model.getO2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),model.getO2(),
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                    WarningMqModel warningO2Model = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
+                    list.add(warningO2Model);
                 }
-
                 // 湿度
                 if (StringUtils.isNotEmpty(model.getRH())) {
-                    showModelUtils.RH(list, monitorinstrument, model, equipmentno, model.getRH(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenthumidity(model.getRH());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(),model.getRH(),
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                    WarningMqModel warningRhModel = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度");
+                    list.add(warningRhModel);
                 }
-
                 // PM5
                 if (StringUtils.isNotEmpty(model.getPM50())) {
-                    showModelUtils.PM5(list, monitorinstrument, model, equipmentno, model.getPM50(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentpm5(model.getPM50());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTPM5.getInstrumentConfigId(),model.getPM50(),
+                            CurrentProbeInfoEnum.CURRENTPM5.getProbeEName());
+                    WarningMqModel warningPm5Model = showModelUtils.procWarnModel(model.getPM50(), monitorinstrument, model.getNowTime(), 27, "PM5");
+                    list.add(warningPm5Model);
                 }
                 // PM0.5
                 if (StringUtils.isNotEmpty(model.getPM05())) {
-                    showModelUtils.PM05(list, monitorinstrument, model, equipmentno, model.getPM05(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentpm05(model.getPM05());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTPM05.getInstrumentConfigId(),model.getPM05(),
+                            CurrentProbeInfoEnum.CURRENTPM05.getProbeEName());
+                    WarningMqModel warningPM05Model = showModelUtils.procWarnModel(model.getPM05(), monitorinstrument, model.getNowTime(), 28, "PM05");
+                    list.add(warningPM05Model);
                 }
                 // 甲醛
                 if (StringUtils.isNotEmpty(model.getOX())) {
-                    showModelUtils.JQ(list, monitorinstrument, model, equipmentno, model.getOX(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentformaldehyde(model.getOX());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(),model.getOX(),
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
+                    WarningMqModel warningOxModel = showModelUtils.procWarnModel(model.getOX(), monitorinstrument, model.getNowTime(), 12, "甲醛");
+                    list.add(warningOxModel);
                 }
                 break;
             case "98":
@@ -1100,9 +1271,10 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         return new BigDecimal(a).divide(new BigDecimal(b), 2, BigDecimal.ROUND_HALF_UP).toString();
     }
 
-    public void  BuildProbeInfoDto(String hospitalCode, String equipmentNo,  String value, String probeEName){
+    public void  BuildProbeInfoDto(String hospitalCode, String equipmentNo, int instrumentConfigId ,String value, String probeEName){
         ProbeInfoDto probeInfoDto =  new ProbeInfoDto();
         probeInfoDto.setInputTime(new Date());
+        probeInfoDto.setInstrumentConfigId(instrumentConfigId);
         probeInfoDto.setHospitalCode(hospitalCode);
         probeInfoDto.setEquipmentNo(equipmentNo);
         probeInfoDto.setValue(value);
