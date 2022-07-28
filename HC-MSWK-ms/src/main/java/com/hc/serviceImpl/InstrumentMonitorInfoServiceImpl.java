@@ -708,40 +708,78 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 if (StringUtils.isNotEmpty(model.getTEMP2())) {
                     monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
                     BuildProbeInfoDto(hospitalcode,equipmentno,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(),model.getTEMP(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(),model.getTEMP2(),
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
                     WarningMqModel warningTemp2Model = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 14, "二路温度");
                     list.add(warningTemp2Model);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP3())) {
-
-                    showModelUtils.Temp3(list, monitorinstrument, model, equipmentno, model.getTEMP3(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(),model.getTEMP3(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                    WarningMqModel warningTemp3Model = showModelUtils.procWarnModel(model.getTEMP3(), monitorinstrument, model.getNowTime(), 15, "三路温度");
+                    list.add(warningTemp3Model);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP4())) {
-                    showModelUtils.Temp4(list, monitorinstrument, model, equipmentno, model.getTEMP4(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature4(model.getTEMP4());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getInstrumentConfigId(),model.getTEMP4(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName());
+                    WarningMqModel warningTemp4Model = showModelUtils.procWarnModel(model.getTEMP4(), monitorinstrument, model.getNowTime(), 16, "四路温度");
+                    list.add(warningTemp4Model);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP5())) {
-                    showModelUtils.Temp5(list, monitorinstrument, model, equipmentno, model.getTEMP5(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature5(model.getTEMP5());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getInstrumentConfigId(),model.getTEMP5(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName());
+                    WarningMqModel warningTemp5Model = showModelUtils.procWarnModel(model.getTEMP5(), monitorinstrument, model.getNowTime(), 17, "五路温度");
+                    list.add(warningTemp5Model);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP6())) {
-                    showModelUtils.Temp6(list, monitorinstrument, model, equipmentno, model.getTEMP6(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature6(model.getTEMP6());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getInstrumentConfigId(),model.getTEMP6(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getTEMP6(), monitorinstrument, model.getNowTime(), 18, "六路温度"));
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP7())) {
-                    showModelUtils.Temp7(list, monitorinstrument, model, equipmentno, model.getTEMP7(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature7(model.getTEMP7());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getInstrumentConfigId(),model.getTEMP7(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getTEMP7(), monitorinstrument, model.getNowTime(), 19, "七路温度"));
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP8())) {
-                    showModelUtils.Temp8(list, monitorinstrument, model, equipmentno, model.getTEMP8(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature8(model.getTEMP8());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getInstrumentConfigId(),model.getTEMP8(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getTEMP8(), monitorinstrument, model.getNowTime(), 20, "八路温度"));
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP9())) {
-                    showModelUtils.Temp9(list, monitorinstrument, model, equipmentno, model.getTEMP9(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature9(model.getTEMP9());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getInstrumentConfigId(),model.getTEMP9(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getTEMP9(), monitorinstrument, model.getNowTime(), 21, "九路温度"))
                 }
                 //十路温度
                 if (StringUtils.isNotEmpty(model.getTEMP10())) {
-                    showModelUtils.Temp10(list, monitorinstrument, model, equipmentno, model.getTEMP10(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenttemperature10(model.getTEMP10());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getInstrumentConfigId(),model.getTEMP10(),
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getTEMP10(), monitorinstrument, model.getNowTime(), 22, "十路温度"));
                 }
                 // CO2
                 if (StringUtils.isNotEmpty(model.getCO2())) {
-                    showModelUtils.CO2(list, monitorinstrument, model, equipmentno, model.getCO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),model.getCO2(),
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2"));
                 }
 
                 // O2

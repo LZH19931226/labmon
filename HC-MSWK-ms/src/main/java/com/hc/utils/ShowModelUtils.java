@@ -71,53 +71,6 @@ public class ShowModelUtils {
         list.add(warningMqModel);
     }
 
-    public void Temp1(List<WarningMqModel> list,  Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature1(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 13, "一路温度");
-        list.add(warningMqModel);
-    }
-
-    public void Temp2(List<WarningMqModel> list,  Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature2(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 14, "二路温度");
-        list.add(warningMqModel);
-    }
-
-    public void Temp3(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature3(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 15, "三路温度");
-        list.add(warningMqModel);
-    }
-
-    public void Temp4(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature4(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 16, "四路温度");
-        list.add(warningMqModel);
-    }
-
-    public void Temp5(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature5(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 17, "五路温度");
-        list.add(warningMqModel);
-    }
-
-    public void Temp6(List<WarningMqModel> list,  Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature6(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 18, "六路温度");
-        list.add(warningMqModel);
-    }
-
-    public void Temp7(List<WarningMqModel> list,  Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature7(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 19, "七路温度");
-        list.add(warningMqModel);
-    }
-
-    public void Temp8(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
-        monitorequipmentlastdata.setCurrenttemperature8(data);
-        WarningMqModel warningMqModel = procWarnModel(data, monitorinstrument, model.getNowTime(), 20, "八路温度");
-        list.add(warningMqModel);
-    }
 
     public void Temp9(List<WarningMqModel> list, Monitorinstrument monitorinstrument, ParamaterModel model,  String equipmentno, String data, Date time, Monitorequipmentlastdata monitorequipmentlastdata) {
         monitorequipmentlastdata.setCurrenttemperature9(data);

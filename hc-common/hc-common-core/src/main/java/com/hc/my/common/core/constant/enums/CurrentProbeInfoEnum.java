@@ -57,16 +57,16 @@ public enum CurrentProbeInfoEnum {
     CURRENTPM05(28,"currentpm05",""),
     //电流
     QCCURRENT(40,"qccurrent",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
+    //温度六
+    CURRENTTEMPERATURE6(18,"currenttemperature6",""),
+    //温度七
+    CURRENTTEMPERATURE7(19,"currenttemperature7",""),
+    //温度八
+    CURRENTTEMPERATURE8(20,"currenttemperature8",""),
+    //温度九
+    CURRENTTEMPERATURE9(21,"currenttemperature9",""),
+    //温度十
+    CURRENTTEMPERATURE10(22,"currenttemperature10",""),
     //当前O2
     CURRENTO2(2,"O2",""),
     //当前O2
