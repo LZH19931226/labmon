@@ -10,6 +10,8 @@ import com.hc.repository.MonitorinstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class MonitorinstrumentRepositoryImpl extends ServiceImpl<MonitorinstrumentDao,MonitorinstrumentPo> implements MonitorinstrumentRepository {
@@ -37,9 +39,9 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
      * @return
      */
     @Override
-    public MonitorinstrumentDTO selectMonitorByEno(String equipmentNo) {
-        MonitorinstrumentPo monitorinstrumentPos
-                = monitorinstrumentDao.selectOne(Wrappers.lambdaQuery(new MonitorinstrumentPo()).eq(MonitorinstrumentPo::getEquipmentno, equipmentNo));
+    public List<MonitorinstrumentDTO> selectMonitorByEno(String equipmentNo) {
+        List<MonitorinstrumentPo> monitorinstrumentPos
+                = monitorinstrumentDao.selectList(Wrappers.lambdaQuery(new MonitorinstrumentPo()).eq(MonitorinstrumentPo::getEquipmentno, equipmentNo));
         return BeanConverter.convert(monitorinstrumentPos,MonitorinstrumentDTO.class);
     }
 
@@ -105,5 +107,14 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
     @Override
     public Integer findProbeInformationByEno(String equipmentNo) {
         return monitorinstrumentDao.findProbeInformationByEno(equipmentNo);
+    }
+
+    /**
+     * @param monitorinstrumentDTO
+     */
+    @Override
+    public void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO) {
+        List<MonitorinstrumentPo> convert = BeanConverter.convert(monitorinstrumentDTO, MonitorinstrumentPo.class);
+        monitorinstrumentDao.selectBatchIds(convert);
     }
 }

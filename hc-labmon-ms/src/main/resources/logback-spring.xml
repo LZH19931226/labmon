@@ -32,6 +32,13 @@
           <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy> -->
     </appender>
+    <appender name="LOGSTASH"
+              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>172.16.10.203:10086</destination>
+        <queueSize>1048576</queueSize>
+        <encoder charset="GB2312"
+                 class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
     <appender name ="ASYNC" class= "ch.qos.logback.classic.AsyncAppender">
         <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
         <discardingThreshold >0</discardingThreshold>

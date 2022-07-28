@@ -568,7 +568,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),model.getTEMP(),
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     WarningMqModel warningMqModel97 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
-                    if (RegularUtil.checkContainsNumbers(model.getTEMP())) {
+                    if (RegularUtil.checkContainsNumbers(model.getTEMP())){
                         if (StringUtils.isNotEmpty(model.getTEMP2())) {
                             if (!RegularUtil.checkContainsNumbers(model.getTEMP4()) || Math.abs(new Double(model.getTEMP()) - new Double(model.getTEMP4())) > 3) {
                                 monitorequipmentlastdata.setCurrenttemperature(ProbeOutlier.VALUE_IS_INVALID.getCode());
@@ -1535,6 +1535,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         probeInfoDto.setValue(value);
         probeInfoDto.setProbeEName(probeEName);
         //调用redis缓存
+        probeRedisApi.addCurrentProbeValueInfo(probeInfoDto);
     }
 }
 

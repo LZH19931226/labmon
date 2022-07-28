@@ -422,14 +422,15 @@ public class MonitorEquipmentApplication {
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
         //修改监控探头信息（monitorinstrument）
-        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(monitorEquipmentCommand.getEquipmentNo());
-        if (!ObjectUtils.isEmpty(monitorinstrumentDTO)) {
-            monitorinstrumentDTO = monitorinstrumentDTO
-                    .setSn(monitorEquipmentCommand.getSn())
-                    .setChannel(monitorEquipmentCommand.getChannel())
-                    .setInstrumentname(monitorEquipmentCommand.getEquipmentName() + "探头");
-            monitorinstrumentService.updateMonitorinstrumentInfo(monitorinstrumentDTO);
+        List<MonitorinstrumentDTO> monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(monitorEquipmentCommand.getEquipmentNo());
+        if (CollectionUtils.isNotEmpty(monitorinstrumentDTO)) {
+            monitorinstrumentDTO.forEach(res->{
+                res.setSn(monitorEquipmentCommand.getSn());
+                res.setChannel(monitorEquipmentCommand.getChannel());
+                res.setInstrumentname(monitorEquipmentCommand.getEquipmentName()+"探头");
+            });
         }
+        monitorinstrumentService.bulkUpdate(monitorinstrumentDTO);
 
         //修改报警时间（monitorequipmentwarningtime）
         List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
@@ -514,9 +515,11 @@ public class MonitorEquipmentApplication {
     private String judgeSnWhetherToModify(MonitorEquipmentCommand monitorEquipmentCommand) {
         String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
         String sn = monitorEquipmentCommand.getSn();
-        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
-        if(!ObjectUtils.isEmpty(monitorinstrumentDTO) && !org.apache.commons.lang3.StringUtils.equals(monitorinstrumentDTO.getSn(),sn)){
-           return monitorinstrumentDTO.getSn();
+        List<MonitorinstrumentDTO> monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
+        for (MonitorinstrumentDTO dto : monitorinstrumentDTO) {
+            if(!ObjectUtils.isEmpty(dto) && !org.apache.commons.lang3.StringUtils.equals(dto.getSn(),sn)){
+                return dto.getSn();
+            }
         }
         return sn;
     }
@@ -536,7 +539,7 @@ public class MonitorEquipmentApplication {
         }
 
         //通过设备eno查询设备sn信息,用于redis删除
-        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
+        List<MonitorinstrumentDTO> monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
 
         MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
         //删除探头表中的信息
@@ -555,12 +558,13 @@ public class MonitorEquipmentApplication {
                 build(Context.getUserId(), monitorEquipmentDto.getEquipmentName(), convert, new MonitorEquipmentCommand(), OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
 
-        //删除redis缓存
-        if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
-            snDeviceRedisApi.deleteSnDeviceDto(monitorinstrumentDTO.getSn());
-            snDeviceRedisApi.deleteCurrentInfo(monitorinstrumentDTO.getHospitalcode(),monitorinstrumentDTO.getEquipmentno());
+        for (MonitorinstrumentDTO dto : monitorinstrumentDTO) {
+            //删除redis缓存
+            if(!ObjectUtils.isEmpty(dto)){
+                snDeviceRedisApi.deleteSnDeviceDto(dto.getSn());
+                snDeviceRedisApi.deleteCurrentInfo(dto.getHospitalcode(),dto.getEquipmentno());
+            }
         }
-
     }
 
     /**

@@ -6,6 +6,8 @@ import com.hc.service.MonitorinstrumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
 
@@ -30,7 +32,7 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
      * @return
      */
     @Override
-    public MonitorinstrumentDTO selectMonitorByEno(String equipmentNo) {
+    public List<MonitorinstrumentDTO> selectMonitorByEno(String equipmentNo) {
         return monitorinstrumentRepository.selectMonitorByEno(equipmentNo);
     }
 
@@ -96,4 +98,11 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         return monitorinstrumentRepository.findProbeInformationByEno(equipmentNo);
     }
 
+    /**
+     * @param monitorinstrumentDTO
+     */
+    @Override
+    public void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO) {
+        monitorinstrumentRepository.bulkUpdate(monitorinstrumentDTO);
+    }
 }

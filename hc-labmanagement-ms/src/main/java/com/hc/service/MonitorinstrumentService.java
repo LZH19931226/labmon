@@ -3,6 +3,8 @@ package com.hc.service;
 
 import com.hc.dto.MonitorinstrumentDTO;
 
+import java.util.List;
+
 /**
  *
  *
@@ -25,7 +27,7 @@ public interface MonitorinstrumentService{
      * @param equipmentNo 设备id
      * @return
      */
-    MonitorinstrumentDTO selectMonitorByEno(String equipmentNo);
+    List<MonitorinstrumentDTO> selectMonitorByEno(String equipmentNo);
 
     /**
      * 更新监控仪器
@@ -65,6 +67,10 @@ public interface MonitorinstrumentService{
      */
     Integer findProbeInformationByEno(String equipmentNo);
 
-
+    /**
+     * 批量更新
+     * @param monitorinstrumentDTO
+     */
+    void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO);
 }
 

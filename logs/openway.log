@@ -1,11 +1,31 @@
-2022-07-27 09:13:20.347 [reactor-http-nio-3] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMON-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
-2022-07-27 09:13:20.363 [reactor-http-nio-3] INFO  com.netflix.loadbalancer.BaseLoadBalancer - Client: HC-LABMON-ms instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMON-ms,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
-2022-07-27 09:13:20.368 [reactor-http-nio-3] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - Using serverListUpdater PollingServerListUpdater
-2022-07-27 09:13:20.381 [reactor-http-nio-3] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMON-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
-2022-07-27 09:13:20.382 [reactor-http-nio-3] INFO  c.n.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client HC-LABMON-ms initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=HC-LABMON-ms,current list of Servers=[172.16.4.2:10620],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
-},Server stats: [[Server:172.16.4.2:10620;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
-]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@2fb5e4a4
-2022-07-27 09:13:21.376 [PollingServerListUpdater-0] INFO  com.netflix.config.ChainedDynamicProperty - Flipping property: HC-LABMON-ms.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
-2022-07-27 09:26:04.264 [Thread-63] INFO  com.netflix.loadbalancer.PollingServerListUpdater - Shutting down the Executor Pool for PollingServerListUpdater
-2022-07-27 09:26:04.275 [Thread-34] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
-2022-07-27 09:26:04.596 [Thread-34] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-07-28 14:58:38.240 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-07-28 14:58:38.406 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$dc077816] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-07-28 14:58:38.589 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-openway-ms.yaml', group: 'DEFAULT_GROUP'
+2022-07-28 14:58:38.597 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-openway-ms-dev.yaml'}, NacosPropertySource {name='hc-openway-ms.yaml'}]}
+2022-07-28 14:58:39.092 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2022-07-28 14:58:39.094 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2022-07-28 14:58:39.211 [restartedMain] WARN  o.springframework.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-07-28 14:58:39.314 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=4b82b837-ca28-3b6d-8d6f-cd80c4d7825f
+2022-07-28 14:58:39.374 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$dc077816] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-07-28 14:58:39.709 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-07-28 14:58:39.709 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-07-28 14:58:39.712 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-07-28 14:58:39.712 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2022-07-28 14:58:40.114 [restartedMain] INFO  o.s.c.gateway.route.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-07-28 14:58:40.327 [restartedMain] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver - Exposing 22 endpoint(s) beneath base path '/actuator'
+2022-07-28 14:58:40.412 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-07-28 14:58:40.537 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-07-28 14:58:40.866 [restartedMain] INFO  o.s.boot.web.embedded.netty.NettyWebServer - Netty started on port(s): 10612
+2022-07-28 14:58:40.916 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-OPENWAY-ms 172.16.4.2:10612 register finished
