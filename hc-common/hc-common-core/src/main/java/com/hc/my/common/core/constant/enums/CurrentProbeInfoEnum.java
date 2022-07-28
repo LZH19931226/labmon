@@ -70,7 +70,7 @@ public enum CurrentProbeInfoEnum {
     //电压
     VOLTAGE(39,"voltage",""),
     //功率
-    POWER(41,"power","")
+    POWER(41,"power","");
     private int instrumentConfigId;
     private String probeEName;
     private String probeCName;
