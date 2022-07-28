@@ -760,7 +760,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     BuildProbeInfoDto(hospitalcode,equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getInstrumentConfigId(),model.getTEMP9(),
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName());
-                    list.add(showModelUtils.procWarnModel(model.getTEMP9(), monitorinstrument, model.getNowTime(), 21, "九路温度"))
+                    list.add(showModelUtils.procWarnModel(model.getTEMP9(), monitorinstrument, model.getNowTime(), 21, "九路温度"));
                 }
                 //十路温度
                 if (StringUtils.isNotEmpty(model.getTEMP10())) {
@@ -781,23 +781,43 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
                 // O2
                 if (StringUtils.isNotEmpty(model.getO2())) {
-                    showModelUtils.O2(list, monitorinstrument, model, equipmentno, model.getO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrento2(model.getO2());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),model.getO2(),
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2"));
                 }
                 //流量1
                 if (StringUtils.isNotEmpty(model.getPM05())) {
-                    showModelUtils.PM05(list, monitorinstrument, model, equipmentno, model.getO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentpm05(model.getPM05());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTPM05.getInstrumentConfigId(),model.getPM05(),
+                            CurrentProbeInfoEnum.CURRENTPM05.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getPM05(), monitorinstrument, model.getNowTime(), 28, "PM05"));
                 }
                 //流量2
                 if (StringUtils.isNotEmpty(model.getPM50())) {
-                    showModelUtils.PM5(list, monitorinstrument, model, equipmentno, model.getO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentpm5(model.getPM50());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTPM5.getInstrumentConfigId(),model.getPM50(),
+                            CurrentProbeInfoEnum.CURRENTPM5.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getPM50(), monitorinstrument, model.getNowTime(), 27, "PM5"));
                 }
                 //气压1
                 if (StringUtils.isNotEmpty(model.getRH())) {
-                    showModelUtils.RH(list, monitorinstrument, model, equipmentno, model.getO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrenthumidity(model.getRH());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(),model.getRH(),
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度"));
                 }
                 //气压2
                 if (StringUtils.isNotEmpty(model.getOX())) {
-                    showModelUtils.JQ(list, monitorinstrument, model, equipmentno, model.getO2(), model.getNowTime(), monitorequipmentlastdata);
+                    monitorequipmentlastdata.setCurrentformaldehyde(model.getOX());
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(),model.getOX(),
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
+                    list.add(showModelUtils.procWarnModel(model.getOX(), monitorinstrument, model.getNowTime(), 12, "甲醛"));
                 }
                 break;
             case "9a":

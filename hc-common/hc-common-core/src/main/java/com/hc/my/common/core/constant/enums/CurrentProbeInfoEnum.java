@@ -18,7 +18,7 @@ public enum CurrentProbeInfoEnum {
     //当前O2
     CURRENTO2(2,"currento2","O2"),
     //当前市电是否异常
-    CURRENTUPS(10,"currentups",""),
+    CURRENTUPS(10,"currentups","市电"),
     //当前开门记录
     CURRENTDOORSTATE(11,"currentdoorstate","报警信号"),
     //当前空气质量
@@ -56,21 +56,39 @@ public enum CurrentProbeInfoEnum {
     //当前PM0.5
     CURRENTPM05(28,"currentpm05","PM0.5"),
     //电流
-    QCCURRENT(40,"qccurrent",""),
-    //温度六
-    CURRENTTEMPERATURE6(18,"currenttemperature6",""),
-    //温度七
-    CURRENTTEMPERATURE7(19,"currenttemperature7",""),
-    //温度八
-    CURRENTTEMPERATURE8(20,"currenttemperature8",""),
-    //温度九
-    CURRENTTEMPERATURE9(21,"currenttemperature9",""),
-    //温度十
-    CURRENTTEMPERATURE10(22,"currenttemperature10",""),
+    QCCURRENT(40,"qccurrent","电流"),
     //电压
-    VOLTAGE(39,"voltage",""),
+    VOLTAGE(39,"voltage","电压"),
     //功率
-    POWER(41,"power","");
+    POWER(41,"power","功率"),
+    //六路温度
+    CURRENTTEMPERATURE6(18,"currenttemperature6","温度六"),
+    //左气流
+    CURRENTLEFTAIRFLOW(31,"currentleftairflow","左气流"),
+    //左舱室湿度
+    LEFTCOMPARTMENTHUMIDITY(37,"leftCompartmentHumidity","左舱室湿度"),
+    //右气流
+    CURRENTRIGHTAIRFLOW(34,"currentrightairflow","右气流"),
+    //右舱室湿度
+    RIGHTCOMPARTMENTHUMIDITY(38,"rightCompartmentHumidity","右舱室湿度"),
+    //九路温度
+    CURRENTTEMPERATURE9(21,"currenttemperature9","温度九"),
+    //10路温度
+    CURRENTTEMPERATURE10(22,"currenttemperature10","温度十"),
+    //当前N2
+    CURRENTN2(36,"currentn2","N2压力"),
+    //7路温度
+    CURRENTTEMPERATURE7(19,"currenttemperature7","温度七"),
+    //8路温度
+    CURRENTTEMPERATURE8(20,"currenttemperature8","温度八"),
+    //左盖板温度
+    CURRENTLEFTCOVERTEMPERATURE(29,"currentleftcovertemperature","左盖板温度"),
+    //右盖板温度
+    CURRENTRIGHTCOVERTEMPERATURE(30,"currentrightcovertemperature","右盖板温度"),
+    //左底板温度
+    CURRENTLEFTENDTEMPERATURE(32,"currentleftendtemperature","左底板温度"),
+    //右底板温度
+    CURRENTRIGHTENDTEMPERATURE(33,"currentrightendtemperature","右底板温度");
     private int instrumentConfigId;
     private String probeEName;
     private String probeCName;
