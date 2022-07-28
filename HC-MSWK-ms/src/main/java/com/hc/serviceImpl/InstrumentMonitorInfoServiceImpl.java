@@ -1466,13 +1466,38 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String voc3 = model.getVOC();
                 monitorequipmentlastdata.setProbe1data(probe1data);
                 monitorequipmentlastdata.setProbe1model(probe1model);
+
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        101,probe1data,
+                        probe1model);
+
                 monitorequipmentlastdata.setProbe2data(probe2data);
                 monitorequipmentlastdata.setProbe2model(probe2model);
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        102,probe2data,
+                        probe2model);
+
                 monitorequipmentlastdata.setProbe3data(probe3data);
                 monitorequipmentlastdata.setProbe3model(probe3model);
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        103,probe3data,
+                        probe3model);
+
                 monitorequipmentlastdata.setCurrentcarbondioxide(co24);
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(),co24,
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+
                 monitorequipmentlastdata.setCurrento2(o2);
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(),o2,
+                        CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+
                 monitorequipmentlastdata.setCurrentvoc(voc3);
+                BuildProbeInfoDto(hospitalcode,equipmentno,
+                        CurrentProbeInfoEnum.CURRENTVOC.getInstrumentConfigId(),voc3,
+                        CurrentProbeInfoEnum.CURRENTVOC.getProbeEName());
+
                 WarningMqModel probeWaringModel1;
                 if (StringUtils.equalsIgnoreCase(probe1model, ProbeOutlierMt310.THE_TEMPERATURE.getCode())){
                     probeWaringModel1 = showModelUtils.procWarnModel(probe1data, monitorinstrument, model.getNowTime(), 4, "温度");
@@ -1537,6 +1562,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         //调用redis缓存
         probeRedisApi.addCurrentProbeValueInfo(probeInfoDto);
     }
+
+
 }
 
 

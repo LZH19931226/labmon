@@ -89,6 +89,9 @@ public enum CurrentProbeInfoEnum {
     CURRENTLEFTENDTEMPERATURE(32,"currentleftendtemperature","左底板温度"),
     //右底板温度
     CURRENTRIGHTENDTEMPERATURE(33,"currentrightendtemperature","右底板温度");
+
+
+
     private int instrumentConfigId;
     private String probeEName;
     private String probeCName;
