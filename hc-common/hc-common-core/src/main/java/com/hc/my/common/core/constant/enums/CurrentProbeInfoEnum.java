@@ -8,53 +8,53 @@ import lombok.Getter;
 public enum CurrentProbeInfoEnum {
 
     //当前温度
-    CURRENT_TEMPERATURE(4,"currenttemperature",""),
+    CURRENT_TEMPERATURE(4,"currenttemperature","温度"),
     //当前电量
-    CURRENTQC(7,"currentqc",""),
+    CURRENTQC(7,"currentqc","电量"),
     //当前锁电量
-    CURRENTQCL(7,"currentqcl",""),
+    CURRENTQCL(7,"currentqcl","锁电量"),
     //当前二氧化碳
-    CURRENTCARBONDIOXIDE(1,"currentcarbondioxide",""),
+    CURRENTCARBONDIOXIDE(1,"currentcarbondioxide","CO2"),
     //当前O2
-    CURRENTO2(2,"currento2",""),
+    CURRENTO2(2,"currento2","O2"),
     //当前市电是否异常
     CURRENTUPS(10,"currentups",""),
     //当前开门记录
-    CURRENTDOORSTATE(11,"currentdoorstate",""),
+    CURRENTDOORSTATE(11,"currentdoorstate","报警信号"),
     //当前空气质量
-    CURRENTVOC(3,"currentvoc",""),
+    CURRENTVOC(3,"currentvoc","VOC"),
     //当前甲醛
-    CURRENTFORMALDEHYDE(12,"currentformaldehyde",""),
+    CURRENTFORMALDEHYDE(12,"currentformaldehyde","甲醛"),
     //当前PM10
-    CURRENTPM10(9,"currentpm10",""),
+    CURRENTPM10(9,"currentpm10","PM10"),
     //当前PM2_5
-    CURRENTPM25(8,"currentpm25",""),
+    CURRENTPM25(8,"currentpm25","PM2.5"),
     //当前气流
-    CURRENTAIRFLOW(6,"currentairflow",""),
+    CURRENTAIRFLOW(6,"currentairflow","气流"),
     //当前湿度
-    CURRENTHUMIDITY(5,"currenthumidity",""),
+    CURRENTHUMIDITY(5,"currenthumidity","湿度"),
     //左路温度  左舱室温度
-    CURRENTLEFTTEMPERATURE(23,"currentlefttemperature",""),
+    CURRENTLEFTTEMPERATURE(23,"currentlefttemperature","左舱室温度"),
     //右路温度  右舱室温度
-    CURRENTRIGTHTEMPERATURE(24,"currentrigthtemperature",""),
+    CURRENTRIGTHTEMPERATURE(24,"currentrigthtemperature","右舱室温度"),
     //培养箱气流
-    CURRENTAIRFLOW1(25,"currentairflow1",""),
+    CURRENTAIRFLOW1(25,"currentairflow1","气流"),
     //一路温度
-    CURRENTTEMPERATURE1(13,"currenttemperature1",""),
+    CURRENTTEMPERATURE1(13,"currenttemperature1","温度一"),
     //二路温度
-    CURRENTTEMPERATURE2(14,"currenttemperature2",""),
+    CURRENTTEMPERATURE2(14,"currenttemperature2","温度二"),
     //三路温度
-    CURRENTTEMPERATURE3(15,"currenttemperature3",""),
+    CURRENTTEMPERATURE3(15,"currenttemperature3","温度三"),
     //四路温度
-    CURRENTTEMPERATURE4(16,"currenttemperature4",""),
+    CURRENTTEMPERATURE4(16,"currenttemperature4","温度四"),
     //五路温度
-    CURRENTTEMPERATURE5(17,"currenttemperature5",""),
+    CURRENTTEMPERATURE5(17,"currenttemperature5","温度五"),
     //温差
-    CURRENTTEMPERATUREDIFF(26,"currenttemperaturediff",""),
+    CURRENTTEMPERATUREDIFF(26,"currenttemperaturediff","温差"),
     //当前PM5
-    CURRENTPM5(27,"currentpm5",""),
+    CURRENTPM5(27,"currentpm5","PM5"),
     //当前PM0.5
-    CURRENTPM05(28,"currentpm05",""),
+    CURRENTPM05(28,"currentpm05","PM0.5"),
     //电流
     QCCURRENT(40,"qccurrent",""),
     //温度六
@@ -67,24 +67,10 @@ public enum CurrentProbeInfoEnum {
     CURRENTTEMPERATURE9(21,"currenttemperature9",""),
     //温度十
     CURRENTTEMPERATURE10(22,"currenttemperature10",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
-    //当前O2
-    CURRENTO2(2,"O2",""),
+    //电压
+    VOLTAGE(39,"voltage",""),
+    //功率
+    POWER(41,"power","")
     private int instrumentConfigId;
     private String probeEName;
     private String probeCName;
