@@ -25,6 +25,11 @@ public class ProbeCurrentInfoDto {
     private Date inputTime;
 
     /**
+     * 设备id
+     */
+    private String equipmentNo;
+
+    /**
      * 探头集合
      */
     private List<ProbeInfoDto> probeInfoDtoList;

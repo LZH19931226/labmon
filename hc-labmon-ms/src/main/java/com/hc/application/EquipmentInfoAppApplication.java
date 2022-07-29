@@ -160,6 +160,7 @@ public class EquipmentInfoAppApplication {
             }
             ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
             probeInfo.setEquipmentName(equipmentname);
+            probeInfo.setEquipmentNo(equipmentno);
             probeInfo.setSn(sn);
             if(maxDate!=null){
                 probeInfo.setInputTime(maxDate);
