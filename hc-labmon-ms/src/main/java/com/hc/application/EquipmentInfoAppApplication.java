@@ -8,6 +8,7 @@ import com.hc.dto.HospitalEquipmentDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.ProbeCurrentInfoDto;
+import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
@@ -16,9 +17,11 @@ import com.hc.service.EquipmentInfoService;
 import com.hc.service.HospitalEquipmentService;
 import com.hc.service.InstrumentParamConfigService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -141,6 +144,13 @@ public class EquipmentInfoAppApplication {
         ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
         probeRedisCommand.setHospitalCode(hospitalCode);
         probeRedisCommand.setENoList(enoList);
+        //获取设备对象的探头信息
+        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
+        //先以设备no分组在以instrumentconfid分组
+        Map<String, Map<Integer, List<InstrumentParamConfigDto>>> collect1 = null;
+        if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
+            collect1 = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentconfigid)));
+        }
         //批量获取设备对应探头当前值信息
         Map<String, List<ProbeInfoDto>> result = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
         List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
@@ -153,6 +163,7 @@ public class EquipmentInfoAppApplication {
             if (result.containsKey(equipmentno)) {
                 probeInfoDtoList = result.get(equipmentno);
             }
+            //获取探头信息中最大的时间
             Date maxDate = null;
             if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
                 List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
@@ -166,11 +177,87 @@ public class EquipmentInfoAppApplication {
                 probeInfo.setInputTime(maxDate);
             }
             if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
+                //构建探头高低值
+                buildProbeHighAndLowValue(equipmentno, probeInfoDtoList, collect1);
                 probeInfo.setProbeInfoDtoList(probeInfoDtoList);
             }
             probeCurrentInfoDtos.add(probeInfo);
         }
         page.setRecords(probeCurrentInfoDtos);
         return page;
+    }
+
+    /**
+     * 构建探头高低值
+     * @param equipmentno
+     * @param probeInfoDtoList
+     * @param collect1
+     * @return
+     */
+    private void buildProbeHighAndLowValue(String equipmentno, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> collect1) {
+        if (MapUtils.isEmpty(collect1)) {
+            return;
+        }
+        for (ProbeInfoDto probeInfoDto : probeInfoDtoList) {
+            Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
+            switch (instrumentConfigId){
+                case 101:
+                case 102:
+                case 103:
+                    String probeEName = probeInfoDto.getProbeEName();
+                    getInstrumentConfigId(probeEName,instrumentConfigId);
+                    setTheProbeHeightAndLowValue(equipmentno,instrumentConfigId,collect1,probeInfoDto);
+                    break;
+                default:
+                    setTheProbeHeightAndLowValue(equipmentno,instrumentConfigId,collect1,probeInfoDto);
+                    break;
+            }
+        }
+
+    }
+
+    /**
+     * 设置探头高低值
+     * @param equipmentno 设备no
+     * @param instrumentConfigId 检测类型id
+     * @param collect1
+     * @return
+     */
+    private void setTheProbeHeightAndLowValue(String equipmentno, Integer instrumentConfigId, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> collect1,ProbeInfoDto probeInfoDto) {
+        if (collect1.containsKey(equipmentno) && collect1.get(equipmentno).containsKey(instrumentConfigId)) {
+            List<InstrumentParamConfigDto> list1 = collect1.get(equipmentno).get(instrumentConfigId);
+            if(CollectionUtils.isNotEmpty(list1) && !ObjectUtils.isEmpty(list1.get(0))){
+                InstrumentParamConfigDto instrumentParamConfigDto = list1.get(0);
+                probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
+                probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowlimit());
+                probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighlimit());
+            }
+        }
+    }
+
+    /**
+     * MT310根据ename返回检测的id
+     * @param probeEName
+     * @return
+     */
+    private void getInstrumentConfigId(String probeEName,int instrumentConfigId) {
+        switch (probeEName){
+            //温度
+            case "1":
+                instrumentConfigId = CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId();
+                break;
+            //湿度
+            case "2":
+                instrumentConfigId =  CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId();
+                break;
+            //O2浓度
+            case "3":
+                instrumentConfigId =  CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId();
+                break;
+            //CO2浓度
+            case "4":
+                instrumentConfigId =  CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId();
+                break;
+        }
     }
 }

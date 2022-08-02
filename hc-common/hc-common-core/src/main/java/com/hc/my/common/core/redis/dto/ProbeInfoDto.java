@@ -2,6 +2,7 @@ package com.hc.my.common.core.redis.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -47,5 +48,14 @@ public class ProbeInfoDto {
 
     /** 探头数据上传时间*/
     private Date inputTime;
+
+    /** 下限值 */
+    private BigDecimal lowLimit;
+
+    /** 上线值 */
+    private BigDecimal highLimit;
+
+    /** 饱和值 */
+    private BigDecimal saturation;
 
 }
