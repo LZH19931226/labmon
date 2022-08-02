@@ -19,6 +19,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * @author hc
@@ -28,8 +29,6 @@ import org.springframework.util.ObjectUtils;
 @Slf4j
 public class SocketMessageListener {
 
-    @Autowired
-    private MonitorEquipmentService monitorEquipmentService;
 
     @Autowired
     private InstrumentparamconfigService instrumentparamconfigService;
@@ -37,8 +36,6 @@ public class SocketMessageListener {
     @Autowired
     private ProbeRedisApi probeRedisApi;
 
-    @Autowired
-    private SnDeviceRedisApi snDeviceRedisApi;
 
     @StreamListener(EquipmentStateMsg.EQUIPMENT_STATE_INFO)
     public void onMessage(String messageContent) {
@@ -48,48 +45,41 @@ public class SocketMessageListener {
 
     private void process(String messageContent) {
         EquipmentState equipmentState = JSONUtil.toBean(messageContent, EquipmentState.class);
-        String state = equipmentState.getState();
-        String instrumentNo = equipmentState.getInstrumentNo();
+        String newState = equipmentState.getState();
         String instrumentConfigNo = equipmentState.getInstrumentConfigNo();
         String instrumentConfigId = equipmentState.getInstrumentConfigId();
         String hospitalCode = equipmentState.getHospitalCode();
-        String sn = equipmentState.getSn();
-        switch (state){
+        InstrumentInfoDto instrumentInfoDto = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentConfigNo + ":" + instrumentConfigId).getResult();
+        String oldState = instrumentInfoDto.getState();
+        if (StringUtils.isEmpty(oldState)){
+            oldState="0";
+        }
+        switch (newState){
+            //从不报警变成报警
             case SysConstants.IN_ALARM:
                 //判断缓存中的信息是否相同 不相同时更新
-                InstrumentInfoDto result = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentConfigNo + ":" + instrumentConfigId).getResult();
-                if(!ObjectUtils.isEmpty(result) && SysConstants.IN_ALARM.equals(result.getState())){
+                if(SysConstants.IN_ALARM.equals(oldState)){
                     return;
                 }
                 InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO();
                 instrumentparamconfigDTO.setInstrumentparamconfigno(instrumentConfigNo)
-                                .setState(state);
+                                .setState(newState);
                 instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
-                result.setState(state);
-                probeRedisApi.addProbeRedisInfo(result);
-                //判断设备是否在报警中 如果相同则不修改
-                SnDeviceDto snDeviceDto = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-                if (!ObjectUtils.isEmpty(snDeviceDto) && SysConstants.IN_ALARM.equals(snDeviceDto.getState())) {
-                    return;
-                }
-                //同步更新缓存和数据库
-                snDeviceDto.setState(state);
-                snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
-                MonitorEquipmentDto convert = BeanConverter.convert(snDeviceDto, MonitorEquipmentDto.class);
-                monitorEquipmentService.updateMonitorEquipment(convert);
+                instrumentInfoDto.setState(newState);
+                probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
                 break;
             case SysConstants.NORMAL:
+                //从报警恢复正常
                 //判断缓存中的设备状态是否相同 不同时做更改
-                InstrumentInfoDto instrumentInfoDto = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentNo + ":" + instrumentConfigId).getResult();
-                if(!ObjectUtils.isEmpty(instrumentInfoDto) && SysConstants.NORMAL.equals(instrumentInfoDto.getState())){
+                if( SysConstants.NORMAL.equals(oldState)){
                     return;
                 }
                 //同步更新缓存和数据库
                 InstrumentparamconfigDTO instrumentParamConfigInfo = new InstrumentparamconfigDTO();
                 instrumentParamConfigInfo.setInstrumentparamconfigno(instrumentConfigNo);
-                instrumentParamConfigInfo.setState(state);
+                instrumentParamConfigInfo.setState(newState);
                 instrumentparamconfigService.updateInfo(instrumentParamConfigInfo);
-                instrumentInfoDto.setState(state);
+                instrumentInfoDto.setState(newState);
                 probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
                 break;
             default:

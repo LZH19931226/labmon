@@ -50,7 +50,7 @@ public class EquipmentInfoAppApplication {
            throw new IedsException(LabMonEnumError.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
         }
         //补全数据库数据
-        completionData(hospitalCode);
+            completionData(hospitalCode);
         List<MonitorEquipmentDto> equipmentInfoByHospitalCode = equipmentInfoService.getEquipmentInfoByHospitalCode(hospitalCode);
         Map<String, List<MonitorEquipmentDto>> collect = equipmentInfoByHospitalCode.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
         List<HospitalEquipmentDto> dtoList = new ArrayList<>();

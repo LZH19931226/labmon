@@ -1,7 +1,6 @@
 package com.hc.exchange;
 
 import org.springframework.cloud.stream.annotation.Input;
-import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
 
 public interface BaoJinMsg {
@@ -13,8 +12,6 @@ public interface BaoJinMsg {
 	String EXCHANGE_NAME1="BJMSCTO";
 
 	String EXCHANGE_NAME2="BJMSCTB";
-
-	String EXCHANGE_NAME3 = "LASTDATA";
 
 	String EXCHANGE_NAME4 = "TIMEOUT";
 
@@ -32,6 +29,4 @@ public interface BaoJinMsg {
 	@Input(EXCHANGE_NAME2)
 	MessageChannel  getIutputChannel3();
 
-	@Input(EXCHANGE_NAME3)
-	MessageChannel  getIntputChannel4();
 }
