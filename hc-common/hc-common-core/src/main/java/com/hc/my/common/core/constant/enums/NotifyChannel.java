@@ -33,5 +33,6 @@ public enum NotifyChannel {
                 .filter(c -> c.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IedsException("Illegal enum value {}", code));
-    }}
+    }
+}
 

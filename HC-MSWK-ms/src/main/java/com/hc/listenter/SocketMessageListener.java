@@ -1,9 +1,12 @@
 package com.hc.listenter;
 
 import com.hc.exchange.SocketMessage;
-import com.hc.model.WarningMqModel;
+import com.hc.my.common.core.constant.enums.ElkLogDetail;
+import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.DateUtils;
+import com.hc.my.common.core.util.ElkLogDetailUtil;
+import com.hc.my.common.core.util.UniqueHash;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.MTJudgeService;
@@ -12,6 +15,7 @@ import com.hc.tcp.TcpClientApi;
 import com.hc.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -39,27 +43,30 @@ public class SocketMessageListener {
 
     @StreamListener(SocketMessage.EXCHANGE_NAME)
     public void onMessage(String messageContent) {
-        log.info("数据处理中心服务接收到队列1中数据:" + messageContent);
         mswkMessage(messageContent, "1");
     }
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME2)
     public void onMessage1(String messageContent) {
-        log.info("数据处理中心服务接收到队列2中数据:" + messageContent);
         mswkMessage(messageContent, "2");
     }
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME3)
     public void onMessage2(String messageContent) {
-        log.info("数据处理中心服务接收到队列3中数据:" + messageContent);
         mswkMessage(messageContent, "3");
     }
 
     public void mswkMessage(String messageContent, String topic) {
+        //该数据生命周期id
+        String id = UniqueHash.Id();
+        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()),messageContent,id);
+        if (StringUtils.isEmpty(messageContent)){
+            return;
+        }
         ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
-        assert model != null;
+        model.setLogId(id);
         //MT500  MT600判断
         //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
@@ -72,27 +79,24 @@ public class SocketMessageListener {
             return;
         }
         //执行数据写入 、 报警推送
-        List<WarningMqModel> save = instrumentMonitorInfoService.save(model, monitorinstrument);
+        List<WarningAlarmDo> warningAlarmDos = instrumentMonitorInfoService.save(model, monitorinstrument);
         //报警消息处理
-        if (CollectionUtils.isNotEmpty(save)) {
-            for (WarningMqModel warningModel : save) {
+        if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
+            for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
+                warningAlarmDo.setLogId(model.getLogId());
                 switch (topic) {
                     case "1":
-                        service.pushMessage1(JsonUtil.toJson(warningModel));
-                        log.info("数据插入服务结束，推送去报警服务：" + JsonUtil.toJson(warningModel));
+                        service.pushMessage1(JsonUtil.toJson(warningAlarmDo));
                         break;
                     case "2":
-                        service.pushMessage2(JsonUtil.toJson(warningModel));
-                        log.info("数据插入服务结束，推送去报警服务：" + JsonUtil.toJson(warningModel));
+                        service.pushMessage2(JsonUtil.toJson(warningAlarmDo));
                         break;
                     case "3":
-                        service.pushMessage3(JsonUtil.toJson(warningModel));
-                        log.info("数据插入服务结束，推送去报警服务：" + JsonUtil.toJson(warningModel));
+                        service.pushMessage3(JsonUtil.toJson(warningAlarmDo));
                         break;
                     default:
                         break;
                 }
-
             }
         }
     }
@@ -117,7 +121,7 @@ public class SocketMessageListener {
                 if (!data.getData().equals(data1)) {
                     tcpClientApi.addDeviceChannel(data);
                 }
-                log.info("sn数据相同命令上传间隔异常:{}", JsonUtil.toJson(data));
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()), JsonUtil.toJson(data),data.getLogId());
                 return true;
             } else {
                 //同步sn数据缓存
@@ -126,7 +130,6 @@ public class SocketMessageListener {
             }
         }catch (Exception e){
             e.printStackTrace();
-            log.info("sn在线设备同缓存数据失败:{}",e);
             return true;
         }
     }

@@ -9,6 +9,6 @@ import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
  */
 public interface WarningRuleService {
 
-    WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe, String remark);
+    WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe);
 
 }

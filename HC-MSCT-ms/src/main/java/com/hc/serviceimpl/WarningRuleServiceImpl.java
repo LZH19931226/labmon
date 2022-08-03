@@ -36,7 +36,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
      * 先判断医院   、  在进行判断是否三次报警
      */
     @Override
-    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe, String remark) {
+    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe) {
         WarningModel warningModel = new WarningModel();
         /*3.医院报警关联 如果是市电则直接报警*/
         //市电是立即报警

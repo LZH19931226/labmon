@@ -14,6 +14,8 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode
 public class ParamaterModel implements Serializable {
+    //日志id
+    private String logId;
     //设备sn号"
     private String SN;
     //命令id"

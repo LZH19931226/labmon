@@ -15,12 +15,15 @@ import com.hc.mapper.UserrightDao;
 import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.model.TimeoutEquipment;
 import com.hc.model.WarningModel;
-import com.hc.model.WarningMqModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
+import com.hc.my.common.core.constant.enums.ElkLogDetail;
 import com.hc.my.common.core.constant.enums.SysConstants;
+import com.hc.my.common.core.domain.MonitorinstrumentDo;
+import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.esm.EquipmentState;
 import com.hc.my.common.core.redis.dto.*;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.po.*;
 import com.hc.service.MessageSendService;
@@ -76,7 +79,6 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME)
     public void onMessage1(String messageContent) {
-        log.info("从通道" + BaoJinMsg.EXCHANGE_NAME + ":" + messageContent);
         msctMessage(messageContent);
 
     }
@@ -87,7 +89,6 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME1)
     public void onMessage2(String messageContent) {
-        log.info("从通道" + BaoJinMsg.EXCHANGE_NAME1 + ":" + JsonUtil.toJson(messageContent));
         msctMessage(messageContent);
 
     }
@@ -98,7 +99,6 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME2)
     public void onMessage3(String messageContent) {
-        log.info("从通道" + BaoJinMsg.EXCHANGE_NAME2 + ":" + messageContent);
         msctMessage(messageContent);
     }
 
@@ -172,29 +172,33 @@ public class SocketMessageListener {
     }
 
     public void msctMessage(String message) {
-        WarningMqModel mQmodel = JsonUtil.toBean(message, WarningMqModel.class);
-        assert mQmodel != null;
-        Monitorinstrument monitorinstrument = mQmodel.getMonitorinstrument();
-        WarningModel model = warningService.produceWarn(mQmodel, mQmodel.getMonitorinstrument(), mQmodel.getDate(), mQmodel.getInstrumentconfigid(), mQmodel.getUnit());
+        if (StringUtils.isEmpty(message)){
+            return;
+        }
+        WarningAlarmDo warningAlarmDo = JsonUtil.toBean(message, WarningAlarmDo.class);
+        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER05.getCode()),message,warningAlarmDo.getLogId());
+        WarningModel model = warningService.produceWarn(warningAlarmDo);
         if (ObjectUtils.isEmpty(model)) {
             return;
         }
+        MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         String equipmentname = model.getEquipmentname();
         String unit = UnitCase.caseUint(model.getUnit());
         String value = UnitCase.caseUint(model.getValue());
         String hospitalcode = model.getHospitalcode();
         HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
         if (null == hospitalInfoDto){
-            log.info("医院信息不存在:{}",hospitalcode);
             return;
         }
         String hospitalName = hospitalInfoDto.getHospitalName();
         //当前时间在报警的时间段内,开启警报信息
         boolean warningTimeBlockRule = warningTimeBlockRule(monitorinstrument);
-        if (!warningTimeBlockRule) {
-            //当前时间不在报警时间段内, 不用报警.直接返回
-            log.info("当前时间不在报警时间段内,医院编号:{},数据模型:{}",hospitalcode,JsonUtil.toJson(monitorinstrument));
-            return;
+        Integer instrumentconfigid = warningAlarmDo.getInstrumentconfigid();
+        if (10 != instrumentconfigid) {
+            if (!warningTimeBlockRule) {
+                log.info("当前时间不在报警时间段内,医院编号:{},数据模型:{}", hospitalcode, JsonUtil.toJson(monitorinstrument));
+                return;
+            }
         }
         //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
         List<UserRightRedisDto> list =addUserScheduLing(hospitalcode);
@@ -336,7 +340,7 @@ public class SocketMessageListener {
      * Y : 根据设备类型和联系人方式直接发送警报
      * N : 查询时间段.判断当前时间是否在报警的区间内
      */
-    private boolean warningTimeBlockRule(Monitorinstrument monitorinstrument) {
+    private boolean warningTimeBlockRule(MonitorinstrumentDo monitorinstrument) {
         String sn = monitorinstrument.getSn();
         String hospitalcode = monitorinstrument.getHospitalcode();
         SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
@@ -346,6 +350,7 @@ public class SocketMessageListener {
             String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
             //全天报警
             if (StringUtils.isEmpty(eqipmentAlwayalarm) || DictEnum.TURN_ON.getCode().equals(eqipmentAlwayalarm)) {
+
                 return true;
             } else {
                 //当前设备有配置时段,但是当前时间不在时段内.不报警
@@ -355,13 +360,7 @@ public class SocketMessageListener {
                 } else if (monitorinstrumentObj.getWarningTimeList() == null
                         || monitorinstrumentObj.getWarningTimeList().isEmpty()) {
                     //没有配置时间段,在设备类型查找
-                    String equipmenttypeid = monitorinstrument.getEquipmenttypeid();
-                    if (StringUtils.isEmpty(equipmenttypeid)) {
-                        String queryEquipmenttypeid = snDeviceDto.getEquipmentTypeId();
-                        if (StringUtils.isNotEmpty(queryEquipmenttypeid)) {
-                            equipmenttypeid = queryEquipmenttypeid;
-                        }
-                    }
+                    String equipmenttypeid =  snDeviceDto.getEquipmentTypeId();
                     HospitalEquipmentTypeInfoDto hosEqType = hospitalEquipmentTypeIdApi.findHospitalEquipmentTypeRedisInfo(hospitalcode, equipmenttypeid).getResult();
                     HospitalEquipmentTypeInfoModel equipmentTypeInfoModel = BeanConverter.convert(hosEqType, HospitalEquipmentTypeInfoModel.class);
                     String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();

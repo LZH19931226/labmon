@@ -5,7 +5,6 @@ import com.hc.device.SnDeviceRedisApi;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.LastDataService;
-import com.hc.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ public class LastDataServiceImpl implements LastDataService {
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(new Date());
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
-        log.info("数据插入,原始数据为：" + JsonUtil.toJson(monitorequipmentlastdata));
         //同步redis缓存
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
         snDeviceRedisApi.updateSnCurrentInfo(convert);
@@ -55,7 +53,6 @@ public class LastDataServiceImpl implements LastDataService {
                 }
             }
         } catch (Exception e) {
-            log.error("判断对象是否为空发生异常，原因：" + e);
             e.printStackTrace();
         }
         return true;
