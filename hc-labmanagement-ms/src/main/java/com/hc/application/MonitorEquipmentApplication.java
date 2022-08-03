@@ -2,9 +2,9 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
-import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
 import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.constants.HospitalEnumErrorCode;
 import com.hc.constants.error.MonitorequipmentEnumErrorCode;
@@ -21,7 +21,6 @@ import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
-import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
@@ -227,7 +226,7 @@ public class MonitorEquipmentApplication {
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
                 .setEquipmentNo(equipmentNo)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
-                .setCreateTime(DateUtils.getNowDate());
+                .setCreateTime(new Date());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
         //插入监控探头信息
