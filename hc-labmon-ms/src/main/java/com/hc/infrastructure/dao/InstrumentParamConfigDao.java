@@ -26,4 +26,6 @@ public interface InstrumentParamConfigDao extends BaseMapper<InstrumentParamConf
     List<InstrumentParamConfigDto> getInstrumentParamConfigByENo(String equipmentNo);
 
     List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(@Param("eNoList") List<String> eNoList);
+
+    List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode);
 }

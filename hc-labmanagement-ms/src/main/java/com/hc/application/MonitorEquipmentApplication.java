@@ -21,6 +21,7 @@ import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
@@ -225,7 +226,8 @@ public class MonitorEquipmentApplication {
                 .setEquipmentName(monitorEquipmentCommand.getEquipmentName())
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
                 .setEquipmentNo(equipmentNo)
-                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
+                .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                .setCreateTime(DateUtils.getNowDate());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
         //插入监控探头信息

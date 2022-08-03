@@ -1,5 +1,6 @@
 package com.hc.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -75,27 +76,39 @@ public class InstrumentParamConfigDto  implements Serializable {
     private BigDecimal saturation;
 
     /** 医院编码 */
+    @TableField(exist = false)
     private String hospitalcode;
 
     /** 医院名称 */
+    @TableField(exist = false)
     private String hospitalname;
 
     /** 设备类型名称 */
+    @TableField(exist = false)
     private String equipmenttypename;
 
+    /** 设备类型id */
+    @TableField(exist = false)
+    private String equipmenttypeid;
+
     /** 设备名称 */
+    @TableField(exist = false)
     private String equipmentname;
 
     /** 设备id */
+    @TableField(exist = false)
     private String equipmentno;
 
     /** sn */
+    @TableField(exist = false)
     private String sn;
 
     /** 检测类型名称 */
+    @TableField(exist = false)
     private String instrumentconfigname;
 
     /** 探头类型名称 */
+    @TableField(exist = false)
     private String instrumenttypename;
 
     /** 探头状态 */

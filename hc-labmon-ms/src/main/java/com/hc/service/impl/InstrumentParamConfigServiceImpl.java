@@ -28,4 +28,13 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     public List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList) {
         return instrumentParamConfigRepository.getInstrumentParamConfigByENoList(eNoList);
     }
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode) {
+        return instrumentParamConfigRepository.getInstrumentParamConfigByCode(hospitalCode);
+    }
 }

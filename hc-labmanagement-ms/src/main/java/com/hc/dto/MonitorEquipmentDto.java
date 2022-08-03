@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,4 +72,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
 
     /** 设备状态 */
     private String state;
+
+    /** 创建时间 */
+    private Date createTime;
 }

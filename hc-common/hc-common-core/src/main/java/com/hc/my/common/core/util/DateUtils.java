@@ -99,7 +99,7 @@ public class DateUtils {
      *
      * @return
      */
-    public String getNowDate() {
+    public static String getNowDate() {
         return datetimeFormat.format(new Date());
     }
 

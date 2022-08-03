@@ -38,4 +38,13 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
     public List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList) {
         return instrumentParamConfigDao.getInstrumentParamConfigByENoList(eNoList);
     }
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode) {
+        return instrumentParamConfigDao.getInstrumentParamConfigByCode(hospitalCode);
+    }
 }
