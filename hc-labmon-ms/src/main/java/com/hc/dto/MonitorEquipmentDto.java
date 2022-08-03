@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -68,7 +69,16 @@ public class MonitorEquipmentDto implements Serializable {
     @TableField(exist = false)
     private String lowlimit;
 
+    /**
+     * 设备状态
+     */
     @TableField(value = "state")
     private String state;
+
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time")
+    private Date createTime;
 
 }

@@ -12,4 +12,6 @@ public interface InstrumentParamConfigRepository extends IService<InstrumentPara
     Map<String, List<InstrumentParamConfigDto>> getInstrumentParamConfigByENo(String equipmentNo);
 
     List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList);
+
+    List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode);
 }

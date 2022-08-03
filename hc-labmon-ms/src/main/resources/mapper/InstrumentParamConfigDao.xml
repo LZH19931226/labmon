@@ -17,4 +17,20 @@
             </foreach>
     </select>
 
+    <select id="getInstrumentParamConfigByCode" resultType="com.hc.dto.InstrumentParamConfigDto">
+        SELECT
+            t1.equipmentno,
+            t1.equipmenttypeid,
+            t2.equipmenttypename,
+            t4.*
+        FROM
+            monitorequipment t1
+                LEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid
+                LEFT JOIN monitorinstrument t3 ON t1.equipmentno  = t3.equipmentno
+                LEFT JOIN instrumentparamconfig t4 ON t3.instrumentno = t4.instrumentno
+                LEFT JOIN hospitalequiment t5 ON t1.hospitalcode = t5.hospitalcode
+        WHERE t1.hospitalcode = #{hospitalCode}
+          AND t1.clientvisible = '1'
+
+    </select>
 </mapper>
