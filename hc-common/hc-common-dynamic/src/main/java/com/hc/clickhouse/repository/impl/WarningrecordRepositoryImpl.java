@@ -11,6 +11,8 @@ import com.hc.clickhouse.repository.WarningrecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @DS("slave")
 @Repository
 public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper, Warningrecord> implements WarningrecordRepository {
@@ -26,5 +28,14 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     @Override
     public void updateIsPhoneInfo(String pkid, String isPhone) {
         warningrecordMapper.updateIsPhoneInfo(pkid,isPhone);
+    }
+
+    /**
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<Warningrecord> getWarningRecordInfo(String equipmentNo) {
+        return list(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getEquipmentno,equipmentNo).eq(Warningrecord::getIsphone,"1"));
     }
 }

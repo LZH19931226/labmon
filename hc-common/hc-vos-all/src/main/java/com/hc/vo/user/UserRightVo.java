@@ -1,6 +1,7 @@
 package com.hc.vo.user;
 
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
+import com.hc.vo.hospital.HospitalInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,4 +74,7 @@ public class UserRightVo {
     private String role;
 
     private List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModels;
+
+    /** 医院信息 */
+    private HospitalInfoVo hospitalInfoVo;
 }

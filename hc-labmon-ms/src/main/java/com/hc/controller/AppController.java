@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.EquipmentInfoAppApplication;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
@@ -43,10 +44,12 @@ public class AppController {
         return equipmentInfoAppApplication.getImplementerInformation(hospitalCode);
     }
 
-    /**
-     * 查询设备曲线值
-     * @return
-     */
+    @GetMapping("/getNumUnreadDeviceAlarms")
+    @ApiOperation("获取设备报警未读数量")
+    public List<Warningrecord> getNumUnreadDeviceAlarms(@RequestParam("equipmentNo")String equipmentNo){
+        return equipmentInfoAppApplication.getNumUnreadDeviceAlarms(equipmentNo);
+    }
+
     @PostMapping("/getEuipmentCurveInfo")
     @ApiOperation("查询app设备曲线值")
     public CurveInfoDto getCurveInfo(@RequestBody CurveCommand curveCommand){

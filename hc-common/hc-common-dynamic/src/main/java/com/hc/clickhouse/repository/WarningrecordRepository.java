@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.clickhouse.po.Warningrecord;
 
+import java.util.List;
+
 public interface WarningrecordRepository extends IService<Warningrecord> {
 
     IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page);
@@ -15,4 +17,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
      * @param isPhone
      */
     void updateIsPhoneInfo(String pkid, String isPhone);
+
+    List<Warningrecord> getWarningRecordInfo(String equipmentNo);
 }

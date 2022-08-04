@@ -2,23 +2,17 @@ package com.hc.listenter;
 
 import cn.hutool.json.JSONUtil;
 import com.hc.device.ProbeRedisApi;
-import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.InstrumentparamconfigDTO;
-import com.hc.dto.MonitorEquipmentDto;
 import com.hc.exchanage.EquipmentStateMsg;
 import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.esm.EquipmentState;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
-import com.hc.my.common.core.redis.dto.SnDeviceDto;
-import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.InstrumentparamconfigService;
-import com.hc.service.MonitorEquipmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**

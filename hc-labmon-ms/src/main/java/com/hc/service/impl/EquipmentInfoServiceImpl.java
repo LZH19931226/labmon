@@ -1,6 +1,7 @@
 package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.ProbeCommand;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.repository.EquipmentInfoRepository;
@@ -88,12 +89,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     /**
      * 分页获取设备id
      * @param page
-     * @param hospitalCode
-     * @param equipmentTypeId
      * @return
      */
     @Override
-    public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, String hospitalCode, String equipmentTypeId) {
-        return equipmentInfoRepository.getEquipmentInfoByPage(page,hospitalCode,equipmentTypeId);
+    public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, ProbeCommand probeCommand) {
+        return equipmentInfoRepository.getEquipmentInfoByPage(page,probeCommand);
     }
 }

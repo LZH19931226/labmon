@@ -4,6 +4,7 @@
 <mapper namespace="com.hc.infrastructure.dao.EquipmentInfoDao">
 
     <select id="getSns" resultType="com.hc.dto.MonitorinstrumentDto">
+
     select equipmentno,sn from monitorinstrument where equipmentno in
     <foreach collection="equipmentNoList" item="id" open="(" close=")" separator="," index="index">
         #{id}
@@ -88,4 +89,15 @@
         order by b.inputdatetime
     </select>
 
+    <select id="getEquipmentInfoByPage" resultType="com.hc.dto.MonitorEquipmentDto">
+        select t1.*,
+               t2.sn
+        from
+            monitorequipment t1
+        left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno
+        where t1.hospitalcode = #{probeCommand.hospitalCode} and t1.equipmenttypeid = #{probeCommand.equipmentTypeId}
+        <if test="probeCommand.equipmentName != null and probeCommand.equipmentName != ''">
+            and t1.equipmentname like concat('%',#{probeCommand.equipmentName},'%')
+        </if>
+    </select>
 </mapper>
