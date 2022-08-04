@@ -3,6 +3,7 @@ package com.hc.repository.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hc.application.command.ProbeCommand;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.infrastructure.dao.EquipmentInfoDao;
 import com.hc.dto.MonitorEquipmentDto;
@@ -84,12 +85,10 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
 
     /**
      * @param page
-     * @param hospitalCode
-     * @param equipmentTypeId
      * @return
      */
     @Override
-    public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, String hospitalCode, String equipmentTypeId) {
-        return equipmentInfoDao.getEquipmentInfoByPage(page,hospitalCode,equipmentTypeId);
+    public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, ProbeCommand probeCommand) {
+        return equipmentInfoDao.getEquipmentInfoByPage(page,probeCommand);
     }
 }

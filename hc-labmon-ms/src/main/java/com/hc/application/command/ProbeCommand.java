@@ -15,6 +15,11 @@ public class ProbeCommand {
     private String equipmentTypeId;
 
     /**
+     * 设备名称
+     */
+    private String equipmentName;
+
+    /**
      * 分页大小
      */
     private Long pageSize;

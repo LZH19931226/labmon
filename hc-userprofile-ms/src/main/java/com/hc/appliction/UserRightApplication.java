@@ -19,6 +19,7 @@ import com.hc.phone.PhoneCodeApi;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.UserBackService;
 import com.hc.service.UserRightService;
+import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserRightVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -184,24 +185,45 @@ public class UserRightApplication {
         String hospitalCode = userRightDto.getHospitalCode();
         //查询医院信息
         HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
+        HospitalInfoVo  hospitalInfoVo = builderHospitalInfo(hospitalInfo);
         //未设置双因子的医院直接放行 设置了的医院在非app上登录直接放行
         if (!HospitalInfoEnum.ONE.getCode().equals(hospitalInfo.getFactor()) || LoginTypeEnum.H5.getCode().equals(loginType)) {
-            return builder(userRightDto,hospitalInfo.getHospitalName());
+            return builder(userRightDto,hospitalInfoVo);
         }
         //是在app上登录并且是非第一次登录 LoginStatus：0为第一次登录
         if(LoginTypeEnum.ANDROID.getCode().equals(loginType) && LoginStatusEnum.ONE.getCode().equals(loginStatus)){
-            return builder(userRightDto,hospitalInfo.getHospitalName());
+            return builder(userRightDto,hospitalInfoVo);
         }
         return UserRightVo.builder()
                 .twoFactorLogin(TwoFactorLoginEnum.ONE.getCode())
                 .username(userRightDto.getUsername())
                 .pwd(userRightDto.getPwd())
                 .isUse(userRightDto.getIsUse())
-                .hospitalCode(userRightDto.getHospitalCode())
                 .userid(userRightDto.getUserid())
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
-                .hospitalName(hospitalInfo.getHospitalName()).build();
+                .hospitalInfoVo(hospitalInfoVo)
+                .build();
+    }
+
+    /**
+     * 构建医院信息
+     * @param hospitalInfo
+     * @return
+     */
+    private HospitalInfoVo builderHospitalInfo(HospitalRegistrationInfoDto hospitalInfo) {
+        return HospitalInfoVo.builder()
+                .hospitalCode(hospitalInfo.getHospitalCode())
+                .hospitalName(hospitalInfo.getHospitalName())
+                .hospitalFullName(hospitalInfo.getHospitalFullName())
+                .updateTime(hospitalInfo.getUpdateTime())
+                .alwaysAlarm(hospitalInfo.getAlwaysAlarm())
+                .timeoutRedDuration(hospitalInfo.getTimeoutRedDuration())
+                .soundLightAlarm(hospitalInfo.getSoundLightAlarm())
+                .isEnable(hospitalInfo.getIsEnable())
+                .timeInterval(hospitalInfo.getTimeInterval())
+                .factor(hospitalInfo.getFactor())
+                .build();
     }
 
     /**
@@ -209,16 +231,15 @@ public class UserRightApplication {
      * @param userRightDto
      * @return
      */
-    private UserRightVo builder(UserRightDto userRightDto,String hospitalName) {
+    private UserRightVo builder(UserRightDto userRightDto, HospitalInfoVo  hospitalInfoVo) {
         return UserRightVo.builder()
                 .username(userRightDto.getUsername())
                 .pwd(userRightDto.getPwd())
                 .isUse(userRightDto.getIsUse())
-                .hospitalCode(userRightDto.getHospitalCode())
                 .userid(userRightDto.getUserid())
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
-                .hospitalName(hospitalName).build();
+                .hospitalInfoVo(hospitalInfoVo).build();
     }
 
     /**

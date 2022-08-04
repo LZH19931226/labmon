@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
+import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.constants.LabMonEnumError;
 import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
@@ -48,6 +50,9 @@ public class EquipmentInfoAppApplication {
 
     @Autowired
     private UserRightService userRightService;
+
+    @Autowired
+    private WarningrecordRepository warningrecordRepository;
 
     /**
      * 获取app首页设备数量
@@ -98,10 +103,9 @@ public class EquipmentInfoAppApplication {
      */
     public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(ProbeCommand probeCommand) {
         String hospitalCode = probeCommand.getHospitalCode();
-        String equipmentTypeId = probeCommand.getEquipmentTypeId();
         Page<ProbeCurrentInfoDto> page = new Page<>(probeCommand.getPageCurrent(),probeCommand.getPageSize());
         //分页查询设备信息
-        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page,hospitalCode,equipmentTypeId);
+        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page,probeCommand);
         List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
         ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
         probeRedisCommand.setHospitalCode(hospitalCode);
@@ -165,7 +169,7 @@ public class EquipmentInfoAppApplication {
                 case 102:
                 case 103:
                     String probeEName = probeInfoDto.getProbeEName();
-                    getInstrumentConfigId(probeEName,instrumentConfigId);
+                    instrumentConfigId =  getInstrumentConfigId(probeEName,instrumentConfigId);
                     setProbeHeightAndLowValue(equipmentno,instrumentConfigId,collect1,probeInfoDto);
                     break;
                 //其他设备
@@ -187,8 +191,10 @@ public class EquipmentInfoAppApplication {
             List<InstrumentParamConfigDto> list = collect.get(equipmentno).get(instrumentConfigId);
             if(CollectionUtils.isNotEmpty(list) && !ObjectUtils.isEmpty(list.get(0))){
                 InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
+                String state = instrumentParamConfigDto.getState();
                 probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
                 probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowlimit());
+                probeInfoDto.setState(state==null?"0":state);
                 probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighlimit());
             }
         }
@@ -199,7 +205,7 @@ public class EquipmentInfoAppApplication {
      * @param probeEName 探头的英文名称
      * @param instrumentConfigId  探头检测id
      */
-    private void getInstrumentConfigId(String probeEName,int instrumentConfigId) {
+    private Integer getInstrumentConfigId(String probeEName,int instrumentConfigId) {
         switch (probeEName){
             //温度
             case "1":
@@ -208,6 +214,7 @@ public class EquipmentInfoAppApplication {
             //湿度
             case "2":
                 instrumentConfigId =  CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId();
+
                 break;
             //O2浓度
             case "3":
@@ -218,6 +225,7 @@ public class EquipmentInfoAppApplication {
                 instrumentConfigId =  CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId();
                 break;
         }
+        return instrumentConfigId;
     }
 
     /**
@@ -321,8 +329,23 @@ public class EquipmentInfoAppApplication {
      * 获取实施人员信息
      * @param hospitalCode
      */
-    public List<UserRightDto> getImplementerInformation(String hospitalCode) {
+    public List<UserRightDto> getImplementerInformation(String hospitalCode){
         List<UserRightDto> list = userRightService.getImplementerInformation(hospitalCode);
-        return null;
+        list.forEach(res->{
+            if(StringUtils.isBlank(res.getReminders())){
+                res.setReminders("");
+            }
+        });
+        return list;
+    }
+
+    /**
+     * 获取设备报警未读数量
+     * @param equipmentNo
+     * @return
+     */
+    public  List<Warningrecord> getNumUnreadDeviceAlarms(String equipmentNo) {
+        List<Warningrecord> warningRecordInfo = warningrecordRepository.getWarningRecordInfo(equipmentNo);
+        return warningRecordInfo.stream().filter(res ->!StringUtils.equals("1", res.getMsgflag())).collect(Collectors.toList());
     }
 }
