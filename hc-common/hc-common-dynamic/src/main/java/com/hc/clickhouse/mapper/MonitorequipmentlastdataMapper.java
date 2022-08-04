@@ -17,7 +17,7 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(@Param("date") String date,
                                                                    @Param("equipmentNo") String equipmentNo);
 
-    @Select("SELECT * FROM lab_mon.monitorequipmentlastdata WHERE formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M') BETWEEN  #{startTime}  AND  #{endTime} AND equipmentno  = #{equipmentNo}")
+    @Select("SELECT * FROM lab_mon.monitorequipmentlastdata WHERE formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M') BETWEEN  #{startTime}  AND  #{endTime} AND equipmentno  = #{equipmentNo} ORDER BY inputdatetime ASC")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastData(@Param("startTime") String startTime,
                                                                    @Param("endTime") String endTime,
                                                                    @Param("equipmentNo") String equipmentNo);
@@ -58,7 +58,7 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
             "AND  formatDateTime(inputdatetime ,'%Y-%m-%d') = #{date}\n" +
             "and formatDateTime(inputdatetime ,'%H:%M:%S') BETWEEN #{startTime} and #{endTime}\n" +
             "GROUP BY equipmentno \n" +
-            ")")
+            ") ORDER BY inputdatetime ASC")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByDate(@Param("hospitalCode") String hospitalCode,
                                                                          @Param("startTime") String startTime,
                                                                          @Param("endTime") String endTime ,
@@ -157,7 +157,7 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
                                                             @Param("month") String month);
 
 
-    @Select("SELECT  inputdatetime,${instrumentConfigName}  FROM lab_mon.monitorequipmentlastdata WHERE  equipmentno  = #{equipmentNo}  AND  formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN #{startTime} AND #{endTime}" )
+    @Select("SELECT  inputdatetime,${instrumentConfigName}  FROM lab_mon.monitorequipmentlastdata WHERE  equipmentno  = #{equipmentNo}  AND  formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN #{startTime} AND #{endTime} ORDER BY inputdatetime ASC" )
     List<MonitorequipmentlastdataDto> getWarningCurveData(@Param("equipmentNo") String equipmentNo,
                                                           @Param("startTime") String startTime,
                                                           @Param("endTime") String endTime,
