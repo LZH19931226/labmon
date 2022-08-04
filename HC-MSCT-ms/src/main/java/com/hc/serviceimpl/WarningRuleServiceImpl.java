@@ -4,9 +4,11 @@ import com.hc.device.ProbeRedisApi;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.labmanagent.ProbeInfoApi;
 import com.hc.model.WarningModel;
+import com.hc.my.common.core.constant.enums.ElkLogDetail;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
+import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.service.WarningRuleService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
@@ -36,12 +38,13 @@ public class WarningRuleServiceImpl implements WarningRuleService {
      * 先判断医院   、  在进行判断是否三次报警
      */
     @Override
-    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe) {
+    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe,String logId) {
         WarningModel warningModel = new WarningModel();
         /*3.医院报警关联 如果是市电则直接报警*/
         //市电是立即报警
         Integer instrumentConfigId = probe.getInstrumentConfigId();
         if( instrumentConfigId != null && instrumentConfigId.equals(10) && "1".equals(data) ){
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER08.getCode()),JsonUtil.toJson(probe),logId);
             warningModel.setPkid(pkid);
             warningModel.setValue(data);
             warningModel.setEquipmentname(probe.getEquipmentName());
@@ -60,12 +63,12 @@ public class WarningRuleServiceImpl implements WarningRuleService {
         //判断是否三次报警
         if (CollectionUtils.isEmpty(warningRecord)) {
             probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
-            log.info("当前设备产生报警记录但是还未报警通知:{}", JsonUtil.toJson(probe));
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()),JsonUtil.toJson(probe),logId);
             return null;
         } else {
             if (warningRecord.size()<alarmtime){
                 probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
-                log.info("当前设备产生报警记录但是还未报警通知:{}", JsonUtil.toJson(probe));
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()),JsonUtil.toJson(probe),logId);
                 return null;
             }else {//这里已确认报警检测到异样已经有三次了
                 probeRedisApi.removeProbeWarnInfo(hospitalcode, instrumentParamConfigNO);
@@ -93,6 +96,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 //同步缓存
                 probeRedisApi.addProbeRedisInfo(probe);
             } else {
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER11.getCode()),JsonUtil.toJson(probe),logId);
                 return null;
             }
         } else {
