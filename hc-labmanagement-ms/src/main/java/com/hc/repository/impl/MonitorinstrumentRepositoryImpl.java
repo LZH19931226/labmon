@@ -115,6 +115,6 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
     @Override
     public void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO) {
         List<MonitorinstrumentPo> convert = BeanConverter.convert(monitorinstrumentDTO, MonitorinstrumentPo.class);
-        monitorinstrumentDao.selectBatchIds(convert);
+        this.updateBatchById(convert);
     }
 }
