@@ -235,14 +235,14 @@ public class SocketMessageListener {
             soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
         }
         //将设备状态信息推送到mq
-        sendEquimentProbeStatus(monitorinstrument,model,hospitalcode);
+        sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
     }
 
 
 
 
 
-    public void sendEquimentProbeStatus( MonitorinstrumentDo monitorinstrument , WarningModel model,String hospitalcode){
+    public void sendEquimentProbeStatus( MonitorinstrumentDo monitorinstrument , WarningModel model,String hospitalcode,String logId){
         EquipmentState equipmentState = new EquipmentState();
         equipmentState.setState(SysConstants.IN_ALARM);
         equipmentState.setEquipmentNo(monitorinstrument.getEquipmentno());
@@ -253,7 +253,7 @@ public class SocketMessageListener {
         equipmentState.setSn(model.getSn());
         String json = JsonUtil.toJson(equipmentState);
         messageSendService.send(json);
-        log.info("推送报警设备状态{}",JsonUtil.toJson(json));
+        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()),JsonUtil.toJson(equipmentState),logId);
     }
 
 

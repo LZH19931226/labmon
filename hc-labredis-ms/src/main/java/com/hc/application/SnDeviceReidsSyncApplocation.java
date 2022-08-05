@@ -65,38 +65,6 @@ public class SnDeviceReidsSyncApplocation {
      * @param monitorequipmentlastdataDto
      */
     public void updateSnCurrentInfo(MonitorequipmentlastdataDto monitorequipmentlastdataDto) {
-        //获取获取设备当前值
-        List<MonitorequipmentlastdataDto>   monitorEquipmentLastDataDtoList =
-                getCurrentInfo(monitorequipmentlastdataDto.getHospitalcode(), monitorequipmentlastdataDto.getEquipmentno());
-        if(CollectionUtils.isNotEmpty(monitorEquipmentLastDataDtoList)){
-            String cmdId = monitorequipmentlastdataDto.getCmdId();
-            String sn = monitorequipmentlastdataDto.getSn();
-            List<MonitorequipmentlastdataDto> removeList = new ArrayList<>();
-            for (MonitorequipmentlastdataDto dto : monitorEquipmentLastDataDtoList) {
-                boolean empty = StringUtils.isEmpty(dto.getSn());
-                if(empty){
-                    if(cmdId.equals(dto.getCmdId())){
-                        removeList.add(dto);
-                    }
-                }else {
-                    if(cmdId.equals(dto.getCmdId()) && sn.equals(dto.getSn())){
-                        removeList.add(dto);
-                    }
-                }
-            }
-            if(CollectionUtils.isNotEmpty(removeList)){
-                monitorEquipmentLastDataDtoList.removeAll(removeList);
-            }
-            monitorEquipmentLastDataDtoList.add(monitorequipmentlastdataDto);
-            redisUtils.hset(MswkServiceEnum.L.getCode()+monitorequipmentlastdataDto.getHospitalcode(),
-                    monitorequipmentlastdataDto.getEquipmentno(),JSONUtil.toJsonStr(monitorEquipmentLastDataDtoList));
-        }
-        else {
-            List<MonitorequipmentlastdataDto> monitorList = new ArrayList<>();
-            monitorList.add(monitorequipmentlastdataDto);
-            redisUtils.hset(MswkServiceEnum.L.getCode()+monitorequipmentlastdataDto.getHospitalcode(),
-                    monitorequipmentlastdataDto.getEquipmentno(),JSONUtil.toJsonStr(monitorList));
-        }
         //将lastData数据存入redis
         redisUtils.lSet(MswkServiceEnum.LAST_DATA.getCode(), JSON.toJSONString(monitorequipmentlastdataDto));
     }

@@ -36,7 +36,7 @@ public class LastDataServiceImpl implements LastDataService {
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(new Date());
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
-        //同步redis缓存
+        //数据存储队列
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
         snDeviceRedisApi.updateSnCurrentInfo(convert);
     }

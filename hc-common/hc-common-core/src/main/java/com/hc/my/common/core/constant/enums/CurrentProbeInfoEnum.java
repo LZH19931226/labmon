@@ -88,7 +88,17 @@ public enum CurrentProbeInfoEnum {
     //左底板温度
     CURRENTLEFTENDTEMPERATURE(32,"currentleftendtemperature","左底板温度"),
     //右底板温度
-    CURRENTRIGHTENDTEMPERATURE(33,"currentrightendtemperature","右底板温度");
+    CURRENTRIGHTENDTEMPERATURE(33,"currentrightendtemperature","右底板温度"),
+    //
+    PROBE1(101,null,"监测探头1"),
+    //
+    PROBE2(102,null,"监测探头2"),
+    //
+    PROBE3(103,null,"监测探头3"),
+    //二路开关量
+    CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2");
+
+
 
 
 

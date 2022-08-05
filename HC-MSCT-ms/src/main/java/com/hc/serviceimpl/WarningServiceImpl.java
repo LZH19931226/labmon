@@ -177,6 +177,7 @@ public class WarningServiceImpl implements WarningService {
                 }
                 break;
             case 11:
+            case 44:
                 if (StringUtils.equals("1", data)) {
                     data = "1.00";
                 } else {
