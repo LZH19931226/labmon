@@ -52,14 +52,17 @@ public class WarningServiceImpl implements WarningService {
         String hospitalcode = monitorinstrument.getHospitalcode();
         InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + instrumentconfigid).getResult();
         if (null == probe) {
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER06.getCode()),JsonUtil.toJson(monitorinstrument),warningAlarmDo.getLogId());
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER06.getCode()), JsonUtil.toJson(monitorinstrument), warningAlarmDo.getLogId());
             return null;
         }
         String warningphone = probe.getWarningPhone();
+        if (StringUtils.isEmpty(warningphone)){
+            warningphone="1";
+        }
         /*1.判断该设备是否开启报警服务*/
         if (StringUtils.equals("0", warningphone)) {
             //不启用报警，直接过滤信息
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER07.getCode()),JsonUtil.toJson(probe),warningAlarmDo.getLogId());
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER07.getCode()), JsonUtil.toJson(probe), warningAlarmDo.getLogId());
             return null;
         }
         Integer instrumentConfigId = probe.getInstrumentConfigId();
@@ -267,11 +270,7 @@ public class WarningServiceImpl implements WarningService {
                 break;
         }
         if (StringUtils.isNotEmpty(warningrecord.getPkid())) {
-            if (StringUtils.isNotEmpty(probe.getWarningPhone())) {
-               return  warningRuleService.warningRule(hospitalcode, warningrecord.getPkid(), data, probe);
-            } else {
-                return null;
-            }
+            return warningRuleService.warningRule(hospitalcode, warningrecord.getPkid(), data, probe, warningAlarmDo.getLogId());
         } else {
             //未产生报警记录，正常值情况，就删除
             probeRedisApi.removeProbeRedisInfo(hospitalcode, instrumentparamconfigNO);
@@ -290,7 +289,6 @@ public class WarningServiceImpl implements WarningService {
             return null;
         }
     }
-
 
 
 }
