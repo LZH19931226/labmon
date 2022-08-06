@@ -119,6 +119,11 @@ public class InstrumentmonitorDTO implements Serializable {
      */
     private String warningphone;
 
+    /**
+     * 通道
+     */
+    private String channel;
+
 }
 
 

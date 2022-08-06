@@ -264,7 +264,7 @@ public class MonitorEquipmentApplication {
                     .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""))
                     .setInstrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
                     .setInstrumentname(monitorinstrumentDTO.getInstrumentname())
-                    .setChannel(monitorEquipmentCommand.getChannel())
+                    .setChannel(instrumentmonitorDTO.getChannel())
                     .setWarningphone("0")
                     .setFirsttime(new Date())
                     .setHighlimit(instrumentmonitorDTO.getHighlimit())
@@ -500,7 +500,7 @@ public class MonitorEquipmentApplication {
                 .setInstrumentNo(monitorEquipmentCommand.getInstrumentno())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setInstrumentName(monitorinstrumenttypeDTO.getInstrumenttypename())
-                .setInstrumentTypeId(monitorinstrumenttypeDTO.getInstrumenttypeid().toString())
+                .setInstrumentTypeId(String.valueOf(monitorinstrumenttypeDTO.getInstrumenttypeid()))
                 .setSn(monitorEquipmentCommand.getSn())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
@@ -654,6 +654,7 @@ public class MonitorEquipmentApplication {
                             .instrumentconfigname(instrumentconfig.getInstrumentconfigname())
                             .highlimit(res.getHighlimit())
                             .saturation(res.getSaturation())
+                            .channel(StringUtils.isEmpty(res.getChannel())?"":res.getChannel())
                             .build();
                     instrumentmonitorVos.add(build1);
                 });
@@ -686,7 +687,6 @@ public class MonitorEquipmentApplication {
             MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = new MonitorinstrumenttypeDTO();
             monitorinstrumenttypeDTO.setInstrumenttypeid(instrumentparamconfigDTO.getInstrumenttypeid());
             monitorinstrumenttypeDTO.setInstrumenttypename(instrumentparamconfigDTO.getInstrumentname().replaceAll("探头", ""));
-
             if (map.containsKey(monitorinstrumenttypeDTO)) {
                 List<InstrumentmonitorDTO> list1 = map.get(monitorinstrumenttypeDTO);
                 InstrumentmonitorDTO instrumentmonitorDTO = new InstrumentmonitorDTO();
@@ -698,7 +698,6 @@ public class MonitorEquipmentApplication {
                 instrumentmonitorDTO.setSaturation(instrumentparamconfigDTO.getSaturation());
                 list1.add(instrumentmonitorDTO);
                 map.put(monitorinstrumenttypeDTO, list1);
-
             } else {
                 InstrumentmonitorDTO instrumentmonitorDTO = new InstrumentmonitorDTO();
                 instrumentmonitorDTO.setInstrumentconfigid(instrumentparamconfigDTO.getInstrumentconfigid());
@@ -715,7 +714,6 @@ public class MonitorEquipmentApplication {
         for (Map.Entry<MonitorinstrumenttypeDTO, List<InstrumentmonitorDTO>> monitorInstrumentTypeListEntry : map.entrySet()) {
             monitorinstrumenttype = monitorInstrumentTypeListEntry.getKey();
             monitorinstrumenttype.setInstrumentmonitorDTOS(monitorInstrumentTypeListEntry.getValue());
-
         }
         return monitorinstrumenttype;
     }

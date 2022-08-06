@@ -1,0 +1,200 @@
+2022-08-03 16:48:10.901 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-08-03 16:48:11.109 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$647057ca] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:11.434 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-08-03 16:48:11.440 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-08-03 16:48:12.771 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-08-03 16:48:13.086 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-08-03 16:48:13.173 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=df88243b-3400-30cf-9cd7-08a07783bed2
+2022-08-03 16:48:13.179 [restartedMain] INFO  o.s.i.c.DefaultConfiguringBeanFactoryPostProcessor - No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2022-08-03 16:48:13.185 [restartedMain] INFO  o.s.i.c.DefaultConfiguringBeanFactoryPostProcessor - No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+2022-08-03 16:48:13.192 [restartedMain] INFO  o.s.i.c.DefaultConfiguringBeanFactoryPostProcessor - No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2022-08-03 16:48:13.285 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$485654cd] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:13.307 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:13.325 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration$$EnhancerBySpringCGLIB$$b3480ffc] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:13.330 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration' of type [org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration$$EnhancerBySpringCGLIB$$8eda1b1c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:13.339 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration' of type [org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration$$EnhancerBySpringCGLIB$$c7c1c3e9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:13.344 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'mbeanServer' of type [com.sun.jmx.mbeanserver.JmxMBeanServer] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:13.352 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$647057ca] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 16:48:14.256 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-08-03 16:48:14.274 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-03 16:48:14.274 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-08-03 16:48:14.376 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-08-03 16:48:14.376 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2916 ms
+2022-08-03 16:48:14.460 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-08-03 16:48:14.462 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-03 16:48:14.561 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-03 16:48:15.224 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-08-03 16:48:15.293 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
+2022-08-03 16:48:15.914 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-08-03 16:48:15.914 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-08-03 16:48:15.918 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-08-03 16:48:15.918 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-08-03 16:48:16.031 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-08-03 16:48:16.202 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-08-03 16:48:16.368 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-08-03 16:48:17.002 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel nullChannel
+2022-08-03 16:48:17.018 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel ESI
+2022-08-03 16:48:17.106 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel errorChannel
+2022-08-03 16:48:17.157 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageHandler errorLogger
+2022-08-03 16:48:17.193 [restartedMain] INFO  o.s.c.stream.messaging.DirectWithAttributesChannel - Channel 'application-1.ESI' has 1 subscriber(s).
+2022-08-03 16:48:17.197 [restartedMain] INFO  o.s.integration.endpoint.EventDrivenConsumer - Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2022-08-03 16:48:17.197 [restartedMain] INFO  o.s.integration.channel.PublishSubscribeChannel - Channel 'application-1.errorChannel' has 1 subscriber(s).
+2022-08-03 16:48:17.197 [restartedMain] INFO  o.s.integration.endpoint.EventDrivenConsumer - started _org.springframework.integration.errorLogger
+2022-08-03 16:48:17.301 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-08-03 16:48:17.304 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-08-03 16:48:17.382 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.204_8848-chenkai] [subscribe] hc-labmanagement-ms.yaml+DEFAULT_GROUP+chenkai
+2022-08-03 16:48:17.383 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.204_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labmanagement-ms.yaml, group=DEFAULT_GROUP, cnt=1
+2022-08-03 16:48:17.383 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.204_8848-chenkai] [subscribe] hc-labmanagement-ms-dev.yaml+DEFAULT_GROUP+chenkai
+2022-08-03 16:48:17.384 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.204_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labmanagement-ms-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2022-08-03 16:48:17.426 [restartedMain] INFO  o.s.c.s.b.r.p.RabbitExchangeQueueProvisioner - declaring queue for inbound: ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw, bound to: ESI
+2022-08-03 16:48:17.429 [restartedMain] INFO  o.s.a.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [172.16.10.201:5672, 172.16.10.202:5672, 172.16.10.203:5672]
+2022-08-03 16:48:17.463 [restartedMain] INFO  o.s.a.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#640d10d8:0/SimpleConnection@44d6574d [delegate=amqp://rabbit@172.16.10.201:5672/HCMQ, localPort= 60749]
+2022-08-03 16:48:17.517 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw.errors
+2022-08-03 16:48:17.551 [restartedMain] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw.errors' has 1 subscriber(s).
+2022-08-03 16:48:17.551 [restartedMain] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw.errors' has 2 subscriber(s).
+2022-08-03 16:48:17.988 [restartedMain] INFO  o.s.i.amqp.inbound.AmqpInboundChannelAdapter - started inbound.ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw
+2022-08-03 16:48:17.990 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-08-03 16:48:18.004 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-08-03 16:48:18.027 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-08-03 16:48:18.201 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: addHospitalEquimentTypeUsingPOST_1
+2022-08-03 16:48:18.255 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-08-03 16:48:18.259 [restartedMain] INFO  com.alibaba.nacos.client.naming - [BEAT] adding beat: {"cluster":"DEFAULT","ip":"172.16.4.2","metadata":{"preserved.register.source":"SPRING_CLOUD"},"period":5000,"port":10613,"scheduled":false,"serviceName":"DEFAULT_GROUP@@HC-LABMANAGEMENT-ms","stopped":false,"weight":1.0} to beat map.
+2022-08-03 16:48:18.276 [restartedMain] INFO  com.alibaba.nacos.client.naming - [REGISTER-SERVICE] chenkai registering service DEFAULT_GROUP@@HC-LABMANAGEMENT-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.4.2","ipDeleteTimeout":30000,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":10613,"weight":1.0}
+2022-08-03 16:48:18.281 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.4.2:10613 register finished
+2022-08-03 17:10:55.864 [com.alibaba.nacos.client.Worker.longPolling.fixed-172.16.10.204_8848-chenkai] ERROR c.alibaba.nacos.client.config.http.ServerHttpAgent - [NACOS SocketTimeoutException httpPost] currentServerAddr: http://172.16.10.204:8848， err : Read timed out
+2022-08-03 17:10:55.865 [com.alibaba.nacos.client.Worker.longPolling.fixed-172.16.10.204_8848-chenkai] ERROR c.alibaba.nacos.client.config.http.ServerHttpAgent - no available server, currentServerAddr : http://172.16.10.204:8848
+2022-08-03 17:10:55.872 [com.alibaba.nacos.client.Worker.longPolling.fixed-172.16.10.204_8848-chenkai] ERROR com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.204_8848-chenkai] [check-update] get changed dataId exception
+java.net.ConnectException: no available server, currentServerAddr : http://172.16.10.204:8848
+	at com.alibaba.nacos.client.config.http.ServerHttpAgent.httpPost(ServerHttpAgent.java:170)
+	at com.alibaba.nacos.client.config.http.MetricsHttpAgent.httpPost(MetricsHttpAgent.java:64)
+	at com.alibaba.nacos.client.config.impl.ClientWorker.checkUpdateConfigStr(ClientWorker.java:377)
+	at com.alibaba.nacos.client.config.impl.ClientWorker.checkUpdateDataIds(ClientWorker.java:352)
+	at com.alibaba.nacos.client.config.impl.ClientWorker$LongPollingRunnable.run(ClientWorker.java:512)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:266)
+	at java.util.concurrent.FutureTask.run(FutureTask.java)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2022-08-03 17:10:55.873 [com.alibaba.nacos.client.Worker.longPolling.fixed-172.16.10.204_8848-chenkai] ERROR com.alibaba.nacos.client.config.impl.ClientWorker - longPolling error :
+java.net.ConnectException: no available server, currentServerAddr : http://172.16.10.204:8848
+	at com.alibaba.nacos.client.config.http.ServerHttpAgent.httpPost(ServerHttpAgent.java:170)
+	at com.alibaba.nacos.client.config.http.MetricsHttpAgent.httpPost(MetricsHttpAgent.java:64)
+	at com.alibaba.nacos.client.config.impl.ClientWorker.checkUpdateConfigStr(ClientWorker.java:377)
+	at com.alibaba.nacos.client.config.impl.ClientWorker.checkUpdateDataIds(ClientWorker.java:352)
+	at com.alibaba.nacos.client.config.impl.ClientWorker$LongPollingRunnable.run(ClientWorker.java:512)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:266)
+	at java.util.concurrent.FutureTask.run(FutureTask.java)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2022-08-03 17:37:31.424 [Thread-42] INFO  o.s.a.r.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2022-08-03 17:37:31.969 [Thread-42] INFO  o.s.a.r.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2022-08-03 17:37:31.969 [Thread-42] INFO  o.s.i.amqp.inbound.AmqpInboundChannelAdapter - stopped inbound.ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw
+2022-08-03 17:37:31.971 [Thread-42] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw.errors' has 1 subscriber(s).
+2022-08-03 17:37:31.971 [Thread-42] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw.errors' has 0 subscriber(s).
+2022-08-03 17:37:31.973 [Thread-42] INFO  o.s.integration.endpoint.EventDrivenConsumer - Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2022-08-03 17:37:31.973 [Thread-42] INFO  o.s.integration.channel.PublishSubscribeChannel - Channel 'application-1.errorChannel' has 0 subscriber(s).
+2022-08-03 17:37:31.973 [Thread-42] INFO  o.s.integration.endpoint.EventDrivenConsumer - stopped _org.springframework.integration.errorLogger
+2022-08-03 17:37:31.982 [Thread-42] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-08-03 17:37:31.982 [Thread-42] INFO  com.alibaba.nacos.client.naming - [BEAT] removing beat: DEFAULT_GROUP@@HC-LABMANAGEMENT-ms:172.16.4.2:10613 from beat map.
+2022-08-03 17:37:31.982 [Thread-42] INFO  com.alibaba.nacos.client.naming - [DEREGISTER-SERVICE] chenkai deregistering service DEFAULT_GROUP@@HC-LABMANAGEMENT-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.4.2","ipDeleteTimeout":30000,"metadata":{},"port":10613,"weight":1.0}
+2022-08-03 17:37:31.984 [Thread-42] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-08-03 17:37:31.985 [Thread-42] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-08-03 17:37:31.989 [Thread-42] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+2022-08-03 17:37:31.997 [Thread-42] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-03 17:37:32.002 [Thread-42] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-03 17:37:32.004 [Thread-42] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: nullChannel
+2022-08-03 17:37:32.004 [Thread-42] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: ESI.anonymous.hbbKxFHYQ-upZsWEn2ogWw.errors
+2022-08-03 17:37:32.004 [Thread-42] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: ESI
+2022-08-03 17:37:32.004 [Thread-42] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: errorChannel
+2022-08-03 17:37:32.004 [Thread-42] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: _org.springframework.integration.errorLogger.handler
+2022-08-03 17:37:43.974 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-08-03 17:37:44.536 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$8df6d996] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:44.975 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-08-03 17:37:44.982 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-08-03 17:37:47.108 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc]' package. Please check your configuration.
+2022-08-03 17:37:47.554 [restartedMain] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.hc.mapper*]' package. Please check your configuration.
+2022-08-03 17:37:47.679 [restartedMain] INFO  o.springframework.cloud.context.scope.GenericScope - BeanFactory id=df88243b-3400-30cf-9cd7-08a07783bed2
+2022-08-03 17:37:47.684 [restartedMain] INFO  o.s.i.c.DefaultConfiguringBeanFactoryPostProcessor - No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2022-08-03 17:37:47.690 [restartedMain] INFO  o.s.i.c.DefaultConfiguringBeanFactoryPostProcessor - No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+2022-08-03 17:37:47.702 [restartedMain] INFO  o.s.i.c.DefaultConfiguringBeanFactoryPostProcessor - No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2022-08-03 17:37:47.914 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$71dcd699] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:47.970 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:48.013 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration$$EnhancerBySpringCGLIB$$dcce91c8] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:48.023 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration' of type [org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration$$EnhancerBySpringCGLIB$$b8609ce8] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:48.039 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration' of type [org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration$$EnhancerBySpringCGLIB$$f14845b5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:48.046 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'mbeanServer' of type [com.sun.jmx.mbeanserver.JmxMBeanServer] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:48.058 [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$8df6d996] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-08-03 17:37:49.213 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10613 (http)
+2022-08-03 17:37:49.242 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-03 17:37:49.242 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.22]
+2022-08-03 17:37:49.379 [restartedMain] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-08-03 17:37:49.380 [restartedMain] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 4366 ms
+2022-08-03 17:37:49.518 [restartedMain] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-08-03 17:37:49.520 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-03 17:37:49.650 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-03 17:37:50.670 [restartedMain] WARN  o.s.b.d.autoconfigure.OptionalLiveReloadServer - Unable to start LiveReload server
+2022-08-03 17:37:50.769 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
+2022-08-03 17:37:51.697 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-08-03 17:37:51.697 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-08-03 17:37:51.702 [restartedMain] WARN  com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+2022-08-03 17:37:51.702 [restartedMain] INFO  com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-08-03 17:37:51.875 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2022-08-03 17:37:52.101 [restartedMain] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Initializing ExecutorService
+2022-08-03 17:37:52.345 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2022-08-03 17:37:53.481 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel ESI
+2022-08-03 17:37:53.597 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel nullChannel
+2022-08-03 17:37:53.614 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel errorChannel
+2022-08-03 17:37:53.670 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageHandler errorLogger
+2022-08-03 17:37:53.716 [restartedMain] INFO  o.s.c.stream.messaging.DirectWithAttributesChannel - Channel 'application-1.ESI' has 1 subscriber(s).
+2022-08-03 17:37:53.721 [restartedMain] INFO  o.s.integration.endpoint.EventDrivenConsumer - Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2022-08-03 17:37:53.721 [restartedMain] INFO  o.s.integration.channel.PublishSubscribeChannel - Channel 'application-1.errorChannel' has 1 subscriber(s).
+2022-08-03 17:37:53.721 [restartedMain] INFO  o.s.integration.endpoint.EventDrivenConsumer - started _org.springframework.integration.errorLogger
+2022-08-03 17:37:53.853 [restartedMain] INFO  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Loading nacos data, dataId: 'hc-labmanagement-ms.yaml', group: 'DEFAULT_GROUP'
+2022-08-03 17:37:53.857 [restartedMain] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='NACOS', propertySources=[NacosPropertySource {name='hc-labmanagement-ms-dev.yaml'}, NacosPropertySource {name='hc-labmanagement-ms.yaml'}]}
+2022-08-03 17:37:53.957 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.204_8848-chenkai] [subscribe] hc-labmanagement-ms.yaml+DEFAULT_GROUP+chenkai
+2022-08-03 17:37:53.958 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.204_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labmanagement-ms.yaml, group=DEFAULT_GROUP, cnt=1
+2022-08-03 17:37:53.958 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.ClientWorker - [fixed-172.16.10.204_8848-chenkai] [subscribe] hc-labmanagement-ms-dev.yaml+DEFAULT_GROUP+chenkai
+2022-08-03 17:37:53.958 [restartedMain] INFO  com.alibaba.nacos.client.config.impl.CacheData - [fixed-172.16.10.204_8848-chenkai] [add-listener] ok, tenant=chenkai, dataId=hc-labmanagement-ms-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2022-08-03 17:37:54.004 [restartedMain] INFO  o.s.c.s.b.r.p.RabbitExchangeQueueProvisioner - declaring queue for inbound: ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw, bound to: ESI
+2022-08-03 17:37:54.006 [restartedMain] INFO  o.s.a.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [172.16.10.201:5672, 172.16.10.202:5672, 172.16.10.203:5672]
+2022-08-03 17:37:54.040 [restartedMain] INFO  o.s.a.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#28cafb3b:0/SimpleConnection@8f58465 [delegate=amqp://rabbit@172.16.10.201:5672/HCMQ, localPort= 56292]
+2022-08-03 17:37:54.095 [restartedMain] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Registering MessageChannel ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw.errors
+2022-08-03 17:37:54.131 [restartedMain] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw.errors' has 1 subscriber(s).
+2022-08-03 17:37:54.131 [restartedMain] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw.errors' has 2 subscriber(s).
+2022-08-03 17:37:54.573 [restartedMain] INFO  o.s.i.amqp.inbound.AmqpInboundChannelAdapter - started inbound.ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw
+2022-08-03 17:37:54.576 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2022-08-03 17:37:54.589 [restartedMain] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2022-08-03 17:37:54.614 [restartedMain] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2022-08-03 17:37:54.809 [restartedMain] INFO  s.d.s.w.r.operation.CachingOperationNameGenerator - Generating unique operation named: addHospitalEquimentTypeUsingPOST_1
+2022-08-03 17:37:54.867 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10613 (http) with context path ''
+2022-08-03 17:37:54.871 [restartedMain] INFO  com.alibaba.nacos.client.naming - [BEAT] adding beat: {"cluster":"DEFAULT","ip":"172.16.4.2","metadata":{"preserved.register.source":"SPRING_CLOUD"},"period":5000,"port":10613,"scheduled":false,"serviceName":"DEFAULT_GROUP@@HC-LABMANAGEMENT-ms","stopped":false,"weight":1.0} to beat map.
+2022-08-03 17:37:54.888 [restartedMain] INFO  com.alibaba.nacos.client.naming - [REGISTER-SERVICE] chenkai registering service DEFAULT_GROUP@@HC-LABMANAGEMENT-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.4.2","ipDeleteTimeout":30000,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":10613,"weight":1.0}
+2022-08-03 17:37:54.893 [restartedMain] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - nacos registry, HC-LABMANAGEMENT-ms 172.16.4.2:10613 register finished
+2022-08-03 18:03:32.259 [Thread-50] INFO  o.s.a.r.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2022-08-03 18:03:32.769 [Thread-50] INFO  o.s.a.r.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2022-08-03 18:03:32.769 [Thread-50] INFO  o.s.i.amqp.inbound.AmqpInboundChannelAdapter - stopped inbound.ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw
+2022-08-03 18:03:32.770 [Thread-50] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw.errors' has 1 subscriber(s).
+2022-08-03 18:03:32.770 [Thread-50] INFO  o.s.cloud.stream.binder.BinderErrorChannel - Channel 'application-1.ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw.errors' has 0 subscriber(s).
+2022-08-03 18:03:32.771 [Thread-50] INFO  o.s.integration.endpoint.EventDrivenConsumer - Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2022-08-03 18:03:32.772 [Thread-50] INFO  o.s.integration.channel.PublishSubscribeChannel - Channel 'application-1.errorChannel' has 0 subscriber(s).
+2022-08-03 18:03:32.772 [Thread-50] INFO  o.s.integration.endpoint.EventDrivenConsumer - stopped _org.springframework.integration.errorLogger
+2022-08-03 18:03:32.778 [Thread-50] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registering from Nacos Server now...
+2022-08-03 18:03:32.778 [Thread-50] INFO  com.alibaba.nacos.client.naming - [BEAT] removing beat: DEFAULT_GROUP@@HC-LABMANAGEMENT-ms:172.16.4.2:10613 from beat map.
+2022-08-03 18:03:32.778 [Thread-50] INFO  com.alibaba.nacos.client.naming - [DEREGISTER-SERVICE] chenkai deregistering service DEFAULT_GROUP@@HC-LABMANAGEMENT-ms with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"172.16.4.2","ipDeleteTimeout":30000,"metadata":{},"port":10613,"weight":1.0}
+2022-08-03 18:03:32.780 [Thread-50] INFO  c.a.cloud.nacos.registry.NacosServiceRegistry - De-registration finished.
+2022-08-03 18:03:32.781 [Thread-50] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2022-08-03 18:03:32.783 [Thread-50] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+2022-08-03 18:03:32.789 [Thread-50] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-03 18:03:32.794 [Thread-50] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-03 18:03:32.794 [Thread-50] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: ESI
+2022-08-03 18:03:32.794 [Thread-50] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: nullChannel
+2022-08-03 18:03:32.795 [Thread-50] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: ESI.anonymous.zoWUHH0jTlWBjsNxP9jxBw.errors
+2022-08-03 18:03:32.795 [Thread-50] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: errorChannel
+2022-08-03 18:03:32.795 [Thread-50] INFO  o.s.integration.monitor.IntegrationMBeanExporter - Summary on shutdown: _org.springframework.integration.errorLogger.handler

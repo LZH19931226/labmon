@@ -116,5 +116,8 @@ public class InstrumentmonitorVo implements Serializable {
      * 报警电话
      */
     private String warningphone;
+
+    /** 通道 */
+    private String channel;
 }
 
