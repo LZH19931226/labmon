@@ -48,7 +48,8 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
             "left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno " +
             "where t1.hospitalcode = #{probeCommand.hospitalCode} and t1.equipmenttypeid = #{probeCommand.equipmentTypeId}" +
             "<if test = 'probeCommand.equipmentName != null and probeCommand.equipmentName != \"\"'>" +
-            " and t1.equipmentname like concat('%',#{probeCommand.equipmentName},'%')"+
+            " and t1.equipmentname like concat('%',#{probeCommand.equipmentName},'%')" +
+            " or t2.sn like concat('%',#{probeCommand.equipmentName},'%')"+
             "</if> "+
             "</script>")
     List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page,@Param("probeCommand")ProbeCommand probeCommand);
