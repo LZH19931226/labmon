@@ -1,7 +1,6 @@
 package com.hc.serviceimpl;
 
 import com.hc.clickhouse.po.Warningrecord;
-import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.ProbeRedisApi;
 import com.hc.model.WarningModel;
 import com.hc.my.common.core.constant.enums.ElkLogDetail;
@@ -33,8 +32,6 @@ import java.util.UUID;
 public class WarningServiceImpl implements WarningService {
     @Autowired
     private ProbeRedisApi probeRedisApi;
-    @Autowired
-    private WarningrecordRepository warningrecordDao;
     @Autowired
     private WarningRuleService warningRuleService;
     @Autowired
@@ -76,6 +73,9 @@ public class WarningServiceImpl implements WarningService {
         warningrecord.setInputdatetime(new Date());
         warningrecord.setHospitalcode(hospitalcode);
         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
+        warningrecord.setWarningvalue(data);
+        warningrecord.setLowLimit(probe.getLowLimit());
+        warningrecord.setHighLimit(probe.getHighLimit());
         /*2.探头类型数据范围判断*/
         switch (instrumentconfigid) {
             case 1:
@@ -108,8 +108,6 @@ public class WarningServiceImpl implements WarningService {
                 if (!RegularUtil.checkContainsNumbers(data)) {
                     //未接传感器
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:" + data);
-                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                    warningrecordDao.save(warningrecord);
                     return null;
                 } else {
                     if (StringUtils.isNotEmpty(data1)) {
@@ -122,14 +120,10 @@ public class WarningServiceImpl implements WarningService {
                             // 当两个值相差3度，值无效
                             if (!RegularUtil.checkContainsNumbers(data1) || Math.abs(new Double(data) - new Double(data1)) > 3) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：超出量程范围");
-                                warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "超出量程范围" + "]");
-                                warningrecordDao.save(warningrecord);
                                 return null;
                             }
                             if (LowHighVerify.verify(probe, data) && LowHighVerify.verify(probe, data1)) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                                warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                                warningrecordDao.save(warningrecord);
                                 break;
                             }
                             break;
@@ -137,14 +131,10 @@ public class WarningServiceImpl implements WarningService {
                             if (!StringUtils.equals(sns, "17")) {
                                 if (!RegularUtil.checkContainsNumbers(data1) || Math.abs(new Double(data) - new Double(data1)) > 3) {
                                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：超出量程范围");
-                                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "超出量程范围" + "]");
-                                    warningrecordDao.save(warningrecord);
                                     return null;
                                 }
                                 if (LowHighVerify.verify(probe, data) && LowHighVerify.verify(probe, data1)) {
                                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                                    warningrecordDao.save(warningrecord);
                                     break;
                                 }
                                 break;
@@ -154,8 +144,6 @@ public class WarningServiceImpl implements WarningService {
                             //大于最大值
                             if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                                warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                                warningrecordDao.save(warningrecord);
                                 break;
                             }
                             break;
@@ -164,16 +152,12 @@ public class WarningServiceImpl implements WarningService {
                     //高低值判断
                     if (LowHighVerify.verify(probe, data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                        warningrecordDao.save(warningrecord);
                     }
                 }
                 break;
             case 10:
                 if (StringUtils.equals("1", data)) {
                     warningrecord.setWarningremark("市电异常");
-                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "市电异常" + "]");
-                    warningrecordDao.save(warningrecord);
                 }
                 break;
             case 11:
@@ -185,8 +169,6 @@ public class WarningServiceImpl implements WarningService {
                 }
                 if (probe.getLowLimit().toString().equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "报警信号异常");
-                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "报警信息异常" + "]");
-                    warningrecordDao.save(warningrecord);
                 }
                 break;
             case 3:
@@ -202,68 +184,50 @@ public class WarningServiceImpl implements WarningService {
                 if (!RegularUtil.checkContainsNumbers(data)) {
                     //已接传感器，但未校准
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:未获取到数据");
-                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未获取到数据" + "]");
-                    warningrecordDao.save(warningrecord);
                     break;
                 }
                 if (LowHighVerify.verify(probe, data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                    warningrecordDao.save(warningrecord);
                 }
                 break;
             case 23:
             case 24:
                 if (!RegularUtil.checkContainsNumbers(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:" + data);
-                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                    warningrecordDao.save(warningrecord);
                     return null;
                 } else {
                     if (LowHighVerify.verify(probe, data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                        warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + data + "]");
-                        warningrecordDao.save(warningrecord);
                     }
                     break;
                 }
             case 25:
                 if ("A".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未获取到数据");
-                    warningrecordDao.save(warningrecord);
                     return null;
                 } else if ("B".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：流量控制关闭");
-                    warningrecordDao.save(warningrecord);
                     return null;
                 } else if ("C".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：气体流量不稳定");
-                    warningrecordDao.save(warningrecord);
                     return null;
                 } else if ("D".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：气口压力低");
-                    warningrecordDao.save(warningrecord);
                     return null;
                 } else if ("E".equals(data)) {
                     //产生报警
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未获取到数据");
-                    warningrecord.setWarningvalue(equipmentname + ":" + unit + " [" + "未获取到数据" + "]");
-                    warningrecordDao.save(warningrecord);
                     break;
                 } else if ("F".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：总开关关闭，但未断电");
-                    warningrecordDao.save(warningrecord);
                     return null;
                     //I M O为98协议上传的气流状态 需要报警的模型
                 } else if ("I".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：发生漏气报警事件");
-                    warningrecordDao.save(warningrecord);
                 } else if ("M".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备漏气报警");
-                    warningrecordDao.save(warningrecord);
                 } else if ("O".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备气压低报警");
-                    warningrecordDao.save(warningrecord);
                 } else {
                     break;
                 }
@@ -271,7 +235,7 @@ public class WarningServiceImpl implements WarningService {
                 break;
         }
         if (StringUtils.isNotEmpty(warningrecord.getPkid())) {
-            return warningRuleService.warningRule(hospitalcode, warningrecord.getPkid(), data, probe, warningAlarmDo.getLogId());
+            return warningRuleService.warningRule(hospitalcode, warningrecord, probe, warningAlarmDo);
         } else {
             //未产生报警记录，正常值情况，就删除
             probeRedisApi.removeProbeRedisInfo(hospitalcode, instrumentparamconfigNO);

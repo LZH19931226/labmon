@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface EquipmentStateMsg {
 
+    //用于修改探头当前是否处于报警得状态
     String EQUIPMENT_STATE_INFO = "ESI";
 
     @Output(EQUIPMENT_STATE_INFO)

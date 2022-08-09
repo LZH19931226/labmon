@@ -1,5 +1,6 @@
 package com.hc.model;
 
+import com.hc.clickhouse.po.Warningrecord;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -32,4 +33,7 @@ public class WarningModel {
     private String instrumentConfigId;
 
     private String sn;
+
+    //存储ck得报警信息
+    private Warningrecord warningrecord;
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @TableName(value = "warningrecord")
@@ -47,17 +48,18 @@ public class Warningrecord implements Serializable {
     private String warningremark;
 
     /**
-     * 推送状态
-     */
-    private String pushstate;
-
-    /**
      * 消息是否已读
      */
     private String msgflag;
 
-    private String isphone;
 
     private String equipmentno;
+
+    /** 最低值 */
+    private BigDecimal lowLimit;
+
+    /** 最高值 */
+    private BigDecimal highLimit;
+
 
 }

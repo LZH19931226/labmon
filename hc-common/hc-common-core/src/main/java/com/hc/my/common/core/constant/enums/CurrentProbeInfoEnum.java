@@ -1,7 +1,10 @@
 package com.hc.my.common.core.constant.enums;
 
+import com.hc.my.common.core.exception.IedsException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
@@ -98,13 +101,16 @@ public enum CurrentProbeInfoEnum {
     //二路开关量
     CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2");
 
-
-
-
-
     private int instrumentConfigId;
     private String probeEName;
     private String probeCName;
 
+    public static CurrentProbeInfoEnum from(int instrumentConfigId) {
+        return Arrays
+                .stream(CurrentProbeInfoEnum.values())
+                .filter(c -> c.getInstrumentConfigId()==(instrumentConfigId))
+                .findFirst()
+                .orElseThrow(() -> new IedsException("Illegal enum value {}", instrumentConfigId));
+    }
 
 }

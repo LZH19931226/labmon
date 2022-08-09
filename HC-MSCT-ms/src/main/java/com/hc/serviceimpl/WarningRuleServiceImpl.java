@@ -1,14 +1,18 @@
 package com.hc.serviceimpl;
 
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.device.ProbeRedisApi;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.labmanagent.ProbeInfoApi;
 import com.hc.model.WarningModel;
 import com.hc.my.common.core.constant.enums.ElkLogDetail;
+import com.hc.my.common.core.domain.MonitorinstrumentDo;
+import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
+import com.hc.service.AlmMsgService;
 import com.hc.service.WarningRuleService;
 import com.hc.utils.JsonUtil;
 import com.hc.utils.TimeHelper;
@@ -30,22 +34,29 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     @Autowired
     private ProbeRedisApi probeRedisApi;
     @Autowired
-    private ProbeInfoApi  probeInfoApi;
+    private ProbeInfoApi probeInfoApi;
     @Autowired
     private HospitalRedisApi hospitalRedisApi;
+    @Autowired
+    private AlmMsgService almMsgService;
+
     /**
      * 进来的默认都是启用报警的
      * 先判断医院   、  在进行判断是否三次报警
      */
     @Override
-    public WarningModel warningRule(String hospitalcode, String pkid, String data, InstrumentInfoDto probe,String logId) {
+    public WarningModel warningRule(String hospitalcode, Warningrecord warningrecord,InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo) {
+        String logId = warningAlarmDo.getLogId();
         WarningModel warningModel = new WarningModel();
+        warningModel.setWarningrecord(warningrecord);
+        String data = warningrecord.getWarningvalue();
+        String pkid = warningrecord.getPkid();
         /*3.医院报警关联 如果是市电则直接报警*/
         //市电是立即报警
         Integer instrumentConfigId = probe.getInstrumentConfigId();
-        if( instrumentConfigId != null && instrumentConfigId.equals(10) && "1".equals(data) ){
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER08.getCode()),JsonUtil.toJson(probe),logId);
-            warningModel.setPkid(pkid);
+        if (instrumentConfigId != null && instrumentConfigId.equals(10) && "1".equals(data)) {
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER08.getCode()), JsonUtil.toJson(probe), logId);
+            warningModel.setPkid(warningrecord.getPkid());
             warningModel.setValue(data);
             warningModel.setEquipmentname(probe.getEquipmentName());
             warningModel.setUnit(probe.getInstrumentName());
@@ -63,14 +74,14 @@ public class WarningRuleServiceImpl implements WarningRuleService {
         //判断是否三次报警
         if (CollectionUtils.isEmpty(warningRecord)) {
             probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()),JsonUtil.toJson(probe),logId);
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()), JsonUtil.toJson(probe), logId);
             return null;
         } else {
-            if (warningRecord.size()<alarmtime){
+            if (warningRecord.size() < alarmtime) {
                 probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()),JsonUtil.toJson(probe),logId);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()), JsonUtil.toJson(probe), logId);
                 return null;
-            }else {//这里已确认报警检测到异样已经有三次了
+            } else {//这里已确认报警检测到异样已经有三次了
                 probeRedisApi.removeProbeWarnInfo(hospitalcode, instrumentParamConfigNO);
                 warningModel.setPkid(pkid);
                 warningModel.setValue(data);
@@ -79,34 +90,49 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 warningModel.setHospitalcode(hospitalcode);
             }
         }
+        //医院设置报警时间间隔规则
+        if (alarmRuleHosInterval(probe, hospitalcode, logId)) {
+            return null;
+        }
+        //设备时段规则
+        if (!almMsgService.warningTimeBlockRule(warningAlarmDo.getMonitorinstrument())) {
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER13.getCode()), JsonUtil.toJson(probe),logId);
+            return null;
+        }
+        return warningModel;
+    }
+
+    public boolean alarmRuleHosInterval(InstrumentInfoDto probe, String hospitalcode, String logId) {
         Date warningtime = probe.getWarningtime();
-        if (null!=warningtime) {
-             //根据医院设置得报警时间间隔
+        if (null != warningtime) {
+            //根据医院设置得报警时间间隔
             HospitalInfoDto hospital = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
             String timeInterval = hospital.getTimeInterval();
-            if (StringUtils.isEmpty(timeInterval)){
+            if (StringUtils.isEmpty(timeInterval)) {
                 //未设置间隔时间则默认是60分钟
-                timeInterval= "60";
+                timeInterval = "60";
             }
             double datePoorMin = TimeHelper.getDatePoorMin(warningtime);
             if (datePoorMin > Double.parseDouble(timeInterval)) {
                 //可以报警
-                probeInfoApi.editWarningTime(instrumentParamConfigNO,TimeHelper.getNowDate(new Date()));
+                probeInfoApi.editWarningTime(probe.getInstrumentParamConfigNO(), TimeHelper.getNowDate(new Date()));
                 probe.setWarningtime(new Date());
                 //同步缓存
                 probeRedisApi.addProbeRedisInfo(probe);
+                return false;
             } else {
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER11.getCode()),JsonUtil.toJson(probe),logId);
-                return null;
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER11.getCode()), JsonUtil.toJson(probe), logId);
+                return true;
             }
         } else {
-            probeInfoApi.editWarningTime(instrumentParamConfigNO,TimeHelper.getNowDate(new Date()));
+            probeInfoApi.editWarningTime(probe.getInstrumentParamConfigNO(), TimeHelper.getNowDate(new Date()));
             probe.setWarningtime(new Date());
             //同步缓存
             probeRedisApi.addProbeRedisInfo(probe);
+            return false;
         }
-        return warningModel;
     }
+
 
     private WarningRecordDto buildProbeWarnInfo(String hospitalcode, String instrumentParamConfigNO, String value) {
         WarningRecordDto warningRecordDto = new WarningRecordDto();

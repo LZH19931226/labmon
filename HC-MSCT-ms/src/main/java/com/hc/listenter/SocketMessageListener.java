@@ -3,6 +3,7 @@ package com.hc.listenter;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.hospital.HospitalRedisApi;
@@ -174,21 +175,17 @@ public class SocketMessageListener {
             return;
         }
         String hospitalName = hospitalInfoDto.getHospitalName();
-        //当前时间在报警的时间段内,开启警报信息
-        Integer instrumentconfigid = warningAlarmDo.getInstrumentconfigid();
-        //市电不走报警时段规则
-        if (10 != instrumentconfigid) {
-            if (!almMsgService.warningTimeBlockRule(monitorinstrument)) {
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER13.getCode()),JsonUtil.toJson(model),warningAlarmDo.getLogId());
-                return;
-            }
-        }
         //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
         List<UserRightRedisDto> list =almMsgService.addUserScheduLing(hospitalcode);
         if (CollectionUtils.isEmpty(list)){
             ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER14.getCode()),JsonUtil.toJson(model),warningAlarmDo.getLogId());
             return;
         }
+        //产生报警记录
+        Warningrecord warningrecord = model.getWarningrecord();
+
+
+
         //获取电话
         List<Sendrecord> sendrecords = new ArrayList<>();
         for (UserRightRedisDto userright : list) {
@@ -230,6 +227,7 @@ public class SocketMessageListener {
         }
         //报警通知完毕之后,修改此条报警数据状态为已经推送
         warningrecordRepository.updateIsPhoneInfo(model.getPkid(),"1");
+
         //如果该医院开启了声光报警则需要推送声光报警指令
         if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
             soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
@@ -241,7 +239,7 @@ public class SocketMessageListener {
 
 
 
-
+    //需要将报警原因,报警通知到得人员,反写过去
     public void sendEquimentProbeStatus( MonitorinstrumentDo monitorinstrument , WarningModel model,String hospitalcode,String logId){
         EquipmentState equipmentState = new EquipmentState();
         equipmentState.setState(SysConstants.IN_ALARM);
