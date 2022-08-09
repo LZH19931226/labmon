@@ -36,6 +36,15 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
      */
     @Override
     public List<Warningrecord> getWarningRecordInfo(String equipmentNo) {
-        return list(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getEquipmentno,equipmentNo).eq(Warningrecord::getIsphone,"1"));
+        return list(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getEquipmentno,equipmentNo));
+    }
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<Warningrecord> getWarningInfo(String hospitalCode,String startTime,String endTime) {
+        return warningrecordMapper.getWarningInfo(hospitalCode,startTime,endTime);
     }
 }

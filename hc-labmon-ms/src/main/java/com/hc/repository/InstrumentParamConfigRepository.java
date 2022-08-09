@@ -14,4 +14,6 @@ public interface InstrumentParamConfigRepository extends IService<InstrumentPara
     List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(List<String> eNoList);
 
     List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode);
+
+    List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo);
 }

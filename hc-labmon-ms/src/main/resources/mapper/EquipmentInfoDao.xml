@@ -89,4 +89,16 @@
         order by b.inputdatetime
     </select>
 
+    <select id="batchGetEquipmentInfo" resultType="com.hc.dto.MonitorEquipmentDto">
+        select
+            t1.*,
+            t2.sn
+        from
+            monitorequipment t1
+        left join  monitorinstrument t2 on t1.equipmentno = t2.equipmentno
+        where t1.equipmentno in
+        <foreach collection="equipmentNoList" item="eqNo" index="index" open="(" separator="," close=")">
+            #{eqNo}
+        </foreach>
+    </select>
 </mapper>

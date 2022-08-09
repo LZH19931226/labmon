@@ -51,4 +51,6 @@ public interface EquipmentInfoService {
      * @return
      */
     List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, ProbeCommand probeCommand);
+
+    List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList);
 }

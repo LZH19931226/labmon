@@ -1,7 +1,7 @@
 package com.hc.application.response;
 
+import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentWarningTimeDTO;
-import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,8 +25,11 @@ public class WarningRecordInfo {
     /** 报警上传时间 */
     private Date inputDateTime;
 
+    /** 报警的数值 */
+    private String warningValue;
+
     /** 探头信息 */
-    private List<ProbeInfoDto> probeInfoDtoList;
+    private List<InstrumentParamConfigDto> instrumentParamConfigDtoList;
 
     /** 报警时段信息*/
     private List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS;

@@ -37,4 +37,13 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     public List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode) {
         return instrumentParamConfigRepository.getInstrumentParamConfigByCode(hospitalCode);
     }
+
+    /**
+     * @param configParamNo
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo) {
+        return instrumentParamConfigRepository.batchGetProbeInfo(configParamNo);
+    }
 }

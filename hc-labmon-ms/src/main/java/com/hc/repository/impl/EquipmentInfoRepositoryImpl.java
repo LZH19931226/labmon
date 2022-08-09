@@ -91,4 +91,13 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
     public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, ProbeCommand probeCommand) {
         return equipmentInfoDao.getEquipmentInfoByPage(page,probeCommand);
     }
+
+    /**
+     * @param equipmentNoList
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList) {
+        return equipmentInfoDao.batchGetEquipmentInfo(equipmentNoList);
+    }
 }

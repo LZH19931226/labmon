@@ -13,4 +13,6 @@ public interface InstrumentParamConfigService {
 
 
     List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode);
+
+    List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo);
 }

@@ -54,4 +54,5 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
             "</script>")
     List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page,@Param("probeCommand")ProbeCommand probeCommand);
 
+    List<MonitorEquipmentDto> batchGetEquipmentInfo(@Param("equipmentNoList") List<String> equipmentNoList);
 }
