@@ -47,6 +47,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     @Override
     public WarningModel warningRule(String hospitalcode, Warningrecord warningrecord,InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo) {
         String logId = warningAlarmDo.getLogId();
+        MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         WarningModel warningModel = new WarningModel();
         warningModel.setWarningrecord(warningrecord);
         String data = warningrecord.getWarningvalue();
@@ -95,7 +96,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
             return null;
         }
         //设备时段规则
-        if (!almMsgService.warningTimeBlockRule(warningAlarmDo.getMonitorinstrument())) {
+        if (!almMsgService.warningTimeBlockRule(monitorinstrument,warningrecord)) {
             ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER13.getCode()), JsonUtil.toJson(probe),logId);
             return null;
         }

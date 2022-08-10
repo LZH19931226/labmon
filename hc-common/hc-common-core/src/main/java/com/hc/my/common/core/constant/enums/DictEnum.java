@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum DictEnum {
     //所有的开关开启为1，其他的为未开启
     TURN_ON("1","开关开启"),
+    OFF("0","不是全天报警"),
     //设备类型
     ENVIRONMENT("1","环境"),
     INCUBATOR("2","培养箱"),

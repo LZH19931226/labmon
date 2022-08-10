@@ -17,39 +17,36 @@ public class DateUtils {
     private static SimpleDateFormat dateFormatHHmm = new SimpleDateFormat("HH:mm");
 
 
+
+
     /**
-     * 判断当前时间是否在[startTime, endTime]区间，注意时间格式要一致
+     * 当前时间是否在此时间区间内
      *
-     * @param nowTime   当前时间
-     * @param startTime 开始时间
-     * @param endTime   结束时间
-     * @author liu
+     * @param nowTime
+     * @param startTime
+     * @param endTime
+     * @return
      */
     public static boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
-        String format1 = simpleDateFormat.format(nowTime);
-        String format2 = simpleDateFormat.format(startTime);
-        String format3 = simpleDateFormat.format(endTime);
-        try {
-            Date parse1 = simpleDateFormat.parse(format1);
-            Date parse2 = simpleDateFormat.parse(format2);
-            Date parse3 = simpleDateFormat.parse(format3);
-            Calendar date = Calendar.getInstance();
-            date.setTime(parse1);
-
-            Calendar begin = Calendar.getInstance();
-            begin.setTime(parse2);
-
-            Calendar end = Calendar.getInstance();
-            end.setTime(parse3);
-            if (date.after(begin) && date.before(end)) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (nowTime.getTime() == startTime.getTime()
+                || nowTime.getTime() == endTime.getTime()) {
+            return true;
         }
-        return false;
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+
+        if (date.after(begin) && date.before(end)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 

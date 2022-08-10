@@ -74,8 +74,8 @@ public class WarningServiceImpl implements WarningService {
         warningrecord.setHospitalcode(hospitalcode);
         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
         warningrecord.setWarningvalue(data);
-        warningrecord.setLowLimit(probe.getLowLimit());
-        warningrecord.setHighLimit(probe.getHighLimit());
+        warningrecord.setLowLimit(probe.getLowLimit().toString());
+        warningrecord.setHighLimit(probe.getHighLimit().toString());
         /*2.探头类型数据范围判断*/
         switch (instrumentconfigid) {
             case 1:

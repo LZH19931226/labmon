@@ -1,5 +1,6 @@
 package com.hc.serviceimpl;
 
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.command.labmanagement.model.UserSchedulingModel;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
@@ -13,6 +14,7 @@ import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.po.MonitorEquipmentWarningTime;
 import com.hc.po.Monitorinstrument;
@@ -112,7 +114,7 @@ public class AlmMsgServiceImpl implements AlmMsgService {
      * N : 查询时间段.判断当前时间是否在报警的区间内
      */
     @Override
-    public boolean warningTimeBlockRule(MonitorinstrumentDo monitorinstrument) {
+    public boolean warningTimeBlockRule(MonitorinstrumentDo monitorinstrument, Warningrecord warningrecord) {
         String sn = monitorinstrument.getSn();
         String hospitalcode = monitorinstrument.getHospitalcode();
         SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
@@ -121,11 +123,12 @@ public class AlmMsgServiceImpl implements AlmMsgService {
             String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
             //全天报警
             if (StringUtils.isEmpty(eqipmentAlwayalarm) || DictEnum.TURN_ON.getCode().equals(eqipmentAlwayalarm)) {
+                warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
                 return true;
             } else {
                 //当前设备有配置时段,但是当前时间不在时段内.不报警
                 if (CollectionUtils.isNotEmpty(monitorinstrumentObj.getWarningTimeList())) {
-                    return currentTimeInWarningBlockEQ(monitorinstrumentObj);
+                    return currentTimeInWarningBlockEQ(monitorinstrumentObj,warningrecord);
                 } else{
                     //没有配置时间段,则读取设备类型得报警规则
                     String equipmenttypeid =  snDeviceDto.getEquipmentTypeId();
@@ -134,14 +137,16 @@ public class AlmMsgServiceImpl implements AlmMsgService {
                     String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
                     //设备类型全天报警,直接发送警报
                     if (DictEnum.TURN_ON.getCode().equals(alwayalarm)) {
+                        warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
                         return true;
                     } else {
                         //设备类型非全天报警又未设置时段,则不报警
                         List<MonitorEquipmentWarningTime> warningTimeList = equipmentTypeInfoModel.getWarningTimeList();
                         if (CollectionUtils.isEmpty(warningTimeList)){
+                            warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
                             return false;
                         }else {
-                            return currentTimeInWarningBlockEQTYPE(equipmentTypeInfoModel);
+                            return currentTimeInWarningBlockEQTYPE(equipmentTypeInfoModel,warningrecord);
                         }
                     }
                 }
@@ -151,13 +156,17 @@ public class AlmMsgServiceImpl implements AlmMsgService {
     }
 
 
-    private boolean currentTimeInWarningBlockEQ(Monitorinstrument monitorinstrument){
+    private boolean currentTimeInWarningBlockEQ(Monitorinstrument monitorinstrument,Warningrecord warningrecord){
         List<MonitorEquipmentWarningTime> warningEquipmentTimeList =monitorinstrument.getWarningTimeList();
+        warningrecord.setAlwayalarm(DictEnum.OFF.getCode());
+        warningrecord.setAlarmTime(buildHhSsTimeFormart(warningEquipmentTimeList));
         return currentTimeInWarningBlock(warningEquipmentTimeList);
     }
 
-    private boolean currentTimeInWarningBlockEQTYPE(HospitalEquipmentTypeInfoModel hospitalEquipmentTypeInfoModel){
+    private boolean currentTimeInWarningBlockEQTYPE(HospitalEquipmentTypeInfoModel hospitalEquipmentTypeInfoModel,Warningrecord warningrecord){
         List<MonitorEquipmentWarningTime> warningEquipmentTimeList = hospitalEquipmentTypeInfoModel.getWarningTimeList();
+        warningrecord.setAlwayalarm(DictEnum.OFF.getCode());
+        warningrecord.setAlarmTime(buildHhSsTimeFormart(warningEquipmentTimeList));
         return currentTimeInWarningBlock(warningEquipmentTimeList);
     }
 
@@ -172,7 +181,7 @@ public class AlmMsgServiceImpl implements AlmMsgService {
                     Date begintime = item.getBegintime();
                     Date endtime = item.getEndtime();
                     List<Date> dateInterval = sameDate(begintime, endtime);
-                    if (isEffectiveDate(nowTime.get(0), dateInterval.get(0), dateInterval.get(1))) {
+                    if (DateUtils.isEffectiveDate(nowTime.get(0), dateInterval.get(0), dateInterval.get(1))) {
                         successDate += 1;
                     }
                 }
@@ -183,6 +192,25 @@ public class AlmMsgServiceImpl implements AlmMsgService {
         return false;
     }
 
+    /**
+     * 将日期转换为字符串,拼接对应时间格式
+     */
+    public String buildHhSsTimeFormart(List<MonitorEquipmentWarningTime> monitorEquipmentWarningTimes){
+         if (CollectionUtils.isNotEmpty(monitorEquipmentWarningTimes)){
+             StringBuffer timeBuffer = new StringBuffer();
+             monitorEquipmentWarningTimes.forEach(monitorEquipmentWarningTime -> {
+                 Date endtime = monitorEquipmentWarningTime.getEndtime();
+                 Date begintime = monitorEquipmentWarningTime.getBegintime();
+                 if (null!=begintime && null!= endtime){
+                     timeBuffer.append(DateUtils.parseDatetime(begintime));
+                     timeBuffer.append("~");
+                     timeBuffer.append(DateUtils.parseDatetime(endtime));
+                 }
+             });
+             return timeBuffer.toString();
+         }
+         return  null;
+    }
 
     /**
      * 修改时间的年月日
@@ -208,35 +236,7 @@ public class AlmMsgServiceImpl implements AlmMsgService {
         return null;
     }
 
-    /**
-     * 当前时间是否在此时间区间内
-     *
-     * @param nowTime
-     * @param startTime
-     * @param endTime
-     * @return
-     */
-    public boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
-        if (nowTime.getTime() == startTime.getTime()
-                || nowTime.getTime() == endTime.getTime()) {
-            return true;
-        }
 
-        Calendar date = Calendar.getInstance();
-        date.setTime(nowTime);
-
-        Calendar begin = Calendar.getInstance();
-        begin.setTime(startTime);
-
-        Calendar end = Calendar.getInstance();
-        end.setTime(endTime);
-
-        if (date.after(begin) && date.before(end)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     private Monitorinstrument objectConversion(SnDeviceDto snDeviceDto) {
         if(ObjectUtils.isEmpty(snDeviceDto)){

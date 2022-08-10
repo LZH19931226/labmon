@@ -183,8 +183,7 @@ public class SocketMessageListener {
         }
         //产生报警记录
         Warningrecord warningrecord = model.getWarningrecord();
-
-
+        warningrecordRepository.save(warningrecord);
 
         //获取电话
         List<Sendrecord> sendrecords = new ArrayList<>();

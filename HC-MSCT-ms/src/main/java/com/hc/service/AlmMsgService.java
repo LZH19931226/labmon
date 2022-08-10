@@ -1,5 +1,6 @@
 package com.hc.service;
 
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.my.common.core.domain.MonitorinstrumentDo;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 
@@ -11,5 +12,5 @@ public interface AlmMsgService {
     List<UserRightRedisDto> addUserScheduLing(String hospitalcode);
 
     //通过设备获取设备报警是否处于报警时段之内
-    boolean warningTimeBlockRule(MonitorinstrumentDo monitorinstrument);
+    boolean warningTimeBlockRule(MonitorinstrumentDo monitorinstrument, Warningrecord warningrecord);
 }

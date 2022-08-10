@@ -46,20 +46,29 @@ public class Warningrecord implements Serializable {
      * 报警信息
      */
     private String warningremark;
-
     /**
      * 消息是否已读
      */
     private String msgflag;
 
-
     private String equipmentno;
 
     /** 最低值 */
-    private BigDecimal lowLimit;
+    private String lowLimit;
 
     /** 最高值 */
-    private BigDecimal highLimit;
+    private String highLimit;
 
+    /** 报警时间段 */
+    private String alarmTime;
+
+    /** 是否全天报警 */
+    private String alwayalarm;
+
+    /** 电话通知到得用户 */
+    private String phoneCallUser;
+
+    /** 短信通知到得用户 */
+    private String mailCallUser;
 
 }
