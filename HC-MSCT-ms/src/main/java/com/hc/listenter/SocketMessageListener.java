@@ -2,6 +2,7 @@ package com.hc.listenter;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.exchange.BaoJinMsg;
@@ -128,32 +129,32 @@ public class SocketMessageListener {
                 return;
             }
             log.info("进入超时报警队列联系人：" + JsonUtil.toJson(userrightByHospitalcodeAAndTimeout));
-//            for (Userright userright : userrightByHospitalcodeAAndTimeout) {
-//                String phonenum = userright.getPhonenum();
-//                if (StringUtils.isEmpty(phonenum)) {
-//                    continue;
-//                }
-//                /**
-//                 * <option value="0">电话+短信</option>
-//                 * <option value="1">电话</option>
-//                 * <option value="2">短信</option>
-//                 * <option value="3">不报警</option>
-//                 */
-//                String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
-//                // 超时报警
-//                if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")){
-//                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-//                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
-//                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
-//                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-//                } else if (StringUtils.equals(timeoutwarning, "1")) {
-//                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-//                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
-//                } else if (StringUtils.equals(timeoutwarning, "2")) {
-//                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
-//                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-//                }
-//            }
+            for (Userright userright : userrightByHospitalcodeAAndTimeout) {
+                String phonenum = userright.getPhonenum();
+                if (StringUtils.isEmpty(phonenum)) {
+                    continue;
+                }
+                /**
+                 * <option value="0">电话+短信</option>
+                 * <option value="1">电话</option>
+                 * <option value="2">短信</option>
+                 * <option value="3">不报警</option>
+                 */
+                String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
+                // 超时报警
+                if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")){
+                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
+                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
+                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                } else if (StringUtils.equals(timeoutwarning, "1")) {
+                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
+                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
+                } else if (StringUtils.equals(timeoutwarning, "2")) {
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
+                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
+                }
+            }
     }
 
     public void msctMessage(String message) {
@@ -170,6 +171,8 @@ public class SocketMessageListener {
         String sn = monitorinstrument.getSn();
         String equipmentname = model.getEquipmentname();
         String hospitalcode = model.getHospitalcode();
+        String unit = model.getUnit();
+        String value = model.getValue();
         HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
         if (null == hospitalInfoDto){
             return;
@@ -201,26 +204,26 @@ public class SocketMessageListener {
             if (StringUtils.equals(reminders,DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
                 continue;
             }
-//            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(),reminders)) {
-//                sendMesService.callPhone(phonenum, equipmentName);
-//                Sendrecord sendrecord = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "1");
-//                sendrecords.add(sendrecord);
-//                sendMesService.sendMes(phonenum, equipmentName, unit, value);
-//                Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "0");
-//                sendrecords.add(sendrecord1);
-//                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
-//            } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
-//                sendMesService.callPhone(userright.getPhoneNum(), equipmentName);
-//                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
-//                sendrecords.add(sendrecord);
-//                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
-//            } else if (StringUtils.equals(reminders,DictEnum.SMS.getCode())) {
-//                sendMesService.sendMes(userright.getPhoneNum(), equipmentName, unit, value);
-//                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
-//                sendrecords.add(sendrecord);
-//                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
-//
-//            }
+            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(),reminders)) {
+                sendMesService.callPhone(phonenum, equipmentName);
+                Sendrecord sendrecord = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "1");
+                sendrecords.add(sendrecord);
+                sendMesService.sendMes(phonenum, equipmentName, unit, value);
+                Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "0");
+                sendrecords.add(sendrecord1);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
+            } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
+                sendMesService.callPhone(userright.getPhoneNum(), equipmentName);
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
+                sendrecords.add(sendrecord);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
+            } else if (StringUtils.equals(reminders,DictEnum.SMS.getCode())) {
+                sendMesService.sendMes(userright.getPhoneNum(), equipmentName, unit, value);
+                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
+                sendrecords.add(sendrecord);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
+
+            }
         }
         if (CollectionUtils.isNotEmpty(sendrecords)) {
             sendrecordService.saveBatch(sendrecords);
