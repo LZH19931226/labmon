@@ -11,13 +11,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
 
     IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page);
 
-    /**
-     * 修改Isphone的值
-     * @param pkid
-     * @param isPhone
-     */
-    void updateIsPhoneInfo(String pkid, String isPhone);
-
     List<Warningrecord> getWarningRecordInfo(String equipmentNo);
 
     List<Warningrecord> getWarningInfo(String hospitalCode,String startTime,String endTime);

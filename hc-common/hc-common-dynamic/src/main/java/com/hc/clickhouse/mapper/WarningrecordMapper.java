@@ -13,9 +13,6 @@ import java.util.List;
 public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
 
 
-    @Update("alter table lab_mon.warningrecord update isphone = #{isPhone} WHERE pkid = #{pkid} ")
-    void updateIsPhoneInfo(@Param("pkid") String pkid,
-                           @Param("isPhone") String isPhone);
 
     @Select("select * from lab_mon.warningrecord where equipmentno = #{equipmentNo}")
     List<Warningrecord> getWarningRecordInfo(String equipmentNo);

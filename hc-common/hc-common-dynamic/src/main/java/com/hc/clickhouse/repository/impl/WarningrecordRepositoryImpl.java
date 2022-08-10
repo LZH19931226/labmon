@@ -25,10 +25,6 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
         return page(page, Wrappers.lambdaQuery(new Warningrecord()).orderByDesc(Warningrecord::getInputdatetime));
     }
 
-    @Override
-    public void updateIsPhoneInfo(String pkid, String isPhone) {
-        warningrecordMapper.updateIsPhoneInfo(pkid,isPhone);
-    }
 
     /**
      * @param equipmentNo

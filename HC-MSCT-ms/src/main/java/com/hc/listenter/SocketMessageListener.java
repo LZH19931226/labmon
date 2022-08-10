@@ -224,8 +224,6 @@ public class SocketMessageListener {
         if (CollectionUtils.isNotEmpty(sendrecords)) {
             sendrecordService.saveBatch(sendrecords);
         }
-        //报警通知完毕之后,修改此条报警数据状态为已经推送
-        warningrecordRepository.updateIsPhoneInfo(model.getPkid(),"1");
 
         //如果该医院开启了声光报警则需要推送声光报警指令
         if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
