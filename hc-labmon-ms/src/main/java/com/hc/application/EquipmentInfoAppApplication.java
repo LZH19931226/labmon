@@ -17,6 +17,7 @@ import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.collections4.CollectionUtils;
@@ -411,6 +412,7 @@ public class EquipmentInfoAppApplication {
             String equipmentNo = warningrecord.getEquipmentno();
             warningRecordInfo.setInputDateTime(warningrecord.getInputdatetime());
             warningRecordInfo.setWarningValue(warningrecord.getWarningvalue());
+            warningRecordInfo.setEquipmentNo(equipmentNo);
             //设置设备信息和设备报警时段
             if(equipmentNoMap.containsKey(equipmentNo) && CollectionUtils.isNotEmpty(equipmentNoMap.get(equipmentNo)) && !ObjectUtils.isEmpty(equipmentNoMap.get(equipmentNo).get(0))){
                 MonitorEquipmentDto monitorEquipmentDto = equipmentNoMap.get(equipmentNo).get(0);
@@ -426,10 +428,9 @@ public class EquipmentInfoAppApplication {
             String instrumentParamConfigNo = warningrecord.getInstrumentparamconfigno();
             if(paramConfigDtoMap.containsKey(instrumentParamConfigNo)){
                 List<InstrumentParamConfigDto> list1 = paramConfigDtoMap.get(instrumentParamConfigNo);
-                list1.forEach(res->{
-                    res.setInstrumentconfigname(CurrentProbeInfoEnum.from(res.getInstrumentconfigid()).getProbeEName());
-                });
-                warningRecordInfo.setInstrumentParamConfigDtoList(list1);
+                InstrumentParamConfigDto instrumentParamConfigDto = list1.get(0);
+                instrumentParamConfigDto.setInstrumentconfigname(CurrentProbeInfoEnum.from(instrumentParamConfigDto.getInstrumentconfigid()).getProbeEName());
+                warningRecordInfo.setInstrumentParamConfigDto(instrumentParamConfigDto);
             }
             if(!ObjectUtils.isEmpty(warningRecordInfo)){
                 list.add(warningRecordInfo);
@@ -459,12 +460,14 @@ public class EquipmentInfoAppApplication {
         String alwaysAlarm = monitorEquipmentDto.getAlwayalarm();
         String equipmentTypeId = monitorEquipmentDto.getEquipmenttypeid();
         if (StringUtils.equals("1",alwaysAlarm)) {
-            warningRecordInfo.setWarningTimeDTOS(null);
+            warningRecordInfo.setAlwayalarm(alwaysAlarm);
             return;
         }
         //非全天报警，有时间段
         if (eidMap.containsKey(equipmentNo)) {
-            warningRecordInfo.setWarningTimeDTOS(eidMap.get(equipmentNo));
+            List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS = eidMap.get(equipmentNo);
+            warningRecordInfo.setAlwayalarm(alwaysAlarm);
+            warningRecordInfo.setAlarmRules(buildHhSsTimeFormart(warningTimeDTOS));
             return;
         }
         //非全天报警，无时间段 判断设备类型
@@ -476,15 +479,52 @@ public class EquipmentInfoAppApplication {
             }
             //全天报警
             if (StringUtils.equals("1",alwaysAlarm1)) {
-                warningRecordInfo.setWarningTimeDTOS(null);
+                warningRecordInfo.setAlwayalarm(alwaysAlarm1);
                 return;
             }
             //非全天报警，有时间段
             if (eidMap.containsKey(equipmentTypeId)) {
-                warningRecordInfo.setWarningTimeDTOS(eidMap.get(equipmentTypeId));
+                List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS = eidMap.get(equipmentTypeId);
+                warningRecordInfo.setAlwayalarm(alwaysAlarm1);
+                warningRecordInfo.setAlarmRules(buildHhSsTimeFormart(warningTimeDTOS));
                 return;
             }
         }
     }
 
+    /**
+     * 获取设备详细信息
+     * @param warningCommand
+     * @return
+     */
+    public List<Warningrecord> getWarningDetailInfo(WarningCommand warningCommand) {
+        String equipmentNo = warningCommand.getEquipmentNo();
+        String startTime = warningCommand.getStartTime();
+        String endTime = warningCommand.getEndTime();
+        return warningrecordRepository.getWarningRecordDetailInfo(equipmentNo,startTime,endTime);
+    }
+
+    /**
+     * 将日期转换为字符串,拼接对应时间格式
+     */
+    public String buildHhSsTimeFormart(List<MonitorEquipmentWarningTimeDTO> monitorEquipmentWarningTimes){
+        if (CollectionUtils.isNotEmpty(monitorEquipmentWarningTimes)){
+            StringBuilder timeBuffer = new StringBuilder();
+            for (int i = 0; i < monitorEquipmentWarningTimes.size(); i++) {
+                MonitorEquipmentWarningTimeDTO monitorEquipmentWarningTimeDTO = monitorEquipmentWarningTimes.get(i);
+                Date endtime = monitorEquipmentWarningTimeDTO.getEndtime();
+                Date begintime = monitorEquipmentWarningTimeDTO.getBegintime();
+                if (null!=begintime && null!= endtime){
+                    timeBuffer.append(DateUtils.parseDatetime(begintime));
+                    timeBuffer.append("~");
+                    timeBuffer.append(DateUtils.parseDatetime(endtime));
+                    if(i != monitorEquipmentWarningTimes.size()-1){
+                        timeBuffer.append(",");
+                    }
+                }
+            }
+            return timeBuffer.toString();
+        }
+        return  "";
+    }
 }

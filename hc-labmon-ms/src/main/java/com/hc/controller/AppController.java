@@ -13,7 +13,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -65,7 +64,12 @@ public class AppController {
     /*报警信息*/
     @PostMapping("/getWarningInfo")
     @ApiOperation("获取报警信息")
-    public List<WarningRecordInfo> getWarningInfo(@RequestBody @Valid WarningCommand warningCommand){
+    public List<WarningRecordInfo> getWarningInfo(@RequestBody WarningCommand warningCommand){
         return equipmentInfoAppApplication.getWarningInfo(warningCommand);
+    }
+
+    @PostMapping("getWarningDetailInfo")
+    public List<Warningrecord> getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
+        return equipmentInfoAppApplication.getWarningDetailInfo(warningCommand);
     }
 }

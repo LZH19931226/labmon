@@ -1,10 +1,10 @@
 package com.hc.clickhouse.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @TableName(value = "warningrecord")
@@ -13,7 +13,6 @@ public class Warningrecord implements Serializable {
     /**
      *
      */
-
     private long id;
 
     /**
@@ -54,21 +53,26 @@ public class Warningrecord implements Serializable {
     private String equipmentno;
 
     /** 最低值 */
+    @TableField(value = "lowLimit")
     private String lowLimit;
 
     /** 最高值 */
+    @TableField(value = "highLimit")
     private String highLimit;
 
     /** 报警时间段 */
+    @TableField(value = "alarmTime")
     private String alarmTime;
 
     /** 是否全天报警 */
     private String alwayalarm;
 
     /** 电话通知到得用户 */
+    @TableField(value = "phoneCallUser")
     private String phoneCallUser;
 
     /** 短信通知到得用户 */
+    @TableField(value = "mailCallUser")
     private String mailCallUser;
 
 }

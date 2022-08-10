@@ -83,7 +83,7 @@ public class SocketMessageListener {
         //报警消息处理
         if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
             for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
-                warningAlarmDo.setLogId(model.getLogId());
+                warningAlarmDo.setLogId(id);
                 switch (topic) {
                     case "1":
                         service.pushMessage1(JsonUtil.toJson(warningAlarmDo));

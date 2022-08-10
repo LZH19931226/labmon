@@ -7,7 +7,6 @@ import com.hc.hospital.HospitalEquipmentTypeIdApi;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
-import com.hc.my.common.core.constant.enums.ElkLogDetail;
 import com.hc.my.common.core.domain.MonitorinstrumentDo;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
@@ -15,13 +14,11 @@ import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
-import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.po.MonitorEquipmentWarningTime;
 import com.hc.po.Monitorinstrument;
 import com.hc.po.UserScheduLing;
 import com.hc.service.AlmMsgService;
 import com.hc.user.UserRightInfoApi;
-import com.hc.utils.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,16 +194,20 @@ public class AlmMsgServiceImpl implements AlmMsgService {
      */
     public String buildHhSsTimeFormart(List<MonitorEquipmentWarningTime> monitorEquipmentWarningTimes){
          if (CollectionUtils.isNotEmpty(monitorEquipmentWarningTimes)){
-             StringBuffer timeBuffer = new StringBuffer();
-             monitorEquipmentWarningTimes.forEach(monitorEquipmentWarningTime -> {
+             StringBuilder timeBuffer = new StringBuilder();
+             for (int i = 0; i < monitorEquipmentWarningTimes.size(); i++) {
+                 MonitorEquipmentWarningTime monitorEquipmentWarningTime = monitorEquipmentWarningTimes.get(i);
                  Date endtime = monitorEquipmentWarningTime.getEndtime();
                  Date begintime = monitorEquipmentWarningTime.getBegintime();
                  if (null!=begintime && null!= endtime){
                      timeBuffer.append(DateUtils.parseDatetime(begintime));
                      timeBuffer.append("~");
                      timeBuffer.append(DateUtils.parseDatetime(endtime));
+                     if(i != monitorEquipmentWarningTimes.size()-1){
+                         timeBuffer.append(",");
+                     }
                  }
-             });
+             }
              return timeBuffer.toString();
          }
          return  null;

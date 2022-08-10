@@ -1,14 +1,12 @@
 package com.hc.application.response;
 
 import com.hc.dto.InstrumentParamConfigDto;
-import com.hc.dto.MonitorEquipmentWarningTimeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,12 +23,18 @@ public class WarningRecordInfo {
     /** 报警上传时间 */
     private Date inputDateTime;
 
+    /** 设备id */
+    private String equipmentNo;
+
     /** 报警的数值 */
     private String warningValue;
 
-    /** 探头信息 */
-    private List<InstrumentParamConfigDto> instrumentParamConfigDtoList;
+    /** 报警规则 */
+    private String alarmRules;
 
-    /** 报警时段信息*/
-    private List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS;
+    /** 是否全天报警 */
+    private String alwayalarm;
+
+    /** 探头信息 */
+    private InstrumentParamConfigDto instrumentParamConfigDto;
 }
