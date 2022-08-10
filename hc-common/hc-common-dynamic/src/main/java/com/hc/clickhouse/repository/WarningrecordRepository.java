@@ -19,4 +19,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
     void updateIsPhoneInfo(String pkid, String isPhone);
 
     List<Warningrecord> getWarningRecordInfo(String equipmentNo);
+
+    List<Warningrecord> getWarningInfo(String hospitalCode,String startTime,String endTime);
 }

@@ -47,4 +47,13 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
     public List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode) {
         return instrumentParamConfigDao.getInstrumentParamConfigByCode(hospitalCode);
     }
+
+    /**
+     * @param configParamNo
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo) {
+        return instrumentParamConfigDao.batchGetProbeInfo(configParamNo);
+    }
 }

@@ -63,6 +63,12 @@ public class MonitorEquipmentDto implements Serializable {
 
     @TableField(exist = false)
     private List<InstrumentMonitorInfoDto> instrumentMonitorInfoDtoList;
+
+    /**
+     * 全天报警
+     */
+    private String alwayalarm;
+
     /**
      * 最低值  ： 最低值为0 就是报警信号开
      */

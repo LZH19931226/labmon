@@ -95,4 +95,13 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     public List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, ProbeCommand probeCommand) {
         return equipmentInfoRepository.getEquipmentInfoByPage(page,probeCommand);
     }
+
+    /**
+     * @param equipmentNoList
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList) {
+        return equipmentInfoRepository.batchGetEquipmentInfo(equipmentNoList);
+    }
 }

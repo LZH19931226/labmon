@@ -3,6 +3,7 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
+import com.hc.application.command.WarningCommand;
 import com.hc.application.response.WarningRecordInfo;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
@@ -358,17 +359,24 @@ public class EquipmentInfoAppApplication {
      * （报警了的记录）
      * @return
      */
-    public List<WarningRecordInfo> getWarningInfo(String hospitalCode) {
-        //分页获取医院报警记录
-        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfo(hospitalCode);
+    public List<WarningRecordInfo> getWarningInfo(WarningCommand warningCommand) {
+        String hospitalCode = warningCommand.getHospitalCode();
+        String startTime = warningCommand.getStartTime();
+        String endTime = warningCommand.getEndTime();
+        //查询医院的报警信息
+        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfo(hospitalCode,startTime,endTime);
         if(CollectionUtils.isEmpty(warningRecord)){
             return null;
         }
-        List<String> equipmentNoList = warningRecord.stream().map(Warningrecord::getEquipmentno).distinct().collect(Collectors.toList());
-        List<String> configParamNo = warningRecord.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
+        //过滤医院报警信息
+        warningRecord = filterAlarmMessages(warningRecord);
 
-        //批量获取设备探头当前值信息
-        List<InstrumentParamConfigDto> paramConfigDtoList =  instrumentParamConfigService.batchGetProbeInfo(configParamNo);
+        //获取eno集合 和 探头主键集合
+        List<String> equipmentNoList = warningRecord.stream().map(Warningrecord::getEquipmentno).distinct().collect(Collectors.toList());
+        List<String> configParamNoList = warningRecord.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
+
+        //批量获取设备探头信息
+        List<InstrumentParamConfigDto> paramConfigDtoList =  instrumentParamConfigService.batchGetProbeInfo(configParamNoList);
         Map<String, List<InstrumentParamConfigDto>> paramConfigDtoMap = new HashMap<>();
         if(CollectionUtils.isNotEmpty(paramConfigDtoList)){
             paramConfigDtoMap =  paramConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
@@ -383,41 +391,100 @@ public class EquipmentInfoAppApplication {
 
         //获取设备报警时间段
         List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS =  warningTimeService.getWarningInfo(hospitalCode);
-        Map<String, List<MonitorEquipmentWarningTimeDTO>> eNoMap = new HashMap<>();
+        Map<String, List<MonitorEquipmentWarningTimeDTO>> eidMap = new HashMap<>();
         if(CollectionUtils.isNotEmpty(warningTimeDTOS)){
-            // map1 设备时间段map
-            //map2 设备类型时间段map
-            eNoMap = warningTimeDTOS.stream().collect(Collectors.groupingBy(MonitorEquipmentWarningTimeDTO::getEquipmentid));
-            warningTimeDTOS.stream().collect(Collectors.groupingBy(MonitorEquipmentWarningTimeDTO::getEquipmentid));
+            // 设备时间段map
+            eidMap = warningTimeDTOS.stream().collect(Collectors.groupingBy(MonitorEquipmentWarningTimeDTO::getEquipmentid));
         }
 
+        //获取医院设备信息
+        List<HospitalEquipmentDto> dtoList = hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
+        Map<String, List<HospitalEquipmentDto>> eqTypeIdMap =  new HashMap<>();
+        if (!CollectionUtils.isEmpty(dtoList)) {
+            //设备类型时间段map
+            eqTypeIdMap  =  dtoList.stream().collect(Collectors.groupingBy(HospitalEquipmentDto::getEquipmentTypeId));
+        }
 
         List<WarningRecordInfo> list = new ArrayList<>();
         for (Warningrecord warningrecord : warningRecord) {
             WarningRecordInfo warningRecordInfo = new WarningRecordInfo();
             String equipmentNo = warningrecord.getEquipmentno();
+            warningRecordInfo.setInputDateTime(warningrecord.getInputdatetime());
+            warningRecordInfo.setWarningValue(warningrecord.getWarningvalue());
+            //设置设备信息和设备报警时段
             if(equipmentNoMap.containsKey(equipmentNo) && CollectionUtils.isNotEmpty(equipmentNoMap.get(equipmentNo)) && !ObjectUtils.isEmpty(equipmentNoMap.get(equipmentNo).get(0))){
                 MonitorEquipmentDto monitorEquipmentDto = equipmentNoMap.get(equipmentNo).get(0);
                 warningRecordInfo.setEquipmentName(monitorEquipmentDto.getEquipmentname());
                 warningRecordInfo.setSn(monitorEquipmentDto.getSn());
-                warningRecordInfo.setInputDateTime(warningrecord.getInputdatetime());
                 String alwayalarm = monitorEquipmentDto.getAlwayalarm();
-                String equipmenttypeid = monitorEquipmentDto.getEquipmenttypeid();
-                if("0".equals(alwayalarm)){
-                    //算法非全天 有时间段
-
-                    // 非全体天 无时间段
-
-                }else {
-                    //全天
-                    warningRecordInfo.setWarningTimeDTOS(null);
+                if(StringUtils.isBlank(alwayalarm)){
+                    alwayalarm = "0";
                 }
+                buildWarningTimeList(equipmentNo,monitorEquipmentDto,warningRecordInfo,eidMap,eqTypeIdMap);
             }
-
-
+            //设置探头当前值信息
+            String instrumentParamConfigNo = warningrecord.getInstrumentparamconfigno();
+            if(paramConfigDtoMap.containsKey(instrumentParamConfigNo)){
+                List<InstrumentParamConfigDto> list1 = paramConfigDtoMap.get(instrumentParamConfigNo);
+                list1.forEach(res->{
+                    res.setInstrumentconfigname(CurrentProbeInfoEnum.from(res.getInstrumentconfigid()).getProbeEName());
+                });
+                warningRecordInfo.setInstrumentParamConfigDtoList(list1);
+            }
+            if(!ObjectUtils.isEmpty(warningRecordInfo)){
+                list.add(warningRecordInfo);
+            }
         }
-        return null;
+        return list;
     }
 
+    /**
+     * 过滤报警信息
+     * 每个eno取最新的一条数据
+     * @param warningRecord
+     */
+    private List<Warningrecord> filterAlarmMessages(List<Warningrecord> warningRecord) {
+        List<Warningrecord> list = new ArrayList<>();
+        Map<String, List<Warningrecord>> map = warningRecord.stream().collect(Collectors.groupingBy(Warningrecord::getEquipmentno));
+        for (String s : map.keySet()) {
+            List<Warningrecord> warningrecordList = map.get(s);
+            List<Warningrecord> collect = warningrecordList.stream().sorted(Comparator.comparing(Warningrecord::getInputdatetime).reversed()).collect(Collectors.toList());
+            Warningrecord warningrecord = collect.get(0);
+            list.add(warningrecord);
+        }
+        return list;
+    }
+
+    private void buildWarningTimeList(String equipmentNo, MonitorEquipmentDto monitorEquipmentDto, WarningRecordInfo warningRecordInfo, Map<String, List<MonitorEquipmentWarningTimeDTO>> eidMap, Map<String, List<HospitalEquipmentDto>> eqTypeIdMap) {
+        String alwaysAlarm = monitorEquipmentDto.getAlwayalarm();
+        String equipmentTypeId = monitorEquipmentDto.getEquipmenttypeid();
+        if (StringUtils.equals("1",alwaysAlarm)) {
+            warningRecordInfo.setWarningTimeDTOS(null);
+            return;
+        }
+        //非全天报警，有时间段
+        if (eidMap.containsKey(equipmentNo)) {
+            warningRecordInfo.setWarningTimeDTOS(eidMap.get(equipmentNo));
+            return;
+        }
+        //非全天报警，无时间段 判断设备类型
+        if (eqTypeIdMap.containsKey(equipmentTypeId) && !ObjectUtils.isEmpty(eqTypeIdMap.get(equipmentTypeId).get(0))) {
+            HospitalEquipmentDto hospitalEquipmentDto = eqTypeIdMap.get(equipmentTypeId).get(0);
+            String alwaysAlarm1 = hospitalEquipmentDto.getAlwaysAlarm();
+            if(StringUtils.isBlank(alwaysAlarm1)){
+                alwaysAlarm1 = "0";
+            }
+            //全天报警
+            if (StringUtils.equals("1",alwaysAlarm1)) {
+                warningRecordInfo.setWarningTimeDTOS(null);
+                return;
+            }
+            //非全天报警，有时间段
+            if (eidMap.containsKey(equipmentTypeId)) {
+                warningRecordInfo.setWarningTimeDTOS(eidMap.get(equipmentTypeId));
+                return;
+            }
+        }
+    }
 
 }
