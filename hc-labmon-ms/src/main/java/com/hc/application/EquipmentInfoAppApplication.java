@@ -418,6 +418,7 @@ public class EquipmentInfoAppApplication {
                 MonitorEquipmentDto monitorEquipmentDto = equipmentNoMap.get(equipmentNo).get(0);
                 warningRecordInfo.setEquipmentName(monitorEquipmentDto.getEquipmentname());
                 warningRecordInfo.setSn(monitorEquipmentDto.getSn());
+                warningRecordInfo.setEquipmentTypeId(monitorEquipmentDto.getEquipmenttypeid());
                 String alwayalarm = monitorEquipmentDto.getAlwayalarm();
                 if(StringUtils.isBlank(alwayalarm)){
                     alwayalarm = "0";

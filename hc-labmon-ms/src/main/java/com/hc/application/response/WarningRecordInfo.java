@@ -35,6 +35,9 @@ public class WarningRecordInfo {
     /** 是否全天报警 */
     private String alwayalarm;
 
+    /** 设备类型id */
+    private String equipmentTypeId;
+
     /** 探头信息 */
     private InstrumentParamConfigDto instrumentParamConfigDto;
 }
