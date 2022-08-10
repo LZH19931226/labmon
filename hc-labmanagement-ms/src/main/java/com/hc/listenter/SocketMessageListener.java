@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -44,6 +45,9 @@ public class SocketMessageListener {
         String instrumentConfigId = equipmentState.getInstrumentConfigId();
         String hospitalCode = equipmentState.getHospitalCode();
         InstrumentInfoDto instrumentInfoDto = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentConfigNo + ":" + instrumentConfigId).getResult();
+        if(ObjectUtils.isEmpty(instrumentInfoDto)){
+            return;
+        }
         String oldState = instrumentInfoDto.getState();
         if (StringUtils.isEmpty(oldState)){
             oldState="0";
