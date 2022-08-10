@@ -185,7 +185,8 @@ public class SocketMessageListener {
         Warningrecord warningrecord = model.getWarningrecord();
         warningrecordRepository.save(warningrecord);
 
-        //获取电话
+        //获取电话.
+
         List<Sendrecord> sendrecords = new ArrayList<>();
         for (UserRightRedisDto userright : list) {
             String reminders = userright.getReminders();
