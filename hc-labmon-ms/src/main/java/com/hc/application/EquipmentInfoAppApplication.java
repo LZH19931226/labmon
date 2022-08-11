@@ -413,7 +413,7 @@ public class EquipmentInfoAppApplication {
             WarningRecordInfo warningRecordInfo = new WarningRecordInfo();
             String equipmentNo = warningrecord.getEquipmentno();
             warningRecordInfo.setInputDateTime(warningrecord.getInputdatetime());
-            warningRecordInfo.setWarningValue(warningrecord.getWarningvalue());
+            warningRecordInfo.setWarningValue(warningrecord.getWarningValue());
             warningRecordInfo.setEquipmentNo(equipmentNo);
             //设置设备信息和设备报警时段
             if(equipmentNoMap.containsKey(equipmentNo) && CollectionUtils.isNotEmpty(equipmentNoMap.get(equipmentNo)) && !ObjectUtils.isEmpty(equipmentNoMap.get(equipmentNo).get(0))){

@@ -50,7 +50,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         WarningModel warningModel = new WarningModel();
         warningModel.setWarningrecord(warningrecord);
-        String data = warningrecord.getWarningvalue();
+        String data = warningrecord.getWarningValue();
         String pkid = warningrecord.getPkid();
         /*3.医院报警关联 如果是市电则直接报警*/
         //市电是立即报警
