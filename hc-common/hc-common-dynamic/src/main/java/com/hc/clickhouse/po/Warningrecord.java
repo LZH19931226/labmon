@@ -34,7 +34,8 @@ public class Warningrecord implements Serializable {
     /**
      * 报警值
      */
-    private String warningvalue;
+    @TableField(value = "warningvalue")
+    private String warningValue;
 
     /**
      * 报警时间
