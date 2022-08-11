@@ -124,7 +124,8 @@ public class WarningServiceImpl implements WarningService {
                             }
                             if (LowHighVerify.verify(probe, data) && LowHighVerify.verify(probe, data1)) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                                break;
+                            }else {
+                                return null;
                             }
                             break;
                         } else {
@@ -135,7 +136,8 @@ public class WarningServiceImpl implements WarningService {
                                 }
                                 if (LowHighVerify.verify(probe, data) && LowHighVerify.verify(probe, data1)) {
                                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                                    break;
+                                }else {
+                                    return null;
                                 }
                                 break;
                             }
@@ -144,7 +146,8 @@ public class WarningServiceImpl implements WarningService {
                             //大于最大值
                             if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
                                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
-                                break;
+                            }else {
+                                return null;
                             }
                             break;
                         }
@@ -152,12 +155,16 @@ public class WarningServiceImpl implements WarningService {
                     //高低值判断
                     if (LowHighVerify.verify(probe, data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+                    }else {
+                        return null;
                     }
                 }
                 break;
             case 10:
                 if (StringUtils.equals("1", data)) {
                     warningrecord.setWarningremark("市电异常");
+                }else {
+                    return null;
                 }
                 break;
             case 11:
@@ -169,6 +176,8 @@ public class WarningServiceImpl implements WarningService {
                 }
                 if (probe.getLowLimit().toString().equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "报警信号异常");
+                }else{
+                    return null;
                 }
                 break;
             case 3:
@@ -184,10 +193,12 @@ public class WarningServiceImpl implements WarningService {
                 if (!RegularUtil.checkContainsNumbers(data)) {
                     //已接传感器，但未校准
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:未获取到数据");
-                    break;
+                    return  null;
                 }
                 if (LowHighVerify.verify(probe, data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+                }else {
+                    return  null;
                 }
                 break;
             case 23:
@@ -198,6 +209,8 @@ public class WarningServiceImpl implements WarningService {
                 } else {
                     if (LowHighVerify.verify(probe, data)) {
                         warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+                    }else {
+                        return null;
                     }
                     break;
                 }
@@ -229,7 +242,7 @@ public class WarningServiceImpl implements WarningService {
                 } else if ("O".equals(data)) {
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备气压低报警");
                 } else {
-                    break;
+                    return  null;
                 }
             default:
                 break;
