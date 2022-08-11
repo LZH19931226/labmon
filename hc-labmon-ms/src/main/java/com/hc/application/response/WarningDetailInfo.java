@@ -30,7 +30,7 @@ public class WarningDetailInfo {
     /**
      * 报警值
      */
-    private String warningvalue;
+    private String warningValue;
 
     /**
      * 报警时间
