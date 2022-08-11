@@ -88,34 +88,34 @@ public class WarningServiceImpl implements WarningService {
                 sendEquimentProbeStatus(probe,warningAlarmDo);
                 return null;
             }
-        }
-        //市电比较探头
-        if (mainsInstrumentConfigIds.contains(instrumentConfigId)) {
+            //市电比较探头
+        }else if (mainsInstrumentConfigIds.contains(instrumentConfigId)){
             if (null== mainsRule(warningrecord,warningAlarmDo)){
                 sendEquimentProbeStatus(probe,warningAlarmDo);
                 return null;
             }
-        }
-        //报警信号比较探头
-        if (alarmSignalInstrumentConfigIds.contains(instrumentConfigId)) {
+            //报警信号比较探头
+        }else if (alarmSignalInstrumentConfigIds.contains(instrumentConfigId)){
             if (null== alarmSignalRule(warningrecord,warningAlarmDo,probe)){
                 sendEquimentProbeStatus(probe,warningAlarmDo);
                 return null;
             }
         }
         //气体比较探头
-        if (gasInstrumentConfigIds.contains(instrumentConfigId)) {
+       else if (gasInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null== gasRule(warningrecord,warningAlarmDo,probe)){
                 sendEquimentProbeStatus(probe,warningAlarmDo);
                 return null;
             }
         }
         //气流比较探头
-        if (airFlowInstrumentConfigIds.contains(instrumentConfigId)) {
+        else if (airFlowInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null== airFlowRule(warningrecord,warningAlarmDo,probe)){
                 sendEquimentProbeStatus(probe,warningAlarmDo);
                 return null;
             }
+        }else {
+            return null;
         }
        return warningRuleService.warningRule(hospitalcode, warningrecord, probe, warningAlarmDo);
     }
@@ -233,6 +233,7 @@ public class WarningServiceImpl implements WarningService {
             String proSn = sn.substring(0, 4);
             String sns = sn.substring(4, 6);
             if (Integer.parseInt(proSn) < 2031) {
+
                 //当一路温度值存在异常，整个值无效
                 // 当两个值相差3度，值无效
                 if (!checkProbeValue(warningAlarmDo,probe)){
