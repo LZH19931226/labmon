@@ -189,7 +189,6 @@ public class SocketMessageListener {
         warningrecordRepository.saveWarningInfo(warningrecord);
 
         //获取电话.
-
         List<Sendrecord> sendrecords = new ArrayList<>();
         for (UserRightRedisDto userright : list) {
             String reminders = userright.getReminders();
@@ -237,9 +236,6 @@ public class SocketMessageListener {
         sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
     }
 
-
-
-
     //需要将报警原因,报警通知到得人员,反写过去
     public void sendEquimentProbeStatus( MonitorinstrumentDo monitorinstrument , WarningModel model,String hospitalcode,String logId){
         EquipmentState equipmentState = new EquipmentState();
@@ -254,7 +250,6 @@ public class SocketMessageListener {
         messageSendService.send(json);
         ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()),JsonUtil.toJson(equipmentState),logId);
     }
-
 
     public Sendrecord producePhoneRecord(String phone, String hospitalcode, String equipmentname, String
             unit, String type) {

@@ -5,6 +5,7 @@ import com.hc.application.EquipmentInfoAppApplication;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
+import com.hc.application.response.WarningDetailInfo;
 import com.hc.application.response.WarningRecordInfo;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
@@ -69,7 +70,7 @@ public class AppController {
     }
 
     @PostMapping("getWarningDetailInfo")
-    public List<Warningrecord> getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
+    public List<WarningDetailInfo> getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
         return equipmentInfoAppApplication.getWarningDetailInfo(warningCommand);
     }
 }

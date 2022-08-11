@@ -38,6 +38,15 @@ public class WarningRecordInfo {
     /** 设备类型id */
     private String equipmentTypeId;
 
+    /** 设备英文名称*/
+    private String eName;
+
+    /** 检测下限值 */
+    private String lowLimit;
+
+    /** 检测上限值 */
+    private String highLimit;
+
     /** 探头信息 */
     private InstrumentParamConfigDto instrumentParamConfigDto;
 }

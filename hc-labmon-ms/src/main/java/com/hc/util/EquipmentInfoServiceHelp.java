@@ -423,8 +423,8 @@ public class EquipmentInfoServiceHelp {
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(listdata);
         if (CollectionUtils.isNotEmpty(list)) {
-            curveDataModel.setMaxNum(list.get(0).getHighlimit()+"");
-            curveDataModel.setMinNum(list.get(0).getLowlimit()+"");
+            curveDataModel.setMaxNum(list.get(0).getHighLimit()+"");
+            curveDataModel.setMinNum(list.get(0).getLowLimit()+"");
         }else {
             OptionalDouble max = listdata.stream().mapToDouble(Double::parseDouble).max();
             if (max.isPresent()) {

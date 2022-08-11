@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
+import com.hc.application.response.WarningDetailInfo;
 import com.hc.application.response.WarningRecordInfo;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
@@ -17,6 +18,7 @@ import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.util.EquipmentInfoServiceHelp;
@@ -199,9 +201,9 @@ public class EquipmentInfoAppApplication {
                 InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
                 String state = instrumentParamConfigDto.getState();
                 probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
-                probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowlimit());
+                probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
                 probeInfoDto.setState(state==null?"0":state);
-                probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighlimit());
+                probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
             }
         }
     }
@@ -430,8 +432,10 @@ public class EquipmentInfoAppApplication {
             if(paramConfigDtoMap.containsKey(instrumentParamConfigNo)){
                 List<InstrumentParamConfigDto> list1 = paramConfigDtoMap.get(instrumentParamConfigNo);
                 InstrumentParamConfigDto instrumentParamConfigDto = list1.get(0);
-                instrumentParamConfigDto.setInstrumentconfigname(CurrentProbeInfoEnum.from(instrumentParamConfigDto.getInstrumentconfigid()).getProbeEName());
+                warningRecordInfo.setEName(CurrentProbeInfoEnum.from(instrumentParamConfigDto.getInstrumentconfigid()).getProbeEName());
                 warningRecordInfo.setInstrumentParamConfigDto(instrumentParamConfigDto);
+                warningRecordInfo.setLowLimit(instrumentParamConfigDto.getLowLimit().toString());
+                warningRecordInfo.setHighLimit(instrumentParamConfigDto.getHighLimit().toString());
             }
             if(!ObjectUtils.isEmpty(warningRecordInfo)){
                 list.add(warningRecordInfo);
@@ -498,11 +502,34 @@ public class EquipmentInfoAppApplication {
      * @param warningCommand
      * @return
      */
-    public List<Warningrecord> getWarningDetailInfo(WarningCommand warningCommand) {
+    public List<WarningDetailInfo> getWarningDetailInfo(WarningCommand warningCommand) {
         String equipmentNo = warningCommand.getEquipmentNo();
         String startTime = warningCommand.getStartTime();
         String endTime = warningCommand.getEndTime();
-        return warningrecordRepository.getWarningRecordDetailInfo(equipmentNo,startTime,endTime);
+        List<Warningrecord> warningRecordList = warningrecordRepository.getWarningRecordDetailInfo(equipmentNo, startTime, endTime);
+        if (CollectionUtils.isEmpty(warningRecordList)) {
+            return null;
+        }
+        List<String> collect = warningRecordList.stream().map(Warningrecord::getInstrumentparamconfigno).collect(Collectors.toList());
+        List<WarningDetailInfo> detailInfos = BeanConverter.convert(warningRecordList, WarningDetailInfo.class);
+        List<InstrumentParamConfigDto> probeInfoList = instrumentParamConfigService.batchGetProbeInfo(collect);
+        Map<String, List<InstrumentParamConfigDto>> stringListMap = new HashMap<>();
+        if(CollectionUtils.isNotEmpty(probeInfoList)){
+            stringListMap = probeInfoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
+        }
+        for (WarningDetailInfo detailInfo : detailInfos) {
+            String instrumentparamconfigno = detailInfo.getInstrumentparamconfigno();
+            if(!stringListMap.containsKey(instrumentparamconfigno)){
+                continue;
+            }
+            List<InstrumentParamConfigDto> list = stringListMap.get(instrumentparamconfigno);
+            if (CollectionUtils.isNotEmpty(list)) {
+                InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
+                Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
+                detailInfo.setEName(CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName());
+            }
+        }
+        return detailInfos;
     }
 
     /**

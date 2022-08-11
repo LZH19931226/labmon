@@ -38,12 +38,14 @@ public class InstrumentParamConfigDto  implements Serializable {
      * 最低限值
      */
     @ApiModelProperty(value = "最低限值")
-    private BigDecimal lowlimit;
+    @TableField(value = "lowlimit")
+    private BigDecimal lowLimit;
     /**
      * 最高限值
      */
     @ApiModelProperty(value = "最高限值")
-    private BigDecimal highlimit;
+    @TableField(value = "highlimit")
+    private BigDecimal highLimit;
     /**
      * 探头类型编码
      */
