@@ -1,6 +1,7 @@
 package com.hc.clickhouse.repository.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -65,9 +66,10 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
 
     @Override
     public void updateWarningCallUser(Warningrecord warningrecord) {
-        warningrecordMapper.update(warningrecord, Wrappers.lambdaUpdate(new Warningrecord())
-                .eq(Warningrecord::getPkid, warningrecord.getPkid())
-                .set(Warningrecord::getPhoneCallUser, warningrecord.getPhoneCallUser())
-                .set(Warningrecord::getMailCallUser, warningrecord.getMailCallUser()));
+        LambdaUpdateWrapper<Warningrecord> warningrecordLambdaUpdateWrapper = Wrappers.lambdaUpdate();
+        warningrecordLambdaUpdateWrapper.eq(Warningrecord::getPkid, warningrecord.getPkid());
+        warningrecordLambdaUpdateWrapper.set(Warningrecord::getPhoneCallUser, warningrecord.getPhoneCallUser());
+        warningrecordLambdaUpdateWrapper.set(Warningrecord::getMailCallUser, warningrecord.getMailCallUser());
+        this.update(warningrecordLambdaUpdateWrapper);
     }
 }
