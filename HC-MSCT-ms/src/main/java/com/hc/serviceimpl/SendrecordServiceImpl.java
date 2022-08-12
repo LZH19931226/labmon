@@ -13,7 +13,6 @@ import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.po.Sendrecord;
 import com.hc.service.SendMesService;
 import com.hc.service.SendrecordService;
-import com.hc.service.WarningService;
 import com.hc.utils.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +42,8 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
         String logId = warningModel.getLogId();
         //获取电话.
         List<Sendrecord> sendrecords = new ArrayList<>();
-        StringBuffer phoneCallUser = new StringBuffer();
-        StringBuffer mailCallUser = new StringBuffer();
+        StringBuilder phoneCallUser = new StringBuilder();
+        StringBuilder mailCallUser = new StringBuilder();
         for (UserRightRedisDto userright : list) {
             String reminders = userright.getReminders();
             String phonenum = userright.getPhoneNum();
@@ -65,23 +64,23 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
             }
             if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(),reminders)) {
                 sendMesService.callPhone(phonenum, equipmentName);
-                mailCallUser.append(username+",");
+                mailCallUser.append(username).append("/");
                 Sendrecord sendrecord = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "1");
                 sendrecords.add(sendrecord);
                 sendMesService.sendMes(phonenum, equipmentName, unit, value);
-                phoneCallUser.append(username+"/");
+                phoneCallUser.append(username).append("/");
                 Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "0");
                 sendrecords.add(sendrecord1);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright),logId);
             } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
                 sendMesService.callPhone(userright.getPhoneNum(), equipmentName);
-                phoneCallUser.append(username+"/");
+                phoneCallUser.append(username).append("/");
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
                 sendrecords.add(sendrecord);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()),JsonUtil.toJson(userright),logId);
             } else if (StringUtils.equals(reminders,DictEnum.SMS.getCode())) {
                 sendMesService.sendMes(userright.getPhoneNum(), equipmentName, unit, value);
-                mailCallUser.append(username+"/");
+                mailCallUser.append(username).append("/");
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
                 sendrecords.add(sendrecord);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()),JsonUtil.toJson(userright),logId);
