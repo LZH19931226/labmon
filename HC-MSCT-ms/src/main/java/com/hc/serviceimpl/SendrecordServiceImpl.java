@@ -30,8 +30,7 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
 
     @Autowired
     private SendMesService sendMesService;
-    @Autowired
-    private SendrecordService sendrecordService;
+
     @Autowired
     private WarningrecordRepository warningrecordRepository;
 
@@ -88,12 +87,14 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
             }
         }
         if (CollectionUtils.isNotEmpty(sendrecords)) {
-            sendrecordService.saveBatch(sendrecords);
+            this.saveBatch(sendrecords);
             //修改报警通知人
             Warningrecord warningrecord = warningModel.getWarningrecord();
-            warningrecord.setMailCallUser(mailCallUser.toString());
-            warningrecord.setPhoneCallUser(phoneCallUser.toString());
-            warningrecordRepository.updateWarningCallUser(warningrecord);
+            Warningrecord warningrecord1  = new Warningrecord();
+            warningrecord1.setPkid(warningrecord.getPkid());
+            warningrecord1.setMailCallUser(mailCallUser.toString());
+            warningrecord1.setPhoneCallUser(phoneCallUser.toString());
+            warningrecordRepository.updateWarningCallUser(warningrecord1);
         }
 
     }
