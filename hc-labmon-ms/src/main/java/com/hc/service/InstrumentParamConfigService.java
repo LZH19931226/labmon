@@ -15,4 +15,11 @@ public interface InstrumentParamConfigService {
     List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode);
 
     List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo);
+
+
+    void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone);
+
+    List<String> getInstrumentParamConfigInfo(String equipmentNo);
+
+    void batchUpdateProbeAlarmState(String warningPhone, List<String> list);
 }

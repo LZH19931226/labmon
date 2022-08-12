@@ -46,4 +46,34 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     public List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo) {
         return instrumentParamConfigRepository.batchGetProbeInfo(configParamNo);
     }
+
+    /**
+     * @param instrumentParamConfigNo
+     * @param warningPhone
+     */
+    @Override
+    public void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone) {
+        InstrumentParamConfigDto instrumentParamConfigDto = new InstrumentParamConfigDto();
+        instrumentParamConfigDto.setInstrumentparamconfigno(instrumentParamConfigNo);
+        instrumentParamConfigDto.setWarningphone(warningPhone);
+        instrumentParamConfigRepository.updateById(instrumentParamConfigDto);
+    }
+
+    /**
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<String> getInstrumentParamConfigInfo(String equipmentNo) {
+        return instrumentParamConfigRepository.getInstrumentParamConfigInfo(equipmentNo);
+    }
+
+    /**
+     * @param warningPhone
+     * @param list
+     */
+    @Override
+    public void batchUpdateProbeAlarmState(String warningPhone, List<String> list) {
+        instrumentParamConfigRepository.batchUpdateProbeAlarmState(warningPhone,list);
+    }
 }

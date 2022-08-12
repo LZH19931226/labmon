@@ -46,4 +46,21 @@
             #{configParamNo}
         </foreach>
     </select>
+
+    <update id="batchUpdateProbeAlarmState">
+        update instrumentparamconfig set warningphone = #{warningPhone}
+        where instrumentparamconfigNO in
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getInstrumentParamConfigInfo" resultType="string">
+        SELECT
+          t1.instrumentparamconfigNO
+          FROM
+          instrumentparamconfig t1
+          LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
+          WHERE t2.equipmentno = #{equipmentNo}
+    </select>
 </mapper>

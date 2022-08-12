@@ -56,4 +56,23 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
     public List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo) {
         return instrumentParamConfigDao.batchGetProbeInfo(configParamNo);
     }
+
+
+    /**
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<String> getInstrumentParamConfigInfo(String equipmentNo) {
+        return instrumentParamConfigDao.getInstrumentParamConfigInfo(equipmentNo);
+    }
+
+    /**
+     * @param warningPhone
+     * @param list
+     */
+    @Override
+    public void batchUpdateProbeAlarmState(String warningPhone, List<String> list) {
+        instrumentParamConfigDao.batchUpdateProbeAlarmState(warningPhone,list);
+    }
 }

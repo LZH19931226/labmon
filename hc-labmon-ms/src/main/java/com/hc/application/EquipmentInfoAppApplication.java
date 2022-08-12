@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
+import com.hc.application.response.AlarmSystem;
+import com.hc.application.response.ProbeAlarmState;
 import com.hc.application.response.WarningDetailInfo;
 import com.hc.application.response.WarningRecordInfo;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
@@ -15,6 +17,7 @@ import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
+import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
@@ -384,7 +387,8 @@ public class EquipmentInfoAppApplication {
         if(CollectionUtils.isNotEmpty(paramConfigDtoList)){
             paramConfigDtoMap =  paramConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
         }
-
+        //设备探头报警数量
+        long count = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getState())).count();
         //获取设备信息
         List<MonitorEquipmentDto> equipmentDtoList =  equipmentInfoService.batchGetEquipmentInfo(equipmentNoList);
         Map<String, List<MonitorEquipmentDto>> equipmentNoMap = new HashMap<>();
@@ -407,7 +411,6 @@ public class EquipmentInfoAppApplication {
             //设备类型时间段map
             eqTypeIdMap  =  dtoList.stream().collect(Collectors.groupingBy(HospitalEquipmentDto::getEquipmentTypeId));
         }
-
         List<WarningRecordInfo> list = new ArrayList<>();
         for (Warningrecord warningrecord : warningRecord) {
             WarningRecordInfo warningRecordInfo = new WarningRecordInfo();
@@ -415,6 +418,11 @@ public class EquipmentInfoAppApplication {
             warningRecordInfo.setInputDateTime(warningrecord.getInputdatetime());
             warningRecordInfo.setWarningValue(warningrecord.getWarningValue());
             warningRecordInfo.setEquipmentNo(equipmentNo);
+            if(count>0){
+                warningRecordInfo.setState(1L);
+            }else {
+                warningRecordInfo.setState(0L);
+            }
             //设置设备信息和设备报警时段
             if(equipmentNoMap.containsKey(equipmentNo) && CollectionUtils.isNotEmpty(equipmentNoMap.get(equipmentNo)) && !ObjectUtils.isEmpty(equipmentNoMap.get(equipmentNo).get(0))){
                 MonitorEquipmentDto monitorEquipmentDto = equipmentNoMap.get(equipmentNo).get(0);
@@ -554,5 +562,60 @@ public class EquipmentInfoAppApplication {
             return timeBuffer.toString();
         }
         return  "";
+    }
+
+    public Page getAlarmSystemInfo(ProbeCommand probeCommand) {
+        Page page = new Page(probeCommand.getPageCurrent(),probeCommand.getPageSize());
+        List<MonitorEquipmentDto> equipmentInfoByPage = equipmentInfoService.getEquipmentInfoByPage(page, probeCommand);
+        if (CollectionUtils.isEmpty(equipmentInfoByPage)) {
+            return null;
+        }
+        List<String> collect = equipmentInfoByPage.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(collect);
+        Map<String, List<InstrumentParamConfigDto>> eNoMap = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
+            eNoMap =  instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
+        }
+        List<AlarmSystem> list = new ArrayList<>();
+        for (MonitorEquipmentDto monitorEquipmentDto : equipmentInfoByPage) {
+            AlarmSystem alarmSystem = new AlarmSystem();
+            alarmSystem.setEquipmentName(monitorEquipmentDto.getEquipmentname());
+            alarmSystem.setSn(monitorEquipmentDto.getSn());
+            alarmSystem.setEquipmentNo(monitorEquipmentDto.getEquipmentno());
+            if(eNoMap.containsKey(monitorEquipmentDto.getEquipmentno())){
+                List<InstrumentParamConfigDto> paramConfigDtoList = eNoMap.get(monitorEquipmentDto.getEquipmentno());
+                long count = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
+                if(count>0){
+                    alarmSystem.setState(SysConstants.IN_ALARM);
+                }else {
+                    alarmSystem.setState(SysConstants.NORMAL);
+                }
+                List<ProbeAlarmState> list1 = new ArrayList<>();
+                paramConfigDtoList.forEach(res->{
+                    ProbeAlarmState probeAlarmState = new ProbeAlarmState();
+                    probeAlarmState.setInstrumentParamConfigNo(res.getInstrumentparamconfigno());
+                    probeAlarmState.setWarningPhone(res.getWarningphone());
+                    probeAlarmState.setEName(CurrentProbeInfoEnum.from(res.getInstrumentconfigid()).getProbeEName());
+                    list1.add(probeAlarmState);
+                });
+                if (CollectionUtils.isNotEmpty(list1)) {
+                    alarmSystem.setProbeAlarmStateList(list1);
+                }
+            }
+            list.add(alarmSystem);
+        }
+        page.setRecords(list);
+        return page;
+    }
+
+    public void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone) {
+        instrumentParamConfigService.updateProbeAlarmState(instrumentParamConfigNo,warningPhone);
+    }
+
+    public void batchUpdateProbeAlarmState(String equipmentNo, String warningPhone) {
+         List<String> list =  instrumentParamConfigService.getInstrumentParamConfigInfo(equipmentNo);
+        if (CollectionUtils.isNotEmpty(list)) {
+            instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,list);
+        }
     }
 }
