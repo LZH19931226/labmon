@@ -46,4 +46,23 @@
             #{configParamNo}
         </foreach>
     </select>
+
+    <select id="getAlarmSystemInfo" resultType="com.hc.dto.InstrumentParamConfigDto">
+        select
+            t1.equipmentname,
+            t3.instrumentparamconfigNO,
+            t3.instrumentconfigid,
+            t3.warningphone,
+            t3.state,
+            t2.sn
+        FROM monitorequipment t1
+                 LEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno
+                 LEFT JOIN instrumentparamconfig t3 ON t2.instrumentno  = t3.instrumentno
+        WHERE t1.hospitalcode = #{alarm.hospitalCode} AND equipmenttypeid = #{alarm.equipmentTypeId}
+            <if test="alarm.search != null and alarm.search != ''">
+                AND equipmentname LIKE concat('%',#{alarm.search},'%')
+                OR sn LIKE concat('%',#{alarm.search},'%')
+            </if>
+
+    </select>
 </mapper>

@@ -47,6 +47,9 @@ public class WarningRecordInfo {
     /** 检测上限值 */
     private String highLimit;
 
+    /** 设备状态 */
+    private Long state;
+
     /** 探头信息 */
     private InstrumentParamConfigDto instrumentParamConfigDto;
 }

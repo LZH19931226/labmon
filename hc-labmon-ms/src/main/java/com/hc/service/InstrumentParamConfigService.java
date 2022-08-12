@@ -1,5 +1,7 @@
 package com.hc.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.AlarmSystemCommand;
 import com.hc.dto.InstrumentParamConfigDto;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface InstrumentParamConfigService {
     List<InstrumentParamConfigDto> getInstrumentParamConfigByCode(String hospitalCode);
 
     List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo);
+
+    List<InstrumentParamConfigDto> getAlarmSystemInfo(Page page, AlarmSystemCommand alarmSystemCommand);
 }

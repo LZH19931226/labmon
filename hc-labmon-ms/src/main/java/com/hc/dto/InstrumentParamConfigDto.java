@@ -1,6 +1,8 @@
 package com.hc.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,6 +20,7 @@ public class InstrumentParamConfigDto  implements Serializable {
      * 监控参数编号
      */
     @ApiModelProperty(value = "监控参数编号")
+    @TableId(value = "instrumentparamconfigNO",type = IdType.INPUT)
     private String instrumentparamconfigno;
     /**
      * 探头编号

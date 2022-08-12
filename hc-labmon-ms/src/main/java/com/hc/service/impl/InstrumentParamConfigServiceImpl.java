@@ -1,5 +1,7 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.AlarmSystemCommand;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.repository.InstrumentParamConfigRepository;
 import com.hc.service.InstrumentParamConfigService;
@@ -45,5 +47,15 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     @Override
     public List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo) {
         return instrumentParamConfigRepository.batchGetProbeInfo(configParamNo);
+    }
+
+    /**
+     * @param page
+     * @param alarmSystemCommand
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getAlarmSystemInfo(Page page, AlarmSystemCommand alarmSystemCommand) {
+        return instrumentParamConfigRepository.getAlarmSystemInfo(page,alarmSystemCommand);
     }
 }

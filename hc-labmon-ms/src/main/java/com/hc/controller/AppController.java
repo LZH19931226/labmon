@@ -64,13 +64,26 @@ public class AppController {
 
     /*报警信息*/
     @PostMapping("/getWarningInfo")
-    @ApiOperation("获取报警信息")
+    @ApiOperation("获取设备报警信息")
     public List<WarningRecordInfo> getWarningInfo(@RequestBody WarningCommand warningCommand){
         return equipmentInfoAppApplication.getWarningInfo(warningCommand);
     }
 
     @PostMapping("getWarningDetailInfo")
+    @ApiOperation("获取设备报警详情信息")
     public List<WarningDetailInfo> getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
         return equipmentInfoAppApplication.getWarningDetailInfo(warningCommand);
+    }
+
+    /***
+     * 1.查询  ename sn
+     * 2.单个修改
+     * 3.批量修改
+     */
+    /*设备报警设置*/
+    @PostMapping("/getAlarmSystemInfo")
+    @ApiOperation("分页获取设备报警设置信息")
+    public Page getAlarmSystemInfo(@RequestBody ProbeCommand probeCommand){
+        return equipmentInfoAppApplication.getAlarmSystemInfo(probeCommand);
     }
 }
