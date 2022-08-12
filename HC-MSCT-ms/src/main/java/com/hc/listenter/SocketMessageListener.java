@@ -182,19 +182,15 @@ public class SocketMessageListener {
             ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER14.getCode()),JsonUtil.toJson(model),logId);
             return;
         }
-        //产生报警记录
-        Warningrecord warningrecord = model.getWarningrecord();
-        warningrecordRepository.saveWarningInfo(warningrecord);
-
         //异步推送报警短信
         sendrecordService.pushNotification(userList,model,hospitalInfoDto);
-
         //如果该医院开启了声光报警则需要推送声光报警指令
         if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
             soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
         }
         //将设备状态信息推送到mq
         sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
+
     }
 
     //需要将报警原因,报警通知到得人员,反写过去
