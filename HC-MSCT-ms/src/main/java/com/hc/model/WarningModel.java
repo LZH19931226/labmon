@@ -34,6 +34,8 @@ public class WarningModel {
 
     private String sn;
 
+    private String logId;
+
     //存储ck得报警信息
     private Warningrecord warningrecord;
 }

@@ -32,7 +32,7 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
      */
     @Override
     public List<Warningrecord> getWarningRecordInfo(String equipmentNo) {
-        return list(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getEquipmentno,equipmentNo));
+        return list(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getEquipmentno, equipmentNo));
     }
 
     /**
@@ -40,8 +40,8 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
      * @return
      */
     @Override
-    public List<Warningrecord> getWarningInfo(String hospitalCode,String startTime,String endTime) {
-        return warningrecordMapper.getWarningInfo(hospitalCode,startTime,endTime);
+    public List<Warningrecord> getWarningInfo(String hospitalCode, String startTime, String endTime) {
+        return warningrecordMapper.getWarningInfo(hospitalCode, startTime, endTime);
     }
 
     /**
@@ -52,7 +52,7 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
      */
     @Override
     public List<Warningrecord> getWarningRecordDetailInfo(String equipmentNo, String startTime, String endTime) {
-        return warningrecordMapper.getWarningRecordDetailInfo(equipmentNo,startTime,endTime);
+        return warningrecordMapper.getWarningRecordDetailInfo(equipmentNo, startTime, endTime);
     }
 
     /**
@@ -61,5 +61,13 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     @Override
     public void saveWarningInfo(Warningrecord warningrecord) {
         warningrecordMapper.insert(warningrecord);
+    }
+
+    @Override
+    public void updateWarningCallUser(Warningrecord warningrecord) {
+        warningrecordMapper.update(warningrecord, Wrappers.lambdaUpdate(new Warningrecord())
+                .eq(Warningrecord::getPkid, warningrecord.getPkid())
+                .set(Warningrecord::getPhoneCallUser, warningrecord.getPhoneCallUser())
+                .set(Warningrecord::getMailCallUser, warningrecord.getMailCallUser()));
     }
 }

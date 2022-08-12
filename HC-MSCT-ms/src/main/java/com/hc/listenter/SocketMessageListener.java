@@ -162,71 +162,32 @@ public class SocketMessageListener {
             return;
         }
         WarningAlarmDo warningAlarmDo = JsonUtil.toBean(message, WarningAlarmDo.class);
-        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER05.getCode()),message,warningAlarmDo.getLogId());
+        String logId = warningAlarmDo.getLogId();
+        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER05.getCode()),message,logId);
         WarningModel model = warningService.produceWarn(warningAlarmDo);
         if (null==model) {
             return;
         }
+        model.setLogId(logId);
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         String sn = monitorinstrument.getSn();
-        String equipmentname = model.getEquipmentname();
         String hospitalcode = model.getHospitalcode();
-        String unit = model.getUnit();
-        String value = model.getValue();
         HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
         if (null == hospitalInfoDto){
             return;
         }
-        String hospitalName = hospitalInfoDto.getHospitalName();
         //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
-        List<UserRightRedisDto> list =almMsgService.addUserScheduLing(hospitalcode);
-        if (CollectionUtils.isEmpty(list)){
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER14.getCode()),JsonUtil.toJson(model),warningAlarmDo.getLogId());
+        List<UserRightRedisDto> userList =almMsgService.addUserScheduLing(hospitalcode);
+        if (CollectionUtils.isEmpty(userList)){
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER14.getCode()),JsonUtil.toJson(model),logId);
             return;
         }
         //产生报警记录
         Warningrecord warningrecord = model.getWarningrecord();
         warningrecordRepository.saveWarningInfo(warningrecord);
 
-        //获取电话.
-        List<Sendrecord> sendrecords = new ArrayList<>();
-        for (UserRightRedisDto userright : list) {
-            String reminders = userright.getReminders();
-            String phonenum = userright.getPhoneNum();
-            String role = userright.getRole();
-            String equipmentName = equipmentname;
-            //1为运维后台人员
-            if (StringUtils.isNotEmpty(role)&&StringUtils.equals(role,"1")){
-                equipmentName = hospitalName + equipmentname;
-            }
-            //不报警
-            if (StringUtils.equals(reminders,DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
-                continue;
-            }
-            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(),reminders)) {
-                sendMesService.callPhone(phonenum, equipmentName);
-                Sendrecord sendrecord = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "1");
-                sendrecords.add(sendrecord);
-                sendMesService.sendMes(phonenum, equipmentName, unit, value);
-                Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "0");
-                sendrecords.add(sendrecord1);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
-            } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
-                sendMesService.callPhone(userright.getPhoneNum(), equipmentName);
-                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
-                sendrecords.add(sendrecord);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
-            } else if (StringUtils.equals(reminders,DictEnum.SMS.getCode())) {
-                sendMesService.sendMes(userright.getPhoneNum(), equipmentName, unit, value);
-                Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
-                sendrecords.add(sendrecord);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()),JsonUtil.toJson(userright),warningAlarmDo.getLogId());
-
-            }
-        }
-        if (CollectionUtils.isNotEmpty(sendrecords)) {
-            sendrecordService.saveBatch(sendrecords);
-        }
+        //异步推送报警短信
+        sendrecordService.pushNotification(userList,model,hospitalInfoDto);
 
         //如果该医院开启了声光报警则需要推送声光报警指令
         if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
@@ -251,17 +212,5 @@ public class SocketMessageListener {
         ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()),JsonUtil.toJson(equipmentState),logId);
     }
 
-    public Sendrecord producePhoneRecord(String phone, String hospitalcode, String equipmentname, String
-            unit, String type) {
-        Sendrecord sendrecord = new Sendrecord();
-        sendrecord.setPhonenum(phone);
-        sendrecord.setCreatetime(new Date());
-        sendrecord.setHospitalcode(hospitalcode);
-        sendrecord.setSendtype(type);
-        sendrecord.setEquipmentname(equipmentname);
-        sendrecord.setUnit(unit);
-        sendrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
-        return sendrecord;
-    }
 
 }
