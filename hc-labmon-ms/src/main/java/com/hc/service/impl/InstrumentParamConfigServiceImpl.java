@@ -1,7 +1,5 @@
 package com.hc.service.impl;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.application.command.AlarmSystemCommand;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.repository.InstrumentParamConfigRepository;
 import com.hc.service.InstrumentParamConfigService;
@@ -50,12 +48,32 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     }
 
     /**
-     * @param page
-     * @param alarmSystemCommand
+     * @param instrumentParamConfigNo
+     * @param warningPhone
+     */
+    @Override
+    public void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone) {
+        InstrumentParamConfigDto instrumentParamConfigDto = new InstrumentParamConfigDto();
+        instrumentParamConfigDto.setInstrumentparamconfigno(instrumentParamConfigNo);
+        instrumentParamConfigDto.setWarningphone(warningPhone);
+        instrumentParamConfigRepository.updateById(instrumentParamConfigDto);
+    }
+
+    /**
+     * @param equipmentNo
      * @return
      */
     @Override
-    public List<InstrumentParamConfigDto> getAlarmSystemInfo(Page page, AlarmSystemCommand alarmSystemCommand) {
-        return instrumentParamConfigRepository.getAlarmSystemInfo(page,alarmSystemCommand);
+    public List<String> getInstrumentParamConfigInfo(String equipmentNo) {
+        return instrumentParamConfigRepository.getInstrumentParamConfigInfo(equipmentNo);
+    }
+
+    /**
+     * @param warningPhone
+     * @param list
+     */
+    @Override
+    public void batchUpdateProbeAlarmState(String warningPhone, List<String> list) {
+        instrumentParamConfigRepository.batchUpdateProbeAlarmState(warningPhone,list);
     }
 }

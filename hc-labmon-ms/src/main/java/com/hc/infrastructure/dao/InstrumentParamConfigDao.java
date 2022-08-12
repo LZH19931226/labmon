@@ -1,8 +1,6 @@
 package com.hc.infrastructure.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.application.command.AlarmSystemCommand;
 import com.hc.dto.InstrumentParamConfigDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,5 +31,8 @@ public interface InstrumentParamConfigDao extends BaseMapper<InstrumentParamConf
 
     List<InstrumentParamConfigDto> batchGetProbeInfo(@Param("configParamNoList") List<String> configParamNoList);
 
-    List<InstrumentParamConfigDto> getAlarmSystemInfo(Page page,@Param("alarm") AlarmSystemCommand alarmSystemCommand);
+
+    List<String> getInstrumentParamConfigInfo(String equipmentNo);
+
+    void batchUpdateProbeAlarmState(@Param("warningPhone") String warningPhone,@Param("list") List<String> list);
 }

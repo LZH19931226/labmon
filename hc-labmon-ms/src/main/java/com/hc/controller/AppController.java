@@ -86,4 +86,16 @@ public class AppController {
     public Page getAlarmSystemInfo(@RequestBody ProbeCommand probeCommand){
         return equipmentInfoAppApplication.getAlarmSystemInfo(probeCommand);
     }
+
+    @PutMapping("/updateProbeAlarmState")
+    @ApiOperation("修改探头报警开关")
+    public void updateProbeAlarmState(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningPhone")String warningPhone ){
+        equipmentInfoAppApplication.updateProbeAlarmState(instrumentParamConfigNo,warningPhone);
+    }
+
+    @PutMapping("/batchUpdateProbeAlarmState")
+    @ApiOperation("修改设备报警开关")
+    public void batchUpdateProbeAlarmState(@RequestParam("equipmentNo")String equipmentNo,@RequestParam("warningPhone")String warningPhone){
+        equipmentInfoAppApplication.batchUpdateProbeAlarmState(equipmentNo,warningPhone);
+    }
 }

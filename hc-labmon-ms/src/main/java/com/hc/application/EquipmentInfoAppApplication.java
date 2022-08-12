@@ -581,6 +581,7 @@ public class EquipmentInfoAppApplication {
             AlarmSystem alarmSystem = new AlarmSystem();
             alarmSystem.setEquipmentName(monitorEquipmentDto.getEquipmentname());
             alarmSystem.setSn(monitorEquipmentDto.getSn());
+            alarmSystem.setEquipmentNo(monitorEquipmentDto.getEquipmentno());
             if(eNoMap.containsKey(monitorEquipmentDto.getEquipmentno())){
                 List<InstrumentParamConfigDto> paramConfigDtoList = eNoMap.get(monitorEquipmentDto.getEquipmentno());
                 long count = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
@@ -605,5 +606,16 @@ public class EquipmentInfoAppApplication {
         }
         page.setRecords(list);
         return page;
+    }
+
+    public void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone) {
+        instrumentParamConfigService.updateProbeAlarmState(instrumentParamConfigNo,warningPhone);
+    }
+
+    public void batchUpdateProbeAlarmState(String equipmentNo, String warningPhone) {
+         List<String> list =  instrumentParamConfigService.getInstrumentParamConfigInfo(equipmentNo);
+        if (CollectionUtils.isNotEmpty(list)) {
+            instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,list);
+        }
     }
 }

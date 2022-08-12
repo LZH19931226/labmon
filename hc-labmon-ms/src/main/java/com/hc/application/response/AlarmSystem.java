@@ -6,8 +6,12 @@ import java.util.List;
 
 @Data
 public class AlarmSystem {
+
     /**设备名称*/
     private String equipmentName;
+
+    /**设备no */
+    private String equipmentNo;
 
     /** sn*/
     private String sn;

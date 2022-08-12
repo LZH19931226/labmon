@@ -47,22 +47,20 @@
         </foreach>
     </select>
 
-    <select id="getAlarmSystemInfo" resultType="com.hc.dto.InstrumentParamConfigDto">
-        select
-            t1.equipmentname,
-            t3.instrumentparamconfigNO,
-            t3.instrumentconfigid,
-            t3.warningphone,
-            t3.state,
-            t2.sn
-        FROM monitorequipment t1
-                 LEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno
-                 LEFT JOIN instrumentparamconfig t3 ON t2.instrumentno  = t3.instrumentno
-        WHERE t1.hospitalcode = #{alarm.hospitalCode} AND equipmenttypeid = #{alarm.equipmentTypeId}
-            <if test="alarm.search != null and alarm.search != ''">
-                AND equipmentname LIKE concat('%',#{alarm.search},'%')
-                OR sn LIKE concat('%',#{alarm.search},'%')
-            </if>
+    <update id="batchUpdateProbeAlarmState">
+        update instrumentparamconfig set warningphone = #{warningPhone}
+        where instrumentparamconfigNO in
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
+    <select id="getInstrumentParamConfigInfo" resultType="string">
+        SELECT
+          t1.instrumentparamconfigNO
+          FROM
+          instrumentparamconfig t1
+          LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
+          WHERE t2.equipmentno = #{equipmentNo}
     </select>
 </mapper>
