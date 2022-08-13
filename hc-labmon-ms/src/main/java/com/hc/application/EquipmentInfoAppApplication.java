@@ -1,6 +1,7 @@
 package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
@@ -20,6 +21,7 @@ import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
@@ -582,6 +584,7 @@ public class EquipmentInfoAppApplication {
             alarmSystem.setEquipmentName(monitorEquipmentDto.getEquipmentname());
             alarmSystem.setSn(monitorEquipmentDto.getSn());
             alarmSystem.setEquipmentNo(monitorEquipmentDto.getEquipmentno());
+            alarmSystem.setHospitalCode(monitorEquipmentDto.getHospitalcode());
             if(eNoMap.containsKey(monitorEquipmentDto.getEquipmentno())){
                 List<InstrumentParamConfigDto> paramConfigDtoList = eNoMap.get(monitorEquipmentDto.getEquipmentno());
                 long count = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
@@ -595,6 +598,8 @@ public class EquipmentInfoAppApplication {
                     ProbeAlarmState probeAlarmState = new ProbeAlarmState();
                     probeAlarmState.setInstrumentParamConfigNo(res.getInstrumentparamconfigno());
                     probeAlarmState.setWarningPhone(res.getWarningphone());
+                    probeAlarmState.setInstrumentConfigId(res.getInstrumentconfigid());
+                    probeAlarmState.setInstrumentNo(res.getInstrumentno());
                     probeAlarmState.setEName(CurrentProbeInfoEnum.from(res.getInstrumentconfigid()).getProbeEName());
                     list1.add(probeAlarmState);
                 });
@@ -608,14 +613,44 @@ public class EquipmentInfoAppApplication {
         return page;
     }
 
-    public void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone) {
-        instrumentParamConfigService.updateProbeAlarmState(instrumentParamConfigNo,warningPhone);
+    public void batchUpdateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
+        String equipmentNo = alarmSystemCommand.getEquipmentNo();
+        String hospitalCode = alarmSystemCommand.getHospitalCode();
+        String warningPhone = alarmSystemCommand.getWarningPhone();
+        List<InstrumentParamConfigDto> list =  instrumentParamConfigService.getInstrumentParamConfigInfo(equipmentNo);
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
+        List<String> collect = list.stream().map(InstrumentParamConfigDto::getInstrumentparamconfigno).collect(Collectors.toList());
+        instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,collect);
+        //更新缓存
+        List<String> collect1 = list.stream().map(res -> res.getInstrumentno() + ":" + res.getInstrumentconfigid()).collect(Collectors.toList());
+        com.hc.my.common.core.redis.command.ProbeCommand probeCommand = new com.hc.my.common.core.redis.command.ProbeCommand();
+        probeCommand.setHospitalCode(hospitalCode);
+        probeCommand.setInstrumentNo(collect1);
+        List<InstrumentInfoDto> result = probeRedisApi.bulkGetProbeRedisInfo(probeCommand).getResult();
+        if (CollectionUtils.isEmpty(result)) {
+            return;
+        }
+        result.forEach(res->res.setWarningPhone(warningPhone));
+        probeCommand.setInstrumentInfoDtoList(result);
+        probeRedisApi.bulkUpdateProbeRedisInfo(probeCommand);
     }
 
-    public void batchUpdateProbeAlarmState(String equipmentNo, String warningPhone) {
-         List<String> list =  instrumentParamConfigService.getInstrumentParamConfigInfo(equipmentNo);
-        if (CollectionUtils.isNotEmpty(list)) {
-            instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,list);
+    public void updateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
+        String instrumentParamConfigNo = alarmSystemCommand.getInstrumentParamConfigNo();
+        String warningPhone = alarmSystemCommand.getWarningPhone();
+        instrumentParamConfigService.updateProbeAlarmState(instrumentParamConfigNo,warningPhone);
+
+        //获取并更新缓存信息
+        String hospitalCode = alarmSystemCommand.getHospitalCode();
+        String instrumentConfigId = alarmSystemCommand.getInstrumentConfigId();
+        String instrumentNo = alarmSystemCommand.getInstrumentNo();
+        InstrumentInfoDto result = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentNo + ":" + instrumentConfigId).getResult();
+        if(ObjectUtils.isEmpty(result)){
+            return;
         }
+        result.setWarningPhone(warningPhone);
+        probeRedisApi.addProbeRedisInfo(result);
     }
 }

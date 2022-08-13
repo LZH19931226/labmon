@@ -32,7 +32,8 @@ public interface InstrumentParamConfigDao extends BaseMapper<InstrumentParamConf
     List<InstrumentParamConfigDto> batchGetProbeInfo(@Param("configParamNoList") List<String> configParamNoList);
 
 
-    List<String> getInstrumentParamConfigInfo(String equipmentNo);
+    List<InstrumentParamConfigDto> getInstrumentParamConfigInfo(String equipmentNo);
 
     void batchUpdateProbeAlarmState(@Param("warningPhone") String warningPhone,@Param("list") List<String> list);
+
 }

@@ -55,12 +55,14 @@
         </foreach>
     </update>
 
-    <select id="getInstrumentParamConfigInfo" resultType="string">
+    <select id="getInstrumentParamConfigInfo" resultType="com.hc.dto.InstrumentParamConfigDto">
         SELECT
-          t1.instrumentparamconfigNO
+          t2.hospitalcode,
+          t1.*
           FROM
           instrumentparamconfig t1
           LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
           WHERE t2.equipmentno = #{equipmentNo}
     </select>
+
 </mapper>

@@ -7,6 +7,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.hc.application.config.RedisUtils;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.ProbeInfoApi;
+import com.hc.my.common.core.redis.command.ProbeCommand;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
@@ -54,6 +55,38 @@ public class ProbeRedisApplication {
      */
     public void addProbeRedisInfo(InstrumentInfoDto instrumentInfoDto) {
         redisUtils.hset(LabManageMentServiceEnum.P.getCode()+instrumentInfoDto.getHospitalCode(),instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
+    }
+
+    /**
+     * 批量更新探头缓存信息
+     * */
+    public void bulkUpdateProbeRedisInfo(ProbeCommand probeCommand) {
+        List<InstrumentInfoDto> instrumentInfoDtoList = probeCommand.getInstrumentInfoDtoList();
+        for (InstrumentInfoDto instrumentInfoDto : instrumentInfoDtoList) {
+            addProbeRedisInfo(instrumentInfoDto);
+        }
+    }
+
+    /***
+     * 批量获取探头信息
+     * @param probeCommand
+     * @return
+     */
+    public List<InstrumentInfoDto> bulkGetProbeRedisInfo(ProbeCommand probeCommand) {
+        String hospitalCode = probeCommand.getHospitalCode();
+        List<String> instrumentNo = probeCommand.getInstrumentNo();
+        List<Object> objects = redisUtils.multiGet(LabManageMentServiceEnum.P.getCode() + hospitalCode, instrumentNo);
+        if (CollectionUtils.isEmpty(objects)) {
+            return null;
+        }
+        List<InstrumentInfoDto> list =  new ArrayList<>();
+        for (int i = 0; i < objects.size(); i++) {
+            if(!StringUtils.isEmpty(objects.get(i))){
+                InstrumentInfoDto instrumentInfoDto = JSON.parseObject((String) JSON.toJSON(objects.get(i)), new TypeReference<InstrumentInfoDto>() { });
+                list.add(instrumentInfoDto);
+            }
+        }
+        return list;
     }
 
     /**
@@ -206,4 +239,6 @@ public class ProbeRedisApplication {
         }
         return map;
     }
+
+
 }

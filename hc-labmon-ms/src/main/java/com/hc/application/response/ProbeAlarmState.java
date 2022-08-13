@@ -15,4 +15,9 @@ public class ProbeAlarmState {
     /** 英文名称 */
     private String eName;
 
+    /** 检测类型id */
+    private Integer instrumentConfigId;
+
+    private String instrumentNo;
+
 }

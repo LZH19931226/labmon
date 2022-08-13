@@ -64,7 +64,7 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
      * @return
      */
     @Override
-    public List<String> getInstrumentParamConfigInfo(String equipmentNo) {
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigInfo(String equipmentNo) {
         return instrumentParamConfigRepository.getInstrumentParamConfigInfo(equipmentNo);
     }
 
@@ -76,4 +76,5 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     public void batchUpdateProbeAlarmState(String warningPhone, List<String> list) {
         instrumentParamConfigRepository.batchUpdateProbeAlarmState(warningPhone,list);
     }
+
 }

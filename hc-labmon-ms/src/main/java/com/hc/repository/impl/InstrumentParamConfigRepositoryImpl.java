@@ -63,7 +63,7 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
      * @return
      */
     @Override
-    public List<String> getInstrumentParamConfigInfo(String equipmentNo) {
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigInfo(String equipmentNo) {
         return instrumentParamConfigDao.getInstrumentParamConfigInfo(equipmentNo);
     }
 
@@ -75,4 +75,5 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
     public void batchUpdateProbeAlarmState(String warningPhone, List<String> list) {
         instrumentParamConfigDao.batchUpdateProbeAlarmState(warningPhone,list);
     }
+
 }

@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.ProbeRedisApplication;
+import com.hc.my.common.core.redis.command.ProbeCommand;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
@@ -39,6 +40,18 @@ public class ProbeRedisController {
     @ApiOperation("添加或更新探头信息")
     public void addProbeRedisInfo(@RequestBody InstrumentInfoDto instrumentInfoDto){
         probeRedisApplication.addProbeRedisInfo(instrumentInfoDto);
+    }
+
+    @PostMapping("/bulkUpdateProbeRedisInfo")
+    @ApiOperation("批量更新探头信息")
+    public void bulkUpdateProbeRedisInfo(@RequestBody ProbeCommand probeCommand){
+        probeRedisApplication.bulkUpdateProbeRedisInfo(probeCommand);
+    }
+
+    @PostMapping("/bulkGetProbeRedisInfo")
+    @ApiOperation("批量获取探头信息")
+    public List<InstrumentInfoDto> bulkGetProbeRedisInfo(@RequestBody ProbeCommand probeCommand){
+        return probeRedisApplication.bulkGetProbeRedisInfo(probeCommand);
     }
 
     /**

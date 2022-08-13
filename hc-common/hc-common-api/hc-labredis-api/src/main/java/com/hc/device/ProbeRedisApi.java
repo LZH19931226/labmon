@@ -2,6 +2,7 @@ package com.hc.device;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
+import com.hc.my.common.core.redis.command.ProbeCommand;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
@@ -31,6 +32,14 @@ public interface ProbeRedisApi {
      */
     @PostMapping("/probe/addProbeRedisInfo")
     void addProbeRedisInfo(@RequestBody InstrumentInfoDto instrumentInfoDto);
+
+    @PostMapping("/probe/bulkUpdateProbeRedisInfo")
+    @ApiOperation("批量更新探头信息")
+    void bulkUpdateProbeRedisInfo(@RequestBody ProbeCommand probeCommand);
+
+    @PostMapping("/probe/bulkGetProbeRedisInfo")
+    @ApiOperation("批量获取探头信息")
+    ApiResponse<List<InstrumentInfoDto>> bulkGetProbeRedisInfo(@RequestBody ProbeCommand probeCommand);
 
     /**
      * 移除探头缓存信息
@@ -90,6 +99,7 @@ public interface ProbeRedisApi {
      */
     @PostMapping("/probe/addProbeCurrentInfo")
     void addCurrentProbeValueInfo(@RequestBody ProbeInfoDto probeInfoDto);
+
 
     @PostMapping("/probe/getProbeInBatches")
     @ApiOperation("批量获取探头当前值")

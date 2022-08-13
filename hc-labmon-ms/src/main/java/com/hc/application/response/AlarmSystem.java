@@ -19,6 +19,9 @@ public class AlarmSystem {
     /**设备状态*/
     private String state;
 
+    /** 医院id */
+    private String hospitalCode;
+
     /** 探头信息 */
     private List<ProbeAlarmState> probeAlarmStateList;
 }

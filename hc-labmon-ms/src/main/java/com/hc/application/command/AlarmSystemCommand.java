@@ -2,13 +2,19 @@ package com.hc.application.command;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class AlarmSystemCommand {
 
     private String warningPhone;
 
-    private List<String> instrumentParamConfigNoList;
+   private  String hospitalCode;
+
+   private String instrumentParamConfigNo;
+
+   private String instrumentConfigId;
+
+   private String instrumentNo;
+
+   private String equipmentNo;
 
 }

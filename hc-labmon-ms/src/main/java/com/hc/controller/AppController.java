@@ -2,6 +2,7 @@ package com.hc.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.EquipmentInfoAppApplication;
+import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
@@ -87,15 +88,15 @@ public class AppController {
         return equipmentInfoAppApplication.getAlarmSystemInfo(probeCommand);
     }
 
-    @PutMapping("/updateProbeAlarmState")
+    @PostMapping("/updateProbeAlarmState")
     @ApiOperation("修改探头报警开关")
-    public void updateProbeAlarmState(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningPhone")String warningPhone ){
-        equipmentInfoAppApplication.updateProbeAlarmState(instrumentParamConfigNo,warningPhone);
+    public void updateProbeAlarmState(@RequestBody AlarmSystemCommand alarmSystemCommand){
+        equipmentInfoAppApplication.updateProbeAlarmState(alarmSystemCommand);
     }
 
-    @PutMapping("/batchUpdateProbeAlarmState")
+    @PostMapping("/batchUpdateProbeAlarmState")
     @ApiOperation("修改设备报警开关")
-    public void batchUpdateProbeAlarmState(@RequestParam("equipmentNo")String equipmentNo,@RequestParam("warningPhone")String warningPhone){
-        equipmentInfoAppApplication.batchUpdateProbeAlarmState(equipmentNo,warningPhone);
+    public void batchUpdateProbeAlarmState(@RequestBody AlarmSystemCommand alarmSystemCommand){
+        equipmentInfoAppApplication.batchUpdateProbeAlarmState(alarmSystemCommand);
     }
 }
