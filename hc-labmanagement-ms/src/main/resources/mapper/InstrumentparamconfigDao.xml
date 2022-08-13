@@ -64,10 +64,20 @@
 
 
     <delete id="deleteInfos" parameterType="Long">
-        delete from instrumentparamconfig where instrumentparamconfigNO in 
+        delete from instrumentparamconfig where instrumentparamconfigNO in
         <foreach collection="array" item="instrumentParamConfigNos" open="(" separator="," close=")">
         #{instrumentParamConfigNos}
         </foreach>
     </delete>
+
+    <select id="getInstrumentParamConfigInfo" resultType="com.hc.dto.InstrumentparamconfigDTO">
+        SELECT
+            t2.hospitalcode,
+            t1.*
+        FROM
+            instrumentparamconfig t1
+                LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
+        WHERE t2.equipmentno = #{equipmentNo}
+    </select>
 
 </mapper>

@@ -104,4 +104,28 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     public List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList) {
         return equipmentInfoRepository.batchGetEquipmentInfo(equipmentNoList);
     }
+
+    /**
+     * @param monitorEquipmentDto
+     */
+    @Override
+    public void updateEquipmentWarningSwitch(MonitorEquipmentDto monitorEquipmentDto) {
+        equipmentInfoRepository.updateById(monitorEquipmentDto);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getAll() {
+        return equipmentInfoRepository.getAll();
+    }
+
+    /**
+     * @param list
+     */
+    @Override
+    public void bulkUpdate(List<MonitorEquipmentDto> list) {
+        equipmentInfoRepository.updateBatchById(list);
+    }
 }

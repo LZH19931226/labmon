@@ -101,4 +101,14 @@
             #{eqNo}
         </foreach>
     </select>
+
+    <select id="getAll" resultType="com.hc.dto.MonitorEquipmentDto">
+        select
+            t1.*,
+            t2.instrumentno,
+            t2.sn
+        from
+            monitorequipment t1
+        left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno
+    </select>
 </mapper>

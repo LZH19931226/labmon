@@ -77,4 +77,11 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
         instrumentParamConfigRepository.batchUpdateProbeAlarmState(warningPhone,list);
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getAll() {
+        return instrumentParamConfigRepository.list();
+    }
 }

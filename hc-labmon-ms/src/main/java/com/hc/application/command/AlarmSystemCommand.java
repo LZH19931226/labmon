@@ -17,4 +17,6 @@ public class AlarmSystemCommand {
 
    private String equipmentNo;
 
+   private String sn;
+
 }

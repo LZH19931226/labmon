@@ -28,4 +28,7 @@ public class ProbeCommand {
      * 当前页
      */
     private Long pageCurrent;
+
+    /** 设备报警开关 */
+    private String warningSwitch;
 }

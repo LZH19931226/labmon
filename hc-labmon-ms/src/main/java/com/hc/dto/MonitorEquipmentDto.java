@@ -87,4 +87,11 @@ public class MonitorEquipmentDto implements Serializable {
     @TableField(value = "create_time")
     private Date createTime;
 
+    /**设备报警开关0为关闭1为开启*/
+    @TableField(value = "warning_switch")
+    private String warningSwitch;
+
+    @TableField(exist = false)
+    private String instrumentNo;
+
 }

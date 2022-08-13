@@ -92,4 +92,5 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
      */
     void editWarningTime(String instrumentParamConfigNo, Date warningTime);
 
+    List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo);
 }

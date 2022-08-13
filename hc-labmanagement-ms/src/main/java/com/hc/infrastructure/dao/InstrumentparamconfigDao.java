@@ -48,4 +48,5 @@ public interface InstrumentparamconfigDao extends BaseMapper<Instrumentparamconf
      */
     void deleteInfos(String[] instrumentParamConfigNos);
 
+    List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo);
 }

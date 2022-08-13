@@ -75,4 +75,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
 
     /** 创建时间 */
     private Date createTime;
+
+    /**设备报警开关0为关闭1为开启*/
+    private String warningSwitch;
 }

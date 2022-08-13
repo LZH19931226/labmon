@@ -99,4 +99,10 @@ public class AppController {
     public void batchUpdateProbeAlarmState(@RequestBody AlarmSystemCommand alarmSystemCommand){
         equipmentInfoAppApplication.batchUpdateProbeAlarmState(alarmSystemCommand);
     }
+
+    @GetMapping("/synchronizedDeviceAlarmSwitch")
+    @ApiOperation("同步设备报警开关")
+    public void synchronizedDeviceAlarmSwitch(){
+        equipmentInfoAppApplication.synchronizedDeviceAlarmSwitch();
+    }
 }

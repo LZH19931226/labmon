@@ -2,19 +2,22 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
-import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.device.ProbeRedisApi;
+import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
+import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
@@ -60,6 +63,9 @@ public class InstrumentparamconfigApplication {
     @Autowired
     private ProbeRedisApi probeRedisApi;
 
+    @Autowired
+    private SnDeviceRedisApi snDeviceRedisApi;
+
     /**
      * 通过设备no获取探头参数信息
      *
@@ -104,11 +110,6 @@ public class InstrumentparamconfigApplication {
             throw new IedsException(MonitorinstrumentEnumCode.PROBE_INFORMATION_ALREADY_EXISTS.getMessage());
         }
 
-        //判断上限与下限逻辑
-        int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
-        if(compareTo>0){
-            throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
-        }
         String instrumentParamConfigNo = UUID.randomUUID().toString().replaceAll("-", "");
         InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
                 .setInstrumentparamconfigno(instrumentParamConfigNo)
@@ -230,8 +231,48 @@ public class InstrumentparamconfigApplication {
 
         InstrumentparamconfigDTO dto =  instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
         MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
-        dto.setSn(monitorinstrumentDTO.getSn());
+        String sn = monitorinstrumentDTO.getSn();
+        dto.setSn(sn);
+        //更新探头信息
+        InstrumentparamconfigDTO instrumentparamconfigDTO = buildInstrumentparamconfigDTO(instrumentParamConfigCommand);
+        instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
+        //更新设备
+        String warningphone = instrumentParamConfigCommand.getWarningphone();
+        String equipmentNo = instrumentParamConfigCommand.getEquipmentNo();
+        MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
+        monitorEquipmentDto.setEquipmentNo(equipmentNo);
+        if(SysConstants.IN_ALARM.equals(warningphone)){
+            monitorEquipmentDto.setWarningSwitch(warningphone);
+        }else {
+            List<InstrumentparamconfigDTO> instrumentconfigDTOS = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
+            long count = instrumentconfigDTOS.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
+            if(count>0){
+                monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
+            }else {
+                monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
+            }
+        }
+        //更新设备数据库
+        monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
+        //更新设备缓存
+        SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
+        result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+        snDeviceRedisApi.updateSnDeviceDtoSync(result1);
 
+        //添加日志信息
+        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                build(Context.getUserId(),
+                        BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
+                        instrumentParamConfigCommand,
+                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
+                        OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
+
+        //更新redis缓存
+        addProbeRedisInfo(monitorinstrumentDTO,instrumentParamConfigCommand,instrumentParamConfigCommand.getInstrumentparamconfigno());
+    }
+
+    private InstrumentparamconfigDTO buildInstrumentparamconfigDTO(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
                 .setInstrumentparamconfigno(instrumentParamConfigCommand.getInstrumentparamconfigno())
                 .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
@@ -245,19 +286,7 @@ public class InstrumentparamconfigApplication {
                 .setSaturation(instrumentParamConfigCommand.getSaturation())
                 .setCalibration(instrumentParamConfigCommand.getCalibration())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
-        instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
-
-        //添加日志信息
-        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
-                build(Context.getUserId(),
-                        BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
-                        instrumentParamConfigCommand,
-                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
-                        OperationLogEunmDerailEnum.EDIT.getCode());
-        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
-
-        //更新redis缓存
-        addProbeRedisInfo(monitorinstrumentDTO,instrumentParamConfigCommand,instrumentParamConfigCommand.getInstrumentparamconfigno());
+        return instrumentparamconfigDTO;
     }
 
     /**

@@ -59,4 +59,7 @@ public class SnDeviceDto implements Serializable {
     /** 设备状态 0为正常 1为报警中 */
     private String state;
 
+    /**设备报警开关0为关闭1为开启*/
+    private String warningSwitch;
+
 }

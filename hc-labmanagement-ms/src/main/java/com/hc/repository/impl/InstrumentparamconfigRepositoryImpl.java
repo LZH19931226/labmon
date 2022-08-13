@@ -164,4 +164,12 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
         instrumentparamconfigDao.updateById(instrumentparamconfigPo);
     }
 
+    /**
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo) {
+        return instrumentparamconfigDao.getInstrumentParamConfigInfo(equipmentNo);
+    }
 }

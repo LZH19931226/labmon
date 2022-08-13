@@ -17,7 +17,7 @@ public class AlarmSystem {
     private String sn;
 
     /**设备状态*/
-    private String state;
+    private String warningSwitch;
 
     /** 医院id */
     private String hospitalCode;

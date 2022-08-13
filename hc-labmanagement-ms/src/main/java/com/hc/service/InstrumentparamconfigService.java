@@ -102,5 +102,12 @@ public interface InstrumentparamconfigService{
      * @return
      */
     int selectProbeStateCount(String instrumentNo);
+
+    /**
+     * 获取设备探头信息
+     * @param equipmentNo
+     * @return
+     */
+    List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo);
 }
 

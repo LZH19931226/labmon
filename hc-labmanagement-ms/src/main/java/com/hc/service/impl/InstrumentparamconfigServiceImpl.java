@@ -163,4 +163,13 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
                 .eq(InstrumentparamconfigPo::getInstrumentno,instrumentNo)
                 .eq(InstrumentparamconfigPo::getState,"1"));
     }
+
+    /**
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo) {
+        return instrumentparamconfigRepository.getInstrumentParamConfigInfo(equipmentNo);
+    }
 }

@@ -53,4 +53,10 @@ public interface EquipmentInfoService {
     List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page, ProbeCommand probeCommand);
 
     List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList);
+
+    void updateEquipmentWarningSwitch(MonitorEquipmentDto monitorEquipmentDto);
+
+    List<MonitorEquipmentDto> getAll();
+
+    void bulkUpdate(List<MonitorEquipmentDto> list);
 }

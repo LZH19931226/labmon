@@ -100,4 +100,12 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
     public List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList) {
         return equipmentInfoDao.batchGetEquipmentInfo(equipmentNoList);
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<MonitorEquipmentDto> getAll() {
+        return equipmentInfoDao.getAll();
+    }
 }
