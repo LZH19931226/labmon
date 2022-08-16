@@ -47,12 +47,17 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
             "monitorequipment t1 " +
             "left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno " +
             "where t1.clientvisible = '1' and t1.hospitalcode = #{probeCommand.hospitalCode} and t1.equipmenttypeid = #{probeCommand.equipmentTypeId}" +
-            "<if test = 'probeCommand.warningSwitch != null and probeCommand.warningSwitch != \"\" '>" +
-            " and   t1.warning_switch = #{probeCommand.warningSwitch}" +
+            "<if test = 'probeCommand.warningSwitch != null and probeCommand.warningSwitch != \"\"'>" +
+            "<if test = 'probeCommand.warningSwitch == 1'> " +
+            " and (t1.warning_switch = #{probeCommand.warningSwitch}  or  t1.warning_switch IS NULL) " +
+            "</if>" +
+            "<if test = 'probeCommand.warningSwitch == 0'>" +
+            "and t1.warning_switch = #{probeCommand.warningSwitch}" +
+            "</if>" +
             "</if>" +
             "<if test = 'probeCommand.equipmentName != null and probeCommand.equipmentName != \"\"'>" +
-            " and t1.equipmentname like concat('%',#{probeCommand.equipmentName},'%')" +
-            " or t2.sn like concat('%',#{probeCommand.equipmentName},'%')"+
+            " and (t1.equipmentname like concat('%',#{probeCommand.equipmentName},'%')" +
+            " or t2.sn like concat('%',#{probeCommand.equipmentName},'%'))"+
             "</if> "+
             "</script>")
     List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page,@Param("probeCommand")ProbeCommand probeCommand);
