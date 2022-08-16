@@ -13,6 +13,7 @@ import com.hc.repository.UserSchedulingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,10 +43,7 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
     @Override
     public void insertUserSchedulingInfo(List<UserSchedulingDto> userSchedulingDtoList) {
         List<UserSchedulingPo> userSchedulingPos = BeanConverter.convert(userSchedulingDtoList, UserSchedulingPo.class);
-        for (UserSchedulingPo userSchedulingPo : userSchedulingPos) {
-            userSchedulingDao.insert(userSchedulingPo);
-        }
-
+        saveBatch(userSchedulingPos);
     }
 
     /**
@@ -84,22 +82,26 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
         }
         //计算新时间段与旧时间段差值
         long days = newStartTime.getTime()-oldStartTime.getTime();
-
+        long startTime = System.currentTimeMillis();
+        List<UserSchedulingPo> saveList = new ArrayList<>();
         for (UserSchedulingPo userSchedulingPo : userSchedulingPos) {
 
-                long start = userSchedulingPo.getStartTime().getTime() + days;
-                Date startDate = new Date();
-                startDate.setTime(start);
+            long start = userSchedulingPo.getStartTime().getTime() + days;
+            Date startDate = new Date();
+            startDate.setTime(start);
 
-                long end =  userSchedulingPo.getEndTime().getTime() + days;
-                Date endDate = new Date();
-                endDate.setTime(end);
+            long end =  userSchedulingPo.getEndTime().getTime() + days;
+            Date endDate = new Date();
+            endDate.setTime(end);
 
-                userSchedulingPo.setStartTime(startDate);
-                userSchedulingPo.setEndTime(endDate);
-                userSchedulingPo.setUsid(null);
-                userSchedulingDao.insert(userSchedulingPo);
+            userSchedulingPo.setStartTime(startDate);
+            userSchedulingPo.setEndTime(endDate);
+            userSchedulingPo.setUsid(null);
+            saveList.add(userSchedulingPo);
         }
+        saveBatch(saveList);
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime-startTime);
     }
 
     /**

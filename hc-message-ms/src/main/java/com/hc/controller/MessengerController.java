@@ -23,8 +23,6 @@ public class MessengerController {
     @Autowired
     private MessengerService messengerService;
 
-
-
     @PostMapping("/p2PNotify")
     public  String send(@RequestBody P2PNotify notify){
         NotifyMessage broadcast = new NotifyMessage();

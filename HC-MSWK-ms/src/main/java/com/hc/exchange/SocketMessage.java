@@ -11,6 +11,8 @@ public interface SocketMessage {
 
 	String EXCHANGE_NAME3="SocketMessageS";
 
+	String EQUIPMENT_STATE_INFO = "ESI";
+
 	@Input(EXCHANGE_NAME)
 	MessageChannel  getIutputChannel();
 
@@ -19,4 +21,7 @@ public interface SocketMessage {
 
 	@Input(EXCHANGE_NAME3)
 	MessageChannel  getIutputChannel2();
+
+	@Input(EQUIPMENT_STATE_INFO)
+	MessageChannel getChannelInfo();
 }

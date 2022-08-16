@@ -1,6 +1,6 @@
 package com.hc.po;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -26,8 +26,7 @@ public class InstrumentparamconfigPo implements Serializable {
     /**
      * 监控参数编号
      */
-    @TableId
-    @TableField(value = "instrumentparamconfigNO")
+    @TableId(value = "instrumentparamconfigNO",type = IdType.INPUT)
     private String instrumentparamconfigno;
     /**
      * 探头编号

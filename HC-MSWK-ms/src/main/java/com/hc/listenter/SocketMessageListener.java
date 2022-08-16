@@ -1,14 +1,21 @@
 package com.hc.listenter;
 
+import cn.hutool.json.JSONUtil;
+import com.hc.device.ProbeRedisApi;
 import com.hc.exchange.SocketMessage;
 import com.hc.my.common.core.constant.enums.ElkLogDetail;
+import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.domain.WarningAlarmDo;
+import com.hc.my.common.core.esm.EquipmentState;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.UniqueHash;
+import com.hc.po.Instrumentparamconfig;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.InstrumentMonitorInfoService;
+import com.hc.service.InstrumentparamconfigService;
 import com.hc.service.MTJudgeService;
 import com.hc.service.MessagePushService;
 import com.hc.tcp.TcpClientApi;
@@ -20,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +46,10 @@ public class SocketMessageListener {
     private InstrumentMonitorInfoService instrumentMonitorInfoService;
     @Autowired
     private TcpClientApi tcpClientApi;
-
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
+    @Autowired
+    private InstrumentparamconfigService instrumentparamconfigService;
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME)
@@ -56,6 +67,12 @@ public class SocketMessageListener {
     @StreamListener(SocketMessage.EXCHANGE_NAME3)
     public void onMessage2(String messageContent) {
         mswkMessage(messageContent, "3");
+    }
+
+    @StreamListener(SocketMessage.EQUIPMENT_STATE_INFO)
+    public void onMessage3(String messageContent) {
+        log.info("数据处理中心服务接收到数据:" + messageContent);
+        process(messageContent);
     }
 
     public void mswkMessage(String messageContent, String topic) {
@@ -131,6 +148,55 @@ public class SocketMessageListener {
         }catch (Exception e){
             e.printStackTrace();
             return true;
+        }
+    }
+
+    private void process(String messageContent) {
+        EquipmentState equipmentState = JSONUtil.toBean(messageContent, EquipmentState.class);
+        String newState = equipmentState.getState();
+        String instrumentNo = equipmentState.getInstrumentNo();
+        String instrumentConfigId = equipmentState.getInstrumentConfigId();
+        String instrumentConfigNo = equipmentState.getInstrumentConfigNo();
+        String hospitalCode = equipmentState.getHospitalCode();
+        InstrumentInfoDto instrumentInfoDto = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentNo + ":" + instrumentConfigId).getResult();
+        if(ObjectUtils.isEmpty(instrumentInfoDto)){
+            return;
+        }
+        String oldState = instrumentInfoDto.getState();
+        if (org.springframework.util.StringUtils.isEmpty(oldState)){
+            oldState="0";
+        }
+        switch (newState){
+            //从不报警变成报警
+            case SysConstants.IN_ALARM:
+                //判断缓存中的信息是否相同 不相同时更新
+                if(SysConstants.IN_ALARM.equals(oldState)){
+                    return;
+                }
+                Instrumentparamconfig instrumentparamconfig = new Instrumentparamconfig();
+                instrumentparamconfig.setInstrumentparamconfigno(instrumentConfigNo);
+                instrumentparamconfig.setState(newState);
+                instrumentparamconfigService.updateInfo(instrumentparamconfig);
+                instrumentInfoDto.setState(newState);
+                probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
+                break;
+            case SysConstants.NORMAL:
+                //从报警恢复正常
+                //判断缓存中的设备状态是否相同 不同时做更改
+//                if( SysConstants.NORMAL.equals(oldState)){
+//                    return;
+//                }
+                //同步更新缓存和数据库
+                Instrumentparamconfig instrumentParamConfigInfo = new Instrumentparamconfig();
+                instrumentParamConfigInfo.setInstrumentparamconfigno(instrumentConfigNo);
+                instrumentParamConfigInfo.setState(newState);
+                instrumentparamconfigService.updateInfo(instrumentParamConfigInfo);
+                instrumentInfoDto.setState(newState);
+                probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
+                break;
+            default:
+                break;
+
         }
     }
 }
