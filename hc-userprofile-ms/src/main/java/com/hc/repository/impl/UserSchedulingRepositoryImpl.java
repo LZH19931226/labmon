@@ -10,6 +10,7 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserSchedulingPo;
 import com.hc.repository.UserSchedulingRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -80,9 +81,11 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
         if(CollectionUtils.isEmpty(userSchedulingPos)){
             throw new IedsException(UserScheduleEnumCode.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
         }
+        //查询出新的新的时间内是否有用户以排版
+        List<UserSchedulingPo> userSchedulingPosList = userSchedulingDao.selectTimePeriod(hospitalCode, newStartTime, newEndTime);
         //计算新时间段与旧时间段差值
         long days = newStartTime.getTime()-oldStartTime.getTime();
-        long startTime = System.currentTimeMillis();
+
         List<UserSchedulingPo> saveList = new ArrayList<>();
         for (UserSchedulingPo userSchedulingPo : userSchedulingPos) {
 
@@ -97,11 +100,28 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
             userSchedulingPo.setStartTime(startDate);
             userSchedulingPo.setEndTime(endDate);
             userSchedulingPo.setUsid(null);
+            if(existed(userSchedulingPo,userSchedulingPosList)){
+                continue;
+            }
             saveList.add(userSchedulingPo);
         }
+        long startTime = System.currentTimeMillis();
         saveBatch(saveList);
         long endTime = System.currentTimeMillis();
         System.out.println(endTime-startTime);
+    }
+
+    private boolean existed(UserSchedulingPo userSchedulingPo, List<UserSchedulingPo> userSchedulingPosList) {
+        if (CollectionUtils.isEmpty(userSchedulingPosList)) {
+            return false;
+        }
+        long count = userSchedulingPosList.stream()
+                .filter(res -> StringUtils.equals(res.getUserid(), userSchedulingPo.getUserid())
+                        && (res.getStartTime().getTime() == userSchedulingPo.getStartTime().getTime())).count();
+        if(count>0){
+            return true;
+        }
+        return false;
     }
 
     /**
