@@ -589,6 +589,9 @@ public class EquipmentInfoAppApplication {
             alarmSystem.setSn(monitorEquipmentDto.getSn());
             alarmSystem.setEquipmentNo(monitorEquipmentDto.getEquipmentno());
             alarmSystem.setHospitalCode(monitorEquipmentDto.getHospitalcode());
+            if (StringUtils.isBlank(monitorEquipmentDto.getWarningSwitch())) {
+                monitorEquipmentDto.setWarningSwitch("1");
+            }
             alarmSystem.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
             if(eNoMap.containsKey(monitorEquipmentDto.getEquipmentno())){
                 List<InstrumentParamConfigDto> paramConfigDtoList = eNoMap.get(monitorEquipmentDto.getEquipmentno());
@@ -636,7 +639,7 @@ public class EquipmentInfoAppApplication {
         SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(alarmSystemCommand.getSn()).getResult();
         result1.setWarningSwitch(warningPhone);
         snDeviceRedisApi.updateSnDeviceDtoSync(result1);
-        //更新缓存
+        //更新探头缓存
         List<String> collect1 = list.stream().map(res -> res.getInstrumentno() + ":" + res.getInstrumentconfigid()).collect(Collectors.toList());
         com.hc.my.common.core.redis.command.ProbeCommand probeCommand = new com.hc.my.common.core.redis.command.ProbeCommand();
         probeCommand.setHospitalCode(hospitalCode);
