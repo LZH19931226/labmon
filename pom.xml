@@ -32,6 +32,7 @@
         <module>hc-userprofile-ms</module>
         <module>hc-labmanagement-ms</module>
         <module>hc-labredis-ms</module>
+        <module>hc-message-ms</module>
     </modules>
 
     <dependencyManagement>

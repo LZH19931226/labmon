@@ -34,7 +34,7 @@ public class SocketMessageListener {
 
     @StreamListener(EquipmentStateMsg.EQUIPMENT_STATE_INFO)
     public void onMessage(String messageContent) {
-        log.info("数据处理中心服务接收到数据:" + messageContent);
+        log.info("设备状态改变:{}" ,messageContent);
         process(messageContent);
     }
 

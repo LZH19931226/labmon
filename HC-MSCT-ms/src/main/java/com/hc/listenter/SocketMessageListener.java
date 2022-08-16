@@ -3,7 +3,6 @@ package com.hc.listenter;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.hospital.HospitalRedisApi;
@@ -20,7 +19,6 @@ import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.SoundLightUtils;
-import com.hc.po.Sendrecord;
 import com.hc.po.Userright;
 import com.hc.service.*;
 import com.hc.tcp.SoundLightApi;
@@ -33,10 +31,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @EnableBinding(BaoJinMsg.class)
@@ -49,8 +44,6 @@ public class SocketMessageListener {
     private WarningService warningService;
     @Autowired
     private SendrecordService sendrecordService;
-    @Autowired
-    private WarningrecordRepository warningrecordRepository;
     @Autowired
     private UserrightDao userrightDao;
     @Autowired
@@ -101,8 +94,8 @@ public class SocketMessageListener {
             if (CollectionUtils.isEmpty(timeoutEquipmentList)) {
                 return;
             }
-            String eqTypeName = "";
-            String count = "";
+            StringBuilder eqTypeName = new StringBuilder();
+            StringBuilder count = new StringBuilder();
             String hospitalName = timeoutEquipmentList.get(0).getHospitalname();
              String hospitalcode = timeoutEquipmentList.get(0).getHospitalcode();
              int size = timeoutEquipmentList.size();
@@ -113,45 +106,37 @@ public class SocketMessageListener {
                     return;
                 }
                 if(i == size-1){
-                    eqTypeName += equipmentTypeName;
-                    count += count1;
+                    eqTypeName.append(equipmentTypeName);
+                    count.append(count1);
                 }else {
-                    eqTypeName+=equipmentTypeName+"/";
-                    count+=count1+"/";
+                    eqTypeName.append(equipmentTypeName).append("/");
+                    count.append(count1).append("/");
                 }
             }
-            if(StringUtils.isBlank(hospitalName) || StringUtils.isBlank(eqTypeName) || StringUtils.isBlank(count)){
+            if(StringUtils.isBlank(hospitalName) || StringUtils.isBlank(eqTypeName.toString()) || StringUtils.isBlank(count.toString())){
                 return;
             }
-            log.info("进入超时报警队列：" + message);
             List<Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
             if (CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
                 return;
             }
-            log.info("进入超时报警队列联系人：" + JsonUtil.toJson(userrightByHospitalcodeAAndTimeout));
             for (Userright userright : userrightByHospitalcodeAAndTimeout) {
                 String phonenum = userright.getPhonenum();
                 if (StringUtils.isEmpty(phonenum)) {
                     continue;
                 }
-                /**
-                 * <option value="0">电话+短信</option>
-                 * <option value="1">电话</option>
-                 * <option value="2">短信</option>
-                 * <option value="3">不报警</option>
-                 */
                 String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
                 // 超时报警
                 if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")){
                     log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
-                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
+                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName.toString());
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName.toString(), "超时", hospitalName, count.toString());
                     log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 } else if (StringUtils.equals(timeoutwarning, "1")) {
                     log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName);
+                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName.toString());
                 } else if (StringUtils.equals(timeoutwarning, "2")) {
-                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName, "超时", hospitalName, count);
+                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName.toString(), "超时", hospitalName, count.toString());
                     log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
                 }
             }
@@ -193,7 +178,7 @@ public class SocketMessageListener {
 
     }
 
-    //需要将报警原因,报警通知到得人员,反写过去
+    //推送探头当前报警状态
     public void sendEquimentProbeStatus( MonitorinstrumentDo monitorinstrument , WarningModel model,String hospitalcode,String logId){
         EquipmentState equipmentState = new EquipmentState();
         equipmentState.setState(SysConstants.IN_ALARM);

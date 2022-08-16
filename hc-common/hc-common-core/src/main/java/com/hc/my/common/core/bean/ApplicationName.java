@@ -46,4 +46,9 @@ public class ApplicationName {
      */
     public static final String MSCT = "HC-MSCT-ms";
 
+    /**
+     * message
+     */
+    public static final String MESSAGE = "HC-MESSAGE-ms";
+
 }

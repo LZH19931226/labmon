@@ -15,8 +15,8 @@ public enum NotifyChannel {
     /**推送类型*/
     SMS("SMS", "短信"),
     MAIL("MAIL", "邮件"),
-    PUSH("PUSH", "WEB推送"),
-    TEST("DemoUse","测试用"),
+    PUSH("APP", "APP推送"),
+    PHONE("PHONE","电话"),
     ;
 
     private String code;
