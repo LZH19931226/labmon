@@ -70,6 +70,8 @@ public class MybatisPlusDataConfig {
         // 默认
         dbConfig.setIdType(IdType.UUID);
         globalConfig.setDbConfig(dbConfig);
+        //将自定义的SQL注入器添加到全局
+        globalConfig.setSqlInjector(new CustomizedSqlInjector());
         return globalConfig;
     }
 

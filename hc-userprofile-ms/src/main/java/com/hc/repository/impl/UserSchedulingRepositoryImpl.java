@@ -106,7 +106,7 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
             saveList.add(userSchedulingPo);
         }
         long startTime = System.currentTimeMillis();
-        saveBatch(saveList);
+        userSchedulingDao.insertBatch(saveList);
         long endTime = System.currentTimeMillis();
         System.out.println(endTime-startTime);
     }

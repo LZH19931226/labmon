@@ -1,6 +1,5 @@
 package com.hc.infrastructure.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.dto.UserSchedulingDto;
 import com.hc.po.UserSchedulingPo;
 import org.apache.ibatis.annotations.Delete;
@@ -14,7 +13,7 @@ import java.util.List;
  * @author hc
  */
 
-public interface UserSchedulingDao extends BaseMapper<UserSchedulingPo> {
+public interface UserSchedulingDao extends RootDao<UserSchedulingPo> {
     /**
      * 删除人员排班信息
      * @param hospitalCode 医院编码
