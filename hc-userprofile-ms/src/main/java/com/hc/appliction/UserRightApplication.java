@@ -1,6 +1,7 @@
 package com.hc.appliction;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.SmsApi;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
@@ -9,7 +10,6 @@ import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserRightDto;
 import com.hc.labmanagent.OperationlogApi;
-import com.hc.msct.sms.SmsApi;
 import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(value = ApplicationName.MESSAGE)
 public interface MessageApi {
 
-    @PostMapping("/p2PNotify")
+    @PostMapping("/message/p2PNotify")
     ApiResponse<String> send(@RequestBody P2PNotify notify);
 
 }

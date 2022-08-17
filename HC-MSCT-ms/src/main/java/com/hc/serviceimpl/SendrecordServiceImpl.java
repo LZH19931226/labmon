@@ -21,7 +21,6 @@ import com.hc.utils.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,7 +37,6 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
 
 
     @Override
-    @Async
     public void pushNotification(List<UserRightRedisDto> list, WarningModel warningModel, HospitalInfoDto hospitalInfoDto) {
         String logId = warningModel.getLogId();
         //获取电话.

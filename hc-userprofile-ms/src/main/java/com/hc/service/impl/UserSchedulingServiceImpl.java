@@ -21,8 +21,6 @@ public class UserSchedulingServiceImpl implements UserSchedulingService {
 
     @Autowired
     private UserSchedulingRepository userSchedulingRepository;
-    @Autowired
-    private UserSchedulingDao userSchedulingDao;
 
     @Override
     public void saveSchedule(UserScheduleCommand userScheduleCommand) {
