@@ -25,6 +25,12 @@ public class InstrumentparamconfigCommand {
      */
     @ApiModelProperty(value = "监控参数类型编码")
     private Integer instrumentconfigid;
+
+    /**
+     * 监控参数类型名称
+     * */
+    @ApiModelProperty(value = "监控参数类型名称")
+    private String instrumentconfigname;
     /**
      * 探头名称
      */

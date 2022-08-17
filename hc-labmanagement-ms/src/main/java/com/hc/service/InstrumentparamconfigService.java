@@ -109,5 +109,17 @@ public interface InstrumentparamconfigService{
      * @return
      */
     List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo);
+
+    /**
+     * 批量插入探头信息
+     * @param probeList
+     */
+    void insertBatch(List<InstrumentparamconfigDTO> probeList);
+
+    /**
+     * 批量更新探头信息
+     * @param list
+     */
+    void updateBatch(List<InstrumentparamconfigDTO> list);
 }
 

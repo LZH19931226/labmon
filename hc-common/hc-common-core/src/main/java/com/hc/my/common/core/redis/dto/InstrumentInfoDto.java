@@ -26,6 +26,8 @@ public class InstrumentInfoDto {
     /** 设备类型主键 */
     private Integer instrumentTypeId;
 
+    private String instrumentConfigName;
+
     /** 医院id */
     private String hospitalCode;
 

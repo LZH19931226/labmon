@@ -2,7 +2,6 @@ package com.hc.repository;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
@@ -93,4 +92,7 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
     void editWarningTime(String instrumentParamConfigNo, Date warningTime);
 
     List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo);
+
+    void insertBatch(List<InstrumentparamconfigDTO> probeList);
+
 }

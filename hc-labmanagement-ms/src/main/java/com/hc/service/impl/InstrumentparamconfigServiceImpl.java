@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.dto.InstrumentconfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentparamconfigPo;
 import com.hc.repository.InstrumentparamconfigRepository;
 import com.hc.service.InstrumentparamconfigService;
@@ -171,5 +172,22 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo) {
         return instrumentparamconfigRepository.getInstrumentParamConfigInfo(equipmentNo);
+    }
+
+    /**
+     * @param probeList
+     */
+    @Override
+    public void insertBatch(List<InstrumentparamconfigDTO> probeList) {
+        instrumentparamconfigRepository.insertBatch(probeList);
+    }
+
+    /**
+     * @param list
+     */
+    @Override
+    public void updateBatch(List<InstrumentparamconfigDTO> list) {
+        List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
+        instrumentparamconfigRepository.updateBatchById(convert);
     }
 }

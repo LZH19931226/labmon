@@ -172,4 +172,14 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     public List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo) {
         return instrumentparamconfigDao.getInstrumentParamConfigInfo(equipmentNo);
     }
+
+    /**
+     * @param probeList
+     */
+    @Override
+    public void insertBatch(List<InstrumentparamconfigDTO> probeList) {
+        List<InstrumentparamconfigPo> convert = BeanConverter.convert(probeList, InstrumentparamconfigPo.class);
+        instrumentparamconfigDao.insertBatchSomeColumn(convert);
+    }
+
 }
