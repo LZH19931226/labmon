@@ -141,6 +141,7 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
         p2PNotify.setMessageIntro(value);
         p2PNotify.setChannels(notifyChannels);
         p2PNotify.setMessageBodys(PushType.USUAL_ALARM.name());
+        p2PNotify.setServiceNo("1");
         messageApi.send(p2PNotify);
     }
 
@@ -157,6 +158,7 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
                 put("timeout", count);
             }
         };
+        p2PNotify.setServiceNo("1");
         p2PNotify.setParams(paramsMap);
         messageApi.send(p2PNotify);
     }
