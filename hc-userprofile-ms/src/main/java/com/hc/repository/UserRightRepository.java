@@ -68,4 +68,6 @@ public interface UserRightRepository extends IService<UserRightPo> {
      * @return 当前医院的所有人员集合
      */
     List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode);
+
+    int selectUserRightByCodeAndPhone(String hospitalCode, String phoneNum);
 }

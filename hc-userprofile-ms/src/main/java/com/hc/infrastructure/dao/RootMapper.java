@@ -5,10 +5,10 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface RootDao<T> extends BaseMapper<T> {
+public interface RootMapper<T> extends BaseMapper<T> {
     /**
      * 自定义批量插入
      * 如果要自动填充，@Param(xx) xx参数名必须是 list/collection/array 3个的其中之一
      */
-    void insertBatch(@Param("list") List<T> list);
+    void insertBatchSomeColumn(@Param("list") List<T> list);
 }

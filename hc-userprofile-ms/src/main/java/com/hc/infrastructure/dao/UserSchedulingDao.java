@@ -13,7 +13,7 @@ import java.util.List;
  * @author hc
  */
 
-public interface UserSchedulingDao extends RootDao<UserSchedulingPo> {
+public interface UserSchedulingDao extends RootMapper<UserSchedulingPo> {
     /**
      * 删除人员排班信息
      * @param hospitalCode 医院编码

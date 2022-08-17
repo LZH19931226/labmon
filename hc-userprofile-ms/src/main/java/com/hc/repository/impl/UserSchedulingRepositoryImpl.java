@@ -44,7 +44,7 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
     @Override
     public void insertUserSchedulingInfo(List<UserSchedulingDto> userSchedulingDtoList) {
         List<UserSchedulingPo> userSchedulingPos = BeanConverter.convert(userSchedulingDtoList, UserSchedulingPo.class);
-        saveBatch(userSchedulingPos);
+        userSchedulingDao.insertBatchSomeColumn(userSchedulingPos);
     }
 
     /**
@@ -81,7 +81,7 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
         if(CollectionUtils.isEmpty(userSchedulingPos)){
             throw new IedsException(UserScheduleEnumCode.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
         }
-        //查询出新的新的时间内是否有用户以排版
+        //查询出新的新的时间内是否有用户以排班
         List<UserSchedulingPo> userSchedulingPosList = userSchedulingDao.selectTimePeriod(hospitalCode, newStartTime, newEndTime);
         //计算新时间段与旧时间段差值
         long days = newStartTime.getTime()-oldStartTime.getTime();
@@ -105,12 +105,16 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
             }
             saveList.add(userSchedulingPo);
         }
-        long startTime = System.currentTimeMillis();
-        userSchedulingDao.insertBatch(saveList);
-        long endTime = System.currentTimeMillis();
-        System.out.println(endTime-startTime);
+        userSchedulingDao.insertBatchSomeColumn(saveList);
+
     }
 
+    /**
+     * 判断userSchedulingPo 是否存在于userSchedulingPosList中
+     * @param userSchedulingPo
+     * @param userSchedulingPosList
+     * @return
+     */
     private boolean existed(UserSchedulingPo userSchedulingPo, List<UserSchedulingPo> userSchedulingPosList) {
         if (CollectionUtils.isEmpty(userSchedulingPosList)) {
             return false;
