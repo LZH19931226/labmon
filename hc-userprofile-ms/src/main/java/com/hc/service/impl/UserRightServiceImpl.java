@@ -71,6 +71,10 @@ public class UserRightServiceImpl implements UserRightService {
         if (StringUtils.isBlank(userType)) {
             throw new IedsException(UserRightEnumCode.USER_ROLE_NOT_NULL.getMessage());
         }
+        int count =  userRightRepository.selectUserRightByCodeAndPhone(hospitalCode,phoneNum);
+        if(count>0){
+            throw new IedsException(UserRightEnumCode.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
+        }
         userRightRepository.insertUserRightInfo(userRightCommand);
     }
 
@@ -101,6 +105,10 @@ public class UserRightServiceImpl implements UserRightService {
         }
         if (StringUtils.isBlank(userRightCommand.getTimeout())) {
             throw new IedsException(UserRightEnumCode.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
+        }
+        int count =  userRightRepository.selectUserRightByCodeAndPhone(userRightCommand.getHospitalCode(),userRightCommand.getPhoneNum());
+        if(count>0){
+            throw new IedsException(UserRightEnumCode.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
         }
         userRightRepository.updateUserRightInfo(userRightCommand);
     }

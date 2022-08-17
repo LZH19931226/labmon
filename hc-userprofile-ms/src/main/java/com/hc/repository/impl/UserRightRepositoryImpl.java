@@ -140,4 +140,16 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         List<UserRightPo> poList = userRightDao.selectList(Wrappers.lambdaQuery(new UserRightPo()).eq(UserRightPo::getHospitalCode, hospitalCode).eq(UserRightPo::getIsUse, DictEnum.TURN_ON.getCode()));
         return BeanConverter.convert(poList,UserRightDto.class);
     }
+
+    /**
+     * @param hospitalCode
+     * @param phoneNum
+     * @return
+     */
+    @Override
+    public int selectUserRightByCodeAndPhone(String hospitalCode, String phoneNum) {
+        return userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
+                .eq(UserRightPo::getHospitalCode,hospitalCode)
+                .eq(UserRightPo::getPhoneNum,phoneNum));
+    }
 }

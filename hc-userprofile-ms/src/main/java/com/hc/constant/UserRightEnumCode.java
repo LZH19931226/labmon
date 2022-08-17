@@ -26,6 +26,7 @@ public enum UserRightEnumCode {
     SUPERMARKET_CONTACT_CANNOT_BE_EMPTY("超时联系人不能为空"),
     NICKNAME_NOT_NULL("用户名称不能为空"),
     HOSPITAL_NAME_NOT_NULL("所属医院不能为空"),
-    USER_PHONE_NOT_NULL("用户手机号不能为空");
+    USER_PHONE_NOT_NULL("用户手机号不能为空"),
+    HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER("同医院不能有相同的手机号");
     private final String message;
 }
