@@ -2,8 +2,6 @@ package com.hc.listenter;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.mapper.UserrightDao;
@@ -38,8 +36,6 @@ import java.util.List;
 @Slf4j
 public class SocketMessageListener {
 
-    @Autowired
-    private SendMesService sendMesService;
     @Autowired
     private WarningService warningService;
     @Autowired
@@ -120,26 +116,7 @@ public class SocketMessageListener {
             if (CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
                 return;
             }
-            for (Userright userright : userrightByHospitalcodeAAndTimeout) {
-                String phonenum = userright.getPhonenum();
-                if (StringUtils.isEmpty(phonenum)) {
-                    continue;
-                }
-                String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
-                // 超时报警
-                if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")){
-                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName.toString());
-                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName.toString(), "超时", hospitalName, count.toString());
-                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                } else if (StringUtils.equals(timeoutwarning, "1")) {
-                    log.info("拨打电话发送短信对象:{}",JsonUtil.toJson(userright));
-                    sendMesService.callPhone2(userright.getPhonenum(),hospitalName, eqTypeName.toString());
-                } else if (StringUtils.equals(timeoutwarning, "2")) {
-                    SendSmsResponse sendSmsResponse = sendMesService.sendMes1(phonenum, eqTypeName.toString(), "超时", hospitalName, count.toString());
-                    log.info("发送短信对象:{}",JsonUtil.toJson(userright) + sendSmsResponse.getCode());
-                }
-            }
+            sendrecordService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString());
     }
 
     public void msctMessage(String message) {

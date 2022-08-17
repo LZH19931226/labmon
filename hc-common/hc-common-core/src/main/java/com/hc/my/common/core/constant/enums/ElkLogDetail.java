@@ -25,8 +25,10 @@ public enum ElkLogDetail {
     MSCT_SERIAL_NUMBER15(13,"探头产生报警,电话通知"),
     MSCT_SERIAL_NUMBER16(14,"探头产生报警,短信通知"),
     MSCT_SERIAL_NUMBER17(15,"探头产生报警,电话、短信通知"),
-    MSCT_SERIAL_NUMBER18(16,"探头报警状态推送");
-
+    MSCT_SERIAL_NUMBER18(16,"探头报警状态推送"),
+    MSCT_SERIAL_NUMBER19(17,"超时报警,电话通知"),
+    MSCT_SERIAL_NUMBER20(18,"超时报警,短信通知"),
+    MSCT_SERIAL_NUMBER21(19,"超时报警,电话、短信通知");
     private int code;
     private String message;
 

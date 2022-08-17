@@ -1,17 +1,21 @@
 package com.hc.serviceimpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hc.MessageApi;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.mapper.SendrecordDao;
 import com.hc.model.WarningModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.constant.enums.ElkLogDetail;
+import com.hc.my.common.core.constant.enums.NotifyChannel;
+import com.hc.my.common.core.constant.enums.PushType;
+import com.hc.my.common.core.domain.P2PNotify;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.po.Sendrecord;
-import com.hc.service.SendMesService;
+import com.hc.po.Userright;
 import com.hc.service.SendrecordService;
 import com.hc.utils.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -20,19 +24,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord> implements SendrecordService {
 
-    @Autowired
-    private SendMesService sendMesService;
 
     @Autowired
     private WarningrecordRepository warningrecordRepository;
+
+    @Autowired
+    private MessageApi messageApi;
 
 
     @Override
@@ -54,36 +56,35 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
             String value = warningModel.getValue();
             String username = userright.getUsername();
             //1为运维后台人员
-            if (StringUtils.isNotEmpty(role)&&StringUtils.equals(role,"1")){
+            if (StringUtils.isNotEmpty(role) && StringUtils.equals(role, "1")) {
                 equipmentName = hospitalName + equipmentName;
             }
             //不报警
             if (StringUtils.equals(reminders, DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
                 continue;
             }
-            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(),reminders)) {
-                sendMesService.callPhone(phonenum, equipmentName);
+            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(), reminders)) {
+                //拨打电话短信
+                buildP2PNotify(phonenum, equipmentName, unit, value, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE));
                 mailCallUser.append(username).append("/");
                 Sendrecord sendrecord = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "1");
                 sendrecords.add(sendrecord);
-                sendMesService.sendMes(phonenum, equipmentName, unit, value);
                 phoneCallUser.append(username).append("/");
                 Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "0");
                 sendrecords.add(sendrecord1);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright),logId);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
             } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
-                sendMesService.callPhone(userright.getPhoneNum(), equipmentName);
+                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.PHONE));
                 phoneCallUser.append(username).append("/");
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
                 sendrecords.add(sendrecord);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()),JsonUtil.toJson(userright),logId);
-            } else if (StringUtils.equals(reminders,DictEnum.SMS.getCode())) {
-                sendMesService.sendMes(userright.getPhoneNum(), equipmentName, unit, value);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
+            } else if (StringUtils.equals(reminders, DictEnum.SMS.getCode())) {
+                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.SMS));
                 mailCallUser.append(username).append("/");
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
                 sendrecords.add(sendrecord);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()),JsonUtil.toJson(userright),logId);
-
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
             }
         }
         if (CollectionUtils.isNotEmpty(sendrecords)) {
@@ -98,6 +99,27 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
 
     }
 
+    @Override
+    public void pushTimeOutNotification(List<Userright> userrights, String hospitalName, String eqTypeName, String count) {
+        for (Userright userright : userrights) {
+            String phonenum = userright.getPhonenum();
+            if (StringUtils.isEmpty(phonenum)) {
+                continue;
+            }
+            String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
+            // 超时报警
+            if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),count);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER21.getCode()), JsonUtil.toJson(userright), null);
+            } else if (StringUtils.equals(timeoutwarning, "1")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.PHONE),count);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER19.getCode()), JsonUtil.toJson(userright), null);
+            } else if (StringUtils.equals(timeoutwarning, "2")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.SMS),count);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER20.getCode()), JsonUtil.toJson(userright), null);
+            }
+        }
+    }
 
 
     public Sendrecord producePhoneRecord(String phone, String hospitalcode, String equipmentname, String
@@ -113,6 +135,33 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
         return sendrecord;
     }
 
+    public void buildP2PNotify(String phone, String equipmentname, String unit, String value, List<NotifyChannel> notifyChannels) {
+        P2PNotify p2PNotify = new P2PNotify();
+        p2PNotify.setUserId(phone);
+        p2PNotify.setMessageTitle(equipmentname);
+        p2PNotify.setMessageCover(unit);
+        p2PNotify.setMessageIntro(value);
+        p2PNotify.setChannels(notifyChannels);
+        p2PNotify.setMessageBodys(PushType.USUAL_ALARM.name());
+        messageApi.send(p2PNotify);
+    }
+
+    public void buildTimeOutP2PNotify(String phone,String equipmentname,String unit,String hospitalName,List<NotifyChannel> notifyChannels,String count) {
+        P2PNotify p2PNotify = new P2PNotify();
+        p2PNotify.setUserId(phone);
+        p2PNotify.setMessageTitle(equipmentname);
+        p2PNotify.setMessageCover(unit);
+        p2PNotify.setMessageIntro(hospitalName);
+        p2PNotify.setChannels(notifyChannels);
+        p2PNotify.setMessageBodys(PushType.TIMEOUT_ALARM.name());
+        Map<String, String> paramsMap = new HashMap<String, String>() {
+            {
+                put("timeout", count);
+            }
+        };
+        p2PNotify.setParams(paramsMap);
+        messageApi.send(p2PNotify);
+    }
 
 
 }
