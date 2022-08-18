@@ -224,11 +224,11 @@ public class InstrumentparamconfigApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void editInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
-        //计较上限值和下限值
-        int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
-        if(compareTo>=0){
-            throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
-        }
+//        //计较上限值和下限值
+//        int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
+//        if(compareTo>=0){
+//            throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
+//        }
 
         InstrumentparamconfigDTO dto =  instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
         MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
