@@ -425,6 +425,7 @@ public class EquipmentInfoAppApplication {
             eqTypeIdMap  =  dtoList.stream().collect(Collectors.groupingBy(HospitalEquipmentDto::getEquipmentTypeId));
         }
         List<WarningRecordInfo> list = new ArrayList<>();
+        List<WarningRecordInfo> removeList = new ArrayList<>();
         for (Warningrecord warningrecord : warningRecord) {
             WarningRecordInfo warningRecordInfo = new WarningRecordInfo();
             String equipmentNo = warningrecord.getEquipmentno();
@@ -457,17 +458,23 @@ public class EquipmentInfoAppApplication {
                 warningRecordInfo.setInstrumentParamConfigDto(instrumentParamConfigDto);
                 warningRecordInfo.setLowLimit(instrumentParamConfigDto.getLowLimit().toString());
                 warningRecordInfo.setHighLimit(instrumentParamConfigDto.getHighLimit().toString());
+            }else {
+                //未匹配到的探头id不展示
+                removeList.add(warningRecordInfo);
             }
             if(!ObjectUtils.isEmpty(warningRecordInfo)){
                 list.add(warningRecordInfo);
             }
+        }
+        if(CollectionUtils.isNotEmpty(removeList)){
+            list.addAll(removeList);
         }
         return list;
     }
 
     /**
      * 过滤报警信息
-     * 每个eno取最新的一条数据
+     * 每个设备取最新的一条数据
      * @param warningRecord
      */
     private List<Warningrecord> filterAlarmMessages(List<Warningrecord> warningRecord) {
@@ -477,7 +484,9 @@ public class EquipmentInfoAppApplication {
             List<Warningrecord> warningrecordList = map.get(s);
             List<Warningrecord> collect = warningrecordList.stream().sorted(Comparator.comparing(Warningrecord::getInputdatetime).reversed()).collect(Collectors.toList());
             Warningrecord warningrecord = collect.get(0);
-            list.add(warningrecord);
+            if (!ObjectUtils.isEmpty(warningrecord)) {
+                list.add(warningrecord);
+            }
         }
         return list;
     }
