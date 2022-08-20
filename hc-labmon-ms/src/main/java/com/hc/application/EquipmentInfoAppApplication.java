@@ -611,6 +611,10 @@ public class EquipmentInfoAppApplication {
             alarmSystem.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
             if(eNoMap.containsKey(monitorEquipmentDto.getEquipmentno())){
                 List<InstrumentParamConfigDto> paramConfigDtoList = eNoMap.get(monitorEquipmentDto.getEquipmentno());
+                long count = paramConfigDtoList.stream().filter(res -> "1".equals(res.getWarningphone())).count();
+                if(count>0){
+                    monitorEquipmentDto.setWarningSwitch("1");
+                }
                 List<ProbeAlarmState> list1 = new ArrayList<>();
                 paramConfigDtoList.forEach(res->{
                     ProbeAlarmState probeAlarmState = new ProbeAlarmState();
