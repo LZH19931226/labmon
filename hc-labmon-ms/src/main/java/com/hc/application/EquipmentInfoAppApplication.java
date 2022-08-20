@@ -467,7 +467,7 @@ public class EquipmentInfoAppApplication {
             }
         }
         if(CollectionUtils.isNotEmpty(removeList)){
-            list.addAll(removeList);
+            list.removeAll(removeList);
         }
         return list;
     }
