@@ -46,12 +46,8 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             "and h.hospitalcode = #{hospitalCode}" +
             "</if>" +
             "<if test = 'username != null and username != \"\"'>" +
-            "and u.username like concat('%',#{username},'%') "+
+            "and (u.username like concat('%',#{username},'%') or u.phonenum like concat('%',#{phoneNum},'%'))"+
             "</if>" +
-            "<if test = 'phoneNum != null and phoneNum !=\"\"'> " +
-            "and u.phonenum like concat('%',#{phoneNum},'%') " +
-            "</if> " +
-            "<if test = 'isUse != null'> " +
             "and u.isuse  = #{isUse} " +
             "</if>" +
             "</script>")
