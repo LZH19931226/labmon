@@ -71,10 +71,6 @@ public class UserRightServiceImpl implements UserRightService {
         if (StringUtils.isBlank(userType)) {
             throw new IedsException(UserRightEnumCode.USER_ROLE_NOT_NULL.getMessage());
         }
-        int count =  userRightRepository.selectUserRightByCodeAndPhone(hospitalCode,phoneNum);
-        if(count>0){
-            throw new IedsException(UserRightEnumCode.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
-        }
         userRightRepository.insertUserRightInfo(userRightCommand);
     }
 
