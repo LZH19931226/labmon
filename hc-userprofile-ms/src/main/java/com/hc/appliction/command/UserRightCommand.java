@@ -63,7 +63,7 @@ public class UserRightCommand {
 
     /** 报警方式 */
     @ApiModelProperty(value = "报警方式")
-    private String reminders;
+    private String reminder;
 
     /** 分页大小 */
     @ApiModelProperty(value = "分页大小")
