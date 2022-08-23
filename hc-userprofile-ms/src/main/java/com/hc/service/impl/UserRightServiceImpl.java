@@ -161,4 +161,14 @@ public class UserRightServiceImpl implements UserRightService {
     public List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode) {
         return userRightRepository.findALLUserRightInfoByHospitalCode(hospitalCode);
     }
+
+    /**
+     * 验证用户名是否存在
+     * @param userName
+     * @return
+     */
+    @Override
+    public Boolean checkUsername(String userName) {
+        return userRightRepository.checkUsername(userName);
+    }
 }

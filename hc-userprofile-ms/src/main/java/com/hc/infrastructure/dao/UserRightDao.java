@@ -61,6 +61,9 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
                                          @Param("phoneNum") String phoneNum,
                                          @Param("isUse") Long isUse);
 
+    @Select("select count(0) from userright where username = #{userName}" )
+    Integer checkUsername(String userName);
+
 //    /**
 //     * 查询用户信息
 //     * @param page 分页对象
