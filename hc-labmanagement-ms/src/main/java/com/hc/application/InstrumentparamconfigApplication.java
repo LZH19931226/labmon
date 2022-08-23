@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.function.Function;
@@ -341,7 +342,9 @@ public class InstrumentparamconfigApplication {
         List<InstrumentparamconfigDTO> instrumentParamConfigList = instrumentparamconfigService.findInstrumentparamconfig(page, instrumentParamConfigCommand);
         List<InstrumentparamconfigVo> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(instrumentParamConfigList)) {
-
+            //去除有探头信息没有设备信息的垃圾数据
+            List<InstrumentparamconfigDTO> removeList = instrumentParamConfigList.stream().filter(res -> StringUtils.isEmpty(res.getHospitalcode())).collect(Collectors.toList());
+            instrumentParamConfigList.removeAll(removeList);
             for (InstrumentparamconfigDTO configDTO : instrumentParamConfigList) {
                 InstrumentparamconfigVo build = InstrumentparamconfigVo
                         .builder()
