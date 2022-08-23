@@ -11,6 +11,7 @@ import com.hc.vo.user.UserRightVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class UserRightServiceImpl implements UserRightService {
         if (StringUtils.isBlank(userType)) {
             throw new IedsException(UserRightEnumCode.USER_ROLE_NOT_NULL.getMessage());
         }
+
         userRightRepository.insertUserRightInfo(userRightCommand);
     }
 
@@ -102,9 +104,16 @@ public class UserRightServiceImpl implements UserRightService {
         if (StringUtils.isBlank(userRightCommand.getTimeout())) {
             throw new IedsException(UserRightEnumCode.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
         }
-        int count =  userRightRepository.selectUserRightByCodeAndPhone(userRightCommand.getHospitalCode(),userRightCommand.getPhoneNum());
-        if(count>0){
-            throw new IedsException(UserRightEnumCode.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
+        UserRightDto userRightDto = userRightRepository.selectUserRightInfo(userRightCommand.getUserid());
+        if (ObjectUtils.isEmpty(userRightDto)) {
+            throw new IedsException(UserRightEnumCode.THIS_INFORMATION_NO_LONGER_EXISTS.getMessage());
+        }
+        //判断phonenum有没有修改，如修改了在用这个手机号和医院查记录数量大于0是手机号重复抛出异常
+        if(!userRightDto.getPhoneNum().equals(userRightCommand.getPhoneNum())){
+            int i = userRightRepository.selectUserRightByCodeAndPhone(userRightDto.getHospitalCode(), userRightDto.getPhoneNum());
+            if (i>0) {
+                throw new IedsException(UserRightEnumCode.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
+            }
         }
         userRightRepository.updateUserRightInfo(userRightCommand);
     }

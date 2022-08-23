@@ -27,6 +27,7 @@ public enum UserRightEnumCode {
     NICKNAME_NOT_NULL("用户名称不能为空"),
     HOSPITAL_NAME_NOT_NULL("所属医院不能为空"),
     USER_PHONE_NOT_NULL("用户手机号不能为空"),
-    HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER("同医院不能有相同的手机号");
+    HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER("同医院不能有相同的手机号"),
+    THIS_INFORMATION_NO_LONGER_EXISTS("该信息已不存在");
     private final String message;
 }
