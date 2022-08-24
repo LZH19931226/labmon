@@ -107,4 +107,13 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public List<MonitorEquipmentDto> getMonitorEquipmentInfoByHCode(String hospitalCode) {
         return monitorEquipmentRepository.getMonitorEquipmentInfoByHCode(hospitalCode);
     }
+
+    /**
+     * @param sn
+     * @return
+     */
+    @Override
+    public Boolean checkSn(String sn) {
+        return monitorEquipmentRepository.checkSn(sn);
+    }
 }
