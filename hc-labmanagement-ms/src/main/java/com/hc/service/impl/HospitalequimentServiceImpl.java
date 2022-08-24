@@ -25,10 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class HospitalequimentServiceImpl implements HospitalequimentService {
@@ -107,8 +105,15 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
             }
         }
         if (null!=deleteWarningTimeBlock && deleteWarningTimeBlock.length>0){
-            List<Integer> deleteTimeBlockIds = Arrays.stream(deleteWarningTimeBlock).map(WorkTimeBlockCommand::getTimeblockid).collect(Collectors.toList());
-            monitorequipmentwarningtimeRepository.removeByIds(deleteTimeBlockIds);
+            List<Integer> list = new ArrayList<>();
+            for (WorkTimeBlockCommand workTimeBlockCommand : deleteWarningTimeBlock) {
+                if(workTimeBlockCommand!=null){
+                    list.add(workTimeBlockCommand.getTimeblockid());
+                }
+            }
+            if(CollectionUtils.isNotEmpty(list)){
+                monitorequipmentwarningtimeRepository.removeByIds(list);
+            }
         }
 
     }
