@@ -90,4 +90,5 @@ public class MonitorEquipmentController {
     public Boolean checkSn(@RequestParam(value = "sn")String sn){
         return monitorEquipmentApplication.checkSn(sn);
     }
+    
 }

@@ -121,5 +121,12 @@ public interface InstrumentparamconfigService{
      * @param list
      */
     void updateBatch(List<InstrumentparamconfigDTO> list);
+
+    /**
+     * 获取设备已添加探头监测类型
+     * @param equipmentNo
+     * @return
+     */
+    List<String> getEquipmentAddProbeInfo(String equipmentNo);
 }
 

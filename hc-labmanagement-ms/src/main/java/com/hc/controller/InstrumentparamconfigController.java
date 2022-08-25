@@ -54,9 +54,15 @@ public class InstrumentparamconfigController {
     }
 
     @GetMapping("/selectInstrumentparamconfigByEqNo")
-    @ApiOperation("通过设备id获取设备对应监测类型")
+    @ApiOperation("通过设备id获取设备对应探头监测类型")
     public List<InstrumentparamconfigVo>  selectInstrumentparamconfigByEqNo(@RequestParam(value ="equipmentNo")String equipmentNo){
         return instrumentparamconfigApplication.selectInstrumentParamConfigByEqNo(equipmentNo);
+    }
+
+    @GetMapping("/getEquipmentUnAddMonitorTypeByNo")
+    @ApiOperation("获取设备未添加的监测类型")
+    public List<InstrumentparamconfigVo> getEquipmentUnAddMonitorTypeByNo(@RequestParam(value ="equipmentNo")String equipmentNo){
+       return  instrumentparamconfigApplication.getEquipmentUnAddMonitorTypeByNo(equipmentNo);
     }
 
     @GetMapping("/getInstrumentMonitorInfo")

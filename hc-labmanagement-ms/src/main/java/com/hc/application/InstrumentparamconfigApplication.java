@@ -397,4 +397,42 @@ public class InstrumentparamconfigApplication {
     public void editWarningTime(String instrumentParamConfigNo, String warningTime){
         instrumentparamconfigService.editWarningTime(instrumentParamConfigNo,warningTime);
     }
+
+    /**
+     * 获取设备未添加的设备探头监测类型
+     * @param equipmentNo
+     * @return
+     */
+    public List<InstrumentparamconfigVo> getEquipmentUnAddMonitorTypeByNo(String equipmentNo) {
+        //获取设备的探头的监测类型
+        List<InstrumentconfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
+        //获取设备已添加的探头监测类型
+        List<String> instrumentConfigIdList  = instrumentparamconfigService.getEquipmentAddProbeInfo(equipmentNo);
+        //当获取设备已添加的探头监测类型不为空时过滤信息
+        if(CollectionUtils.isNotEmpty(instrumentConfigIdList)){
+            List<InstrumentconfigDTO> removeList = new ArrayList<>();
+            instrumentConfigList.forEach(res->{
+                if (instrumentConfigIdList.contains(res.getInstrumentconfigid())) {
+                    removeList.add(res);
+                }
+            });
+            if(CollectionUtils.isNotEmpty(removeList)){
+                instrumentConfigList.removeAll(removeList);
+            }
+
+        }
+        if (CollectionUtils.isNotEmpty(instrumentConfigList)) {
+            List<InstrumentparamconfigVo> instrumentParamConfigVos = new ArrayList<>();
+            instrumentConfigList.forEach(s -> {
+                instrumentParamConfigVos.add(
+                        InstrumentparamconfigVo.builder()
+                                .instrumentconfigid(s.getInstrumentconfigid())
+                                .instrumentconfigname(s.getInstrumentconfigname())
+                                .build()
+                );
+            });
+            return instrumentParamConfigVos;
+        }
+        return null;
+    }
 }
