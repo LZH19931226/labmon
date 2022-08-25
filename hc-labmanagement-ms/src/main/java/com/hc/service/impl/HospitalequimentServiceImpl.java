@@ -100,7 +100,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                     //有三段时间需要比三次
                     Boolean one = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
                     Boolean two = checkTimesHasOverlap(list.get(0), list.get(1), list.get(4), list.get(5));
-                    Boolean three = checkTimesHasOverlap(list.get(2), list.get(2), list.get(4), list.get(5));
+                    Boolean three = checkTimesHasOverlap(list.get(2), list.get(3), list.get(4), list.get(5));
                     if(one || two || three){
                         throw new IedsException(HospitalequimentEnumErrorCode.THERE_IS_AN_OVERLAP_OF_THE_THREE_TIME_PERIODS.getCode());
                     }
