@@ -49,7 +49,7 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             "and u.isuse  = #{isUse} " +
             "</if>" +
             "<if test = 'username != null and username != \"\"'>" +
-            "and (u.username like concat('%',#{username},'%') or u.phonenum like concat('%',#{username},'%'))" +
+            "and (u.nickname like concat('%',#{username},'%') or u.phonenum like concat('%',#{username},'%'))" +
             "</if>"+
             "</script>")
     List<UserRightDto> findUserRightList(Page<UserRightVo> page,
