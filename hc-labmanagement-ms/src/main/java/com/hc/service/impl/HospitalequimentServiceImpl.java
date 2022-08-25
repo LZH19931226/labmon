@@ -81,8 +81,8 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         for (WorkTimeBlockCommand workTimeBlockCommand : singletonList) {
             Date startTime = workTimeBlockCommand.getBegintime();
             Date endTime = workTimeBlockCommand.getEndtime();
-            if(startTime.after(endTime)){
-                throw new IedsException("开始不能大于或等于结束时间");
+            if(endTime.compareTo(startTime)<=0){
+                throw new IedsException(HospitalequimentEnumErrorCode.START_TIME_AND_END_TIME_ARE_ABNORMAL.getCode());
             }
             list.add(buildTime(startTime));
             list.add(buildTime(endTime));
@@ -93,7 +93,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                 case 4:
                     Boolean aBoolean = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
                     if(aBoolean){
-                        throw new IedsException("两个时间段之间存在重叠，请检查时间");
+                        throw new IedsException(HospitalequimentEnumErrorCode.THERE_IS_AN_OVERLAP_BETWEEN_THE_TWO_TIME_PERIODS.getCode());
                     }
                     break;
                 case 6:
@@ -102,7 +102,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                     Boolean two = checkTimesHasOverlap(list.get(0), list.get(1), list.get(4), list.get(5));
                     Boolean three = checkTimesHasOverlap(list.get(2), list.get(2), list.get(4), list.get(5));
                     if(one || two || three){
-                        throw new IedsException("三个时间段存在交集重叠，请检测时间");
+                        throw new IedsException(HospitalequimentEnumErrorCode.THERE_IS_AN_OVERLAP_OF_THE_THREE_TIME_PERIODS.getCode());
                     }
                     break;
                 default:
@@ -130,6 +130,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
      * 判断两个时间范围是否有交集
      * 1. 比较时间段的结束时间在参考时间段的开始时间之前
      * 2. 比较时间段的开始时间在参考时间段的结束时间之后
+     * 取反得到所有的交集
      */
     public static Boolean checkTimesHasOverlap(Date dynaStartTime, Date dynaEndTime, Date fixedStartTime, Date fixedEndTime) {
         return !(dynaEndTime.getTime() < fixedStartTime.getTime() || dynaStartTime.getTime() > fixedEndTime.getTime());
