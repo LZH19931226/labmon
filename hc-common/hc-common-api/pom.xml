@@ -14,7 +14,6 @@
         <module>hc-labmanagment-api</module>
         <module>hc-labredis-api</module>
         <module>hc-userprofile-api</module>
-        <module>hc-msct-api</module>
         <module>hc-tcp-api</module>
         <module>hc-message-api</module>
     </modules>
