@@ -24,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class HospitalequimentServiceImpl implements HospitalequimentService {
@@ -60,6 +58,8 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         hospitalequimentRepository.saveHospitalEquiment(hospitalequimentDTO);
         List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOS  = new ArrayList<>();
         if (null!=workTimeBlock && workTimeBlock.length>0){
+            //校验时间
+            checkWorkTime(Arrays.asList(workTimeBlock));
             for (WorkTimeBlockCommand workTimeBlockCommand : workTimeBlock) {
                 if (workTimeBlockCommand != null) {
                     MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO = buildMonitorequipmentwarningtimeDTO(workTimeBlockCommand.getBegintime(), workTimeBlockCommand.getEndtime(), hospitalcode, equipmenttypeid);
@@ -72,6 +72,70 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         }
     }
 
+    /**
+     * 检测时间
+     * @param singletonList
+     */
+    private void checkWorkTime(List<WorkTimeBlockCommand> singletonList) {
+        List<Date> list = new ArrayList<>();
+        for (WorkTimeBlockCommand workTimeBlockCommand : singletonList) {
+            Date startTime = workTimeBlockCommand.getBegintime();
+            Date endTime = workTimeBlockCommand.getEndtime();
+            if(startTime.after(endTime)){
+                throw new IedsException("开始不能大于或等于结束时间");
+            }
+            list.add(buildTime(startTime));
+            list.add(buildTime(endTime));
+        }
+        if(CollectionUtils.isNotEmpty(list)){
+            int size = list.size();
+            switch (size){
+                case 4:
+                    Boolean aBoolean = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
+                    if(aBoolean){
+                        throw new IedsException("两个时间段之间存在重叠，请检查时间");
+                    }
+                    break;
+                case 6:
+                    //有三段时间需要比三次
+                    Boolean one = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
+                    Boolean two = checkTimesHasOverlap(list.get(0), list.get(1), list.get(4), list.get(5));
+                    Boolean three = checkTimesHasOverlap(list.get(2), list.get(2), list.get(4), list.get(5));
+                    if(one || two || three){
+                        throw new IedsException("三个时间段存在交集重叠，请检测时间");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 设置时间
+     * @param date
+     * @return
+     */
+    public Date buildTime(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.YEAR,1970);
+        cal.set(Calendar.MONTH,1);
+        cal.set(Calendar.DATE,1);
+        return cal.getTime();
+    }
+
+
+    /**
+     * 判断两个时间范围是否有交集
+     * 1. 比较时间段的结束时间在参考时间段的开始时间之前
+     * 2. 比较时间段的开始时间在参考时间段的结束时间之后
+     */
+    public static Boolean checkTimesHasOverlap(Date dynaStartTime, Date dynaEndTime, Date fixedStartTime, Date fixedEndTime) {
+        return !(dynaEndTime.getTime() < fixedStartTime.getTime() || dynaStartTime.getTime() > fixedEndTime.getTime());
+    }
+
+
     @Override
     public void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         String hospitalcode = hospitalEquimentTypeCommand.getHospitalcode();
@@ -82,6 +146,8 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         hospitalequimentRepository.updateHospitalEquiment(hospitalequimentDTO);
         //带时段id的更新,不带时段id的新增,处于移除时段里面的id删除
         if (null!=workTimeBlock && workTimeBlock.length>0){
+            //校验时间
+            checkWorkTime(Arrays.asList(workTimeBlock));
             List<MonitorequipmentwarningtimeDTO> addMonitorequipmentwarningtimeDTO =  new ArrayList<>();
             List<MonitorequipmentwarningtimeDTO> updateMonitorequipmentwarningtimeDTO =  new ArrayList<>();
             for (WorkTimeBlockCommand workTimeBlockCommand : workTimeBlock) {
