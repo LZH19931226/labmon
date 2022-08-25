@@ -59,4 +59,11 @@ public interface UserRightService {
      * @return 当前医院的所有人员集合
      */
     List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode);
+
+    /**
+     * 验证用户名是否存在
+     * @param userName
+     * @return
+     */
+    Boolean checkUsername(String userName);
 }

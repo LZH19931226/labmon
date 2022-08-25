@@ -95,4 +95,5 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
 
     void insertBatch(List<InstrumentparamconfigDTO> probeList);
 
+    List<String> getEquipmentAddProbeInfo(String equipmentNo);
 }

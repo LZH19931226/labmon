@@ -11,7 +11,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UserEnumErrorCode {
     NOT_LOGGED_IN("未登录"),
-    USERNAME_ALREADY_EXISTS("用户名已存在"),
+    LOGIN_ACCOUNT_ALREADY_EXISTS("登录账号已存在"),
+    USERNAME_ALREADY_EXISTS("用户名称已存在"),
     USER_NOT_EXISTS("用户不存在"),
     USER_ACCOUNT_OR_PASSWORD_ERROR("账号或者密码有误"),
     REQUEST_PARAMETER_NOT_VALID("请求参数不合法"),

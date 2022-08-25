@@ -303,4 +303,13 @@ public class UserRightApplication {
                 .hospitalName(userRightCommand.getHospitalName())
                 .build();
     }
+
+    /**
+     *
+     * @param userName
+     * @return
+     */
+    public Boolean checkUsername(String userName) {
+        return userRightService.checkUsername(userName);
+    }
 }

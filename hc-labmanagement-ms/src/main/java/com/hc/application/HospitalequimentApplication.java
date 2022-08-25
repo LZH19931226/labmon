@@ -3,12 +3,13 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.application.command.WorkTimeBlockCommand;
-import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.dto.HospitalequimentDTO;
+import com.hc.dto.MonitorequipmenttypeDTO;
 import com.hc.dto.MonitorequipmentwarningtimeDTO;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
 import com.hc.hospital.HospitalInfoApi;
@@ -19,9 +20,11 @@ import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.HospitalequimentService;
+import com.hc.service.MonitorequipmenttypeService;
 import com.hc.service.MonitorequipmentwarningtimeService;
 import com.hc.service.OperationlogService;
 import com.hc.vo.equimenttype.HospitalequimentVo;
+import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
 import com.hc.vo.equimenttype.MonitorequipmentwarningtimeVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +58,9 @@ public class HospitalequimentApplication {
 
     @Autowired
     private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
+
+    @Autowired
+    private MonitorequipmenttypeService monitorequipmenttypeService;
 
     /**
      * 新增医院设备类型
@@ -291,5 +297,45 @@ public class HospitalequimentApplication {
            resultList.add(hospitalEquipmentTypeInfoDto);
         }
         return resultList;
+    }
+
+    /**
+     * 获取医院未添加的设备信息
+     * @param hospitalCode
+     * @return
+     */
+    public List<MonitorEquipmentTypeVo> getUnAddDeviceTypes(String hospitalCode) {
+        //查出医院设备类型
+        List<HospitalequimentDTO> hospitalEquipmentTypeByCode = hospitalequimentService.findHospitalEquipmentTypeByCode(hospitalCode);
+        //查出所有类型
+        List<MonitorequipmenttypeDTO> allmonitorequipmentType = monitorequipmenttypeService.getAllmonitorequipmentType();
+        //当医院设备类型不为空时过滤信息
+        if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeByCode)){
+            List<String> collect = hospitalEquipmentTypeByCode.stream().map(HospitalequimentDTO::getEquipmenttypeid).collect(Collectors.toList());
+            List<MonitorequipmenttypeDTO> removeList = new ArrayList<>();
+            allmonitorequipmentType.forEach(res->{
+                if (collect.contains(res.getEquipmenttypeid())) {
+                    removeList.add(res);
+                }
+                }
+            );
+            if (CollectionUtils.isNotEmpty(removeList)) {
+                allmonitorequipmentType.removeAll(removeList);
+            }
+        }
+        //转换对象
+        if (CollectionUtils.isNotEmpty(allmonitorequipmentType)) {
+            List<MonitorEquipmentTypeVo> monitorequipmenttypeVoList = new ArrayList<>();
+            allmonitorequipmentType.forEach(s -> {
+                        monitorequipmenttypeVoList.add(
+                                MonitorEquipmentTypeVo.builder()
+                                        .equipmentTypeId(s.getEquipmenttypeid())
+                                        .equipmentTypeName(s.getEquipmenttypename())
+                                        .build());
+                    }
+            );
+            return monitorequipmenttypeVoList;
+        }
+        return null;
     }
 }

@@ -55,7 +55,7 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         Integer integer = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
         if(integer>0){
-            throw new IedsException(UserEnumErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(UserEnumErrorCode.LOGIN_ACCOUNT_ALREADY_EXISTS.getMessage());
         }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
@@ -151,5 +151,15 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         return userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getHospitalCode,hospitalCode)
                 .eq(UserRightPo::getPhoneNum,phoneNum));
+    }
+
+    /**
+     * @param userName
+     * @return
+     */
+    @Override
+    public Boolean checkUsername(String userName) {
+        Integer integer = userRightDao.checkUsername(userName);
+        return integer > 0;
     }
 }

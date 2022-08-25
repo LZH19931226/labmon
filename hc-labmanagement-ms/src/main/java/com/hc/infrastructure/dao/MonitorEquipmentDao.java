@@ -43,4 +43,6 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
     List<MonitorEquipmentDto> getEquipmentNoList(@Param("hospitalCode") String hospitalCode,
                                                  @Param("equipmentTypeId")String equipmentTypeId);
 
+    @Select("select count(*) from monitorinstrument where sn = #{sn}")
+    Integer checkSn(String sn);
 }

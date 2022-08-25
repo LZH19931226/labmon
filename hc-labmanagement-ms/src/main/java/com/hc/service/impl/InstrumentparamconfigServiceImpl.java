@@ -190,4 +190,15 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
         List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
         instrumentparamconfigRepository.updateBatchById(convert);
     }
+
+    /**
+     * 获取设备已添加探头监测类型
+     *
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<String> getEquipmentAddProbeInfo(String equipmentNo) {
+        return instrumentparamconfigRepository.getEquipmentAddProbeInfo(equipmentNo);
+    }
 }

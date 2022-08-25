@@ -814,4 +814,13 @@ public class MonitorEquipmentApplication {
         }
         return BeanConverter.convert(monitorEquipmentDto,SnDeviceDto.class);
     }
+
+    /**
+     * 判断是否已存在
+     * @param sn
+     * @return
+     */
+    public Boolean checkSn(String sn) {
+        return monitorEquipmentService.checkSn(sn);
+    }
 }

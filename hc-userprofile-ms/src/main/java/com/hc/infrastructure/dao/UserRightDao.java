@@ -45,21 +45,21 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
             "<if test = 'hospitalCode !=null and hospitalCode != \"\"'>" +
             "and h.hospitalcode = #{hospitalCode}" +
             "</if>" +
-            "<if test = 'username != null and username != \"\"'>" +
-            "and u.username like concat('%',#{username},'%') "+
-            "</if>" +
-            "<if test = 'phoneNum != null and phoneNum !=\"\"'> " +
-            "and u.phonenum like concat('%',#{phoneNum},'%') " +
-            "</if> " +
             "<if test = 'isUse != null'> " +
             "and u.isuse  = #{isUse} " +
             "</if>" +
+            "<if test = 'username != null and username != \"\"'>" +
+            "and (u.nickname like concat('%',#{username},'%') or u.phonenum like concat('%',#{username},'%'))" +
+            "</if>"+
             "</script>")
     List<UserRightDto> findUserRightList(Page<UserRightVo> page,
                                          @Param("hospitalCode") String hospitalCode,
                                          @Param("username") String username,
                                          @Param("phoneNum") String phoneNum,
                                          @Param("isUse") Long isUse);
+
+    @Select("select count(*) from userright where username = #{userName}" )
+    Integer checkUsername(String userName);
 
 //    /**
 //     * 查询用户信息

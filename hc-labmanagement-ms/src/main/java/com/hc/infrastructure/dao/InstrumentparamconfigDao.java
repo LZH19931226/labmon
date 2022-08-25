@@ -6,6 +6,7 @@ import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -48,4 +49,7 @@ public interface InstrumentparamconfigDao extends RootMapper<Instrumentparamconf
     void deleteInfos(String[] instrumentParamConfigNos);
 
     List<InstrumentparamconfigDTO> getInstrumentParamConfigInfo(String equipmentNo);
+
+    @Select("select t3.instrumentconfigid from  monitorinstrument t2  left join instrumentparamconfig t3 on t2.instrumentno = t3.instrumentno where t2.equipmentno = #{equipmentNo}" )
+    List<String> getEquipmentAddProbeInfo(String equipmentNo);
 }

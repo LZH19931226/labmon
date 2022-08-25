@@ -131,4 +131,13 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
                 monitorEquipmentDao.selectList(Wrappers.lambdaQuery(new MonitorEquipmentPo()).eq(MonitorEquipmentPo::getHospitalCode, hospitalCode));
         return BeanConverter.convert(monitorEquipmentPos,MonitorEquipmentDto.class);
     }
+
+    /**
+     * @param sn
+     * @return
+     */
+    @Override
+    public Boolean checkSn(String sn) {
+        return monitorEquipmentDao.checkSn(sn)>0;
+    }
 }

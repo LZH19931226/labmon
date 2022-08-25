@@ -29,7 +29,7 @@ public interface  HospitalequimentDao extends BaseMapper<HospitalequimentPo> {
      * @return
      */
     @Select("SELECT het.equipmenttypeid,het.equipmenttypename,hor.hospitalname,he.orderno FROM hospitalequiment he LEFT JOIN monitorequipmenttype het " +
-            "ON het.equipmenttypeid = he.equipmenttypeid  LEFT JOIN hospitalofreginfo hor ON hor.hospitalcode = he.hospitalcode  WHERE he.hospitalcode = #{hospitalCode} AND he.isvisible = '1' ")
+            "ON het.equipmenttypeid = he.equipmenttypeid  LEFT JOIN hospitalofreginfo hor ON hor.hospitalcode = he.hospitalcode  WHERE he.hospitalcode = #{hospitalCode}")
     List<HospitalequimentDTO> selectHospitalEquipmentInfo(String hospitalCode);
 
     List<HospitalequimentDTO> getAllHospitalEquipmentTypeInfo();

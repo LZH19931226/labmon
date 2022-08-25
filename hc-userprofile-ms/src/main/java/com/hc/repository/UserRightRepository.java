@@ -70,4 +70,11 @@ public interface UserRightRepository extends IService<UserRightPo> {
     List<UserRightDto> findALLUserRightInfoByHospitalCode(String hospitalCode);
 
     int selectUserRightByCodeAndPhone(String hospitalCode, String phoneNum);
+
+    /**
+     * 验证用户名是否存在
+     * @param userName
+     * @return
+     */
+    Boolean checkUsername(String userName);
 }

@@ -78,4 +78,6 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
 
 
     List<MonitorEquipmentDto> getMonitorEquipmentInfoByHCode(String hospitalCode);
+
+    Boolean checkSn(String sn);
 }
