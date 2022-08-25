@@ -406,13 +406,16 @@ public class InstrumentparamconfigApplication {
     public List<InstrumentparamconfigVo> getEquipmentUnAddMonitorTypeByNo(String equipmentNo) {
         //获取设备的探头的监测类型
         List<InstrumentconfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
+        if(CollectionUtils.isEmpty(instrumentConfigList)){
+            return null;
+        }
         //获取设备已添加的探头监测类型
         List<String> instrumentConfigIdList  = instrumentparamconfigService.getEquipmentAddProbeInfo(equipmentNo);
         //当获取设备已添加的探头监测类型不为空时过滤信息
         if(CollectionUtils.isNotEmpty(instrumentConfigIdList)){
             List<InstrumentconfigDTO> removeList = new ArrayList<>();
             instrumentConfigList.forEach(res->{
-                if (instrumentConfigIdList.contains(res.getInstrumentconfigid())) {
+                if (instrumentConfigIdList.contains(String.valueOf(res.getInstrumentconfigid()))) {
                     removeList.add(res);
                 }
             });
@@ -421,18 +424,15 @@ public class InstrumentparamconfigApplication {
             }
 
         }
-        if (CollectionUtils.isNotEmpty(instrumentConfigList)) {
-            List<InstrumentparamconfigVo> instrumentParamConfigVos = new ArrayList<>();
-            instrumentConfigList.forEach(s -> {
-                instrumentParamConfigVos.add(
-                        InstrumentparamconfigVo.builder()
-                                .instrumentconfigid(s.getInstrumentconfigid())
-                                .instrumentconfigname(s.getInstrumentconfigname())
-                                .build()
-                );
-            });
-            return instrumentParamConfigVos;
-        }
-        return null;
+        List<InstrumentparamconfigVo> instrumentParamConfigVos = new ArrayList<>();
+        instrumentConfigList.forEach(s -> {
+            instrumentParamConfigVos.add(
+                    InstrumentparamconfigVo.builder()
+                            .instrumentconfigid(s.getInstrumentconfigid())
+                            .instrumentconfigname(s.getInstrumentconfigname())
+                            .build()
+            );
+        });
+        return instrumentParamConfigVos;
     }
 }
