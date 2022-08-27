@@ -258,7 +258,9 @@ public class InstrumentparamconfigApplication {
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
         //更新设备缓存
         SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-        result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+        if(!ObjectUtils.isEmpty(result1)){
+            result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+        }
         snDeviceRedisApi.updateSnDeviceDtoSync(result1);
 
         //添加日志信息
