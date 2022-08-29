@@ -58,7 +58,7 @@
         and b.instrumentno = #{instrumentNo}
     </if>
     <if test="sn != null and sn != ''">
-        and b.sn  = #{sn}
+        and b.sn  like concat('%',#{sn},'%')
     </if>
     </select>
 

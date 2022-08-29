@@ -66,9 +66,59 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
 
     @Insert("<script> " +
             "INSERT INTO lab_mon.monitorequipmentlastdata " +
-            "(id, sn, cmdid, hospitalcode, equipmentno, inputdatetime, currenttemperature, currentcarbondioxide, currento2, currentairflow, currentdoorstate, currenthumidity, currentvoc, currentformaldehyde, currentpm25, currentpm10, currentups, currentqc, currentairflow1, " +
-            "currenttemperature1, currenttemperature2, currenttemperature3, currenttemperature4, currenttemperature5, currenttemperature6, currenttemperature7, currenttemperature8, currenttemperature9, currenttemperature10, currentlefttemperature, currentrigthtemperature, " +
-            "currenttemperaturediff, currentpm5, currentpm05, currentleftcovertemperature, currentleftendtemperature, currentleftairflow, currentrightcovertemperature, currentrightendtemperature, currentrightairflow, currentqcl, currentn2, leftCompartmentHumidity, rightCompartmentHumidity, model, probe1model, probe1data, probe2model, probe2data, probe3model, probe3data, voltage, power, qccurrent)" +
+            "(id, " +
+            "sn, " +
+            "cmdid, " +
+            "hospitalcode, " +
+            "equipmentno, " +
+            "inputdatetime, " +
+            "currenttemperature, " +
+            "currentcarbondioxide, " +
+            "currento2, " +
+            "currentairflow, " +
+            "currentdoorstate, " +
+            "currenthumidity, " +
+            "currentvoc, " +
+            "currentformaldehyde, " +
+            "currentpm25, " +
+            "currentpm10, " +
+            "currentups, " +
+            "currentqc, " +
+            "currentairflow1, " +
+            "currenttemperature1, " +
+            "currenttemperature2, " +
+            "currenttemperature3, " +
+            "currenttemperature4, " +
+            "currenttemperature5, " +
+            "currenttemperature6, " +
+            "currenttemperature7, " +
+            "currenttemperature8, " +
+            "currenttemperature9, " +
+            "currenttemperature10, " +
+            "currentlefttemperature, " +
+            "currentrigthtemperature, " +
+            "currenttemperaturediff, " +
+            "currentpm5, currentpm05, " +
+            "currentleftcovertemperature, " +
+            "currentleftendtemperature, " +
+            "currentleftairflow, " +
+            "currentrightcovertemperature, " +
+            "currentrightendtemperature, " +
+            "currentrightairflow, " +
+            "currentqcl, " +
+            "currentn2, " +
+            "leftCompartmentHumidity, " +
+            "rightCompartmentHumidity, " +
+            "model, " +
+            "probe1model, " +
+            "probe1data, " +
+            "probe2model, " +
+            "probe2data, " +
+            "probe3model, " +
+            "probe3data, " +
+            "voltage, " +
+            "power, " +
+            "qccurrent)" +
             "VALUES " +
             "<foreach collection = 'converts' item = 'convert'  separator=','> " +
             "('0'" +
