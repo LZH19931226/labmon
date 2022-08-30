@@ -36,6 +36,9 @@ public class MonitorinstrumenttypeDTO implements Serializable {
     @ApiModelProperty(value = "智能报警限制")
     private Integer alarmtime;
 
+    /**设备类型id*/
+    private String equipmenttypeid;
+
     /** 监控参数类型编码 */
     private Integer instrumentconfigid;
 

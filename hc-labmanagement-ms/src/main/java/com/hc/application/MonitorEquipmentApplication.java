@@ -728,7 +728,7 @@ public class MonitorEquipmentApplication {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation() {
+    public List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation(String equipmentTypeId) {
         List<MonitorinstrumenttypeVo> mitVo = new ArrayList<>();
         //查出所有的监控设备类型
         List<MonitorinstrumenttypeDTO> monitorinstrumenttypeVoList = monitorinstrumenttypeService.seleclAll();
@@ -739,10 +739,9 @@ public class MonitorEquipmentApplication {
 
         List<InstrumentmonitorDTO> list = instrumentmonitorService.selectMonitorEquipmentAll();
         Map<Integer, List<InstrumentmonitorDTO>> instrumentmonitorMap = list.stream().collect(Collectors.groupingBy(InstrumentmonitorDTO::getInstrumenttypeid));
-
         for (MonitorinstrumenttypeDTO monitorinstrumenttypeDTO : monitorinstrumenttypeVoList) {
-
-            if(instrumentmonitorMap.containsKey(monitorinstrumenttypeDTO.getInstrumenttypeid())){
+            boolean flag = checkEquipmentId(equipmentTypeId,monitorinstrumenttypeDTO.getEquipmenttypeid());
+            if(flag && instrumentmonitorMap.containsKey(monitorinstrumenttypeDTO.getInstrumenttypeid())){
                 List<InstrumentmonitorDTO> instrumentmonitorDTOS = instrumentmonitorMap.get(monitorinstrumenttypeDTO.getInstrumenttypeid());
                 List<InstrumentmonitorVo> instrumentmonitorVos = new ArrayList<>();
                 instrumentmonitorDTOS.forEach(res -> {
@@ -763,6 +762,36 @@ public class MonitorEquipmentApplication {
             }
         }
         return mitVo;
+    }
+
+    /**
+     * 校验设备id
+     * @param equipmentTypeId
+     * @param equipmenttypeid
+     * @return
+     */
+    private boolean checkEquipmentId(String equipmentTypeId, String equipmenttypeid) {
+        if(StringUtils.isEmpty(equipmentTypeId)){
+            return true;
+        }
+        if(equipmentTypeId.equals(equipmenttypeid)){
+            return true;
+        }
+        if(equipmenttypeid.length()>1){
+            List<String> list = parseStr(equipmenttypeid);
+            if (CollectionUtils.isNotEmpty(list) && list.contains(equipmentTypeId) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<String> parseStr(String equipmenttypeid) {
+        if(equipmenttypeid.contains(",")){
+            String[] str = equipmenttypeid.split(",");
+            return Arrays.asList(str);
+        }
+        return null;
     }
 
     private InstrumentmonitorVo buildInstrumentmonitorVo(InstrumentmonitorDTO res, InstrumentconfigDTO instrumentconfig) {
