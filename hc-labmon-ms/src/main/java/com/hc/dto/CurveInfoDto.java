@@ -80,6 +80,8 @@ public class CurveInfoDto {
     private CurveDataModel leftCompartmentHumidity;
     @ApiModelProperty("右湿度")
     private CurveDataModel rightCompartmentHumidity;
+    @ApiModelProperty("电量")
+    private CurveDataModel qc;
     /**
      * mt310dc特殊探头
      */

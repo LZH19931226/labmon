@@ -2,11 +2,13 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.application.command.WorkTimeBlockCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
 import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.constants.HospitalEnumErrorCode;
+import com.hc.constants.error.HospitalequimentEnumErrorCode;
 import com.hc.constants.error.MonitorequipmentEnumErrorCode;
 import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.device.ProbeRedisApi;
@@ -262,12 +264,15 @@ public class MonitorEquipmentApplication {
         //插入报警时段
         List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
         if (CollectionUtils.isNotEmpty(warningTimeList)) {
+            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
+            //检测时间是否重叠
+            checkWorkTime(workTimeBlockCommandList);
             warningTimeList.forEach(res -> {
                 res.setHospitalcode(monitorEquipmentCommand.getHospitalCode())
                         .setEquipmentid(monitorinstrumentDTO.getEquipmentno())
                         .setEquipmentcategory("EQ");
-                monitorequipmentwarningtimeService.insetWarningtimeList(res);
             });
+            monitorequipmentwarningtimeService.insetWarningtimeList(warningTimeList);
         }
 
         //插入探头参数表
@@ -304,6 +309,70 @@ public class MonitorEquipmentApplication {
         //探头信息存入redis
         updateProbeRedisInfo(instrumentNo,instrumentName,equipmentNo,monitorEquipmentCommand,probeList);
     }
+
+    /**
+     * 检测时间
+     * @param singletonList
+     */
+    private void checkWorkTime(List<WorkTimeBlockCommand> singletonList) {
+        List<Date> list = new ArrayList<>();
+        for (WorkTimeBlockCommand workTimeBlockCommand : singletonList) {
+            Date startTime = workTimeBlockCommand.getBegintime();
+            Date endTime = workTimeBlockCommand.getEndtime();
+            if(endTime.compareTo(startTime)<=0){
+                throw new IedsException(HospitalequimentEnumErrorCode.START_TIME_AND_END_TIME_ARE_ABNORMAL.getCode());
+            }
+            list.add(buildTime(startTime));
+            list.add(buildTime(endTime));
+        }
+        if(CollectionUtils.isNotEmpty(list)){
+            int size = list.size();
+            switch (size){
+                case 4:
+                    Boolean aBoolean = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
+                    if(aBoolean){
+                        throw new IedsException(HospitalequimentEnumErrorCode.THERE_IS_AN_OVERLAP_BETWEEN_THE_TWO_TIME_PERIODS.getCode());
+                    }
+                    break;
+                case 6:
+                    //有三段时间需要比三次
+                    Boolean one = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
+                    Boolean two = checkTimesHasOverlap(list.get(0), list.get(1), list.get(4), list.get(5));
+                    Boolean three = checkTimesHasOverlap(list.get(2), list.get(3), list.get(4), list.get(5));
+                    if(one || two || three){
+                        throw new IedsException(HospitalequimentEnumErrorCode.THERE_IS_AN_OVERLAP_OF_THE_THREE_TIME_PERIODS.getCode());
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 统一时间
+     * @param date
+     * @return
+     */
+    public Date buildTime(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.YEAR,1970);
+        cal.set(Calendar.MONTH,1);
+        cal.set(Calendar.DATE,1);
+        return cal.getTime();
+    }
+
+    /**
+     * 判断两个时间范围是否有交集
+     * 1. 比较时间段的结束时间在参考时间段的开始时间之前
+     * 2. 比较时间段的开始时间在参考时间段的结束时间之后
+     * 取反得到所有的交集
+     */
+    public static Boolean checkTimesHasOverlap(Date dynaStartTime, Date dynaEndTime, Date fixedStartTime, Date fixedEndTime) {
+        return !(dynaEndTime.getTime() < fixedStartTime.getTime() || dynaStartTime.getTime() > fixedEndTime.getTime());
+    }
+
 
     /**
      * 更新探头reids缓存
@@ -426,14 +495,20 @@ public class MonitorEquipmentApplication {
 
         MonitorEquipmentDto equipmentDto =
                 monitorEquipmentService.selectMonitorEquipmentInfoByNo(monitorEquipmentCommand.getEquipmentNo());
-        Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
-        if(integer>1){
-            throw new IedsException(MonitorequipmentEnumErrorCode.DEVICE_NAME_ALREADY_EXISTS.getMessage());
+        //判断设备名称有没有修改
+        if(!equipmentName.equals(equipmentDto.getEquipmentName())){
+            //修改时用判断该医院下设备名称是否已存在
+            Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+            if(integer>0){
+                throw new IedsException(MonitorequipmentEnumErrorCode.DEVICE_NAME_ALREADY_EXISTS.getMessage());
+            }
         }
         //用于redis判断sn是否修改
-        String sn = judgeSnWhetherToModify(monitorEquipmentCommand);
-        boolean flag =  org.apache.commons.lang3.StringUtils.equals(sn,monitorEquipmentCommand.getSn());
+        String newSn = monitorEquipmentCommand.getSn();
+        String oldSn = equipmentDto.getSn();
+        boolean flag = oldSn.equals(newSn);
         if(!flag){
+            //如果sn修改了校验新sn是否已存在
             Boolean aBoolean = monitorEquipmentService.checkSn(monitorEquipmentCommand.getSn());
             if(aBoolean){
                throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_UPDATE_DEVICE.getMessage());
@@ -464,6 +539,9 @@ public class MonitorEquipmentApplication {
         //修改报警时间（monitorequipmentwarningtime）
         List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
         if (CollectionUtils.isNotEmpty(warningTimeList)) {
+            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
+            //检测时间是否重叠
+            checkWorkTime(workTimeBlockCommandList);
             List<MonitorequipmentwarningtimeDTO> updateList = warningTimeList.stream().filter(res -> res.getTimeblockid() != null).collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(updateList)) {
                 monitorequipmentwarningtimeService.updateList(updateList);
@@ -474,14 +552,17 @@ public class MonitorEquipmentApplication {
                     res.setEquipmentid(monitorEquipmentCommand.getEquipmentNo())
                             .setEquipmentcategory("EQ")
                             .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
-                    monitorequipmentwarningtimeService.insetWarningtimeList(res);
                 });
+                monitorequipmentwarningtimeService.insetWarningtimeList(insertList);
             }
         }
 
         List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList = monitorEquipmentCommand.getDeleteWarningTimeList();
         if (CollectionUtils.isNotEmpty(deleteWarningTimeList)) {
-            deleteWarningTimeList.forEach(res -> monitorequipmentwarningtimeService.deleteInfo(res));
+            List<Integer> collect = deleteWarningTimeList.stream().map(MonitorequipmentwarningtimeDTO::getTimeblockid).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(collect)) {
+                monitorequipmentwarningtimeService.bulkRemove(collect);
+            }
         }
 
         //更新探头参数表
@@ -517,7 +598,7 @@ public class MonitorEquipmentApplication {
         //更新redis缓存
         //判断sn是否被修改，如果是就需要先删除该sn的redis信息，重新put信息
         if(!flag){
-            snDeviceRedisApi.deleteSnDeviceDto(sn);
+            snDeviceRedisApi.deleteSnDeviceDto(oldSn);
         }
         List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
         SnDeviceDto snDeviceDto =  buildSnDeviceDto(monitorEquipmentCommand,monitorinstrumenttypeDTO,warningTimeDTOs);
@@ -547,23 +628,6 @@ public class MonitorEquipmentApplication {
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
                 .setWarningTimeList(warningTimeDTOs);
-    }
-
-    /**
-     * 判断sn是否被修改
-     * @param monitorEquipmentCommand
-     * @return
-     */
-    private String judgeSnWhetherToModify(MonitorEquipmentCommand monitorEquipmentCommand) {
-        String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
-        String sn = monitorEquipmentCommand.getSn();
-        List<MonitorinstrumentDTO> monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
-        for (MonitorinstrumentDTO dto : monitorinstrumentDTO) {
-            if(!ObjectUtils.isEmpty(dto) && !org.apache.commons.lang3.StringUtils.equals(dto.getSn(),sn)){
-                return dto.getSn();
-            }
-        }
-        return sn;
     }
 
     /**

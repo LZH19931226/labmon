@@ -21,9 +21,7 @@ public interface MonitorequipmentwarningtimeService{
      * 插入报警时段
      * @param monitorequipmentwarningtimeDTO
      */
-    void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO);
-
-
+    void insetWarningtimeList(List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTO);
 
     /**
      * 批量修改报警时间段集合
@@ -66,5 +64,11 @@ public interface MonitorequipmentwarningtimeService{
      * @return
      */
     List<MonitorequipmentwarningtimeDTO> selectWarningtimeByHospitalCode(List<String> hospitalCodes);
+
+    /**
+     * 通过主键批量删除
+     * @param idList
+     */
+    void bulkRemove(List<Integer> idList);
 }
 
