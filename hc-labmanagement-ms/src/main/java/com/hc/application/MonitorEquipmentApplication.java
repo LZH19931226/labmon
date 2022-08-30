@@ -211,7 +211,7 @@ public class MonitorEquipmentApplication {
      */
     @Transactional(rollbackFor = Exception.class)
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
-        String sn = monitorEquipmentCommand.getSn();
+        String sn = monitorEquipmentCommand.getSn().trim();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
         String equipmentTypeId = monitorEquipmentCommand.getEquipmentTypeId();
         //sn不能重复
