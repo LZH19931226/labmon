@@ -31,7 +31,7 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
      * @param monitorequipmentwarningtimeDTO
      */
     @Override
-    public void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO) {
+    public void insetWarningtimeList(List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTO) {
         monitorequipmentwarningtimeRepository.insetWarningtimeList(monitorequipmentwarningtimeDTO);
 
     }
@@ -100,5 +100,15 @@ public class MonitorequipmentwarningtimeServiceImpl implements Monitorequipmentw
                 .eq(MonitorEquipmentWarningTimePo::getEquipmentCategory, "EQ")
                 .in(MonitorEquipmentWarningTimePo::getHospitalCode, hospitalCodes));
         return BeanConverter.convert(times,MonitorequipmentwarningtimeDTO.class);
+    }
+
+    /**
+     * 通过主键批量删除
+     *
+     * @param idList
+     */
+    @Override
+    public void bulkRemove(List<Integer> idList) {
+        monitorequipmentwarningtimeRepository.removeByIds(idList);
     }
 }

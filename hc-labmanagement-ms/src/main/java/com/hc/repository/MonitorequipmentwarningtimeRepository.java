@@ -13,7 +13,7 @@ public interface MonitorequipmentwarningtimeRepository extends IService <Monitor
      * 插入报警时段
      * @param monitorequipmentwarningtimeDTO
      */
-    void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO);
+    void insetWarningtimeList(List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTO);
 
 
     /**

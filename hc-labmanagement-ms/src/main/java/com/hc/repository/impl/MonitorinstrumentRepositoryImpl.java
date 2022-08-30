@@ -26,10 +26,8 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
      */
     @Override
     public Integer selectCount(MonitorinstrumentDTO monitorinstrumentDTO) {
-
         return monitorinstrumentDao.selectCount(Wrappers.lambdaQuery(new MonitorinstrumentPo())
-                .eq(MonitorinstrumentPo::getSn,monitorinstrumentDTO.getSn())
-                .eq(MonitorinstrumentPo::getHospitalcode,monitorinstrumentDTO.getHospitalcode()));
+                .eq(MonitorinstrumentPo::getSn,monitorinstrumentDTO.getSn()));
     }
 
     /**

@@ -87,6 +87,8 @@ public class EquipmentInfoServiceHelp {
         List<String> leftCompartmentHumidityTime = new ArrayList<String>();
         List<String> rightCompartmentHumidity = new ArrayList<String>();
         List<String> rightCompartmentHumidityTime = new ArrayList<String>();
+        List<String> qc = new ArrayList<>();
+        List<String> qcTime = new ArrayList<>();
 
 
 
@@ -268,14 +270,22 @@ public class EquipmentInfoServiceHelp {
                 n2.add(lastDataModel.getCurrentn2());
                 n2Time.add(da);
             }
+            //左舱室湿度
             if (StringUtils.isNotEmpty(lastDataModel.getLeftCompartmentHumidity())&& RegularUtil.checkContainsNumbers(lastDataModel.getLeftCompartmentHumidity())) {
                 leftCompartmentHumidity.add(lastDataModel.getLeftCompartmentHumidity());
                 leftCompartmentHumidityTime.add(da);
             }
+            //右舱室湿度
             if (StringUtils.isNotEmpty(lastDataModel.getRightCompartmentHumidity())&& RegularUtil.checkContainsNumbers(lastDataModel.getRightCompartmentHumidity())) {
                 rightCompartmentHumidity.add(lastDataModel.getRightCompartmentHumidity());
                 rightCompartmentHumidityTime.add(da);
             }
+            //当前电量
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentqc())&& RegularUtil.checkContainsNumbers(lastDataModel.getCurrentqc())) {
+                qc.add(lastDataModel.getRightCompartmentHumidity());
+                qcTime.add(da);
+            }
+
         }
         CurveInfoDto curveInfoDto = new CurveInfoDto();
         if (CollectionUtils.isNotEmpty(n2)) {
@@ -413,6 +423,10 @@ public class EquipmentInfoServiceHelp {
         if (CollectionUtils.isNotEmpty(rightCompartmentHumidity)) {
             CurveDataModel curveDataModel = generateCurveDataModel(rightCompartmentHumidity, rightCompartmentHumidityTime,map.get("rightCompartmentHumidity"));
             curveInfoDto.setRightCompartmentHumidity(curveDataModel);
+        }
+        if (CollectionUtils.isNotEmpty(qc)) {
+            CurveDataModel curveDataModel = generateCurveDataModel(qc, qcTime,map.get("QC"));
+            curveInfoDto.setQc(curveDataModel);
         }
         return curveInfoDto;
     }

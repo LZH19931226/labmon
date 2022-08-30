@@ -30,9 +30,9 @@ public class MonitorequipmentwarningtimeRepositoryImpl extends ServiceImpl<Monit
      * @param monitorequipmentwarningtimeDTO
      */
     @Override
-    public void insetWarningtimeList(MonitorequipmentwarningtimeDTO monitorequipmentwarningtimeDTO) {
-        MonitorEquipmentWarningTimePo warningTimePo = BeanConverter.convert(monitorequipmentwarningtimeDTO, MonitorEquipmentWarningTimePo.class);
-        monitorEquipmentWarningTimeDao.insert(warningTimePo);
+    public void insetWarningtimeList(List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTO) {
+        List<MonitorEquipmentWarningTimePo> warningTimePo = BeanConverter.convert(monitorequipmentwarningtimeDTO, MonitorEquipmentWarningTimePo.class);
+        monitorEquipmentWarningTimeDao.insertBatchSomeColumn(warningTimePo);
     }
 
     /**
