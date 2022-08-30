@@ -163,7 +163,7 @@ public class SocketMessageListener {
             return;
         }
         String oldState = instrumentInfoDto.getState();
-        if (org.springframework.util.StringUtils.isEmpty(oldState)){
+        if (StringUtils.isEmpty(oldState)){
             oldState="0";
         }
         switch (newState){
