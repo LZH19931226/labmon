@@ -27,8 +27,8 @@ public class MonitorEquipmentController {
 
     @GetMapping("/findHardwareTypeProbeInformation")
     @ApiOperation("获取硬件设备类型对应监控探头信息")
-    private List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation(){
-        return monitorEquipmentApplication.getHardwareTypeProbeInformation();
+    private List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation(@RequestParam("equipmentTypeId") String equipmentTypeId){
+        return monitorEquipmentApplication.getHardwareTypeProbeInformation(equipmentTypeId);
     }
 
     @PostMapping("/findEquipmentInfo")
@@ -90,5 +90,5 @@ public class MonitorEquipmentController {
     public Boolean checkSn(@RequestParam(value = "sn")String sn){
         return monitorEquipmentApplication.checkSn(sn);
     }
-    
+
 }
