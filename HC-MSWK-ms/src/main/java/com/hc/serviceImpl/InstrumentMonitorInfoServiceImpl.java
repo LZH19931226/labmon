@@ -60,7 +60,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "85":
                 InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if (!ObjectUtils.isEmpty(probe)) {
-                    if (StringUtils.equalsAnyIgnoreCase("04", "19",snType)) {
+                    if (StringUtils.equalsAnyIgnoreCase(snType, "04","19")) {
                         if (StringUtils.isNotEmpty(model.getTEMP2())) {
                             String calibration = showModelUtils.calibration(probe, model.getTEMP2());
                             // 判断是否存在温度探头
