@@ -1457,4 +1457,32 @@ public class cmdidParseUtils {
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
     }
+
+    public static ParamaterModel paseAD(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+        // 一路温度
+        String substring2 = cmd.substring(28, 32);
+        String pasetemperature = pasetemperature(substring2);
+        //验证数据
+        pasetemperature = CustomUtils.tem85(pasetemperature, sn);
+        paramaterModel.setTEMP(pasetemperature);
+        // 二路温度
+        String substring4 = cmd.substring(32, 36);
+        String pasetemperature1 = pasetemperature(substring4);
+        pasetemperature1 = CustomUtils.tem85(pasetemperature1, sn);
+        paramaterModel.setTEMP2(pasetemperature1);
+        //1路2路温度不一致则抛弃数据
+        if (!StringUtils.equalsIgnoreCase(pasetemperature,pasetemperature1)){
+            return null;
+        }
+        // 电量
+        String pow = cmd.substring(36, 38);
+        String electricity = paramaterModelUtils.electricity(pow);
+        pow = CustomUtils.agreementAll(electricity, "0", "100");
+        paramaterModel.setQC(pow);
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
+        return paramaterModel;
+
+    }
 }
