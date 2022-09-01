@@ -76,14 +76,13 @@ public class SocketMessageListener {
     }
 
     public void mswkMessage(String messageContent, String topic) {
-        //该数据生命周期id
-        String id = UniqueHash.Id();
-        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()),messageContent,id);
         if (StringUtils.isEmpty(messageContent)){
             return;
         }
         ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
-        model.setLogId(id);
+        String logId = model.getLogId();
+        //该数据生命周期id
+        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()),messageContent,logId);
         //MT500  MT600判断
         //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
@@ -100,7 +99,7 @@ public class SocketMessageListener {
         //报警消息处理
         if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
             for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
-                warningAlarmDo.setLogId(id);
+                warningAlarmDo.setLogId(logId);
                 switch (topic) {
                     case "1":
                         service.pushMessage1(JsonUtil.toJson(warningAlarmDo));

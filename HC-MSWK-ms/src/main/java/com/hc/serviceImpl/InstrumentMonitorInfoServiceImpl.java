@@ -1550,7 +1550,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 }
                 String mt100Qc = model.getQC();
                 if (StringUtils.isNotEmpty(mt100Qc) && !StringUtils.equals(mt100Qc, "0")) {
-                    //常规液氮罐电量
                     monitorequipmentlastdata.setCurrentqc(mt100Qc);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), mt100Qc,
