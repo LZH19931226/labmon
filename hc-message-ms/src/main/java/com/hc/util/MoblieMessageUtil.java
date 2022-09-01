@@ -202,6 +202,9 @@ public class MoblieMessageUtil {
             else
                 request.setTemplateCode("SMS_141605631");
         } else {
+            if(unit==null){
+                unit = "";
+            }
             switch (unit) {
                 case "CO2": {
                     if (isLocalphone)
