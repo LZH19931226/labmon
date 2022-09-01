@@ -319,6 +319,9 @@ public class MonitorEquipmentApplication {
         for (WorkTimeBlockCommand workTimeBlockCommand : singletonList) {
             Date startTime = workTimeBlockCommand.getBegintime();
             Date endTime = workTimeBlockCommand.getEndtime();
+            if(startTime ==null || endTime == null){
+                continue;
+            }
             if(endTime.compareTo(startTime)<=0){
                 throw new IedsException(HospitalequimentEnumErrorCode.START_TIME_AND_END_TIME_ARE_ABNORMAL.getCode());
             }
