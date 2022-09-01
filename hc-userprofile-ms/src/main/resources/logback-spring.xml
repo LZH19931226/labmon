@@ -14,40 +14,12 @@
             </pattern>
         </encoder>
     </appender>
-    <!-- 按照每天生成日志文件 -->
-    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/userprofile.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--日志文件输出的文件名-->
-            <FileNamePattern>./logs/userprofile.%d{yyyy-MM-dd}.log</FileNamePattern>
-            <MaxHistory>30</MaxHistory>
-        </rollingPolicy>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
-        </layout>
-        <!--日志文件最大的大小-->
-        <!-- <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-          <MaxFileSize>10MB</MaxFileSize>
-        </triggeringPolicy> -->
-    </appender>
-
     <appender name="LOGSTASH"
               class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>172.16.10.203:10086</destination>
         <queueSize>1048576</queueSize>
         <encoder charset="GB2312"
                  class="net.logstash.logback.encoder.LogstashEncoder" />
-    </appender>
-
-    <appender name ="ASYNC" class= "ch.qos.logback.classic.AsyncAppender">
-        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
-        <discardingThreshold >0</discardingThreshold>
-        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
-        <queueSize>512</queueSize>
-        <!-- 添加附加的appender,最多只能添加一个 -->
-        <appender-ref ref ="FILE"/>
     </appender>
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
@@ -67,14 +39,13 @@
     <!-- 也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root". -->
 
     <logger name="com.hc" level="INFO" additivity="false">
-<!--        <appender-ref ref="FILE"/>-->
+        <appender-ref ref="LOGSTASH"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-<!--        <appender-ref ref="FILE"/>-->
-        <appender-ref ref="ASYNC"/>
+        <appender-ref ref="LOGSTASH"/>
     </root>
 
 </configuration>
