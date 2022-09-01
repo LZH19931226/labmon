@@ -137,7 +137,7 @@ public class SocketMessageListener {
                 return false;
             }else {
                 //小于30秒相同命令对比内容,内容一致不保存数据,不一致保存数据更新缓存
-                if (StringUtils.equalsIgnoreCase(oldData,newData)) {
+                if (!StringUtils.equalsIgnoreCase(oldData,newData)) {
                     tcpClientApi.addDeviceChannel(data);
                     return false;
                 }else {
