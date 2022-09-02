@@ -282,7 +282,7 @@ public class EquipmentInfoServiceHelp {
             }
             //当前电量
             if (StringUtils.isNotEmpty(lastDataModel.getCurrentqc())&& RegularUtil.checkContainsNumbers(lastDataModel.getCurrentqc())) {
-                qc.add(lastDataModel.getRightCompartmentHumidity());
+                qc.add(lastDataModel.getCurrentqc());
                 qcTime.add(da);
             }
 

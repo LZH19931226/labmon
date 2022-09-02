@@ -62,6 +62,11 @@ public class MonitorequipmentlastdataDto implements Serializable {
     private String currentdoorstate;
 
     /**
+     * 当前开门记录2
+     */
+    private String currentdoorstate2;
+
+    /**
      * 当前湿度
      */
     private String currenthumidity;
