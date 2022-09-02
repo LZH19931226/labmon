@@ -59,7 +59,6 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
             " and (t1.equipmentname like concat('%',#{probeCommand.equipmentName},'%')" +
             " or t2.sn like concat('%',#{probeCommand.equipmentName},'%'))"+
             "</if>" +
-            "oreder by t1.equipmentname "+
             "</script>")
     List<MonitorEquipmentDto> getEquipmentInfoByPage(Page page,@Param("probeCommand")ProbeCommand probeCommand);
 
