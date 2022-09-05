@@ -103,15 +103,17 @@ public class SocketMessageListener {
         if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
             for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
                 warningAlarmDo.setLogId(logId);
+                String waringAlarmDo = JsonUtil.toJson(warningAlarmDo);
                 switch (topic) {
                     case "1":
-                        service.pushMessage1(JsonUtil.toJson(warningAlarmDo));
+                        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
+                        service.pushMessage1(waringAlarmDo);
                         break;
                     case "2":
-                        service.pushMessage2(JsonUtil.toJson(warningAlarmDo));
+                        service.pushMessage2(waringAlarmDo);
                         break;
                     case "3":
-                        service.pushMessage3(JsonUtil.toJson(warningAlarmDo));
+                        service.pushMessage3(waringAlarmDo);
                         break;
                     default:
                         break;

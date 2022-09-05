@@ -14,6 +14,7 @@ public enum ElkLogDetail {
     MSWK_SERIAL_NUMBER02(2,"当前设备sn号未注册"),
     MSWK_SERIAL_NUMBER03(3,"设备未启用"),
     MSWK_SERIAL_NUMBER04(4,"sn数据相同命令上传间隔异常"),
+    MSWK_SERIAL_NUMBER22(22,"数据存储成功"),
     MSCT_SERIAL_NUMBER05(5,"报警服务订阅数据包"),
     MSCT_SERIAL_NUMBER06(6,"缓存探头信息不存在"),
     MSCT_SERIAL_NUMBER07(7,"报警规则1,探头未开启报警"),
