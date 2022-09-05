@@ -103,9 +103,9 @@ public class SocketMessageListener {
             for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
                 warningAlarmDo.setLogId(logId);
                 String waringAlarmDo = JsonUtil.toJson(warningAlarmDo);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
                 switch (topic) {
                     case "1":
-                        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
                         service.pushMessage1(waringAlarmDo);
                         break;
                     case "2":
