@@ -293,11 +293,11 @@ public class EquipmentInfoServiceHelp {
             curveInfoDto.setN2(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftcovertemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(leftcovertemp,leftcovertempTime,map.get("LEFTTEMP"));
+            CurveDataModel curveDataModel = generateCurveDataModel(leftcovertemp,leftcovertempTime,map.get("LEFTCOVERTEMP"));
             curveInfoDto.setLeftcovertemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftendtemp)) {
-            CurveDataModel curveDataModel = generateCurveDataModel(leftendtemp,leftendTime,map.get("RIGHTTEMP"));
+            CurveDataModel curveDataModel = generateCurveDataModel(leftendtemp,leftendTime,map.get("RIGHTENDTEMP"));
             curveInfoDto.setLeftendtemp(curveDataModel);
         }
         if (CollectionUtils.isNotEmpty(leftair)) {
