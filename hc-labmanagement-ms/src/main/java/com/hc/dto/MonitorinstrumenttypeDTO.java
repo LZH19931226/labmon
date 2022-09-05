@@ -60,7 +60,8 @@ public class MonitorinstrumenttypeDTO implements Serializable {
 	@ApiModelProperty(value = "探头信息")
 	private List<InstrumentmonitorDTO> instrumentmonitorDTOS;
 
-
+    /** 同上 */
+    private List<InstrumentmonitorDTO> instrumentmonitorVos;
 }
 
 

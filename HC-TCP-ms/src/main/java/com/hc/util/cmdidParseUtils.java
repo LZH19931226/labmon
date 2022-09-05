@@ -1,8 +1,8 @@
 package com.hc.util;
 
+import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
-import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -225,16 +225,21 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         String tem = cmd.substring(28, 32);
         String s2 = pasetemperature1(tem);
-        s2 = CustomUtils.agreementAll(s2, "-0", "50");
+        if(RegularUtil.checkContainsNumbers(s2)){
+            s2 = CustomUtils.agreementAll(s2, "-0", "50");
+        }
         paramaterModel.setTEMP(s2);
         String yangqi = cmd.substring(32, 36);
-
         String s = paseAir(yangqi);
-        s = CustomUtils.agreementAll(s, "0", "30");
+        if(RegularUtil.checkContainsNumbers(s)){
+            s = CustomUtils.agreementAll(s, "0", "30");
+        }
         paramaterModel.setO2(s);
         String eryanghuatan = cmd.substring(36, 40);
         String s1 = paseAir(eryanghuatan);
-        s1 = CustomUtils.agreementAll(s1, "0", "20");
+        if(RegularUtil.checkContainsNumbers(s1)){
+            s1 = CustomUtils.agreementAll(s1, "0", "20");
+        }
         paramaterModel.setCO2(s1);
         return paramaterModel;
     }

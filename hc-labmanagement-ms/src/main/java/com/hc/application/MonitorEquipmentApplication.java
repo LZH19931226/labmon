@@ -283,6 +283,7 @@ public class MonitorEquipmentApplication {
             InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
                     .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""))
                     .setInstrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
+                    .setInstrumentconfigname(instrumentmonitorDTO.getInstrumentconfigname())
                     .setInstrumentname(monitorinstrumentDTO.getInstrumentname())
                     .setChannel(instrumentmonitorDTO.getChannel())
                     .setWarningphone("0")
@@ -401,6 +402,8 @@ public class MonitorEquipmentApplication {
                     .setSaturation(res.getSaturation())
                     .setInstrumentParamConfigNO(res.getInstrumentparamconfigno())
                     .setInstrumentConfigId(res.getInstrumentconfigid())
+                    .setInstrumentConfigName(res.getInstrumentconfigname())
+                    .setWarningPhone("0")
                     .setLowLimit(res.getLowlimit())
                     .setHighLimit(res.getHighlimit());
             list.add(instrumentInfoDto);
@@ -570,12 +573,13 @@ public class MonitorEquipmentApplication {
 
         //更新探头参数表
         MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
-        List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
+        List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorVos();
+        List<InstrumentparamconfigDTO> list =  new ArrayList<>();
         if (CollectionUtils.isNotEmpty(instrumentmonitorDTOS)) {
-            List<InstrumentparamconfigDTO> list =  new ArrayList<>();
-            List<InstrumentmonitorDTO> dtos = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
-            for (InstrumentmonitorDTO dto : dtos) {
+            for (InstrumentmonitorDTO dto : instrumentmonitorDTOS) {
                 InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO();
+                instrumentparamconfigDTO.setInstrumentconfigid(dto.getInstrumentconfigid());
+                instrumentparamconfigDTO.setInstrumentno(monitorEquipmentCommand.getInstrumentno());
                 instrumentparamconfigDTO.setInstrumentparamconfigno(dto.getInstrumentparamconfigno());
                 instrumentparamconfigDTO.setInstrumenttypeid(dto.getInstrumenttypeid());
                 instrumentparamconfigDTO.setLowlimit(dto.getLowlimit());
@@ -606,6 +610,31 @@ public class MonitorEquipmentApplication {
         List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
         SnDeviceDto snDeviceDto =  buildSnDeviceDto(monitorEquipmentCommand,monitorinstrumenttypeDTO,warningTimeDTOs);
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
+
+        //更新探头redis信息
+       updateProbeRedisInfo(hospitalCode,list,monitorEquipmentCommand);
+    }
+
+    /**
+     * 批量更新探头信息
+     * @param hospitalCode
+     * @param instrumentMonitorDTOList
+     * @param monitorEquipmentCommand
+     */
+    private void updateProbeRedisInfo(String hospitalCode, List<InstrumentparamconfigDTO> instrumentMonitorDTOList,MonitorEquipmentCommand monitorEquipmentCommand) {
+        ProbeCommand probeCommand = new ProbeCommand();
+        probeCommand.setHospitalCode(hospitalCode);
+        List<String> instrumentNoList = instrumentMonitorDTOList.stream().map(res -> res.getInstrumentno() + ":" + res.getInstrumentconfigid()).collect(Collectors.toList());
+        probeCommand.setInstrumentNo(instrumentNoList);
+        List<InstrumentInfoDto> instrumentInfoDtoList = probeRedisApi.bulkGetProbeRedisInfo(probeCommand).getResult();
+        InstrumentparamconfigDTO instrumentparamconfigDTO = instrumentMonitorDTOList.get(0);
+        for (InstrumentInfoDto instrumentInfoDto : instrumentInfoDtoList) {
+            instrumentInfoDto.setEquipmentName(monitorEquipmentCommand.getEquipmentName());
+            instrumentInfoDto.setSn(monitorEquipmentCommand.getSn());
+            instrumentInfoDto.setInstrumentName(instrumentparamconfigDTO.getInstrumentname());
+        }
+        probeCommand.setInstrumentInfoDtoList(instrumentInfoDtoList);
+        probeRedisApi.bulkUpdateProbeRedisInfo(probeCommand);
     }
 
     /**

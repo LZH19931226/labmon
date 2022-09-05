@@ -1,6 +1,5 @@
 package com.hc.clickhouse.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import org.apache.ibatis.annotations.Insert;
@@ -11,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipmentlastdata> {
+public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipmentlastdata> {
 
     @Select("select * from monitorequipmentlastdata where formatDateTime(inputdatetime,'%Y-%m-%d') = #{date} and equipmentno = #{equipmentNo}  ORDER BY inputdatetime ASC ")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(@Param("date") String date,
@@ -98,7 +97,8 @@ public interface MonitorequipmentlastdataMapper extends BaseMapper<Monitorequipm
             "currentlefttemperature, " +
             "currentrigthtemperature, " +
             "currenttemperaturediff, " +
-            "currentpm5, currentpm05, " +
+            "currentpm5, " +
+            "currentpm05, " +
             "currentleftcovertemperature, " +
             "currentleftendtemperature, " +
             "currentleftairflow, " +

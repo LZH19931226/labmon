@@ -40,7 +40,7 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
 
   @Override
   public void batchInsert(List<Monitorequipmentlastdata> convert) {
-    monitorequipmentlastdataMapper.batchInsert(convert);
+    monitorequipmentlastdataMapper.insertBatchSomeColumn(convert);
   }
 
   @Override

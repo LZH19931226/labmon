@@ -11,7 +11,6 @@ import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
-import com.hc.my.common.core.util.UniqueHash;
 import com.hc.po.Instrumentparamconfig;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.InstrumentMonitorInfoService;
