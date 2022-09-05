@@ -19,4 +19,9 @@ public class MybatisPlusConfig {
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.CLICK_HOUSE));
         return interceptor;
     }
+
+    @Bean
+    public CustomSqlInjector customSqlInjector(){
+        return new CustomSqlInjector();
+    }
 }
