@@ -210,7 +210,8 @@ public class AppEquipmentInfoApplication {
         SnDeviceDto snDeviceDto = equipmentNoMap.get(eNo).get(0);
         MonitorUpsInfoDto monitorUpsInfoDto = new MonitorUpsInfoDto()
                 .setEquipmentName(snDeviceDto.getEquipmentName())
-                .setEquipmentNo(snDeviceDto.getEquipmentNo());
+                .setEquipmentNo(snDeviceDto.getEquipmentNo())
+                .setSn(snDeviceDto.getSn());
         List<ProbeInfoDto> list = probeInfoMap.get(eNo);
         List<ProbeInfoDto> currentUps = list.stream().filter(res -> res.getProbeEName().equals("currentups")).collect(Collectors.toList());
         if(CollectionUtils.isNotEmpty(currentUps)){
