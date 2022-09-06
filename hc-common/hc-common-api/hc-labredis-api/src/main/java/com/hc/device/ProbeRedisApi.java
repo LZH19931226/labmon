@@ -85,7 +85,7 @@ public interface ProbeRedisApi {
                                  @RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
 
     /**
-     * 获取探头当天值
+     * 获取探头当前值
      * @param hospitalCode 医院id
      * @param equipmentNo 设备id
      * @return

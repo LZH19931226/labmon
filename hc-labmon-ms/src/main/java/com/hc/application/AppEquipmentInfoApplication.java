@@ -17,6 +17,7 @@ import com.hc.constants.LabMonEnumError;
 import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
+import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.constant.enums.SysConstants;
@@ -40,7 +41,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class EquipmentInfoAppApplication {
+public class AppEquipmentInfoApplication {
 
     @Autowired
     private EquipmentInfoService equipmentInfoService;
@@ -68,6 +69,10 @@ public class EquipmentInfoAppApplication {
 
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
+
+    @Autowired
+    private MonitorEquipmentApi monitorEquipmentApi;
+
     /**
      * 获取app首页设备数量
      * @param hospitalCode
@@ -110,6 +115,7 @@ public class EquipmentInfoAppApplication {
         }
         return dtoList;
     }
+
     /**
      * 获取探头当前值
      * @param probeCommand 参数对象
@@ -168,6 +174,55 @@ public class EquipmentInfoAppApplication {
         return page;
     }
 
+    /***
+     * 获取设备UPS信息
+     * @param hospitalCode 医院id
+     * @param equipmentTypeId 设备id
+     * @return
+     */
+    public List<MonitorUpsInfoDto> getCurrentUps(String hospitalCode, String equipmentTypeId) {
+        List<SnDeviceDto> equipmentList = monitorEquipmentApi.getEquipmentNoList(hospitalCode,equipmentTypeId).getResult();
+        if(CollectionUtils.isEmpty(equipmentList)){
+            return null;
+        }
+        //获取equipmentNo的集合
+        List<String> equipmentNoList = equipmentList.stream().map(SnDeviceDto::getEquipmentNo).collect(Collectors.toList());
+        //以equipmentNo分组
+        Map<String, List<SnDeviceDto>> equipmentNoMap = equipmentList.stream().collect(Collectors.groupingBy(SnDeviceDto::getEquipmentNo));
+        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
+        probeRedisCommand.setHospitalCode(hospitalCode);
+        probeRedisCommand.setENoList(equipmentNoList);
+        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
+        if(MapUtils.isEmpty(probeInfoMap)){
+            return null;
+        }
+        List<MonitorUpsInfoDto> list = new ArrayList<>();
+        equipmentNoList.forEach(res->{
+            if(equipmentNoMap.containsKey(res) && probeInfoMap.containsKey(res)){
+                MonitorUpsInfoDto monitorUpsInfoDto = buildMonitorUpsInfoDto(res, equipmentNoMap, probeInfoMap);
+                list.add(monitorUpsInfoDto);
+            }
+        });
+       return list;
+    }
+
+    private MonitorUpsInfoDto buildMonitorUpsInfoDto(String eNo, Map<String, List<SnDeviceDto>> equipmentNoMap, Map<String, List<ProbeInfoDto>> probeInfoMap) {
+        SnDeviceDto snDeviceDto = equipmentNoMap.get(eNo).get(0);
+        MonitorUpsInfoDto monitorUpsInfoDto = new MonitorUpsInfoDto()
+                .setEquipmentName(snDeviceDto.getEquipmentName())
+                .setEquipmentNo(snDeviceDto.getEquipmentNo());
+        List<ProbeInfoDto> list = probeInfoMap.get(eNo);
+        List<ProbeInfoDto> currentUps = list.stream().filter(res -> res.getProbeEName().equals("currentups")).collect(Collectors.toList());
+        if(CollectionUtils.isNotEmpty(currentUps)){
+            monitorUpsInfoDto.setCurrentUps(currentUps.get(0).getValue());
+        }
+        List<ProbeInfoDto> voltage = list.stream().filter(res -> res.getProbeEName().equals("voltage")).collect(Collectors.toList());
+        if(CollectionUtils.isNotEmpty(voltage)){
+            monitorUpsInfoDto.setVoltage(voltage.get(0).getValue());
+        }
+
+        return monitorUpsInfoDto;
+    }
 
 
     /**
@@ -737,4 +792,5 @@ public class EquipmentInfoAppApplication {
         //更新数据库
         equipmentInfoService.bulkUpdate(list);
     }
+
 }
