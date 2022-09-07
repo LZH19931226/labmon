@@ -890,9 +890,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     String calibration = showModelUtils.calibration(temp9b, model.getTEMP());
                     //老版本mt200m报警以及温度
                     monitorequipmentlastdata.setCurrenttemperature(calibration);
-                    BuildProbeInfoDto(hospitalcode, equipmentno,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), calibration,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                     if (Integer.parseInt(proSn) < 2031) {
                         if (RegularUtil.checkContainsNumbers(model.getTEMP())) {
@@ -915,6 +912,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                                 monitorequipmentlastdata.setCurrenttemperature(ProbeOutlier.VALUE_IS_INVALID.getCode());
                             }
                         }
+
                         monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
                         if (RegularUtil.checkContainsNumbers(temp2)) {
                             BigDecimal bigDecimal = new BigDecimal(temp2);
@@ -926,7 +924,18 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         }
                         list.add(WarningAlarmDo97);
                     }
+
+                    BuildProbeInfoDto(hospitalcode, equipmentno,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), monitorequipmentlastdata.getCurrenttemperature(),
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                    String currenttemperature2 = monitorequipmentlastdata.getCurrenttemperature2();
+                    if (StringUtils.isNotEmpty(currenttemperature2)){
+                        BuildProbeInfoDto(hospitalcode, equipmentno,
+                                CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), currenttemperature2,
+                                CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                    }
                 }
+
                 if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
                     monitorequipmentlastdata.setCurrentqc(model.getQC());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
