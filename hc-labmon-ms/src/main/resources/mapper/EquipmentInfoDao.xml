@@ -120,6 +120,6 @@
                 LEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno
                 LEFT JOIN instrumentparamconfig t3 ON t2.instrumentno = t3.instrumentno
         WHERE
-            t1.equipmentno = "475f40da96bc4042be2f065a493cb5ab"
+            t1.equipmentno = #{equipmentNo}
     </select>
 </mapper>
