@@ -21,6 +21,26 @@ public class cmdidParseUtils {
                 return ProbeOutlier.OUT_OF_TEST_RANGE.getCode();
             } else
                 // 若已接传感器且已校准，但值无效，该值为 0xFFF0;
+                if (StringUtils.equalsAnyIgnoreCase(co2, ProbeOutlier.FFF0.getCode(),"028C","9C00")) {
+                    return ProbeOutlier.VALUE_IS_INVALID.getCode();
+                } else
+                    // 若已接传感器，但未校准，该值为 0xFFFF；
+                    if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FFFF.getCode())) {
+                        return ProbeOutlier.NO_CALIBRATION.getCode();
+                    } else {
+                        return paramaterModelUtils.gas(co2);
+                    }
+    }
+
+    public static String paseAir91(String co2) {
+        if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.F000.getCode())) {
+            return ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
+        } else
+            // 若超出量程范围(0%-20%)，该值为 0xFF00； 针对mt400得异常值
+            if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FF00.getCode())) {
+                return ProbeOutlier.OUT_OF_TEST_RANGE.getCode();
+            } else
+                // 若已接传感器且已校准，但值无效，该值为 0xFFF0;
                 if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FFF0.getCode())) {
                     return ProbeOutlier.VALUE_IS_INVALID.getCode();
                 } else
@@ -230,13 +250,13 @@ public class cmdidParseUtils {
         }
         paramaterModel.setTEMP(s2);
         String yangqi = cmd.substring(32, 36);
-        String s = paseAir(yangqi);
+        String s = paseAir91(yangqi);
         if(RegularUtil.checkContainsNumbers(s)){
             s = CustomUtils.agreementAll(s, "0", "30");
         }
         paramaterModel.setO2(s);
         String eryanghuatan = cmd.substring(36, 40);
-        String s1 = paseAir(eryanghuatan);
+        String s1 = paseAir91(eryanghuatan);
         if(RegularUtil.checkContainsNumbers(s1)){
             s1 = CustomUtils.agreementAll(s1, "0", "20");
         }
