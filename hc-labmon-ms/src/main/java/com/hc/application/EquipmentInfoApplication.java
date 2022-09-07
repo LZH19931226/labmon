@@ -1,9 +1,11 @@
 package com.hc.application;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import com.hc.application.ExcelMadel.HjExcleModel;
 import com.hc.application.ExcelMadel.OtherExcleModel;
 import com.hc.application.ExcelMadel.PyxExcleModel;
-import com.hc.application.response.QueryInfo;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
@@ -31,6 +33,7 @@ import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -231,13 +234,13 @@ public class EquipmentInfoApplication {
     }
 
     /**
-     * 查询当前值信息
+     * 查询当前值信息(查询导出页面)
      * @param equipmentNo
      * @param startTime
      * @param endTime
      * @return
      */
-    public QueryInfoModel getQueryInfo(String equipmentNo, String startTime, String endTime ) throws NoSuchFieldException, IllegalAccessException {
+    public QueryInfoModel getQueryInfo(String equipmentNo, String startTime, String endTime ){
         SnDeviceDto snDeviceDto =
                 monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
         if (ObjectUtils.isEmpty(snDeviceDto)) {
@@ -273,33 +276,6 @@ public class EquipmentInfoApplication {
         return eNameList;
     }
 
-    /**
-     * 只展示数据库有的探头信息
-     * @param equipmentNo
-     * @param startDate
-     * @param endDate
-     * @param response
-     */
-    public void exportExcel( String equipmentNo, String startDate, String endDate, HttpServletResponse response)
-    {
-        //查询标题
-        List<String> list = queryTitle(equipmentNo);
-
-        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
-                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
-        if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
-            return;
-        }
-        SnDeviceDto snDeviceDto =
-                monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
-        String type = null;
-        if (startDate.equals(endDate)) {
-            type = startDate;
-        } else {
-            type = startDate + "----" + endDate;
-        }
-        FileUtil.exportExcel(monitorEquipmentLastDataInfo,snDeviceDto.getEquipmentName()+"监控数据汇总","sheet1",Monitorequipmentlastdata.class,snDeviceDto.getEquipmentName()+type+"监控数据汇总.xlsx",response);
-    }
 
     /**
      * 时间点查询
@@ -619,49 +595,83 @@ public class EquipmentInfoApplication {
                 EquipmentInfoServiceHelp.getCurveFirst(lastDateList,map,true);
     }
 
-    public QueryInfo getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) throws Exception {
-        QueryInfo queryInfo = new QueryInfo();
+    public void getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
         //获取数据库数据
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
-        Map<String,List<String>> map = new HashMap<>();
+        //获取标头
+        List<String> list = queryTitle(equipmentNo);
+        if(CollectionUtils.isEmpty(list)){
+           return;
+        }
+        //标头映射
+        List<ExcelExportEntity> beanList = headerMapping(list);
+        list.add("inputdatetime");
+        //获取属性map
+        List<Map<String,Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata monitorequipmentlastdata : monitorEquipmentLastDataInfo) {
-            Class<? extends Monitorequipmentlastdata> aClass = monitorequipmentlastdata.getClass();
-            Field[] declaredFields = aClass.getDeclaredFields();
-            for (int i = 0; i < declaredFields.length; i++) {
-                declaredFields[i].setAccessible(true);
-                String fieldName = declaredFields[i].getName();
-                Field declaredField = aClass.getDeclaredField(fieldName);
-                declaredField.setAccessible(true);
-                Object object = declaredField.get(monitorequipmentlastdata);
-                if(object instanceof String  && !ObjectUtils.isEmpty(object)){
-                    mapPutString(fieldName,(String)object,map);
-                }
-                if(object instanceof Date){
-                    Date inputDateTime = monitorequipmentlastdata.getInputdatetime();
-                    String datetime = DateUtils.paseDatetime(inputDateTime);
-                    mapPutString(fieldName,datetime,map);
-                }
+            Map<String, Object> objectMap = getObjectToMap(monitorequipmentlastdata);
+            //过滤map
+            filterMap(objectMap,list);
+            mapList.add(objectMap);
+        }
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String equipmentname = equipmentInfoByNo.getEquipmentname();
+        String title = equipmentname+startDate+"-"+endDate+"监控数据汇总";
+        Workbook workbook =  ExcelExportUtil.exportExcel(new ExportParams(title,"sheet1"),beanList,mapList);
+        FileUtil.downLoadExcel(title+".xls",response,workbook);
+    }
+    /**
+     * 过滤map
+     * @param objectMap
+     */
+    private void filterMap(Map<String, Object> objectMap,List<String> list) {
+        Iterator<String> iterator = objectMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            if(!list.contains(next)){
+                iterator.remove();
+                objectMap.remove(next);
             }
         }
-        Set<String> keySet = map.keySet();
-        queryInfo.setFieldList(new ArrayList<>(keySet));
-        for (String fieldName : keySet) {
-
-        }
-        queryInfo.setMonitorEquipmentLastDataList(monitorEquipmentLastDataInfo);
-        return queryInfo;
     }
 
-    private void mapPutString(String fieldName,String value ,Map<String,List<String>> map) {
-        List<String> list;
-        if (map.containsKey(fieldName)) {
-            list = map.get(fieldName);
-        }else {
-            list = new ArrayList<>();
+    private List<ExcelExportEntity> headerMapping(List<String> list) {
+        List<ExcelExportEntity> excelExportEntities = new ArrayList<>();
+        excelExportEntities.add(new ExcelExportEntity("记录时间","inputdatetime"));
+        for (String fieldName : list) {
+            excelExportEntities.add(new ExcelExportEntity(CurrentProbeInfoEnum.from(fieldName).getProbeCName(),fieldName));
         }
-        list.add(value);
-        map.put(fieldName,list);
+        return excelExportEntities;
     }
+
+    /**
+     * 对象转map
+     * @param obj
+     * @return
+     */
+    public static Map<String, Object> getObjectToMap(Object obj)  {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Class<?> cla = obj.getClass();
+        Field[] fields = cla.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            String keyName = field.getName();
+            Object value = null;
+            try {
+                value = field.get(obj);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            if (value == null)
+                value = "";
+            if(value instanceof Date){
+                value = DateUtils.paseDatetime((Date) value);
+            }
+            map.put(keyName, value);
+        }
+        return map;
+    }
+
 
 }

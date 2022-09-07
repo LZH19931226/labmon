@@ -1,7 +1,6 @@
 package com.hc.controller;
 
 import com.hc.application.EquipmentInfoApplication;
-import com.hc.application.response.QueryInfo;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.QueryInfoModel;
 import com.hc.dto.CurveInfoDto;
@@ -93,7 +92,7 @@ public class EquipmentInfoController {
     @ApiOperation("查询导出")
     public void exportExcel(@RequestParam("equipmentNo") String equipmentNo, @RequestParam("startDate") String startDate,
                             @RequestParam("endDate") String endDate,HttpServletResponse response){
-        equipmentInfoApplication.exportExcel(equipmentNo,startDate,endDate,response);
+        equipmentInfoApplication.getQueryResult(equipmentNo,startDate,endDate,response);
     }
 
     @GetMapping("/exportSingle")
@@ -112,9 +111,4 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,operationDate);
     }
 
-    @GetMapping("/getqueryinfo")
-    public QueryInfo getQueryResult(@RequestParam("equipmentNo") String equipmentNo, @RequestParam("startDate") String startDate,
-                                    @RequestParam("endDate") String endDate, HttpServletResponse response) throws Exception {
-        return equipmentInfoApplication.getQueryResult(equipmentNo,startDate,endDate,response);
-    }
 }

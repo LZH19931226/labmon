@@ -113,4 +113,11 @@ public enum CurrentProbeInfoEnum {
                 .orElseThrow(() -> new IedsException("Illegal enum value {}", instrumentConfigId));
     }
 
+    public static CurrentProbeInfoEnum from(String probeEName){
+        return Arrays
+                .stream(CurrentProbeInfoEnum.values())
+                .filter(c->probeEName.equals(c.getProbeEName()))
+                .findFirst()
+                .orElseThrow(()-> new IedsException("Illegal enum value {}", probeEName));
+    }
 }
