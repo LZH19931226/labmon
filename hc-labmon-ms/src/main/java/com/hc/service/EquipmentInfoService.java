@@ -59,4 +59,11 @@ public interface EquipmentInfoService {
     List<MonitorEquipmentDto> getAll();
 
     void bulkUpdate(List<MonitorEquipmentDto> list);
+
+    /**
+     * 查询所有的设备配置ID
+     * @param equipmentNo
+     * @return
+     */
+    List<Integer> selectInstrumentConfigId(String equipmentNo);
 }

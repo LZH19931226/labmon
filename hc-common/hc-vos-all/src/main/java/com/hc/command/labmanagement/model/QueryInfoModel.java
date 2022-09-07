@@ -17,4 +17,6 @@ public class QueryInfoModel {
     private String equipmentName;
 
     private List<MonitorequipmentlastdataDto> monitorEquipmentLastDataDTOList;
+
+    private List<String>  probeENameList;
 }

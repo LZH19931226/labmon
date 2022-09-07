@@ -128,4 +128,15 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     public void bulkUpdate(List<MonitorEquipmentDto> list) {
         equipmentInfoRepository.updateBatchById(list);
     }
+
+    /**
+     * 查询所有的设备配置ID
+     *
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<Integer> selectInstrumentConfigId(String equipmentNo) {
+        return equipmentInfoRepository.selectInstrumentConfigId(equipmentNo);
+    }
 }

@@ -67,4 +67,5 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
 
     List<MonitorEquipmentDto> getAll();
 
+    List<Integer> selectInstrumentConfigIdByENo(String equipmentNo);
 }

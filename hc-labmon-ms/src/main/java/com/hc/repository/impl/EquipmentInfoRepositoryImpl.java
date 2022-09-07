@@ -108,4 +108,15 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
     public List<MonitorEquipmentDto> getAll() {
         return equipmentInfoDao.getAll();
     }
+
+    /**
+     * 查询所有的设备配置ID
+     *
+     * @param equipmentNo
+     * @return
+     */
+    @Override
+    public List<Integer> selectInstrumentConfigId(String equipmentNo) {
+        return equipmentInfoDao.selectInstrumentConfigIdByENo(equipmentNo);
+    }
 }

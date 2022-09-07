@@ -3,6 +3,7 @@ package com.hc.application;
 import com.hc.application.ExcelMadel.HjExcleModel;
 import com.hc.application.ExcelMadel.OtherExcleModel;
 import com.hc.application.ExcelMadel.PyxExcleModel;
+import com.hc.application.response.QueryInfo;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
@@ -14,6 +15,7 @@ import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.HospitalEquipmentTypeApi;
 import com.hc.labmanagent.MonitorEquipmentApi;
+import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
@@ -34,6 +36,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -234,7 +237,7 @@ public class EquipmentInfoApplication {
      * @param endTime
      * @return
      */
-    public QueryInfoModel getQueryInfo(String equipmentNo, String startTime, String endTime ){
+    public QueryInfoModel getQueryInfo(String equipmentNo, String startTime, String endTime ) throws NoSuchFieldException, IllegalAccessException {
         SnDeviceDto snDeviceDto =
                 monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
         if (ObjectUtils.isEmpty(snDeviceDto)) {
@@ -244,14 +247,44 @@ public class EquipmentInfoApplication {
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startTime, endTime, equipmentNo);
         QueryInfoModel queryInfoModel = new QueryInfoModel();
         queryInfoModel.setEquipmentName(snDeviceDto.getEquipmentName());
+        //查询标题
+        List<String> eNameList = queryTitle(equipmentNo);
+        queryInfoModel.setProbeENameList(eNameList);
         List<MonitorequipmentlastdataDto> convert = BeanConverter.convert(monitorEquipmentLastDataInfo, MonitorequipmentlastdataDto.class);
         queryInfoModel.setMonitorEquipmentLastDataDTOList(convert);
         return queryInfoModel;
     }
 
+    /**
+     * 查询标题
+     * @param equipmentNo
+     * @return
+     */
+    private List<String> queryTitle(String equipmentNo) {
+        List<Integer> list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
+        if(CollectionUtils.isEmpty(list)){
+            throw new IedsException(LabMonEnumError.THE_DEVICE_HAS_NO_PROBE_INFORMATION.getMessage());
+        }
+        List<String> eNameList = new ArrayList<>();
+        for (Integer instrumentTypeId : list) {
+            String probeEName = CurrentProbeInfoEnum.from(instrumentTypeId).getProbeEName();
+            eNameList.add(probeEName);
+        }
+        return eNameList;
+    }
 
+    /**
+     * 只展示数据库有的探头信息
+     * @param equipmentNo
+     * @param startDate
+     * @param endDate
+     * @param response
+     */
     public void exportExcel( String equipmentNo, String startDate, String endDate, HttpServletResponse response)
     {
+        //查询标题
+        List<String> list = queryTitle(equipmentNo);
+
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
         if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
@@ -585,4 +618,50 @@ public class EquipmentInfoApplication {
                 EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDateList,map,true):
                 EquipmentInfoServiceHelp.getCurveFirst(lastDateList,map,true);
     }
+
+    public QueryInfo getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) throws Exception {
+        QueryInfo queryInfo = new QueryInfo();
+        //获取数据库数据
+        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
+        Map<String,List<String>> map = new HashMap<>();
+        for (Monitorequipmentlastdata monitorequipmentlastdata : monitorEquipmentLastDataInfo) {
+            Class<? extends Monitorequipmentlastdata> aClass = monitorequipmentlastdata.getClass();
+            Field[] declaredFields = aClass.getDeclaredFields();
+            for (int i = 0; i < declaredFields.length; i++) {
+                declaredFields[i].setAccessible(true);
+                String fieldName = declaredFields[i].getName();
+                Field declaredField = aClass.getDeclaredField(fieldName);
+                declaredField.setAccessible(true);
+                Object object = declaredField.get(monitorequipmentlastdata);
+                if(object instanceof String  && !ObjectUtils.isEmpty(object)){
+                    mapPutString(fieldName,(String)object,map);
+                }
+                if(object instanceof Date){
+                    Date inputDateTime = monitorequipmentlastdata.getInputdatetime();
+                    String datetime = DateUtils.paseDatetime(inputDateTime);
+                    mapPutString(fieldName,datetime,map);
+                }
+            }
+        }
+        Set<String> keySet = map.keySet();
+        queryInfo.setFieldList(new ArrayList<>(keySet));
+        for (String fieldName : keySet) {
+
+        }
+        queryInfo.setMonitorEquipmentLastDataList(monitorEquipmentLastDataInfo);
+        return queryInfo;
+    }
+
+    private void mapPutString(String fieldName,String value ,Map<String,List<String>> map) {
+        List<String> list;
+        if (map.containsKey(fieldName)) {
+            list = map.get(fieldName);
+        }else {
+            list = new ArrayList<>();
+        }
+        list.add(value);
+        map.put(fieldName,list);
+    }
+
 }

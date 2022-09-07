@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.EquipmentInfoApplication;
+import com.hc.application.response.QueryInfo;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.QueryInfoModel;
 import com.hc.dto.CurveInfoDto;
@@ -31,7 +32,7 @@ public class EquipmentInfoController {
      * @return
      */
     @GetMapping("/getEquipmentCurrentData")
-    @ApiOperation("查询所有设备当前值信息")
+    @ApiOperation("查询所有设备当前值信息(卡片)")
     public List<MonitorEquipmentDto> getEquipmentCurrentData(@RequestParam("hospitalCode")String hospitalCode,
                                                              @RequestParam("equipmentTypeId")String equipmentTypeId){
         return equipmentInfoApplication.findEquipmentCurrentData(hospitalCode,equipmentTypeId);
@@ -81,10 +82,10 @@ public class EquipmentInfoController {
      * @return
      */
     @GetMapping("/findQueryInfo")
-    @ApiOperation("查询当前值信息")
+    @ApiOperation("查询当前值信息(查询导出)")
     public QueryInfoModel getQueryInfo(@RequestParam("equipmentNo") String equipmentNo,
                                        @RequestParam("startTime") String startTime,
-                                       @RequestParam("endTime") String endTime){
+                                       @RequestParam("endTime") String endTime) throws NoSuchFieldException, IllegalAccessException {
         return equipmentInfoApplication.getQueryInfo(equipmentNo,startTime,endTime);
     }
 
@@ -111,5 +112,9 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,operationDate);
     }
 
-
+    @GetMapping("/getqueryinfo")
+    public QueryInfo getQueryResult(@RequestParam("equipmentNo") String equipmentNo, @RequestParam("startDate") String startDate,
+                                    @RequestParam("endDate") String endDate, HttpServletResponse response) throws Exception {
+        return equipmentInfoApplication.getQueryResult(equipmentNo,startDate,endDate,response);
+    }
 }
