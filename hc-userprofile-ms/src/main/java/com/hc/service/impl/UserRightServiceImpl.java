@@ -171,4 +171,14 @@ public class UserRightServiceImpl implements UserRightService {
     public Boolean checkUsername(String userName) {
         return userRightRepository.checkUsername(userName);
     }
+
+    /**
+     * app修改用户信息
+     *
+     * @param userRightCommand
+     */
+    @Override
+    public void appUpdateUser(UserRightCommand userRightCommand) {
+        userRightRepository.updateUserRightInfo(userRightCommand);
+    }
 }

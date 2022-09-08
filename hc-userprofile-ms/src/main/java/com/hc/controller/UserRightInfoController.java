@@ -92,4 +92,8 @@ public class UserRightInfoController {
          userRightApplication.getPhoneCode(phoneNum);
     }
 
+    @PostMapping("/appUpdateUser")
+    public void appUpdateUser(@RequestBody UserRightCommand userRightCommand){
+        userRightApplication.appUpdateUser(userRightCommand);
+    }
 }

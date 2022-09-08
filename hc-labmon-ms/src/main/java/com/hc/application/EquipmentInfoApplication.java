@@ -272,6 +272,7 @@ public class EquipmentInfoApplication {
         MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
         String hospitalCode = equipmentInfoByNo.getHospitalcode();
         List<Integer> list;
+        //mt400时取缓存为主
         if (equipmentInfoByNo.getEquipmenttypeid().equals("1") && equipmentInfoByNo.getInstrumenttypeid().equals("8")) {
             list = probeRedisApi.getEquipmentMonitorInfo(hospitalCode, equipmentNo).getResult();
         }else {

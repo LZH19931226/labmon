@@ -203,6 +203,7 @@ public class UserRightApplication {
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .hospitalInfoVo(hospitalInfoVo)
+                .nickname(userRightDto.getNickname())
                 .build();
     }
 
@@ -311,5 +312,13 @@ public class UserRightApplication {
      */
     public Boolean checkUsername(String userName) {
         return userRightService.checkUsername(userName);
+    }
+
+    /**
+     * app修改用户信息
+     * @param userRightCommand
+     */
+    public void appUpdateUser(UserRightCommand userRightCommand) {
+        userRightService.appUpdateUser(userRightCommand);
     }
 }

@@ -66,4 +66,10 @@ public interface UserRightService {
      * @return
      */
     Boolean checkUsername(String userName);
+
+    /**
+     * app修改用户信息
+     * @param userRightCommand
+     */
+    void appUpdateUser(UserRightCommand userRightCommand);
 }
