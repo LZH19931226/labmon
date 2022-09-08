@@ -257,6 +257,7 @@ public class EquipmentInfoApplication {
         //查询标题
         List<String> eNameList = queryTitle(equipmentNo);
         queryInfoModel.setProbeENameList(eNameList);
+        queryInfoModel.setEquipmentTypeId(snDeviceDto.getEquipmentTypeId());
         List<MonitorequipmentlastdataDto> convert = BeanConverter.convert(monitorEquipmentLastDataInfo, MonitorequipmentlastdataDto.class);
         queryInfoModel.setMonitorEquipmentLastDataDTOList(convert);
         return queryInfoModel;
