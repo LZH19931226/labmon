@@ -270,7 +270,8 @@ public class EquipmentInfoApplication {
         }
         List<String> eNameList = new ArrayList<>();
         for (Integer instrumentTypeId : list) {
-            String probeEName = CurrentProbeInfoEnum.from(instrumentTypeId).getProbeEName();
+            CurrentProbeInfoEnum from = CurrentProbeInfoEnum.from(instrumentTypeId);
+            String probeEName = from.getProbeEName();
             eNameList.add(probeEName);
         }
         return eNameList;
@@ -640,7 +641,12 @@ public class EquipmentInfoApplication {
         List<ExcelExportEntity> excelExportEntities = new ArrayList<>();
         excelExportEntities.add(new ExcelExportEntity("记录时间","inputdatetime"));
         for (String fieldName : list) {
-            excelExportEntities.add(new ExcelExportEntity(CurrentProbeInfoEnum.from(fieldName).getProbeCName(),fieldName));
+            CurrentProbeInfoEnum from = CurrentProbeInfoEnum.from(fieldName);
+            String name = from.getProbeCName();
+            if (!StringUtils.isBlank(from.getUnit())) {
+                name = name+"("+from.getUnit()+")";
+            }
+            excelExportEntities.add(new ExcelExportEntity(name,fieldName));
         }
         return excelExportEntities;
     }
