@@ -84,7 +84,7 @@ public class EquipmentInfoController {
     @ApiOperation("查询当前值信息(查询导出)")
     public QueryInfoModel getQueryInfo(@RequestParam("equipmentNo") String equipmentNo,
                                        @RequestParam("startTime") String startTime,
-                                       @RequestParam("endTime") String endTime) throws NoSuchFieldException, IllegalAccessException {
+                                       @RequestParam("endTime") String endTime) {
         return equipmentInfoApplication.getQueryInfo(equipmentNo,startTime,endTime);
     }
 

@@ -121,5 +121,6 @@
                 LEFT JOIN instrumentparamconfig t3 ON t2.instrumentno = t3.instrumentno
         WHERE
             t1.equipmentno = #{equipmentNo}
+        order by instrumentconfigid
     </select>
 </mapper>
