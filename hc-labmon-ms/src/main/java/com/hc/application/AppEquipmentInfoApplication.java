@@ -705,7 +705,7 @@ public class AppEquipmentInfoApplication {
         }
         List<String> collect = list.stream().map(InstrumentParamConfigDto::getInstrumentparamconfigno).collect(Collectors.toList());
         //更新探头报警状态
-        instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,collect);
+        instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
         //更新设备报警状态开关
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
         monitorEquipmentDto.setEquipmentno(equipmentNo);

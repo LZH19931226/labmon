@@ -268,9 +268,14 @@ public class EquipmentInfoApplication {
      * @return
      */
     private List<String> queryTitle(String equipmentNo) {
-//        List<Integer> list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
-        String hospitalCode = "c1637d5b31dc43ce9fe48cfb21a3046e";
-        List<Integer> list = probeRedisApi.getEquipmentMonitorInfo(hospitalCode, equipmentNo).getResult();
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String hospitalCode = equipmentInfoByNo.getHospitalcode();
+        List<Integer> list;
+        if (equipmentInfoByNo.getEquipmenttypeid().equals("1") && equipmentInfoByNo.getInstrumenttypeid().equals("8")) {
+            list = probeRedisApi.getEquipmentMonitorInfo(hospitalCode, equipmentNo).getResult();
+        }else {
+            list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
+        }
         if(CollectionUtils.isEmpty(list)){
             throw new IedsException(LabMonEnumError.THE_DEVICE_HAS_NO_PROBE_INFORMATION.getMessage());
         }
