@@ -122,6 +122,12 @@ public class ProbeRedisController {
         return probeRedisApplication.getCurrentProbeValueInfo(hospitalCode,equipmentNo);
     }
 
+    @GetMapping("/getEquipmentMonitorConfigId")
+    @ApiOperation("获取设备监测信息id(用于查询导出做标题)")
+    public List<Integer> getEquipmentMonitorInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo){
+        return probeRedisApplication.getEquipmentMonitoringInfo(hospitalCode,equipmentNo);
+    }
+
     @PostMapping("/addProbeCurrentInfo")
     @ApiOperation("添加或更新探头当前值")
     public void addCurrentProbeValueInfo(@RequestBody ProbeInfoDto probeInfoDto){

@@ -12,6 +12,7 @@ import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.QueryInfoModel;
 import com.hc.constants.LabMonEnumError;
+import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
@@ -72,6 +73,9 @@ public class EquipmentInfoApplication {
 
     @Autowired
     private MonitorEquipmentApi monitorEquipmentApi;
+
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
 
     /**
      * 查询所有设备当前值信息
@@ -264,7 +268,9 @@ public class EquipmentInfoApplication {
      * @return
      */
     private List<String> queryTitle(String equipmentNo) {
-        List<Integer> list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
+//        List<Integer> list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
+        String hospitalCode = "c1637d5b31dc43ce9fe48cfb21a3046e";
+        List<Integer> list = probeRedisApi.getEquipmentMonitorInfo(hospitalCode, equipmentNo).getResult();
         if(CollectionUtils.isEmpty(list)){
             throw new IedsException(LabMonEnumError.THE_DEVICE_HAS_NO_PROBE_INFORMATION.getMessage());
         }
