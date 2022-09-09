@@ -89,7 +89,7 @@ public class FileUtil {
         downLoadExcel(fileName, response, workbook);
     }
 
-    private static void downLoadExcel(String fileName, HttpServletResponse response, Workbook workbook) {
+    public static void downLoadExcel(String fileName, HttpServletResponse response, Workbook workbook) {
         try {
             response.setCharacterEncoding("UTF-8");
             response.setHeader("content-Type", "application/vnd.ms-excel");

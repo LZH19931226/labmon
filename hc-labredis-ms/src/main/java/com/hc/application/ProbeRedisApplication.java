@@ -22,6 +22,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ProbeRedisApplication {
@@ -183,6 +184,17 @@ public class ProbeRedisApplication {
             return null;
         }
         return JSON.parseObject((String) JSONObject.toJSON(obj), new TypeReference<List<ProbeInfoDto>>(){});
+    }
+
+    /**
+     * 获取设备监测信息id(用于查询导出做标题)
+     * @param hospitalCode
+     * @param equipmentNo
+     * @return
+     */
+    public List<Integer> getEquipmentMonitoringInfo(String hospitalCode,String equipmentNo){
+        List<ProbeInfoDto> currentProbeValueInfo = getCurrentProbeValueInfo(hospitalCode, equipmentNo);
+        return  currentProbeValueInfo.stream().map(ProbeInfoDto::getInstrumentConfigId).collect(Collectors.toList());
     }
 
     /**

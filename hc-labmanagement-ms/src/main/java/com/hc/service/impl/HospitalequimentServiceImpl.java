@@ -112,7 +112,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     }
 
     /**
-     * 设置时间
+     * 统一时间
      * @param date
      * @return
      */

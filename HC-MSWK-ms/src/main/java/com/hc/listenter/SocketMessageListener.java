@@ -11,7 +11,6 @@ import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
-import com.hc.my.common.core.util.UniqueHash;
 import com.hc.po.Instrumentparamconfig;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.InstrumentMonitorInfoService;
@@ -76,14 +75,19 @@ public class SocketMessageListener {
     }
 
     public void mswkMessage(String messageContent, String topic) {
-        //该数据生命周期id
-        String id = UniqueHash.Id();
-        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()),messageContent,id);
-        if (StringUtils.isEmpty(messageContent)){
+        if (StringUtils.isEmpty(messageContent)) {
             return;
         }
         ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
-        model.setLogId(id);
+        String logId = model.getLogId();
+        //该数据生命周期id
+        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()), messageContent, logId);
+
+        //多个500数据重复上传问题,已经注册得设同步缓存
+        if (repeatDatafilter(model)) {
+            return;
+        }
+
         //MT500  MT600判断
         //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
@@ -91,25 +95,24 @@ public class SocketMessageListener {
         if (monitorinstrument == null) {
             return;
         }
-        //多个500数据重复上传问题,已经注册得设同步缓存
-        if (repeatDatafilter(model)) {
-            return;
-        }
+
         //执行数据写入 、 报警推送
         List<WarningAlarmDo> warningAlarmDos = instrumentMonitorInfoService.save(model, monitorinstrument);
         //报警消息处理
         if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
             for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
-                warningAlarmDo.setLogId(id);
+                warningAlarmDo.setLogId(logId);
+                String waringAlarmDo = JsonUtil.toJson(warningAlarmDo);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
                 switch (topic) {
                     case "1":
-                        service.pushMessage1(JsonUtil.toJson(warningAlarmDo));
+                        service.pushMessage1(waringAlarmDo);
                         break;
                     case "2":
-                        service.pushMessage2(JsonUtil.toJson(warningAlarmDo));
+                        service.pushMessage2(waringAlarmDo);
                         break;
                     case "3":
-                        service.pushMessage3(JsonUtil.toJson(warningAlarmDo));
+                        service.pushMessage3(waringAlarmDo);
                         break;
                     default:
                         break;
@@ -120,34 +123,33 @@ public class SocketMessageListener {
 
     //解决多个一包数据经过多个500重复上传问题,一包数据30秒内是要一条
     public boolean repeatDatafilter(ParamaterModel data) {
-        try {
-            String sn = data.getSN();
-            String cmdid = data.getCmdid();
-            ParamaterModel snInfo = tcpClientApi.getSnBychannelId(sn, cmdid).getResult();
-            if (null != snInfo) {
-                //判断30秒内重复数据
-                Date nowTime = snInfo.getNowTime();
-                String data1 = snInfo.getData();
-                //大于30秒
-                if (DateUtils.calculateIntervalTime(new Date(), nowTime, 30)) {
-                    //大于30秒解决一个设备多个sn数据同步数据问题 相同命令
-                    tcpClientApi.addDeviceChannel(data);
-                    return false;
-                }
-                //小于30秒相同命令对比内容,内容一致不保存数据,不一致保存数据更新缓存
-                if (!data.getData().equals(data1)) {
-                    tcpClientApi.addDeviceChannel(data);
-                }
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()), JsonUtil.toJson(data),data.getLogId());
-                return true;
-            } else {
-                //同步sn数据缓存
+        String sn = data.getSN();
+        String cmdid = data.getCmdid();
+        String newData = data.getData();
+        ParamaterModel snInfo = tcpClientApi.getSnBychannelId(sn, cmdid).getResult();
+        if (null != snInfo) {
+            //判断30秒内重复数据
+            Date nowTime = snInfo.getNowTime();
+            String oldData = snInfo.getData();
+            //大于30秒
+            if (DateUtils.calculateIntervalTime(new Date(), nowTime, 30)) {
+                //大于30秒解决一个设备多个sn数据同步数据问题 相同命令
                 tcpClientApi.addDeviceChannel(data);
                 return false;
+            }else {
+                //小于30秒相同命令对比内容,内容一致不保存数据,不一致保存数据更新缓存
+                if (!StringUtils.equalsIgnoreCase(oldData,newData)) {
+                    tcpClientApi.addDeviceChannel(data);
+                    return false;
+                }else {
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER04.getCode()), JsonUtil.toJson(data), data.getLogId());
+                    return true;
+                }
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            return true;
+        } else {
+            //同步sn数据缓存
+            tcpClientApi.addDeviceChannel(data);
+            return false;
         }
     }
 
@@ -159,18 +161,18 @@ public class SocketMessageListener {
         String instrumentConfigNo = equipmentState.getInstrumentConfigNo();
         String hospitalCode = equipmentState.getHospitalCode();
         InstrumentInfoDto instrumentInfoDto = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentNo + ":" + instrumentConfigId).getResult();
-        if(ObjectUtils.isEmpty(instrumentInfoDto)){
+        if (ObjectUtils.isEmpty(instrumentInfoDto)) {
             return;
         }
         String oldState = instrumentInfoDto.getState();
-        if (org.springframework.util.StringUtils.isEmpty(oldState)){
-            oldState="0";
+        if (StringUtils.isEmpty(oldState)) {
+            oldState = "0";
         }
-        switch (newState){
+        switch (newState) {
             //从不报警变成报警
             case SysConstants.IN_ALARM:
                 //判断缓存中的信息是否相同 不相同时更新
-                if(SysConstants.IN_ALARM.equals(oldState)){
+                if (SysConstants.IN_ALARM.equals(oldState)) {
                     return;
                 }
                 Instrumentparamconfig instrumentparamconfig = new Instrumentparamconfig();

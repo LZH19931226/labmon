@@ -70,11 +70,11 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
 
     /**
      * @param warningPhone
-     * @param list
+     * @param equipmentNo
      */
     @Override
-    public void batchUpdateProbeAlarmState(String warningPhone, List<String> list) {
-        instrumentParamConfigRepository.batchUpdateProbeAlarmState(warningPhone,list);
+    public void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo) {
+        instrumentParamConfigRepository.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
     }
 
     /**

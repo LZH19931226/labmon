@@ -1,5 +1,8 @@
 package com.hc.application;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import com.hc.application.ExcelMadel.HjExcleModel;
 import com.hc.application.ExcelMadel.OtherExcleModel;
 import com.hc.application.ExcelMadel.PyxExcleModel;
@@ -9,11 +12,13 @@ import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.QueryInfoModel;
 import com.hc.constants.LabMonEnumError;
+import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
 import com.hc.labmanagent.HospitalEquipmentTypeApi;
 import com.hc.labmanagent.MonitorEquipmentApi;
+import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
@@ -29,11 +34,13 @@ import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,6 +73,9 @@ public class EquipmentInfoApplication {
 
     @Autowired
     private MonitorEquipmentApi monitorEquipmentApi;
+
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
 
     /**
      * 查询所有设备当前值信息
@@ -228,7 +238,7 @@ public class EquipmentInfoApplication {
     }
 
     /**
-     * 查询当前值信息
+     * 查询当前值信息(查询导出页面)
      * @param equipmentNo
      * @param startTime
      * @param endTime
@@ -244,29 +254,42 @@ public class EquipmentInfoApplication {
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startTime, endTime, equipmentNo);
         QueryInfoModel queryInfoModel = new QueryInfoModel();
         queryInfoModel.setEquipmentName(snDeviceDto.getEquipmentName());
+        //查询标题
+        List<String> eNameList = queryTitle(equipmentNo);
+        queryInfoModel.setProbeENameList(eNameList);
+        queryInfoModel.setEquipmentTypeId(snDeviceDto.getEquipmentTypeId());
         List<MonitorequipmentlastdataDto> convert = BeanConverter.convert(monitorEquipmentLastDataInfo, MonitorequipmentlastdataDto.class);
         queryInfoModel.setMonitorEquipmentLastDataDTOList(convert);
         return queryInfoModel;
     }
 
-
-    public void exportExcel( String equipmentNo, String startDate, String endDate, HttpServletResponse response)
-    {
-        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
-                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
-        if (CollectionUtils.isEmpty(monitorEquipmentLastDataInfo)) {
-            return;
+    /**
+     * 查询标题
+     * @param equipmentNo
+     * @return
+     */
+    private List<String> queryTitle(String equipmentNo) {
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String hospitalCode = equipmentInfoByNo.getHospitalcode();
+        List<Integer> list;
+        //mt400时取缓存为主
+        if (equipmentInfoByNo.getEquipmenttypeid().equals("1") && equipmentInfoByNo.getInstrumenttypeid().equals("8")) {
+            list = probeRedisApi.getEquipmentMonitorInfo(hospitalCode, equipmentNo).getResult();
+        }else {
+            list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
         }
-        SnDeviceDto snDeviceDto =
-                monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
-        String type = null;
-        if (startDate.equals(endDate)) {
-            type = startDate;
-        } else {
-            type = startDate + "----" + endDate;
+        if(CollectionUtils.isEmpty(list)){
+            throw new IedsException(LabMonEnumError.THE_DEVICE_HAS_NO_PROBE_INFORMATION.getMessage());
         }
-        FileUtil.exportExcel(monitorEquipmentLastDataInfo,snDeviceDto.getEquipmentName()+"监控数据汇总","sheet1",Monitorequipmentlastdata.class,snDeviceDto.getEquipmentName()+type+"监控数据汇总.xlsx",response);
+        List<String> eNameList = new ArrayList<>();
+        for (Integer instrumentTypeId : list) {
+            CurrentProbeInfoEnum from = CurrentProbeInfoEnum.from(instrumentTypeId);
+            String probeEName = from.getProbeEName();
+            eNameList.add(probeEName);
+        }
+        return eNameList;
     }
+
 
     /**
      * 时间点查询
@@ -585,4 +608,89 @@ public class EquipmentInfoApplication {
                 EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDateList,map,true):
                 EquipmentInfoServiceHelp.getCurveFirst(lastDateList,map,true);
     }
+
+    public void getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
+        //获取数据库数据
+        List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
+        //获取标头
+        List<String> list = queryTitle(equipmentNo);
+        if(CollectionUtils.isEmpty(list)){
+           return;
+        }
+        //标头映射
+        List<ExcelExportEntity> beanList = headerMapping(list);
+        list.add("inputdatetime");
+        //获取属性map
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (Monitorequipmentlastdata monitorequipmentlastdata : monitorEquipmentLastDataInfo) {
+            Map<String, Object> objectMap = getObjectToMap(monitorequipmentlastdata);
+            //过滤map
+            filterMap(objectMap,list);
+            mapList.add(objectMap);
+        }
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String equipmentname = equipmentInfoByNo.getEquipmentname();
+        String title = equipmentname+startDate+"-"+endDate+"监控数据汇总";
+        Workbook workbook =  ExcelExportUtil.exportExcel(new ExportParams(title,"sheet1"),beanList,mapList);
+        FileUtil.downLoadExcel(title+".xls",response,workbook);
+    }
+    /**
+     * 过滤map
+     * @param objectMap
+     */
+    private void filterMap(Map<String, Object> objectMap,List<String> list) {
+        Iterator<String> iterator = objectMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            if(!list.contains(next)){
+                iterator.remove();
+                objectMap.remove(next);
+            }
+        }
+    }
+
+    private List<ExcelExportEntity> headerMapping(List<String> list) {
+        List<ExcelExportEntity> excelExportEntities = new ArrayList<>();
+        excelExportEntities.add(new ExcelExportEntity("记录时间","inputdatetime"));
+        for (String fieldName : list) {
+            CurrentProbeInfoEnum from = CurrentProbeInfoEnum.from(fieldName);
+            String name = from.getProbeCName();
+            if (!StringUtils.isBlank(from.getUnit())) {
+                name = name+"("+from.getUnit()+")";
+            }
+            excelExportEntities.add(new ExcelExportEntity(name,fieldName));
+        }
+        return excelExportEntities;
+    }
+
+    /**
+     * 对象转map
+     * @param obj
+     * @return
+     */
+    public static Map<String, Object> getObjectToMap(Object obj)  {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Class<?> cla = obj.getClass();
+        Field[] fields = cla.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            String keyName = field.getName();
+            Object value = null;
+            try {
+                value = field.get(obj);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            if (value == null)
+                value = "";
+            if(value instanceof Date){
+                value = DateUtils.paseDatetime((Date) value);
+            }
+            map.put(keyName, value);
+        }
+        return map;
+    }
+
+
 }

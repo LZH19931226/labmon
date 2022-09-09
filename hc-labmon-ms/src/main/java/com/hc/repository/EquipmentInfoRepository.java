@@ -53,4 +53,11 @@ public interface EquipmentInfoRepository extends IService<MonitorEquipmentDto> {
     List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList);
 
     List<MonitorEquipmentDto> getAll();
+
+    /**
+     * 查询所有的设备配置ID
+     * @param equipmentNo
+     * @return
+     */
+    List<Integer> selectInstrumentConfigId(String equipmentNo);
 }

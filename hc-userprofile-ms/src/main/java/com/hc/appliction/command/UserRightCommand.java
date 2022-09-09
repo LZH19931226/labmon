@@ -50,7 +50,7 @@ public class UserRightCommand {
     private String userType;
 
     /** 超时联系人 */
-    @ApiModelProperty(value = "超时联系人")
+    @ApiModelProperty(value = "是否设置超时报警0为关闭1为开启")
     private String timeout;
 
     /** 推送类型 */
@@ -58,12 +58,12 @@ public class UserRightCommand {
     private String deviceType;
 
     /** 超时警告 */
-    @ApiModelProperty(value = "超时警告")
+    @ApiModelProperty(value = "超时报警方式(空和0为电话+短信，1为电话，2为短信，3为不报警)")
     private String timeoutWarning;
 
     /** 报警方式 */
-    @ApiModelProperty(value = "报警方式")
-    private String reminder;
+    @ApiModelProperty(value = "报警方式(空和0为电话+短信，1为电话，2为短信，3为不报警)")
+    private String reminders;
 
     /** 分页大小 */
     @ApiModelProperty(value = "分页大小")

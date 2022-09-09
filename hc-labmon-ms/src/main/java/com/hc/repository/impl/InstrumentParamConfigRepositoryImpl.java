@@ -69,11 +69,11 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
 
     /**
      * @param warningPhone
-     * @param list
+     * @param equipmentNo
      */
     @Override
-    public void batchUpdateProbeAlarmState(String warningPhone, List<String> list) {
-        instrumentParamConfigDao.batchUpdateProbeAlarmState(warningPhone,list);
+    public void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo) {
+        instrumentParamConfigDao.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
     }
 
 }

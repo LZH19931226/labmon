@@ -4,6 +4,7 @@ package com.hc.handler;
 import cn.hutool.json.JSONUtil;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.probe.EquipmentCommand;
+import com.hc.my.common.core.util.UniqueHash;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
 import com.hc.socketServer.IotServer;
@@ -109,7 +110,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 saveChannelIdSn(snData);
                 //推送mq
                 randomPush(snData);
-                log.info("通道:{},原始数据:{},推送给RabbitMQ的模型为:{}", asShortText, dataStr, JsonUtil.toJson(snData));
+                log.info("通道:{},原始数据:{},推送给消息队列的模型为:{}", asShortText, dataStr, JsonUtil.toJson(snData));
             });
         } catch (Exception e) {
             log.error("通道:{},数据接收异常:{}", ctx.channel().id().asShortText(), Hex.encodeHexString(receiveMsgBytes));
@@ -129,8 +130,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void randomPush(ParamaterModel model) {
-        Random random = new Random();
-        int a = random.nextInt(3);
+        //生成全局id标记
+        model.setLogId(UniqueHash.Id());
+        int a = new Random().nextInt(3);
         if (a == 0) {
             msgservice.pushMessage(JsonUtil.toJson(model));
         }

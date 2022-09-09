@@ -108,10 +108,10 @@ public class UserRightPo {
      * 报警方式：""和0为手机加短信 1为电话 2为短信 3不报警
      */
     @TableField(value = "reminders")
-    private String reminder;
+    private String reminders;
 
     /**
-     * 超时警告
+     * 超时报警方式： ""和0为手机加短信 1为电话 2为短信 3不报警
      */
     @TableField(value = "timeoutwarning")
     private String timeoutWarning;

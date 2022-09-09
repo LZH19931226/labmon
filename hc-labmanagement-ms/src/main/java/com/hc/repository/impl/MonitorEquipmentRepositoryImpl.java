@@ -84,8 +84,7 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
      */
     @Override
     public MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo) {
-        MonitorEquipmentPo monitorEquipmentPo = monitorEquipmentDao.selectById(equipmentNo);
-        return BeanConverter.convert(monitorEquipmentPo,MonitorEquipmentDto.class);
+        return  monitorEquipmentDao.selectMonitorEquipmentInfoByNo(equipmentNo);
     }
 
     /**

@@ -31,7 +31,7 @@ public class EquipmentInfoController {
      * @return
      */
     @GetMapping("/getEquipmentCurrentData")
-    @ApiOperation("查询所有设备当前值信息")
+    @ApiOperation("查询所有设备当前值信息(卡片)")
     public List<MonitorEquipmentDto> getEquipmentCurrentData(@RequestParam("hospitalCode")String hospitalCode,
                                                              @RequestParam("equipmentTypeId")String equipmentTypeId){
         return equipmentInfoApplication.findEquipmentCurrentData(hospitalCode,equipmentTypeId);
@@ -81,10 +81,10 @@ public class EquipmentInfoController {
      * @return
      */
     @GetMapping("/findQueryInfo")
-    @ApiOperation("查询当前值信息")
+    @ApiOperation("查询当前值信息(查询导出)")
     public QueryInfoModel getQueryInfo(@RequestParam("equipmentNo") String equipmentNo,
                                        @RequestParam("startTime") String startTime,
-                                       @RequestParam("endTime") String endTime){
+                                       @RequestParam("endTime") String endTime) {
         return equipmentInfoApplication.getQueryInfo(equipmentNo,startTime,endTime);
     }
 
@@ -92,7 +92,7 @@ public class EquipmentInfoController {
     @ApiOperation("查询导出")
     public void exportExcel(@RequestParam("equipmentNo") String equipmentNo, @RequestParam("startDate") String startDate,
                             @RequestParam("endDate") String endDate,HttpServletResponse response){
-        equipmentInfoApplication.exportExcel(equipmentNo,startDate,endDate,response);
+        equipmentInfoApplication.getQueryResult(equipmentNo,startDate,endDate,response);
     }
 
     @GetMapping("/exportSingle")
@@ -110,6 +110,5 @@ public class EquipmentInfoController {
                                                 @RequestParam("operationDate")String operationDate){
         return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,operationDate);
     }
-
 
 }

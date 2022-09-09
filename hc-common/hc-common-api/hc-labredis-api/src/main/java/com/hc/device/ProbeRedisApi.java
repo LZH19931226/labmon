@@ -85,7 +85,7 @@ public interface ProbeRedisApi {
                                  @RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo);
 
     /**
-     * 获取探头当天值
+     * 获取探头当前值
      * @param hospitalCode 医院id
      * @param equipmentNo 设备id
      * @return
@@ -104,5 +104,9 @@ public interface ProbeRedisApi {
     @PostMapping("/probe/getProbeInBatches")
     @ApiOperation("批量获取探头当前值")
     ApiResponse<Map<String,List<ProbeInfoDto>>> getTheCurrentValueOfTheProbeInBatches(@RequestBody ProbeRedisCommand probeRedisCommand);
+
+    @GetMapping("/probe/getEquipmentMonitorConfigId")
+    @ApiOperation("获取设备监测信息id(用于查询导出做标题)")
+    ApiResponse<List<Integer>> getEquipmentMonitorInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo);
 }
 

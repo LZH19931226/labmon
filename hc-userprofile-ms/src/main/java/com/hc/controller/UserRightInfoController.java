@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.UserRightApplication;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
-import com.hc.phone.PhoneCodeApi;
 import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,9 +23,6 @@ public class UserRightInfoController {
 
     @Autowired
     private UserRightApplication userRightApplication;
-
-    @Autowired
-    private PhoneCodeApi phoneCodeApi;
 
     @PostMapping("/findUserRightInfoList")
     @ApiOperation("分页获取人员信息")
@@ -92,4 +88,9 @@ public class UserRightInfoController {
          userRightApplication.getPhoneCode(phoneNum);
     }
 
+    @PostMapping("/appUpdateUser")
+    @ApiOperation("app修改用户信息")
+    public void appUpdateUser(@RequestBody UserRightCommand userRightCommand){
+        userRightApplication.appUpdateUser(userRightCommand);
+    }
 }

@@ -1,7 +1,7 @@
 package com.hc.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.application.EquipmentInfoAppApplication;
+import com.hc.application.AppEquipmentInfoApplication;
 import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
@@ -23,7 +23,7 @@ import java.util.List;
 public class AppController {
 
     @Autowired
-    private EquipmentInfoAppApplication equipmentInfoAppApplication;
+    private AppEquipmentInfoApplication equipmentInfoAppApplication;
 
     /*首页*/
     @GetMapping("/getEquipmentNum")
@@ -37,6 +37,15 @@ public class AppController {
     @ApiOperation("获取探头当前值")
     public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
         return  equipmentInfoAppApplication.getTheCurrentValueOfTheProbe(probeCommand);
+    }
+
+    /**
+     * 获取设备ups值
+     * */
+    @GetMapping("/getCurrentUps")
+    @ApiOperation("获取设备ups信息")
+    public List<MonitorUpsInfoDto> getCurrentUps(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
+        return equipmentInfoAppApplication.getCurrentUps(hospitalCode,equipmentTypeId);
     }
 
     /*设备详情*/

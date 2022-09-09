@@ -1,8 +1,8 @@
 package com.hc.util;
 
+import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
-import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,26 @@ public class cmdidParseUtils {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(cmdidParseUtils.class);
 
     public static String paseAir(String co2) {
+        if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.F000.getCode())) {
+            return ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
+        } else
+            // 若超出量程范围(0%-20%)，该值为 0xFF00； 针对mt400得异常值
+            if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FF00.getCode())) {
+                return ProbeOutlier.OUT_OF_TEST_RANGE.getCode();
+            } else
+                // 若已接传感器且已校准，但值无效，该值为 0xFFF0;
+                if (StringUtils.equalsAnyIgnoreCase(co2, ProbeOutlier.FFF0.getCode(),"028C","9C00")) {
+                    return ProbeOutlier.VALUE_IS_INVALID.getCode();
+                } else
+                    // 若已接传感器，但未校准，该值为 0xFFFF；
+                    if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FFFF.getCode())) {
+                        return ProbeOutlier.NO_CALIBRATION.getCode();
+                    } else {
+                        return paramaterModelUtils.gas(co2);
+                    }
+    }
+
+    public static String paseAir91(String co2) {
         if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.F000.getCode())) {
             return ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
         } else
@@ -225,16 +245,21 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         String tem = cmd.substring(28, 32);
         String s2 = pasetemperature1(tem);
-        s2 = CustomUtils.agreementAll(s2, "-0", "50");
+        if(RegularUtil.checkContainsNumbers(s2)){
+            s2 = CustomUtils.agreementAll(s2, "-0", "50");
+        }
         paramaterModel.setTEMP(s2);
         String yangqi = cmd.substring(32, 36);
-
-        String s = paseAir(yangqi);
-        s = CustomUtils.agreementAll(s, "0", "30");
+        String s = paseAir91(yangqi);
+        if(RegularUtil.checkContainsNumbers(s)){
+            s = CustomUtils.agreementAll(s, "0", "30");
+        }
         paramaterModel.setO2(s);
         String eryanghuatan = cmd.substring(36, 40);
-        String s1 = paseAir(eryanghuatan);
-        s1 = CustomUtils.agreementAll(s1, "0", "20");
+        String s1 = paseAir91(eryanghuatan);
+        if(RegularUtil.checkContainsNumbers(s1)){
+            s1 = CustomUtils.agreementAll(s1, "0", "20");
+        }
         paramaterModel.setCO2(s1);
         return paramaterModel;
     }
@@ -1456,5 +1481,33 @@ public class cmdidParseUtils {
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
+    }
+
+    public static ParamaterModel paseAD(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+        // 一路温度
+        String substring2 = cmd.substring(28, 32);
+        String pasetemperature = pasetemperature(substring2);
+        //验证数据
+        pasetemperature = CustomUtils.tem85(pasetemperature, sn);
+        paramaterModel.setTEMP(pasetemperature);
+        // 二路温度
+        String substring4 = cmd.substring(32, 36);
+        String pasetemperature1 = pasetemperature(substring4);
+        pasetemperature1 = CustomUtils.tem85(pasetemperature1, sn);
+        paramaterModel.setTEMP2(pasetemperature1);
+        //1路2路温度不一致则抛弃数据
+        if (!StringUtils.equalsIgnoreCase(pasetemperature,pasetemperature1)){
+            return null;
+        }
+        // 电量
+        String pow = cmd.substring(36, 38);
+        String electricity = paramaterModelUtils.electricity(pow);
+        pow = CustomUtils.agreementAll(electricity, "0", "100");
+        paramaterModel.setQC(pow);
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
+        return paramaterModel;
+
     }
 }

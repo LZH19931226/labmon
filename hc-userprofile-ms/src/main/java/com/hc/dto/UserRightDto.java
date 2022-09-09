@@ -90,12 +90,12 @@ public class UserRightDto extends UserRightPo {
     private String userType;
 
     /**
-     * reminders
+     * 报警方式(空和0为电话+短信，1为电话，2为短信，3为不报警)
      */
     private String reminders;
 
     /**
-     * 超时警告
+     * 超时报警方式(空和0为电话+短信，1为电话，2为短信，3为不报警)
      */
     private String timeoutWarning;
 

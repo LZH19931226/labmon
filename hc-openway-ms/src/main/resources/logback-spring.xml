@@ -40,6 +40,13 @@
         <!-- 添加附加的appender,最多只能添加一个 -->
         <appender-ref ref ="FILE"/>
     </appender>
+<!--    <appender name="LOGSTASH"-->
+<!--              class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--        <destination>172.16.10.203:10086</destination>-->
+<!--        <queueSize>1048576</queueSize>-->
+<!--        <encoder charset="GB2312"-->
+<!--                 class="net.logstash.logback.encoder.LogstashEncoder" />-->
+<!--    </appender>-->
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
     <!-- <loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。-->
