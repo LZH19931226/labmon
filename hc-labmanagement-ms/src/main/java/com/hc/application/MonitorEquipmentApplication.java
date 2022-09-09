@@ -212,8 +212,8 @@ public class MonitorEquipmentApplication {
         String sn = monitorEquipmentCommand.getSn();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
         String equipmentTypeId = monitorEquipmentCommand.getEquipmentTypeId();
-        //判断同医院sn是否重复
-        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn).setHospitalcode(hospitalCode));
+        //sn不能重复
+        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn));
         if (integer > 0) {
             throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_ADD_DEVICE.getMessage());
         }
@@ -433,7 +433,12 @@ public class MonitorEquipmentApplication {
         //用于redis判断sn是否修改
         String sn = judgeSnWhetherToModify(monitorEquipmentCommand);
         boolean flag =  org.apache.commons.lang3.StringUtils.equals(sn,monitorEquipmentCommand.getSn());
-
+        if(!flag){
+            Boolean aBoolean = monitorEquipmentService.checkSn(monitorEquipmentCommand.getSn());
+            if(aBoolean){
+               throw new IedsException(MonitorinstrumentEnumCode.FAILED_TO_UPDATE_DEVICE.getMessage());
+            }
+        }
         //修改监控设备信息（monitorequipment）
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
                 .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
@@ -813,5 +818,14 @@ public class MonitorEquipmentApplication {
             return null;
         }
         return BeanConverter.convert(monitorEquipmentDto,SnDeviceDto.class);
+    }
+
+    /**
+     * 判断是否已存在
+     * @param sn
+     * @return
+     */
+    public Boolean checkSn(String sn) {
+        return monitorEquipmentService.checkSn(sn);
     }
 }

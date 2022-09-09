@@ -84,4 +84,11 @@ public class MonitorEquipmentController {
     public List<SnDeviceDto> getMonitorEquipmentInfoByHCode(@RequestParam("hospitalCode") String hospitalCode){
         return monitorEquipmentApplication.getMonitorEquipmentInfoByHCode(hospitalCode);
     }
+
+    @GetMapping("/checkSn")
+    @ApiOperation("判断sn是否已存在")
+    public Boolean checkSn(@RequestParam(value = "sn")String sn){
+        return monitorEquipmentApplication.checkSn(sn);
+    }
+    
 }

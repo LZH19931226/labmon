@@ -6,6 +6,7 @@ import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.vo.equimenttype.HospitalequimentVo;
+import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,11 @@ public class HospitalequimentController {
     @ApiOperation("获取所有的设备类型信息")
     public List<HospitalEquipmentTypeInfoDto> getAllHospitalEquipmentTypeInfo(){
         return hospitalequimentApplication.getAllHospitalEquipmentTypeInfo();
+    }
+
+    @GetMapping("/getUnAddDeviceTypes")
+    @ApiOperation("获取医院未添加的设备类型")
+    public List<MonitorEquipmentTypeVo> getUnAddDeviceTypes(@RequestParam(name = "hospitalCode") String hospitalCode){
+        return hospitalequimentApplication.getUnAddDeviceTypes(hospitalCode);
     }
 }

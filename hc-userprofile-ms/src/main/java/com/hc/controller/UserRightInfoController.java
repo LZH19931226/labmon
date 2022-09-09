@@ -46,6 +46,12 @@ public class UserRightInfoController {
         userRightApplication.updateUserRightInfo(userRightCommand);
     }
 
+    @GetMapping("/checkUsername")
+    @ApiOperation("验证用户名是否已存在")
+    public Boolean search(@RequestParam("userName") String userName){
+        return userRightApplication.checkUsername(userName);
+    }
+
     @DeleteMapping("/deleteUserRightInfo")
     @ApiOperation("删除用户信息")
     public void remove(@RequestBody UserRightCommand userRightCommand){

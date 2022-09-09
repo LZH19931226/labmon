@@ -54,12 +54,19 @@ public class InstrumentparamconfigController {
     }
 
     @GetMapping("/selectInstrumentparamconfigByEqNo")
-    @ApiOperation("通过设备id获取设备对应监测类型")
+    @ApiOperation("通过设备id获取设备对应探头监测类型")
     public List<InstrumentparamconfigVo>  selectInstrumentparamconfigByEqNo(@RequestParam(value ="equipmentNo")String equipmentNo){
         return instrumentparamconfigApplication.selectInstrumentParamConfigByEqNo(equipmentNo);
     }
 
+    @GetMapping("/getEquipmentUnAddMonitorTypeByNo")
+    @ApiOperation("获取设备未添加的监测类型")
+    public List<InstrumentparamconfigVo> getEquipmentUnAddMonitorTypeByNo(@RequestParam(value ="equipmentNo")String equipmentNo){
+       return  instrumentparamconfigApplication.getEquipmentUnAddMonitorTypeByNo(equipmentNo);
+    }
+
     @GetMapping("/getInstrumentMonitorInfo")
+    @ApiOperation("查询医院探头监测的信息")
     public List<InstrumentmonitorDto> selectInstrumentMonitorInfo(@RequestParam("hospitalCode") String hospitalCode){
         return instrumentparamconfigApplication.selectInstrumentMonitorInfo(hospitalCode);
     }
@@ -70,6 +77,7 @@ public class InstrumentparamconfigController {
      * @param warningTime 报警时间
      */
     @PutMapping("/editProbeWarningTime")
+    @ApiOperation("更新最新一次的报警时间(用于每小时只报警一次)")
     public void editWarningTime(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningTime") String warningTime){
         instrumentparamconfigApplication.editWarningTime(instrumentParamConfigNo,warningTime);
     }

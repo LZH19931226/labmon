@@ -105,10 +105,10 @@ public class UserRightPo {
     private String userType;
 
     /**
-     * reminders
+     * 报警方式：""和0为手机加短信 1为电话 2为短信 3不报警
      */
     @TableField(value = "reminders")
-    private String reminders;
+    private String reminder;
 
     /**
      * 超时警告
