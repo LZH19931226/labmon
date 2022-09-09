@@ -6,6 +6,7 @@ import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
+import com.hc.application.response.AlarmHand;
 import com.hc.application.response.WarningDetailInfo;
 import com.hc.application.response.WarningRecordInfo;
 import com.hc.clickhouse.po.Warningrecord;
@@ -15,7 +16,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -122,4 +122,9 @@ public class AppController {
         equipmentInfoAppApplication.batchOperationType(alarmSystemCommand);
     }
 
+    @PostMapping("/getTheNumberOfAlarmSettingDevices")
+    @ApiOperation("获取报警设置设备数量")
+    public AlarmHand getTheNumberOfAlarmSettingDevices(@RequestBody AlarmSystemCommand alarmSystemCommand){
+        return equipmentInfoAppApplication.getTheNumberOfAlarmSettingDevices(alarmSystemCommand);
+    }
 }

@@ -84,4 +84,14 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     public List<InstrumentParamConfigDto> getAll() {
         return instrumentParamConfigRepository.list();
     }
+
+    /**
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
+        return instrumentParamConfigRepository.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
+    }
 }

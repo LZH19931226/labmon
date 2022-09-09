@@ -5,10 +5,7 @@ import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
-import com.hc.application.response.AlarmSystem;
-import com.hc.application.response.ProbeAlarmState;
-import com.hc.application.response.WarningDetailInfo;
-import com.hc.application.response.WarningRecordInfo;
+import com.hc.application.response.*;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
@@ -294,7 +291,6 @@ public class AppEquipmentInfoApplication {
             //湿度
             case "2":
                 instrumentConfigId =  CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId();
-
                 break;
             //O2浓度
             case "3":
@@ -697,7 +693,7 @@ public class AppEquipmentInfoApplication {
      * 修改设备报警开关
      * @param alarmSystemCommand
      */
-    public void batchUpdateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
+    public void  batchUpdateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
         String equipmentNo = alarmSystemCommand.getEquipmentNo();
         String hospitalCode = alarmSystemCommand.getHospitalCode();
         String warningPhone = alarmSystemCommand.getWarningPhone();
@@ -707,27 +703,18 @@ public class AppEquipmentInfoApplication {
         }
         //更新探头报警状态
         instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
+        SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(alarmSystemCommand.getSn()).getResult();
+
         //更新设备报警状态开关
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
         monitorEquipmentDto.setEquipmentno(equipmentNo);
         monitorEquipmentDto.setWarningSwitch(warningPhone);
         equipmentInfoService.updateEquipmentWarningSwitch(monitorEquipmentDto);
         //更新设备缓存
-        SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(alarmSystemCommand.getSn()).getResult();
         result1.setWarningSwitch(warningPhone);
         snDeviceRedisApi.updateSnDeviceDtoSync(result1);
         //更新探头缓存
-        List<String> collect1 = list.stream().map(res -> res.getInstrumentno() + ":" + res.getInstrumentconfigid()).collect(Collectors.toList());
-        com.hc.my.common.core.redis.command.ProbeCommand probeCommand = new com.hc.my.common.core.redis.command.ProbeCommand();
-        probeCommand.setHospitalCode(hospitalCode);
-        probeCommand.setInstrumentNo(collect1);
-        List<InstrumentInfoDto> result = probeRedisApi.bulkGetProbeRedisInfo(probeCommand).getResult();
-        if (CollectionUtils.isEmpty(result)) {
-            return;
-        }
-        result.forEach(res->res.setWarningPhone(warningPhone));
-        probeCommand.setInstrumentInfoDtoList(result);
-        probeRedisApi.bulkUpdateProbeRedisInfo(probeCommand);
+        updateProbeRedis(list,warningPhone,hospitalCode);
     }
 
     /**
@@ -777,12 +764,12 @@ public class AppEquipmentInfoApplication {
     public void synchronizedDeviceAlarmSwitch() {
         List<MonitorEquipmentDto> list = equipmentInfoService.getAll();
         List<InstrumentParamConfigDto> instrumentParamConfigDtoList = instrumentParamConfigService.getAll();
-        Map<String, List<InstrumentParamConfigDto>> collect =
+        Map<String, List<InstrumentParamConfigDto>> map =
                 instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentno));
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
             String instrumentNo = monitorEquipmentDto.getInstrumentNo();
-            if(collect.containsKey(instrumentNo)){
-                List<InstrumentParamConfigDto> paramConfigDtoList = collect.get(instrumentNo);
+            if(map.containsKey(instrumentNo)){
+                List<InstrumentParamConfigDto> paramConfigDtoList = map.get(instrumentNo);
                 long count = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
                 if(count>0){
                     monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
@@ -801,16 +788,63 @@ public class AppEquipmentInfoApplication {
         String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
         String warningPhone = alarmSystemCommand.getWarningPhone();
         //获取探头对象
-        List<InstrumentParamConfigDto> instrumentParamConfigDtos =  equipmentInfoService.selectProbeByHosCodeAndEqTypeId(hospitalCode,equipmentTypeId);
-        if (CollectionUtils.isEmpty(instrumentParamConfigDtos)){
+        List<InstrumentParamConfigDto> instrumentParamConfigDtoList =  instrumentParamConfigService.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
+        if (CollectionUtils.isEmpty(instrumentParamConfigDtoList)){
          throw  new IedsException("暂无设备探头信息");
         }
-        List<String> probeIds = instrumentParamConfigDtos.stream().map(InstrumentParamConfigDto::getInstrumentparamconfigno).collect(Collectors.toList());
+        List<String> probeIds = instrumentParamConfigDtoList.stream().map(InstrumentParamConfigDto::getInstrumentparamconfigno).collect(Collectors.toList());
         //批量控制探头报警状态
         hospitalEquipmentService.batchProbeAlarmState(probeIds,warningPhone);
         //同步更新缓存探头配置
+        updateProbeRedis(instrumentParamConfigDtoList,warningPhone,hospitalCode);
+    }
+
+    private void updateProbeRedis(List<InstrumentParamConfigDto> instrumentParamConfigDtoList, String warningPhone, String hospitalCode) {
+        List<String> stringList = instrumentParamConfigDtoList.stream().map(res -> res.getInstrumentno() + ":" + res.getInstrumentconfigid()).collect(Collectors.toList());
+        com.hc.my.common.core.redis.command.ProbeCommand probeCommand = new com.hc.my.common.core.redis.command.ProbeCommand();
+        probeCommand.setHospitalCode(hospitalCode);
+        probeCommand.setInstrumentNo(stringList);
+        List<InstrumentInfoDto> result = probeRedisApi.bulkGetProbeRedisInfo(probeCommand).getResult();
+        if (CollectionUtils.isEmpty(result)) {
+            return;
+        }
+        result.forEach(res->res.setWarningPhone(warningPhone));
+        probeCommand.setInstrumentInfoDtoList(result);
+        probeRedisApi.bulkUpdateProbeRedisInfo(probeCommand);
+    }
 
 
-
+    /**
+     * 获取报警设置设备的数量
+     * @param alarmSystemCommand
+     * @return
+     */
+    public AlarmHand getTheNumberOfAlarmSettingDevices(AlarmSystemCommand alarmSystemCommand) {
+        String hospitalCode = alarmSystemCommand.getHospitalCode();
+        String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
+        //通过医院id和设备类型id获取所有的探头信息
+        List<InstrumentParamConfigDto> instrumentParamConfigDtoList =
+                instrumentParamConfigService.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
+        if(CollectionUtils.isEmpty(instrumentParamConfigDtoList)){
+            throw new IedsException(LabMonEnumError.DEVICE_INFORMATION_NOT_OBTAINED.getMessage());
+        }
+        //计算设备报警是否启用：一个设备下只要有一个探头设置了报警视为设备开启报警 全未设置报警视为设备未开启报警
+        Map<String, List<InstrumentParamConfigDto>> instrumentNoMap =
+                instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentno));
+        int enableNum = 0;
+        int disabledNum = 0;
+        for (String instrumentNo : instrumentNoMap.keySet()) {
+            List<InstrumentParamConfigDto> instrumentParamConfigDtoList1 = instrumentNoMap.get(instrumentNo);
+            long count = instrumentParamConfigDtoList1.stream().filter(res -> "1".equals(res.getWarningphone())).count();
+            if(count>0){
+                enableNum++;
+            }else {
+                disabledNum++;
+            }
+        }
+        AlarmHand alarmHand = new AlarmHand();
+        alarmHand.setDisabledNum(disabledNum);
+        alarmHand.setEnableNum(enableNum);
+        return alarmHand;
     }
 }

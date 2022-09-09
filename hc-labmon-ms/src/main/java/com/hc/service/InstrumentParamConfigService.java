@@ -24,4 +24,6 @@ public interface InstrumentParamConfigService {
     void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo);
 
     List<InstrumentParamConfigDto> getAll();
+
+    List<InstrumentParamConfigDto> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
 }

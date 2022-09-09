@@ -76,4 +76,13 @@ public class InstrumentParamConfigRepositoryImpl  extends ServiceImpl<Instrument
         instrumentParamConfigDao.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
     }
 
+    /**
+     * @param hospitalCode
+     * @param equipmentTypeId
+     * @return
+     */
+    @Override
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
+        return instrumentParamConfigDao.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
+    }
 }
