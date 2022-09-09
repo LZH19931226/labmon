@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.application.command.ProbeCommand;
+import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.infrastructure.dao.EquipmentInfoDao;
 import com.hc.dto.MonitorEquipmentDto;
@@ -118,5 +119,10 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
     @Override
     public List<Integer> selectInstrumentConfigId(String equipmentNo) {
         return equipmentInfoDao.selectInstrumentConfigIdByENo(equipmentNo);
+    }
+
+    @Override
+    public List<InstrumentParamConfigDto> selectProbeByHosCodeAndEqTypeId(String hospitalCode, String equipmentTypeId) {
+        return equipmentInfoDao.selectProbeByHosCodeAndEqTypeId(hospitalCode,equipmentTypeId);
     }
 }

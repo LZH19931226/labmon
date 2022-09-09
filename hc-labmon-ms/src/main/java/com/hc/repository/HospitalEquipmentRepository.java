@@ -8,4 +8,6 @@ import java.util.List;
 public interface HospitalEquipmentRepository extends IService<HospitalEquipmentDto> {
 
     List<HospitalEquipmentDto> selectHospitalEquipmentInfo(String hospitalCode);
+
+    void batchProbeAlarmState(List<String> probeIds, String warningPhone);
 }

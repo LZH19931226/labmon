@@ -304,6 +304,8 @@ public class AppEquipmentInfoApplication {
             case "4":
                 instrumentConfigId =  CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId();
                 break;
+            default:
+                break;
         }
         return instrumentConfigId;
     }
@@ -703,7 +705,6 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isEmpty(list)) {
             return;
         }
-        List<String> collect = list.stream().map(InstrumentParamConfigDto::getInstrumentparamconfigno).collect(Collectors.toList());
         //更新探头报警状态
         instrumentParamConfigService.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
         //更新设备报警状态开关
@@ -796,5 +797,20 @@ public class AppEquipmentInfoApplication {
 
 
     public void batchOperationType(AlarmSystemCommand alarmSystemCommand) {
+        String hospitalCode = alarmSystemCommand.getHospitalCode();
+        String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
+        String warningPhone = alarmSystemCommand.getWarningPhone();
+        //获取探头对象
+        List<InstrumentParamConfigDto> instrumentParamConfigDtos =  equipmentInfoService.selectProbeByHosCodeAndEqTypeId(hospitalCode,equipmentTypeId);
+        if (CollectionUtils.isEmpty(instrumentParamConfigDtos)){
+         throw  new IedsException("暂无设备探头信息");
+        }
+        List<String> probeIds = instrumentParamConfigDtos.stream().map(InstrumentParamConfigDto::getInstrumentparamconfigno).collect(Collectors.toList());
+        //批量控制探头报警状态
+        hospitalEquipmentService.batchProbeAlarmState(probeIds,warningPhone);
+        //同步更新缓存探头配置
+
+
+
     }
 }

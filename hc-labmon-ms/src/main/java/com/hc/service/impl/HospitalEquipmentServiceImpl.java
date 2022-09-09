@@ -22,4 +22,11 @@ public class HospitalEquipmentServiceImpl implements HospitalEquipmentService {
     public List<HospitalEquipmentDto> selectHospitalEquipmentInfo(String hospitalCode) {
         return hospitalEquipmentRepository.selectHospitalEquipmentInfo(hospitalCode);
     }
+
+    @Override
+    public void batchProbeAlarmState(List<String> probeIds, String warningPhone) {
+        hospitalEquipmentRepository.batchProbeAlarmState(probeIds,warningPhone);
+    }
+
+
 }

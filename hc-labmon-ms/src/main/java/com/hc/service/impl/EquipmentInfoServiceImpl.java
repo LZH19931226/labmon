@@ -2,6 +2,7 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.ProbeCommand;
+import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.repository.EquipmentInfoRepository;
@@ -138,5 +139,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public List<Integer> selectInstrumentConfigId(String equipmentNo) {
         return equipmentInfoRepository.selectInstrumentConfigId(equipmentNo);
+    }
+
+    @Override
+    public List<InstrumentParamConfigDto> selectProbeByHosCodeAndEqTypeId(String hospitalCode, String equipmentTypeId) {
+        return equipmentInfoRepository.selectProbeByHosCodeAndEqTypeId(hospitalCode,equipmentTypeId);
     }
 }

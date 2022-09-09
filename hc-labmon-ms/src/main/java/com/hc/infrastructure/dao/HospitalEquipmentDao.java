@@ -17,4 +17,6 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
             "WHERE " +
             "t1.hospitalcode = #{hospitalCode}")
     List<HospitalEquipmentDto> hospitalEquipmentDao(@Param("hospitalCode") String hospitalCode);
+
+
 }

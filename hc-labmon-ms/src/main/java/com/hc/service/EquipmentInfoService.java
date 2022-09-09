@@ -2,6 +2,7 @@ package com.hc.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.ProbeCommand;
+import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
@@ -66,4 +67,6 @@ public interface EquipmentInfoService {
      * @return
      */
     List<Integer> selectInstrumentConfigId(String equipmentNo);
+
+    List<InstrumentParamConfigDto> selectProbeByHosCodeAndEqTypeId(String hospitalCode, String equipmentTypeId);
 }

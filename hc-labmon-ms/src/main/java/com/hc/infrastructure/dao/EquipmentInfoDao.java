@@ -3,6 +3,7 @@ package com.hc.infrastructure.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.ProbeCommand;
+import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorinstrumentDto;
 import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
@@ -68,4 +69,14 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
     List<MonitorEquipmentDto> getAll();
 
     List<Integer> selectInstrumentConfigIdByENo(String equipmentNo);
+
+    @Select("SELECT\n" +
+            "\tt3.instrumentparamconfigNO,\n" +
+            "\tt3.warningphone\n" +
+            "FROM\n" +
+            "\tmonitorequipment t1\n" +
+            "\tLEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno\n" +
+            "\tLEFT JOIN instrumentparamconfig t3 on t2.instrumentno = t3.instrumentno\n" +
+            "\tWHERE t1.hospitalcode = #{hospitalCode} AND t1.equipmenttypeid = #{equipmentTypeId}")
+    List<InstrumentParamConfigDto> selectProbeByHosCodeAndEqTypeId(@Param("hospitalCode") String hospitalCode,@Param("equipmentTypeId") String equipmentTypeId);
 }
