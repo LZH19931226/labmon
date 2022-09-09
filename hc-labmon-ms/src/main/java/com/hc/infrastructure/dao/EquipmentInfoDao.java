@@ -49,10 +49,10 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
             "left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno " +
             "where t1.clientvisible = '1' and t1.hospitalcode = #{probeCommand.hospitalCode} and t1.equipmenttypeid = #{probeCommand.equipmentTypeId}" +
             "<if test = 'probeCommand.warningSwitch != null and probeCommand.warningSwitch != \"\"'>" +
-            "<if test = 'probeCommand.warningSwitch == 1'> " +
+            "<if test = 'probeCommand.warningSwitch == 0'> " +
             " and (t1.warning_switch = #{probeCommand.warningSwitch}  or  t1.warning_switch IS NULL) " +
             "</if>" +
-            "<if test = 'probeCommand.warningSwitch == 0'>" +
+            "<if test = 'probeCommand.warningSwitch == 1'>" +
             "and t1.warning_switch = #{probeCommand.warningSwitch}" +
             "</if>" +
             "</if>" +
