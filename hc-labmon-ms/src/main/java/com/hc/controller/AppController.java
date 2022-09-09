@@ -15,6 +15,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -105,4 +106,11 @@ public class AppController {
     public void synchronizedDeviceAlarmSwitch(){
         equipmentInfoAppApplication.synchronizedDeviceAlarmSwitch();
     }
+
+    @PostMapping("/batchOperationType")
+    @ApiOperation(value = "批量禁用与启用当前设备类型下所有设备报警探头")
+    public void batchOperationType(@RequestBody AlarmSystemCommand alarmSystemCommand) {
+        equipmentInfoAppApplication.batchOperationType(alarmSystemCommand);
+    }
+
 }

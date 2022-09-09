@@ -737,4 +737,7 @@ public class EquipmentInfoAppApplication {
         //更新数据库
         equipmentInfoService.bulkUpdate(list);
     }
+
+    public void batchOperationType(AlarmSystemCommand alarmSystemCommand) {
+    }
 }
