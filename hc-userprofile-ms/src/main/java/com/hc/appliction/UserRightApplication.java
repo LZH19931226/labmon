@@ -238,6 +238,7 @@ public class UserRightApplication {
                 .pwd(userRightDto.getPwd())
                 .isUse(userRightDto.getIsUse())
                 .userid(userRightDto.getUserid())
+                .nickname(userRightDto.getNickname())
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .hospitalInfoVo(hospitalInfoVo).build();
