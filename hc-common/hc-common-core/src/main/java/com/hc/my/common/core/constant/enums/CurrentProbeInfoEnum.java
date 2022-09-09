@@ -98,6 +98,9 @@ public enum CurrentProbeInfoEnum {
     PROBE2(102,null,"监测探头2",null),
     //
     PROBE3(103,null,"监测探头3",null),
+    //
+    OUTERCO2(42,"outerCO2","外置CO2探头",null),
+    OUTERO2(43,"outerO2","外置O2探头",null),
     //二路开关量
     CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2",null);
 
