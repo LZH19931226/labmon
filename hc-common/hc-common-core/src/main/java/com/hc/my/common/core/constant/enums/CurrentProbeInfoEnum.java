@@ -21,7 +21,7 @@ public enum CurrentProbeInfoEnum {
     //当前O2
     CURRENTO2(2,"currento2","O2","%"),
     //当前市电是否异常
-    CURRENTUPS(10,"currentups","市电","mV"),
+    CURRENTUPS(10,"currentups","适配器供电",""),
     //当前开门记录
     CURRENTDOORSTATE(11,"currentdoorstate","报警信号",null),
     //当前空气质量
@@ -32,8 +32,8 @@ public enum CurrentProbeInfoEnum {
     CURRENTPM10(9,"currentpm10","PM10","L/MIN"),
     //当前PM2_5
     CURRENTPM25(8,"currentpm25","PM2.5","L/MIN"),
-    //当前气流
-    CURRENTAIRFLOW(6,"currentairflow","气流","Mpa"),
+    //当前压力
+    CURRENTAIRFLOW(6,"currentairflow","压力","Mpa"),
     //当前湿度
     CURRENTHUMIDITY(5,"currenthumidity","湿度","%"),
     //左路温度  左舱室温度
@@ -61,7 +61,7 @@ public enum CurrentProbeInfoEnum {
     //电流
     QCCURRENT(40,"qccurrent","电流","mA"),
     //电压
-    VOLTAGE(39,"voltage","电压","V"),
+    VOLTAGE(39,"voltage","电压","mV"),
     //功率
     POWER(41,"power","功率","W"),
     //六路温度

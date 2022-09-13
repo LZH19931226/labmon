@@ -245,19 +245,19 @@ public class EquipmentInfoApplication {
      * @return
      */
     public QueryInfoModel getQueryInfo(String equipmentNo, String startTime, String endTime ){
-        SnDeviceDto snDeviceDto =
-                monitorEquipmentApi.selectMonitorEquipmentInfoByEno(equipmentNo).getResult();
-        if (ObjectUtils.isEmpty(snDeviceDto)) {
+        MonitorEquipmentDto equipmentInfo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        if (ObjectUtils.isEmpty(equipmentInfo)) {
             return null;
         }
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startTime, endTime, equipmentNo);
         QueryInfoModel queryInfoModel = new QueryInfoModel();
-        queryInfoModel.setEquipmentName(snDeviceDto.getEquipmentName());
+        queryInfoModel.setEquipmentName(equipmentInfo.getEquipmentname());
+        queryInfoModel.setInstrumentTypeId(equipmentInfo.getInstrumenttypeid());
         //查询标题
         List<String> eNameList = queryTitle(equipmentNo);
         queryInfoModel.setProbeENameList(eNameList);
-        queryInfoModel.setEquipmentTypeId(snDeviceDto.getEquipmentTypeId());
+        queryInfoModel.setEquipmentTypeId(equipmentInfo.getEquipmenttypeid());
         List<MonitorequipmentlastdataDto> convert = BeanConverter.convert(monitorEquipmentLastDataInfo, MonitorequipmentlastdataDto.class);
         queryInfoModel.setMonitorEquipmentLastDataDTOList(convert);
         return queryInfoModel;
@@ -272,8 +272,8 @@ public class EquipmentInfoApplication {
         MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
         String hospitalCode = equipmentInfoByNo.getHospitalcode();
         List<Integer> list;
-        //mt400时取缓存为主
-        if (equipmentInfoByNo.getEquipmenttypeid().equals("1") && equipmentInfoByNo.getInstrumenttypeid().equals("8")) {
+        //mt400时取缓存
+        if ("1".equals(equipmentInfoByNo.getEquipmenttypeid()) && "8".equals(equipmentInfoByNo.getInstrumenttypeid())) {
             list = probeRedisApi.getEquipmentMonitorInfo(hospitalCode, equipmentNo).getResult();
         }else {
             list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
@@ -609,6 +609,13 @@ public class EquipmentInfoApplication {
                 EquipmentInfoServiceHelp.getCurveFirst(lastDateList,map,true);
     }
 
+    /**
+     * 导出excel
+     * @param equipmentNo
+     * @param startDate
+     * @param endDate
+     * @param response
+     */
     public void getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
         //获取数据库数据
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
@@ -618,18 +625,24 @@ public class EquipmentInfoApplication {
         if(CollectionUtils.isEmpty(list)){
            return;
         }
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
         //标头映射
-        List<ExcelExportEntity> beanList = headerMapping(list);
-        list.add("inputdatetime");
+        List<ExcelExportEntity> beanList = headerMapping(list,equipmentInfoByNo);
         //获取属性map
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata monitorequipmentlastdata : monitorEquipmentLastDataInfo) {
+            String currentups = monitorequipmentlastdata.getCurrentups();
+            if("1".equals(currentups)){
+                monitorequipmentlastdata.setCurrentups("异常");
+            }
+            else{
+                monitorequipmentlastdata.setCurrentups("正常");
+            }
             Map<String, Object> objectMap = getObjectToMap(monitorequipmentlastdata);
-            //过滤map
+            //过滤map 只取list存在的key的map
             filterMap(objectMap,list);
             mapList.add(objectMap);
         }
-        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
         String equipmentname = equipmentInfoByNo.getEquipmentname();
         String title = equipmentname+startDate+"-"+endDate+"监控数据汇总";
         Workbook workbook =  ExcelExportUtil.exportExcel(new ExportParams(title,"sheet1"),beanList,mapList);
@@ -640,6 +653,7 @@ public class EquipmentInfoApplication {
      * @param objectMap
      */
     private void filterMap(Map<String, Object> objectMap,List<String> list) {
+        list.add("inputdatetime");
         Iterator<String> iterator = objectMap.keySet().iterator();
         while (iterator.hasNext()) {
             String next = iterator.next();
@@ -650,7 +664,7 @@ public class EquipmentInfoApplication {
         }
     }
 
-    private List<ExcelExportEntity> headerMapping(List<String> list) {
+    private List<ExcelExportEntity> headerMapping(List<String> list,MonitorEquipmentDto equipmentInfo) {
         List<ExcelExportEntity> excelExportEntities = new ArrayList<>();
         excelExportEntities.add(new ExcelExportEntity("记录时间","inputdatetime"));
         for (String fieldName : list) {
@@ -659,9 +673,31 @@ public class EquipmentInfoApplication {
             if (!StringUtils.isBlank(from.getUnit())) {
                 name = name+"("+from.getUnit()+")";
             }
+            //设备特殊值判断
+            name = deviceSpecialValue(fieldName,name,equipmentInfo);
             excelExportEntities.add(new ExcelExportEntity(name,fieldName));
         }
         return excelExportEntities;
+    }
+
+    private String deviceSpecialValue(String fieldName,String name , MonitorEquipmentDto equipmentInfo) {
+        switch (fieldName){
+            //当设备为Mt300MIX时为状态
+            case "currentairflow1":
+                if("7".equals(equipmentInfo.getInstrumenttypeid())){
+                    name = "状态";
+                }
+                break;
+            //当设备类型为2(培养箱)时
+            case "currentairflow":
+                if("2".equals(equipmentInfo.getEquipmenttypeid())){
+                    name = "CO2压力(Mpa)";
+                }
+                break;
+            default:
+                break;
+        }
+        return name;
     }
 
     /**
@@ -682,8 +718,9 @@ public class EquipmentInfoApplication {
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            if (value == null)
+            if (value == null) {
                 value = "";
+            }
             if(value instanceof Date){
                 value = DateUtils.paseDatetime((Date) value);
             }

@@ -19,6 +19,9 @@ public class QueryInfoModel {
     /** 设备类型id */
     private String equipmentTypeId;
 
+    /** 设备型号id */
+    private String instrumentTypeId;
+
     private List<MonitorequipmentlastdataDto> monitorEquipmentLastDataDTOList;
 
     private List<String>  probeENameList;
