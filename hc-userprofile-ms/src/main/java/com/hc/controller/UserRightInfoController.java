@@ -93,4 +93,10 @@ public class UserRightInfoController {
     public void appUpdateUser(@RequestBody UserRightCommand userRightCommand){
         userRightApplication.appUpdateUser(userRightCommand);
     }
+
+    @PostMapping("/checkPhoneNum")
+    @ApiOperation("检验手机号是否重复")
+    public Boolean checkPhoneNum(@RequestBody UserRightCommand userRightCommand){
+        return  userRightApplication.checkPhoneNum(userRightCommand);
+    }
 }

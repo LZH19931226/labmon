@@ -77,4 +77,11 @@ public interface UserRightRepository extends IService<UserRightPo> {
      * @return
      */
     Boolean checkUsername(String userName);
+
+    /**
+     * 检验手机号是否存在
+     * @param userRightCommand
+     * @return
+     */
+    Boolean checkPhoneNum(UserRightCommand userRightCommand);
 }

@@ -146,6 +146,7 @@ public class AppEquipmentInfoApplication {
             String equipmentNo = monitorEquipmentDto.getEquipmentno();
             String sn = monitorEquipmentDto.getSn();
             String instrumentTypeId = monitorEquipmentDto.getInstrumenttypeid();
+            String equipmentTypeId = monitorEquipmentDto.getEquipmenttypeid();
             List<ProbeInfoDto> probeInfoDtoList = null;
             if (probeInfoMap.containsKey(equipmentNo)) {
                 probeInfoDtoList = probeInfoMap.get(equipmentNo);
@@ -155,6 +156,7 @@ public class AppEquipmentInfoApplication {
             probeInfo.setEquipmentNo(equipmentNo);
             probeInfo.setSn(sn);
             probeInfo.setInstrumentTypeId(instrumentTypeId);
+            probeInfo.setEquipmentTypeId(equipmentTypeId);
             Date maxDate = null;
             if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
                 //获取探头信息中最大的时间

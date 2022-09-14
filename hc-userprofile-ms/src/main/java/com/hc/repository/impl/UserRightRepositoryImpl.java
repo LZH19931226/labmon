@@ -69,11 +69,6 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
     @Override
     public void updateUserRightInfo(UserRightCommand userRightCommand) {
         UserRightPo convert = BeanConverter.convert(userRightCommand, UserRightPo.class);
-        String phoneNum = convert.getPhoneNum();
-        Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo()).eq(UserRightPo::getPhoneNum, phoneNum));
-        if(num>0){
-            throw new IedsException(UserEnumErrorCode.PHONE_NUM_EXISTS.getMessage());
-        }
         userRightDao.updateById(convert);
     }
 
@@ -166,5 +161,21 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
     public Boolean checkUsername(String userName) {
         Integer integer = userRightDao.checkUsername(userName);
         return integer > 0;
+    }
+
+    /**
+     * 检验手机号是否存在
+     *
+     * @param userRightCommand
+     * @return
+     */
+    @Override
+    public Boolean checkPhoneNum(UserRightCommand userRightCommand) {
+        String hospitalCode = StringUtils.isBlank(userRightCommand.getHospitalCode())?"":userRightCommand.getHospitalCode();
+        String phoneNum = StringUtils.isBlank(userRightCommand.getPhoneNum())?"":userRightCommand.getPhoneNum();
+        Integer integer = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
+                .eq(UserRightPo::getHospitalCode, hospitalCode)
+                .eq(UserRightPo::getPhoneNum, phoneNum));
+        return integer>0;
     }
 }

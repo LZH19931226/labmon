@@ -322,4 +322,13 @@ public class UserRightApplication {
     public void appUpdateUser(UserRightCommand userRightCommand) {
         userRightService.appUpdateUser(userRightCommand);
     }
+
+    /**
+     * 检验手机号同医院是否重复
+     * @param userRightCommand
+     * @return
+     */
+    public Boolean checkPhoneNum(UserRightCommand userRightCommand) {
+        return userRightService.checkPhoneNum(userRightCommand);
+    }
 }

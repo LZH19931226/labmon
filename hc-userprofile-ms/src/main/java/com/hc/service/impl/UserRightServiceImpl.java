@@ -181,4 +181,15 @@ public class UserRightServiceImpl implements UserRightService {
     public void appUpdateUser(UserRightCommand userRightCommand) {
         userRightRepository.updateUserRightInfo(userRightCommand);
     }
+
+    /**
+     * 验证手机号是否存在
+     *
+     * @param userRightCommand
+     * @return
+     */
+    @Override
+    public Boolean checkPhoneNum(UserRightCommand userRightCommand) {
+        return userRightRepository.checkPhoneNum(userRightCommand);
+    }
 }

@@ -72,4 +72,11 @@ public interface UserRightService {
      * @param userRightCommand
      */
     void appUpdateUser(UserRightCommand userRightCommand);
+
+    /**
+     * 验证手机号是否存在
+     * @param userRightCommand
+     * @return
+     */
+    Boolean checkPhoneNum(UserRightCommand userRightCommand);
 }
