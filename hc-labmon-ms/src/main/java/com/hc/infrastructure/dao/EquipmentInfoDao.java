@@ -37,7 +37,7 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
                                                      @Param("equipmentNo") String equipmentNo,
                                                      @Param("tableName") String tableName);
 
-    @Select("select t1.*,t2.instrumenttypeid from monitorequipment t1 left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno where t1.equipmentno = #{equipmentNo} ")
+    @Select("select t1.*,t2.instrumenttypeid,t2.sn from monitorequipment t1 left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno where t1.equipmentno = #{equipmentNo} ")
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
 
     @Select("<script>" +

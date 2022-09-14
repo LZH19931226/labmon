@@ -110,5 +110,4 @@ public class EquipmentInfoController {
                                                 @RequestParam("operationDate")String operationDate){
         return equipmentInfoApplication.getCurveInfoByMonthTime(equipmentNo,operationDate);
     }
-
 }

@@ -287,6 +287,17 @@ public class EquipmentInfoApplication {
             String probeEName = from.getProbeEName();
             eNameList.add(probeEName);
         }
+        //当设备为MT200LM（15）时电量变为锁电量
+        String sn = equipmentInfoByNo.getSn();
+        if(StringUtils.isBlank(sn)){
+            sn="";
+        }else {
+            sn = sn.substring(4, 6);
+        }
+        if(StringUtils.endsWithAny(sn, "02", "18") && eNameList.contains("currentqc")){
+            eNameList.remove("currentqc");
+            eNameList.add("currentqcl");
+        }
         return eNameList;
     }
 
