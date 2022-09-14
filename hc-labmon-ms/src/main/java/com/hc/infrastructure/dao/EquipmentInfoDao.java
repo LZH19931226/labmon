@@ -43,7 +43,8 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
     @Select("<script>" +
             "select " +
             "t1.*," +
-            "t2.sn " +
+            "t2.sn," +
+            "t2.instrumenttypeid " +
             "from " +
             "monitorequipment t1 " +
             "left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno " +
