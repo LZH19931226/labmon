@@ -1,6 +1,5 @@
 package com.hc.util;
 
-import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.util.RegularUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,9 +8,6 @@ import java.math.BigDecimal;
 public class paramaterModelUtils {
     // 解析温度
     public static String temperature(String data) {
-        if (!RegularUtil.checkContainsNumbers(data)){
-            return data;
-        }
         String rule = "";
         // 16进制转2进制每一位都要转然后拼接
         String hexadecima11 = MathUtil.hexadecimal(data.substring(0, 1));
@@ -123,7 +119,7 @@ public class paramaterModelUtils {
     }
 
     public static void  main(String[] args){
-        System.out.println(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
+        System.out.println(temperature("cbdd"));
 
     }
 }
