@@ -69,6 +69,11 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
     @Override
     public void updateUserRightInfo(UserRightCommand userRightCommand) {
         UserRightPo convert = BeanConverter.convert(userRightCommand, UserRightPo.class);
+        String phoneNum = convert.getPhoneNum();
+        Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo()).eq(UserRightPo::getPhoneNum, phoneNum));
+        if(num>0){
+            throw new IedsException(UserEnumErrorCode.PHONE_NUM_EXISTS.getMessage());
+        }
         userRightDao.updateById(convert);
     }
 

@@ -34,7 +34,7 @@ public class AppController {
 
     /*设备当前值*/
     @PostMapping("/getCurrentProbeInfo")
-    @ApiOperation("获取探头当前值")
+    @ApiOperation("获取探头当前值(卡片)")
     public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
         return  equipmentInfoAppApplication.getTheCurrentValueOfTheProbe(probeCommand);
     }

@@ -38,6 +38,7 @@
         <if test="clientVisible != null">
         and me.clientvisible = #{clientVisible}
         </if>
+        order by equipmentName
     </select>
 
     <select id="getAllMonitorEquipmentInfo" resultType="com.hc.dto.MonitorEquipmentDto">
