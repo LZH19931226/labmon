@@ -142,16 +142,16 @@ public class AppEquipmentInfoApplication {
         List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
         //遍历设备信息
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
-            String equipmentname = monitorEquipmentDto.getEquipmentname();
-            String equipmentno = monitorEquipmentDto.getEquipmentno();
+            String equipmentName = monitorEquipmentDto.getEquipmentname();
+            String equipmentNo = monitorEquipmentDto.getEquipmentno();
             String sn = monitorEquipmentDto.getSn();
             List<ProbeInfoDto> probeInfoDtoList = null;
-            if (probeInfoMap.containsKey(equipmentno)) {
-                probeInfoDtoList = probeInfoMap.get(equipmentno);
+            if (probeInfoMap.containsKey(equipmentNo)) {
+                probeInfoDtoList = probeInfoMap.get(equipmentNo);
             }
             ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
-            probeInfo.setEquipmentName(equipmentname);
-            probeInfo.setEquipmentNo(equipmentno);
+            probeInfo.setEquipmentName(equipmentName);
+            probeInfo.setEquipmentNo(equipmentNo);
             probeInfo.setSn(sn);
             Date maxDate = null;
             if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
@@ -159,8 +159,11 @@ public class AppEquipmentInfoApplication {
                 List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
                 maxDate = Collections.max(collect);
                 //构建探头高低值
-                buildProbeHighAndLowValue(equipmentno, probeInfoDtoList, instrumentParamConfigMap);
+                buildProbeHighAndLowValue(equipmentNo, probeInfoDtoList, instrumentParamConfigMap);
                 probeInfo.setProbeInfoDtoList(probeInfoDtoList);
+                //获取标头信息(用于前端展示)
+                List<String> instrumentConfigId = queryTitle(probeInfoDtoList);
+                probeInfo.setInstrumentConfigIdList(instrumentConfigId);
             }
             if(maxDate!=null){
                 probeInfo.setInputTime(maxDate);
@@ -169,6 +172,17 @@ public class AppEquipmentInfoApplication {
         }
         page.setRecords(probeCurrentInfoDtos);
         return page;
+    }
+
+    /**
+     * 获取探头标头(用于前端展示)
+     * @param probeInfoDtoList
+     * @return
+     */
+    private List<String> queryTitle(List<ProbeInfoDto> probeInfoDtoList) {
+        return probeInfoDtoList.stream().map(res -> {
+            return CurrentProbeInfoEnum.from(res.getInstrumentConfigId()).getProbeEName();
+        }).collect(Collectors.toList());
     }
 
     /***

@@ -33,4 +33,9 @@ public class ProbeCurrentInfoDto {
      * 探头集合
      */
     private List<ProbeInfoDto> probeInfoDtoList;
+
+    /**
+     * 检测类型id集合
+     */
+    private List<String> instrumentConfigIdList;
 }

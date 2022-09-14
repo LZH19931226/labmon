@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserEnumErrorCode {
+    PHONE_NUM_EXISTS("手机号已存在"),
     NOT_LOGGED_IN("未登录"),
     LOGIN_ACCOUNT_ALREADY_EXISTS("登录账号已存在"),
     USERNAME_ALREADY_EXISTS("用户名称已存在"),
