@@ -5,6 +5,7 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
+import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
@@ -158,5 +159,10 @@ public class FileUtil {
         if (workbook != null ) {
             downLoadExcel(fileName,response,workbook);
         }
+    }
+
+    public static void exportExcel(String fileName, List<ExcelExportEntity> beanList, List<Map<String,Object>> mapList,HttpServletResponse response){
+        Workbook workbook =  ExcelExportUtil.exportExcel(new ExportParams(fileName,"sheet1"),beanList,mapList);
+        downLoadExcel(fileName+".xls",response,workbook);
     }
 }

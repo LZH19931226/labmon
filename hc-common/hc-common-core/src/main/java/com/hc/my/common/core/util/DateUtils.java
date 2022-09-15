@@ -15,6 +15,7 @@ public class DateUtils {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat dateFormatHHmm = new SimpleDateFormat("HH:mm");
+    private static SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
 
 
 
@@ -89,6 +90,15 @@ public class DateUtils {
      */
     public static String paseDateHHmmss(Date date) {
         return simpleDateFormat.format(date);
+    }
+
+    /**
+     * 解析时间
+     * @param date
+     * @return "MM-dd"
+     */
+    public static String paseDateMMdd(Date date){
+        return dateFormatMMdd.format(date);
     }
 
     /**
