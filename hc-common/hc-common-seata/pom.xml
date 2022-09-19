@@ -16,25 +16,21 @@
   -->
 
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.hc</groupId>
-		<artifactId>labmon</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-
-	<artifactId>hc-common</artifactId>
-	<packaging>pom</packaging>
-
-	<description>hc 公共聚合模块</description>
-	<modules>
-		<module>hc-common-core</module>
-		<module>hc-common-web</module>
-		<module>hc-common-data</module>
-		<module>hc-common-api</module>
-		<module>hc-vos-all</module>
-		<module>hc-common-dynamic</module>
-		<module>hc-common-seata</module>
-	</modules>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.hc</groupId>
+        <artifactId>hc-common</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>hc-common-seata</artifactId>
+    <packaging>jar</packaging>
+    <description>hc 公共包</description>
+    <dependencies>
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+    </dependencies>
 </project>

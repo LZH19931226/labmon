@@ -26,6 +26,7 @@ import com.hc.service.OperationlogService;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
 import com.hc.vo.equimenttype.MonitorequipmentwarningtimeVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -227,6 +228,7 @@ public class HospitalequimentApplication {
      * @param hospitalCode 医院id
      * @param equipmenttypeid 设备类型Id
      */
+    @GlobalTransactional
     public void deleteHospitalEquimentType(String hospitalCode, String equipmenttypeid) {
         HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode, equipmenttypeid);
 
