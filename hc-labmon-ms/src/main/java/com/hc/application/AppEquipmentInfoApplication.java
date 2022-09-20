@@ -612,6 +612,13 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isEmpty(warningRecordList)) {
             return null;
         }
+        String hospitalCode = warningRecordList.get(0).getHospitalcode();
+        //获取医院所有的人员信息
+        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(hospitalCode);
+        Map<String, List<UserRightDto>> userMap = new HashMap<>();
+        if(CollectionUtils.isNotEmpty(userRightDtoList)){
+            userMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+        }
         List<String> collect = warningRecordList.stream().map(Warningrecord::getInstrumentparamconfigno).collect(Collectors.toList());
         List<WarningDetailInfo> detailInfos = BeanConverter.convert(warningRecordList, WarningDetailInfo.class);
         List<InstrumentParamConfigDto> probeInfoList = instrumentParamConfigService.batchGetProbeInfo(collect);
@@ -620,6 +627,15 @@ public class AppEquipmentInfoApplication {
             stringListMap = probeInfoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
         }
         for (WarningDetailInfo detailInfo : detailInfos) {
+            //将手机号换成用户名
+            String mailCallUser = detailInfo.getMailCallUser();
+            if(StringUtils.isNotBlank(mailCallUser)){
+                if (mailCallUser.contains("/")) {
+                   List<String>  list= Arrays.asList(mailCallUser.split("/"));
+                   String str =  listToStr(list,userMap);
+                   detailInfo.setMailCallUser(str);
+                }
+            }
             String instrumentparamconfigno = detailInfo.getInstrumentparamconfigno();
             if(!stringListMap.containsKey(instrumentparamconfigno)){
                 continue;
@@ -632,6 +648,18 @@ public class AppEquipmentInfoApplication {
             }
         }
         return detailInfos;
+    }
+
+    private String listToStr(List<String> list, Map<String, List<UserRightDto>> userMap) {
+        StringBuilder stringBuilder =new StringBuilder();
+        for (String phoneNum : list) {
+            if (userMap.containsKey(phoneNum)) {
+                stringBuilder.append(userMap.get(phoneNum).get(0).getUsername()).append("/");
+            }else {
+                stringBuilder.append(phoneNum).append("/");
+            }
+        }
+        return stringBuilder.toString();
     }
 
     /**
