@@ -76,7 +76,7 @@ public class InstrumentparamconfigDTO implements Serializable {
     @ApiModelProperty(value = "")
     private String channel;
     /**
-     *
+     *报警次数
      */
     @ApiModelProperty(value = "")
     private Integer alarmtime;

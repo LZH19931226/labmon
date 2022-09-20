@@ -234,6 +234,7 @@ public class InstrumentparamconfigApplication {
         InstrumentparamconfigDTO dto =  instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
         MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
         String sn = monitorinstrumentDTO.getSn();
+        String newWarningPhone = dto.getWarningphone();
         dto.setSn(sn);
         //更新探头信息
         InstrumentparamconfigDTO instrumentparamconfigDTO = buildInstrumentparamconfigDTO(instrumentParamConfigCommand);
@@ -243,15 +244,18 @@ public class InstrumentparamconfigApplication {
         String equipmentNo = instrumentParamConfigCommand.getEquipmentNo();
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
         monitorEquipmentDto.setEquipmentNo(equipmentNo);
-        if(SysConstants.IN_ALARM.equals(warningphone)){
-            monitorEquipmentDto.setWarningSwitch(warningphone);
-        }else {
-            List<InstrumentparamconfigDTO> instrumentconfigDTOS = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
-            long count = instrumentconfigDTOS.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
-            if(count>0){
-                monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
+        //当设备报警开关发生变化时在修改设备的报警开关(有一个探头开启设备开启，所有探头关闭设备关闭)
+        if(!StringUtils.isEmpty(newWarningPhone) && !newWarningPhone.equals(warningphone)){
+            if(SysConstants.IN_ALARM.equals(warningphone)){
+                monitorEquipmentDto.setWarningSwitch(warningphone);
             }else {
-                monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
+                List<InstrumentparamconfigDTO> instrumentconfigDTOS = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
+                long count = instrumentconfigDTOS.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
+                if(count>0){
+                    monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
+                }else {
+                    monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
+                }
             }
         }
         //更新设备数据库
@@ -277,7 +281,7 @@ public class InstrumentparamconfigApplication {
     }
 
     private InstrumentparamconfigDTO buildInstrumentparamconfigDTO(InstrumentparamconfigCommand instrumentParamConfigCommand) {
-        InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
+        return new InstrumentparamconfigDTO()
                 .setInstrumentparamconfigno(instrumentParamConfigCommand.getInstrumentparamconfigno())
                 .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
                 .setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
@@ -291,7 +295,6 @@ public class InstrumentparamconfigApplication {
                 .setSaturation(instrumentParamConfigCommand.getSaturation())
                 .setCalibration(instrumentParamConfigCommand.getCalibration())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
-        return instrumentparamconfigDTO;
     }
 
     /**
