@@ -630,11 +630,15 @@ public class AppEquipmentInfoApplication {
             //将手机号换成用户名
             String mailCallUser = detailInfo.getMailCallUser();
             if(StringUtils.isNotBlank(mailCallUser)){
-                if (mailCallUser.contains("/")) {
-                   List<String>  list= Arrays.asList(mailCallUser.split("/"));
-                   String str =  listToStr(list,userMap);
-                   detailInfo.setMailCallUser(str);
-                }
+               List<String>  list= Arrays.asList(mailCallUser.split("/"));
+               String str =  listToStr(list,userMap);
+               detailInfo.setMailCallUser(str);
+            }
+            String phoneCallUser = detailInfo.getPhoneCallUser();
+            if(StringUtils.isNotBlank(phoneCallUser)){
+                List<String>  list= Arrays.asList(phoneCallUser.split("/"));
+                String str =  listToStr(list,userMap);
+                detailInfo.setPhoneCallUser(str);
             }
             String instrumentparamconfigno = detailInfo.getInstrumentparamconfigno();
             if(!stringListMap.containsKey(instrumentparamconfigno)){
@@ -654,11 +658,13 @@ public class AppEquipmentInfoApplication {
         StringBuilder stringBuilder =new StringBuilder();
         for (String phoneNum : list) {
             if (userMap.containsKey(phoneNum)) {
-                stringBuilder.append(userMap.get(phoneNum).get(0).getUsername()).append("/");
+                String username = userMap.get(phoneNum).get(0).getUsername();
+                stringBuilder.append(username).append("/");
             }else {
                 stringBuilder.append(phoneNum).append("/");
             }
         }
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
         return stringBuilder.toString();
     }
 

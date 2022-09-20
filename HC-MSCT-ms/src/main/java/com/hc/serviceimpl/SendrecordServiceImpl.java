@@ -102,8 +102,6 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
                 && !"null".equals(phoneCallUser.toString())
                 && !"".equals(phoneCallUser.toString())){
             phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
-        }{
-            phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
             warningrecord.setPhoneCallUser(phoneCallUser.toString());
         }
 

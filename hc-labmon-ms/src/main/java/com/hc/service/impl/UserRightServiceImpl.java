@@ -23,4 +23,13 @@ public class UserRightServiceImpl implements UserRightService {
         return userRightRepository.list(Wrappers.lambdaQuery(new UserRightDto()).eq(UserRightDto::getHospitalCode, hospitalCode)
                 .eq(UserRightDto::getIsUse, "1").eq(UserRightDto::getRole,"1"));
     }
+
+    /**
+     * @param hospitalCode
+     * @return
+     */
+    @Override
+    public List<UserRightDto> getallByHospitalCode(String hospitalCode) {
+        return userRightRepository.list(Wrappers.lambdaQuery(new UserRightDto()).eq(UserRightDto::getHospitalCode, hospitalCode));
+    }
 }
