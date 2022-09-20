@@ -586,7 +586,6 @@ public class MonitorEquipmentApplication {
                 instrumentparamconfigDTO.setHighlimit(dto.getHighlimit());
                 instrumentparamconfigDTO.setInstrumentname(monitorEquipmentCommand.getEquipmentName() + "探头");
                 instrumentparamconfigDTO.setSaturation(dto.getSaturation());
-                instrumentparamconfigDTO.setAlarmtime(Integer.valueOf(monitorEquipmentCommand.getAlwaysAlarm()));
                 instrumentparamconfigDTO.setFirsttime(new Date());
                 list.add(instrumentparamconfigDTO);
             }
