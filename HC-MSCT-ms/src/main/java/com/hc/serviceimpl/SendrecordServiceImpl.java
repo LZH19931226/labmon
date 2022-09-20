@@ -52,7 +52,6 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
             String hospitalcode = warningModel.getHospitalcode();
             String unit = warningModel.getUnit();
             String value = warningModel.getValue();
-            String username = userright.getUsername();
             //1为运维后台人员
             if (StringUtils.isNotEmpty(role) && StringUtils.equals(role, "1")) {
                 equipmentName = hospitalName + equipmentName;
@@ -64,22 +63,22 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
             if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(), reminders)) {
                 //拨打电话短信
                 buildP2PNotify(phonenum, equipmentName, unit, value, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE));
-                mailCallUser.append(username).append("/");
+                mailCallUser.append(phonenum).append("/");
                 Sendrecord sendrecord = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "1");
                 sendrecords.add(sendrecord);
-                phoneCallUser.append(username).append("/");
+                phoneCallUser.append(phonenum).append("/");
                 Sendrecord sendrecord1 = producePhoneRecord(phonenum, hospitalcode, equipmentName, unit, "0");
                 sendrecords.add(sendrecord1);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
             } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
                 buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.PHONE));
-                phoneCallUser.append(username).append("/");
+                phoneCallUser.append(phonenum).append("/");
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "1");
                 sendrecords.add(sendrecord);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
             } else if (StringUtils.equals(reminders, DictEnum.SMS.getCode())) {
                 buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.SMS));
-                mailCallUser.append(username).append("/");
+                mailCallUser.append(phonenum).append("/");
                 Sendrecord sendrecord = producePhoneRecord(userright.getPhoneNum(), hospitalcode, equipmentName, unit, "0");
                 sendrecords.add(sendrecord);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
