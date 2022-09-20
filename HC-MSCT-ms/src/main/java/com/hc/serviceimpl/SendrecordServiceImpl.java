@@ -90,13 +90,22 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
         //修改报警通知人
         Warningrecord warningrecord = warningModel.getWarningrecord();
         warningrecord.setPkid(warningrecord.getPkid());
-        if(StringUtils.isNotBlank(mailCallUser)){
+
+        if(mailCallUser.length()>0
+                && !"null".equals(mailCallUser.toString())
+                && !"".equals(mailCallUser.toString())){
             mailCallUser.deleteCharAt(mailCallUser.length()-1);
         }
         warningrecord.setMailCallUser(mailCallUser.toString());
-        if(StringUtils.isNotBlank(phoneCallUser)){
-            mailCallUser.deleteCharAt(mailCallUser.length()-1);
+
+        if(phoneCallUser.length()>0
+                && !"null".equals(phoneCallUser.toString())
+                && !"".equals(phoneCallUser.toString())){
+            phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
+        }{
+            phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
         }
+
         warningrecord.setPhoneCallUser(phoneCallUser.toString());
         warningrecordRepository.saveWarningInfo(warningrecord);
 
