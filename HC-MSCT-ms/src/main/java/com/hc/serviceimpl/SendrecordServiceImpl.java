@@ -95,8 +95,8 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
                 && !"null".equals(mailCallUser.toString())
                 && !"".equals(mailCallUser.toString())){
             mailCallUser.deleteCharAt(mailCallUser.length()-1);
+            warningrecord.setMailCallUser(mailCallUser.toString());
         }
-        warningrecord.setMailCallUser(mailCallUser.toString());
 
         if(phoneCallUser.length()>0
                 && !"null".equals(phoneCallUser.toString())
@@ -104,9 +104,9 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
             phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
         }{
             phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
+            warningrecord.setPhoneCallUser(phoneCallUser.toString());
         }
 
-        warningrecord.setPhoneCallUser(phoneCallUser.toString());
         warningrecordRepository.saveWarningInfo(warningrecord);
 
     }
