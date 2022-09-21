@@ -1,24 +1,25 @@
 package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hc.dto.InstrumentconfigDTO;
+import com.hc.dto.InstrumentConfigDTO;
 import com.hc.my.common.core.util.BeanConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hc.repository.InstrumentconfigRepository;
-import com.hc.infrastructure.dao.InstrumentconfigDao;
+import com.hc.infrastructure.dao.InstrumentConfigDao;
 import com.hc.po.InstrumentconfigPo;
 
 import java.util.List;
 
 
 @Repository
-public class InstrumentconfigRepositoryImpl extends ServiceImpl<InstrumentconfigDao,InstrumentconfigPo> implements InstrumentconfigRepository  {
+public class InstrumentconfigRepositoryImpl extends ServiceImpl<InstrumentConfigDao,InstrumentconfigPo> implements InstrumentconfigRepository  {
 
     @Autowired
-    private InstrumentconfigDao instrumentconfigDao;
+    private InstrumentConfigDao instrumentconfigDao;
     /**
      * 查询探头配置信息
      *
@@ -26,9 +27,9 @@ public class InstrumentconfigRepositoryImpl extends ServiceImpl<Instrumentconfig
      * @return
      */
     @Override
-    public InstrumentconfigDTO selectInfoByConfigid(Integer instrumentconfigid) {
+    public InstrumentConfigDTO selectInfoByConfigid(Integer instrumentconfigid) {
         InstrumentconfigPo instrumentconfigPo = instrumentconfigDao.selectOne(Wrappers.lambdaQuery(new InstrumentconfigPo()).eq(InstrumentconfigPo::getInstrumentconfigid, instrumentconfigid));
-        return BeanConverter.convert(instrumentconfigPo,InstrumentconfigDTO.class);
+        return BeanConverter.convert(instrumentconfigPo, InstrumentConfigDTO.class);
     }
 
     /**
@@ -37,8 +38,19 @@ public class InstrumentconfigRepositoryImpl extends ServiceImpl<Instrumentconfig
      * @return
      */
     @Override
-    public List<InstrumentconfigDTO> selectAllInfo() {
+    public List<InstrumentConfigDTO> selectAllInfo() {
         List<InstrumentconfigPo> instrumentconfigPos = instrumentconfigDao.selectList(null);
-        return BeanConverter.convert(instrumentconfigPos,InstrumentconfigDTO.class);
+        return BeanConverter.convert(instrumentconfigPos, InstrumentConfigDTO.class);
+    }
+
+    /**
+     * 分页查询监控参数类型信息
+     * @param page
+     * @param instrumentConfigName
+     * @return
+     */
+    @Override
+    public List<InstrumentConfigDTO> listByPage(Page<InstrumentConfigDTO> page, String instrumentConfigName) {
+        return instrumentconfigDao.listByPage(page,instrumentConfigName);
     }
 }

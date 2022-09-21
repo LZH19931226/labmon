@@ -69,7 +69,7 @@ public class FileUtils {
         //验证文件大小
         long size = file.getSize();
         if(size>DEFAULT_MAX_SIZE){
-            throw new IedsException("文件不得超过30M");
+            throw new IedsException("文件不得超过50M");
         }
         //检测格式石否正确
         String extension = getExtension(file);
@@ -77,7 +77,8 @@ public class FileUtils {
             throw new IedsException("文件格式错误");
         }
         //构建文件名称
-        String fileName = extractFilename(file);
+        String fileName = file.getOriginalFilename();
+//        String fileName = extractFilename(file);
         //创建文件
         File desc = getAbsoluteFile(baseDir, fileName);
         file.transferTo(desc);
@@ -132,7 +133,7 @@ public class FileUtils {
     public static void download(String filename, String baseDir, HttpServletResponse response) {
         try {
             //关键点，需要获取的文件所在文件系统的目录，定位准确才可以顺利下载文件
-            String filePath = baseDir+filename;
+            String filePath = baseDir+"\\"+filename;
             //创建一个输入流，将读取到的文件保存到输入流
             InputStream fis = new BufferedInputStream(Files.newInputStream(Paths.get(filePath)));
             byte[] buffer = new byte[fis.available()];
@@ -148,10 +149,33 @@ public class FileUtils {
             oStream.write(buffer);
             oStream.flush();
             oStream.close();
-            System.out.println("下载日志文件" + filename +"成功");
+            System.out.println("下载文件" + filename +"成功");
         } catch (Exception e) {
-            System.out.println("下载日志文件出错,错误原因:" + e);
+            System.out.println("下载文件出错,错误原因:" + e);
         }
+    }
+
+    public static boolean deleteFile(String path,String fileName){
+        return deleteFile(path+"\\"+fileName);
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param filePath 文件名
+     * @return
+     */
+    public static boolean deleteFile(String filePath)
+    {
+        boolean flag = false;
+        File file = new File(filePath);
+        // 路径为文件且不为空则进行删除
+        if (file.isFile() && file.exists())
+        {
+            file.delete();
+            flag = true;
+        }
+        return flag;
     }
 
 }

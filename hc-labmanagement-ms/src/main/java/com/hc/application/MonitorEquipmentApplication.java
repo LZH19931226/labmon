@@ -67,7 +67,7 @@ public class MonitorEquipmentApplication {
     private MonitorinstrumenttypeService monitorinstrumenttypeService;
 
     @Autowired
-    private InstrumentconfigService instrumentconfigService;
+    private InstrumentConfigService instrumentconfigService;
 
     @Autowired
     private OperationlogService operationlogService;
@@ -102,8 +102,8 @@ public class MonitorEquipmentApplication {
             Map<String, List<InstrumentparamconfigDTO>> instrumentNoMap = instrumentParamConfigLists.stream().collect(Collectors.groupingBy(InstrumentparamconfigDTO::getInstrumentno));
 
             //查询所有的探头检测信息
-            List<InstrumentconfigDTO> instrumentConfigList = instrumentconfigService.selectAllInfo();
-            Map<Integer, InstrumentconfigDTO> instrumentConfigMap = instrumentConfigList.stream().collect(Collectors.toMap(InstrumentconfigDTO::getInstrumentconfigid, t -> t));
+            List<InstrumentConfigDTO> instrumentConfigList = instrumentconfigService.selectAllInfo();
+            Map<Integer, InstrumentConfigDTO> instrumentConfigMap = instrumentConfigList.stream().collect(Collectors.toMap(InstrumentConfigDTO::getInstrumentconfigid, t -> t));
 
             //在超时报警中以equipmentNo为key,equipmentNo对应的MonitorequipmentwarningtimeDTO集合为value
             List<String> equipmentNoList = dtoList.stream().map(MonitorEquipmentDto::getEquipmentNo).collect(Collectors.toList());
@@ -125,7 +125,7 @@ public class MonitorEquipmentApplication {
                     if (CollectionUtils.isNotEmpty(instrumentMonitorList)) {
                         for (InstrumentmonitorDTO instrumentmonitorDTO : instrumentMonitorList) {
                             //查询检测类型名称
-                            InstrumentconfigDTO instrumentconfigDTO = instrumentConfigMap.get(instrumentmonitorDTO.getInstrumentconfigid());
+                            InstrumentConfigDTO instrumentconfigDTO = instrumentConfigMap.get(instrumentmonitorDTO.getInstrumentconfigid());
                             InstrumentmonitorVo build = buildInstrumentmonitorVo(instrumentconfigDTO,instrumentmonitorDTO);
                             instrumentMonitorVos.add(build);
                         }
@@ -192,7 +192,7 @@ public class MonitorEquipmentApplication {
         return timeVoList;
     }
 
-    private InstrumentmonitorVo buildInstrumentmonitorVo(InstrumentconfigDTO instrumentconfigDTO, InstrumentmonitorDTO instrumentmonitorDTO) {
+    private InstrumentmonitorVo buildInstrumentmonitorVo(InstrumentConfigDTO instrumentconfigDTO, InstrumentmonitorDTO instrumentmonitorDTO) {
         return InstrumentmonitorVo.builder()
                 .instrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
                 .instrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
@@ -765,8 +765,8 @@ public class MonitorEquipmentApplication {
         List<MonitorinstrumenttypeDTO> monitorinstrumenttypeVoList = monitorinstrumenttypeService.seleclAll();
 
         //查询出所有的监控配置
-        List<InstrumentconfigDTO> instrumentconfigDTOS = instrumentconfigService.selectAllInfo();
-        Map<Integer, InstrumentconfigDTO> instrumentconfigMap = instrumentconfigDTOS.stream().collect(Collectors.toMap(InstrumentconfigDTO::getInstrumentconfigid, Function.identity()));
+        List<InstrumentConfigDTO> instrumentconfigDTOS = instrumentconfigService.selectAllInfo();
+        Map<Integer, InstrumentConfigDTO> instrumentconfigMap = instrumentconfigDTOS.stream().collect(Collectors.toMap(InstrumentConfigDTO::getInstrumentconfigid, Function.identity()));
 
         List<InstrumentmonitorDTO> list = instrumentmonitorService.selectMonitorEquipmentAll();
         Map<Integer, List<InstrumentmonitorDTO>> instrumentmonitorMap = list.stream().collect(Collectors.groupingBy(InstrumentmonitorDTO::getInstrumenttypeid));
@@ -777,7 +777,7 @@ public class MonitorEquipmentApplication {
                 List<InstrumentmonitorVo> instrumentmonitorVos = new ArrayList<>();
                 instrumentmonitorDTOS.forEach(res -> {
                     Integer instrumentconfigid = res.getInstrumentconfigid();
-                    InstrumentconfigDTO instrumentconfig = new InstrumentconfigDTO();
+                    InstrumentConfigDTO instrumentconfig = new InstrumentConfigDTO();
                     if(instrumentconfigMap.containsKey(instrumentconfigid)){
                         instrumentconfig = instrumentconfigMap.get(instrumentconfigid);
                     }
@@ -825,7 +825,7 @@ public class MonitorEquipmentApplication {
         return null;
     }
 
-    private InstrumentmonitorVo buildInstrumentmonitorVo(InstrumentmonitorDTO res, InstrumentconfigDTO instrumentconfig) {
+    private InstrumentmonitorVo buildInstrumentmonitorVo(InstrumentmonitorDTO res, InstrumentConfigDTO instrumentconfig) {
         return InstrumentmonitorVo.builder()
                 .instrumentconfigid(res.getInstrumentconfigid())
                 .instrumenttypeid(res.getInstrumenttypeid())

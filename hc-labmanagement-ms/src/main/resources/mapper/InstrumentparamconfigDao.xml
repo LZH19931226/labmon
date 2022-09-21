@@ -3,7 +3,7 @@
 
 <mapper namespace="com.hc.infrastructure.dao.InstrumentparamconfigDao">
 
-    <select id="selectInstrumentparamconfigByEqNo" resultType="com.hc.dto.InstrumentconfigDTO">
+    <select id="selectInstrumentparamconfigByEqNo" resultType="com.hc.dto.InstrumentConfigDTO">
         SELECT
             t3.instrumentconfigid,
             t3.instrumentconfigname

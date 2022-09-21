@@ -3,7 +3,7 @@ package com.hc.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
-import com.hc.dto.InstrumentconfigDTO;
+import com.hc.dto.InstrumentConfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentparamconfigPo;
@@ -55,7 +55,7 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     }
 
     @Override
-    public List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo) {
+    public List<InstrumentConfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo) {
         return instrumentparamconfigRepository.selectInstrumentparamconfigByEqNo(equipmentNo);
     }
 

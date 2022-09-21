@@ -2,5 +2,12 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+# 本地文件上传：最大支持文件大小
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      enabled: true
+      resolve-lazily: false
   profiles:
     active: dev

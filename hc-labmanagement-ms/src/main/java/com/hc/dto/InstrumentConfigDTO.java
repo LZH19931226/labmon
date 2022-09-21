@@ -1,11 +1,10 @@
 package com.hc.dto;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author liuzhihao
@@ -14,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "instrumentconfig")
-public class InstrumentconfigDTO implements Serializable {
+public class InstrumentConfigDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

@@ -3,7 +3,7 @@ package com.hc.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
-import com.hc.dto.InstrumentconfigDTO;
+import com.hc.dto.InstrumentConfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 
@@ -39,7 +39,7 @@ public interface InstrumentparamconfigService{
     void deleteInfoByEno(String instrumentno);
 
 
-    List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo);
+    List<InstrumentConfigDTO> selectInstrumentparamconfigByEqNo(String equipmentNo);
 
     /**
      * 更新探头配置信息

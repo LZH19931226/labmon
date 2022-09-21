@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc.infrastructure.dao.AppVersionManageDao">
+
+    <select id="listByPage" resultType="com.hc.dto.AppVersionManageDto">
+        select
+        id,
+        app_id as appId,
+        version_id as versionId,
+        version_mini as versionMini,
+        app_name as appName,
+        version_code as versionCode,
+        type,
+        apk_url as apkUrl,
+        upgrade_point as upgradePoint,
+        status,
+        create_time as createTime,
+        update_time as updateTime
+        from
+            version_upgrade
+        where  1=1
+        <if test="appVersionManageDto.appName != null and appVersionManageDto.appName != ''">
+            and (app_name like concat('%',#{appManageCommand.appName},'%')
+        </if>
+    </select>
+</mapper>

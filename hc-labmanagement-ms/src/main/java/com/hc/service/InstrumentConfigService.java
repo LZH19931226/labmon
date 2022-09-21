@@ -1,15 +1,20 @@
-package com.hc.repository;
+package com.hc.service;
+
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-
+import com.hc.application.command.InstrumentConfigCommand;
 import com.hc.dto.InstrumentConfigDTO;
-import com.hc.po.InstrumentconfigPo;
 
 import java.util.List;
 
-
-public interface InstrumentconfigRepository extends IService <InstrumentconfigPo>{
+/**
+ *
+ *
+ * @author liuzhihao
+ * @email 1969994698@qq.com
+ * @date 2022-04-18 15:27:01
+ */
+public interface InstrumentConfigService {
 
     /**
      * 查询探头配置信息
@@ -24,6 +29,8 @@ public interface InstrumentconfigRepository extends IService <InstrumentconfigPo
      */
     List<InstrumentConfigDTO> selectAllInfo();
 
+    void save(String instrumentConfigName);
+
     /**
      * 分页查询监控参数类型信息
      * @param page
@@ -31,4 +38,7 @@ public interface InstrumentconfigRepository extends IService <InstrumentconfigPo
      * @return
      */
     List<InstrumentConfigDTO> listByPage(Page<InstrumentConfigDTO> page, String instrumentConfigName);
+
+    void edit(InstrumentConfigCommand instrumentConfigCommand);
 }
+

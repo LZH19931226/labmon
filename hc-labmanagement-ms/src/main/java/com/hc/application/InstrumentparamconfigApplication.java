@@ -74,7 +74,7 @@ public class InstrumentparamconfigApplication {
      * @return 探头信息集合
      */
     public List<InstrumentparamconfigVo> selectInstrumentParamConfigByEqNo(String equipmentNo) {
-        List<InstrumentconfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
+        List<InstrumentConfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
         if (CollectionUtils.isNotEmpty(instrumentConfigList)) {
             List<InstrumentparamconfigVo> instrumentParamConfigVos = new ArrayList<>();
             instrumentConfigList.forEach(s -> {
@@ -410,7 +410,7 @@ public class InstrumentparamconfigApplication {
      */
     public List<InstrumentparamconfigVo> getEquipmentUnAddMonitorTypeByNo(String equipmentNo) {
         //获取设备的探头的监测类型
-        List<InstrumentconfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
+        List<InstrumentConfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
         if(CollectionUtils.isEmpty(instrumentConfigList)){
             return null;
         }
@@ -418,7 +418,7 @@ public class InstrumentparamconfigApplication {
         List<String> instrumentConfigIdList  = instrumentparamconfigService.getEquipmentAddProbeInfo(equipmentNo);
         //当获取设备已添加的探头监测类型不为空时过滤信息
         if(CollectionUtils.isNotEmpty(instrumentConfigIdList)){
-            List<InstrumentconfigDTO> removeList = new ArrayList<>();
+            List<InstrumentConfigDTO> removeList = new ArrayList<>();
             instrumentConfigList.forEach(res->{
                 if (instrumentConfigIdList.contains(String.valueOf(res.getInstrumentconfigid()))) {
                     removeList.add(res);

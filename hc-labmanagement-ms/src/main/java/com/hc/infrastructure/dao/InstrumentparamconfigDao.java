@@ -1,7 +1,7 @@
 package com.hc.infrastructure.dao;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.dto.InstrumentconfigDTO;
+import com.hc.dto.InstrumentConfigDTO;
 import com.hc.dto.InstrumentparamconfigDTO;
 import com.hc.po.InstrumentparamconfigPo;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
@@ -25,7 +25,7 @@ public interface InstrumentparamconfigDao extends RootMapper<Instrumentparamconf
      * @param equipmentNo
      * @return
      */
-    List<InstrumentconfigDTO> selectInstrumentparamconfigByEqNo(@Param("equipmentNo") String equipmentNo);
+    List<InstrumentConfigDTO> selectInstrumentparamconfigByEqNo(@Param("equipmentNo") String equipmentNo);
 
     /**
      * 分页查询探头参数配置信息
