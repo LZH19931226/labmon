@@ -102,4 +102,12 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
             instrumentconfigRepository.updateById(instrumentconfigPo);
         }
     }
+
+    /**
+     * @param instrumentConfigId
+     */
+    @Override
+    public void remove(String instrumentConfigId) {
+        instrumentconfigRepository.removeById(instrumentConfigId);
+    }
 }

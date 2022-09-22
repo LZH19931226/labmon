@@ -44,6 +44,12 @@ public class AppManageCommand {
     private Integer versionMini;
 
     /**
+     * app名称
+     */
+    @ApiModelProperty(value = "app名称")
+    private String appName;
+
+    /**
      * 版本标识 1.2
      */
     @ApiModelProperty(value = "版本标识 1.2")

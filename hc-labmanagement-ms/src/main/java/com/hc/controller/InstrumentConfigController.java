@@ -1,8 +1,8 @@
 package com.hc.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.InstrumentConfigApplication;
 import com.hc.application.command.InstrumentConfigCommand;
-import com.hc.appliction.InstrumentConfigApplication;
 import com.hc.dto.InstrumentConfigDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +40,14 @@ public class InstrumentConfigController {
     }
 
     @PutMapping("/update")
+    @ApiOperation("更新监控参数类型")
     public void edit(@RequestBody InstrumentConfigCommand instrumentConfigCommand){
         instrumentconfigApplication.edit(instrumentConfigCommand);
+    }
+
+    @DeleteMapping("/delete")
+    @ApiOperation("删除监控参数类型")
+    public void remove(@RequestParam("instrumentConfigId")String instrumentConfigId){
+        instrumentconfigApplication.remove(instrumentConfigId);
     }
 }

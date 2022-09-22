@@ -40,5 +40,7 @@ public interface InstrumentConfigService {
     List<InstrumentConfigDTO> listByPage(Page<InstrumentConfigDTO> page, String instrumentConfigName);
 
     void edit(InstrumentConfigCommand instrumentConfigCommand);
+
+    void remove(String instrumentConfigId);
 }
 

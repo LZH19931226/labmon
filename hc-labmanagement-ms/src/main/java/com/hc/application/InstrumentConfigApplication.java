@@ -1,4 +1,4 @@
-package com.hc.appliction;
+package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentConfigCommand;
@@ -25,12 +25,17 @@ public class InstrumentConfigApplication {
 
     /**
      * 新增探头监测类型
-     * @param instrumentConfigName
+     * @param instrumentConfigName 探头监测类型名称
      */
     public void save(String instrumentConfigName) {
         instrumentConfigService.save(instrumentConfigName);
     }
 
+    /**
+     * 分页查询监测类型
+     * @param instrumentConfigCommand
+     * @return
+     */
     public Page<InstrumentConfigDTO> list(InstrumentConfigCommand instrumentConfigCommand) {
         Integer pageCurrent = instrumentConfigCommand.getPageCurrent();
         Integer pageSize = instrumentConfigCommand.getPageSize();
@@ -41,7 +46,19 @@ public class InstrumentConfigApplication {
         return page;
     }
 
+    /**
+     * 更新监测类型
+     * @param instrumentConfigCommand
+     */
     public void edit(InstrumentConfigCommand instrumentConfigCommand) {
         instrumentConfigService.edit(instrumentConfigCommand);
+    }
+
+    /**
+     * 删除监测类型
+     * @param instrumentConfigId
+     */
+    public void remove(String instrumentConfigId) {
+        instrumentConfigService.remove(instrumentConfigId);
     }
 }
