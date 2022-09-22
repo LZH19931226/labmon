@@ -133,7 +133,7 @@ public class FileUtils {
     public static void download(String filename, String baseDir, HttpServletResponse response) {
         try {
             //关键点，需要获取的文件所在文件系统的目录，定位准确才可以顺利下载文件
-            String filePath = baseDir+"\\"+filename;
+            String filePath = baseDir+"/"+filename;
             //创建一个输入流，将读取到的文件保存到输入流
             InputStream fis = new BufferedInputStream(Files.newInputStream(Paths.get(filePath)));
             byte[] buffer = new byte[fis.available()];
@@ -156,7 +156,7 @@ public class FileUtils {
     }
 
     public static boolean deleteFile(String path,String fileName){
-        return deleteFile(path+"\\"+fileName);
+        return deleteFile(path+"/"+fileName);
     }
 
     /**

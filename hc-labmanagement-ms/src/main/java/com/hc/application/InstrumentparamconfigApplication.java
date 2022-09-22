@@ -23,10 +23,10 @@ import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -95,7 +95,7 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigCommand 探头信息参数
      */
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public void insertInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         //判断探头的检测类型是否存在
         boolean flag = instrumentmonitorService.selectOne(new InstrumentmonitorDTO().setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
@@ -223,7 +223,7 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigCommand 探头信息参数
      */
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public void editInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
 //        //计较上限值和下限值
 //        int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
@@ -302,7 +302,7 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigNos 探头信息参数
      */
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
         if(!ObjectUtils.isEmpty(instrumentParamConfigNos)){
             List<InstrumentparamconfigDTO> dos = instrumentparamconfigService.selectInstrumentparamconfigAllInfo();

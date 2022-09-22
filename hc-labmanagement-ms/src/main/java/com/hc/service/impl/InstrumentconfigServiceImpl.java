@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentConfigCommand;
 import com.hc.constants.error.InstrumentConfigEnumErrorCode;
@@ -85,5 +86,20 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
         String instrumentConfigName = instrumentConfigCommand.getInstrumentConfigName();
         Integer instrumentConfigId = instrumentConfigCommand.getInstrumentConfigId();
         InstrumentConfigDTO instrumentConfigDTO = instrumentconfigRepository.selectInfoByConfigid(instrumentConfigId);
+        String oldName = instrumentConfigDTO.getInstrumentconfigname();
+        if (instrumentConfigName.equals(oldName)) {
+            return;
+        }
+        int count = instrumentconfigRepository.count(Wrappers.lambdaQuery(new InstrumentconfigPo())
+                .eq(InstrumentconfigPo::getInstrumentconfigname, instrumentConfigName));
+        if(count>0){
+
+            throw new IedsException(InstrumentConfigEnumErrorCode.NAME_ALREADY_EXISTS.getMessage());
+        }else {
+            InstrumentconfigPo instrumentconfigPo = new InstrumentconfigPo();
+            instrumentconfigPo.setInstrumentconfigid(instrumentConfigId);
+            instrumentconfigPo.setInstrumentconfigname(instrumentConfigName);
+            instrumentconfigRepository.updateById(instrumentconfigPo);
+        }
     }
 }
