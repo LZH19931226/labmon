@@ -28,8 +28,20 @@
     <description>hc 公共包</description>
     <dependencies>
         <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-seata</artifactId>
+            <version>2.2.0.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.seata</groupId>
+                    <artifactId>seata-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>io.seata</groupId>
-            <artifactId>seata-spring-boot-starter</artifactId>
+            <artifactId>seata-all</artifactId>
             <version>1.4.0</version>
         </dependency>
     </dependencies>
