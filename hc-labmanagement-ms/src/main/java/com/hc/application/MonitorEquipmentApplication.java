@@ -33,7 +33,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -209,7 +208,6 @@ public class MonitorEquipmentApplication {
      *
      * @param monitorEquipmentCommand 监控设备参数
      */
-    @Transactional(rollbackFor = Exception.class)
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String sn = monitorEquipmentCommand.getSn().trim();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
@@ -494,7 +492,6 @@ public class MonitorEquipmentApplication {
      *
      * @param monitorEquipmentCommand 监控设备参数
      */
-    @Transactional(rollbackFor = Exception.class)
     public void updateMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
@@ -666,7 +663,6 @@ public class MonitorEquipmentApplication {
      *
      * @param equipmentNo 设备编号
      */
-    @Transactional(rollbackFor = Exception.class)
     public void deleteMonitorEquipment(String equipmentNo) {
 
         //判断设备是否有探头信息
@@ -710,7 +706,6 @@ public class MonitorEquipmentApplication {
      * @param instrumenttypeid 探头类型id
      * @return
      */
-    @Transactional(rollbackFor = Exception.class)
     public List<MonitorinstrumenttypeVo> selectMonitorEquipmentType(String instrumenttypeid) {
         List<MonitorinstrumenttypeDTO> monitorinstrumenttypeDTOS = instrumentmonitorService.selectMonitorEquipmentType(instrumenttypeid);
         if (CollectionUtils.isNotEmpty(monitorinstrumenttypeDTOS)) {
@@ -758,7 +753,6 @@ public class MonitorEquipmentApplication {
      *
      * @return
      */
-    @Transactional(rollbackFor = Exception.class)
     public List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation(String equipmentTypeId) {
         List<MonitorinstrumenttypeVo> mitVo = new ArrayList<>();
         //查出所有的监控设备类型
