@@ -1,5 +1,6 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.hc.dto.MonitorequipmenttypeDTO;
@@ -25,4 +26,5 @@ public interface MonitorinstrumenttypeRepository extends IService <Monitorinstru
      */
     List<MonitorinstrumenttypeDTO> seleclAll();
 
+    List<MonitorinstrumenttypeDTO> listByPage(Page<MonitorinstrumenttypeDTO> page, String instrumentTypeName);
 }

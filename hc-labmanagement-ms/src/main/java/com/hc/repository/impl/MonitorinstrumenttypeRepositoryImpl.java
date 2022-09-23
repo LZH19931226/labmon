@@ -1,6 +1,7 @@
 package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.MonitorequipmenttypeDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
@@ -44,5 +45,10 @@ public class MonitorinstrumenttypeRepositoryImpl extends ServiceImpl<Monitorinst
     public List<MonitorinstrumenttypeDTO> seleclAll() {
         List<MonitorinstrumenttypePo> monitorinstrumenttypePos = monitorinstrumenttypeDao.selectList(null);
         return BeanConverter.convert(monitorinstrumenttypePos,MonitorinstrumenttypeDTO.class);
+    }
+
+    @Override
+    public List<MonitorinstrumenttypeDTO> listByPage(Page page, String instrumentTypeName) {
+        return monitorinstrumenttypeDao.list(page,instrumentTypeName);
     }
 }

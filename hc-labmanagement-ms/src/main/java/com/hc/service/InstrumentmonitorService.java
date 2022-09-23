@@ -57,5 +57,12 @@ public interface InstrumentmonitorService {
      * @return
      */
     List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode);
+
+    /**
+     *
+     * @param instrumentTypeId
+     * @return
+     */
+    int countByInstrumentTypeId(String instrumentTypeId);
 }
 

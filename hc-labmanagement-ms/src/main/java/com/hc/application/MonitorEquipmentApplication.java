@@ -756,7 +756,7 @@ public class MonitorEquipmentApplication {
     public List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation(String equipmentTypeId) {
         List<MonitorinstrumenttypeVo> mitVo = new ArrayList<>();
         //查出所有的监控设备类型
-        List<MonitorinstrumenttypeDTO> monitorinstrumenttypeVoList = monitorinstrumenttypeService.seleclAll();
+        List<MonitorinstrumenttypeDTO> monitorinstrumenttypeVoList = monitorinstrumenttypeService.selectAll();
 
         //查询出所有的监控配置
         List<InstrumentConfigDTO> instrumentconfigDTOS = instrumentconfigService.selectAllInfo();

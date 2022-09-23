@@ -1,7 +1,9 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
+import com.hc.po.InstrumentmonitorPo;
 import com.hc.repository.InstrumentmonitorRepository;
 import com.hc.service.InstrumentmonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +82,15 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
     @Override
     public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode) {
         return instrumentmonitorRepository.selectInstrumentMonitorInfo(hospitalCode);
+    }
+
+    /**
+     * @param instrumentTypeId
+     * @return
+     */
+    @Override
+    public int countByInstrumentTypeId(String instrumentTypeId) {
+        return instrumentmonitorRepository.count(Wrappers.lambdaQuery(new InstrumentmonitorPo())
+                .eq(InstrumentmonitorPo::getInstrumenttypeid,instrumentTypeId));
     }
 }

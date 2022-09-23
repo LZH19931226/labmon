@@ -1,7 +1,12 @@
 package com.hc.infrastructure.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.dto.MonitorinstrumenttypeDTO;
 import com.hc.po.MonitorinstrumenttypePo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  *
@@ -12,4 +17,5 @@ import com.hc.po.MonitorinstrumenttypePo;
  */
 public interface MonitorinstrumenttypeDao extends BaseMapper<MonitorinstrumenttypePo> {
 
+    List<MonitorinstrumenttypeDTO> list(Page page, @Param("instrumentTypeName") String instrumentTypeName);
 }

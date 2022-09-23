@@ -238,7 +238,7 @@ public class InstrumentparamconfigApplication {
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
         //更新设备
         String warningphone = instrumentParamConfigCommand.getWarningphone();
-        String equipmentNo = instrumentParamConfigCommand.getEquipmentNo();
+        String equipmentNo = monitorinstrumentDTO.getEquipmentno();
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
         monitorEquipmentDto.setEquipmentNo(equipmentNo);
         //当设备报警开关发生变化时在修改设备的报警开关(有一个探头开启设备开启，所有探头关闭设备关闭)
