@@ -6,6 +6,7 @@ import com.hc.application.command.InstrumentConfigCommand;
 import com.hc.constants.error.InstrumentConfigEnumErrorCode;
 import com.hc.dto.InstrumentConfigDTO;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentconfigPo;
 import com.hc.repository.InstrumentconfigRepository;
 import com.hc.service.InstrumentConfigService;
@@ -109,5 +110,11 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
     @Override
     public void remove(String instrumentConfigId) {
         instrumentconfigRepository.removeById(instrumentConfigId);
+    }
+
+    @Override
+    public List<InstrumentConfigDTO> list() {
+        List<InstrumentconfigPo> list = instrumentconfigRepository.list();
+        return BeanConverter.convert(list,InstrumentConfigDTO.class);
     }
 }

@@ -1,8 +1,12 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.InstrumentMonitorCommand;
 import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentmonitorPo;
 import com.hc.repository.InstrumentmonitorRepository;
 import com.hc.service.InstrumentmonitorService;
@@ -92,5 +96,37 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
     public int countByInstrumentTypeId(String instrumentTypeId) {
         return instrumentmonitorRepository.count(Wrappers.lambdaQuery(new InstrumentmonitorPo())
                 .eq(InstrumentmonitorPo::getInstrumenttypeid,instrumentTypeId));
+    }
+
+    /**
+     * 删除
+     *
+     * @param instrumentTypeId
+     */
+    @Override
+    public void removeByTypeId(Integer instrumentTypeId) {
+        instrumentmonitorRepository.remove(Wrappers.lambdaQuery(new InstrumentmonitorPo())
+                .eq(InstrumentmonitorPo::getInstrumenttypeid,instrumentTypeId));
+    }
+
+    @Override
+    public void add(InstrumentMonitorCommand instrumentMonitorCommand) {
+        List<InstrumentmonitorDTO> dtoList = instrumentMonitorCommand.getInstrumentmonitorDTOList();
+        List<InstrumentmonitorPo> poList = BeanConverter.convert(dtoList, InstrumentmonitorPo.class);
+        if(CollectionUtils.isNotEmpty(dtoList)){
+            instrumentmonitorRepository.saveBatch(poList);
+        }
+    }
+
+    @Override
+    public List<InstrumentmonitorDTO> list(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId) {
+        return instrumentmonitorRepository.listByPage(page,instrumentTypeId);
+    }
+
+    @Override
+    public void remove(Integer instrumentTypeId, Integer instrumentConfigId) {
+        instrumentmonitorRepository.remove(Wrappers.lambdaQuery(new InstrumentmonitorPo())
+                .eq(InstrumentmonitorPo::getInstrumenttypeid,instrumentTypeId)
+                .eq(InstrumentmonitorPo::getInstrumentconfigid,instrumentConfigId));
     }
 }

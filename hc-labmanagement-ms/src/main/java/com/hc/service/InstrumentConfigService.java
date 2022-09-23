@@ -42,5 +42,7 @@ public interface InstrumentConfigService {
     void edit(InstrumentConfigCommand instrumentConfigCommand);
 
     void remove(String instrumentConfigId);
+
+    List<InstrumentConfigDTO> list();
 }
 

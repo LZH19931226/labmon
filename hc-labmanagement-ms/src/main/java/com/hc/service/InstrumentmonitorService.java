@@ -1,6 +1,8 @@
 package com.hc.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.InstrumentMonitorCommand;
 import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
 
@@ -64,5 +66,18 @@ public interface InstrumentmonitorService {
      * @return
      */
     int countByInstrumentTypeId(String instrumentTypeId);
+
+    /**
+     * 删除
+     * @param instrumentTypeId
+     */
+    void removeByTypeId(Integer instrumentTypeId);
+
+    void add(InstrumentMonitorCommand instrumentMonitorCommand);
+
+    List<InstrumentmonitorDTO> list(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId);
+
+    void remove(Integer instrumentTypeId, Integer instrumentConfigId);
+
 }
 

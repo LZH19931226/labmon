@@ -23,6 +23,7 @@ import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -222,16 +223,9 @@ public class InstrumentparamconfigApplication {
      * @param instrumentParamConfigCommand 探头信息参数
      */
     public void editInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
-//        //计较上限值和下限值
-//        int compareTo = instrumentParamConfigCommand.getLowlimit().compareTo(instrumentParamConfigCommand.getHighlimit());
-//        if(compareTo>=0){
-//            throw new IedsException(MonitorinstrumentEnumCode.THE_LOWER_LIMIT_CANNOT_EXCEED_THE_UPPER_LIMIT.getMessage());
-//        }
-
         InstrumentparamconfigDTO dto =  instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
         MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
         String sn = monitorinstrumentDTO.getSn();
-        String newWarningPhone = dto.getWarningphone();
         dto.setSn(sn);
         //更新探头信息
         InstrumentparamconfigDTO instrumentparamconfigDTO = buildInstrumentparamconfigDTO(instrumentParamConfigCommand);
@@ -242,21 +236,20 @@ public class InstrumentparamconfigApplication {
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
         monitorEquipmentDto.setEquipmentNo(equipmentNo);
         //当设备报警开关发生变化时在修改设备的报警开关(有一个探头开启设备开启，所有探头关闭设备关闭)
-        if(!StringUtils.isEmpty(newWarningPhone) && !newWarningPhone.equals(warningphone)){
-            if(SysConstants.IN_ALARM.equals(warningphone)){
-                monitorEquipmentDto.setWarningSwitch(warningphone);
+        if(SysConstants.IN_ALARM.equals(warningphone)){
+            monitorEquipmentDto.setWarningSwitch(warningphone);
+        }else {
+            List<InstrumentparamconfigDTO> instrumentConfigDTOS = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
+            long count = instrumentConfigDTOS.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
+            if(count>0){
+                monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
             }else {
-                List<InstrumentparamconfigDTO> instrumentconfigDTOS = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
-                long count = instrumentconfigDTOS.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
-                if(count>0){
-                    monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
-                }else {
-                    monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
-                }
+                monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
             }
         }
-        //更新设备数据库
+        //当修改探头报警状态时更新设备数据库
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
+
         //更新设备缓存
         SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
         if(!ObjectUtils.isEmpty(result1)){

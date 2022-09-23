@@ -53,4 +53,17 @@
                 LEFT JOIN monitorequipment e ON d.equipmentno = e.equipmentno
         where e.hospitalcode = #{hospitalCode}
     </select>
+
+    <select id="listByPage" resultType="com.hc.dto.InstrumentmonitorDTO">
+       select
+           *
+        from
+            instrumentmonitor
+        where
+            1=1
+        <if test="instrumentTypeId != null and instrumentTypeId != ''">
+            and instrumenttypeid = #{instrumentTypeId}
+        </if>
+
+    </select>
 </mapper>

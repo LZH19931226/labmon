@@ -1,5 +1,6 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.hc.dto.InstrumentmonitorDTO;
@@ -49,4 +50,11 @@ public interface InstrumentmonitorRepository extends IService <Instrumentmonitor
      */
     List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode);
 
+    /**
+     * 分页查询
+     * @param page
+     * @param instrumentTypeId
+     * @return
+     */
+    List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId);
 }

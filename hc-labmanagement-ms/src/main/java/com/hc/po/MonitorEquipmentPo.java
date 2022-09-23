@@ -1,5 +1,6 @@
 package com.hc.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -25,8 +26,7 @@ public class MonitorEquipmentPo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 设备号 */
-    @TableId
-    @TableField(value = "equipmentno")
+    @TableId(value = "equipmentno",type = IdType.INPUT)
     private String equipmentNo;
 
     /** 设备类型id */

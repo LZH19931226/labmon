@@ -1,6 +1,7 @@
 package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.InstrumentmonitorDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
@@ -112,5 +113,17 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
     @Override
     public List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode) {
         return instrumentmonitorDao.selectInstrumentMonitorInfo(hospitalCode);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param page
+     * @param instrumentTypeId
+     * @return
+     */
+    @Override
+    public List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId) {
+        return instrumentmonitorDao.listByPage(page,instrumentTypeId);
     }
 }

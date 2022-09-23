@@ -26,7 +26,7 @@ public class MonitorinstrumenttypePo  implements Serializable {
 	/**
 	* 探头类型编码
 	*/
-	@TableId(type = IdType.AUTO)
+	@TableId(value = "instrumenttypeid",type = IdType.INPUT)
 	private Integer instrumenttypeid;
 	/**
 	* 探头类型名称
