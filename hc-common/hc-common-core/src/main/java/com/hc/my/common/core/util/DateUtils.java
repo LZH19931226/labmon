@@ -1,5 +1,9 @@
 package com.hc.my.common.core.util;
 
+import com.hc.my.common.core.util.date.DateConstant;
+import com.hc.my.common.core.util.date.DateDto;
+import org.springframework.util.ObjectUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -234,5 +238,81 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year,month,date);
         return calendar.getTime();
+    }
+
+    /**
+     * 获取两个时间相隔的时间
+     *
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @return 时间对象{年，月，日，时，分，秒}
+     */
+    public static DateDto convert(Date startDate, Date endDate) {
+        //获取开始时间毫秒数
+        long startTime = startDate.getTime();
+        //获取结束毫秒数
+        long endTime = endDate.getTime();
+        long timeDifference = endTime-startTime;
+        //计算秒
+        long time = (timeDifference/1000);
+        return getDateDto(time);
+    }
+
+    /**
+     * 获取时间对象
+     * @param obj Date或long类型
+     * @return 时间对象{年，月，日，时，分，秒}
+     */
+    public static DateDto getDateDto(Object obj){
+        return obj instanceof Long ? getDateDto(((Long) obj)) :
+                obj instanceof Date ? getDateDto(((Date)obj).getTime()/1000)  : null;
+    }
+
+    /**
+     * 获取时间对象
+     * @param time 毫秒
+     * @return
+     */
+    public static DateDto getDateDto(Long time){
+        DateDto dateDto = new DateDto();
+        if(time< DateConstant.SECOND_THRESHOLD){
+            //设置秒
+            dateDto.setSecond(time);
+        }else{
+            long minute =  time/DateConstant.SECOND_THRESHOLD;
+            if(minute < DateConstant.MINUTE_THRESHOLD){
+                //设置分
+                dateDto.setMinute(minute);
+                dateDto.setSecond(time%DateConstant.SECOND_THRESHOLD);
+            }else {
+                long hour = minute/DateConstant.MINUTE_THRESHOLD;
+                if(hour < DateConstant.HOUR_THRESHOLD){
+                    //设置时
+                    dateDto.setHour(hour);
+                }else {
+                    long date = hour/DateConstant.HOUR_THRESHOLD;
+                    if(date < DateConstant.DATE_THRESHOLD){
+                        //设置日
+                        dateDto.setDate(date);
+                    }else {
+                        long month = date/DateConstant.DATE_THRESHOLD;
+                        if(month<DateConstant.MONTH_THRESHOLD){
+                            //设置月
+                            dateDto.setMonth(month);
+                        }else {
+                            Long year = month/DateConstant.MONTH_THRESHOLD;
+                            //设置年
+                            dateDto.setYear(year);
+                            dateDto.setMonth(month%DateConstant.MONTH_THRESHOLD);
+                        }
+                        dateDto.setDate(date%DateConstant.DATE_THRESHOLD);
+                    }
+                    dateDto.setHour(hour%DateConstant.HOUR_THRESHOLD);
+                }
+                dateDto.setMinute(minute%DateConstant.MINUTE_THRESHOLD);
+                dateDto.setSecond(time%DateConstant.SECOND_THRESHOLD);
+            }
+        }
+        return dateDto;
     }
 }

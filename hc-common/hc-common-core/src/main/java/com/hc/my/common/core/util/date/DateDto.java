@@ -1,4 +1,4 @@
-package com.hc.dto;
+package com.hc.my.common.core.util.date;
 
 import lombok.Data;
 
@@ -17,3 +17,4 @@ public class DateDto {
 
     private Long second;
 }
+

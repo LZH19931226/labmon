@@ -24,6 +24,7 @@ import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.util.EquipmentInfoServiceHelp;
@@ -339,63 +340,7 @@ public class AppEquipmentInfoApplication {
             return new DateDto();
         }
         Date date = new Date();
-        return convert(createTime,date);
-    }
-
-    /**
-     * 获取两个时间相隔的时间
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    public DateDto convert(Date startDate, Date endDate) {
-        long startTime = startDate.getTime();//获取毫秒数
-        long endTime = endDate.getTime();	 //获取毫秒数
-        long timeDifference = endTime-startTime;
-        long time = (timeDifference/1000);	//计算秒
-        DateDto dateDto = new DateDto();
-        if(time<60){
-            dateDto.setSecond(time);//设置秒
-        }else{
-            long minute =  time/60;
-            if(minute < 60){
-                dateDto.setMinute(minute);//设置分
-                dateDto.setSecond(time%60);
-            }else {
-                long hour = minute/60;
-                if(hour < 24){
-                    dateDto.setHour(hour);
-                    dateDto.setMinute(minute%60);
-                    dateDto.setSecond(time%60);
-                }else {
-                    long date = hour/24;
-                    if(date < 30){
-                        dateDto.setDate(date);
-                        dateDto.setHour(hour%24);
-                        dateDto.setMinute(minute%60);
-                        dateDto.setSecond(time%60);
-                    }else {
-                        long month = date/30;
-                        if(month<12){
-                            dateDto.setMonth(month);
-                            dateDto.setDate(date%30);
-                            dateDto.setHour(hour%24);
-                            dateDto.setMinute(minute%60);
-                            dateDto.setSecond(time%60);
-                        }else {
-                            Long year = month/12;
-                            dateDto.setYear(year);
-                            dateDto.setMonth(month%12);
-                            dateDto.setDate(date%30);
-                            dateDto.setHour(hour%24);
-                            dateDto.setMinute(minute%60);
-                            dateDto.setSecond(time%60);
-                        }
-                    }
-                }
-            }
-        }
-        return dateDto;
+        return DateUtils.convert(createTime,date);
     }
 
     /**

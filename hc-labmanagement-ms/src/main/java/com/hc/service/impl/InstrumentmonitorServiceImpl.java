@@ -113,7 +113,7 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
     public void add(InstrumentMonitorCommand instrumentMonitorCommand) {
         List<InstrumentmonitorDTO> dtoList = instrumentMonitorCommand.getInstrumentmonitorDTOList();
         List<InstrumentmonitorPo> poList = BeanConverter.convert(dtoList, InstrumentmonitorPo.class);
-        if(CollectionUtils.isNotEmpty(dtoList)){
+        if(CollectionUtils.isNotEmpty(poList)){
             instrumentmonitorRepository.saveBatch(poList);
         }
     }
