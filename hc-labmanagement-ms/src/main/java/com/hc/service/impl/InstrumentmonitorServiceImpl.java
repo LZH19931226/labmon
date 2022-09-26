@@ -119,8 +119,8 @@ public class InstrumentmonitorServiceImpl implements InstrumentmonitorService {
     }
 
     @Override
-    public List<InstrumentmonitorDTO> list(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId) {
-        return instrumentmonitorRepository.listByPage(page,instrumentTypeId);
+    public List<InstrumentmonitorDTO> list(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId,Integer instrumentConfigId) {
+        return instrumentmonitorRepository.listByPage(page,instrumentTypeId,instrumentConfigId);
     }
 
     @Override

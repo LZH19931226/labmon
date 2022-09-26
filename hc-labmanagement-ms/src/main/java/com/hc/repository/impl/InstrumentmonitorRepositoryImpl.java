@@ -123,7 +123,7 @@ public class InstrumentmonitorRepositoryImpl extends ServiceImpl<Instrumentmonit
      * @return
      */
     @Override
-    public List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId) {
-        return instrumentmonitorDao.listByPage(page,instrumentTypeId);
+    public List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId,Integer instrumentConfigId) {
+        return instrumentmonitorDao.listByPage(page,instrumentTypeId,instrumentConfigId);
     }
 }

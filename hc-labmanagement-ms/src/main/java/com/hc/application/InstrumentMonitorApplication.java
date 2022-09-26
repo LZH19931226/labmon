@@ -58,8 +58,9 @@ public class InstrumentMonitorApplication {
         Integer pageCurrent = instrumentMonitorCommand.getPageCurrent();
         Integer pageSize = instrumentMonitorCommand.getPageSize();
         Integer instrumentTypeId = instrumentMonitorCommand.getInstrumentTypeId();
+        Integer instrumentConfigId = instrumentMonitorCommand.getInstrumentConfigId();
         Page<InstrumentmonitorDTO> page = new Page<>(pageCurrent,pageSize);
-        List<InstrumentmonitorDTO> list = instrumentmonitorService.list(page,instrumentTypeId);
+        List<InstrumentmonitorDTO> list = instrumentmonitorService.list(page,instrumentTypeId,instrumentConfigId);
         if(CollectionUtils.isNotEmpty(list)){
             //查询设备字典
             List<MonitorinstrumenttypeDTO> monitorInstrumentTypeList = monitorinstrumenttypeService.selectAll();

@@ -21,5 +21,7 @@ public interface InstrumentmonitorDao extends BaseMapper<InstrumentmonitorPo> {
 
     List<InstrumentmonitorDTO> selectInstrumentMonitorInfo(String hospitalCode);
 
-    List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page,@Param("instrumentTypeId") Integer instrumentTypeId);
+    List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page,
+                                          @Param("instrumentTypeId") Integer instrumentTypeId,
+                                          @Param("instrumentConfigId") Integer instrumentConfigId);
 }

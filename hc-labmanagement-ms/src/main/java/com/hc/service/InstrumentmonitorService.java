@@ -75,7 +75,7 @@ public interface InstrumentmonitorService {
 
     void add(InstrumentMonitorCommand instrumentMonitorCommand);
 
-    List<InstrumentmonitorDTO> list(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId);
+    List<InstrumentmonitorDTO> list(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId,Integer instrumentConfigId);
 
     void remove(Integer instrumentTypeId, Integer instrumentConfigId);
 

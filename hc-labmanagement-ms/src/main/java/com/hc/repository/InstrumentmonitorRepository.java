@@ -56,5 +56,5 @@ public interface InstrumentmonitorRepository extends IService <Instrumentmonitor
      * @param instrumentTypeId
      * @return
      */
-    List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId);
+    List<InstrumentmonitorDTO> listByPage(Page<InstrumentmonitorDTO> page, Integer instrumentTypeId,Integer instrumentConfigId);
 }
