@@ -143,4 +143,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
         warningRecordDto.setWarningvalue(value);
         return warningRecordDto;
     }
+    public static void  main(String[] args){
+        System.out.println(1<1);
+    }
 }

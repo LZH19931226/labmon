@@ -2,6 +2,7 @@ package com.hc.service.serviceImpl;
 
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
+import com.hc.my.common.core.util.Crc16Utils;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.tcp.TcpClientApi;
@@ -77,6 +78,12 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
             }
             // 获取命令id
             String cmdid = cmd.substring(4, 6);
+            //CRC16校验 旧协议不需要,旧协议有7,8,9,A
+            if (!StringUtils.equalsAnyIgnoreCase(cmdid,"7","8","9","a")){
+                if(!Crc16Utils.getCRCCodeIsTrue(cmd)){
+                    continue;
+                }
+            }
             paramaterModel.setSN(sn);
             paramaterModel.setCmdid(cmdid);
             switch (cmdid) {
@@ -388,7 +395,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     ParamaterModel paramaterModel21 = cmdidParseUtils.paseAB(cmd, sn, cmdid);
                     list.add(paramaterModel21);
                     continue;
-                case"ad":
+                case"b0":
                     ParamaterModel paramaterModel22 = cmdidParseUtils.paseAD(cmd, sn, cmdid);
                     list.add(paramaterModel22);
                     continue;
