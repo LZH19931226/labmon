@@ -60,7 +60,7 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
         OptionalInt max = list.stream().mapToInt(InstrumentconfigPo::getInstrumentconfigid).max();
         InstrumentconfigPo instrumentconfigPo = new InstrumentconfigPo();
         if(max.isPresent()){
-            instrumentconfigPo.setInstrumentconfigid(max.getAsInt());
+            instrumentconfigPo.setInstrumentconfigid(max.getAsInt()+1);
         }else {
             instrumentconfigPo.setInstrumentconfigid(list.size()+1);
         }
