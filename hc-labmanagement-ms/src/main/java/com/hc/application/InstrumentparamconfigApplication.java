@@ -95,6 +95,7 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigCommand 探头信息参数
      */
+    @GlobalTransactional
     public void insertInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         //判断探头的检测类型是否存在
         boolean flag = instrumentmonitorService.selectOne(new InstrumentmonitorDTO().setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
@@ -222,6 +223,7 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigCommand 探头信息参数
      */
+    @GlobalTransactional
     public void editInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         InstrumentparamconfigDTO dto =  instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
         MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
@@ -292,6 +294,7 @@ public class InstrumentparamconfigApplication {
      *
      * @param instrumentParamConfigNos 探头信息参数
      */
+    @GlobalTransactional
     public void removeInstrumentParamConfig(String[] instrumentParamConfigNos) {
         if(!ObjectUtils.isEmpty(instrumentParamConfigNos)){
             List<InstrumentparamconfigDTO> dos = instrumentparamconfigService.selectInstrumentparamconfigAllInfo();

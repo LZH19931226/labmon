@@ -18,7 +18,8 @@
             a.instrumenttypename instrumentTypeName,
             me.equipmentbrand equipmentBrand,
             me.clientvisible clientVisible,
-            me.alwayalarm alwaysAlarm
+            me.alwayalarm alwaysAlarm,
+            me.remark remark
         FROM
             monitorequipment me
                 LEFT JOIN hospitalofreginfo h ON me.hospitalcode = h.hospitalcode

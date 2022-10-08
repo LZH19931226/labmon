@@ -78,4 +78,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
 
     /**设备报警开关0为关闭1为开启*/
     private String warningSwitch;
+
+    /** 备注 */
+    private String remark;
 }

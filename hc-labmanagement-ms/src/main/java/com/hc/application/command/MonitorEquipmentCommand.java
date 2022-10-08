@@ -92,6 +92,11 @@ public class MonitorEquipmentCommand {
     private String instrumenttypeid;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 报警时间段
      */
     private List<MonitorequipmentwarningtimeDTO> warningTimeList;

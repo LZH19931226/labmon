@@ -304,7 +304,7 @@ public class cmdidParseUtils {
         //气流
         String qi = cmd.substring(36, 40);
         if (StringUtils.equalsIgnoreCase(qi, ProbeOutlier.FFF0.getCode())) {
-            paramaterModel.setAirflow(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
+            paramaterModel.setAirflow("E");
         } else if (StringUtils.equalsIgnoreCase(qi, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setAirflow(ProbeOutlier.AIRFLOW_CONTROL_OFF.getCode());
         } else if (StringUtils.equalsIgnoreCase(qi, ProbeOutlier.FFF2.getCode())) {

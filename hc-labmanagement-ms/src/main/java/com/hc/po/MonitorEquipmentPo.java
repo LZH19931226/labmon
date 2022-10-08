@@ -68,4 +68,8 @@ public class MonitorEquipmentPo implements Serializable {
     /**设备报警开关0为关闭1为开启*/
     @TableField(value = "warning_switch")
     private String warningSwitch;
+
+    /** 备注 */
+    @TableField(value = "remark")
+    private String remark;
 }

@@ -29,6 +29,7 @@ import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
 import com.hc.vo.equimenttype.WarningTimeVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,6 +173,7 @@ public class MonitorEquipmentApplication {
                 .warningTimeList(timeVoList)
                 .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                 .deleteOrNot(deleteOrNot)
+                .remark(res.getRemark())
                 .build();
     }
 
@@ -208,6 +210,7 @@ public class MonitorEquipmentApplication {
      *
      * @param monitorEquipmentCommand 监控设备参数
      */
+    @GlobalTransactional
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String sn = monitorEquipmentCommand.getSn().trim();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
@@ -234,6 +237,7 @@ public class MonitorEquipmentApplication {
         //插入到monitorequipment表中
         String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
+                .setRemark(monitorEquipmentCommand.getRemark())
                 .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
                 .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
                 .setClientVisible(monitorEquipmentCommand.getClientVisible())
@@ -440,7 +444,8 @@ public class MonitorEquipmentApplication {
                 .setAlarmTime(3L)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
-                .setWarningTimeList(warningTimeDTOs);
+                .setWarningTimeList(warningTimeDTOs)
+                .setRemark(monitorEquipmentCommand.getRemark());
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
 
@@ -492,6 +497,7 @@ public class MonitorEquipmentApplication {
      *
      * @param monitorEquipmentCommand 监控设备参数
      */
+    @GlobalTransactional
     public void updateMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
@@ -642,6 +648,7 @@ public class MonitorEquipmentApplication {
      */
     public SnDeviceDto buildSnDeviceDto(MonitorEquipmentCommand monitorEquipmentCommand,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO, List<MonitorEquipmentWarningTimeDto> warningTimeDTOs){
         return new SnDeviceDto()
+                .setRemark(monitorEquipmentCommand.getRemark())
                 .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
                 .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
