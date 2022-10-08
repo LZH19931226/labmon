@@ -12,8 +12,8 @@ import java.util.List;
 
 
 /**
- * 
- * 
+ *
+ *
  * @author liuzhihao
  * @date 2022-04-18 15:27:01
  */
@@ -56,7 +56,7 @@ public class 	MonitorEquipmentVo  implements Serializable {
 	@ApiModelProperty(value="是否显示")
 	private Long clientVisible;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(value="")
 	private Long sort;
@@ -99,5 +99,8 @@ public class 	MonitorEquipmentVo  implements Serializable {
 
 	/** 饱和值 */
 	private String saturation;
+
+	/** 备注 */
+	private String remark;
 }
 

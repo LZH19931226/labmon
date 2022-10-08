@@ -172,6 +172,7 @@ public class MonitorEquipmentApplication {
                 .warningTimeList(timeVoList)
                 .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                 .deleteOrNot(deleteOrNot)
+                .remark(res.getRemark())
                 .build();
     }
 
@@ -234,6 +235,7 @@ public class MonitorEquipmentApplication {
         //插入到monitorequipment表中
         String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
+                .setRemark(monitorEquipmentCommand.getRemark())
                 .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
                 .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
                 .setClientVisible(monitorEquipmentCommand.getClientVisible())
@@ -440,7 +442,8 @@ public class MonitorEquipmentApplication {
                 .setAlarmTime(3L)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
-                .setWarningTimeList(warningTimeDTOs);
+                .setWarningTimeList(warningTimeDTOs)
+                .setRemark(monitorEquipmentCommand.getRemark());
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
 
@@ -642,6 +645,7 @@ public class MonitorEquipmentApplication {
      */
     public SnDeviceDto buildSnDeviceDto(MonitorEquipmentCommand monitorEquipmentCommand,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO, List<MonitorEquipmentWarningTimeDto> warningTimeDTOs){
         return new SnDeviceDto()
+                .setRemark(monitorEquipmentCommand.getRemark())
                 .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
                 .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
