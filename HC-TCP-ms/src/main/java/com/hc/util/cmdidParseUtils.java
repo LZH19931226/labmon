@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
+import static com.hc.util.paramaterModelUtils.temperatureB1;
+
 public class cmdidParseUtils {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(cmdidParseUtils.class);
 
@@ -85,7 +87,13 @@ public class cmdidParseUtils {
                     }
 
     }
-
+    public static String paseCmdIdB1(String data){
+        // 未接入传感器
+        if (StringUtils.equalsIgnoreCase(data, ProbeOutlier.FFF0.getCode())) {
+            return ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
+        }
+        return paramaterModelUtils.temperatureB1(data);
+    }
     public static String paseCmdId9B9C(String data) {
         // 未接入传感器
         if (StringUtils.equalsIgnoreCase(data, ProbeOutlier.FFF0.getCode())) {
@@ -1509,5 +1517,49 @@ public class cmdidParseUtils {
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
 
+    }
+
+    public static ParamaterModel paseB1(String cmd, String sn, String cmdid) {
+        ParamaterModel paramaterModel = new ParamaterModel();
+        //液位
+        String liquid = cmd.substring(28, 32);
+        String liquidLevel = paseLiquidLevel(liquid);
+        //验证数据
+        liquidLevel = CustomUtils.tem85(liquidLevel, sn);
+        paramaterModel.setLiquidLevel(liquidLevel);
+
+        //一路温度
+        String substring2 = cmd.substring(36, 40);
+        String pasetemperature = paseCmdIdB1(substring2);
+        //验证数据
+        pasetemperature = CustomUtils.tempB1(pasetemperature);
+        paramaterModel.setTEMP(pasetemperature);
+
+        // 二路温度
+        String substring4 = cmd.substring(40, 44);
+        String pasetemperature1 = paseCmdIdB1(substring4);
+        pasetemperature1 = CustomUtils.tempB1(pasetemperature1);
+        paramaterModel.setTEMP2(pasetemperature1);
+        //1路2路温度不一致则抛弃数据
+        if (!StringUtils.equalsIgnoreCase(pasetemperature,pasetemperature1)){
+            return null;
+        }
+        // 电量
+        String pow = cmd.substring(52, 54);
+        String electricity = paramaterModelUtils.electricity(pow);
+        pow = CustomUtils.agreementAll(electricity, "0", "100");
+        paramaterModel.setQC(pow);
+        paramaterModel.setSN(sn);
+        paramaterModel.setCmdid(cmdid);
+        return paramaterModel;
+    }
+
+    private static String paseLiquidLevel(String liquid) {
+        // 未接入传感器
+        if (StringUtils.equalsIgnoreCase(liquid, ProbeOutlier.FFF0.getCode())) {
+            return ProbeOutlier.VALUE_IS_INVALID.getCode();
+        } else {
+            return paramaterModelUtils.temperature10(liquid);
+        }
     }
 }

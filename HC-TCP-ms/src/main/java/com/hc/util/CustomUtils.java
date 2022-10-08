@@ -2,6 +2,7 @@ package com.hc.util;
 
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.util.RegularUtil;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -44,7 +45,6 @@ public class CustomUtils {
         return data;
     }
 
-
     /**
      * 91 温度 、CO2 、 O2
      *
@@ -73,6 +73,19 @@ public class CustomUtils {
         }
         return false;
     }
+
+    public static String tempB1(String data) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
+        boolean comparison = comparison(data, "-200", "20");
+        if(comparison){
+            return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.name();
+        }
+        return data;
+    }
+
+
 
     public static void main(String args[]) {
 //            BigDecimal bigDecimal = new BigDecimal(0);

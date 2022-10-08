@@ -48,6 +48,24 @@ public class paramaterModelUtils {
         return rule + f;
     }
 
+    // 解析温度MT210M
+    public static String temperatureB1(String data) {
+        String rule = "";
+        // 16进制转2进制每一位都要转然后拼接
+        String hexadecima11 = MathUtil.hexadecimal(data.substring(0, 1));
+        String hexadecimal2 = MathUtil.hexadecimal(data.substring(1, 2));
+        String hexadecimal3 = MathUtil.hexadecimal(data.substring(2, 3));
+        String hexadecimal4 = MathUtil.hexadecimal(data.substring(3, 4));
+        String hexadecimal = hexadecima11 + hexadecimal2 + hexadecimal3 + hexadecimal4;
+        // 判断正负
+        if (StringUtils.equals(hexadecimal.substring(0, 1), "1")) {
+            rule = "-";
+        }
+        // 二进制转10进制(占位符除外)
+        int a = Integer.parseInt(hexadecimal.substring(1, hexadecimal.length()), 2);
+        return rule + a;
+    }
+
 
     // 解析电量/市电/开门记录/压力/PM2.5/PM10/甲醛
     public static String electricity(String data) {
