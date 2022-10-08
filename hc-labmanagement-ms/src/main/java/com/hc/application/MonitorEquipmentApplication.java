@@ -29,6 +29,7 @@ import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
 import com.hc.vo.equimenttype.WarningTimeVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,6 +210,7 @@ public class MonitorEquipmentApplication {
      *
      * @param monitorEquipmentCommand 监控设备参数
      */
+    @GlobalTransactional
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String sn = monitorEquipmentCommand.getSn().trim();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
@@ -495,6 +497,7 @@ public class MonitorEquipmentApplication {
      *
      * @param monitorEquipmentCommand 监控设备参数
      */
+    @GlobalTransactional
     public void updateMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
