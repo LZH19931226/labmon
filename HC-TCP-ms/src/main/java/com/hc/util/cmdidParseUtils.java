@@ -87,13 +87,16 @@ public class cmdidParseUtils {
                     }
 
     }
+
     public static String paseCmdIdB1(String data){
-        // 未接入传感器
+        //值无效
         if (StringUtils.equalsIgnoreCase(data, ProbeOutlier.FFF0.getCode())) {
-            return ProbeOutlier.NO_SENSOR_IS_CONNECTED.getCode();
+            return ProbeOutlier.VALUE_IS_INVALID.getCode();
         }
         return paramaterModelUtils.temperatureB1(data);
     }
+
+
     public static String paseCmdId9B9C(String data) {
         // 未接入传感器
         if (StringUtils.equalsIgnoreCase(data, ProbeOutlier.FFF0.getCode())) {
