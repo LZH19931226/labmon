@@ -163,5 +163,4 @@ public class TimerConfig {
         List<Monitorequipmentlastdata> convert = BeanConverter.convert(list, Monitorequipmentlastdata.class);
         monitorequipmentlastdataRepository.batchInsert(convert);
     }
-
 }

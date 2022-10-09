@@ -1567,6 +1567,41 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     list.add(WarningAlarmDo);
                 }
                 break;
+            case "b1":
+                //液位
+                String liquidLevel = model.getLiquidLevel();
+                if(StringUtils.isNotBlank(liquidLevel)){
+                    monitorequipmentlastdata.setLiquidLevel(liquidLevel);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.LIQUIDLEVEL.getInstrumentConfigId(),liquidLevel,
+                            CurrentProbeInfoEnum.LIQUIDLEVEL.getProbeEName());
+                    //执行报警服务
+                    WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(liquidLevel, monitorinstrument, model.getNowTime(), 45, "液位");
+                    list.add(warningAlarmDo);
+                }
+                //温度
+                String modelTEMP = model.getTEMP();
+                if(StringUtils.isNotBlank(modelTEMP)){
+                    monitorequipmentlastdata.setCurrenttemperature(modelTEMP);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),liquidLevel,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                    //执行报警服务
+                    WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(modelTEMP, monitorinstrument, model.getNowTime(), 4, "温度");
+                    list.add(warningAlarmDo);
+                }
+                //电量
+                String modelQC = model.getQC();
+                if(StringUtils.isNotBlank(modelQC)){
+                    monitorequipmentlastdata.setCurrentqc(modelQC);
+                    BuildProbeInfoDto(hospitalcode,equipmentno,
+                            CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),liquidLevel,
+                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                    //执行报警服务
+                    WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(modelQC, monitorinstrument, model.getNowTime(), 7, "电量");
+                    list.add(WarningAlarmDo);
+                }
+                break;
             default:
                 break;
         }
