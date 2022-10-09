@@ -1544,7 +1544,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 list.add(showModelUtils.procWarnModel(co24, monitorinstrument, model.getNowTime(), 42, "二氧化碳"));
                 list.add(showModelUtils.procWarnModel(voc3, monitorinstrument, model.getNowTime(), 3, "VOC"));
                 break;
-            case "ad":
+            case "b0":
                 InstrumentInfoDto mt100Probe = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":4").getResult();
                 if (null != mt100Probe) {
                     String calibration = showModelUtils.calibration(mt100Probe, model.getTEMP());
