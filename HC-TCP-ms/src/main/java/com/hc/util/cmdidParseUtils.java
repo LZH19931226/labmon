@@ -1524,26 +1524,35 @@ public class cmdidParseUtils {
         //液位
         String liquid = cmd.substring(28, 32);
         String liquidLevel = paseLiquidLevel(liquid);
-        //验证数据
-        liquidLevel = CustomUtils.tem85(liquidLevel, sn);
         paramaterModel.setLiquidLevel(liquidLevel);
 
-        //一路温度
+        //温度
         String substring2 = cmd.substring(36, 40);
-        String pasetemperature = paseCmdIdB1(substring2);
-        //验证数据
-        pasetemperature = CustomUtils.tempB1(pasetemperature);
-        paramaterModel.setTEMP(pasetemperature);
-
-        // 二路温度
-        String substring4 = cmd.substring(40, 44);
-        String pasetemperature1 = paseCmdIdB1(substring4);
-        pasetemperature1 = CustomUtils.tempB1(pasetemperature1);
-        paramaterModel.setTEMP2(pasetemperature1);
-        //1路2路温度不一致则抛弃数据
-        if (!StringUtils.equalsIgnoreCase(pasetemperature,pasetemperature1)){
-            return null;
+        String substring3 = cmd.substring(40, 44);
+        if(substring2.equals(substring3)){
+            String pasetemperature = paseCmdIdB1(substring2);
+            pasetemperature = CustomUtils.tempB1(pasetemperature);
+            paramaterModel.setTEMP(pasetemperature);
+            paramaterModel.setTEMP2(pasetemperature);
+        }else {
+            //一路温度
+            String pasetemperature = paseCmdIdB1(substring2);
+            pasetemperature = CustomUtils.tempB1(pasetemperature);
+            paramaterModel.setTEMP(pasetemperature);
+            // 二路温度
+            String pasetemperature1 = paseCmdIdB1(substring3);
+            pasetemperature1 = CustomUtils.tempB1(pasetemperature1);
+            paramaterModel.setTEMP2(pasetemperature1);
+            //计算两个数的差不得大于3，否则设置值无效
+            Long temp1 = Long.valueOf(pasetemperature);
+            Long temp2 = Long.valueOf(pasetemperature1);
+            long abs = Math.abs(temp1-temp2);
+            if(abs>3){
+                paramaterModel.setTEMP(ProbeOutlier.VALUE_IS_INVALID.getCode());
+                paramaterModel.setTEMP2(ProbeOutlier.VALUE_IS_INVALID.getCode());
+            }
         }
+
         // 电量
         String pow = cmd.substring(52, 54);
         String electricity = paramaterModelUtils.electricity(pow);
@@ -1559,7 +1568,7 @@ public class cmdidParseUtils {
         if (StringUtils.equalsIgnoreCase(liquid, ProbeOutlier.FFF0.getCode())) {
             return ProbeOutlier.VALUE_IS_INVALID.getCode();
         } else {
-            return paramaterModelUtils.temperature10(liquid);
+            return paramaterModelUtils.electricity(liquid);
         }
     }
 }
