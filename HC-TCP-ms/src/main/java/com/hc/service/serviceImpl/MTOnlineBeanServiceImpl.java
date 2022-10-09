@@ -397,7 +397,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                     list.add(paramaterModel21);
                     continue;
                 case"b0":
-                    ParamaterModel paramaterModel22 = cmdidParseUtils.paseAD(cmd, sn, cmdid);
+                    ParamaterModel paramaterModel22 = cmdidParseUtils.paseB0(cmd, sn, cmdid);
                     list.add(paramaterModel22);
                     continue;
                 case "b1":
@@ -415,7 +415,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 
 
     public static void main(String[] args) {
-        ParamaterModel ab = cmdidParseUtils.Paser85("4843850f31373238303530303031ff00ffff5f2923", "2214310001", "85");
+        ParamaterModel ab = cmdidParseUtils.Paser85("4843850f31373238303530303031c847ffff444223", "2214310001", "85");
         System.out.println(ab);
     }
 
