@@ -229,4 +229,37 @@ public class Monitorequipmentlastdata implements Serializable {
      */
     private String probe3data  ;
 
+    /** 液位 */
+    private String liquidLevel;
+
+    /** 预留字段1 */
+    private String remark1;
+
+    /** 预留字段2 */
+    private String remark2;
+
+    /** 预留字段3 */
+    private String remark3;
+
+    /** 预留字段4 */
+    private String remark4;
+
+    /** 预留字段5 */
+    private String remark5;
+
+    /** 预留字段6 */
+    private String remark6;
+
+    /** 预留字段7 */
+    private String remark7;
+
+    /** 预留字段8 */
+    private String remark8;
+
+    /** 预留字段9 */
+    private String remark9;
+
+    /** 预留字段10 */
+    private String remark10;
+
 }
