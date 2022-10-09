@@ -78,9 +78,10 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
             }
             // 获取命令id
             String cmdid = cmd.substring(4, 6);
+            String substring1 = cmdid.substring(0, 1);
             //CRC16校验 旧协议不需要,旧协议有7,8,9,A
-            if (!StringUtils.equalsAnyIgnoreCase(cmdid,"7","8","9","a")){
-                if(!Crc16Utils.getCRCCodeIsTrue(cmd)){
+            if (!StringUtils.equalsAnyIgnoreCase(substring1,"7","8","9","a")){
+                if(!Crc16Utils.getCRCCodeIsTrue(substring1)){
                     continue;
                 }
             }
