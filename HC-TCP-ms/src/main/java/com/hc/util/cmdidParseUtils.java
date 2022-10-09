@@ -1181,10 +1181,10 @@ public class cmdidParseUtils {
     }
 
     public static void main(String[] args) {
-        String id = "48 43 AA 1A 31 38 33 35 33 38 30 30 30 31 00 00 27 10 08 98 08 98 50 00 00 00 00 00 00 00 D9 23";
+        String id = "48 43 B0 11 32 31 35 30 31 39 30 30 30 31 0E 74 0E 74 50 7C 25 AC 23";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
-        ParamaterModel paramaterModel = paseAA(s, null, null);
+        ParamaterModel paramaterModel = paseB0(s, "2150190001", "b0");
         System.out.println(paramaterModel);
     }
 
@@ -1494,7 +1494,7 @@ public class cmdidParseUtils {
         return paramaterModel;
     }
 
-    public static ParamaterModel paseAD(String cmd, String sn, String cmdid) {
+    public static ParamaterModel paseB0(String cmd, String sn, String cmdid) {
         ParamaterModel paramaterModel = new ParamaterModel();
         // 一路温度
         String substring2 = cmd.substring(28, 32);
