@@ -230,6 +230,7 @@ public class Monitorequipmentlastdata implements Serializable {
     private String probe3data  ;
 
     /** 液位 */
+    @TableField(value = "liquidLevel")
     private String liquidLevel;
 
     /** 预留字段1 */

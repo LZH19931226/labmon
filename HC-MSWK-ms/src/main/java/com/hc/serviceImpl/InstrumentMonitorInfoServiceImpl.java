@@ -1584,7 +1584,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 if(StringUtils.isNotBlank(modelTEMP)){
                     monitorequipmentlastdata.setCurrenttemperature(modelTEMP);
                     BuildProbeInfoDto(hospitalcode,equipmentno,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),liquidLevel,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),modelTEMP,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     //执行报警服务
                     WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(modelTEMP, monitorinstrument, model.getNowTime(), 4, "温度");
@@ -1595,7 +1595,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 if(StringUtils.isNotBlank(modelQC)){
                     monitorequipmentlastdata.setCurrentqc(modelQC);
                     BuildProbeInfoDto(hospitalcode,equipmentno,
-                            CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),liquidLevel,
+                            CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),modelQC,
                             CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(modelQC, monitorinstrument, model.getNowTime(), 7, "电量");
