@@ -152,7 +152,6 @@ public class SocketMessageListener {
         }
         //将设备状态信息推送到mq
         sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
-
     }
 
     //推送探头当前报警状态

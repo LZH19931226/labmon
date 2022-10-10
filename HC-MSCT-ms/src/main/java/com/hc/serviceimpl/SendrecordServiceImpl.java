@@ -150,6 +150,9 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
         p2PNotify.setUserId(phone);
         p2PNotify.setMessageTitle(equipmentname);
         p2PNotify.setMessageCover(unit);
+        if("LIQUIDLEVEL".equals(unit)){
+            p2PNotify.setMessageCover("液位");
+        }
         p2PNotify.setMessageIntro(value);
         p2PNotify.setChannels(notifyChannels);
         p2PNotify.setMessageBodys(PushType.USUAL_ALARM.name());
@@ -162,6 +165,9 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
         p2PNotify.setUserId(phone);
         p2PNotify.setMessageTitle(equipmentname);
         p2PNotify.setMessageCover(unit);
+        if("LIQUIDLEVEL".equals(unit)){
+            p2PNotify.setMessageCover("液位");
+        }
         p2PNotify.setMessageIntro(hospitalName);
         p2PNotify.setChannels(notifyChannels);
         p2PNotify.setMessageBodys(PushType.TIMEOUT_ALARM.name());

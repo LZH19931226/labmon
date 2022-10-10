@@ -233,7 +233,6 @@ public class WarningServiceImpl implements WarningService {
             String proSn = sn.substring(0, 4);
             String sns = sn.substring(4, 6);
             if (Integer.parseInt(proSn) < 2031) {
-
                 //当一路温度值存在异常，整个值无效
                 // 当两个值相差3度，值无效
                 if (!checkProbeValue(warningAlarmDo,probe)){

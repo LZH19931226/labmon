@@ -13,6 +13,7 @@ import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.LastDataService;
+import com.hc.service.UpsService;
 import com.hc.utils.ShowModelUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
     private ShowModelUtils showModelUtils;
     @Autowired
     private ProbeRedisApi probeRedisApi;
+    @Autowired
+    private UpsService upsService;
 
     @Override
     public List<WarningAlarmDo> save(ParamaterModel model, Monitorinstrument monitorinstrument) {
@@ -127,11 +130,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "89":
                 if (!StringUtils.isEmpty(model.getUPS())) {
                     //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1,2,5变成 3,4
-
-
-
-
-
+                    upsService.sendInfo(model,equipmentno,hospitalcode);
                     String ups = "1"; // 表示市电异常
                     if ("3".equals(model.getUPS()) || "4".equals(model.getUPS())) {
                         ups = "0";//市电正常
@@ -1217,7 +1216,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String ups1 = model.getUPS();
                 if (StringUtils.isNotEmpty(ups1)) {
                     //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1变成0
-
+                    upsService.sendInfo(model,equipmentno,hospitalcode);
                     monitorequipmentlastdata.setCurrentups(ups1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(), ups1,
