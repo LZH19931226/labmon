@@ -21,4 +21,6 @@ public class SmsController {
 	public void senMessagecode(@RequestParam("phonenum")String phontnum, @RequestParam("code")String code) {
 		 moblieMessageUtil.senCode(phontnum, code);
 	}
+
+
 }

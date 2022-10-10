@@ -126,6 +126,12 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "89":
                 if (!StringUtils.isEmpty(model.getUPS())) {
+                    //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1,2,5变成 3,4
+
+
+
+
+
                     String ups = "1"; // 表示市电异常
                     if ("3".equals(model.getUPS()) || "4".equals(model.getUPS())) {
                         ups = "0";//市电正常
@@ -1210,6 +1216,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "a4":
                 String ups1 = model.getUPS();
                 if (StringUtils.isNotEmpty(ups1)) {
+                    //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1变成0
+
                     monitorequipmentlastdata.setCurrentups(ups1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(), ups1,
