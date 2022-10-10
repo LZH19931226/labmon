@@ -13,4 +13,7 @@ public interface SmsApi {
     @GetMapping("/sms/code")
     ApiResponse<String> senMessagecode(@RequestParam("phonenum")String phontnum, @RequestParam("code")String code);
 
+    @GetMapping("/sms/upsRemind")
+    void upsRemind(@RequestParam("phonenum")String phontnum, @RequestParam("eqname")String eqname);
+
 }

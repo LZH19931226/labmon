@@ -500,4 +500,35 @@ public class MoblieMessageUtil {
     }
 
 
+    public SendSmsResponse upsRemind(String phontnum, String eqname) {
+        //初始化acsClient,暂不支持region化
+        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
+        try {
+            DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
+        } catch (ClientException e1) {
+            e1.printStackTrace();
+        }
+        IAcsClient acsClient = new DefaultAcsClient(profile);
+
+        //组装请求对象-具体描述见控制台-文档部分内容
+        SendSmsRequest request = new SendSmsRequest();
+        //必填:待发送手机号
+        request.setPhoneNumbers(phontnum);
+        //必填:短信签名-可在短信控制台中找到
+        request.setSignName(signName);
+        //模板
+        request.setTemplateCode("SMS_254136164");
+        //模板json
+        request.setTemplateParam("{\"eqname\":\"" + eqname + "\"}");
+        SendSmsResponse acsResponse = null;
+        try {
+            log.info("短信发送的请求" + JSONUtil.toJsonStr(request));
+            acsResponse = acsClient.getAcsResponse(request);
+            log.info("短信返回的请求" + JSONUtil.toJsonStr(acsResponse));
+        } catch (ClientException e) {
+            log.error(e + "");
+        }
+
+        return acsResponse;
+    }
 }

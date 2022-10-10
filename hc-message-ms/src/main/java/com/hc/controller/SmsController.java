@@ -22,5 +22,10 @@ public class SmsController {
 		 moblieMessageUtil.senCode(phontnum, code);
 	}
 
+	@GetMapping("/upsRemind")
+	@ApiOperation("恢复市电提醒")
+	public void upsRemind(@RequestParam("phonenum")String phontnum, @RequestParam("eqname")String eqname){
+		moblieMessageUtil.upsRemind(phontnum,eqname);
+	}
 
 }
