@@ -11,6 +11,7 @@ import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.WarningRecordInfoDto;
+import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
@@ -67,95 +68,16 @@ public class WarningInfoApplication {
         String instrumentParamConfigNo = warningrecord.getInstrumentparamconfigno();
         InstrumentParamConfigDto instrumentParamConfigDto = instrumentParamConfigRepository.getProbeInfo(instrumentParamConfigNo);
         String instrumentConfigName = instrumentParamConfigDto.getInstrumentconfigname();
+        Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
         //电量无曲线
         if (StringUtils.isNotBlank(instrumentConfigName) && StringUtils.equalsAnyIgnoreCase(instrumentConfigName,"QC","UPS","DOOR","voltage")){
             throw  new IedsException("市电,电量无曲线");
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigRepository.getInstrumentParamConfigByENo(equipmentNo);
-        String configName = changeInstrumentConfigName(instrumentConfigName);
-        List<MonitorequipmentlastdataDto> lastDataList = monitorequipmentlastdataRepository.getWarningCurveData(equipmentNo,startTime,endTime,configName);
+        String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
+        List<MonitorequipmentlastdataDto> lastDataList = monitorequipmentlastdataRepository.getWarningCurveData(equipmentNo,startTime,endTime,probeEName);
         List<Monitorequipmentlastdata> monitorEquipmentLastDataList = BeanConverter.convert(lastDataList, Monitorequipmentlastdata.class);
         return EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataList, map, false);
-    }
-
-    private String changeInstrumentConfigName(String instrumentconfigname) {
-        switch (instrumentconfigname) {
-            case "CO2":
-                return "currentcarbondioxide";
-            case "O2":
-                return "currento2";
-            case "VOC":
-                return "currentvoc";
-            case "TEMP":
-                return "currenttemperature";
-            case "RH":
-                return "currenthumidity";
-            case "PRESS":
-                return "currentairflow";
-            case "PM2.5":
-                return "currentpm25";
-            case "PM10":
-                return "currentpm10";
-            case "DOOR":
-                return "currentdoorstate";
-            case "甲醛":
-                return "currentformaldehyde";
-            case "TEMP1":
-                return "currenttemperature1";
-            case "TEMP2":
-                return "currenttemperature2";
-            case "TEMP3":
-                return "currenttemperature3";
-            case "TEMP4":
-                return "currenttemperature4";
-            case "TEMP5":
-                return "currenttemperature5";
-            case "TEMP6":
-                return "currenttemperature6";
-            case "TEMP7":
-                return "currenttemperature7";
-            case "TEMP8":
-                return "currenttemperature8";
-            case "TEMP9":
-                return "currenttemperature9";
-            case "TEMP10":
-                return "currenttemperature10";
-            case "LEFTTEMP":
-                return "currentlefttemperature";
-            case "RIGHTTEMP":
-                return "currentrigthtemperature";
-            case "气流":
-                return "currentairflow1";
-            case "DIFFTEMP":
-                return "currenttemperaturediff";
-            case "PM5":
-                return "currentpm5";
-            case "PM0.5":
-                return "currentpm05";
-            case "LEFTCOVERTEMP":
-                return "currentleftcovertemperature";
-            case "LEFTENDTEMP":
-                return "currentleftendtemperature";
-            case "左气流":
-                return "currentleftairflow";
-            case "RIGHTCOVERTEMP":
-                return "currentrightcovertemperature";
-            case "RIGHTENDTEMP":
-                return "currentrightendtemperature";
-            case "右气流":
-                return "currentrightairflow";
-            case "N2":
-                return "currentn2";
-            case "leftCompartmentHumidity":
-                return instrumentconfigname;
-            case "rightCompartmentHumidity":
-                return instrumentconfigname;
-            case "voltage":
-                return instrumentconfigname;
-            default:
-                break;
-        }
-        return null;
     }
 
     /**

@@ -103,7 +103,7 @@ public enum CurrentProbeInfoEnum {
     OUTERO2(43,"outerO2","外置O2探头",null),
     //二路开关量
     CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2",null),
-    LIQUIDLEVEL(45,"liquidlevel","液位","mm");
+    LIQUIDLEVEL(45,"liquidLevel","液位","mm");
 
     private int instrumentConfigId;
     private String probeEName;
