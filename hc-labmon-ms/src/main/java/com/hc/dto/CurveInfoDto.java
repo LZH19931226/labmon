@@ -111,4 +111,8 @@ public class CurveInfoDto {
     private CurveDataModel probe3Co2;
     @ApiModelProperty("外置探头3o2浓度")
     private CurveDataModel probe3O2;
+
+    @ApiModelProperty("液位")
+    private CurveDataModel liquidLevel;
+
 }

@@ -89,6 +89,8 @@ public class EquipmentInfoServiceHelp {
         List<String> rightCompartmentHumidityTime = new ArrayList<String>();
         List<String> qc = new ArrayList<>();
         List<String> qcTime = new ArrayList<>();
+        List<String> liquidLevel = new ArrayList<>();
+        List<String> liquidLevelTime = new ArrayList<>();
 
 
 
@@ -285,6 +287,11 @@ public class EquipmentInfoServiceHelp {
                 qc.add(lastDataModel.getCurrentqc());
                 qcTime.add(da);
             }
+            //当前液位
+            if(StringUtils.isNotEmpty(lastDataModel.getLiquidLevel())&& RegularUtil.checkContainsNumbers(lastDataModel.getLiquidLevel())){
+                liquidLevel.add(lastDataModel.getLiquidLevel());
+                liquidLevelTime.add(da);
+            }
 
         }
         CurveInfoDto curveInfoDto = new CurveInfoDto();
@@ -427,6 +434,10 @@ public class EquipmentInfoServiceHelp {
         if (CollectionUtils.isNotEmpty(qc)) {
             CurveDataModel curveDataModel = generateCurveDataModel(qc, qcTime,map.get("QC"));
             curveInfoDto.setQc(curveDataModel);
+        }
+        if(CollectionUtils.isNotEmpty(liquidLevel)){
+            CurveDataModel curveDataModel = generateCurveDataModel(liquidLevel, liquidLevelTime, map.get("LIQUIDLEVEL"));
+            curveInfoDto.setLiquidLevel(curveDataModel);
         }
         return curveInfoDto;
     }
