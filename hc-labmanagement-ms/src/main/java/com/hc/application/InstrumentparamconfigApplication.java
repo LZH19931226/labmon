@@ -334,6 +334,7 @@ public class InstrumentparamconfigApplication {
      * @param instrumentParamConfigCommand 探头信息参数
      * @return
      */
+    @GlobalTransactional
     public Page<InstrumentparamconfigVo> findInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         Page<InstrumentparamconfigVo> page = new Page<>(instrumentParamConfigCommand.getPageCurrent(), instrumentParamConfigCommand.getPageSize());
         List<InstrumentparamconfigDTO> instrumentParamConfigList = instrumentparamconfigService.findInstrumentparamconfig(page, instrumentParamConfigCommand);

@@ -90,6 +90,7 @@ public class MonitorEquipmentApplication {
      * @param monitorEquipmentCommand 监控设备参数
      * @return 分页对象
      */
+    @GlobalTransactional
     public Page<MonitorEquipmentVo> getEquipmentInfoList(MonitorEquipmentCommand monitorEquipmentCommand) {
         Page<MonitorEquipmentVo> page = new Page<>(monitorEquipmentCommand.getPageCurrent(), monitorEquipmentCommand.getPageSize());
         List<MonitorEquipmentDto> dtoList = monitorEquipmentService.getEquipmentInfoList(page, monitorEquipmentCommand);
@@ -146,6 +147,10 @@ public class MonitorEquipmentApplication {
                 boolean deleteOrNot = ObjectUtils.isEmpty(instrumentNoMap.get(instrumentNo));
                 MonitorEquipmentVo build = buildMonitorEquipmentVo(res,timeVoList,monitorinstrumenttypeVo,deleteOrNot);
                 list.add(build);
+
+                if(StringUtils.isEmpty(res.getRemark())){
+                    res.setRemark("");
+                }
             });
         }
         page.setRecords(list);
@@ -670,6 +675,7 @@ public class MonitorEquipmentApplication {
      *
      * @param equipmentNo 设备编号
      */
+    @GlobalTransactional
     public void deleteMonitorEquipment(String equipmentNo) {
 
         //判断设备是否有探头信息

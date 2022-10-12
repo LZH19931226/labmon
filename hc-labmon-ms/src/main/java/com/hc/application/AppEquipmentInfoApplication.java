@@ -28,6 +28,7 @@ import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.util.EquipmentInfoServiceHelp;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -691,6 +692,7 @@ public class AppEquipmentInfoApplication {
      * 修改设备报警开关
      * @param alarmSystemCommand
      */
+    @GlobalTransactional
     public void  batchUpdateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
         String equipmentNo = alarmSystemCommand.getEquipmentNo();
         String hospitalCode = alarmSystemCommand.getHospitalCode();
@@ -719,6 +721,7 @@ public class AppEquipmentInfoApplication {
      * 修改探头报警开关
      * @param alarmSystemCommand
      */
+    @GlobalTransactional
     public void updateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
         String instrumentParamConfigNo = alarmSystemCommand.getInstrumentParamConfigNo();
         String warningPhone = alarmSystemCommand.getWarningPhone();
@@ -780,7 +783,7 @@ public class AppEquipmentInfoApplication {
         equipmentInfoService.bulkUpdate(list);
     }
 
-
+    @GlobalTransactional
     public void batchOperationType(AlarmSystemCommand alarmSystemCommand) {
         String hospitalCode = alarmSystemCommand.getHospitalCode();
         String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
