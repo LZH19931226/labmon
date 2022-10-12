@@ -55,7 +55,6 @@ public interface EquipmentInfoService {
 
     List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList);
 
-    void updateEquipmentWarningSwitch(MonitorEquipmentDto monitorEquipmentDto);
 
     List<MonitorEquipmentDto> getAll();
 

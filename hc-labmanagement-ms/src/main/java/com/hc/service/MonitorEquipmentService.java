@@ -77,4 +77,6 @@ public interface MonitorEquipmentService {
     List<MonitorEquipmentDto> getMonitorEquipmentInfoByHCode(String hospitalCode);
 
     Boolean checkSn(String sn);
+
+    void updateEquipmentWarningSwitch(MonitorEquipmentDto monitorEquipmentDto);
 }

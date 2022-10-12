@@ -1,5 +1,6 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -189,5 +190,23 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     @Override
     public List<String> getEquipmentAddProbeInfo(String equipmentNo) {
         return instrumentparamconfigDao.getEquipmentAddProbeInfo(equipmentNo);
+    }
+
+    @Override
+    public void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo) {
+        instrumentparamconfigDao.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
+    }
+
+    @Override
+    public List<InstrumentparamconfigDTO> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
+        return instrumentparamconfigDao.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
+    }
+
+    @Override
+    public void batchProbeAlarmState(List<String> probeIds, String warningPhone) {
+        LambdaUpdateWrapper<InstrumentparamconfigPo> instrumentParamConfigPoLambdaUpdateWrapper = Wrappers.lambdaUpdate();
+        instrumentParamConfigPoLambdaUpdateWrapper.in(InstrumentparamconfigPo::getInstrumentparamconfigno, probeIds);
+        instrumentParamConfigPoLambdaUpdateWrapper.set(InstrumentparamconfigPo::getWarningphone, warningPhone);
+        instrumentparamconfigDao.update(new InstrumentparamconfigPo(),instrumentParamConfigPoLambdaUpdateWrapper);
     }
 }

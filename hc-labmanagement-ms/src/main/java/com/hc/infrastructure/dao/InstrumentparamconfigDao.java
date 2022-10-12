@@ -52,4 +52,8 @@ public interface InstrumentparamconfigDao extends RootMapper<Instrumentparamconf
 
     @Select("select t3.instrumentconfigid from  monitorinstrument t2  left join instrumentparamconfig t3 on t2.instrumentno = t3.instrumentno where t2.equipmentno = #{equipmentNo}" )
     List<String> getEquipmentAddProbeInfo(String equipmentNo);
+
+    void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo);
+
+    List<InstrumentparamconfigDTO> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
 }

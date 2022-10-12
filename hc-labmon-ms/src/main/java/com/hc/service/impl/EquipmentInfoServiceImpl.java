@@ -107,14 +107,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     }
 
     /**
-     * @param monitorEquipmentDto
-     */
-    @Override
-    public void updateEquipmentWarningSwitch(MonitorEquipmentDto monitorEquipmentDto) {
-        equipmentInfoRepository.updateById(monitorEquipmentDto);
-    }
-
-    /**
      * @return
      */
     @Override

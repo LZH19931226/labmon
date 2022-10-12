@@ -3,6 +3,8 @@ package com.hc.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.dto.MonitorEquipmentDto;
+import com.hc.my.common.core.util.BeanConverter;
+import com.hc.po.MonitorEquipmentPo;
 import com.hc.repository.MonitorEquipmentRepository;
 import com.hc.service.MonitorEquipmentService;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
@@ -115,5 +117,11 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     @Override
     public Boolean checkSn(String sn) {
         return monitorEquipmentRepository.checkSn(sn);
+    }
+
+    @Override
+    public void updateEquipmentWarningSwitch(MonitorEquipmentDto monitorEquipmentDto) {
+        MonitorEquipmentPo convert = BeanConverter.convert(monitorEquipmentDto, MonitorEquipmentPo.class);
+        monitorEquipmentRepository.updateById(convert);
     }
 }
