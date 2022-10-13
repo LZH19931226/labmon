@@ -395,6 +395,7 @@ public class MonitorEquipmentApplication {
      * @param monitorEquipmentCommand 监控设备对象
      * @param probeList 探头信息集合
      */
+    @GlobalTransactional
     private void updateProbeRedisInfo(String instrumentNo, String instrumentName, String equipmentNo, MonitorEquipmentCommand monitorEquipmentCommand, List<InstrumentparamconfigDTO> probeList) {
         Integer instrumenttypeid = monitorEquipmentCommand.getMonitorinstrumenttypeDTO().getInstrumenttypeid();
         List<InstrumentInfoDto> list = new ArrayList<>();
@@ -1010,6 +1011,7 @@ public class MonitorEquipmentApplication {
      * 修改设备报警开关
      * @param alarmSystemCommand
      */
+    @GlobalTransactional
     public void  batchUpdateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
         String equipmentNo = alarmSystemCommand.getEquipmentNo();
         String hospitalCode = alarmSystemCommand.getHospitalCode();
@@ -1048,6 +1050,7 @@ public class MonitorEquipmentApplication {
         probeRedisApi.bulkUpdateProbeRedisInfo(probeCommand);
     }
 
+    @GlobalTransactional
     public void batchOperationType(AlarmSystemCommand alarmSystemCommand) {
         String hospitalCode = alarmSystemCommand.getHospitalCode();
         String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
