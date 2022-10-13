@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.hc.infrastructure.dao.MonitorEquipmentDao">
+    <update id="updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId">
+        UPDATE monitorequipment
+        SET warning_switch = #{warningPhone}
+        WHERE
+                equipmentno IN (
+                SELECT a.equipmentno FROM (
+                SELECT equipmentno FROM monitorequipment  WHERE hospitalcode = #{hospitalCode} AND equipmenttypeid = #{equipmentTypeId} ) a
+                                )
+    </update>
 
     <select id="getEquipmentInfoList" resultType="com.hc.dto.MonitorEquipmentDto">
         SELECT

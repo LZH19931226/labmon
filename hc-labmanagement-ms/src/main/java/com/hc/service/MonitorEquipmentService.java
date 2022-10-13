@@ -79,4 +79,6 @@ public interface MonitorEquipmentService {
     Boolean checkSn(String sn);
 
     void updateEquipmentWarningSwitch(MonitorEquipmentDto monitorEquipmentDto);
+
+    void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(String hospitalCode, String equipmentTypeId,String warningPhone);
 }

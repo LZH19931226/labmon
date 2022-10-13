@@ -124,4 +124,9 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
         MonitorEquipmentPo convert = BeanConverter.convert(monitorEquipmentDto, MonitorEquipmentPo.class);
         monitorEquipmentRepository.updateById(convert);
     }
+
+    @Override
+    public void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(String hospitalCode, String equipmentTypeId,String warningPhone) {
+        monitorEquipmentRepository.updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(hospitalCode,equipmentTypeId,warningPhone);
+    }
 }

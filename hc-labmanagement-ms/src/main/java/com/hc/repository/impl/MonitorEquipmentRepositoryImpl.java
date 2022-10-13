@@ -139,4 +139,9 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
     public Boolean checkSn(String sn) {
         return monitorEquipmentDao.checkSn(sn)>0;
     }
+
+    @Override
+    public void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(String hospitalCode, String equipmentTypeId,String warningPhone) {
+        monitorEquipmentDao.updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(hospitalCode,equipmentTypeId,warningPhone);
+    }
 }

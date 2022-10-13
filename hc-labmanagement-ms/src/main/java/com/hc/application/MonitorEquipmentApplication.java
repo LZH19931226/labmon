@@ -1063,6 +1063,8 @@ public class MonitorEquipmentApplication {
         List<String> probeIds = instrumentParamConfigDtoList.stream().map(InstrumentparamconfigDTO::getInstrumentparamconfigno).collect(Collectors.toList());
         //批量控制探头报警状态
         instrumentparamconfigService.batchProbeAlarmState(probeIds,warningPhone);
+        //批量修改设备报警状态
+        monitorEquipmentService.updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(hospitalCode,equipmentTypeId,warningPhone);
         //同步更新缓存探头配置
         updateProbeRedis(instrumentParamConfigDtoList,warningPhone,hospitalCode);
     }
