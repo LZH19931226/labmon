@@ -67,6 +67,7 @@ public class HospitalequimentApplication {
      * 新增医院设备类型
      * @param hospitalEquimentTypeCommand 医院设备类型命令类
      */
+    @GlobalTransactional
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         hospitalequimentService.addHospitalEquimentType(hospitalEquimentTypeCommand);
         //插入日志
@@ -148,6 +149,7 @@ public class HospitalequimentApplication {
      * 修改设备类型
      * @param hospitalEquipmentTypeCommand 医院设备类型命令类
      */
+    @GlobalTransactional
     public void updateHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquipmentTypeCommand) {
         HospitalequimentDTO hospitalequimentDTO =
                 hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalEquipmentTypeCommand.getHospitalcode(), hospitalEquipmentTypeCommand.getEquipmenttypeid());

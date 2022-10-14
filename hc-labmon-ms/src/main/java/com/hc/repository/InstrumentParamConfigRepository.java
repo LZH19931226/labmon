@@ -17,10 +17,5 @@ public interface InstrumentParamConfigRepository extends IService<InstrumentPara
 
     List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo);
 
-
-    List<InstrumentParamConfigDto> getInstrumentParamConfigInfo(String equipmentNo);
-
-    void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo);
-
     List<InstrumentParamConfigDto> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
 }

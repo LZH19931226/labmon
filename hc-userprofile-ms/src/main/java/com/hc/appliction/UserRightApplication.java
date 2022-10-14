@@ -21,6 +21,7 @@ import com.hc.service.UserBackService;
 import com.hc.service.UserRightService;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserRightVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -262,6 +263,7 @@ public class UserRightApplication {
      * @param phoneNum
      * @return
      */
+    @GlobalTransactional
     public void getPhoneCode(String phoneNum) {
         String code = builderCode();
         phoneCodeApi.addPhoneCode(phoneNum,code);
@@ -277,6 +279,7 @@ public class UserRightApplication {
      * @param userRightCommand
      * @return
      */
+    @GlobalTransactional
     public UserRightVo userRightLoginByPhone(UserRightCommand userRightCommand) {
         String phoneNum = userRightCommand.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {

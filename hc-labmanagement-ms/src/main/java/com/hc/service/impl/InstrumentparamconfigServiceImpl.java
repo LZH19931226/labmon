@@ -201,4 +201,27 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     public List<String> getEquipmentAddProbeInfo(String equipmentNo) {
         return instrumentparamconfigRepository.getEquipmentAddProbeInfo(equipmentNo);
     }
+
+    @Override
+    public void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone) {
+        InstrumentparamconfigPo instrumentparamconfigPo = new InstrumentparamconfigPo();
+        instrumentparamconfigPo.setInstrumentparamconfigno(instrumentParamConfigNo);
+        instrumentparamconfigPo.setWarningphone(warningPhone);
+        instrumentparamconfigRepository.updateById(instrumentparamconfigPo);
+    }
+
+    @Override
+    public void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo) {
+        instrumentparamconfigRepository.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
+    }
+
+    @Override
+    public List<InstrumentparamconfigDTO> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
+        return instrumentparamconfigRepository.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
+    }
+
+    @Override
+    public void batchProbeAlarmState(List<String> probeIds, String warningPhone) {
+        instrumentparamconfigRepository.batchProbeAlarmState(probeIds,warningPhone);
+    }
 }

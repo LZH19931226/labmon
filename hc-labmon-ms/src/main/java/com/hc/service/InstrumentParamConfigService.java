@@ -16,13 +16,6 @@ public interface InstrumentParamConfigService {
 
     List<InstrumentParamConfigDto> batchGetProbeInfo(List<String> configParamNo);
 
-
-    void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone);
-
-    List<InstrumentParamConfigDto> getInstrumentParamConfigInfo(String equipmentNo);
-
-    void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo);
-
     List<InstrumentParamConfigDto> getAll();
 
     List<InstrumentParamConfigDto> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId);

@@ -30,14 +30,4 @@ public class HospitalEquipmentRepositoryImpl extends ServiceImpl<HospitalEquipme
         return hospitalEquipmentDao.hospitalEquipmentDao(hospitalCode);
     }
 
-    @Override
-    public void batchProbeAlarmState(List<String> probeIds, String warningPhone) {
-        LambdaUpdateWrapper<InstrumentParamConfigDto> instrumentParamConfigDtoLambdaUpdateWrapper = Wrappers.lambdaUpdate();
-        instrumentParamConfigDtoLambdaUpdateWrapper.in(InstrumentParamConfigDto::getInstrumentparamconfigno, probeIds);
-        instrumentParamConfigDtoLambdaUpdateWrapper.set(InstrumentParamConfigDto::getWarningphone, warningPhone);
-        instrumentParamConfigDao.update(new InstrumentParamConfigDto(),instrumentParamConfigDtoLambdaUpdateWrapper);
-
-    }
-
-
 }

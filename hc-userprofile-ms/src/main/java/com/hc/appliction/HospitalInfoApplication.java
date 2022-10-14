@@ -22,6 +22,7 @@ import com.hc.service.UserBackService;
 import com.hc.service.UserSchedulingService;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserSchedulingVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -91,7 +92,7 @@ public class HospitalInfoApplication {
      *
      * @param hospitalCommand 医院视图对象
      */
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         hospitalCommand.setUpdateTime(new Date());
         hospitalCommand.setOrderBy(Context.getUserId());
@@ -126,7 +127,7 @@ public class HospitalInfoApplication {
      *
      * @param hospitalCommand 医院信息参数
      */
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public void editHospitalInfo(HospitalCommand hospitalCommand) {
         HospitalMadel hospitalInfo = findHospitalInfoByCode(hospitalCommand.getHospitalCode());
         HospitalCommand hospitalCommand1 = BeanConverter.convert(hospitalInfo,HospitalCommand.class);
@@ -147,7 +148,7 @@ public class HospitalInfoApplication {
      *
      * @param hospitalCode 医院id
      */
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public void deleteHospitalInfoByCode(String hospitalCode) {
         HospitalRegistrationInfoDto hospitalInfoByCode = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         hospitalRegistrationInfoService.deleteHospitalInfoByCode(hospitalCode);

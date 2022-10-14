@@ -128,5 +128,13 @@ public interface InstrumentparamconfigService{
      * @return
      */
     List<String> getEquipmentAddProbeInfo(String equipmentNo);
+
+    void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone);
+
+    void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo);
+
+    List<InstrumentparamconfigDTO> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
+
+    void batchProbeAlarmState(List<String> probeIds, String warningPhone);
 }
 

@@ -48,36 +48,6 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     }
 
     /**
-     * @param instrumentParamConfigNo
-     * @param warningPhone
-     */
-    @Override
-    public void updateProbeAlarmState(String instrumentParamConfigNo, String warningPhone) {
-        InstrumentParamConfigDto instrumentParamConfigDto = new InstrumentParamConfigDto();
-        instrumentParamConfigDto.setInstrumentparamconfigno(instrumentParamConfigNo);
-        instrumentParamConfigDto.setWarningphone(warningPhone);
-        instrumentParamConfigRepository.updateById(instrumentParamConfigDto);
-    }
-
-    /**
-     * @param equipmentNo
-     * @return
-     */
-    @Override
-    public List<InstrumentParamConfigDto> getInstrumentParamConfigInfo(String equipmentNo) {
-        return instrumentParamConfigRepository.getInstrumentParamConfigInfo(equipmentNo);
-    }
-
-    /**
-     * @param warningPhone
-     * @param equipmentNo
-     */
-    @Override
-    public void batchUpdateProbeAlarmState(String warningPhone, String equipmentNo) {
-        instrumentParamConfigRepository.batchUpdateProbeAlarmState(warningPhone,equipmentNo);
-    }
-
-    /**
      * @return
      */
     @Override

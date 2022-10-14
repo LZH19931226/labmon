@@ -47,30 +47,6 @@
         </foreach>
     </select>
 
-    <update id="batchUpdateProbeAlarmState">
-        UPDATE instrumentparamconfig
-        SET warningphone = #{warningPhone}
-        WHERE
-            instrumentparamconfigNO IN (
-                SELECT
-                    a.instrumentparamconfigNO
-                FROM
-                    ( SELECT t2.instrumentparamconfigNO
-                      FROM monitorinstrument t1
-                          LEFT JOIN instrumentparamconfig t2  ON t1.instrumentno = t2.instrumentno
-                      WHERE t1.equipmentno = #{equipmentNo} ) a)
-    </update>
-
-    <select id="getInstrumentParamConfigInfo" resultType="com.hc.dto.InstrumentParamConfigDto">
-        SELECT
-          t2.hospitalcode,
-          t1.*
-          FROM
-          instrumentparamconfig t1
-          LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
-          WHERE t2.equipmentno = #{equipmentNo}
-    </select>
-
     <select id="getInstrumentParamConfigByCodeAndTypeId" resultType="com.hc.dto.InstrumentParamConfigDto">
         SELECT
             t3.*

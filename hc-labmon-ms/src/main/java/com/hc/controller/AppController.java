@@ -99,28 +99,11 @@ public class AppController {
         return equipmentInfoAppApplication.getAlarmSystemInfo(probeCommand);
     }
 
-    @PostMapping("/updateProbeAlarmState")
-    @ApiOperation("修改探头报警开关")
-    public void updateProbeAlarmState(@RequestBody AlarmSystemCommand alarmSystemCommand){
-        equipmentInfoAppApplication.updateProbeAlarmState(alarmSystemCommand);
-    }
-
-    @PostMapping("/batchUpdateProbeAlarmState")
-    @ApiOperation("修改设备报警开关")
-    public void batchUpdateProbeAlarmState(@RequestBody AlarmSystemCommand alarmSystemCommand){
-        equipmentInfoAppApplication.batchUpdateProbeAlarmState(alarmSystemCommand);
-    }
 
     @GetMapping("/synchronizedDeviceAlarmSwitch")
     @ApiOperation("同步设备报警开关")
     public void synchronizedDeviceAlarmSwitch(){
         equipmentInfoAppApplication.synchronizedDeviceAlarmSwitch();
-    }
-
-    @PostMapping("/batchOperationType")
-    @ApiOperation(value = "批量禁用与启用当前设备类型下所有设备报警探头")
-    public void batchOperationType(@RequestBody AlarmSystemCommand alarmSystemCommand) {
-        equipmentInfoAppApplication.batchOperationType(alarmSystemCommand);
     }
 
     @PostMapping("/getTheNumberOfAlarmSettingDevices")

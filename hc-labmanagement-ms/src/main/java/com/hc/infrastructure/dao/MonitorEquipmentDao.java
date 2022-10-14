@@ -48,4 +48,8 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
 
     @Select("select t1.*,t2.sn from monitorequipment t1 left join monitorinstrument t2 ON t1.equipmentno = t2.equipmentno where t1.equipmentno = #{equipmentNo}")
     MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo);
+
+    void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(@Param("hospitalCode") String hospitalCode,
+                                                                      @Param("equipmentTypeId") String equipmentTypeId,
+                                                                      @Param("warningPhone") String warningPhone);
 }
