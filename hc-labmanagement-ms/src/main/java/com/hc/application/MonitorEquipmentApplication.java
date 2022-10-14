@@ -145,14 +145,16 @@ public class MonitorEquipmentApplication {
                 List<MonitorequipmentwarningtimeDTO> monitorEquipmentWarningTimeList = monitorEquipmentWarningTimeMaps.get(equipmentNo);
                 List<WarningTimeVo> timeVoList =  bulidWarningTimeVoList(monitorEquipmentWarningTimeList);
 
+                if(StringUtils.isEmpty(res.getRemark())){
+                    res.setRemark("");
+                }
+
                 //获取设备有没有绑定探头信息
                 boolean deleteOrNot = ObjectUtils.isEmpty(instrumentNoMap.get(instrumentNo));
                 MonitorEquipmentVo build = buildMonitorEquipmentVo(res,timeVoList,monitorinstrumenttypeVo,deleteOrNot);
                 list.add(build);
 
-                if(StringUtils.isEmpty(res.getRemark())){
-                    res.setRemark("");
-                }
+
             });
         }
         page.setRecords(list);
