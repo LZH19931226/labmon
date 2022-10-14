@@ -541,6 +541,7 @@ public class MonitorEquipmentApplication {
                 .setClientVisible(monitorEquipmentCommand.getClientVisible())
                 .setHospitalCode(monitorEquipmentCommand.getHospitalCode())
                 .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
+                .setRemark(monitorEquipmentCommand.getRemark())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
