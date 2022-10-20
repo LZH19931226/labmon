@@ -17,4 +17,6 @@ public interface AppManageRepository extends IService<AppVersionManagePo> {
      * @return
      */
     List<AppVersionManageDto> listByPage(Page page,AppVersionManageDto appVersionManageDto);
+
+    AppVersionManageDto getAppNewVersion();
 }

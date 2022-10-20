@@ -1,9 +1,11 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.AppVersionManageDto;
 import com.hc.infrastructure.dao.AppVersionManageDao;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.AppVersionManagePo;
 import com.hc.repository.AppManageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +31,15 @@ public class AppManageRepositoryImpl extends ServiceImpl<AppVersionManageDao, Ap
     @Override
     public List<AppVersionManageDto> listByPage(Page page,AppVersionManageDto appVersionManageDto) {
         return appVersionManageDao.listByPage(page,appVersionManageDto);
+    }
+
+    @Override
+    public AppVersionManageDto getAppNewVersion() {
+        AppVersionManagePo appVersionManagePo = appVersionManageDao.selectOne(Wrappers.lambdaQuery(new AppVersionManagePo()).eq(AppVersionManagePo::getAppId, "1")
+                .orderByDesc(AppVersionManagePo::getCreateTime).last("LIMIT 1"));
+        if (null!=appVersionManagePo){
+            return BeanConverter.convert(appVersionManagePo,AppVersionManageDto.class);
+        }
+        return null;
     }
 }

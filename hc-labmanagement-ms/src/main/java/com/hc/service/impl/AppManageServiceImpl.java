@@ -58,4 +58,9 @@ public class AppManageServiceImpl implements AppManageService {
     public void remove(Integer id) {
         appManageRepository.removeById(id);
     }
+
+    @Override
+    public AppVersionManageDto getAppNewVersion() {
+        return appManageRepository.getAppNewVersion();
+    }
 }

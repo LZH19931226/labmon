@@ -71,4 +71,8 @@ public class AppManageApplication {
         appManageService.remove(id);
         FileUtils.deleteFile(path,appName);
     }
+
+    public AppVersionManageDto getAppNewVersion() {
+        return appManageService.getAppNewVersion();
+    }
 }

@@ -19,4 +19,6 @@ public interface AppManageService {
     List<AppVersionManageDto> list(Page page, AppVersionManageDto appVersionManageDto);
 
     void remove(Integer id);
+
+    AppVersionManageDto getAppNewVersion();
 }

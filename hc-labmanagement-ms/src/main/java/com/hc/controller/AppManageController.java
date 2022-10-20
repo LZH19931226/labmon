@@ -45,4 +45,10 @@ public class AppManageController {
     public void remove(@RequestParam("id")Integer id,@RequestParam("appName")String appName){
         appManageApplication.remove(id,appName);
     }
+
+    @GetMapping("/getAppNewVersion")
+    @ApiOperation(value = "获取安卓最新版本信息")
+    public AppVersionManageDto getAppNewVersion(){
+        return appManageApplication.getAppNewVersion();
+    }
 }
