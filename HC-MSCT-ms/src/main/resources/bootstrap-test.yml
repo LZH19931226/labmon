@@ -2,11 +2,11 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 172.17.165.26:8848
+        server-addr: 172.24.58.151:8848
         file-extension: yaml
         prefix: hc-msct-ms
         group: DEFAULT_GROUP
         namespace: dev
       discovery:
-        server-addr: 172.17.165.26:8848
+        server-addr: 172.24.58.151:8848
         namespace: dev
