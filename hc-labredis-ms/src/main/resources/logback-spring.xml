@@ -16,7 +16,7 @@
     </appender>
     <appender name="LOGSTASH"
               class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>172.16.10.203:10086</destination>
+        <destination>172.24.58.151:10086</destination>
         <queueSize>1048576</queueSize>
         <encoder charset="GB2312"
                  class="net.logstash.logback.encoder.LogstashEncoder" />
