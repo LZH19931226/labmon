@@ -53,25 +53,41 @@ public class SocketMessageListener {
 
     @StreamListener(SocketMessage.EXCHANGE_NAME)
     public void onMessage(String messageContent) {
-        mswkMessage(messageContent, "1");
+        try {
+            mswkMessage(messageContent, "1");
+        }catch (Exception e){
+            return;
+        }
     }
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME2)
     public void onMessage1(String messageContent) {
+        try {
         mswkMessage(messageContent, "2");
+        }catch (Exception e){
+            return;
+        }
     }
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME3)
     public void onMessage2(String messageContent) {
+        try {
         mswkMessage(messageContent, "3");
+        }catch (Exception e){
+            return;
+        }
     }
 
     @StreamListener(SocketMessage.EQUIPMENT_STATE_INFO)
     public void onMessage3(String messageContent) {
+        try {
         log.info("数据处理中心服务接收到数据:" + messageContent);
         process(messageContent);
+        }catch (Exception e){
+            return;
+        }
     }
 
     public void mswkMessage(String messageContent, String topic) {
