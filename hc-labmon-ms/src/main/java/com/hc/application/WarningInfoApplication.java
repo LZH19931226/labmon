@@ -48,7 +48,8 @@ public class WarningInfoApplication {
      */
     public  Page<Warningrecord> getWarningRecord(WarningInfoCommand warningInfoCommand) {
         Page<Warningrecord> page = new Page<>(warningInfoCommand.getPageCurrent(),warningInfoCommand.getPageSize());
-        IPage<Warningrecord> warningRecordIPage = warningrecordRepository.getWarningRecord(page);
+        String hospitalCode = warningInfoCommand.getHospitalcode();
+        IPage<Warningrecord> warningRecordIPage = warningrecordRepository.getWarningRecord(page,hospitalCode);
         List<Warningrecord> records = warningRecordIPage.getRecords();
         page.setRecords(records);
         return page;

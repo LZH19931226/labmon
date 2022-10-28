@@ -22,8 +22,8 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     private WarningrecordMapper warningrecordMapper;
 
     @Override
-    public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page) {
-        return page(page, Wrappers.lambdaQuery(new Warningrecord()).orderByDesc(Warningrecord::getInputdatetime));
+    public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page,String hospitalCode) {
+        return page(page, Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getHospitalcode,hospitalCode).orderByDesc(Warningrecord::getInputdatetime));
     }
 
 

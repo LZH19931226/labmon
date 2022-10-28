@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface WarningrecordRepository extends IService<Warningrecord> {
 
-    IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page);
+    IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page,String hospitalCode);
 
     List<Warningrecord> getWarningRecordInfo(String equipmentNo);
 
