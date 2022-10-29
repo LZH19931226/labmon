@@ -52,6 +52,9 @@ public class UpsServiceImpl implements UpsService {
         }
         boolean flag = false;
         List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalcode, equipmentno).getResult();
+        if(CollectionUtils.isEmpty(result)){
+            return;
+        }
         for (ProbeInfoDto probeInfoDto : result) {
             String probeEName = probeInfoDto.getProbeEName();
             if("currentups".equals(probeEName) &&
