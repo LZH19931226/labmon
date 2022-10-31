@@ -70,7 +70,7 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
      * @return
      */
     @Override
-    public MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo) {
+    public List<MonitorEquipmentDto> selectMonitorEquipmentInfoByNo(String equipmentNo) {
 
         return monitorEquipmentRepository.selectMonitorEquipmentInfoByNo(equipmentNo);
     }

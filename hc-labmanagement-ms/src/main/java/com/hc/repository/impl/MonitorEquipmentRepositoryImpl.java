@@ -83,7 +83,7 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
      * @return
      */
     @Override
-    public MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo) {
+    public List<MonitorEquipmentDto> selectMonitorEquipmentInfoByNo(String equipmentNo) {
         return  monitorEquipmentDao.selectMonitorEquipmentInfoByNo(equipmentNo);
     }
 

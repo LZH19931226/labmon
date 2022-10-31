@@ -192,7 +192,8 @@ public class InstrumentparamconfigApplication {
         }
         //获取设备信息
         String equipmentNo = newInfo.getEquipmentNo();
-        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
+        List<MonitorEquipmentDto> monitorEquipmentDtoList = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
+        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentDtoList.get(0);
         if(!ObjectUtils.isEmpty(monitorEquipmentDto)){
             infoCommand.setEquipmentName(monitorEquipmentDto.getEquipmentName());
         }
