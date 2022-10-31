@@ -115,41 +115,59 @@ public class AlmMsgServiceImpl implements AlmMsgService {
         String sn = monitorinstrument.getSn();
         String hospitalcode = monitorinstrument.getHospitalcode();
         SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
-        if (null!=snDeviceDto) {
-            Monitorinstrument monitorinstrumentObj = objectConversion(snDeviceDto);
-            String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
-            //全天报警
-            if (StringUtils.isEmpty(eqipmentAlwayalarm) || DictEnum.TURN_ON.getCode().equals(eqipmentAlwayalarm)) {
+//        if (null!=snDeviceDto) {
+//            Monitorinstrument monitorinstrumentObj = objectConversion(snDeviceDto);
+//            String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();
+//            //全天报警
+//            if (StringUtils.isEmpty(eqipmentAlwayalarm) || DictEnum.TURN_ON.getCode().equals(eqipmentAlwayalarm)) {
+//                warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
+//                return true;
+//            } else {
+//                //当前设备有配置时段,但是当前时间不在时段内.不报警
+//                if (CollectionUtils.isNotEmpty(monitorinstrumentObj.getWarningTimeList())) {
+//                    return currentTimeInWarningBlockEQ(monitorinstrumentObj,warningrecord);
+//                } else{
+//                    //没有配置时间段,则读取设备类型得报警规则
+//                    String equipmenttypeid =  snDeviceDto.getEquipmentTypeId();
+//                    HospitalEquipmentTypeInfoDto hosEqType = hospitalEquipmentTypeIdApi.findHospitalEquipmentTypeRedisInfo(hospitalcode, equipmenttypeid).getResult();
+//                    HospitalEquipmentTypeInfoModel equipmentTypeInfoModel = BeanConverter.convert(hosEqType, HospitalEquipmentTypeInfoModel.class);
+//                    String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
+//                    //设备类型全天报警,直接发送警报
+//                    if (DictEnum.TURN_ON.getCode().equals(alwayalarm)) {
+//                        warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
+//                        return true;
+//                    } else {
+//                        //设备类型非全天报警又未设置时段,则不报警
+//                        List<MonitorEquipmentWarningTime> warningTimeList = equipmentTypeInfoModel.getWarningTimeList();
+//                        if (CollectionUtils.isEmpty(warningTimeList)){
+//                            warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
+//                            return false;
+//                        }else {
+//                            return currentTimeInWarningBlockEQTYPE(equipmentTypeInfoModel,warningrecord);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+        String equipmenttypeid = snDeviceDto.getEquipmentTypeId();
+        HospitalEquipmentTypeInfoDto hosEqType = hospitalEquipmentTypeIdApi.findHospitalEquipmentTypeRedisInfo(hospitalcode, equipmenttypeid).getResult();
+        HospitalEquipmentTypeInfoModel equipmentTypeInfoModel = BeanConverter.convert(hosEqType, HospitalEquipmentTypeInfoModel.class);
+        String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
+        //设备类型全天报警,直接发送警报
+        if (DictEnum.TURN_ON.getCode().equals(alwayalarm)) {
+            warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
+            return true;
+        } else {
+            //设备类型非全天报警又未设置时段,则不报警
+            List<MonitorEquipmentWarningTime> warningTimeList = equipmentTypeInfoModel.getWarningTimeList();
+            if (CollectionUtils.isEmpty(warningTimeList)){
                 warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
-                return true;
-            } else {
-                //当前设备有配置时段,但是当前时间不在时段内.不报警
-                if (CollectionUtils.isNotEmpty(monitorinstrumentObj.getWarningTimeList())) {
-                    return currentTimeInWarningBlockEQ(monitorinstrumentObj,warningrecord);
-                } else{
-                    //没有配置时间段,则读取设备类型得报警规则
-                    String equipmenttypeid =  snDeviceDto.getEquipmentTypeId();
-                    HospitalEquipmentTypeInfoDto hosEqType = hospitalEquipmentTypeIdApi.findHospitalEquipmentTypeRedisInfo(hospitalcode, equipmenttypeid).getResult();
-                    HospitalEquipmentTypeInfoModel equipmentTypeInfoModel = BeanConverter.convert(hosEqType, HospitalEquipmentTypeInfoModel.class);
-                    String alwayalarm = equipmentTypeInfoModel.getAlwayalarm();
-                    //设备类型全天报警,直接发送警报
-                    if (DictEnum.TURN_ON.getCode().equals(alwayalarm)) {
-                        warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
-                        return true;
-                    } else {
-                        //设备类型非全天报警又未设置时段,则不报警
-                        List<MonitorEquipmentWarningTime> warningTimeList = equipmentTypeInfoModel.getWarningTimeList();
-                        if (CollectionUtils.isEmpty(warningTimeList)){
-                            warningrecord.setAlwayalarm(DictEnum.TURN_ON.getCode());
-                            return false;
-                        }else {
-                            return currentTimeInWarningBlockEQTYPE(equipmentTypeInfoModel,warningrecord);
-                        }
-                    }
-                }
+                return false;
+            }else {
+                return currentTimeInWarningBlockEQTYPE(equipmentTypeInfoModel,warningrecord);
             }
         }
-        return false;
     }
 
 
