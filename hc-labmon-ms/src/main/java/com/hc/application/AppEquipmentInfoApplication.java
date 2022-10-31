@@ -126,6 +126,8 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isEmpty(list)) {
             return page;
         }
+        //过滤一个Eno对应多个Ino的值
+        list = filterEno(list);
         List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
         ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
         probeRedisCommand.setHospitalCode(hospitalCode);
@@ -176,6 +178,25 @@ public class AppEquipmentInfoApplication {
         }
         page.setRecords(probeCurrentInfoDtos);
         return page;
+    }
+
+    /**
+     * 过滤一个Eno对应多个Ino的值（有线设备）
+     * @param list
+     * @return
+     */
+    private List<MonitorEquipmentDto> filterEno(List<MonitorEquipmentDto> list) {
+        Map<String, List<MonitorEquipmentDto>> collect1 = list.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
+        List<MonitorEquipmentDto>  removeList = new ArrayList<>();
+        for (String eno : collect1.keySet()) {
+            if (collect1.get(eno).size()>1) {
+                removeList.add(collect1.get(eno).get(1));
+            }
+        }
+        if(CollectionUtils.isNotEmpty(removeList)){
+            list.removeAll(removeList);
+        }
+        return list;
     }
 
     /**

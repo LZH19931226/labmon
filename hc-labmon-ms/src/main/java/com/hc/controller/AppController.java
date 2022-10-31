@@ -99,7 +99,6 @@ public class AppController {
         return equipmentInfoAppApplication.getAlarmSystemInfo(probeCommand);
     }
 
-
     @GetMapping("/synchronizedDeviceAlarmSwitch")
     @ApiOperation("同步设备报警开关")
     public void synchronizedDeviceAlarmSwitch(){
