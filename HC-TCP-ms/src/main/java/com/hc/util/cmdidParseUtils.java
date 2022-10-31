@@ -228,7 +228,7 @@ public class cmdidParseUtils {
         String o2 = cmd.substring(32, 36);
         // 若未接 O2 传感器，该值为 0xF000
         String s1 = paseAir(o2);
-        s1 = CustomUtils.agreementAll(s1, "0", "20");
+        s1 = CustomUtils.agreementAll(s1, "0", "30");
         paramaterModel.setO2(s1);
         paramaterModel.setCmdid(cmdid);
         paramaterModel.setSN(sn);

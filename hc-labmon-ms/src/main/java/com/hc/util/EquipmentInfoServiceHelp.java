@@ -283,7 +283,7 @@ public class EquipmentInfoServiceHelp {
                 rightCompartmentHumidityTime.add(da);
             }
             //当前电量
-            if (StringUtils.isNotEmpty(lastDataModel.getCurrentqc())&& RegularUtil.checkContainsNumbers(lastDataModel.getCurrentqc())) {
+            if (StringUtils.isNotEmpty(lastDataModel.getCurrentqc()) && RegularUtil.checkContainsNumbers(lastDataModel.getCurrentqc()) && map.containsKey("QC")) {
                 qc.add(lastDataModel.getCurrentqc());
                 qcTime.add(da);
             }

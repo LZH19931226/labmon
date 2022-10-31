@@ -153,6 +153,9 @@ public class SnDeviceReidsSyncApplocation {
         redisUtils.hDel(LabManageMentServiceEnum.DEVICEINFO.getCode());
         for (SnDeviceDto snDeviceDto : snDeviceDtoList) {
             String sn = snDeviceDto.getSn();
+            if(StringUtils.isEmpty(sn)){
+                continue;
+            }
             redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn,JSONUtil.toJsonStr(snDeviceDto));
         }
     }
