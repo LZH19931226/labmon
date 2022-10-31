@@ -182,6 +182,7 @@ public class AppEquipmentInfoApplication {
 
     /**
      * 过滤一个Eno对应多个Ino的值（有线设备）
+     * 只取index=0的值
      * @param list
      * @return
      */
@@ -190,7 +191,9 @@ public class AppEquipmentInfoApplication {
         List<MonitorEquipmentDto>  removeList = new ArrayList<>();
         for (String eno : collect1.keySet()) {
             if (collect1.get(eno).size()>1) {
-                removeList.add(collect1.get(eno).get(1));
+                List<MonitorEquipmentDto> list1 = collect1.get(eno);
+                list1.remove(0);
+                removeList.addAll(list1);
             }
         }
         if(CollectionUtils.isNotEmpty(removeList)){
