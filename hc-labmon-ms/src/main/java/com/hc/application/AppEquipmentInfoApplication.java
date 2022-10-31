@@ -85,6 +85,7 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isEmpty(instrumentParamConfigDtos)) {
             return null;
         }
+        instrumentParamConfigDtos.removeIf(res->res.getEquipmenttypeid()==null);
         Map<String, List<InstrumentParamConfigDto>>  eqTypeIdMap = instrumentParamConfigDtos.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmenttypeid));
         List<HospitalEquipmentDto> dtoList = new ArrayList<>();
         for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
