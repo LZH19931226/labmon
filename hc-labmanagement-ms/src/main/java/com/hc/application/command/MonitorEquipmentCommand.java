@@ -97,6 +97,11 @@ public class MonitorEquipmentCommand {
     private String remark;
 
     /**
+     * 市电恢复通知
+     */
+    private String upsNotice;
+
+    /**
      * 报警时间段
      */
     private List<MonitorequipmentwarningtimeDTO> warningTimeList;
