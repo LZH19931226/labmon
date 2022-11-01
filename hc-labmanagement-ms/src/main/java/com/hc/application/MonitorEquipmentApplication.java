@@ -177,7 +177,6 @@ public class MonitorEquipmentApplication {
 
     private MonitorEquipmentVo buildMonitorEquipmentVo(MonitorEquipmentDto res, List<WarningTimeVo> timeVoList, MonitorinstrumenttypeVo monitorinstrumenttypeVo, boolean deleteOrNot) {
         return MonitorEquipmentVo.builder()
-                .upsNotice(res.getUpsNotice())
                 .equipmentNo(res.getEquipmentNo())
                 .equipmentBrand(res.getEquipmentBrand())
                 .equipmentName(res.getEquipmentName())
@@ -197,7 +196,8 @@ public class MonitorEquipmentApplication {
                 .warningTimeList(timeVoList)
                 .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                 .deleteOrNot(deleteOrNot)
-                .remark(res.getRemark())
+                .remark(StringUtils.isEmpty(res.getRemark()) ? "" : res.getRemark())
+                .upsNotice(StringUtils.isEmpty(res.getUpsNotice()) ? "" : res.getUpsNotice())
                 .build();
     }
 
