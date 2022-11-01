@@ -46,39 +46,68 @@ public class UpsServiceImpl implements UpsService {
     @Override
     public void sendInfo(ParamaterModel model, String equipmentno, String hospitalcode) {
         String ups = model.getUPS();
-        //判断当前ups的值，异常变为正常时继续
-        if(StringUtils.equalsAnyIgnoreCase(ups,"1","2","5")){
-            return;
-        }
-        boolean flag = false;
-        List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalcode, equipmentno).getResult();
-        if(CollectionUtils.isEmpty(result)){
-            return;
-        }
-        for (ProbeInfoDto probeInfoDto : result) {
-            String probeEName = probeInfoDto.getProbeEName();
-            if("currentups".equals(probeEName) &&
-                    //1表示异常
-               "1".equals(probeInfoDto.getValue())){
-                flag = true;
+        String cmdid = model.getCmdid();
+        if (StringUtils.equalsIgnoreCase(cmdid,"89")){
+            //协议为89时
+            //判断当前ups的值，异常变为正常时继续
+            if(StringUtils.equalsAnyIgnoreCase(ups,"1","2","5")){
+                return;
+            }
+            //此处根据设备判断设备有没有开启恢复断电报警功能,没有的话,则不需要后续
+
+
+            List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalcode, equipmentno).getResult();
+            if(CollectionUtils.isEmpty(result)){
+                return;
+            }
+            for (ProbeInfoDto probeInfoDto : result) {
+                String probeEName = probeInfoDto.getProbeEName();
+                if("currentups".equals(probeEName)){
+                    String value = probeInfoDto.getValue();
+                    if (StringUtils.equalsAnyIgnoreCase(value,"1","2","5")){
+                        sendSms(model,equipmentno,hospitalcode);
+                    }
+                }
             }
         }
-        if(flag){
-            //获取人员信息
-            List<UserRightRedisDto> userList = addUserScheduLing(hospitalcode);
-            //获取设备缓存信息
-            SnDeviceDto snDeviceDto = snDeviceRedisApi.getSnDeviceDto(model.getSN()).getResult();
-            if(CollectionUtils.isNotEmpty(userList)){
-                String equipmentName = snDeviceDto.getEquipmentName();
-                //调用短信接口
-                for (UserRightRedisDto userRightRedisDto : userList) {
-                    String role = userRightRedisDto.getRole();
-                    if (StringUtils.isNotEmpty(role) && StringUtils.equals(role, "1")) {
-                        HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
-                        equipmentName = hospitalInfoDto.getHospitalName() + equipmentName;
+        if (StringUtils.equalsIgnoreCase(cmdid,"a4")){
+            //协议为a4时
+            //判断当前ups的值，异常变为正常时继续
+            if(StringUtils.equalsAnyIgnoreCase(ups,"1")){
+                return;
+            }
+            //此处根据设备判断设备有没有开启恢复断电报警功能,没有的话,则不需要后续
+
+            List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalcode, equipmentno).getResult();
+            if(CollectionUtils.isEmpty(result)){
+                return;
+            }
+            for (ProbeInfoDto probeInfoDto : result) {
+                String probeEName = probeInfoDto.getProbeEName();
+                if("currentups".equals(probeEName)){
+                    String value = probeInfoDto.getValue();
+                    if (StringUtils.equalsAnyIgnoreCase(value,"1")){
+                        sendSms(model,equipmentno,hospitalcode);
                     }
-                    smsApi.upsRemind(userRightRedisDto.getPhoneNum(),equipmentName);
                 }
+            }
+        }
+    }
+
+    public void sendSms(ParamaterModel model, String equipmentno, String hospitalcode){
+        List<UserRightRedisDto> userList = addUserScheduLing(hospitalcode);
+        //获取设备缓存信息
+        SnDeviceDto snDeviceDto = snDeviceRedisApi.getSnDeviceDto(model.getSN()).getResult();
+        if(CollectionUtils.isNotEmpty(userList)){
+            String equipmentName = snDeviceDto.getEquipmentName();
+            //调用短信接口
+            for (UserRightRedisDto userRightRedisDto : userList) {
+                String role = userRightRedisDto.getRole();
+                if (StringUtils.isNotEmpty(role) && StringUtils.equals(role, "1")) {
+                    HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+                    equipmentName = hospitalInfoDto.getHospitalName() + equipmentName;
+                }
+                smsApi.upsRemind(userRightRedisDto.getPhoneNum(),equipmentName);
             }
         }
     }
