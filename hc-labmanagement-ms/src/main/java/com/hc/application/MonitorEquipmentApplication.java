@@ -98,6 +98,20 @@ public class MonitorEquipmentApplication {
         List<MonitorEquipmentDto> dtoList = monitorEquipmentService.getEquipmentInfoList(page, monitorEquipmentCommand);
         List<MonitorEquipmentVo> list = new ArrayList<>();
         if (!CollectionUtils.isEmpty(dtoList)) {
+            Map<String, List<MonitorEquipmentDto>> eInfoMap = dtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentNo));
+            List<MonitorEquipmentDto> removeList = new ArrayList<>();
+            for (String eno : eInfoMap.keySet()) {
+                if (eInfoMap.get(eno).size()>1) {
+                    List<MonitorEquipmentDto> med = eInfoMap.get(eno);
+                    med.remove(0);
+                    if(CollectionUtils.isNotEmpty(med)){
+                        removeList.addAll(med);
+                    }
+                }
+            }
+            if(CollectionUtils.isNotEmpty(removeList)){
+                dtoList.removeAll(removeList);
+            }
             //将for循环中的操作数据库移植到外面做缓存
             //在探头参数配置表中以instrumentNo为key,instrumentNo对应的InstrumentparamconfigDTO集合为value
             List<String> instrumentNos = dtoList.stream().map(MonitorEquipmentDto::getInstrumentNo).collect(Collectors.toList());
@@ -512,8 +526,9 @@ public class MonitorEquipmentApplication {
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
 
-        MonitorEquipmentDto equipmentDto =
+        List<MonitorEquipmentDto> equipmentDtoList =
                 monitorEquipmentService.selectMonitorEquipmentInfoByNo(monitorEquipmentCommand.getEquipmentNo());
+        MonitorEquipmentDto equipmentDto = equipmentDtoList.get(0);
         //判断设备名称有没有修改
         if(!equipmentName.equals(equipmentDto.getEquipmentName())){
             //修改时用判断该医院下设备名称是否已存在
@@ -693,7 +708,8 @@ public class MonitorEquipmentApplication {
         //通过设备eno查询设备sn信息,用于redis删除
         List<MonitorinstrumentDTO> monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(equipmentNo);
 
-        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
+        List<MonitorEquipmentDto> monitorEquipmentDtoList = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
+        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentDtoList.get(0);
         //删除探头表中的信息
         monitorinstrumentService.deleteMonitorinstrumentInfo(equipmentNo);
         monitorEquipmentService.deleteMonitorEquipmentInfo(equipmentNo);

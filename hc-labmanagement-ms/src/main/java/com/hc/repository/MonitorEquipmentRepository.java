@@ -48,7 +48,7 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
      * @param equipmentNo
      * @return
      */
-    MonitorEquipmentDto selectMonitorEquipmentInfoByNo(String equipmentNo);
+    List<MonitorEquipmentDto> selectMonitorEquipmentInfoByNo(String equipmentNo);
 
     /**
      * 删除设备信息
