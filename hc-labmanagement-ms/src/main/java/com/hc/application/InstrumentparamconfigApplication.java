@@ -191,7 +191,7 @@ public class InstrumentparamconfigApplication {
             infoCommand.setHospitalName(hospitalInfo.getHospitalName());
         }
         //获取设备信息
-        String equipmentNo = newInfo.getEquipmentNo();
+        String equipmentNo = monitorinstrumentDTO.getEquipmentno();
         List<MonitorEquipmentDto> monitorEquipmentDtoList = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
         MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentDtoList.get(0);
         if(!ObjectUtils.isEmpty(monitorEquipmentDto)){
@@ -253,12 +253,12 @@ public class InstrumentparamconfigApplication {
         //当修改探头报警状态时更新设备数据库
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
-        //更新设备缓存
+        //更新设备缓存(当报警状态发生改变时修改)
         SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-        if(!ObjectUtils.isEmpty(result1)){
+        if(!ObjectUtils.isEmpty(result1) && !warningphone.equals(result1.getWarningSwitch())){
             result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+            snDeviceRedisApi.updateSnDeviceDtoSync(result1);
         }
-        snDeviceRedisApi.updateSnDeviceDtoSync(result1);
 
         //添加日志信息
         InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
