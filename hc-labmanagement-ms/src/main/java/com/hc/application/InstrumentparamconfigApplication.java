@@ -234,32 +234,25 @@ public class InstrumentparamconfigApplication {
         InstrumentparamconfigDTO instrumentparamconfigDTO = buildInstrumentparamconfigDTO(instrumentParamConfigCommand);
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
         //更新设备
-        String warningphone = instrumentParamConfigCommand.getWarningphone();
+        String newWarningPhone = instrumentParamConfigCommand.getWarningphone();
+        String oldWarningPhone = dto.getWarningphone();
         String equipmentNo = monitorinstrumentDTO.getEquipmentno();
         MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
         monitorEquipmentDto.setEquipmentNo(equipmentNo);
-        //当设备报警开关发生变化时在修改设备的报警开关(有一个探头开启设备开启，所有探头关闭设备关闭)
-        if(SysConstants.IN_ALARM.equals(warningphone)){
-            monitorEquipmentDto.setWarningSwitch(warningphone);
-        }else {
-            List<InstrumentparamconfigDTO> instrumentConfigDTOS = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
-            long count = instrumentConfigDTOS.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
-            if(count>0){
-                monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
-            }else {
-                monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
+        //当探头报警开关发生变化时在修改设备的报警开关(有一个探头开启设备开启，所有探头关闭设备关闭)
+        //设备报警开关只作为app报警设置接口查看用
+        if(!newWarningPhone.equals(oldWarningPhone)){
+            build(equipmentNo, monitorEquipmentDto, instrumentparamconfigService);
+            //当修改探头报警状态时更新设备数据库
+            monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
+
+            //更新设备缓存(当报警状态发生改变时修改)
+            SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
+            if(!ObjectUtils.isEmpty(result1) && ! newWarningPhone.equals(result1.getWarningSwitch())){
+                result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+                snDeviceRedisApi.updateSnDeviceDtoSync(result1);
             }
         }
-        //当修改探头报警状态时更新设备数据库
-        monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
-
-        //更新设备缓存(当报警状态发生改变时修改)
-        SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-        if(!ObjectUtils.isEmpty(result1) && !warningphone.equals(result1.getWarningSwitch())){
-            result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
-            snDeviceRedisApi.updateSnDeviceDtoSync(result1);
-        }
-
         //添加日志信息
         InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
                 build(Context.getUserId(),
@@ -271,6 +264,16 @@ public class InstrumentparamconfigApplication {
 
         //更新redis缓存
         addProbeRedisInfo(monitorinstrumentDTO,instrumentParamConfigCommand,instrumentParamConfigCommand.getInstrumentparamconfigno());
+    }
+
+    static void build(String equipmentNo, MonitorEquipmentDto monitorEquipmentDto, InstrumentparamconfigService instrumentparamconfigService) {
+        List<InstrumentparamconfigDTO> instrumentConfigDTOS = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
+        long count = instrumentConfigDTOS.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
+        if(count>0){
+            monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
+        }else {
+            monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
+        }
     }
 
     private InstrumentparamconfigDTO buildInstrumentparamconfigDTO(InstrumentparamconfigCommand instrumentParamConfigCommand) {
