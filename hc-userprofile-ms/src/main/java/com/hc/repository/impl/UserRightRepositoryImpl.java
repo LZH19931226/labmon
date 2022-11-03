@@ -15,6 +15,7 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
 import com.hc.repository.UserRightRepository;
 import com.hc.vo.user.UserRightVo;
+import com.sun.deploy.security.MSCryptoDSASignature;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -56,6 +57,12 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
         if(integer>0){
             throw new IedsException(UserEnumErrorCode.LOGIN_ACCOUNT_ALREADY_EXISTS.getMessage());
+        }
+        Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
+                .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
+                .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
+        if(num>0){
+            throw new IedsException(UserEnumErrorCode.PHONE_NUM_EXISTS.getMessage());
         }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
