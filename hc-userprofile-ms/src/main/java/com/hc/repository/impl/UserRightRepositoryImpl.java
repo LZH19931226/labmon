@@ -15,7 +15,6 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
 import com.hc.repository.UserRightRepository;
 import com.hc.vo.user.UserRightVo;
-import com.sun.deploy.security.MSCryptoDSASignature;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
