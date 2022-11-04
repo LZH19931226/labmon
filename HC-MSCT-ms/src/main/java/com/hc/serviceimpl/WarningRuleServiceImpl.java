@@ -89,6 +89,8 @@ public class WarningRuleServiceImpl implements WarningRuleService {
                 warningModel.setEquipmentname(probe.getEquipmentName());
                 warningModel.setUnit(probe.getInstrumentConfigName());
                 warningModel.setHospitalcode(hospitalcode);
+                warningModel.setInstrumentConfigId(String.valueOf(probe.getInstrumentConfigId()));
+                warningModel.setInstrumentparamconfigNO(probe.getInstrumentParamConfigNO());
             }
         }
         //医院设置报警时间间隔规则

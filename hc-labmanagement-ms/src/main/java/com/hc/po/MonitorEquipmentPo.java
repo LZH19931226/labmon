@@ -72,4 +72,8 @@ public class MonitorEquipmentPo implements Serializable {
     /** 备注 */
     @TableField(value = "remark")
     private String remark;
+
+    /** 市电恢复通知 0和空为不开启 1为开启 */
+    @TableField(value = "ups_notice")
+    private String upsNotice;
 }

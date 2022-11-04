@@ -81,4 +81,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
 
     /** 备注 */
     private String remark;
+
+    /** 市电恢复通知 */
+    private String upsNotice;
 }

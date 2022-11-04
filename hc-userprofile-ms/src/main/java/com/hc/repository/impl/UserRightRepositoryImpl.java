@@ -57,6 +57,12 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         if(integer>0){
             throw new IedsException(UserEnumErrorCode.LOGIN_ACCOUNT_ALREADY_EXISTS.getMessage());
         }
+        Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
+                .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
+                .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
+        if(num>0){
+            throw new IedsException(UserEnumErrorCode.PHONE_NUM_EXISTS.getMessage());
+        }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
     }

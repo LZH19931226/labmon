@@ -47,6 +47,7 @@ public class UpsServiceImpl implements UpsService {
     public void sendInfo(ParamaterModel model, String equipmentno, String hospitalcode) {
         String ups = model.getUPS();
         String cmdid = model.getCmdid();
+        String sn = model.getSN();
         if (StringUtils.equalsIgnoreCase(cmdid,"89")){
             //协议为89时
             //判断当前ups的值，异常变为正常时继续
@@ -54,7 +55,10 @@ public class UpsServiceImpl implements UpsService {
                 return;
             }
             //此处根据设备判断设备有没有开启恢复断电报警功能,没有的话,则不需要后续
-
+            boolean noticeForOpen = upsNoticeForOpen(sn);
+            if(!noticeForOpen){
+                return;
+            }
 
             List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalcode, equipmentno).getResult();
             if(CollectionUtils.isEmpty(result)){
@@ -76,7 +80,12 @@ public class UpsServiceImpl implements UpsService {
             if(StringUtils.equalsAnyIgnoreCase(ups,"1")){
                 return;
             }
+
             //此处根据设备判断设备有没有开启恢复断电报警功能,没有的话,则不需要后续
+            boolean noticeForOpen = upsNoticeForOpen(sn);
+            if(!noticeForOpen){
+                return;
+            }
 
             List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalcode, equipmentno).getResult();
             if(CollectionUtils.isEmpty(result)){
@@ -162,5 +171,16 @@ public class UpsServiceImpl implements UpsService {
             }
         }
         return list;
+    }
+
+    /** 探头是开启市电恢复提醒 */
+    public boolean upsNoticeForOpen(String sn){
+        SnDeviceDto snDeviceDto = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
+        String upsNotice = snDeviceDto.getUpsNotice();
+        //0和空表示未开启
+        if(StringUtils.isBlank(upsNotice) || "0".equals(upsNotice)){
+            return false;
+        }
+        return true;
     }
 }
