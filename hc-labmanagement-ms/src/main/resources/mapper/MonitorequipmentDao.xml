@@ -113,9 +113,10 @@
         <if test ="monitorEquipmentCommand.equipmentName != null and monitorEquipmentCommand.equipmentName != '' ">
             and me.equipmentname like concat("%",#{monitorEquipmentCommand.equipmentName},"%")
         </if>
-        <if test="monitorEquipmentCommand.clientVisible != null">
+        <if test="monitorEquipmentCommand.clientVisible != null and monitorEquipmentCommand.clientVisible!= '' ">
             and me.clientvisible = #{monitorEquipmentCommand.clientVisible}
         </if>
+        order by equipmentName
     </select>
 
 </mapper>
