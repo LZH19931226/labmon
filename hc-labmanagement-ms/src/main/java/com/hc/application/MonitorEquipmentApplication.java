@@ -160,7 +160,7 @@ public class MonitorEquipmentApplication {
                 sn = monitorinstrumentDTO.getSn();
             }
             MonitorEquipmentVo monitorEquipmentVo = MonitorEquipmentVo.builder()
-                    .alwaysAlarm(monitorEquipmentDto.getAlwaysAlarm())
+                    .alwaysAlarm(StringUtils.isEmpty(monitorEquipmentDto.getAlwaysAlarm()) ? "0":monitorEquipmentDto.getAlwaysAlarm())
                     .channel(channel)
                     .clientVisible(monitorEquipmentDto.getClientVisible())
                     .deleteOrNot(flag)
