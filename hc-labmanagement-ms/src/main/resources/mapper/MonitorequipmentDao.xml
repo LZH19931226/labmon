@@ -88,4 +88,34 @@
             ) a ON a.equipmentno = me.equipmentno
     </select>
 
+    <select id="getMonitorEquipmentList" resultType="com.hc.dto.MonitorEquipmentDto">
+        select
+            me.equipmentno equipmentNo,
+            me.hospitalcode hospitalCode,
+            me.equipmentbrand equipmentBrand,
+            me.clientvisible clientVisible,
+            me.alwayalarm alwaysAlarm,
+            me.equipmentname equipmentName,
+            me.remark remark,
+            me.ups_notice upsNotice,
+            h.hospitalname hospitalName,
+            met.equipmenttypename equipmentTypeName
+        from monitorequipment me
+        left join monitorequipmenttype met on me.equipmenttypeid = met.equipmenttypeid
+        LEFT JOIN hospitalofreginfo h ON me.hospitalcode = h.hospitalcode
+        where 1=1
+        <if test = "monitorEquipmentCommand.hospitalCode != null and monitorEquipmentCommand.hospitalCode != ''" >
+            and me.hospitalcode = #{monitorEquipmentCommand.hospitalCode}
+        </if>
+        <if test = "monitorEquipmentCommand.equipmentTypeId != null and monitorEquipmentCommand.equipmentTypeId != ''">
+            and me.equipmenttypeid = #{monitorEquipmentCommand.equipmentTypeId}
+        </if>
+        <if test ="monitorEquipmentCommand.equipmentName != null and monitorEquipmentCommand.equipmentName != '' ">
+            and me.equipmentname like concat("%",#{monitorEquipmentCommand.equipmentName},"%")
+        </if>
+        <if test="monitorEquipmentCommand.clientVisible != null">
+            and me.clientvisible = #{monitorEquipmentCommand.clientVisible}
+        </if>
+    </select>
+
 </mapper>

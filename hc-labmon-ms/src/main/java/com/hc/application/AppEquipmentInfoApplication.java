@@ -70,6 +70,9 @@ public class AppEquipmentInfoApplication {
     @Autowired
     private MonitorEquipmentApi monitorEquipmentApi;
 
+    @Autowired
+    private MonitorInstrumentService monitorInstrumentService;
+
     /**
      * 获取app首页设备数量
      * @param hospitalCode
@@ -124,12 +127,16 @@ public class AppEquipmentInfoApplication {
         Page<ProbeCurrentInfoDto> page = new Page<>(probeCommand.getPageCurrent(),probeCommand.getPageSize());
         //分页查询设备信息
         List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page,probeCommand);
+        //在查出monitorinstrument信息
+        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+        List<MonitorinstrumentDto> monitorInstrumentDTOList =  monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
+        Map<String, List<MonitorinstrumentDto>> enoAndMiMap = new HashMap<>();
+        if(CollectionUtils.isNotEmpty(monitorInstrumentDTOList)){
+            enoAndMiMap =  monitorInstrumentDTOList.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
+        }
         if (CollectionUtils.isEmpty(list)) {
             return page;
         }
-        //过滤一个Eno对应多个Ino的值
-        list = filterEno(list);
-        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
         ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
         probeRedisCommand.setHospitalCode(hospitalCode);
         probeRedisCommand.setENoList(enoList);
@@ -147,8 +154,6 @@ public class AppEquipmentInfoApplication {
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
             String equipmentName = monitorEquipmentDto.getEquipmentname();
             String equipmentNo = monitorEquipmentDto.getEquipmentno();
-            String sn = monitorEquipmentDto.getSn();
-            String instrumentTypeId = monitorEquipmentDto.getInstrumenttypeid();
             String equipmentTypeId = monitorEquipmentDto.getEquipmenttypeid();
             List<ProbeInfoDto> probeInfoDtoList = null;
             if (probeInfoMap.containsKey(equipmentNo)) {
@@ -157,8 +162,11 @@ public class AppEquipmentInfoApplication {
             ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
             probeInfo.setEquipmentName(equipmentName);
             probeInfo.setEquipmentNo(equipmentNo);
-            probeInfo.setSn(sn);
-            probeInfo.setInstrumentTypeId(instrumentTypeId);
+            if(MapUtils.isNotEmpty(enoAndMiMap) && enoAndMiMap.containsKey(equipmentNo)){
+                MonitorinstrumentDto monitorinstrumentDto = enoAndMiMap.get(equipmentNo).get(0);
+                probeInfo.setSn(monitorinstrumentDto.getSn());
+                probeInfo.setInstrumentTypeId(String.valueOf(monitorinstrumentDto.getInstrumenttypeid()));
+            }
             probeInfo.setEquipmentTypeId(equipmentTypeId);
             Date maxDate = null;
             if(CollectionUtils.isNotEmpty(probeInfoDtoList)){

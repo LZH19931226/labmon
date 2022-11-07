@@ -42,12 +42,9 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
 
     @Select("<script>" +
             "select " +
-            "t1.*," +
-            "t2.sn," +
-            "t2.instrumenttypeid " +
+            "t1.*" +
             "from " +
             "monitorequipment t1 " +
-            "left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno " +
             "where t1.clientvisible = '1' and t1.hospitalcode = #{probeCommand.hospitalCode} and t1.equipmenttypeid = #{probeCommand.equipmentTypeId}" +
             "<if test = 'probeCommand.warningSwitch != null and probeCommand.warningSwitch != \"\"'>" +
             "<if test = 'probeCommand.warningSwitch == 0'> " +

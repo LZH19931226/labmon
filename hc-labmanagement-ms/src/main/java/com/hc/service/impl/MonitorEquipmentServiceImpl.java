@@ -129,4 +129,9 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(String hospitalCode, String equipmentTypeId,String warningPhone) {
         monitorEquipmentRepository.updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(hospitalCode,equipmentTypeId,warningPhone);
     }
+
+    @Override
+    public List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand) {
+        return monitorEquipmentRepository.getMonitorEquipmentList(page,monitorEquipmentCommand);
+    }
 }

@@ -144,4 +144,9 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
     public void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(String hospitalCode, String equipmentTypeId,String warningPhone) {
         monitorEquipmentDao.updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(hospitalCode,equipmentTypeId,warningPhone);
     }
+
+    @Override
+    public List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand) {
+        return monitorEquipmentDao.getMonitorEquipmentList(page,monitorEquipmentCommand);
+    }
 }

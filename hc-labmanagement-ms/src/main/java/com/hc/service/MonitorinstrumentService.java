@@ -72,5 +72,7 @@ public interface MonitorinstrumentService{
      * @param monitorinstrumentDTO
      */
     void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO);
+
+    List<MonitorinstrumentDTO> selectMonitorInstrumentByEnoList(List<String> enoList);
 }
 

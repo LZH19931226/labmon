@@ -82,4 +82,6 @@ public interface MonitorEquipmentRepository extends IService<MonitorEquipmentPo>
     Boolean checkSn(String sn);
 
     void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(String hospitalCode, String equipmentTypeId,String warningPhone);
+
+    List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand);
 }
