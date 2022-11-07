@@ -16,7 +16,7 @@ public class RegularUtil {
     }
 
     public static void  main(String[] args){
-     System.out.println(checkContainsNumbers("s1ada"));
+     System.out.println(checkContainsNumbers("881e"));
 
     }
 }

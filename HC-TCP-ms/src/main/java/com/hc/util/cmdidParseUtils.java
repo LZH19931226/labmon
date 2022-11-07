@@ -257,7 +257,7 @@ public class cmdidParseUtils {
         String tem = cmd.substring(28, 32);
         String s2 = pasetemperature1(tem);
         if(RegularUtil.checkContainsNumbers(s2)){
-            s2 = CustomUtils.agreementAll(s2, "-0", "50");
+            s2 = CustomUtils.agreementAll(s2, "-100", "50");
         }
         paramaterModel.setTEMP(s2);
         String yangqi = cmd.substring(32, 36);
