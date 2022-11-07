@@ -85,7 +85,13 @@ public class MonitorEquipmentApplication {
 
     @Autowired
     private ProbeRedisApi probeRedisApi;
-
+    /**
+     * 分页获取监控设备信息
+     *  (用户新增设备页面选择设备后出现的探头检测信息)
+     * @param monitorEquipmentCommand 监控设备参数
+     * @return 分页对象
+     */
+    @GlobalTransactional
     public Page<MonitorEquipmentVo> getEquipmentInfo(MonitorEquipmentCommand monitorEquipmentCommand){
         //分页查出设备信息
         Page<MonitorEquipmentVo> page = new Page<>(monitorEquipmentCommand.getPageCurrent(), monitorEquipmentCommand.getPageSize());
@@ -537,7 +543,6 @@ public class MonitorEquipmentApplication {
     public static Boolean checkTimesHasOverlap(Date dynaStartTime, Date dynaEndTime, Date fixedStartTime, Date fixedEndTime) {
         return !(dynaEndTime.getTime() < fixedStartTime.getTime() || dynaStartTime.getTime() > fixedEndTime.getTime());
     }
-
 
     /**
      * 更新探头reids缓存

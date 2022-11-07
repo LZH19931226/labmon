@@ -93,6 +93,7 @@
             me.equipmentno equipmentNo,
             me.hospitalcode hospitalCode,
             me.equipmentbrand equipmentBrand,
+            me.equipmenttypeid equipmentTypeId,
             me.clientvisible clientVisible,
             me.alwayalarm alwaysAlarm,
             me.equipmentname equipmentName,
