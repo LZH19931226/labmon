@@ -97,7 +97,6 @@ public class MonitorEquipmentApplication {
         Page<MonitorEquipmentVo> page = new Page<>(monitorEquipmentCommand.getPageCurrent(), monitorEquipmentCommand.getPageSize());
         List<MonitorEquipmentDto> monitorEquipmentList =  monitorEquipmentService.getMonitorEquipmentList(page,monitorEquipmentCommand);
         if(CollectionUtils.isEmpty(monitorEquipmentList)){
-            page.setRecords(null);
             return page;
         }
         //根据meno查询所有相关的monitorInstrument信息,在通过eno分组
