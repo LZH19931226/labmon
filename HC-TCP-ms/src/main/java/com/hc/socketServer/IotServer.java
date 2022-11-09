@@ -43,7 +43,7 @@ public class IotServer {
 	public static ChannelGroup onlineChannels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	
 	@PostConstruct
-	public void start() throws Exception{
+	public void start() {
 		//删除之前所有缓存得通道信息
 		tcpClientApi.deleteHashKey(TcpServiceEnum.CHANNELCLIENT.getCode());
 		log.info("启动服务器 " + tcpSocket);
