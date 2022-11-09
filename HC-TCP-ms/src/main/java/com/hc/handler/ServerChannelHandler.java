@@ -106,10 +106,11 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 checkIsHeartbeat(sn, asShortText, cmdid, ctx);
                 //判断sn是否是mt600/mt1100,需要缓存通道与sn的关联
                 saveChannelIdSn(snData);
-                //推送mq
-                messagePushService.pushMessage(JsonUtil.toJson(snData));
-                log.info("通道:{},原始数据:{},推送给消息队列的模型为:{}", asShortText, dataStr, JsonUtil.toJson(snData));
             });
+            ParamaterModel paramaterModel =  new ParamaterModel();
+            paramaterModel.setData(dataStr);
+            messagePushService.pushMessage(JsonUtil.toJson(paramaterModel));
+            log.info("通道:{},原始数据:{},推送给消息队列的模型为:{}", asShortText, dataStr, JsonUtil.toJson(paramaterModel));
         } catch (Exception e) {
             log.error("通道:{},数据接收异常:{}", ctx.channel().id().asShortText(), Hex.encodeHexString(receiveMsgBytes));
         } finally {
