@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hc.dao.MonitorinstrumentDao">
+<mapper namespace="com.hc.infrastructure.dao.MonitorinstrumentDao">
 
-
-
-
+    <select id="getMonitorInstrumentByEnoList" resultType="com.hc.dto.MonitorinstrumentDTO">
+       select
+           mi.*,
+           mit.instrumenttypename
+       from
+           monitorinstrument mi
+       left join monitorinstrumenttype mit on mi.instrumenttypeid = mit.instrumenttypeid
+       where mi.equipmentno in
+            <foreach collection="enoList" item="eno" index="index" open="(" separator="," close=")">
+                #{eno}
+            </foreach>
+    </select>
 </mapper>

@@ -175,9 +175,10 @@ public class EquipmentInfoApplication {
             hospitalInfo.setTimeoutRedDuration("60");
         }
         List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList = hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
-        if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeModelList)){
-            hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
+        if(CollectionUtils.isEmpty(hospitalEquipmentTypeModelList)){
+            throw new IedsException(LabMonEnumError.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
         }
+        hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
         return hospitalInfo;
     }
 

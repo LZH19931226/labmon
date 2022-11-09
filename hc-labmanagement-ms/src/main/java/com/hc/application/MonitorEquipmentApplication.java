@@ -85,6 +85,145 @@ public class MonitorEquipmentApplication {
 
     @Autowired
     private ProbeRedisApi probeRedisApi;
+    /**
+     * 分页获取监控设备信息
+     *  (用户新增设备页面选择设备后出现的探头检测信息)
+     * @param monitorEquipmentCommand 监控设备参数
+     * @return 分页对象
+     */
+    @GlobalTransactional
+    public Page<MonitorEquipmentVo> getEquipmentInfo(MonitorEquipmentCommand monitorEquipmentCommand){
+        //分页查出设备信息
+        Page<MonitorEquipmentVo> page = new Page<>(monitorEquipmentCommand.getPageCurrent(), monitorEquipmentCommand.getPageSize());
+        List<MonitorEquipmentDto> monitorEquipmentList =  monitorEquipmentService.getMonitorEquipmentList(page,monitorEquipmentCommand);
+        if(CollectionUtils.isEmpty(monitorEquipmentList)){
+            return page;
+        }
+        //根据meno查询所有相关的monitorInstrument信息,在通过eno分组
+        List<String> enoList = monitorEquipmentList.stream().map(MonitorEquipmentDto::getEquipmentNo).collect(Collectors.toList());
+        List<MonitorinstrumentDTO> monitorInstrumentDTOList =  monitorinstrumentService.selectMonitorInstrumentByEnoList(enoList);
+        Map<String, List<MonitorinstrumentDTO>> enoAndMiMap = monitorInstrumentDTOList.stream().collect(Collectors.groupingBy(MonitorinstrumentDTO::getEquipmentno));
+
+        //根据mino查询出所有的探头信息,在通过ino分组
+        List<String> inoList = monitorInstrumentDTOList.stream().map(MonitorinstrumentDTO::getInstrumentno).collect(Collectors.toList());
+        List<InstrumentparamconfigDTO> instrumentParamConfigDTOList =  instrumentparamconfigService.slectInfo(inoList);
+        Map<String, List<InstrumentparamconfigDTO>> inoAndParamConfigMap = instrumentParamConfigDTOList.stream().collect(Collectors.groupingBy(InstrumentparamconfigDTO::getInstrumentno));
+
+        //查询所有的探头检测信息，在通过监测confid分组
+        List<InstrumentConfigDTO> instrumentConfigList = instrumentconfigService.selectAllInfo();
+        Map<Integer, InstrumentConfigDTO> instrumentConfigMap = instrumentConfigList.stream().collect(Collectors.toMap(InstrumentConfigDTO::getInstrumentconfigid, t -> t));
+
+        //根据eno查询报警时段信息
+        List<MonitorequipmentwarningtimeDTO> monitorEquipmentWarningTimeDTOList = monitorequipmentwarningtimeService.selectWarningtimeByEnoList(enoList);
+        Map<String, List<MonitorequipmentwarningtimeDTO>> monitorEquipmentWarningTimeMaps =
+                monitorEquipmentWarningTimeDTOList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid));
+
+        //构建返回信息集合
+        List<MonitorEquipmentVo> list = new ArrayList<>();
+        for (MonitorEquipmentDto monitorEquipmentDto : monitorEquipmentList) {
+
+            String equipmentNo = monitorEquipmentDto.getEquipmentNo();
+
+            //构建monitorinstrumenttypeVo
+            MonitorinstrumenttypeVo monitorinstrumenttypeVo = MonitorinstrumenttypeVo.builder().build();
+            MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO();
+            if(MapUtils.isNotEmpty(enoAndMiMap) && enoAndMiMap.containsKey(equipmentNo)){
+                monitorinstrumentDTO =  enoAndMiMap.get(equipmentNo).get(0);
+                monitorinstrumenttypeVo =  buildMonitorinstrumenttypeVo(enoAndMiMap,equipmentNo,inoAndParamConfigMap,instrumentConfigMap);
+
+            }
+
+            //构建warningTimeList
+            List<WarningTimeVo> warningTimeVos = new ArrayList<>();
+            if(monitorEquipmentWarningTimeMaps.containsKey(equipmentNo)){
+                List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOList = monitorEquipmentWarningTimeMaps.get(equipmentNo);
+                warningTimeVos =  bulidWarningTimeVoList(monitorequipmentwarningtimeDTOList);
+            }
+
+
+            boolean flag = true;
+            String channel = null;
+            String instrumenttypename = null;
+            Integer instrumenttypeid=null;
+            String instrumentno =null;
+            String sn=null;
+            if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
+                channel = monitorinstrumentDTO.getChannel();
+                instrumentno = monitorinstrumentDTO.getInstrumentno();
+                //判断设备下有无探头绑定
+                if(!StringUtils.isEmpty(instrumentno)){
+                    flag = false;
+                }
+                instrumenttypeid = monitorinstrumentDTO.getInstrumenttypeid();
+                instrumenttypename = monitorinstrumentDTO.getInstrumenttypename();
+                sn = monitorinstrumentDTO.getSn();
+            }
+            MonitorEquipmentVo monitorEquipmentVo = MonitorEquipmentVo.builder()
+                    .alwaysAlarm(StringUtils.isEmpty(monitorEquipmentDto.getAlwaysAlarm()) ? "0":monitorEquipmentDto.getAlwaysAlarm())
+                    .channel(channel)
+                    .clientVisible(monitorEquipmentDto.getClientVisible())
+                    .deleteOrNot(flag)
+                    .equipmentBrand(monitorEquipmentDto.getEquipmentBrand())
+                    .equipmentName(monitorEquipmentDto.getEquipmentName())
+                    .equipmentNo(monitorEquipmentDto.getEquipmentNo())
+                    .equipmentTypeId(monitorEquipmentDto.getEquipmentTypeId())
+                    .equipmentTypeName(monitorEquipmentDto.getEquipmentTypeName())
+                    .hospitalCode(monitorEquipmentDto.getHospitalCode())
+                    .hospitalName(monitorEquipmentDto.getHospitalName())
+                    .instrumentTypeName(instrumenttypename==null?"":instrumenttypename)
+                    .instrumentno(instrumentno==null?"":instrumentno)
+                    .instrumenttypeid(instrumenttypeid)
+                    .remark(StringUtils.isEmpty(monitorEquipmentDto.getRemark())?"":monitorEquipmentDto.getRemark())
+                    .upsNotice(StringUtils.isEmpty(monitorEquipmentDto.getUpsNotice())?"":monitorEquipmentDto.getUpsNotice())
+                    .saturation(StringUtils.isEmpty(monitorEquipmentDto.getSaturation()) ? "": monitorEquipmentDto.getSaturation())
+                    .sn(sn==null?"":sn)
+                    .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
+                    .warningTimeList(warningTimeVos)
+                    .build();
+            list.add(monitorEquipmentVo);
+        }
+        page.setRecords(list);
+        return page;
+
+    }
+
+    private MonitorinstrumenttypeVo buildMonitorinstrumenttypeVo(Map<String, List<MonitorinstrumentDTO>> enoAndMiMap, String equipmentNo, Map<String, List<InstrumentparamconfigDTO>> inoAndParamConfigMap,Map<Integer, InstrumentConfigDTO> instrumentConfigMap) {
+        //eno与ino为一对一的关系（有线设备除外，有线设备只取第一个）
+        MonitorinstrumentDTO monitorinstrumentDTO = enoAndMiMap.get(equipmentNo).get(0);
+        Integer instrumentTypeId = monitorinstrumentDTO.getInstrumenttypeid();
+        String instrumentTypeName = monitorinstrumentDTO.getInstrumenttypename();
+        String instrumentNo = monitorinstrumentDTO.getInstrumentno();
+        //根据ino查找探头的信息集合
+        if(inoAndParamConfigMap.containsKey(instrumentNo)){
+            List<InstrumentparamconfigDTO> list = inoAndParamConfigMap.get(instrumentNo);
+            List<InstrumentmonitorVo> instrumentmonitorVos = new ArrayList<>();
+            //遍历探头的信息集合构建InstrumentmonitorVo对象
+            for (InstrumentparamconfigDTO instrumentparamconfigDTO : list) {
+                Integer instrumentConfigId = instrumentparamconfigDTO.getInstrumentconfigid();
+                if(instrumentConfigMap.containsKey(instrumentConfigId)){
+                    InstrumentConfigDTO instrumentConfigDTO = instrumentConfigMap.get(instrumentConfigId);
+                    InstrumentmonitorVo build = InstrumentmonitorVo.builder()
+                            .instrumentconfigid(instrumentConfigDTO.getInstrumentconfigid())
+                            .instrumenttypeid(monitorinstrumentDTO.getInstrumenttypeid())
+                            .highlimit(instrumentparamconfigDTO.getHighlimit())
+                            .lowlimit(instrumentparamconfigDTO.getLowlimit())
+                            .instrumentparamconfigno(instrumentparamconfigDTO.getInstrumentparamconfigno())
+                            .instrumentconfigname(instrumentConfigDTO.getInstrumentconfigname())
+                            .saturation(instrumentparamconfigDTO.getSaturation() == null ? new BigDecimal(0) : instrumentparamconfigDTO.getSaturation())
+                            .build();
+                    instrumentmonitorVos.add(build);
+                }
+            }
+            return  MonitorinstrumenttypeVo.builder()
+                    .instrumenttypeid(monitorinstrumentDTO.getInstrumenttypeid())
+                    .instrumenttypename(monitorinstrumentDTO.getInstrumenttypename())
+                    .instrumentmonitorVos(instrumentmonitorVos)
+                    .build();
+        }
+
+        return null;
+    }
+
 
     /**
      * 分页获取监控设备信息
@@ -403,7 +542,6 @@ public class MonitorEquipmentApplication {
     public static Boolean checkTimesHasOverlap(Date dynaStartTime, Date dynaEndTime, Date fixedStartTime, Date fixedEndTime) {
         return !(dynaEndTime.getTime() < fixedStartTime.getTime() || dynaStartTime.getTime() > fixedEndTime.getTime());
     }
-
 
     /**
      * 更新探头reids缓存

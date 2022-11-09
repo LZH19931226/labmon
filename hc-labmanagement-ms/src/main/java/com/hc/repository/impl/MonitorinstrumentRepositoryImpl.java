@@ -115,4 +115,9 @@ public class MonitorinstrumentRepositoryImpl extends ServiceImpl<Monitorinstrume
         List<MonitorinstrumentPo> convert = BeanConverter.convert(monitorinstrumentDTO, MonitorinstrumentPo.class);
         this.updateBatchById(convert);
     }
+
+    @Override
+    public List<MonitorinstrumentDTO> getMonitorInstrumentByEnoList(List<String> enoList) {
+        return monitorinstrumentDao.getMonitorInstrumentByEnoList(enoList);
+    }
 }

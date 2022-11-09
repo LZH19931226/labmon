@@ -2,8 +2,10 @@ package com.hc.infrastructure.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.po.MonitorEquipmentPo;
+import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -52,4 +54,6 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
     void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(@Param("hospitalCode") String hospitalCode,
                                                                       @Param("equipmentTypeId") String equipmentTypeId,
                                                                       @Param("warningPhone") String warningPhone);
+
+    List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page,@Param("monitorEquipmentCommand") MonitorEquipmentCommand monitorEquipmentCommand);
 }

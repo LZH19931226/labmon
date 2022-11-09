@@ -40,7 +40,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     /** 设备型号 */
     private String equipmentBrand;
 
-    /** 是否显示  */
+    /** 是否显示 0不起用 1启用 */
     private Long clientVisible;
 
     /** 分类 */

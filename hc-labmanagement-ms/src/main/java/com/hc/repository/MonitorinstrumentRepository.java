@@ -65,4 +65,6 @@ public interface MonitorinstrumentRepository extends IService <Monitorinstrument
     Integer findProbeInformationByEno(String equipmentNo);
 
     void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO);
+
+    List<MonitorinstrumentDTO> getMonitorInstrumentByEnoList(List<String> enoList);
 }

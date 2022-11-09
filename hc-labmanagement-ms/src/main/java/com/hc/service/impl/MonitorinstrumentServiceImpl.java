@@ -105,4 +105,9 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
     public void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO) {
         monitorinstrumentRepository.bulkUpdate(monitorinstrumentDTO);
     }
+
+    @Override
+    public List<MonitorinstrumentDTO> selectMonitorInstrumentByEnoList(List<String> enoList) {
+        return monitorinstrumentRepository.getMonitorInstrumentByEnoList(enoList);
+    }
 }

@@ -55,6 +55,9 @@ public class MonitorinstrumentDTO  implements Serializable {
 	private String channel;
 
 	private String equipmentname;
+
+	/** 探头类型名称 */
+	private String instrumenttypename;
 }
 
 
