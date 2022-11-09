@@ -177,6 +177,8 @@ public class EquipmentInfoApplication {
         List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList = hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
         if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeModelList)){
             hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
+        }else {
+            hospitalInfo.setHospitalEquipmentTypeModelList(new ArrayList<>());
         }
         return hospitalInfo;
     }
