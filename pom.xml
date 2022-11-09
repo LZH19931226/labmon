@@ -33,7 +33,7 @@
         <module>hc-labmanagement-ms</module>
         <module>hc-labredis-ms</module>
         <module>hc-message-ms</module>
-        <module>HC-datapase-ms</module>
+        <module>hc-datapase-ms</module>
     </modules>
 
     <dependencyManagement>

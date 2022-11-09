@@ -7,7 +7,8 @@
         <artifactId>labmon</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>HC-datapase-ms</artifactId>
+
+    <artifactId>hc-datapase-ms</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
