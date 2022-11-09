@@ -4,7 +4,6 @@ package com.hc.handler;
 import cn.hutool.json.JSONUtil;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.probe.EquipmentCommand;
-import com.hc.my.common.core.util.UniqueHash;
 import com.hc.service.MTOnlineBeanService;
 import com.hc.service.MessagePushService;
 import com.hc.socketServer.IotServer;
@@ -27,7 +26,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 @Component
 @Sharable
@@ -36,11 +34,11 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private MTOnlineBeanService service;
     @Autowired
-    private MessagePushService msgservice;
-    @Autowired
     private NettyUtil nettyUtil;
     @Autowired
     private TcpClientApi tcpClientApi;
+    @Autowired
+    private MessagePushService messagePushService;
 
 
     @Override
@@ -109,7 +107,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 //判断sn是否是mt600/mt1100,需要缓存通道与sn的关联
                 saveChannelIdSn(snData);
                 //推送mq
-                randomPush(snData);
+                messagePushService.pushMessage(JsonUtil.toJson(snData));
                 log.info("通道:{},原始数据:{},推送给消息队列的模型为:{}", asShortText, dataStr, JsonUtil.toJson(snData));
             });
         } catch (Exception e) {
@@ -129,20 +127,6 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    public void randomPush(ParamaterModel model) {
-        //生成全局id标记
-        model.setLogId(UniqueHash.Id());
-        int a = new Random().nextInt(3);
-        if (a == 0) {
-            msgservice.pushMessage(JsonUtil.toJson(model));
-        }
-        if (a == 1) {
-            msgservice.pushMessage1(JsonUtil.toJson(model));
-        }
-        if (a == 2) {
-            msgservice.pushMessage2(JsonUtil.toJson(model));
-        }
-    }
 
     /**
      * 关闭通道，同时移除当前通道在线列表信息

@@ -40,11 +40,10 @@ public class IotServer {
 	
 	private Channel serverChannel;
 	//在线通道列表
-	//public static Map<String, Channel> liveChannels = new ConcurrentSkipListMap<String, Channel>();	
 	public static ChannelGroup onlineChannels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	
 	@PostConstruct
-	public void start() throws Exception{
+	public void start() {
 		//删除之前所有缓存得通道信息
 		tcpClientApi.deleteHashKey(TcpServiceEnum.CHANNELCLIENT.getCode());
 		log.info("启动服务器 " + tcpSocket);

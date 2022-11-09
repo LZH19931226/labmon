@@ -13,50 +13,14 @@ import org.springframework.stereotype.Service;
 public class MessagePushServiceImpl implements MessagePushService {
 
 
-	@Autowired
-	private SocketMessage socketMessage;
+    @Autowired
+    private SocketMessage socketMessage;
 
-	@Override
-	public boolean pushMessage(String message) {
-		
-		Message<String> build = MessageBuilder.withPayload(message).build();
-		
-		return socketMessage.getOutputChannel().send(build);
-	}
+    @Override
+    public boolean pushMessage(String message) {
+        Message<String> build = MessageBuilder.withPayload(message).build();
+        return socketMessage.getOutputChannel().send(build);
+    }
 
-	@Override
-	public boolean pushMessage1(String message) {
-		Message<String> build = MessageBuilder.withPayload(message).build();
-
-		return socketMessage.getOutputChannel1().send(build);
-	}
-
-	@Override
-	public boolean pushMessage2(String message) {
-		Message<String> build = MessageBuilder.withPayload(message).build();
-
-		return socketMessage.getOutputChannel2().send(build);
-	}
-//
-//	@Override
-//	public boolean pushMessage3(byte[] arr) {
-//		Message<byte[]> build = MessageBuilder.withPayload(arr).build();
-//
-//		return socketMessage.getOutputChannel3().send(build);
-//	}
-//
-//	@Override
-//	public boolean pushMessage4(byte[] arr) {
-//		Message<byte[]> build = MessageBuilder.withPayload(arr).build();
-//
-//		return socketMessage.getOutputChannel4().send(build);
-//	}
-//
-//	@Override
-//	public boolean pushMessage5(byte[] arr) {
-//		Message<byte[]> build = MessageBuilder.withPayload(arr).build();
-//
-//		return socketMessage.getOutputChannel5().send(build);
-//	}
 
 }
