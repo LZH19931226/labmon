@@ -40,6 +40,7 @@ public class IotServer {
 	
 	private Channel serverChannel;
 	//在线通道列表
+	//public static Map<String, Channel> liveChannels = new ConcurrentSkipListMap<String, Channel>();	
 	public static ChannelGroup onlineChannels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	
 	@PostConstruct
