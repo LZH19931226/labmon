@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <springProperty scope="context" name="appName"
+                    source="spring.application.name" defaultValue="HC-datapase-ms" />
+    <springProperty scope="context" name="type"
+                    source="msConfig.logging.path" defaultValue="logs" />
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!-- 日志输出的通道 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <!-- 按照每天生成日志文件 -->
+<!--    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>logs/tcp.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;-->
+<!--            <FileNamePattern>./tcp/tcp.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+<!--            <MaxHistory>30</MaxHistory>-->
+<!--        </rollingPolicy>-->
+<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+<!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n-->
+<!--            </pattern>-->
+<!--        </layout>-->
+<!--    </appender>-->
+    <appender name="LOGSTASH"
+              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>172.24.58.151:10086</destination>
+        <queueSize>1048576</queueSize>
+        <encoder charset="GB2312"
+                 class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+<!--    <appender name ="ASYNC" class= "ch.qos.logback.classic.AsyncAppender">-->
+<!--        &lt;!&ndash; 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 &ndash;&gt;-->
+<!--        <discardingThreshold >0</discardingThreshold>-->
+<!--        &lt;!&ndash; 更改默认的队列的深度,该值会影响性能.默认值为256 &ndash;&gt;-->
+<!--        <queueSize>512</queueSize>-->
+<!--        &lt;!&ndash; 添加附加的appender,最多只能添加一个 &ndash;&gt;-->
+<!--        <appender-ref ref ="FILE"/>-->
+<!--    </appender>-->
+    <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
+    <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
+    <!-- <loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。-->
+    <!-- name:用来指定受此loger约束的某一个包或者具体的某一个类。-->
+    <!-- level:
+        用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。
+        如果未设置此属性，那么当前loger将会继承上级的级别 。-->
+    <logger name="jdbc.sqltiming" level="DEBUG"/>
+    <logger name="com.ibatis" level="DEBUG" />
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" />
+    <logger name="java.sql.Connection" level="DEBUG" />
+    <logger name="java.sql.Statement" level="DEBUG" />
+    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <!-- 也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root". -->
+    <root level="INFO">
+        <!--    <appender-ref ref="STDOUT"/>-->
+   <!--        <appender-ref ref="FILE"/>-->
+<!--        <appender-ref ref="ASYNC"/>-->
+        <appender-ref ref="LOGSTASH"/>
+    </root>
+
+</configuration>
