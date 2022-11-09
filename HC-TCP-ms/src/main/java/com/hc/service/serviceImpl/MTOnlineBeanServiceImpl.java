@@ -83,6 +83,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
             }
             paramaterModel.setSN(sn);
             paramaterModel.setCmdid(cmdid);
+            list.add(paramaterModel);
         }
         return list;
     }
