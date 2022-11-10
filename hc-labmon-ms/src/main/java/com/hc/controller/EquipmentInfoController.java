@@ -6,6 +6,7 @@ import com.hc.command.labmanagement.model.QueryInfoModel;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.MonitorUpsInfoDto;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,6 +89,7 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.getQueryInfo(equipmentNo,startTime,endTime);
     }
 
+    @JwtIgnore
     @GetMapping("/exportExcel")
     @ApiOperation("查询导出")
     public void exportExcel(@RequestParam("equipmentNo") String equipmentNo, @RequestParam("startDate") String startDate,
@@ -95,6 +97,7 @@ public class EquipmentInfoController {
         equipmentInfoApplication.getQueryResult(equipmentNo,startDate,endDate,response);
     }
 
+    @JwtIgnore
     @GetMapping("/exportSingle")
     @ApiOperation("时间点导出")
     public void exportSingle(@RequestParam("hospitalCode") String hospitalCode,
