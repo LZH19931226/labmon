@@ -10,8 +10,10 @@ import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserRightDto;
 import com.hc.labmanagent.OperationlogApi;
+import com.hc.my.common.core.bean.Audience;
 import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.jwt.JwtTokenUtil;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
@@ -56,6 +58,9 @@ public class UserRightApplication {
 
     @Autowired
     private SmsApi smsApi;
+
+    @Autowired
+    private Audience audience;
 
     /**
      * 根据分页信息查询用户权限信息
@@ -187,13 +192,17 @@ public class UserRightApplication {
         //查询医院信息
         HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         HospitalInfoVo  hospitalInfoVo = builderHospitalInfo(hospitalInfo);
+
+        String token = JwtTokenUtil.createJWT(userRightDto.getUserid(), userRightDto.getUsername(), audience);
+
+
         //未设置双因子的医院直接放行 设置了的医院在非app上登录直接放行
         if (!HospitalInfoEnum.ONE.getCode().equals(hospitalInfo.getFactor()) || LoginTypeEnum.H5.getCode().equals(loginType)) {
-            return builder(userRightDto,hospitalInfoVo);
+            return builder(userRightDto,hospitalInfoVo,token);
         }
         //是在app上登录并且是非第一次登录 LoginStatus：0为第一次登录
         if(LoginTypeEnum.ANDROID.getCode().equals(loginType) && LoginStatusEnum.ONE.getCode().equals(loginStatus)){
-            return builder(userRightDto,hospitalInfoVo);
+            return builder(userRightDto,hospitalInfoVo,token);
         }
         return UserRightVo.builder()
                 .twoFactorLogin(TwoFactorLoginEnum.ONE.getCode())
@@ -205,6 +214,7 @@ public class UserRightApplication {
                 .userType(userRightDto.getUserType())
                 .hospitalInfoVo(hospitalInfoVo)
                 .nickname(userRightDto.getNickname())
+                .token(token)
                 .build();
     }
 
@@ -233,7 +243,7 @@ public class UserRightApplication {
      * @param userRightDto
      * @return
      */
-    private UserRightVo builder(UserRightDto userRightDto, HospitalInfoVo  hospitalInfoVo) {
+    private UserRightVo builder(UserRightDto userRightDto, HospitalInfoVo  hospitalInfoVo,String token) {
         return UserRightVo.builder()
                 .username(userRightDto.getUsername())
                 .pwd(userRightDto.getPwd())
@@ -242,6 +252,7 @@ public class UserRightApplication {
                 .nickname(userRightDto.getNickname())
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
+                .token(token)
                 .hospitalInfoVo(hospitalInfoVo).build();
     }
 

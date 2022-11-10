@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.UserInfoApplication;
 import com.hc.appliction.command.UserCommand;
 import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.vo.user.UserInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +30,7 @@ public class UserInfoController {
        return   userInfoApplication.findUserAllInfo(userCommand);
     }
 
+    @JwtIgnore
     @PostMapping("/userLogin")
     @ApiOperation(value = "后台管理登录")
     public UserInfoVo userLogin(@ApiParam(name = "UserCommand", value = "用户登录对象", required = true)

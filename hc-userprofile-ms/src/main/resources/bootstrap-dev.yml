@@ -6,9 +6,9 @@ spring:
         file-extension: yaml
         prefix: hc-userprofile-ms
         group: DEFAULT_GROUP
-        namespace: chenkai
+        namespace: liuzhihao
       discovery:
         server-addr: 172.16.10.204:8848
-        namespace: chenkai
+        namespace: liuzhihao
 
 

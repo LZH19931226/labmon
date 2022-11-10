@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserCommand;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.dto.UserBackDto;
+import com.hc.my.common.core.bean.Audience;
+import com.hc.my.common.core.jwt.JwtTokenUtil;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.UserBackService;
 import com.hc.vo.user.UserInfoVo;
@@ -24,6 +26,9 @@ public class UserInfoApplication {
     @Autowired
     private UserBackService userBackService;
 
+    @Autowired
+    private Audience audience;
+
     /**
      * 用户登录
      *
@@ -31,9 +36,12 @@ public class UserInfoApplication {
      */
     public UserInfoVo userLogin(UserCommand userCommand) {
         UserBackDto userBackDto = userBackService.userLogin(userCommand);
+        //创建token返回token
+        String token = JwtTokenUtil.createJWT(userBackDto.getUserid(), userBackDto.getUsername(), audience);
         return UserInfoVo.builder()
                 .username(userBackDto.getUsername())
                 .userid(userBackDto.getUserid())
+                .token(token)
                 .build();
     }
 

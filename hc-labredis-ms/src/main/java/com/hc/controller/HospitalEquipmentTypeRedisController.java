@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.HospitalEquipmentTypeRedisApplication;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class HospitalEquipmentTypeRedisController {
     /**
      * 同步所有的设备类型信息
      */
+    @JwtIgnore
     @GetMapping("/cacheHospitalEquipmentTypeRedisInfo")
     @ApiOperation("同步所有的设备类型信息")
     public void hospitalEquipmentTypeRedisInfoCache(){

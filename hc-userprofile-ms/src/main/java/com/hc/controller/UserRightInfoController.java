@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.UserRightApplication;
 import com.hc.appliction.command.UserRightCommand;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
@@ -56,6 +57,7 @@ public class UserRightInfoController {
 
     @PostMapping("/userLogin")
     @ApiOperation("用户账号登录")
+    @JwtIgnore
     public UserRightVo UserRightLogin(@RequestBody UserRightCommand userRightCommand){
         return userRightApplication.Login(userRightCommand);
     }

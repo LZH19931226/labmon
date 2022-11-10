@@ -1,5 +1,6 @@
 package com.hc;
 
+import com.hc.web.authorization.EnableAuthorizationX;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @MapperScan(value = {"com.hc.infrastructure.dao","com.hc.clickhouse.mapper"})
 @EnableFeignClients
+@EnableAuthorizationX
 public class HcLabMonMsApplication {
 
 	public static void main(String[] args) {

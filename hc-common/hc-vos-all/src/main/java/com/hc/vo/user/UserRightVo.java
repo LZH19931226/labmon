@@ -77,4 +77,6 @@ public class UserRightVo {
 
     /** 医院信息 */
     private HospitalInfoVo hospitalInfoVo;
+
+    private String token;
 }

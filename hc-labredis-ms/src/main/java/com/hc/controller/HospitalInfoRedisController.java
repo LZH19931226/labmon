@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.HospitalInfoRedisApplication;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ public class HospitalInfoRedisController {
     /**
      * 同步医院信息
      */
+    @JwtIgnore
     @GetMapping("/hospitalInfoCache")
     @ApiOperation("同步医院信息")
     public void hospitalInfoCache(){

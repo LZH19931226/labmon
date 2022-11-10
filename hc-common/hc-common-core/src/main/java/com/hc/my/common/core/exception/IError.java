@@ -49,23 +49,45 @@ public interface IError extends Serializable {
         }
     };
 
-    IError SUCCESS = new IError() {
+
+    IError TOKEN = new IError() {
 
         private static final long serialVersionUID = -5326097417886035981L;
 
         @Override
         public int code() {
-            return 00000;
+            return 9998;
         }
 
         @Override
         public String text() {
-            return "请求成功";
+            return "token异常";
         }
 
         @Override
         public String cause() {
-            return "请求成功";
+            return "token异常";
+        }
+    };
+
+
+    IError TIMEOUT = new IError() {
+
+        private static final long serialVersionUID = -5326097417886035981L;
+
+        @Override
+        public int code() {
+            return 9997;
+        }
+
+        @Override
+        public String text() {
+            return "token超时请重新登陆";
+        }
+
+        @Override
+        public String cause() {
+            return "token超时请重新登陆";
         }
     };
 

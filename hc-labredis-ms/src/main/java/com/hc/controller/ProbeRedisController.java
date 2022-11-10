@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.ProbeRedisApplication;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.command.ProbeCommand;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
@@ -68,6 +69,7 @@ public class ProbeRedisController {
     /**
      * 同步探头信息
      */
+    @JwtIgnore
     @GetMapping("/probeRedisInfoCache")
     @ApiOperation("同步探头信息")
     public void probeRedisInfoCache(){

@@ -1,5 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.hc.web.config.SwaggerConfig,\
   com.hc.web.handler.RestResultWrapper,\
-  com.hc.web.handler.SpringExceptionHandle
+  com.hc.web.handler.SpringExceptionHandle,\
+  com.hc.web.config.FeignSupportConfig
 

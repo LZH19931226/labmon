@@ -9,7 +9,7 @@ public class IedsException extends RuntimeException {
 
     private static final long   serialVersionUID = 2400008380982132191L;
     protected            IError error            = IError.SYSTEM;
-
+    protected            IError token            = IError.TOKEN;
     /**
      * Message value parameters
      * <p>
@@ -40,6 +40,7 @@ public class IedsException extends RuntimeException {
         super(IError.format(message, args));
         this.error = SampleError.create(message, args);
     }
+
 
     public IedsException(String message, Throwable e, Object... args) {
         super(IError.format(message, args), e);

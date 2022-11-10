@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.SnDeviceReidsSyncApplocation;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
@@ -95,6 +96,7 @@ public class SnDeviceReidsSyncController {
     /**
      * 同步监控设备信息
      */
+    @JwtIgnore
     @GetMapping("/monitorEquipmentInfoCache")
     @ApiOperation("同步监控设备信息")
     public void MonitorEquipmentInfoCache(){

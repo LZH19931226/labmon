@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.application.TcpClientReidsSyncApplication;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class TcpClientReidsSyncController {
         tcpClientReidsSyncApplication.deleteChannelIdSn(channelId);
     }
 
+    @JwtIgnore
     @GetMapping("/getAllClientInfo")
     @ApiOperation("获取通道缓存最新sn信息")
     public Map<Object,Object>  getAllClientInfo(){
