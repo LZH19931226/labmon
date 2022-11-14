@@ -384,7 +384,8 @@ public class AppEquipmentInfoApplication {
         String endTime = curveCommand.getEndTime();
         String sn = curveCommand.getSn();
         String equipmentNo = curveCommand.getEquipmentNo();
-        List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startTime,endTime,equipmentNo);
+        String ym = DateUtils.parseDateYm(startTime);
+        List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startTime,endTime,equipmentNo,ym);
         if(org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }

@@ -24,7 +24,6 @@ public class DateUtils {
 
 
 
-
     /**
      * 当前时间是否在此时间区间内
      *
@@ -161,6 +160,20 @@ public class DateUtils {
             throw new RuntimeException(e);
         }
         return date;
+    }
+
+    /**
+     * 以 yyyy-MM 的格式解析String
+     * @param str
+     * @return
+     */
+    public static String parseDateYm(String str){
+        Date date = parseDate(str);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int year = calendar.get(Calendar.YEAR);
+        return month >9 ? ""+year+month : ""+year+"0"+month;
     }
 
     /**

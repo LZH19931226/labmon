@@ -21,4 +21,6 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(String equipmentNo, String startTime, String endTime, String date);
 
     List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName);
+
+    List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo1(String startTime, String endTime, String equipmentNo, String ym);
 }

@@ -52,4 +52,9 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   public List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName) {
     return monitorequipmentlastdataMapper.getWarningCurveData(equipmentNo,startTime,endTime,instrumentConfigName);
   }
+
+  @Override
+  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo1(String startTime, String endTime, String equipmentNo, String ym) {
+    return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfo1(startTime,endTime,equipmentNo,ym);
+  }
 }
