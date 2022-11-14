@@ -19,14 +19,9 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   private  MonitorequipmentlastdataMapper monitorequipmentlastdataMapper;
 
     @Override
-    public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String date, String equipmentNo) {
-      return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfo(date,equipmentNo);
+    public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String date, String equipmentNo,String ym) {
+      return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfo(date,equipmentNo,ym);
     }
-
-  @Override
-  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String startTime, String endTime, String equipmentNo) {
-    return monitorequipmentlastdataMapper.getMonitorEquipmentLastData(startTime,endTime,equipmentNo);
-  }
 
   @Override
   public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByPeriod(String hospitalCode, String startTime, String endTime, String month) {
@@ -44,13 +39,13 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   }
 
   @Override
-  public List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(String equipmentNo, String startTime, String endTime, String date) {
-    return monitorequipmentlastdataMapper.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date);
+  public List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(String equipmentNo, String startTime, String endTime, String date,String ym) {
+    return monitorequipmentlastdataMapper.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date,ym);
   }
 
   @Override
-  public List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName) {
-    return monitorequipmentlastdataMapper.getWarningCurveData(equipmentNo,startTime,endTime,instrumentConfigName);
+  public List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName,String ym) {
+    return monitorequipmentlastdataMapper.getWarningCurveData(equipmentNo,startTime,endTime,instrumentConfigName,ym);
   }
 
   @Override

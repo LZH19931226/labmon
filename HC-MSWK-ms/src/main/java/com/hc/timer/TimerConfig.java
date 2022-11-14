@@ -79,6 +79,9 @@ public class TimerConfig {
                 }
                 List<TimeoutEquipment> equipmentList = equipmentTypeIdMap.get(equipmentTypeId);
                 List<String> equipmentNoList = equipmentList.stream().map(TimeoutEquipment::getEquipmentno).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(equipmentNoList) || StringUtils.isEmpty(hospitalCode)){
+                    continue;
+                }
                 EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
                 equipmentInfoCommand.setHospitalCode(hospitalCode);
                 equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
