@@ -146,7 +146,8 @@ public class EquipmentInfoApplication {
      * @return 曲线信息对象
      */
     public CurveInfoDto getCurveFirst(String equipmentNo, String date,String sn) {
-        List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo);
+        String ym = DateUtils.parseDateYm(date);
+        List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo,ym);
         if(CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
@@ -249,8 +250,9 @@ public class EquipmentInfoApplication {
         if (ObjectUtils.isEmpty(equipmentInfo)) {
             return null;
         }
+        String ym = DateUtils.parseDateYm(startTime);
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
-                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startTime, endTime, equipmentNo);
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startTime, endTime, equipmentNo,ym);
         QueryInfoModel queryInfoModel = new QueryInfoModel();
         queryInfoModel.setEquipmentName(equipmentInfo.getEquipmentname());
         queryInfoModel.setInstrumentTypeId(equipmentInfo.getInstrumenttypeid());
@@ -619,9 +621,10 @@ public class EquipmentInfoApplication {
         String startTime = DateUtils.getPreviousHourHHmm(newDate);
         String endTime = DateUtils.parseDatetime(newDate);
         String date = DateUtils.getYearMonth(newDate);
+        String ym = DateUtils.parseDateYm(operationDate);
         //查询前一个小时到现在的所有数据(当月这个时间段所有的数据)
         List<Monitorequipmentlastdata> lastDateList =
-                monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date);
+                monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date,ym);
         List<Monitorequipmentlastdata> list = filterData(lastDateList, equipmentNo);
         if(CollectionUtils.isEmpty(list)) {
             return null;
@@ -704,9 +707,11 @@ public class EquipmentInfoApplication {
      * @param response
      */
     public void getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
+
+        String ym = DateUtils.parseDateYm(startDate);
         //获取数据库数据
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
-                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(startDate, endDate, equipmentNo);
+                monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startDate, endDate, equipmentNo,ym);
         //获取标头
         List<String> list = queryTitle(equipmentNo);
         if(CollectionUtils.isEmpty(list)){

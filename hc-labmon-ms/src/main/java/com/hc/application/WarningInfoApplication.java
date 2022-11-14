@@ -15,6 +15,7 @@ import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.repository.InstrumentParamConfigRepository;
 import com.hc.service.WarningRecordInfoService;
 import com.hc.util.EquipmentInfoServiceHelp;
@@ -61,6 +62,7 @@ public class WarningInfoApplication {
      * @return
      */
     public CurveInfoDto getWarningCurveData(String pkId ,String startTime,String endTime ) {
+        String ym = DateUtils.parseDateYm(startTime);
         Warningrecord warningrecord = warningrecordRepository.getOne(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getPkid, pkId));
         if(ObjectUtils.isEmpty(warningrecord)) {
             return null;
@@ -76,7 +78,7 @@ public class WarningInfoApplication {
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigRepository.getInstrumentParamConfigByENo(equipmentNo);
         String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
-        List<MonitorequipmentlastdataDto> lastDataList = monitorequipmentlastdataRepository.getWarningCurveData(equipmentNo,startTime,endTime,probeEName);
+        List<MonitorequipmentlastdataDto> lastDataList = monitorequipmentlastdataRepository.getWarningCurveData(equipmentNo,startTime,endTime,probeEName,ym);
         List<Monitorequipmentlastdata> monitorEquipmentLastDataList = BeanConverter.convert(lastDataList, Monitorequipmentlastdata.class);
         return EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataList, map, false);
     }

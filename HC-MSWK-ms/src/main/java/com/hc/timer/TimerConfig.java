@@ -79,6 +79,9 @@ public class TimerConfig {
                 }
                 List<TimeoutEquipment> equipmentList = equipmentTypeIdMap.get(equipmentTypeId);
                 List<String> equipmentNoList = equipmentList.stream().map(TimeoutEquipment::getEquipmentno).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(equipmentNoList) || StringUtils.isEmpty(hospitalCode)){
+                    continue;
+                }
                 EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
                 equipmentInfoCommand.setHospitalCode(hospitalCode);
                 equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
@@ -147,7 +150,7 @@ public class TimerConfig {
         return "2";
     }
 
-    //每分钟执行一次
+    //每十秒执行一次
     @Scheduled(cron = "*/10 * * * * ?")
     public void Timing(){
         Long size = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode()).getResult();
