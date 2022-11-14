@@ -37,19 +37,19 @@ public class EquipmentInfoController {
         return equipmentInfoApplication.findEquipmentCurrentData(hospitalCode,equipmentTypeId);
     }
 
-    /**
-     * 查询设备曲线值
-     * @param equipmentNo 设备id
-     * @param date 时间
-     * @return
-     */
-    @GetMapping("/getEuipmentCurveInfo")
-    @ApiOperation("查询设备曲线值")
-    public CurveInfoDto getCurveInfo( @RequestParam("equipmentNo")String equipmentNo,
-                                     @RequestParam("date")String date,
-                                      @RequestParam("sn")String sn){
-        return equipmentInfoApplication.getCurveFirst(equipmentNo,date,sn);
-    }
+//    /**
+//     * 查询设备曲线值
+//     * @param equipmentNo 设备id
+//     * @param date 时间
+//     * @return
+//     */
+//    @GetMapping("/getEuipmentCurveInfo")
+//    @ApiOperation("查询设备曲线值")
+//    public CurveInfoDto getCurveInfo( @RequestParam("equipmentNo")String equipmentNo,
+//                                     @RequestParam("date")String date,
+//                                      @RequestParam("sn")String sn){
+//        return equipmentInfoApplication.getCurveFirst(equipmentNo,date,sn);
+//    }
 
     /**
      * 查询医院信息

@@ -4,6 +4,7 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.LastDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +37,7 @@ public class LastDataServiceImpl implements LastDataService {
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         monitorequipmentlastdata.setInputdatetime(new Date());
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
+        monitorequipmentlastdata.setId(DateUtils.getCurrentYYMM());
         //数据存储队列
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
         snDeviceRedisApi.updateSnCurrentInfo(convert);

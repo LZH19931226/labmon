@@ -23,18 +23,14 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
     @Override
     public List<ParamaterModel> paseData(String data) {
         // 数据拆分 4843 开头后 加上异或长度 最后两位是否是23
-        List<String> ruleone = MathUtil.ruleone(data);
+        List<String> ruleone = MathUtil.cutOutString4843(data);
         if (CollectionUtils.isEmpty(ruleone)) {
             return null;
         }
-        // 异或校验
-        List<String> ruleTwo = MathUtil.ruleTwo(ruleone);
-        if (CollectionUtils.isEmpty(ruleTwo)) {
-            return null;
-        }
+
         List<ParamaterModel> list = new ArrayList<>();
         // sn号 命令id 值 获取
-        for (String cmd : ruleTwo) {
+        for (String cmd : ruleone) {
             // 获取sn号
             ParamaterModel paramaterModel = new ParamaterModel();
             String sn = HexStringUtils.fromHex(cmd.substring(8, 28));

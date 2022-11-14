@@ -6,6 +6,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -144,16 +145,7 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException {
-//        Date startTime = simpleDateFormat.parse("09:00:00");
-//        Date endTime = simpleDateFormat.parse("19:50:59");
-//        System.out.println(isEffectiveDate(new Date(), startTime, endTime));
-//        System.out.println(getYesterday(new Date()));
-//        List<String> list = Arrays.asList("1","2");
-//        List<String> list2 = Arrays.asList("4","1");
-//        list=list2;
-//        System.out.println(list);
-        String nowDate = new DateUtils().getNowDate();
-        System.out.println(nowDate);
+        System.out.println(getCurrentYYMM());
     }
 
     /**
@@ -314,5 +306,13 @@ public class DateUtils {
             }
         }
         return dateDto;
+    }
+
+    public static int getCurrentYYMM(){
+        LocalDateTime now = LocalDateTime.now();
+        int month =now.getMonth().getValue();
+        int year = now.getYear();
+        String yymm = String.valueOf(year)+String.valueOf(month);
+        return Integer.parseInt(yymm);
     }
 }

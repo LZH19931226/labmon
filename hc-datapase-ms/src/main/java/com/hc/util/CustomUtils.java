@@ -26,20 +26,20 @@ public class CustomUtils {
             //MT200  -200 -- 40
             boolean comparison = comparison(data, "-200", "40");
             if (comparison) {
-                return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.name();
+                return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode();
             }
             return data;
         } else if (StringUtils.equals("14", substring)) {
             // 因为MT300LITE走的是85（老版本） 故将值范围拉低至-100
             boolean comparison = comparison(data, "-100", "50");
             if (comparison) {
-                return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.name();
+                return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode();
             }
         } else {
 
             boolean comparison = comparison(data, "0", "50");
             if (comparison) {
-                return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.name();
+                return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode();
             }
         }
         return data;
@@ -80,7 +80,7 @@ public class CustomUtils {
         }
         boolean comparison = comparison(data, "-200", "20");
         if(comparison){
-            return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.name();
+            return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode();
         }
         return data;
     }
