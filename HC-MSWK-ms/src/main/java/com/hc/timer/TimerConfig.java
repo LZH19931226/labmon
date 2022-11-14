@@ -11,6 +11,7 @@ import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.namespace.MswkServiceEnum;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -157,6 +158,7 @@ public class TimerConfig {
         for (long i = 0; i < size; i++) {
             MonitorequipmentlastdataDto monitorequipmentlastdataDto = snDeviceRedisApi.getLeftPopLastData(MswkServiceEnum.LAST_DATA.getCode()).getResult();
             if(null!=monitorequipmentlastdataDto){
+                monitorequipmentlastdataDto.setId(DateUtils.getCurrentYYMM());
                 list.add(monitorequipmentlastdataDto);
             }
         }
