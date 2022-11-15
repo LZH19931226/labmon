@@ -6,6 +6,7 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.TimeoutEquipment;
+import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
@@ -62,12 +63,12 @@ public class TimerConfig {
         Map<String, List<TimeoutEquipment>> map =
                 timeoutEquipments.stream().collect(Collectors.groupingBy(TimeoutEquipment::getHospitalcode));
         Map<String, Map<String, Map<String, List<TimeoutEquipment>>>> timeoutEquipmentMap =
-                       timeoutEquipments.stream().collect(Collectors.groupingBy(TimeoutEquipment::getHospitalcode, Collectors.groupingBy(TimeoutEquipment::getEquipmenttypeid, Collectors.groupingBy(TimeoutEquipment::getEquipmentno))));
+                timeoutEquipments.stream().collect(Collectors.groupingBy(TimeoutEquipment::getHospitalcode, Collectors.groupingBy(TimeoutEquipment::getEquipmenttypeid, Collectors.groupingBy(TimeoutEquipment::getEquipmentno))));
 
         //先以医院分组
         for (String hospitalCode : map.keySet()) {
-           List<TimeoutEquipment> codeList = map.get(hospitalCode);
-            if(CollectionUtils.isEmpty(codeList)){
+            List<TimeoutEquipment> codeList = map.get(hospitalCode);
+            if (CollectionUtils.isEmpty(codeList)) {
                 continue;
             }
             List<TimeoutEquipment> timeoutList = new ArrayList<>();
@@ -79,7 +80,7 @@ public class TimerConfig {
                 }
                 List<TimeoutEquipment> equipmentList = equipmentTypeIdMap.get(equipmentTypeId);
                 List<String> equipmentNoList = equipmentList.stream().map(TimeoutEquipment::getEquipmentno).collect(Collectors.toList());
-                if(CollectionUtils.isEmpty(equipmentNoList) || StringUtils.isEmpty(hospitalCode)){
+                if (CollectionUtils.isEmpty(equipmentNoList) || StringUtils.isEmpty(hospitalCode)) {
                     continue;
                 }
                 EquipmentInfoCommand equipmentInfoCommand = new EquipmentInfoCommand();
@@ -87,58 +88,59 @@ public class TimerConfig {
                 equipmentInfoCommand.setEquipmentNoList(equipmentNoList);
                 List<MonitorequipmentlastdataDto> lastDataResult =
                         snDeviceRedisApi.getTheCurrentValueOfTheDeviceInBatches(equipmentInfoCommand).getResult();
-                if(CollectionUtils.isEmpty(lastDataResult)){
-                   continue;
+                if (CollectionUtils.isEmpty(lastDataResult)) {
+                    continue;
                 }
                 int count = 0;
-                TimeoutEquipment timeoutEquipment =null;
+                TimeoutEquipment timeoutEquipment = null;
                 //遍历当前医院设备类型下的所有设备
                 for (MonitorequipmentlastdataDto monitorequipmentlastdataDto : lastDataResult) {
                     Date inputDateTime = monitorequipmentlastdataDto.getInputdatetime();
                     String equipmentNo = monitorequipmentlastdataDto.getEquipmentno();
-                    if (MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode)) || MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId))|| CollectionUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo)) ) {
+                    if (MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode)) || MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId)) || CollectionUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo))) {
                         continue;
                     }
                     List<TimeoutEquipment> timeoutEquipmentList = timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo);
                     //equipmentNo是唯一键只会有一个
                     TimeoutEquipment equipment = timeoutEquipmentList.get(0);
                     //-------------当clientvisib的值为0时表示未开启超时报警-------------
-                    if (StringUtils.isNotEmpty(equipment.getClientvisible()) && !StringUtils.equals(DictEnum.TURN_ON.getCode(),equipment.getClientvisible())) {
+                    if (StringUtils.isNotEmpty(equipment.getClientvisible()) && !StringUtils.equals(DictEnum.TURN_ON.getCode(), equipment.getClientvisible())) {
                         continue;
                     }
                     Integer timeoutTime = equipment.getTimeouttime();
                     String differenceTime = compareTime(inputDateTime, timeoutTime);
                     if ("2".equals(differenceTime)) {
-                        if(count == 0){
+                        if (count == 0) {
                             timeoutEquipment = equipment;
                         }
                         count++;
                     }
                 }
-                if(!ObjectUtils.isEmpty(timeoutEquipment)){
-                    timeoutEquipment.setCount(count+"");
+                if (!ObjectUtils.isEmpty(timeoutEquipment)) {
+                    timeoutEquipment.setCount(count + "");
                     timeoutList.add(timeoutEquipment);
                 }
             }
-            if(CollectionUtils.isNotEmpty(timeoutList)){
+            if (CollectionUtils.isNotEmpty(timeoutList)) {
                 String string = JSON.toJSONString(timeoutList);
                 log.info("超时报警推送:{}", JsonUtil.toJson(string));
                 messagePushService.pushMessage5(string);
             }
-            }
+        }
     }
 
     /**
      * 判断如何处理这条记录
-     *  当差值小于等于超时时长时不报警
-     *  @param date 数据最后上传时间
+     * 当差值小于等于超时时长时不报警
+     *
+     * @param date        数据最后上传时间
      * @param timeoutTime 医院设置的超时时长
      * @return
      */
-    private String compareTime(Date date,Integer timeoutTime) {
+    private String compareTime(Date date, Integer timeoutTime) {
         //如果开启超时未设置超时时长则默认为60分钟
-        if(ObjectUtils.isEmpty(timeoutTime)){
-            timeoutTime=60;
+        if (ObjectUtils.isEmpty(timeoutTime)) {
+            timeoutTime = 60;
         }
         Date currentTime = new Date();
         long difference = currentTime.getTime() - date.getTime();
@@ -152,20 +154,27 @@ public class TimerConfig {
 
     //每分钟执行一次
     @Scheduled(cron = "*/30 * * * * ?")
-    public void Timing(){
-        Long size = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode()).getResult();
-        if(size == 0) {
+    public void Timing() {
+        ApiResponse<Long> lastDataListSize = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode());
+        if (null == lastDataListSize) {
+            return;
+        }
+        Long size = lastDataListSize.getResult();
+        if (size == 0) {
             return;
         }
         List<MonitorequipmentlastdataDto> list = new ArrayList<>();
         for (long i = 0; i < size; i++) {
             MonitorequipmentlastdataDto monitorequipmentlastdataDto = snDeviceRedisApi.getLeftPopLastData(MswkServiceEnum.LAST_DATA.getCode()).getResult();
-            if(null!=monitorequipmentlastdataDto){
-                monitorequipmentlastdataDto.setId(DateUtils.getCurrentYYMM());
+            if (null != monitorequipmentlastdataDto) {
                 list.add(monitorequipmentlastdataDto);
             }
         }
         List<Monitorequipmentlastdata> convert = BeanConverter.convert(list, Monitorequipmentlastdata.class);
+        convert.forEach(monitorequipmentlastdata -> {
+            monitorequipmentlastdata.setId(DateUtils.getCurrentYYMM());
+        });
+
         monitorequipmentlastdataRepository.batchInsert(convert);
     }
 }
