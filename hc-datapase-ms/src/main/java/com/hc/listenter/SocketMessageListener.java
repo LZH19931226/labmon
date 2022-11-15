@@ -41,6 +41,7 @@ public class SocketMessageListener {
             }
             paseData.forEach(snData -> {
                 snData.setNowTime(new Date());
+                snData.setData(messageContent);
                 //推送mq
                 randomPush(snData);
                 log.info("数据解析服务解析完成推送到队列:{}",JsonUtil.toJson(snData));

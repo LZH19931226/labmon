@@ -63,7 +63,7 @@ public class Crc16Utils {
         //结果转换为16进制
         String result = Integer.toHexString(CRC).toUpperCase();
         if (result.length() != 4) {
-            StringBuffer sb = new StringBuffer("0000");
+            StringBuilder sb = new StringBuilder("0000");
             result = sb.replace(4 - result.length(), 4, result).toString();
         }
         //交换高低位
