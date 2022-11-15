@@ -399,7 +399,6 @@ public class DateUtils {
             stringBuilder.append(",");
         }
         stringBuilder.deleteCharAt(stringBuilder.length()-1);
-        System.out.println(stringBuilder);
         return stringBuilder.toString();
     }
 }

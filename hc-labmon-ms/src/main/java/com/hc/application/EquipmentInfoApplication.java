@@ -250,7 +250,7 @@ public class EquipmentInfoApplication {
         if (ObjectUtils.isEmpty(equipmentInfo)) {
             return null;
         }
-        String ym = DateUtils.parseDateYm(startTime);
+        String ym = DateUtils.getYearMonth(startTime,endTime);
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startTime, endTime, equipmentNo,ym);
         QueryInfoModel queryInfoModel = new QueryInfoModel();
@@ -708,7 +708,7 @@ public class EquipmentInfoApplication {
      */
     public void getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
 
-        String ym = DateUtils.parseDateYm(startDate);
+        String ym = DateUtils.getYearMonth(startDate,endDate);
         //获取数据库数据
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startDate, endDate, equipmentNo,ym);
