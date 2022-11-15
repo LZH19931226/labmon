@@ -27,6 +27,7 @@ import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.util.EquipmentInfoServiceHelp;
+import com.sun.corba.se.spi.orbutil.threadpool.NoSuchThreadPoolException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -384,7 +385,7 @@ public class AppEquipmentInfoApplication {
         String endTime = curveCommand.getEndTime();
         String sn = curveCommand.getSn();
         String equipmentNo = curveCommand.getEquipmentNo();
-        String ym = DateUtils.parseDateYm(startTime);
+        String ym = DateUtils.getYearMonth(startTime,endTime);
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startTime,endTime,equipmentNo,ym);
         if(org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());

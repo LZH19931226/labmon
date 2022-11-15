@@ -250,7 +250,7 @@ public class EquipmentInfoApplication {
         if (ObjectUtils.isEmpty(equipmentInfo)) {
             return null;
         }
-        String ym = DateUtils.parseDateYm(startTime);
+        String ym = DateUtils.getYearMonth(startTime,endTime);
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startTime, endTime, equipmentNo,ym);
         QueryInfoModel queryInfoModel = new QueryInfoModel();
@@ -621,7 +621,7 @@ public class EquipmentInfoApplication {
         String startTime = DateUtils.getPreviousHourHHmm(newDate);
         String endTime = DateUtils.parseDatetime(newDate);
         String date = DateUtils.getYearMonth(newDate);
-        String ym = DateUtils.parseDateYm(operationDate);
+        String ym = DateUtils.parseDateYm(startTime);
         //查询前一个小时到现在的所有数据(当月这个时间段所有的数据)
         List<Monitorequipmentlastdata> lastDateList =
                 monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date,ym);
@@ -708,7 +708,7 @@ public class EquipmentInfoApplication {
      */
     public void getQueryResult(String equipmentNo, String startDate, String endDate, HttpServletResponse response) {
 
-        String ym = DateUtils.parseDateYm(startDate);
+        String ym = DateUtils.getYearMonth(startDate,endDate);
         //获取数据库数据
         List<Monitorequipmentlastdata> monitorEquipmentLastDataInfo =
                 monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startDate, endDate, equipmentNo,ym);

@@ -199,7 +199,7 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
                                                           @Param("instrumentConfigName") String instrumentConfigName,
                                                           @Param("ym")String ym);
 
-    @Select("SELECT * FROM lab_mon.monitorequipmentlastdata WHERE  toYYYYMM(inputdatetime) in (#{ym}) and formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M')BETWEEN  #{startTime}  AND #{endTime} AND equipmentno  = #{equipmentNo} ORDER BY inputdatetime ASC")
+    @Select("SELECT * FROM lab_mon.monitorequipmentlastdata WHERE  toYYYYMM(inputdatetime) in (${ym}) and formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M')BETWEEN  #{startTime}  AND #{endTime} AND equipmentno  = #{equipmentNo} ORDER BY inputdatetime ASC")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo1(@Param("startTime") String startTime,
                                                                     @Param("endTime")String endTime,
                                                                     @Param("equipmentNo") String equipmentNo,
