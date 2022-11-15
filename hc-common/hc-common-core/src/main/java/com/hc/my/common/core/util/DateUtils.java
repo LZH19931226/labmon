@@ -7,8 +7,10 @@ import org.springframework.util.ObjectUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author LiuZhiHao
@@ -165,7 +167,7 @@ public class DateUtils {
     /**
      * 以 yyyy-MM 的格式解析String
      * @param str
-     * @return
+     * @return year+month
      */
     public static String parseDateYm(String str){
         Date date = parseDate(str);
@@ -327,5 +329,77 @@ public class DateUtils {
         int year = now.getYear();
         String yymm = String.valueOf(year)+String.valueOf(month);
         return Integer.parseInt(yymm);
+    }
+
+    /**
+     * 获取年份
+     * @param time 格式为yyyy-MM-dd
+     * @return yyyy
+     */
+    public static int getYear(String time){
+        Date date = parseDate(time);
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(date);
+        return instance.get(Calendar.YEAR);
+    }
+
+    /**
+     * 获取月份
+     * @param time yyyy-MM-dd
+     * @return mm
+     */
+    public static int getMonth(String time){
+        Date date = parseDate(time);
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(date);
+        return instance.get(Calendar.MONTH)+1;
+    }
+
+    /**
+     * 获取两个时间之间所有的年月集合
+     *  开始时间不能大于结束时间
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return '202201','202202'...
+     */
+    public static String getYearMonth(String startTime,String endTime){
+        String startYm = DateUtils.parseDateYm(startTime);
+        String endYm = DateUtils.parseDateYm(endTime);
+        //相同时任意返回一个
+        if(startYm.equals(endYm)){
+            return startYm;
+        }
+
+        int startYear = DateUtils.getYear(startTime);
+        int endYear = DateUtils.getYear(endTime);
+        List<String> list = new ArrayList<>();
+        //获取月
+        int startMonth = DateUtils.getMonth(startTime);
+        int endMonth = DateUtils.getMonth(endTime);
+        list.add(startMonth>9?""+startYear+startMonth:""+startYear+"0"+startMonth);
+        Date date = DateUtils.parseDate(startTime);
+        Calendar cal =Calendar.getInstance();
+        cal.setTime(date);
+        while(true){
+            cal.add(Calendar.MONTH,1);
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH) +1;
+            if(year == endYear){
+                if(month>endMonth){
+                    break;
+                }
+            }
+            list.add( month > 9 ? ""+ year + month: ""+year+"0"+month);
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String s : list) {
+            stringBuilder.append("'");
+            stringBuilder.append(s);
+            stringBuilder.append("'");
+            stringBuilder.append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        System.out.println(stringBuilder);
+        return stringBuilder.toString();
     }
 }

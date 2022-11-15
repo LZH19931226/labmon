@@ -62,7 +62,7 @@ public class WarningInfoApplication {
      * @return
      */
     public CurveInfoDto getWarningCurveData(String pkId ,String startTime,String endTime ) {
-        String ym = DateUtils.parseDateYm(startTime);
+        String ym = DateUtils.getYearMonth(startTime,endTime);
         Warningrecord warningrecord = warningrecordRepository.getOne(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getPkid, pkId));
         if(ObjectUtils.isEmpty(warningrecord)) {
             return null;
