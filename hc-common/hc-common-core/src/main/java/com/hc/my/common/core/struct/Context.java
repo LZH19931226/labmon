@@ -20,8 +20,9 @@ public class Context {
 
     public static String getUserId(){
         HttpServletRequest request = getRequest();
-        String userIdToken = request.getHeader("token");
-        String userId = JwtTokenUtil.getUserId(userIdToken,new Audience().getBase64Secret());
+        String userIdToken = request.getHeader("Authorization");
+        String token = userIdToken.substring(7);
+        String userId = JwtTokenUtil.getUserId(token,new Audience().getBase64Secret());
         if(StringUtils.isBlank(userId)){
             throw new IedsException(ContextEnum.NOT_LOGGED_IN.getMessage());
         }

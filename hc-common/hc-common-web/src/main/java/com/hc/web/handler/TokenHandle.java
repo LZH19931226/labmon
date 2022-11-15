@@ -56,18 +56,19 @@ public class TokenHandle implements HandlerInterceptor {
             return true;
         }
         // 获取请求头信息authorization信息
-        String authHeader = req.getHeader(JwtTokenUtil.TOKEN);
+        String authHeader = req.getHeader(JwtTokenUtil.AUTH_HEADER_KEY);
         log.info("## authHeader= {}", authHeader);
         if (StringUtils.isEmpty(authHeader)) {
             throw new IedsException(IError.TOKEN);
         }
         // 获取token
+        String token = authHeader.substring(7);
         if (audience == null) {
             BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext());
             audience = factory.getBean(Audience.class);
         }
         // 验证token是否有效--无效已做异常抛出，由全局异常处理后返回对应信息
-        Claims claims = JwtTokenUtil.parseJWT(authHeader, audience.getBase64Secret());
+        Claims claims = JwtTokenUtil.parseJWT(token, audience.getBase64Secret());
         if (null == claims) {
             throw new IedsException(IError.TOKEN);
         }
