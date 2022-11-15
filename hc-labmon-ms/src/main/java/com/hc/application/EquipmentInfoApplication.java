@@ -621,7 +621,7 @@ public class EquipmentInfoApplication {
         String startTime = DateUtils.getPreviousHourHHmm(newDate);
         String endTime = DateUtils.parseDatetime(newDate);
         String date = DateUtils.getYearMonth(newDate);
-        String ym = DateUtils.getYearMonth(startTime,endTime);
+        String ym = DateUtils.parseDateYm(startTime);
         //查询前一个小时到现在的所有数据(当月这个时间段所有的数据)
         List<Monitorequipmentlastdata> lastDateList =
                 monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date,ym);
