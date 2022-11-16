@@ -610,7 +610,7 @@ public class EquipmentInfoApplication {
     }
 
     /**
-     * 设备通过月份获取每个时间点数据
+     * 设备通过月份获取每个时间点数据(曲线)
      * @param equipmentNo
      * @param operationDate
      * @return
@@ -621,7 +621,7 @@ public class EquipmentInfoApplication {
         String startTime = DateUtils.getPreviousHourHHmm(newDate);
         String endTime = DateUtils.parseDatetime(newDate);
         String date = DateUtils.getYearMonth(newDate);
-        String ym = DateUtils.parseDateYm(startTime);
+        String ym = DateUtils.parseDateYm(operationDate);
         //查询前一个小时到现在的所有数据(当月这个时间段所有的数据)
         List<Monitorequipmentlastdata> lastDateList =
                 monitorequipmentlastdataRepository.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date,ym);
