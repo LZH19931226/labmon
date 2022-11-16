@@ -28,6 +28,7 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.FileUtil;
 import com.hc.service.EquipmentInfoService;
+import com.hc.service.HospitalEquipmentService;
 import com.hc.service.InstrumentMonitorInfoService;
 import com.hc.service.InstrumentParamConfigService;
 import com.hc.util.EquipmentInfoServiceHelp;
@@ -75,6 +76,9 @@ public class EquipmentInfoApplication {
 
     @Autowired
     private ProbeRedisApi probeRedisApi;
+
+    @Autowired
+    private HospitalEquipmentService hospitalEquipmentService;
 
     /**
      * 查询所有设备当前值信息
@@ -327,14 +331,14 @@ public class EquipmentInfoApplication {
      */
     public void exportSingle(String hospitalCode, String operationDate, String type,HttpServletResponse response) {
         //判断该医院有哪些设备类型
-        List<HospitalEquipmentTypeModel> result =
-                hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
+        List<HospitalEquipmentDto> result = hospitalEquipmentService.findHospitalEquipmentTypeByCode(hospitalCode);
         if (CollectionUtils.isEmpty(result)) {
             return;
         }
-        String hospitalName = result.get(0).getHospitalName();
+        String hospitalName = result.get(0).getHospitalname();
         //获取医院的设备信息集合
-        List<SnDeviceDto> monitorInfo = monitorEquipmentApi.getMonitorEquipmentInfoByHCode(hospitalCode).getResult();
+//        List<SnDeviceDto> monitorInfo = monitorEquipmentApi.getMonitorEquipmentInfoByHCode(hospitalCode).getResult();
+        List<MonitorEquipmentDto> monitorInfo = equipmentInfoService.getEquipmentInfoByHospitalCode(hospitalCode);
         if (CollectionUtils.isEmpty(monitorInfo)) {
             return;
         }
@@ -369,13 +373,13 @@ public class EquipmentInfoApplication {
             List<OtherExcleModel> otherExcleModelone = new ArrayList<OtherExcleModel>();
             //操作台
             List<OtherExcleModel> otherExcleModeltwo= new ArrayList<OtherExcleModel>();
-            for (SnDeviceDto snDeviceDto : monitorInfo) {
-                String equipmentTypeId = snDeviceDto.getEquipmentTypeId();
+            for (MonitorEquipmentDto snDeviceDto : monitorInfo) {
+                String equipmentTypeId = snDeviceDto.getEquipmenttypeid();
                 if (StringUtils.isBlank(equipmentTypeId)) {
                     continue;
                 }
-                equipmentName = snDeviceDto.getEquipmentName();
-                String equipmentNo = snDeviceDto.getEquipmentNo();
+                equipmentName = snDeviceDto.getEquipmentname();
+                String equipmentNo = snDeviceDto.getInstrumentNo();
                 List<Monitorequipmentlastdata> list = new ArrayList<>();
                 if (!equipmentNoMap.containsKey(equipmentNo)) {
                     continue;
@@ -503,16 +507,16 @@ public class EquipmentInfoApplication {
         //操作台
         List<OtherExcleModel> otherExcleModeltwo = new ArrayList<OtherExcleModel>();
 
-        for (SnDeviceDto snDeviceDto : monitorInfo) {
-            String equipmentTypeId = snDeviceDto.getEquipmentTypeId();
+        for (MonitorEquipmentDto snDeviceDto : monitorInfo) {
+            String equipmentTypeId = snDeviceDto.getEquipmenttypeid();
             if (StringUtils.isBlank(equipmentTypeId)) {
                 continue;
             }
-            String equipmentNo = snDeviceDto.getEquipmentNo();
+            String equipmentNo = snDeviceDto.getEquipmentno();
             if (!equipmentNoMap.containsKey(equipmentNo)) {
                 continue;
             }
-            equipmentName = snDeviceDto.getEquipmentName();
+            equipmentName = snDeviceDto.getEquipmentname();
             List<Monitorequipmentlastdata> list = equipmentNoMap.get(equipmentNo);
             switch (equipmentTypeId){
                 case "1":
