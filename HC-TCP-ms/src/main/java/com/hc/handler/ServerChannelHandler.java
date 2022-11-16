@@ -109,6 +109,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
             });
             ParamaterModel paramaterModel =  new ParamaterModel();
             paramaterModel.setData(dataStr);
+            paramaterModel.setChannelId(asShortText);
             messagePushService.pushMessage(JsonUtil.toJson(paramaterModel));
             log.info("通道:{},原始数据:{},推送给消息队列的模型为:{}", asShortText, dataStr, JsonUtil.toJson(paramaterModel));
         } catch (Exception e) {
