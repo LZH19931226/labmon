@@ -28,11 +28,13 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
             "FROM    " +
             "lab_mon.monitorequipmentlastdata " +
             "WHERE " +
-            "formatDateTime(inputdatetime ,'%H:%M')  BETWEEN #{startTime} and #{endTime} " +
+            "toYYYYMM(inputdatetime) in (#{month}) " +
+            "AND" +
+            " formatDateTime(inputdatetime ,'%H:%M')  BETWEEN #{startTime} and #{endTime} " +
             "AND " +
             "hospitalcode  = #{hospitalCode} " +
-            "AND " +
-            "formatDateTime(inputdatetime ,'%Y-%m') = #{month} " +
+//            "AND " +
+//            "formatDateTime(inputdatetime ,'%Y-%m') = #{month} " +
             "GROUP BY " +
             "formatDateTime(inputdatetime ,'%d'),equipmentno " +
             ") t2 ON  t1.inputdatetime  = t2.time " +
