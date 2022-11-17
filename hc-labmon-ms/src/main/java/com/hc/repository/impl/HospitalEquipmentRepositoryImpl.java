@@ -30,4 +30,8 @@ public class HospitalEquipmentRepositoryImpl extends ServiceImpl<HospitalEquipme
         return hospitalEquipmentDao.hospitalEquipmentDao(hospitalCode);
     }
 
+    @Override
+    public List<HospitalEquipmentDto> findHospitalEquipmentTypeByCode(String hospitalCode) {
+        return hospitalEquipmentDao.findHospitalEquipmentTypeByCode(hospitalCode);
+    }
 }

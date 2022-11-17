@@ -20,8 +20,8 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
     @Select("SELECT " +
             "DISTINCT (*) " +
             "FROM " +
-            "lab_mon.monitorequipmentlastdata t1" +
-            "inner JOIN" +
+            "lab_mon.monitorequipmentlastdata t1 " +
+            "inner JOIN " +
             "(" +
             "SELECT " +
             "MAX(inputdatetime) as time " +
