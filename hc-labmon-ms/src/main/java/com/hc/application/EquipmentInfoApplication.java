@@ -379,7 +379,7 @@ public class EquipmentInfoApplication {
                     continue;
                 }
                 equipmentName = snDeviceDto.getEquipmentname();
-                String equipmentNo = snDeviceDto.getInstrumentNo();
+                String equipmentNo = snDeviceDto.getEquipmentno();
                 List<Monitorequipmentlastdata> list = new ArrayList<>();
                 if (!equipmentNoMap.containsKey(equipmentNo)) {
                     continue;

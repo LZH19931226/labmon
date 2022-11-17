@@ -22,7 +22,7 @@ public class MonitorEquipmentDto implements Serializable {
     /**
      * 设备编号
      */
-    @TableId(type = IdType.INPUT)
+    @TableId(type = IdType.INPUT,value = "equipmentno")
     private String equipmentno;
 
     /**
