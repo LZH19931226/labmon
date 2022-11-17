@@ -16,46 +16,39 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(@Param("date") String date,
                                                                    @Param("equipmentNo") String equipmentNo,
                                                                    @Param("ym")String ym);
-
-    @Select("SELECT " +
-            "DISTINCT (*) " +
-            "FROM " +
-            "lab_mon.monitorequipmentlastdata t1 " +
-            "inner JOIN " +
-            "(" +
-            "SELECT " +
-            "MAX(inputdatetime) as time " +
-            "FROM    " +
-            "lab_mon.monitorequipmentlastdata " +
-            "WHERE " +
-            "toYYYYMM(inputdatetime) in (#{month}) " +
-            "AND" +
-            " formatDateTime(inputdatetime ,'%H:%M')  BETWEEN #{startTime} and #{endTime} " +
-            "AND " +
-            "hospitalcode  = #{hospitalCode} " +
-//            "AND " +
-//            "formatDateTime(inputdatetime ,'%Y-%m') = #{month} " +
-            "GROUP BY " +
-            "formatDateTime(inputdatetime ,'%d'),equipmentno " +
-            ") t2 ON  t1.inputdatetime  = t2.time " +
-            "ORDER BY inputdatetime ASC ")
+    @Select("SELECT DISTINCT (*) FROM lab_mon.monitorequipmentlastdata" +
+            "where " +
+            " inputdatetime in ( " +
+            " SELECT" +
+            " MAX( inputdatetime ) AS time " +
+            " FROM" +
+            " lab_mon.monitorequipmentlastdata " +
+            " WHERE" +
+            " toYYYYMM ( inputdatetime ) IN ( #{month} )" +
+            " AND formatDateTime ( inputdatetime, '%H:%M' ) BETWEEN #{startTime} AND #{endTime} " +
+            " AND hospitalcode = #{hospitalCode} " +
+            " GROUP BY" +
+            " formatDateTime ( inputdatetime, '%d' )," +
+            " equipmentno " +
+            " )" +
+            " ORDER BY inputdatetime")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByPeriod(@Param("hospitalCode") String hospitalCode,
                                                                            @Param("startTime") String startTime,
                                                                            @Param("endTime") String endTime ,
                                                                            @Param("month") String month);
 
-    @Select("SELECT\n" +
-            "*\n" +
-            "FROM\n" +
-            "lab_mon.monitorequipmentlastdata\n" +
-            "WHERE\n" +
-            "hospitalcode = #{hospitalCode} \n" +
-            "AND  inputdatetime in \n" +
-            "(\n" +
-            "SELECT MAX(inputdatetime)  FROM lab_mon.monitorequipmentlastdata where hospitalcode = #{hospitalCode} \n" +
-            "AND  formatDateTime(inputdatetime ,'%Y-%m-%d') = #{date}\n" +
-            "and formatDateTime(inputdatetime ,'%H:%M:%S') BETWEEN #{startTime} and #{endTime}\n" +
-            "GROUP BY equipmentno \n" +
+    @Select("SELECT" +
+            "*" +
+            "FROM" +
+            "lab_mon.monitorequipmentlastdata" +
+            "WHERE" +
+            "hospitalcode = #{hospitalCode} " +
+            "AND  inputdatetime in " +
+            "(" +
+            "SELECT MAX(inputdatetime)  FROM lab_mon.monitorequipmentlastdata where hospitalcode = #{hospitalCode} " +
+            "AND  formatDateTime(inputdatetime ,'%Y-%m-%d') = #{date}" +
+            "and formatDateTime(inputdatetime ,'%H:%M:%S') BETWEEN #{startTime} and #{endTime}" +
+            "GROUP BY equipmentno " +
             ") ORDER BY inputdatetime ASC")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByDate(@Param("hospitalCode") String hospitalCode,
                                                                          @Param("startTime") String startTime,
