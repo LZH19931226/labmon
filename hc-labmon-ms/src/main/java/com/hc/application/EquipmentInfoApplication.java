@@ -353,7 +353,7 @@ public class EquipmentInfoApplication {
             Date date = DateUtils.parseDate(operationDate);
             String startTime = DateUtils.getPreviousHourHHmm(date);
             String endTime = DateUtils.dateReduceHHmm(date);
-            String yearMonth = DateUtils.getYearMonth(date);
+            String yearMonth = DateUtils.parseDateYm(operationDate);
             List<Monitorequipmentlastdata> lastDateList =
                     monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfoByPeriod(hospitalCode,startTime,endTime,yearMonth);
             if(CollectionUtils.isEmpty(lastDateList)){
