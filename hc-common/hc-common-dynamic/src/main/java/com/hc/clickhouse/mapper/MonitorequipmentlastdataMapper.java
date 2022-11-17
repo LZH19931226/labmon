@@ -17,7 +17,7 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
                                                                    @Param("equipmentNo") String equipmentNo,
                                                                    @Param("ym")String ym);
     @Select("SELECT DISTINCT (*) FROM lab_mon.monitorequipmentlastdata" +
-            "where " +
+            " where " +
             " inputdatetime in ( " +
             " SELECT" +
             " MAX( inputdatetime ) AS time " +
@@ -37,19 +37,19 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
                                                                            @Param("endTime") String endTime ,
                                                                            @Param("month") String month);
 
-    @Select("SELECT" +
-            "*" +
-            "FROM" +
-            "lab_mon.monitorequipmentlastdata" +
-            "WHERE" +
-            "hospitalcode = #{hospitalCode} " +
-            "AND  inputdatetime in " +
-            "(" +
-            "SELECT MAX(inputdatetime)  FROM lab_mon.monitorequipmentlastdata where hospitalcode = #{hospitalCode} " +
-            "AND  formatDateTime(inputdatetime ,'%Y-%m-%d') = #{date}" +
-            "and formatDateTime(inputdatetime ,'%H:%M:%S') BETWEEN #{startTime} and #{endTime}" +
-            "GROUP BY equipmentno " +
-            ") ORDER BY inputdatetime ASC")
+    @Select(" SELECT " +
+            " * " +
+            " FROM" +
+            " lab_mon.monitorequipmentlastdata" +
+            " WHERE" +
+            " hospitalcode = #{hospitalCode} " +
+            " AND  inputdatetime in " +
+            " (" +
+            " SELECT MAX(inputdatetime)  FROM lab_mon.monitorequipmentlastdata where hospitalcode = #{hospitalCode} " +
+            " AND  formatDateTime(inputdatetime ,'%Y-%m-%d') = #{date}" +
+            " and formatDateTime(inputdatetime ,'%H:%M:%S') BETWEEN #{startTime} and #{endTime}" +
+            " GROUP BY equipmentno " +
+            " ) ORDER BY inputdatetime ASC")
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByDate(@Param("hospitalCode") String hospitalCode,
                                                                          @Param("startTime") String startTime,
                                                                          @Param("endTime") String endTime ,
