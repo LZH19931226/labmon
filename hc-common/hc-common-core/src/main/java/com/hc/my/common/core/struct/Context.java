@@ -29,6 +29,17 @@ public class Context {
         return userId;
     }
 
+    public static String getLang(){
+        HttpServletRequest request = getRequest();
+        String userIdToken = request.getHeader("Authorization");
+        String token = userIdToken.substring(7);
+        String lang = JwtTokenUtil.getLang(token, new Audience().getBase64Secret());
+        if(StringUtils.isBlank(lang)){
+            throw new IedsException("not find lang info");
+        }
+        return lang;
+    }
+
 
     /**
      * 获取Request

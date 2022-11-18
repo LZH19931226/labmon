@@ -31,4 +31,10 @@ public class UserCommand {
 
     @ApiModelProperty(value = "当前页")
     private Long pageCurrent;
+
+    /**
+     * CN表示中文 US 表示英文
+     */
+    @ApiModelProperty(value = "语种")
+    private String lang;
 }

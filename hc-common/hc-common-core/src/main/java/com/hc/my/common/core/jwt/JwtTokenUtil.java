@@ -55,7 +55,7 @@ public class JwtTokenUtil {
      * @param audience
      * @return
      */
-    public static String createJWT(String userId, String username,Audience audience) {
+    public static String createJWT(String userId, String username,String lang,Audience audience) {
         try {
             // 使用HS256加密算法
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -74,6 +74,7 @@ public class JwtTokenUtil {
             JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
                     // 可以将基本不重要的对象信息放到claims
                     .claim("userId", encryId)
+                    .claim("lang",lang)
                     //.claim("userPermissions",Base64Util.encode(userPermissions))
                     // 代表这个JWT的主体，即它的所有人
                     .setSubject(username)
@@ -120,6 +121,17 @@ public class JwtTokenUtil {
     public static String getUserId(String token, String base64Security){
         String userId = parseJWT(token, base64Security).get("userId", String.class);
         return Base64Util.decode(userId);
+    }
+
+    /**
+     * 从token中获取语种
+     * @param token
+     * @param base64Security
+     * @return
+     */
+    public static String getLang(String token,String base64Security){
+        String lang = parseJWT(token, base64Security).get("lang", String.class);
+        return Base64Util.decode(lang);
     }
 
 

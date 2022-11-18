@@ -189,11 +189,12 @@ public class UserRightApplication {
         String loginType = userRightCommand.getLoginType();
         String loginStatus = userRightCommand.getLoginStatus();
         String hospitalCode = userRightDto.getHospitalCode();
+        String lang = userRightCommand.getLang();
         //查询医院信息
         HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         HospitalInfoVo  hospitalInfoVo = builderHospitalInfo(hospitalInfo);
 
-        String token = JwtTokenUtil.createJWT(userRightDto.getUserid(), userRightDto.getUsername(), audience);
+        String token = JwtTokenUtil.createJWT(userRightDto.getUserid(), userRightDto.getUsername(),lang, audience);
 
 
         //未设置双因子的医院直接放行 设置了的医院在非app上登录直接放行
