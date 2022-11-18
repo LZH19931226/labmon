@@ -43,7 +43,7 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         String hospitalName = hospitalCommand.getHospitalFullName();
         if(StringUtils.isBlank(hospitalName)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_NOT_NULL);
         }
         hospitalRegistrationInfoRepository.insertHospitalInfo(hospitalCommand);
     }
@@ -57,10 +57,10 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
         String hospitalCode = hospitalCommand.getHospitalCode();
         String hospitalName = hospitalCommand.getHospitalName();
         if(StringUtils.isBlank(hospitalCode)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL);
         }
         if(StringUtils.isBlank(hospitalName)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_NOT_NULL);
         }
         hospitalRegistrationInfoRepository.editHospitalInfo(hospitalCommand);
     }
@@ -72,7 +72,7 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     @Override
     public void deleteHospitalInfoByCode(String hospitalCode) {
         if(StringUtils.isBlank(hospitalCode)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL);
         }
         hospitalRegistrationInfoRepository.deleteHospitalInfoByCode(hospitalCode);
     }

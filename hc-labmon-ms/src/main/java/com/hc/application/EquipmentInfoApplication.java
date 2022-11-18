@@ -181,7 +181,7 @@ public class EquipmentInfoApplication {
         }
         List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList = hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
         if(CollectionUtils.isEmpty(hospitalEquipmentTypeModelList)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE);
         }
         hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
         return hospitalInfo;

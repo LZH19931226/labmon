@@ -54,13 +54,13 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         Integer integer = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
         if(integer>0){
-            throw new IedsException(LabSystemEnum.LOGIN_ACCOUNT_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.LOGIN_ACCOUNT_ALREADY_EXISTS);
         }
         Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
                 .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
         if(num>0){
-            throw new IedsException(LabSystemEnum.PHONE_NUM_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.PHONE_NUM_EXISTS);
         }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
@@ -123,13 +123,13 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         UserRightPo userRightPo = userRightDao.selectOne(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
         if(ObjectUtils.isEmpty(userRightPo)){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST);
         }
         if(!StringUtils.equals(userRightPo.getPwd(),userRightCommand.getPwd())){
-            throw new IedsException(LabSystemEnum.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
+            throw new IedsException(LabSystemEnum.INCORRECT_USERNAME_OR_PASSWORD);
         }
         if(userRightPo.getIsUse() != 1L){
-            throw new IedsException(LabSystemEnum.USER_NOT_ENABLED.getMessage());
+            throw new IedsException(LabSystemEnum.USER_NOT_ENABLED);
         }
         return BeanConverter.convert(userRightPo,UserRightDto.class);
     }

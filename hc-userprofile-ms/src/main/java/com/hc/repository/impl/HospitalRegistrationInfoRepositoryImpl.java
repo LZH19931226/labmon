@@ -53,7 +53,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         HospitalRegistrationInfoPo selectOne = hospitalRegistrationInfoDao.selectOne(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
                 .eq(HospitalRegistrationInfoPo::getHospitalName, hospitalCommand.getHospitalName()));
         if(null!=selectOne){
-            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_ALREADY_EXISTS);
         }
        hospitalRegistrationInfoDao.insert(infoPo);
 
@@ -68,7 +68,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         HospitalEquipmentPo hospitalEquipmentPo =
                 hospitalRegistrationInfoDao.selectHospitalName(hospitalCommand.getHospitalName(),hospitalCommand.getHospitalCode());
         if (!ObjectUtils.isEmpty(hospitalEquipmentPo)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_NAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_NAME_ALREADY_EXISTS);
         }
         HospitalRegistrationInfoPo convert = BeanConverter.convert(hospitalCommand, HospitalRegistrationInfoPo.class);
         convert.setUpdateTime(new Date());
@@ -85,12 +85,12 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         Integer integer = hospitalEquipmentDao.selectCount(Wrappers.lambdaQuery(new HospitalEquipmentPo())
                 .eq(HospitalEquipmentPo::getHospitalCode, hospitalCode));
         if(integer>0){
-            throw new IedsException(LabSystemEnum.HOSPITAL_INFO_NOTABLE_DELETED.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_INFO_NOTABLE_DELETED);
         }
         int delete = hospitalRegistrationInfoDao.delete(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
                 .eq(HospitalRegistrationInfoPo::getHospitalCode, hospitalCode));
         if(delete<=0){
-            throw new IedsException(LabSystemEnum.HOSPITAL_INFO_DELETE_FAIL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_INFO_DELETE_FAIL);
         }
     }
 

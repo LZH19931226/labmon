@@ -42,15 +42,15 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
     public void addHospitalEquimentType(HospitalEquimentTypeCommand hospitalEquimentTypeCommand) {
         String hospitalcode = hospitalEquimentTypeCommand.getHospitalcode();
         if(StringUtils.isBlank(hospitalcode)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL);
         }
         String equipmenttypeid = hospitalEquimentTypeCommand.getEquipmenttypeid();
         if(StringUtils.isBlank(equipmenttypeid)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_TYPE_ID_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_TYPE_ID_NOT_NULL);
         }
         HospitalequimentDTO hospitalequimentDTO1 = hospitalequimentRepository.selectHospitalEquimentInfoByCodeAndTypeId(hospitalcode, equipmenttypeid);
         if (!ObjectUtils.isEmpty(hospitalequimentDTO1)) {
-            throw new IedsException(LabSystemEnum.THE_SAME_DEVICE_TYPE_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.THE_SAME_DEVICE_TYPE_EXISTS);
         }
         WorkTimeBlockCommand[] workTimeBlock = hospitalEquimentTypeCommand.getWorkTimeBlock();
         HospitalequimentDTO hospitalequimentDTO = BeanConverter.convert(hospitalEquimentTypeCommand, HospitalequimentDTO.class);
@@ -81,7 +81,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
             Date startTime = workTimeBlockCommand.getBegintime();
             Date endTime = workTimeBlockCommand.getEndtime();
             if(endTime.compareTo(startTime)<=0){
-                throw new IedsException(LabSystemEnum.START_TIME_AND_END_TIME_ARE_ABNORMAL.getMessage());
+                throw new IedsException(LabSystemEnum.START_TIME_AND_END_TIME_ARE_ABNORMAL);
             }
             list.add(buildTime(startTime));
             list.add(buildTime(endTime));
@@ -92,7 +92,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                 case 4:
                     Boolean aBoolean = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
                     if(aBoolean){
-                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_BETWEEN_THE_TWO_TIME_PERIODS.getMessage());
+                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_BETWEEN_THE_TWO_TIME_PERIODS);
                     }
                     break;
                 case 6:
@@ -101,7 +101,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                     Boolean two = checkTimesHasOverlap(list.get(0), list.get(1), list.get(4), list.get(5));
                     Boolean three = checkTimesHasOverlap(list.get(2), list.get(3), list.get(4), list.get(5));
                     if(one || two || three){
-                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_OF_THE_THREE_TIME_PERIODS.getMessage());
+                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_OF_THE_THREE_TIME_PERIODS);
                     }
                     break;
                 default:
@@ -198,7 +198,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
                 .eq(MonitorEquipmentPo::getEquipmentTypeId, equipmenttypeid)
                 .last("limit 1"));
         if (CollectionUtils.isNotEmpty(equipment)){
-            throw  new IedsException(LabSystemEnum.DEVICES_EXIST_UNDER_THIS_DEVICE_TYPE.getMessage());
+            throw  new IedsException(LabSystemEnum.DEVICES_EXIST_UNDER_THIS_DEVICE_TYPE);
         }
         hospitalequimentRepository.remove(Wrappers.lambdaQuery(new HospitalequimentPo())
         .eq(HospitalequimentPo::getHospitalcode,hospitalCode)

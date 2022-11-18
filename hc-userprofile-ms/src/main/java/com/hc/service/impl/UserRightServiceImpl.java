@@ -51,22 +51,22 @@ public class UserRightServiceImpl implements UserRightService {
         String hospitalCode = userRightCommand.getHospitalCode();
         String userType = userRightCommand.getUserType();
         if (StringUtils.isBlank(username)) {
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL);
         }
         if (StringUtils.isBlank(nickname)) {
-            throw new IedsException(LabSystemEnum.NICKNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.NICKNAME_NOT_NULL);
         }
         if (StringUtils.isBlank(pwd)) {
-            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL);
         }
         if (StringUtils.isBlank(timeout)) {
-            throw new IedsException(LabSystemEnum.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
+            throw new IedsException(LabSystemEnum.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY);
         }
         if (StringUtils.isBlank(hospitalCode)) {
-            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL);
         }
         if (StringUtils.isBlank(userType)) {
-            throw new IedsException(LabSystemEnum.USER_ROLE_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USER_ROLE_NOT_NULL);
         }
 
         userRightRepository.insertUserRightInfo(userRightCommand);
@@ -80,32 +80,32 @@ public class UserRightServiceImpl implements UserRightService {
     @Override
     public void updateUserRightInfo(UserRightCommand userRightCommand) {
         if(StringUtils.isBlank(userRightCommand.getUserid())){
-            throw new IedsException(LabSystemEnum.USERID_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERID_NOT_NULL);
         }
         if (StringUtils.isBlank(userRightCommand.getNickname())) {
-            throw new IedsException(LabSystemEnum.NICKNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.NICKNAME_NOT_NULL);
         }
         if (StringUtils.isBlank(userRightCommand.getPwd())) {
-            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL);
         }
         if (StringUtils.isBlank(userRightCommand.getHospitalCode())) {
-            throw new IedsException(LabSystemEnum.HOSPITAL_NAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_NAME_NOT_NULL);
         }
         if (StringUtils.isBlank(userRightCommand.getUserType())) {
-            throw new IedsException(LabSystemEnum.USER_ROLE_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USER_ROLE_NOT_NULL);
         }
         if (StringUtils.isBlank(userRightCommand.getTimeout())) {
-            throw new IedsException(LabSystemEnum.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
+            throw new IedsException(LabSystemEnum.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY);
         }
         UserRightDto userRightDto = userRightRepository.selectUserRightInfo(userRightCommand.getUserid());
         if (ObjectUtils.isEmpty(userRightDto)) {
-            throw new IedsException(LabSystemEnum.THIS_INFORMATION_NO_LONGER_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.THIS_INFORMATION_NO_LONGER_EXISTS);
         }
         //判断phonenum有没有修改，如修改了在用修改的手机号和医院查记录数量大于0是手机号重复抛出异常
         if(!userRightDto.getPhoneNum().equals(userRightCommand.getPhoneNum())){
             int i = userRightRepository.selectUserRightByCodeAndPhone(userRightDto.getHospitalCode(), userRightCommand.getPhoneNum());
             if (i>0) {
-                throw new IedsException(LabSystemEnum.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
+                throw new IedsException(LabSystemEnum.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER);
             }
         }
         userRightRepository.updateUserRightInfo(userRightCommand);

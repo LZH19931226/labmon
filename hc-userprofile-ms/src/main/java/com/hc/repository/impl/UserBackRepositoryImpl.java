@@ -43,10 +43,10 @@ public class UserBackRepositoryImpl  implements UserBackRepository {
                         .eq(UserBackPo::getUsername, username));
 
         if(userPo == null){
-           throw  new IedsException(LabSystemEnum.USER_NOT_EXISTS.getMessage());
+           throw  new IedsException(LabSystemEnum.USER_NOT_EXISTS.name());
         }
         if(!userPo.getPwd().equals(pwd)){
-            throw  new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.getMessage());
+            throw  new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.name());
         }
 
         return BeanConverter.convert(userPo, UserBackDto.class);
@@ -65,7 +65,7 @@ public class UserBackRepositoryImpl  implements UserBackRepository {
         String username = userBackPo.getUsername();
         UserBackPo userBackPo1 = userBackDao.selectById(userid);
         if(userBackPo1 == null){
-            throw new IedsException(LabSystemEnum.USER_NOT_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.USER_NOT_EXISTS);
         }
         userBackDao.updateById(new UserBackPo().setUserid(userid).setPwd(pwd).setUsername(username));
     }

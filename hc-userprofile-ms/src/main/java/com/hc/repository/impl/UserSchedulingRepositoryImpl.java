@@ -75,11 +75,11 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
         long time1 =  oldEndTime.getTime()-oldStartTime.getTime();
         long time2 =  newEndTime.getTime()-newStartTime.getTime();
         if(time1!=time2){
-            throw new IedsException(LabSystemEnum.TIME_PERIOD_DISAGREE.getMessage());
+            throw new IedsException(LabSystemEnum.TIME_PERIOD_DISAGREE);
         }
         List<UserSchedulingPo> userSchedulingPos = userSchedulingDao.selectTimePeriod( hospitalCode,oldStartTime,oldEndTime);
         if(CollectionUtils.isEmpty(userSchedulingPos)){
-            throw new IedsException(LabSystemEnum.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
+            throw new IedsException(LabSystemEnum.NO_SCHEDULE_INFORMATION_FOUND);
         }
         //查询出新的新的时间内是否有用户以排班
         List<UserSchedulingPo> userSchedulingPosList = userSchedulingDao.selectTimePeriod(hospitalCode, newStartTime, newEndTime);

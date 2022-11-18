@@ -31,9 +31,14 @@ public class Context {
 
     public static String getLang(){
         HttpServletRequest request = getRequest();
-        String lang = JwtTokenUtil.getLang(request.getHeader("lang"), new Audience().getBase64Secret());
+        String userIdToken = request.getHeader("Authorization");
+        String token = userIdToken.substring(7);
+        if(StringUtils.isBlank(token)){
+            return null;
+        }
+        String lang = JwtTokenUtil.getLang(token,new Audience().getBase64Secret());
         if(StringUtils.isBlank(lang)){
-            throw new IedsException("not find lang info");
+            return null;
         }
         return lang;
     }

@@ -42,8 +42,8 @@ public class SpringExceptionHandle {
     public <T> ApiResponse<T> sendError(IedsException exception, HttpServletRequest request) {
         String requestUrl = request.getRequestURI();
         String lang = Context.getLang();
-        String errText =exception.labSystemEnum.getMessage();
-        if (!StringUtils.equals(lang,"CN")) {
+        String errText =exception.getText();
+        if(StringUtils.isNotBlank(lang) && !StringUtils.equals(lang,"CN")){
             LabSystemEnum labSystemEnum = LabSystemEnum.from(errText);
             errText = labSystemEnum.name();
         }

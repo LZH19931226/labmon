@@ -15,6 +15,7 @@ public enum LabSystemEnum {
     THE_DEVICE_HAS_NO_PROBE_INFORMATION("未找到设备探头信息"),
     NO_DATA_FOR_CURRENT_TIME("当前时间未找到数据"),
     /**user服务*/
+    LANG_NOT_NULL("语种不能为空"),
     PASSWORD_CAN_NOT_NULL("密码不能为空"),
     USERID_NOT_NULL("用户id不能为空"),
     HOSPITAL_FULL_NAME_NOT_NULL("医院全称不能为空"),

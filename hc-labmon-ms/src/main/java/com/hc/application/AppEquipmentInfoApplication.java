@@ -78,7 +78,7 @@ public class AppEquipmentInfoApplication {
         //查出医院的设备类型
         List<HospitalEquipmentDto> hospitalEquipmentDto =  hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
         if (CollectionUtils.isEmpty(hospitalEquipmentDto)) {
-           throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
+           throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE);
         }
         List<InstrumentParamConfigDto> instrumentParamConfigDtos =  instrumentParamConfigService.getInstrumentParamConfigByCode(hospitalCode);
         if (CollectionUtils.isEmpty(instrumentParamConfigDtos)) {

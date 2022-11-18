@@ -36,11 +36,15 @@ public class UserBackServiceImpl  implements UserBackService {
     public UserBackDto userLogin(UserCommand userCommand) {
         String username = userCommand.getUsername();
         if(StringUtils.isBlank(username)){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL);
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.name());
         }
         String pwd = userCommand.getPwd();
         if(StringUtils.isBlank(pwd)){
-            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.name());
+        }
+        String lang = userCommand.getLang();
+        if(StringUtils.isBlank(lang)){
+            throw new IedsException(LabSystemEnum.LANG_NOT_NULL.name());
         }
         UserBackPo userBackPo =BeanConverter.convert(userCommand, UserBackPo.class);
         return userBackRepository.userLogin(userBackPo);
@@ -55,12 +59,12 @@ public class UserBackServiceImpl  implements UserBackService {
     public void updateUserInfo(UserCommand userCommand) {
         String userid = userCommand.getUserid();
         if(StringUtils.isBlank(userid)){
-            throw new IedsException(LabSystemEnum.USERID_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERID_NOT_NULL);
         }
         String username = userCommand.getUsername();
         Integer integer = userBackRepository.selectOne(username);
         if(integer>1){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL);
         }
         UserBackPo userBackPo = BeanConverter.convert(userCommand,UserBackPo.class);
         userBackRepository.updateUserInfo(userBackPo);
@@ -109,7 +113,7 @@ public class UserBackServiceImpl  implements UserBackService {
         String username = userCommand.getUsername();
         UserBackDto userBackDto = userBackRepository.selectUserBackByUsername(username);
         if(!ObjectUtils.isEmpty(userBackDto)){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL);
         }
         userBackRepository.insertUserInfo(userCommand);
     }
