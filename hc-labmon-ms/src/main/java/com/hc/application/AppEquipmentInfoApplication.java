@@ -19,6 +19,7 @@ import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
@@ -66,9 +67,6 @@ public class AppEquipmentInfoApplication {
     private WarningTimeService warningTimeService;
 
     @Autowired
-    private SnDeviceRedisApi snDeviceRedisApi;
-
-    @Autowired
     private MonitorEquipmentApi monitorEquipmentApi;
 
     @Autowired
@@ -83,7 +81,7 @@ public class AppEquipmentInfoApplication {
         //查出医院的设备类型
         List<HospitalEquipmentDto> hospitalEquipmentDto =  hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
         if (CollectionUtils.isEmpty(hospitalEquipmentDto)) {
-           throw new IedsException(LabMonEnumError.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
+           throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
         }
         List<InstrumentParamConfigDto> instrumentParamConfigDtos =  instrumentParamConfigService.getInstrumentParamConfigByCode(hospitalCode);
         if (CollectionUtils.isEmpty(instrumentParamConfigDtos)) {
