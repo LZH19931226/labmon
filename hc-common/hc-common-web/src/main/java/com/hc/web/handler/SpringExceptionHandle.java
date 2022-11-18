@@ -3,6 +3,9 @@ package com.hc.web.handler;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
+import com.hc.my.common.core.struct.Context;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +41,14 @@ public class SpringExceptionHandle {
     @ResponseStatus(value = HttpStatus.OK)
     public <T> ApiResponse<T> sendError(IedsException exception, HttpServletRequest request) {
         String requestUrl = request.getRequestURI();
+        String lang = Context.getLang();
+        String errText =exception.labSystemEnum.getMessage();
+        if (!StringUtils.equals(lang,"CN")) {
+            LabSystemEnum labSystemEnum = LabSystemEnum.from(errText);
+            errText = labSystemEnum.name();
+        }
         logger.error("occurs error when execute url ={} ,message {}", requestUrl, exception.getMessage());
-        return new ApiResponse<>(false, exception.getCode(), exception.getText());
+        return new ApiResponse<>(false, exception.getCode(), errText);
     }
 
 

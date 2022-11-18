@@ -1,6 +1,5 @@
 package com.hc.my.common.core.exception;
 
-import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

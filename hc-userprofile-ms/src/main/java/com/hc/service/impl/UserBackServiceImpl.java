@@ -36,7 +36,7 @@ public class UserBackServiceImpl  implements UserBackService {
     public UserBackDto userLogin(UserCommand userCommand) {
         String username = userCommand.getUsername();
         if(StringUtils.isBlank(username)){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL);
         }
         String pwd = userCommand.getPwd();
         if(StringUtils.isBlank(pwd)){

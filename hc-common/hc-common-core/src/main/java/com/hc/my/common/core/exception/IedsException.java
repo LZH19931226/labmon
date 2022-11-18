@@ -10,6 +10,7 @@ public class IedsException extends RuntimeException {
     private static final long   serialVersionUID = 2400008380982132191L;
     protected            IError error            = IError.SYSTEM;
     protected            IError token            = IError.TOKEN;
+    public               LabSystemEnum           labSystemEnum;
     /**
      * Message value parameters
      * <p>
@@ -40,6 +41,12 @@ public class IedsException extends RuntimeException {
         super(IError.format(message, args));
         this.error = SampleError.create(message, args);
     }
+
+    public IedsException(LabSystemEnum labSystemEnum,Object... args){
+        super(IError.format(labSystemEnum.getMessage(), args));
+        this.error = SampleError.create(labSystemEnum.getMessage(), args);
+    }
+
 
 
     public IedsException(String message, Throwable e, Object... args) {
