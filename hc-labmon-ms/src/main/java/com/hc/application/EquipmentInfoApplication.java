@@ -10,7 +10,6 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.QueryInfoModel;
-import com.hc.constants.LabMonEnumError;
 import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
@@ -21,6 +20,7 @@ import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.MT310DCEnum;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
@@ -91,7 +91,7 @@ public class EquipmentInfoApplication {
         //获取监控设备的信息
         List<MonitorEquipmentDto> monitorEquipmentDtoList = equipmentInfoService.getEquipmentInfoByCodeAndTypeId(hospitalCode,equipmentTypeId);
         if(CollectionUtils.isEmpty(monitorEquipmentDtoList)){
-            throw new IedsException(LabMonEnumError.DEVICE_INFORMATION_NOT_FOUND.getMessage());
+            throw new IedsException(LabSystemEnum.EQUIPMENT_INFO_NOT_FOUND.getMessage());
         }
         List<String> equipmentNoList = monitorEquipmentDtoList.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
         Map<String, List<MonitorEquipmentDto>> monitorEquipmentMap = monitorEquipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
@@ -153,7 +153,7 @@ public class EquipmentInfoApplication {
         String ym = DateUtils.parseDateYm(date);
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo,ym);
         if(CollectionUtils.isEmpty(lastDataModelList)) {
-            throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
+            throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
         Map<String,List<InstrumentParamConfigDto>>  map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
         boolean flag = false;
@@ -181,7 +181,7 @@ public class EquipmentInfoApplication {
         }
         List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList = hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
         if(CollectionUtils.isEmpty(hospitalEquipmentTypeModelList)){
-            throw new IedsException(LabMonEnumError.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE.getMessage());
         }
         hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
         return hospitalInfo;
@@ -237,7 +237,7 @@ public class EquipmentInfoApplication {
             }
         });
         if(CollectionUtils.isEmpty(upsInfoList)) {
-            throw new IedsException(LabMonEnumError.NO_UTILITY_RECORD.getMessage());
+            throw new IedsException(LabSystemEnum.NO_UTILITY_RECORD.getMessage());
         }
         return upsInfoList;
     }
@@ -289,7 +289,7 @@ public class EquipmentInfoApplication {
             list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
         }
         if(CollectionUtils.isEmpty(list)){
-            throw new IedsException(LabMonEnumError.THE_DEVICE_HAS_NO_PROBE_INFORMATION.getMessage());
+            throw new IedsException(LabSystemEnum.THE_DEVICE_HAS_NO_PROBE_INFORMATION.getMessage());
         }
         List<String> eNameList = new ArrayList<>();
         for (Integer instrumentTypeId : list) {

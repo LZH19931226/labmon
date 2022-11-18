@@ -2,9 +2,9 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.constants.error.AppManageErrorEnumCode;
 import com.hc.dto.AppVersionManageDto;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.AppVersionManagePo;
 import com.hc.repository.AppManageRepository;
@@ -32,7 +32,7 @@ public class AppManageServiceImpl implements AppManageService {
         String versionCode = appVersionManageDto.getVersionCode();
         int count = appManageRepository.count(Wrappers.lambdaQuery(new AppVersionManagePo()).eq(AppVersionManagePo::getVersionCode, versionCode));
         if(count>0){
-            throw new IedsException(AppManageErrorEnumCode.VERSION_NUMBER_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.VERSION_NUMBER_ALREADY_EXISTS.getMessage());
         }
         appVersionManageDto.setCreateTime(new Date());
         appVersionManageDto.setUpdateTime(new Date());

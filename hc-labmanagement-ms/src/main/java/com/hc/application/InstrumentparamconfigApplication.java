@@ -6,7 +6,6 @@ import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
-import com.hc.constants.error.MonitorinstrumentEnumCode;
 import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
@@ -15,6 +14,7 @@ import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
@@ -101,14 +101,14 @@ public class InstrumentparamconfigApplication {
         boolean flag = instrumentmonitorService.selectOne(new InstrumentmonitorDTO().setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
                 .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid()));
         if(!flag){
-            throw new IedsException("设备探头与检测类型不匹配");
+            throw new IedsException(LabSystemEnum.EQUIPMENT_PROBE_AND_DETECTION_TYPE_MISMATCH.getMessage());
         }
 
         //判断探头检测类型是否存在
         Integer i =  instrumentparamconfigService.selectCount(instrumentParamConfigCommand.getInstrumentNo(),
                 instrumentParamConfigCommand.getInstrumentconfigid(),instrumentParamConfigCommand.getInstrumenttypeid());
         if(i>0){
-            throw new IedsException(MonitorinstrumentEnumCode.PROBE_INFORMATION_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.PROBE_INFORMATION_ALREADY_EXISTS.getMessage());
         }
 
         String instrumentParamConfigNo = UUID.randomUUID().toString().replaceAll("-", "");

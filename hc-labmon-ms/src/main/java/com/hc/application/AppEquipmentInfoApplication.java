@@ -10,9 +10,7 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
-import com.hc.constants.LabMonEnumError;
 import com.hc.device.ProbeRedisApi;
-import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
@@ -28,7 +26,6 @@ import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.util.EquipmentInfoServiceHelp;
-import com.sun.corba.se.spi.orbutil.threadpool.NoSuchThreadPoolException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -364,7 +361,7 @@ public class AppEquipmentInfoApplication {
     public DateDto getEquipmentRunningTime(String equipmentNo) {
         MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
         if(ObjectUtils.isEmpty(equipmentInfoByNo)){
-            throw new IedsException("未找到设备信息");
+            throw new IedsException(LabSystemEnum.EQUIPMENT_INFO_NOT_FOUND.getMessage());
         }
         Date createTime = equipmentInfoByNo.getCreateTime();
         if (createTime == null) {
@@ -386,7 +383,7 @@ public class AppEquipmentInfoApplication {
         String ym = DateUtils.getYearMonth(startTime,endTime);
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startTime,endTime,equipmentNo,ym);
         if(org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
-            throw new IedsException(LabMonEnumError.NO_DATA_FOR_CURRENT_TIME.getMessage());
+            throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME.getMessage());
         }
         Map<String,List<InstrumentParamConfigDto>>  map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
         boolean flag = false;
@@ -753,7 +750,7 @@ public class AppEquipmentInfoApplication {
         List<InstrumentParamConfigDto> instrumentParamConfigDtoList =
                 instrumentParamConfigService.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
         if(CollectionUtils.isEmpty(instrumentParamConfigDtoList)){
-            throw new IedsException(LabMonEnumError.DEVICE_INFORMATION_NOT_OBTAINED.getMessage());
+            throw new IedsException(LabSystemEnum.EQUIPMENT_INFO_NOT_FOUND.getMessage());
         }
         //计算设备报警是否启用：一个设备下只要有一个探头设置了报警视为设备开启报警 全未设置报警视为设备未开启报警
         Map<String, List<InstrumentParamConfigDto>> instrumentNoMap =

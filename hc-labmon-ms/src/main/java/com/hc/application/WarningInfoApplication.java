@@ -74,7 +74,7 @@ public class WarningInfoApplication {
         Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
         //电量无曲线
         if (StringUtils.isNotBlank(instrumentConfigName) && StringUtils.equalsAnyIgnoreCase(instrumentConfigName,"QC","UPS","DOOR","voltage")){
-            throw  new IedsException("市电,电量无曲线");
+            throw  new IedsException("QC,UPS,DOOR,VOLTAGE NOT CURVE");
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigRepository.getInstrumentParamConfigByENo(equipmentNo);
         String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();

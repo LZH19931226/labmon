@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.appliction.command.UserRightCommand;
-import com.hc.constant.UserEnumErrorCode;
-import com.hc.constant.UserRightEnumCode;
 import com.hc.dto.UserRightDto;
 import com.hc.infrastructure.dao.UserRightDao;
 import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
 import com.hc.repository.UserRightRepository;
@@ -55,13 +54,13 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         Integer integer = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
         if(integer>0){
-            throw new IedsException(UserEnumErrorCode.LOGIN_ACCOUNT_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.LOGIN_ACCOUNT_ALREADY_EXISTS.getMessage());
         }
         Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
                 .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
         if(num>0){
-            throw new IedsException(UserEnumErrorCode.PHONE_NUM_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.PHONE_NUM_EXISTS.getMessage());
         }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
@@ -124,13 +123,13 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         UserRightPo userRightPo = userRightDao.selectOne(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
         if(ObjectUtils.isEmpty(userRightPo)){
-            throw new IedsException(UserRightEnumCode.USERNAME_NOT_EXIST.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST.getMessage());
         }
         if(!StringUtils.equals(userRightPo.getPwd(),userRightCommand.getPwd())){
-            throw new IedsException(UserRightEnumCode.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
+            throw new IedsException(LabSystemEnum.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
         }
         if(userRightPo.getIsUse() != 1L){
-            throw new IedsException(UserRightEnumCode.USER_NOT_ENABLED.getMessage());
+            throw new IedsException(LabSystemEnum.USER_NOT_ENABLED.getMessage());
         }
         return BeanConverter.convert(userRightPo,UserRightDto.class);
     }

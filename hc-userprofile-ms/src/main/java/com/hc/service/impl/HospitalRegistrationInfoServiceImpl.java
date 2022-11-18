@@ -2,9 +2,9 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.command.labmanagement.model.hospital.HospitalCommand;
-import com.hc.constant.HospitalEnumErrorCode;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.repository.HospitalRegistrationInfoRepository;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.vo.hospital.HospitalInfoVo;
@@ -43,7 +43,7 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     public void insertHospitalInfo(HospitalCommand hospitalCommand) {
         String hospitalName = hospitalCommand.getHospitalFullName();
         if(StringUtils.isBlank(hospitalName)){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_NOT_NULL.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_NOT_NULL.getMessage());
         }
         hospitalRegistrationInfoRepository.insertHospitalInfo(hospitalCommand);
     }
@@ -57,10 +57,10 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
         String hospitalCode = hospitalCommand.getHospitalCode();
         String hospitalName = hospitalCommand.getHospitalName();
         if(StringUtils.isBlank(hospitalCode)){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_CODE_NOT_NULL.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL.getMessage());
         }
         if(StringUtils.isBlank(hospitalName)){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_NOT_NULL.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_NOT_NULL.getMessage());
         }
         hospitalRegistrationInfoRepository.editHospitalInfo(hospitalCommand);
     }
@@ -72,7 +72,7 @@ public class HospitalRegistrationInfoServiceImpl implements HospitalRegistration
     @Override
     public void deleteHospitalInfoByCode(String hospitalCode) {
         if(StringUtils.isBlank(hospitalCode)){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_CODE_NOT_NULL.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL.getMessage());
         }
         hospitalRegistrationInfoRepository.deleteHospitalInfoByCode(hospitalCode);
     }

@@ -5,7 +5,6 @@ import com.hc.SmsApi;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
-import com.hc.constant.UserRightEnumCode;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserRightDto;
@@ -13,6 +12,7 @@ import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.bean.Audience;
 import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.jwt.JwtTokenUtil;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.struct.Context;
@@ -184,7 +184,7 @@ public class UserRightApplication {
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
         String phoneNum = userRightDto.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
-            throw new IedsException(UserRightEnumCode.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.getMessage());
+            throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.getMessage());
         }
         String loginType = userRightCommand.getLoginType();
         String loginStatus = userRightCommand.getLoginStatus();
@@ -295,18 +295,18 @@ public class UserRightApplication {
     public UserRightVo userRightLoginByPhone(UserRightCommand userRightCommand) {
         String phoneNum = userRightCommand.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
-            throw new IedsException(UserRightEnumCode.MOBILE_NUMBER_CANNOT_BE_EMPTY.getMessage());
+            throw new IedsException(LabSystemEnum.MOBILE_NUMBER_CANNOT_BE_EMPTY.getMessage());
         }
         String code = userRightCommand.getCode();
         if (StringUtils.isEmpty(code)) {
-            throw new IedsException(UserRightEnumCode.VERIFICATION_CODE_MUST_BE_FILLED.getMessage());
+            throw new IedsException(LabSystemEnum.VERIFICATION_CODE_MUST_BE_FILLED.getMessage());
         }
         String result = phoneCodeApi.getPhoneCode(phoneNum).getResult();
         if (StringUtils.isEmpty(result)) {
-            throw new IedsException(UserRightEnumCode.VERIFICATION_CODE_HAS_EXPIRED.getMessage());
+            throw new IedsException(LabSystemEnum.VERIFICATION_CODE_HAS_EXPIRED.getMessage());
         }
         if(!result.equals(code)){
-            throw new IedsException(UserRightEnumCode.VERIFICATION_CODE_ERROR.getMessage());
+            throw new IedsException(LabSystemEnum.VERIFICATION_CODE_ERROR.getMessage());
         }
         return UserRightVo.builder()
                 .hospitalCode(userRightCommand.getHospitalCode())

@@ -3,10 +3,10 @@ package com.hc.repository.impl;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hc.constant.UserScheduleEnumCode;
 import com.hc.dto.UserSchedulingDto;
 import com.hc.infrastructure.dao.UserSchedulingDao;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserSchedulingPo;
 import com.hc.repository.UserSchedulingRepository;
@@ -75,11 +75,11 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
         long time1 =  oldEndTime.getTime()-oldStartTime.getTime();
         long time2 =  newEndTime.getTime()-newStartTime.getTime();
         if(time1!=time2){
-            throw new IedsException(UserScheduleEnumCode.TIME_PERIOD_DISAGREE.getMessage());
+            throw new IedsException(LabSystemEnum.TIME_PERIOD_DISAGREE.getMessage());
         }
         List<UserSchedulingPo> userSchedulingPos = userSchedulingDao.selectTimePeriod( hospitalCode,oldStartTime,oldEndTime);
         if(CollectionUtils.isEmpty(userSchedulingPos)){
-            throw new IedsException(UserScheduleEnumCode.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
+            throw new IedsException(LabSystemEnum.NO_SCHEDULE_INFORMATION_FOUND.getMessage());
         }
         //查询出新的新的时间内是否有用户以排班
         List<UserSchedulingPo> userSchedulingPosList = userSchedulingDao.selectTimePeriod(hospitalCode, newStartTime, newEndTime);

@@ -2,9 +2,9 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
-import com.hc.constant.UserRightEnumCode;
 import com.hc.dto.UserRightDto;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.repository.UserRightRepository;
 import com.hc.service.UserRightService;
 import com.hc.vo.user.UserRightVo;
@@ -47,30 +47,26 @@ public class UserRightServiceImpl implements UserRightService {
         String username = userRightCommand.getUsername();
         String nickname = userRightCommand.getNickname();
         String pwd = userRightCommand.getPwd();
-        String phoneNum = userRightCommand.getPhoneNum();
         String timeout = userRightCommand.getTimeout();
         String hospitalCode = userRightCommand.getHospitalCode();
         String userType = userRightCommand.getUserType();
         if (StringUtils.isBlank(username)) {
-            throw new IedsException(UserRightEnumCode.USERNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(nickname)) {
-            throw new IedsException(UserRightEnumCode.NICKNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.NICKNAME_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(pwd)) {
-            throw new IedsException(UserRightEnumCode.PWD_NOT_NULL.getMessage());
-        }
-        if(!phoneNum.matches("^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}$")){
-            throw new IedsException(UserRightEnumCode.PHONE_NUMBER_FORMAT_IS_NOT_CORRECT.getMessage());
+            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(timeout)) {
-            throw new IedsException(UserRightEnumCode.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
+            throw new IedsException(LabSystemEnum.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
         }
         if (StringUtils.isBlank(hospitalCode)) {
-            throw new IedsException(UserRightEnumCode.HOSPITAL_NAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_CODE_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(userType)) {
-            throw new IedsException(UserRightEnumCode.USER_ROLE_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USER_ROLE_NOT_NULL.getMessage());
         }
 
         userRightRepository.insertUserRightInfo(userRightCommand);
@@ -84,35 +80,32 @@ public class UserRightServiceImpl implements UserRightService {
     @Override
     public void updateUserRightInfo(UserRightCommand userRightCommand) {
         if(StringUtils.isBlank(userRightCommand.getUserid())){
-            throw new IedsException(UserRightEnumCode.USE_ID_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERID_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(userRightCommand.getNickname())) {
-            throw new IedsException(UserRightEnumCode.NICKNAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.NICKNAME_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(userRightCommand.getPwd())) {
-            throw new IedsException(UserRightEnumCode.PWD_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(userRightCommand.getHospitalCode())) {
-            throw new IedsException(UserRightEnumCode.HOSPITAL_NAME_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_NAME_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(userRightCommand.getUserType())) {
-            throw new IedsException(UserRightEnumCode.USER_ROLE_NOT_NULL.getMessage());
-        }
-        if(!userRightCommand.getPhoneNum().matches("^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}$")){
-            throw new IedsException(UserRightEnumCode.PHONE_NUMBER_FORMAT_IS_NOT_CORRECT.getMessage());
+            throw new IedsException(LabSystemEnum.USER_ROLE_NOT_NULL.getMessage());
         }
         if (StringUtils.isBlank(userRightCommand.getTimeout())) {
-            throw new IedsException(UserRightEnumCode.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
+            throw new IedsException(LabSystemEnum.SUPERMARKET_CONTACT_CANNOT_BE_EMPTY.getMessage());
         }
         UserRightDto userRightDto = userRightRepository.selectUserRightInfo(userRightCommand.getUserid());
         if (ObjectUtils.isEmpty(userRightDto)) {
-            throw new IedsException(UserRightEnumCode.THIS_INFORMATION_NO_LONGER_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.THIS_INFORMATION_NO_LONGER_EXISTS.getMessage());
         }
         //判断phonenum有没有修改，如修改了在用修改的手机号和医院查记录数量大于0是手机号重复抛出异常
         if(!userRightDto.getPhoneNum().equals(userRightCommand.getPhoneNum())){
             int i = userRightRepository.selectUserRightByCodeAndPhone(userRightDto.getHospitalCode(), userRightCommand.getPhoneNum());
             if (i>0) {
-                throw new IedsException(UserRightEnumCode.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
+                throw new IedsException(LabSystemEnum.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER.getMessage());
             }
         }
         userRightRepository.updateUserRightInfo(userRightCommand);

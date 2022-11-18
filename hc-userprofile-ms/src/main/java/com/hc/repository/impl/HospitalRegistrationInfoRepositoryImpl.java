@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.command.labmanagement.model.hospital.HospitalCommand;
-import com.hc.constant.HospitalEnumErrorCode;
 import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.infrastructure.dao.HospitalEquipmentDao;
 import com.hc.infrastructure.dao.HospitalRegistrationInfoDao;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.HospitalEquipmentPo;
 import com.hc.po.HospitalRegistrationInfoPo;
@@ -53,7 +53,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         HospitalRegistrationInfoPo selectOne = hospitalRegistrationInfoDao.selectOne(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
                 .eq(HospitalRegistrationInfoPo::getHospitalName, hospitalCommand.getHospitalName()));
         if(null!=selectOne){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_FULL_NAME_ALREADY_EXISTS.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_FULL_NAME_ALREADY_EXISTS.getMessage());
         }
        hospitalRegistrationInfoDao.insert(infoPo);
 
@@ -68,7 +68,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         HospitalEquipmentPo hospitalEquipmentPo =
                 hospitalRegistrationInfoDao.selectHospitalName(hospitalCommand.getHospitalName(),hospitalCommand.getHospitalCode());
         if (!ObjectUtils.isEmpty(hospitalEquipmentPo)){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_NAME_ALREADY_EXISTS.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_NAME_ALREADY_EXISTS.getMessage());
         }
         HospitalRegistrationInfoPo convert = BeanConverter.convert(hospitalCommand, HospitalRegistrationInfoPo.class);
         convert.setUpdateTime(new Date());
@@ -85,12 +85,12 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
         Integer integer = hospitalEquipmentDao.selectCount(Wrappers.lambdaQuery(new HospitalEquipmentPo())
                 .eq(HospitalEquipmentPo::getHospitalCode, hospitalCode));
         if(integer>0){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_INFO_NOTABLE_DELETED.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_INFO_NOTABLE_DELETED.getMessage());
         }
         int delete = hospitalRegistrationInfoDao.delete(Wrappers.lambdaQuery(new HospitalRegistrationInfoPo())
                 .eq(HospitalRegistrationInfoPo::getHospitalCode, hospitalCode));
         if(delete<=0){
-            throw new IedsException(HospitalEnumErrorCode.HOSPITAL_INFO_DELETE_FAIL.getCode());
+            throw new IedsException(LabSystemEnum.HOSPITAL_INFO_DELETE_FAIL.getMessage());
         }
     }
 

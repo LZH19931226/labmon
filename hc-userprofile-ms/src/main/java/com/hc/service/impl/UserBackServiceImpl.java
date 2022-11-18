@@ -2,9 +2,9 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserCommand;
-import com.hc.constant.UserEnumErrorCode;
 import com.hc.dto.UserBackDto;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserBackPo;
 import com.hc.repository.UserBackRepository;
@@ -36,11 +36,11 @@ public class UserBackServiceImpl  implements UserBackService {
     public UserBackDto userLogin(UserCommand userCommand) {
         String username = userCommand.getUsername();
         if(StringUtils.isBlank(username)){
-            throw new IedsException(UserEnumErrorCode.USERNAME_CAN_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
         }
         String pwd = userCommand.getPwd();
         if(StringUtils.isBlank(pwd)){
-            throw new IedsException(UserEnumErrorCode.PASSWORD_CAN_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.getMessage());
         }
         UserBackPo userBackPo =BeanConverter.convert(userCommand, UserBackPo.class);
         return userBackRepository.userLogin(userBackPo);
@@ -55,12 +55,12 @@ public class UserBackServiceImpl  implements UserBackService {
     public void updateUserInfo(UserCommand userCommand) {
         String userid = userCommand.getUserid();
         if(StringUtils.isBlank(userid)){
-            throw new IedsException(UserEnumErrorCode.USERID_NOT_NULL.getMessage());
+            throw new IedsException(LabSystemEnum.USERID_NOT_NULL.getMessage());
         }
         String username = userCommand.getUsername();
         Integer integer = userBackRepository.selectOne(username);
         if(integer>1){
-            throw new IedsException(UserEnumErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
         }
         UserBackPo userBackPo = BeanConverter.convert(userCommand,UserBackPo.class);
         userBackRepository.updateUserInfo(userBackPo);
@@ -109,7 +109,7 @@ public class UserBackServiceImpl  implements UserBackService {
         String username = userCommand.getUsername();
         UserBackDto userBackDto = userBackRepository.selectUserBackByUsername(username);
         if(!ObjectUtils.isEmpty(userBackDto)){
-            throw new IedsException(UserEnumErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
         }
         userBackRepository.insertUserInfo(userCommand);
     }

@@ -6,8 +6,8 @@ import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogComma
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.dto.OperationlogDTO;
-import com.hc.my.common.core.constant.enums.OperationLogErrorEunm;
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.service.OperationlogService;
 import com.hc.vo.backlog.OperationlogVo;
 import org.apache.commons.collections.CollectionUtils;
@@ -54,10 +54,10 @@ public class OperationlogApplication {
         Date begintime = operationLogCommand.getBegintime();
         Date endtime = operationLogCommand.getEndtime();
         if(ObjectUtils.isEmpty(begintime) || ObjectUtils.isEmpty(endtime)){
-            throw new IedsException(OperationLogErrorEunm.START_TIME_OR_END_TIME_CANNOT_BE_EMPTY.getCode());
+            throw new IedsException(LabSystemEnum.START_TIME_OR_END_TIME_CANNOT_BE_EMPTY.getMessage());
         }
         if (endtime.before(begintime)) {
-            throw new IedsException(OperationLogErrorEunm.END_TIME_CANNOT_BE_EARLIER_THAN_START_TIME.getCode());
+            throw new IedsException(LabSystemEnum.END_TIME_CANNOT_BE_EARLIER_THAN_START_TIME.getMessage());
         }
         Long pageSize = operationLogCommand.getPageSize();
         Long pageCurrent = operationLogCommand.getPageCurrent();
