@@ -91,7 +91,7 @@ public class EquipmentInfoApplication {
         //获取监控设备的信息
         List<MonitorEquipmentDto> monitorEquipmentDtoList = equipmentInfoService.getEquipmentInfoByCodeAndTypeId(hospitalCode,equipmentTypeId);
         if(CollectionUtils.isEmpty(monitorEquipmentDtoList)){
-            throw new IedsException(LabSystemEnum.EQUIPMENT_INFO_NOT_FOUND.getMessage());
+            throw new IedsException(LabSystemEnum.EQUIPMENT_INFO_NOT_FOUND);
         }
         List<String> equipmentNoList = monitorEquipmentDtoList.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
         Map<String, List<MonitorEquipmentDto>> monitorEquipmentMap = monitorEquipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
@@ -153,7 +153,7 @@ public class EquipmentInfoApplication {
         String ym = DateUtils.parseDateYm(date);
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo(date,equipmentNo,ym);
         if(CollectionUtils.isEmpty(lastDataModelList)) {
-            throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME.getMessage());
+            throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
         Map<String,List<InstrumentParamConfigDto>>  map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
         boolean flag = false;
@@ -237,7 +237,7 @@ public class EquipmentInfoApplication {
             }
         });
         if(CollectionUtils.isEmpty(upsInfoList)) {
-            throw new IedsException(LabSystemEnum.NO_UTILITY_RECORD.getMessage());
+            throw new IedsException(LabSystemEnum.NO_UTILITY_RECORD);
         }
         return upsInfoList;
     }
@@ -289,7 +289,7 @@ public class EquipmentInfoApplication {
             list = equipmentInfoService.selectInstrumentConfigId(equipmentNo);
         }
         if(CollectionUtils.isEmpty(list)){
-            throw new IedsException(LabSystemEnum.THE_DEVICE_HAS_NO_PROBE_INFORMATION.getMessage());
+            throw new IedsException(LabSystemEnum.THE_DEVICE_HAS_NO_PROBE_INFORMATION);
         }
         List<String> eNameList = new ArrayList<>();
         for (Integer instrumentTypeId : list) {

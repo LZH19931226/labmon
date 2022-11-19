@@ -28,7 +28,7 @@ public class FollowServiceImpl implements FollowService {
         return Optional
                 .ofNullable(relations)
                 .map(fs -> fs.stream().map(MessengerFollowRelation::getFollowerId))
-                .orElseThrow(() -> new IedsException("服务号{}不存在!", followKey))
+                .orElseThrow(() -> new IedsException("service {} not exist!", followKey))
                 .collect(Collectors.toList());
     }
 }

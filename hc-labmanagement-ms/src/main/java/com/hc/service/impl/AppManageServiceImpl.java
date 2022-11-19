@@ -32,7 +32,7 @@ public class AppManageServiceImpl implements AppManageService {
         String versionCode = appVersionManageDto.getVersionCode();
         int count = appManageRepository.count(Wrappers.lambdaQuery(new AppVersionManagePo()).eq(AppVersionManagePo::getVersionCode, versionCode));
         if(count>0){
-            throw new IedsException(LabSystemEnum.VERSION_NUMBER_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.VERSION_NUMBER_ALREADY_EXISTS);
         }
         appVersionManageDto.setCreateTime(new Date());
         appVersionManageDto.setUpdateTime(new Date());

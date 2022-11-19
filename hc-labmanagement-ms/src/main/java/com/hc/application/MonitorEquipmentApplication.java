@@ -378,20 +378,20 @@ public class MonitorEquipmentApplication {
         //sn不能重复
         Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn));
         if (integer > 0) {
-            throw new IedsException(LabSystemEnum.FAILED_TO_ADD_DEVICE.getMessage());
+            throw new IedsException(LabSystemEnum.FAILED_TO_ADD_DEVICE);
         }
 
         //判断同医院设备名称是否有重复
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
         Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
         if(integer1>0){
-            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
         }
 
         //判断医院是否存在设备类型
         HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode, equipmentTypeId);
         if(ObjectUtils.isEmpty(hospitalequimentDTO)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_DEVICE_TYPE_DOES_NOT_EXIST.getMessage());
+            throw new IedsException(LabSystemEnum.HOSPITAL_DEVICE_TYPE_DOES_NOT_EXIST);
         }
 
         //插入到monitorequipment表中
@@ -487,7 +487,7 @@ public class MonitorEquipmentApplication {
                 continue;
             }
             if(endTime.compareTo(startTime)<=0){
-                throw new IedsException(LabSystemEnum.START_TIME_AND_END_TIME_ARE_ABNORMAL.getMessage());
+                throw new IedsException(LabSystemEnum.START_TIME_AND_END_TIME_ARE_ABNORMAL);
             }
             list.add(buildTime(startTime));
             list.add(buildTime(endTime));
@@ -498,7 +498,7 @@ public class MonitorEquipmentApplication {
                 case 4:
                     Boolean aBoolean = checkTimesHasOverlap(list.get(0), list.get(1), list.get(2), list.get(3));
                     if(aBoolean){
-                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_BETWEEN_THE_TWO_TIME_PERIODS.getMessage());
+                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_BETWEEN_THE_TWO_TIME_PERIODS);
                     }
                     break;
                 case 6:
@@ -507,7 +507,7 @@ public class MonitorEquipmentApplication {
                     Boolean two = checkTimesHasOverlap(list.get(0), list.get(1), list.get(4), list.get(5));
                     Boolean three = checkTimesHasOverlap(list.get(2), list.get(3), list.get(4), list.get(5));
                     if(one || two || three){
-                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_OF_THE_THREE_TIME_PERIODS.getMessage());
+                        throw new IedsException(LabSystemEnum.THERE_IS_AN_OVERLAP_OF_THE_THREE_TIME_PERIODS);
                     }
                     break;
                 default:
@@ -672,7 +672,7 @@ public class MonitorEquipmentApplication {
             //修改时用判断该医院下设备名称是否已存在
             Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
             if(integer>0){
-                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS.getMessage());
+                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
             }
         }
         //用于redis判断sn是否修改
@@ -683,7 +683,7 @@ public class MonitorEquipmentApplication {
             //如果sn修改了校验新sn是否已存在
             Boolean aBoolean = monitorEquipmentService.checkSn(monitorEquipmentCommand.getSn());
             if(aBoolean){
-               throw new IedsException(LabSystemEnum.FAILED_TO_UPDATE_DEVICE.getMessage());
+               throw new IedsException(LabSystemEnum.FAILED_TO_UPDATE_DEVICE);
             }
         }
         //修改监控设备信息（monitorequipment）
@@ -842,7 +842,7 @@ public class MonitorEquipmentApplication {
         //判断设备是否有探头信息
         Integer integer1 = monitorinstrumentService.findProbeInformationByEno(equipmentNo);
         if (integer1>0) {
-            throw new IedsException(LabSystemEnum.FAILED_TO_DELETE.getMessage());
+            throw new IedsException(LabSystemEnum.FAILED_TO_DELETE);
         }
 
         //通过设备eno查询设备sn信息,用于redis删除
@@ -1217,7 +1217,7 @@ public class MonitorEquipmentApplication {
         //获取探头对象
         List<InstrumentparamconfigDTO> instrumentParamConfigDtoList =  instrumentparamconfigService.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
         if (org.apache.commons.collections4.CollectionUtils.isEmpty(instrumentParamConfigDtoList)){
-            throw  new IedsException("暂无设备探头信息");
+            throw  new IedsException(LabSystemEnum.NO_PROBE_INFO_FOUND);
         }
         List<String> probeIds = instrumentParamConfigDtoList.stream().map(InstrumentparamconfigDTO::getInstrumentparamconfigno).collect(Collectors.toList());
         //批量控制探头报警状态

@@ -86,7 +86,7 @@ public class MessengerServiceImpl implements MessengerService {
     private MessengerServiceDefine getServiceDefine(String serviceNo) {
         List<MessengerServiceDefine> defines = serviceDefineDao.selectByMap(new Maps("service_no", serviceNo));
         Optional<MessengerServiceDefine> define = Optional.ofNullable(defines).flatMap(fs -> fs.stream().findFirst());
-        return define.orElseThrow(() -> new IedsException("服务号{}不存在!", serviceNo));
+        return define.orElseThrow(() -> new IedsException("service {} not exist!", serviceNo));
     }
 }
 

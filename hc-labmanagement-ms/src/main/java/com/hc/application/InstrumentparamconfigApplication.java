@@ -101,14 +101,14 @@ public class InstrumentparamconfigApplication {
         boolean flag = instrumentmonitorService.selectOne(new InstrumentmonitorDTO().setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
                 .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid()));
         if(!flag){
-            throw new IedsException(LabSystemEnum.EQUIPMENT_PROBE_AND_DETECTION_TYPE_MISMATCH.getMessage());
+            throw new IedsException(LabSystemEnum.EQUIPMENT_PROBE_AND_DETECTION_TYPE_MISMATCH);
         }
 
         //判断探头检测类型是否存在
         Integer i =  instrumentparamconfigService.selectCount(instrumentParamConfigCommand.getInstrumentNo(),
                 instrumentParamConfigCommand.getInstrumentconfigid(),instrumentParamConfigCommand.getInstrumenttypeid());
         if(i>0){
-            throw new IedsException(LabSystemEnum.PROBE_INFORMATION_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.PROBE_INFORMATION_ALREADY_EXISTS);
         }
 
         String instrumentParamConfigNo = UUID.randomUUID().toString().replaceAll("-", "");

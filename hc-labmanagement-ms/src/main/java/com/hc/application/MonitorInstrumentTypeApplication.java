@@ -3,6 +3,7 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorInstrumentTypeCommand;
 import com.hc.dto.MonitorinstrumenttypeDTO;
+import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.service.InstrumentmonitorService;
 import com.hc.service.MonitorinstrumenttypeService;
@@ -66,7 +67,7 @@ public class MonitorInstrumentTypeApplication {
     public void remove(String instrumentTypeId) {
         int  count = instrumentMonitorService.countByInstrumentTypeId(instrumentTypeId);
         if(count>0){
-            throw  new RuntimeException(LabSystemEnum.DEVICES_EXIST_UNDER_THIS_DEVICE_TYPE.getMessage());
+            throw  new IedsException(LabSystemEnum.DEVICES_EXIST_UNDER_THIS_DEVICE_TYPE);
         }
         monitorInstrumentTypeService.remove(instrumentTypeId);
     }

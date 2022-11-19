@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorInstrumentTypeCommand;
 import com.hc.dto.MonitorequipmenttypeDTO;
 import com.hc.dto.MonitorinstrumenttypeDTO;
+import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.po.MonitorinstrumenttypePo;
 import com.hc.repository.MonitorinstrumenttypeRepository;
@@ -53,7 +54,7 @@ public class MonitorinstrumenttypeServiceImpl implements MonitorinstrumenttypeSe
         int count = monitorinstrumenttypeRepository.count(Wrappers.lambdaQuery(new MonitorinstrumenttypePo())
                 .eq(MonitorinstrumenttypePo::getInstrumenttypename, instrumentTypeName));
         if(count>0){
-            throw new RuntimeException(LabSystemEnum.NAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.NAME_ALREADY_EXISTS);
         }
         MonitorinstrumenttypePo monitorInstrumentTypePo =  buildMonitorinstrumenttypePo(monitorInstrumentTypeCommand);
         List<MonitorinstrumenttypePo> list = monitorinstrumenttypeRepository.list();
@@ -109,7 +110,7 @@ public class MonitorinstrumenttypeServiceImpl implements MonitorinstrumenttypeSe
             int count = monitorinstrumenttypeRepository.count(Wrappers.lambdaQuery(new MonitorinstrumenttypePo())
                     .eq(MonitorinstrumenttypePo::getInstrumenttypename, typeName));
             if (count > 0) {
-                throw new RuntimeException(LabSystemEnum.NAME_ALREADY_EXISTS.getMessage());
+                throw new IedsException(LabSystemEnum.NAME_ALREADY_EXISTS);
             }
             monitorInstrumentTypePo.setInstrumenttypename(typeName);
         }

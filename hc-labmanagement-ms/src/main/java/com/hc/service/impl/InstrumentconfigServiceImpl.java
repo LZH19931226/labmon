@@ -55,7 +55,7 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
         }
         List<String> instrumentConfigNameList = list.stream().map(InstrumentconfigPo::getInstrumentconfigname).collect(Collectors.toList());
         if(instrumentConfigNameList.contains(instrumentConfigName)){
-            throw new IedsException(LabSystemEnum.NAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.NAME_ALREADY_EXISTS);
         }
         OptionalInt max = list.stream().mapToInt(InstrumentconfigPo::getInstrumentconfigid).max();
         InstrumentconfigPo instrumentconfigPo = new InstrumentconfigPo();
@@ -95,7 +95,7 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
                 .eq(InstrumentconfigPo::getInstrumentconfigname, instrumentConfigName));
         if(count>0){
 
-            throw new IedsException(LabSystemEnum.NAME_ALREADY_EXISTS.getMessage());
+            throw new IedsException(LabSystemEnum.NAME_ALREADY_EXISTS);
         }else {
             InstrumentconfigPo instrumentconfigPo = new InstrumentconfigPo();
             instrumentconfigPo.setInstrumentconfigid(instrumentConfigId);

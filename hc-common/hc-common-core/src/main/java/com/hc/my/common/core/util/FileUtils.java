@@ -1,6 +1,7 @@
 package com.hc.my.common.core.util;
 
 import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.LabSystemEnum;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,17 +65,17 @@ public class FileUtils {
         //验证文件名长度
         int fileNameLength = Objects.requireNonNull(file.getOriginalFilename()).length();
         if (fileNameLength > FileUtils.DEFAULT_FILE_NAME_LENGTH){
-            throw new IedsException("文件名称太长");
+            throw new IedsException(LabSystemEnum.FILE_NAME_IS_TOO_LONG);
         }
         //验证文件大小
         long size = file.getSize();
         if(size>DEFAULT_MAX_SIZE){
-            throw new IedsException("文件不得超过50M");
+            throw new IedsException(LabSystemEnum.FILE_MUST_NOT_EXCEED_50M);
         }
         //检测格式石否正确
         String extension = getExtension(file);
         if(!DEFAULT_ALLOWED_EXTENSION.equals(extension)){
-            throw new IedsException("文件格式错误");
+            throw new IedsException(LabSystemEnum.WRONG_FILE_FORMAT);
         }
         //构建文件名称
         String fileName = file.getOriginalFilename();

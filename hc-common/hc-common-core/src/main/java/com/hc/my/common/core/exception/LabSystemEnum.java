@@ -62,6 +62,10 @@ public enum LabSystemEnum {
     FAILED_TO_ADD_DEVICE("添加设备失败,sn已被占用"),
     START_TIME_OR_END_TIME_CANNOT_BE_EMPTY("开始时间或结束时间不能为空"),
     END_TIME_CANNOT_BE_EARLIER_THAN_START_TIME("结束时间不能早于开始时间"),
+    NO_PROBE_INFO_FOUND("暂无设备探头信息"),
+    FILE_NAME_IS_TOO_LONG("文件名称太长"),
+    FILE_MUST_NOT_EXCEED_50M("文件不得超过50M"),
+    WRONG_FILE_FORMAT("文件格式错误"),
     HOSPITAL_DEVICE_TYPE_DOES_NOT_EXIST("医院设备类型不存在");
 
     private String message;
