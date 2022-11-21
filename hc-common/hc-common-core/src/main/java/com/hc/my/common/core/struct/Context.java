@@ -32,10 +32,10 @@ public class Context {
     public static String getLang(){
         HttpServletRequest request = getRequest();
         String userIdToken = request.getHeader("Authorization");
-        String token = userIdToken.substring(7);
-        if(StringUtils.isBlank(token)){
+        if(StringUtils.isBlank(userIdToken)){
             return null;
         }
+        String token = userIdToken.substring(7);
         String lang = JwtTokenUtil.getLang(token,new Audience().getBase64Secret());
         if(StringUtils.isBlank(lang)){
             return null;
