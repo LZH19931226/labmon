@@ -32,7 +32,7 @@ public class Context {
     public static String getLang(){
         HttpServletRequest request = getRequest();
         String userIdToken = request.getHeader("Authorization");
-        if(StringUtils.isBlank(userIdToken)){
+        if(StringUtils.isBlank(userIdToken) && "Bearer undefined".equals(userIdToken)){
             return null;
         }
         System.out.println(userIdToken);
