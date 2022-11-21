@@ -32,10 +32,10 @@ public class Context {
     public static String getLang(){
         HttpServletRequest request = getRequest();
         String userIdToken = request.getHeader("Authorization");
-        if(StringUtils.isBlank(userIdToken) && "Bearer undefined".equals(userIdToken)){
+        if(StringUtils.isBlank(userIdToken) || "Bearer undefined".equals(userIdToken)){
             return null;
         }
-        System.out.println(userIdToken);
+        System.out.println("Authorization: "+userIdToken);
         String token = userIdToken.substring(7);
         String lang = JwtTokenUtil.getLang(token,new Audience().getBase64Secret());
         if(StringUtils.isBlank(lang)){
