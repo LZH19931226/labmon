@@ -411,7 +411,7 @@ public class MonitorEquipmentApplication {
 
         //插入监控探头信息（monitorinstrumnet表）
         String instrumentNo = UUID.randomUUID().toString().replaceAll("-", "");
-        String instrumentName = monitorEquipmentDto.getEquipmentName() + "探头";
+        String instrumentName = monitorEquipmentDto.getEquipmentName();
         MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO()
                 .setInstrumenttypeid(monitorEquipmentCommand.getMonitorinstrumenttypeDTO().getInstrumenttypeid())
                 .setEquipmentno(monitorEquipmentDto.getEquipmentNo())
@@ -705,7 +705,7 @@ public class MonitorEquipmentApplication {
             monitorinstrumentDTO.forEach(res->{
                 res.setSn(monitorEquipmentCommand.getSn());
                 res.setChannel(monitorEquipmentCommand.getChannel());
-                res.setInstrumentname(monitorEquipmentCommand.getEquipmentName()+"探头");
+                res.setInstrumentname(monitorEquipmentCommand.getEquipmentName());
             });
         }
         monitorinstrumentService.bulkUpdate(monitorinstrumentDTO);
@@ -752,7 +752,7 @@ public class MonitorEquipmentApplication {
                 instrumentparamconfigDTO.setInstrumenttypeid(dto.getInstrumenttypeid());
                 instrumentparamconfigDTO.setLowlimit(dto.getLowlimit());
                 instrumentparamconfigDTO.setHighlimit(dto.getHighlimit());
-                instrumentparamconfigDTO.setInstrumentname(monitorEquipmentCommand.getEquipmentName() + "探头");
+                instrumentparamconfigDTO.setInstrumentname(monitorEquipmentCommand.getEquipmentName());
                 instrumentparamconfigDTO.setSaturation(dto.getSaturation());
                 instrumentparamconfigDTO.setFirsttime(new Date());
                 list.add(instrumentparamconfigDTO);
@@ -1022,7 +1022,7 @@ public class MonitorEquipmentApplication {
             //将MonitorinstrumenttypeDTO对象作为map中的key,提取集合相同的合并为value
             MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = new MonitorinstrumenttypeDTO();
             monitorinstrumenttypeDTO.setInstrumenttypeid(instrumentparamconfigDTO.getInstrumenttypeid());
-            monitorinstrumenttypeDTO.setInstrumenttypename(instrumentparamconfigDTO.getInstrumentname().replace("探头",""));
+            monitorinstrumenttypeDTO.setInstrumenttypename(instrumentparamconfigDTO.getInstrumentname());
             if (map.containsKey(monitorinstrumenttypeDTO)) {
                 List<InstrumentmonitorDTO> list1 = map.get(monitorinstrumenttypeDTO);
                 InstrumentmonitorDTO convert = BeanConverter.convert(instrumentparamconfigDTO, InstrumentmonitorDTO.class);
