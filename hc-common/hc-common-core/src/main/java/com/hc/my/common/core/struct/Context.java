@@ -35,7 +35,6 @@ public class Context {
         if(StringUtils.isBlank(userIdToken) || "Bearer undefined".equals(userIdToken)){
             return null;
         }
-        System.out.println("Authorization: "+userIdToken);
         String token = userIdToken.substring(7);
         String lang = JwtTokenUtil.getLang(token,new Audience().getBase64Secret());
         if(StringUtils.isBlank(lang)){
