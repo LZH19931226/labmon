@@ -88,8 +88,11 @@ public class UserRightCommand {
     @ApiModelProperty(value = "用户权限 1为后台用户 其他为普通用户")
     private String role;
 
+    /** token信息 */
+    private String token;
+
     /**
-     * CN 中文 US 英文
+     * zh 中文 en 英文
      */
     @ApiModelProperty(value = "语种")
     private String lang;

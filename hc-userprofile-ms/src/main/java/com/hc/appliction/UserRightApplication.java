@@ -184,7 +184,7 @@ public class UserRightApplication {
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
         String phoneNum = userRightDto.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
-            throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER);
+            throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.name());
         }
         String loginType = userRightCommand.getLoginType();
         String loginStatus = userRightCommand.getLoginStatus();
@@ -318,6 +318,8 @@ public class UserRightApplication {
                 .phoneNum(userRightCommand.getPhoneNum())
                 .userType(userRightCommand.getUserType())
                 .hospitalName(userRightCommand.getHospitalName())
+                .token(userRightCommand.getToken())
+                .lang(userRightCommand.getLang())
                 .build();
     }
 
