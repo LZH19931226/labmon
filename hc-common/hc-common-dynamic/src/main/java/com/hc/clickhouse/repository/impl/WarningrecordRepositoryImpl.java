@@ -72,4 +72,9 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
         warningrecordLambdaUpdateWrapper.set(Warningrecord::getMailCallUser, warningrecord.getMailCallUser());
         this.update(warningrecordLambdaUpdateWrapper);
     }
+
+    @Override
+    public List<Warningrecord> getWarningInfoByTime(String time) {
+        return warningrecordMapper.getWarningInfoByTime(time);
+    }
 }

@@ -20,4 +20,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
     void saveWarningInfo(Warningrecord warningrecord);
 
     void updateWarningCallUser(Warningrecord warningrecord);
+
+    List<Warningrecord> getWarningInfoByTime(String time);
 }
