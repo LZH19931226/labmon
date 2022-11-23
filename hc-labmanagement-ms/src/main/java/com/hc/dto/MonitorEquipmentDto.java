@@ -55,6 +55,9 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     /** 监控设备 */
     private String instrumentTypeName;
 
+    /** 设备类型英文名称*/
+    private String equipmentTypeNameUs;
+
     /** 仪器类型id */
     private String instrumentTypeId;
 

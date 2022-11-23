@@ -100,7 +100,8 @@
             me.remark remark,
             me.ups_notice upsNotice,
             h.hospitalname hospitalName,
-            met.equipmenttypename equipmentTypeName
+            met.equipmenttypename equipmentTypeName,
+            met.equipmenttypename_us equipmentTypeNameUs
         from monitorequipment me
         left join monitorequipmenttype met on me.equipmenttypeid = met.equipmenttypeid
         LEFT JOIN hospitalofreginfo h ON me.hospitalcode = h.hospitalcode

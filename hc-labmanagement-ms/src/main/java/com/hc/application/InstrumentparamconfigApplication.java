@@ -347,6 +347,8 @@ public class InstrumentparamconfigApplication {
             //去除有探头信息没有设备信息的垃圾数据
             List<InstrumentparamconfigDTO> removeList = instrumentParamConfigList.stream().filter(res -> StringUtils.isEmpty(res.getHospitalcode())).collect(Collectors.toList());
             instrumentParamConfigList.removeAll(removeList);
+            String lang = Context.getLang();
+            boolean flag = "en".equals(lang);
             for (InstrumentparamconfigDTO configDTO : instrumentParamConfigList) {
                 InstrumentparamconfigVo build = InstrumentparamconfigVo
                         .builder()
@@ -354,7 +356,7 @@ public class InstrumentparamconfigApplication {
                         .hospitalname(configDTO.getHospitalname())
                         .hospitalCode(configDTO.getHospitalcode())
                         .equipmentName(configDTO.getEquipmentname())
-                        .equipmenttypename(configDTO.getEquipmenttypename())
+                        .equipmenttypename(flag?configDTO.getEquipmenttypename_us() : configDTO.getEquipmenttypename())
                         .instrumentname(configDTO.getInstrumentname())
                         .instrumentno(configDTO.getInstrumentno())
                         .sn(configDTO.getSn())
