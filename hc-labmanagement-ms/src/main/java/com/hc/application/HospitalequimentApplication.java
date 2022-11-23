@@ -330,12 +330,13 @@ public class HospitalequimentApplication {
         }
         //转换对象
         if (CollectionUtils.isNotEmpty(allmonitorequipmentType)) {
+            String lang = Context.getLang();
             List<MonitorEquipmentTypeVo> monitorequipmenttypeVoList = new ArrayList<>();
             allmonitorequipmentType.forEach(s -> {
                         monitorequipmenttypeVoList.add(
                                 MonitorEquipmentTypeVo.builder()
                                         .equipmentTypeId(s.getEquipmenttypeid())
-                                        .equipmentTypeName(s.getEquipmenttypename())
+                                        .equipmentTypeName("en".equals(lang) ?s.getEquipmenttypename_us() : s.getEquipmenttypename())
                                         .build());
                     }
             );
