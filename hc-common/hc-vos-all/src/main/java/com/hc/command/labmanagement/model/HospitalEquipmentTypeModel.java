@@ -28,4 +28,7 @@ public class HospitalEquipmentTypeModel {
     /** 排序*/
     private String orderno;
 
+    private String equipmentTypeNameUS;
+
+
 }
