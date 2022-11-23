@@ -183,6 +183,7 @@ public class HospitalequimentApplication {
                 warningTimesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode,Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid)));
             }
             Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>>  finalTimesMap = warningTimesMap;
+            String lang = Context.getLang();
             for (HospitalequimentDTO s : hospitalEquipmentList) {
                 String hospitalcode = s.getHospitalcode();
                 String equipmenttypeid = s.getEquipmenttypeid();
@@ -210,7 +211,7 @@ public class HospitalequimentApplication {
                         .hospitalcode(hospitalcode)
                         .hospitalname(s.getHospitalname())
                         .equipmenttypeid(s.getEquipmenttypeid())
-                        .equipmenttypename(s.getEquipmenttypename())
+                        .equipmenttypename("en".equals(lang)?s.getEquipmenttypename_us() :s.getEquipmenttypename())
                         .isvisible(s.getIsvisible())
                         .alwayalarm(s.getAlwayalarm())
                         .timeout(s.getTimeout())
