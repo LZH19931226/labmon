@@ -51,6 +51,9 @@ public class CustomUtils {
      * @return
      */
     public static String agreementAll(String data, String lowData, String highData) {
+        if (!RegularUtil.checkContainsNumbers(data)){
+            return data;
+        }
         boolean comparison = comparison(data, lowData, highData);
         if (comparison) {
             return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode();

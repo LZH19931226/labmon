@@ -77,7 +77,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                         paramaterModel.setRH(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     } else {
                         String gas6 = paramaterModelUtils.gas(substring7);
-                        gas6 = CustomUtils.agreementAll(gas6, "0", "100");
+                        gas6 = CustomUtils.agreementAll(gas6, "0", "99");
                         paramaterModel.setRH(gas6);
                     }
                     // 压力
@@ -113,7 +113,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
                         paramaterModel.setVOC(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
                     } else {
                         String gas7 = paramaterModelUtils.gas(substring11);
-                        gas7 = CustomUtils.agreementAll(gas7, "0", "200");
+                        gas7 = CustomUtils.agreementAll(gas7, "0", "20");
                         paramaterModel.setVOC(gas7);
                     }
                     // 甲醛
