@@ -3,6 +3,7 @@ package com.hc.serviceImpl;
 import cn.hutool.json.JSONUtil;
 import com.hc.clickhouse.po.Harvester;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.clickhouse.repository.HarvesterRepository;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.my.common.core.redis.dto.HarvesterDto;
@@ -28,7 +29,7 @@ public class LastDataServiceImpl implements LastDataService {
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
     @Autowired
-    private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
+    private HarvesterRepository harvesterRepository;
 
     @Override
     public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, String hospitalcode,String cmdId,String sn) {
@@ -51,7 +52,7 @@ public class LastDataServiceImpl implements LastDataService {
     public void saveHaverLastData(String messageContent) {
         HarvesterDto harvesterDto = JSONUtil.toBean(messageContent, HarvesterDto.class);
         Harvester convert = BeanConverter.convert(harvesterDto, Harvester.class);
-
+        harvesterRepository.save(convert);
     }
 
     // 判断对象是否为空方法：
