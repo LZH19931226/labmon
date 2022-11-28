@@ -13,6 +13,9 @@ public interface SocketMessage {
 
 	String EQUIPMENT_STATE_INFO = "ESI";
 
+
+	String EXCHANGE_NAME_HAVER="HAVER-MQTT";
+
 	@Input(EXCHANGE_NAME)
 	MessageChannel  getIutputChannel();
 
@@ -23,5 +26,8 @@ public interface SocketMessage {
 	MessageChannel  getIutputChannel2();
 
 	@Input(EQUIPMENT_STATE_INFO)
-	MessageChannel getChannelInfo();
+	MessageChannel  getChannelInfo();
+
+	@Input(EXCHANGE_NAME_HAVER)
+	MessageChannel  getHavrtIutputChannel();
 }

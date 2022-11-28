@@ -13,10 +13,7 @@ import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.po.Instrumentparamconfig;
 import com.hc.po.Monitorinstrument;
-import com.hc.service.InstrumentMonitorInfoService;
-import com.hc.service.InstrumentparamconfigService;
-import com.hc.service.MTJudgeService;
-import com.hc.service.MessagePushService;
+import com.hc.service.*;
 import com.hc.tcp.TcpClientApi;
 import com.hc.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +46,18 @@ public class SocketMessageListener {
     private ProbeRedisApi probeRedisApi;
     @Autowired
     private InstrumentparamconfigService instrumentparamconfigService;
+    @Autowired
+    private LastDataService lastDataService;
+
+    @StreamListener(SocketMessage.EXCHANGE_NAME_HAVER)
+    public void haverMessage(String messageContent) {
+        try {
+            lastDataService.saveHaverLastData(messageContent);
+        }catch (Exception e){
+            return;
+        }
+    }
+
 
 
     @StreamListener(SocketMessage.EXCHANGE_NAME)

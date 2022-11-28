@@ -1,7 +1,11 @@
 package com.hc.serviceImpl;
 
+import cn.hutool.json.JSONUtil;
+import com.hc.clickhouse.po.Harvester;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.device.SnDeviceRedisApi;
+import com.hc.my.common.core.redis.dto.HarvesterDto;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.LastDataService;
@@ -23,6 +27,8 @@ public class LastDataServiceImpl implements LastDataService {
 
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
+    @Autowired
+    private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
 
     @Override
     public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, String hospitalcode,String cmdId,String sn) {
@@ -40,6 +46,14 @@ public class LastDataServiceImpl implements LastDataService {
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
         snDeviceRedisApi.updateSnCurrentInfo(convert);
     }
+
+    @Override
+    public void saveHaverLastData(String messageContent) {
+        HarvesterDto harvesterDto = JSONUtil.toBean(messageContent, HarvesterDto.class);
+        Harvester convert = BeanConverter.convert(harvesterDto, Harvester.class);
+
+    }
+
     // 判断对象是否为空方法：
     public boolean checkObjAllFieldsIsNull(Object object) {
         if (null == object) {
