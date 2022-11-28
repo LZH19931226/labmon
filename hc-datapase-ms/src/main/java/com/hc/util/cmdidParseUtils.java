@@ -1325,7 +1325,7 @@ public class cmdidParseUtils {
         String temp = pasetemperature3(substring1);
         paramaterModel.setTEMP(CustomUtils.agreementAll(temp,"0","50"));
         String substring2 = cmd.substring(32, 34);
-        if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.F0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.F0.getCode())) {
             paramaterModel.setRH(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.F1.getCode())) {
             paramaterModel.setRH(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1334,7 +1334,7 @@ public class cmdidParseUtils {
             paramaterModel.setRH(CustomUtils.agreementAll(rh,"0","99"));
         }
         String substring3 = cmd.substring(34, 36);
-        if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.F0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.F0.getCode())) {
             paramaterModel.setCO2(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.F1.getCode())) {
             paramaterModel.setCO2(ProbeOutlier.VALUE_IS_INVALID.getCode());
@@ -1354,7 +1354,7 @@ public class cmdidParseUtils {
             paramaterModel.setO2(CustomUtils.agreementAll(o2,"0","30"));
         }
         String substring5 = cmd.substring(40, 44);
-        if (StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setPRESS(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setPRESS(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1363,7 +1363,7 @@ public class cmdidParseUtils {
             paramaterModel.setPRESS(CustomUtils.agreementAll(press,"300","1250"));
         }
         String substring6 = cmd.substring(44, 48);
-        if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setPM25(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setPM25(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1372,7 +1372,7 @@ public class cmdidParseUtils {
             paramaterModel.setPM25(CustomUtils.agreementAll(pm25,"0","500"));
         }
         String substring7 = cmd.substring(48, 52);
-        if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setPM10(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setPM10(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1381,7 +1381,7 @@ public class cmdidParseUtils {
             paramaterModel.setPM10(CustomUtils.agreementAll(pm10,"0","500"));
         }
         String substring8 = cmd.substring(52, 56);
-        if (StringUtils.equalsIgnoreCase(substring8, ProbeOutlier.FFF0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring8, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setOX(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring8, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setOX(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1390,7 +1390,7 @@ public class cmdidParseUtils {
             paramaterModel.setOX(CustomUtils.agreementAll(ox,"0","2"));
         }
         String substring9 = cmd.substring(56, 60);
-        if (StringUtils.equalsIgnoreCase(substring9, ProbeOutlier.FFF0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring9, ProbeOutlier.FFF0.getCode())) {
             paramaterModel.setVOC(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring9, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setVOC(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
