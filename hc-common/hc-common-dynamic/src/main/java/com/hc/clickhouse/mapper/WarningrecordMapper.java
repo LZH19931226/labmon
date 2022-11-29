@@ -25,4 +25,13 @@ public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
     List<Warningrecord> getWarningRecordDetailInfo(@Param("equipmentNo") String equipmentNo,
                                                    @Param("startTime") String startTime,
                                                    @Param("endTime") String endTime);
+
+    @Select("select " +
+            "hospitalcode, " +
+            "equipmentno, " +
+            "COUNT(instrumentparamconfigno) num " +
+            "FROM " +
+            "lab_mon.warningrecord " +
+            "WHERE toYYYYMM ( inputdatetime ) IN ( #{time} ) GROUP BY hospitalcode ,equipmentno  order BY  hospitalcode ")
+    List<Warningrecord> getWarningInfoByTime(@Param("time") String time);
 }

@@ -6,8 +6,11 @@ import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogComma
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.dto.OperationlogDTO;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
+import com.hc.my.common.core.struct.Context;
 import com.hc.service.OperationlogService;
 import com.hc.vo.backlog.OperationlogVo;
 import org.apache.commons.collections.CollectionUtils;
@@ -64,11 +67,12 @@ public class OperationlogApplication {
         Page<OperationlogVo> page = new Page<>(pageCurrent,pageSize);
         List<OperationlogDTO> operationlogDTO =  operationlogService.findAllLogInfo(page,operationLogCommand);
         List<OperationlogVo> list = new ArrayList<>();
+        String lang = Context.getLang();
         if(CollectionUtils.isNotEmpty(operationlogDTO)){
             operationlogDTO.forEach(res->{
                 OperationlogVo build = OperationlogVo.builder()
-                        .opeartiontype(res.getOpeartiontype())
-                        .functionname(res.getFunctionname())
+                        .opeartiontype(editOperateType(res.getOpeartiontype(),lang))
+                        .functionname(editFunctionName(res.getFunctionname(),lang))
                         .hospitalname(res.getHospitalname())
                         .equipmentname(res.getEquipmentname())
                         .username(res.getUsername())
@@ -80,6 +84,22 @@ public class OperationlogApplication {
         }
         page.setRecords(list);
         return page;
+    }
+
+    public String editOperateType(String code,String lang){
+        if("en".equals(lang)){
+            OperationLogEunmDerailEnum from = OperationLogEunmDerailEnum.from(code);
+            return from.name();
+        }
+        return code;
+    }
+
+    public String editFunctionName(String message,String lang){
+        if("en".equals(lang)){
+            OperationLogEunm operationLogEunm = OperationLogEunm.from(message);
+            return operationLogEunm.name();
+        }
+        return message;
     }
 
 

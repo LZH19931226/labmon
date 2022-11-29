@@ -76,4 +76,9 @@ public class Warningrecord implements Serializable {
     @TableField(value = "mailCallUser")
     private String mailCallUser;
 
+    /**
+     *
+     */
+    private Long num;
+
 }

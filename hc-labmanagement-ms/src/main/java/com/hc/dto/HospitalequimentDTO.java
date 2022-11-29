@@ -1,5 +1,6 @@
 package com.hc.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -57,6 +58,9 @@ public class HospitalequimentDTO implements Serializable {
 
 	@ApiModelProperty(value = "设备名称")
     private String equipmenttypename;
+
+    @ApiModelProperty(value = "设备英文名称")
+    private String equipmenttypename_us;
 
 }
 

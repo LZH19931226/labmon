@@ -34,5 +34,7 @@ public class MonitorequipmenttypePo  implements Serializable {
 	 */
 		private String equipmenttypename;
 
+		private String equipmenttypename_us;
+
 }
 

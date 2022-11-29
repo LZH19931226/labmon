@@ -107,7 +107,7 @@ public class UserRightApplication {
         UserRightInfoCommand userRightInfoCommand = build(Context.getUserId(),
                  new UserRightLogCommand(),
                  userRightCommand,
-                 OperationLogEunm.USER_INFO.getCode(),
+                 OperationLogEunm.USER_MANAGEMENT.getCode(),
                  OperationLogEunmDerailEnum.ADD.getCode());
         operationlogApi.addUserRightLog(userRightInfoCommand);
     }
@@ -153,7 +153,7 @@ public class UserRightApplication {
         UserRightInfoCommand build = build(Context.getUserId(),
                 convert,
                 userRightCommand,
-                OperationLogEunm.USER_INFO.getCode(),
+                OperationLogEunm.USER_MANAGEMENT.getCode(),
                 OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogApi.addUserRightLog(build);
     }
@@ -168,7 +168,7 @@ public class UserRightApplication {
         userRightService.deleteUserRightInfo(userRightCommand);
         UserRightLogCommand command = BeanConverter.convert(userRightDto, UserRightLogCommand.class);
         UserRightInfoCommand build =
-                build(Context.getUserId(), command, new UserRightCommand(), OperationLogEunm.USER_INFO.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
+                build(Context.getUserId(), command, new UserRightCommand(), OperationLogEunm.USER_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogApi.addUserRightLog(build);
     }
 
@@ -184,7 +184,7 @@ public class UserRightApplication {
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
         String phoneNum = userRightDto.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
-            throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER);
+            throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.name());
         }
         String loginType = userRightCommand.getLoginType();
         String loginStatus = userRightCommand.getLoginStatus();
@@ -318,6 +318,8 @@ public class UserRightApplication {
                 .phoneNum(userRightCommand.getPhoneNum())
                 .userType(userRightCommand.getUserType())
                 .hospitalName(userRightCommand.getHospitalName())
+                .token(userRightCommand.getToken())
+                .lang(userRightCommand.getLang())
                 .build();
     }
 

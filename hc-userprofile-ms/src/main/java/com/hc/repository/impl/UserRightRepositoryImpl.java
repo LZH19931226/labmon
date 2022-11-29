@@ -123,13 +123,13 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         UserRightPo userRightPo = userRightDao.selectOne(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
         if(ObjectUtils.isEmpty(userRightPo)){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST);
+            throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST.name());
         }
         if(!StringUtils.equals(userRightPo.getPwd(),userRightCommand.getPwd())){
-            throw new IedsException(LabSystemEnum.INCORRECT_USERNAME_OR_PASSWORD);
+            throw new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.name());
         }
         if(userRightPo.getIsUse() != 1L){
-            throw new IedsException(LabSystemEnum.USER_NOT_ENABLED);
+            throw new IedsException(LabSystemEnum.USER_NOT_ENABLED.name());
         }
         return BeanConverter.convert(userRightPo,UserRightDto.class);
     }

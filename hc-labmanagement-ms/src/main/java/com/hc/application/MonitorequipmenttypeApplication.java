@@ -1,6 +1,7 @@
 package com.hc.application;
 
 import com.hc.dto.MonitorequipmenttypeDTO;
+import com.hc.my.common.core.struct.Context;
 import com.hc.service.MonitorequipmenttypeService;
 import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
 import org.apache.commons.collections.CollectionUtils;
@@ -26,12 +27,13 @@ public class MonitorequipmenttypeApplication {
     public List<MonitorEquipmentTypeVo> getAllmonitorequipmentType() {
         List<MonitorequipmenttypeDTO> monitorEquipmentTypeLists = monitorequipmenttypeService.getAllmonitorequipmentType();
         if (CollectionUtils.isNotEmpty(monitorEquipmentTypeLists)) {
+            String lang = Context.getLang();
             List<MonitorEquipmentTypeVo> monitorequipmenttypeVoList = new ArrayList<>();
             monitorEquipmentTypeLists.forEach(s -> {
                         monitorequipmenttypeVoList.add(
                                 MonitorEquipmentTypeVo.builder()
                                         .equipmentTypeId(s.getEquipmenttypeid())
-                                        .equipmentTypeName(s.getEquipmenttypename())
+                                        .equipmentTypeName("en".equals(lang)?s.getEquipmenttypename_us() : s.getEquipmenttypename())
                                         .build());
                     }
             );

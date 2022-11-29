@@ -43,7 +43,7 @@ public class SpringExceptionHandle {
         String requestUrl = request.getRequestURI();
         String lang = Context.getLang();
         String errText =exception.getText();
-        if(StringUtils.isNotBlank(lang) && !StringUtils.equals(lang,"CN")){
+        if(StringUtils.isNotBlank(lang) && !StringUtils.equals(lang,"zh")){
             LabSystemEnum labSystemEnum = LabSystemEnum.from(errText);
             errText = labSystemEnum.name();
         }

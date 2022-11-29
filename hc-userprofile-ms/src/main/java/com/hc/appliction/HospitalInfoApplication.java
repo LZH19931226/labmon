@@ -102,7 +102,7 @@ public class HospitalInfoApplication {
         hospitalRegistrationInfoService.insertHospitalInfo(hospitalCommand);
         //添加日志信息
         operationlogApi.addHospitalOperationlog(buildHospitalOperationLogCommand(Context.getUserId(),new HospitalCommand(),hospitalCommand,
-                OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode()));
+                OperationLogEunm.HOSPITAL_MANAGENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode()));
         //添加缓存信息
         HospitalInfoDto hospitalInfoDto =  BeanConverter.convert(hospitalCommand, HospitalInfoDto.class);
         hospitalRedisApi.addHospitalRedisInfo(hospitalInfoDto);
@@ -135,7 +135,7 @@ public class HospitalInfoApplication {
         hospitalRegistrationInfoService.editHospitalInfo(hospitalCommand);
         //添加日志信息
         HospitalOperationLogCommand hospitalOperationLogCommand = buildHospitalOperationLogCommand(Context.getUserId(),hospitalCommand1 ,hospitalCommand,
-                OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.EDIT.getCode());
+                OperationLogEunm.HOSPITAL_MANAGENT.getCode(), OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
 
         //更新缓存信息
@@ -157,7 +157,7 @@ public class HospitalInfoApplication {
         HospitalCommand convert = BeanConverter.convert(hospitalInfoByCode, HospitalCommand.class);
         HospitalOperationLogCommand hospitalOperationLogCommand =
                 buildHospitalOperationLogCommand(Context.getUserId(), convert, new HospitalCommand(),
-                        OperationLogEunm.HOSPITALMANAGENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
+                        OperationLogEunm.HOSPITAL_MANAGENT.getCode(), OperationLogEunmDerailEnum.REMOVE.getCode());
         operationlogApi.addHospitalOperationlog(hospitalOperationLogCommand);
 
         //移除缓存信息

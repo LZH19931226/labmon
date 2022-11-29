@@ -24,6 +24,7 @@ import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
+import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.FileUtil;
@@ -182,6 +183,12 @@ public class EquipmentInfoApplication {
         List<HospitalEquipmentTypeModel> hospitalEquipmentTypeModelList = hospitalEquipmentTypeApi.findHospitalEquipmentTypeByCode(hospitalCode).getResult();
         if(CollectionUtils.isEmpty(hospitalEquipmentTypeModelList)){
             throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE);
+        }
+        String lang = Context.getLang();
+        if("en".equals(lang)){
+            hospitalEquipmentTypeModelList.forEach(res->{
+                res.setEquipmentTypeName(res.getEquipmentTypeNameUS());
+            });
         }
         hospitalInfo.setHospitalEquipmentTypeModelList(hospitalEquipmentTypeModelList);
         return hospitalInfo;

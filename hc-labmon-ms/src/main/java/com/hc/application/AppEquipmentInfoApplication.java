@@ -14,6 +14,7 @@ import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
 import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
+import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
@@ -21,6 +22,7 @@ import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
+import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
@@ -154,6 +156,8 @@ public class AppEquipmentInfoApplication {
             List<ProbeInfoDto> probeInfoDtoList = null;
             if (probeInfoMap.containsKey(equipmentNo)) {
                 probeInfoDtoList = probeInfoMap.get(equipmentNo);
+                //中英文切换
+                zhAndEn(probeInfoDtoList);
             }
             ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
             probeInfo.setEquipmentName(equipmentName);
@@ -183,6 +187,24 @@ public class AppEquipmentInfoApplication {
         }
         page.setRecords(probeCurrentInfoDtos);
         return page;
+    }
+
+    /**
+     * 中英文切换
+     * @param probeInfoDtoList
+     */
+    private void zhAndEn(List<ProbeInfoDto> probeInfoDtoList) {
+        String lang = Context.getLang();
+        if("en".equals(lang)){
+            List<String> nameList = ProbeOutlier.getNameList();
+            probeInfoDtoList.forEach(res->{
+                String value = res.getValue();
+                if (StringUtils.isNotBlank(value) && nameList.contains(value)) {
+                    String code = ProbeOutlier.from(res.getValue()).name();
+                    res.setValue(code);
+                }
+            });
+        }
     }
 
     /**

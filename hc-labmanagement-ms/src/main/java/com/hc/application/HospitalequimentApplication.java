@@ -183,6 +183,7 @@ public class HospitalequimentApplication {
                 warningTimesMap = warningTimes.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getHospitalcode,Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid)));
             }
             Map<String, Map<String, List<MonitorequipmentwarningtimeDTO>>>  finalTimesMap = warningTimesMap;
+            String lang = Context.getLang();
             for (HospitalequimentDTO s : hospitalEquipmentList) {
                 String hospitalcode = s.getHospitalcode();
                 String equipmenttypeid = s.getEquipmenttypeid();
@@ -210,7 +211,7 @@ public class HospitalequimentApplication {
                         .hospitalcode(hospitalcode)
                         .hospitalname(s.getHospitalname())
                         .equipmenttypeid(s.getEquipmenttypeid())
-                        .equipmenttypename(s.getEquipmenttypename())
+                        .equipmenttypename("en".equals(lang)?s.getEquipmenttypename_us() :s.getEquipmenttypename())
                         .isvisible(s.getIsvisible())
                         .alwayalarm(s.getAlwayalarm())
                         .timeout(s.getTimeout())
@@ -258,9 +259,10 @@ public class HospitalequimentApplication {
             dtoList.forEach(res->{
                 HospitalEquipmentTypeModel model = new HospitalEquipmentTypeModel();
                 model.setEquipmentTypeId(res.getEquipmenttypeid())
-                        .setOrderno(res.getOrderno()+"")
-                        .setHospitalName(res.getHospitalname())
-                     .setEquipmentTypeName(res.getEquipmenttypename());
+                .setOrderno(res.getOrderno()+"")
+                .setHospitalName(res.getHospitalname())
+                     .setEquipmentTypeName(res.getEquipmenttypename())
+                             .setEquipmentTypeNameUS(res.getEquipmenttypename_us());
                 list.add(model);
             });
         }
@@ -329,12 +331,13 @@ public class HospitalequimentApplication {
         }
         //转换对象
         if (CollectionUtils.isNotEmpty(allmonitorequipmentType)) {
+            String lang = Context.getLang();
             List<MonitorEquipmentTypeVo> monitorequipmenttypeVoList = new ArrayList<>();
             allmonitorequipmentType.forEach(s -> {
                         monitorequipmenttypeVoList.add(
                                 MonitorEquipmentTypeVo.builder()
                                         .equipmentTypeId(s.getEquipmenttypeid())
-                                        .equipmentTypeName(s.getEquipmenttypename())
+                                        .equipmentTypeName("en".equals(lang) ?s.getEquipmenttypename_us() : s.getEquipmenttypename())
                                         .build());
                     }
             );

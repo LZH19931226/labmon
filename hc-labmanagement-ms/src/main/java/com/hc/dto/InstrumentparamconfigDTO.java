@@ -105,6 +105,9 @@ public class InstrumentparamconfigDTO implements Serializable {
     /** 设备类型名称 */
     private String equipmenttypename;
 
+    /** 设备类型英文名称 */
+    private String equipmenttypename_us;
+
     /** 设备名称 */
     private String equipmentname;
 
@@ -119,6 +122,9 @@ public class InstrumentparamconfigDTO implements Serializable {
 
     /** 探头状态 0为正常 1为报警中*/
     private String state;
+
+
 }
+
 
 

@@ -30,6 +30,8 @@ public class MonitorequipmenttypeDTO  implements Serializable {
 	@ApiModelProperty(value="设备类型名称")
         private String equipmenttypename;
 
+	@ApiModelProperty(value = "设备类型英文名称")
+	private String equipmenttypename_us;
 }
 
 

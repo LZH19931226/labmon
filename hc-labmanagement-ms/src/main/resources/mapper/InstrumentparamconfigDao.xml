@@ -33,6 +33,7 @@
     SELECT
         g.hospitalname,
         e.equipmenttypename,
+        e.equipmenttypename_us,
         d.equipmentname,
         b.sn,
         a.instrumentno ,

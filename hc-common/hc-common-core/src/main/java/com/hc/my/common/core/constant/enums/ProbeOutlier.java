@@ -1,6 +1,11 @@
 package com.hc.my.common.core.constant.enums;
 
+import com.hc.my.common.core.exception.IedsException;
 import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 设备异常值
@@ -48,5 +53,18 @@ public enum ProbeOutlier {
         this.code =code;
     };
 
+    public static List<String> getNameList(){
+        return  Arrays
+                .stream(ProbeOutlier.values())
+                .map(ProbeOutlier::getCode)
+                .collect(Collectors.toList());
+    }
 
+    public static ProbeOutlier from(String code){
+        return Arrays
+                .stream(ProbeOutlier.values())
+                .filter(c->code.equals(c.getCode()))
+                .findFirst()
+                .orElseThrow(()-> new IedsException("Illegal enum value {}", code));
+    }
 }

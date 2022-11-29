@@ -1,6 +1,8 @@
 package com.hc.application;
 
 import com.hc.dto.OperationlogdetailDTO;
+import com.hc.my.common.core.constant.enums.FeildEnum;
+import com.hc.my.common.core.struct.Context;
 import com.hc.service.OperationlogdetailService;
 import com.hc.vo.backlog.OperationlogdetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,11 @@ public class OperationlogdetailApplication {
         List<OperationlogdetailDTO> dto =  operationlogdetailService.getDetailedLogById(logId);
         List<OperationlogdetailVo> list = new ArrayList<>();
         if (!ObjectUtils.isEmpty(dto)) {
+            String lang = Context.getLang();
             dto.forEach(res->{
                 OperationlogdetailVo build = OperationlogdetailVo.builder()
                         .detailid(res.getDetailid())
-                        .filedcaption(res.getFiledcaption())
+                        .filedcaption(editFiledCaption(res.getFiledcaption(),lang))
                         .filedname(res.getFiledname())
                         .filedvalue(res.getFiledvalue())
                         .filedvalueprev(res.getFiledvalueprev())
@@ -46,5 +49,13 @@ public class OperationlogdetailApplication {
             });
         }
         return list;
+    }
+
+    public String editFiledCaption(String message,String lang){
+        if("en".equals(lang)){
+            FeildEnum from = FeildEnum.from(message);
+            return from.name();
+        }
+        return message;
     }
 }

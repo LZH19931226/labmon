@@ -79,4 +79,7 @@ public class UserRightVo {
     private HospitalInfoVo hospitalInfoVo;
 
     private String token;
+
+    /** 语种 zh表示中文 en表示英文 */
+    private String lang;
 }

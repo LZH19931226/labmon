@@ -117,6 +117,7 @@ public class MonitorEquipmentApplication {
 
         //构建返回信息集合
         List<MonitorEquipmentVo> list = new ArrayList<>();
+        String lang = Context.getLang();
         for (MonitorEquipmentDto monitorEquipmentDto : monitorEquipmentList) {
 
             String equipmentNo = monitorEquipmentDto.getEquipmentNo();
@@ -164,7 +165,7 @@ public class MonitorEquipmentApplication {
                     .equipmentName(monitorEquipmentDto.getEquipmentName())
                     .equipmentNo(monitorEquipmentDto.getEquipmentNo())
                     .equipmentTypeId(monitorEquipmentDto.getEquipmentTypeId())
-                    .equipmentTypeName(monitorEquipmentDto.getEquipmentTypeName())
+                    .equipmentTypeName("en".equals(lang)?monitorEquipmentDto.getEquipmentTypeNameUs():monitorEquipmentDto.getEquipmentTypeName())
                     .hospitalCode(monitorEquipmentDto.getHospitalCode())
                     .hospitalName(monitorEquipmentDto.getHospitalName())
                     .instrumentTypeName(instrumenttypename==null?"":instrumenttypename)

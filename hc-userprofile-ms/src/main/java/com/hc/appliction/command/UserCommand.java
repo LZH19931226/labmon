@@ -33,7 +33,7 @@ public class UserCommand {
     private Long pageCurrent;
 
     /**
-     * CN表示中文 US 表示英文
+     * zh表示中文 en 表示英文
      */
     @ApiModelProperty(value = "语种")
     private String lang;
