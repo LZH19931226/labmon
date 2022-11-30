@@ -68,9 +68,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
             warningModel.setHospitalcode(hospitalcode);
             return warningModel;
         }
-        //存储报警信息
-        warningrecordRepository.saveWarningInfo(warningrecord);
-        warningrecordRepository.updateWarningCallUser(warningrecord);
         /*4.报警次数设置*/
         //未满足三次报警次数不推送
         Integer alarmtime = probe.getAlarmTime();
