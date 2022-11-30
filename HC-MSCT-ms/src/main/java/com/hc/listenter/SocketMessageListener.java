@@ -50,6 +50,10 @@ public class SocketMessageListener {
     private MessageSendService messageSendService;
     @Autowired
     private AlmMsgService almMsgService;
+
+    @Autowired
+    private SendTimeoutRecordService sendTimeoutRecordService;
+
     /**
      * 监听报警信息
      */
@@ -85,38 +89,41 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME4)
     public void onMessage5(String message) {
-            JSONArray objects = JSONUtil.parseArray(message);
-            List<TimeoutEquipment> timeoutEquipmentList = JSONUtil.toList(objects, TimeoutEquipment.class);
-            if (CollectionUtils.isEmpty(timeoutEquipmentList)) {
+        JSONArray objects = JSONUtil.parseArray(message);
+        List<TimeoutEquipment> timeoutEquipmentList = JSONUtil.toList(objects, TimeoutEquipment.class);
+        if (CollectionUtils.isEmpty(timeoutEquipmentList)) {
+            return;
+        }
+        StringBuilder eqTypeName = new StringBuilder();
+        StringBuilder count = new StringBuilder();
+        String hospitalName = timeoutEquipmentList.get(0).getHospitalname();
+         String hospitalcode = timeoutEquipmentList.get(0).getHospitalcode();
+         int size = timeoutEquipmentList.size();
+        for (int i = 0; i < size; i++) {
+            String equipmentTypeName = timeoutEquipmentList.get(i).getEquipmenttypename();
+            String count1 = timeoutEquipmentList.get(i).getCount();
+            if(StringUtils.isBlank(equipmentTypeName) || StringUtils.isBlank(count1)){
                 return;
             }
-            StringBuilder eqTypeName = new StringBuilder();
-            StringBuilder count = new StringBuilder();
-            String hospitalName = timeoutEquipmentList.get(0).getHospitalname();
-             String hospitalcode = timeoutEquipmentList.get(0).getHospitalcode();
-             int size = timeoutEquipmentList.size();
-            for (int i = 0; i < size; i++) {
-                String equipmentTypeName = timeoutEquipmentList.get(i).getEquipmenttypename();
-                String count1 = timeoutEquipmentList.get(i).getCount();
-                if(StringUtils.isBlank(equipmentTypeName) || StringUtils.isBlank(count1)){
-                    return;
-                }
-                if(i == size-1){
-                    eqTypeName.append(equipmentTypeName);
-                    count.append(count1);
-                }else {
-                    eqTypeName.append(equipmentTypeName).append("/");
-                    count.append(count1).append("/");
-                }
+            if(i == size-1){
+                eqTypeName.append(equipmentTypeName);
+                count.append(count1);
+            }else {
+                eqTypeName.append(equipmentTypeName).append("/");
+                count.append(count1).append("/");
             }
-            if(StringUtils.isBlank(hospitalName) || StringUtils.isBlank(eqTypeName.toString()) || StringUtils.isBlank(count.toString())){
-                return;
-            }
-            List<Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
-            if (CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
-                return;
-            }
-            sendrecordService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString());
+        }
+        if(StringUtils.isBlank(hospitalName) || StringUtils.isBlank(eqTypeName.toString()) || StringUtils.isBlank(count.toString())){
+            return;
+        }
+        List<Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
+        if (CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
+            return;
+        }
+        //通知信息
+        sendrecordService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString());
+        //保存到数据库
+        sendTimeoutRecordService.saveTimeOutRecord(userrightByHospitalcodeAAndTimeout,hospitalcode,eqTypeName.toString(),count.toString());
     }
 
     public void msctMessage(String message) {

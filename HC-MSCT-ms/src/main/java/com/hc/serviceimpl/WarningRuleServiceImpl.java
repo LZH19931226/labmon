@@ -1,6 +1,7 @@
 package com.hc.serviceimpl;
 
 import com.hc.clickhouse.po.Warningrecord;
+import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.ProbeRedisApi;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.labmanagent.ProbeInfoApi;
@@ -40,6 +41,9 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     @Autowired
     private AlmMsgService almMsgService;
 
+    @Autowired
+    private WarningrecordRepository warningrecordRepository;
+
     /**
      * 进来的默认都是启用报警的
      * 先判断医院   、  在进行判断是否三次报警
@@ -64,6 +68,9 @@ public class WarningRuleServiceImpl implements WarningRuleService {
             warningModel.setHospitalcode(hospitalcode);
             return warningModel;
         }
+        //存储报警信息
+        warningrecordRepository.saveWarningInfo(warningrecord);
+        warningrecordRepository.updateWarningCallUser(warningrecord);
         /*4.报警次数设置*/
         //未满足三次报警次数不推送
         Integer alarmtime = probe.getAlarmTime();

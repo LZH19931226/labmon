@@ -52,7 +52,7 @@ public class StatisticalAnalysisApplication {
         }
         Map<String, List<MonitorEquipmentDto>> enoMap = monitorEquipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
         Map<String,Map<String,Long>> map = new HashMap<>();
-        //3.统计医院设备类型的数量
+        //4.统计医院设备类型的数量
         for (Warningrecord warningrecord : wrList) {
             String equipmentNo = warningrecord.getEquipmentno();
             Long num = warningrecord.getNum();
