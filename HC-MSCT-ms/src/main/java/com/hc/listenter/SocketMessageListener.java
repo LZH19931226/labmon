@@ -2,6 +2,9 @@ package com.hc.listenter;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.hc.clickhouse.po.Warningrecord;
+import com.hc.clickhouse.repository.WarningrecordRepository;
+import com.hc.device.ProbeRedisApi;
 import com.hc.exchange.BaoJinMsg;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.mapper.UserrightDao;
@@ -14,6 +17,7 @@ import com.hc.my.common.core.domain.MonitorinstrumentDo;
 import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.esm.EquipmentState;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.SoundLightUtils;
@@ -50,6 +54,12 @@ public class SocketMessageListener {
     private MessageSendService messageSendService;
     @Autowired
     private AlmMsgService almMsgService;
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
+    @Autowired
+    private WarningRuleService warningRuleService;
+    @Autowired
+    private WarningrecordRepository warningrecordRepository;
 
     @Autowired
     private SendTimeoutRecordService sendTimeoutRecordService;
@@ -133,32 +143,42 @@ public class SocketMessageListener {
         WarningAlarmDo warningAlarmDo = JsonUtil.toBean(message, WarningAlarmDo.class);
         String logId = warningAlarmDo.getLogId();
         ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER05.getCode()),message,logId);
-        WarningModel model = warningService.produceWarn(warningAlarmDo);
-        if (null==model) {
-            return;
-        }
-        model.setLogId(logId);
+        Integer instrumentconfigid = warningAlarmDo.getInstrumentconfigid();
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
+        String hospitalcode = monitorinstrument.getHospitalcode();
         String sn = monitorinstrument.getSn();
-        String hospitalcode = model.getHospitalcode();
-        HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
-        if (null == hospitalInfoDto){
+        //获取探头对象
+        InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + instrumentconfigid).getResult();
+        if (null == probe) {
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER06.getCode()), JsonUtil.toJson(monitorinstrument), warningAlarmDo.getLogId());
             return;
         }
-        //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
-        List<UserRightRedisDto> userList =almMsgService.addUserScheduLing(hospitalcode);
-        if (CollectionUtils.isEmpty(userList)){
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER14.getCode()),JsonUtil.toJson(model),logId);
-            return;
+        //判断探头是否满足量程范围
+        Warningrecord warningrecord = warningService.checkProbeLowLimit(probe, warningAlarmDo);
+        if (null!=warningrecord){
+            //判断探头是否满足报警规则
+            WarningModel model = warningRuleService.warningRule(hospitalcode, warningrecord, probe, warningAlarmDo);
+            if (null!=model) {
+                model.setLogId(logId);
+                HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+                //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
+                List<UserRightRedisDto> userList =almMsgService.addUserScheduLing(hospitalcode);
+                if (CollectionUtils.isEmpty(userList)){
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER14.getCode()),JsonUtil.toJson(model),logId);
+                    return;
+                }
+                //异步推送报警短信
+                warningrecord = sendrecordService.pushNotification(userList, model, hospitalInfoDto);
+                //如果该医院开启了声光报警则需要推送声光报警指令
+                if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
+                    soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
+                }
+                //将设备状态信息推送到mq
+                sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
+            }
+            //不满足报警规则,但是超量程的数据也需要记录
+            warningrecordRepository.save(warningrecord);
         }
-        //异步推送报警短信
-        sendrecordService.pushNotification(userList,model,hospitalInfoDto);
-        //如果该医院开启了声光报警则需要推送声光报警指令
-        if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
-            soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
-        }
-        //将设备状态信息推送到mq
-        sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
     }
 
     //推送探头当前报警状态
