@@ -18,7 +18,6 @@ import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.esm.EquipmentState;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
-import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.po.Userright;
@@ -162,7 +161,7 @@ public class SocketMessageListener {
                 model.setLogId(logId);
                 HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
                 //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
-                List<UserRightRedisDto> userList =almMsgService.addUserScheduLing(hospitalcode);
+                List<Userright> userList =almMsgService.addUserScheduLing(hospitalcode);
                 if (CollectionUtils.isEmpty(userList)){
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER14.getCode()),JsonUtil.toJson(model),logId);
                     return;
