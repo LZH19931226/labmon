@@ -3,7 +3,6 @@ package com.hc.serviceimpl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.MessageApi;
 import com.hc.clickhouse.po.Warningrecord;
-import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.mapper.SendrecordDao;
 import com.hc.model.WarningModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
@@ -30,14 +29,11 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
 
 
     @Autowired
-    private WarningrecordRepository warningrecordRepository;
-
-    @Autowired
     private MessageApi messageApi;
 
 
     @Override
-    public void pushNotification(List<UserRightRedisDto> list, WarningModel warningModel, HospitalInfoDto hospitalInfoDto) {
+    public Warningrecord pushNotification(List<UserRightRedisDto> list, WarningModel warningModel, HospitalInfoDto hospitalInfoDto) {
         String logId = warningModel.getLogId();
         //获取电话.
         List<Sendrecord> sendrecords = new ArrayList<>();
@@ -104,9 +100,7 @@ public class SendrecordServiceImpl extends ServiceImpl<SendrecordDao, Sendrecord
             phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
             warningrecord.setPhoneCallUser(phoneCallUser.toString());
         }
-
-        warningrecordRepository.saveWarningInfo(warningrecord);
-
+        return warningrecord;
     }
 
     @Override
