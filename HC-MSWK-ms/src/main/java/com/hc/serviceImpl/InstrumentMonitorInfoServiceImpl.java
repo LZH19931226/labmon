@@ -130,7 +130,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "89":
                 if (!StringUtils.isEmpty(model.getUPS())) {
                     //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1,2,5变成 3,4
-                    upsService.sendInfo(model,equipmentno,hospitalcode);
+                    upsService.sendInfo(model, equipmentno, hospitalcode);
                     String ups = "1"; // 表示市电异常
                     if ("3".equals(model.getUPS()) || "4".equals(model.getUPS())) {
                         ups = "0";//市电正常
@@ -934,7 +934,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), monitorequipmentlastdata.getCurrenttemperature(),
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     String currenttemperature2 = monitorequipmentlastdata.getCurrenttemperature2();
-                    if (StringUtils.isNotEmpty(currenttemperature2)){
+                    if (StringUtils.isNotEmpty(currenttemperature2)) {
                         BuildProbeInfoDto(hospitalcode, equipmentno,
                                 CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), currenttemperature2,
                                 CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
@@ -1216,7 +1216,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String ups1 = model.getUPS();
                 if (StringUtils.isNotEmpty(ups1)) {
                     //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1变成0
-                    upsService.sendInfo(model,equipmentno,hospitalcode);
+                    upsService.sendInfo(model, equipmentno, hospitalcode);
                     monitorequipmentlastdata.setCurrentups(ups1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(), ups1,
@@ -1577,10 +1577,10 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             case "b1":
                 //液位
                 String liquidLevel = model.getLiquidLevel();
-                if(StringUtils.isNotBlank(liquidLevel)){
+                if (StringUtils.isNotBlank(liquidLevel)) {
                     monitorequipmentlastdata.setLiquidLevel(liquidLevel);
-                    BuildProbeInfoDto(hospitalcode,equipmentno,
-                            CurrentProbeInfoEnum.LIQUIDLEVEL.getInstrumentConfigId(),liquidLevel,
+                    BuildProbeInfoDto(hospitalcode, equipmentno,
+                            CurrentProbeInfoEnum.LIQUIDLEVEL.getInstrumentConfigId(), liquidLevel,
                             CurrentProbeInfoEnum.LIQUIDLEVEL.getProbeEName());
                     //执行报警服务
                     WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(liquidLevel, monitorinstrument, model.getNowTime(), 45, "液位");
@@ -1588,10 +1588,10 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 }
                 //温度
                 String modelTEMP = model.getTEMP();
-                if(StringUtils.isNotBlank(modelTEMP)){
+                if (StringUtils.isNotBlank(modelTEMP)) {
                     monitorequipmentlastdata.setCurrenttemperature(modelTEMP);
-                    BuildProbeInfoDto(hospitalcode,equipmentno,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(),modelTEMP,
+                    BuildProbeInfoDto(hospitalcode, equipmentno,
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), modelTEMP,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
                     //执行报警服务
                     WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(modelTEMP, monitorinstrument, model.getNowTime(), 4, "温度");
@@ -1599,10 +1599,10 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 }
                 //电量
                 String modelQC = model.getQC();
-                if(StringUtils.isNotBlank(modelQC)){
+                if (StringUtils.isNotBlank(modelQC)) {
                     monitorequipmentlastdata.setCurrentqc(modelQC);
-                    BuildProbeInfoDto(hospitalcode,equipmentno,
-                            CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(),modelQC,
+                    BuildProbeInfoDto(hospitalcode, equipmentno,
+                            CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), modelQC,
                             CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(modelQC, monitorinstrument, model.getNowTime(), 7, "电量");
@@ -1612,10 +1612,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
             default:
                 break;
         }
-        if (!ObjectUtils.isEmpty(monitorequipmentlastdata)) {
-            //从缓存中取数据
-            lastDataService.saveLastData(monitorequipmentlastdata, equipmentno, monitorinstrument.getHospitalcode(), cmdid, sn);
-        }
+        lastDataService.saveLastData(monitorequipmentlastdata, equipmentno, monitorinstrument.getHospitalcode(), cmdid, sn);
         return list;
     }
 
