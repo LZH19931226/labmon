@@ -147,9 +147,10 @@ public class MonitorEquipmentApplication {
             String sn=null;
             if(!ObjectUtils.isEmpty(monitorinstrumentDTO)){
                 channel = monitorinstrumentDTO.getChannel();
+
                 instrumentno = monitorinstrumentDTO.getInstrumentno();
                 //判断设备下有无探头绑定
-                if(!StringUtils.isEmpty(instrumentno)){
+                if(!StringUtils.isEmpty(instrumentno) && inoAndParamConfigMap.containsKey(instrumentno)){
                     flag = false;
                 }
                 instrumenttypeid = monitorinstrumentDTO.getInstrumenttypeid();
@@ -457,6 +458,7 @@ public class MonitorEquipmentApplication {
                     .setInstrumentno(monitorinstrumentDTO.getInstrumentno())
                     .setInstrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
                     .setSaturation(instrumentmonitorDTO.getSaturation())
+//                    .setUnit(instrumentmonitorDTO.getUnit())
                     .setAlarmtime(3);
             probeList.add(instrumentparamconfigDTO);
         }
@@ -570,6 +572,7 @@ public class MonitorEquipmentApplication {
                     .setWarningPhone("0")
                     .setLowLimit(res.getLowlimit())
                     .setHighLimit(res.getHighlimit());
+//                    .setUnit(res.getUnit());
             list.add(instrumentInfoDto);
         }
         List<String> collect1 = list.stream().map(res -> res.getInstrumentNo() + ":" + res.getInstrumentConfigId()).collect(Collectors.toList());
@@ -755,6 +758,7 @@ public class MonitorEquipmentApplication {
                 instrumentparamconfigDTO.setHighlimit(dto.getHighlimit());
                 instrumentparamconfigDTO.setInstrumentname(monitorEquipmentCommand.getEquipmentName());
                 instrumentparamconfigDTO.setSaturation(dto.getSaturation());
+//                instrumentparamconfigDTO.setUnit(dto.getUnit());
                 instrumentparamconfigDTO.setFirsttime(new Date());
                 list.add(instrumentparamconfigDTO);
             }
@@ -800,6 +804,7 @@ public class MonitorEquipmentApplication {
             instrumentInfoDto.setEquipmentName(monitorEquipmentCommand.getEquipmentName());
             instrumentInfoDto.setSn(monitorEquipmentCommand.getSn());
             instrumentInfoDto.setInstrumentName(instrumentparamconfigDTO.getInstrumentname());
+//            instrumentInfoDto.setUnit(instrumentparamconfigDTO.getUnit());
         }
         probeCommand.setInstrumentInfoDtoList(instrumentInfoDtoList);
         probeRedisApi.bulkUpdateProbeRedisInfo(probeCommand);
@@ -1004,6 +1009,7 @@ public class MonitorEquipmentApplication {
                 .highlimit(res.getHighlimit())
                 .saturation(res.getSaturation())
                 .channel(StringUtils.isEmpty(res.getChannel())?"":res.getChannel())
+//                .unit(StringUtils.isEmpty(res.getUnit())?"":res.getUnit())
                 .build();
     }
 

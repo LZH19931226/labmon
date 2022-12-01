@@ -124,6 +124,11 @@ public class InstrumentmonitorDTO implements Serializable {
      */
     private String channel;
 
+    /**
+     * 单位
+     */
+    private String unit;
+
 }
 
 
