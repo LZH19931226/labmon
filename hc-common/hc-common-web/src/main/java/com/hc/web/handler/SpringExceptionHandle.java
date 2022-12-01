@@ -4,6 +4,7 @@ package com.hc.web.handler;
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
+import com.hc.my.common.core.exception.TokenException;
 import com.hc.my.common.core.struct.Context;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -50,6 +51,19 @@ public class SpringExceptionHandle {
         logger.error("occurs error when execute url ={} ,message {}", requestUrl, exception.getMessage());
         return new ApiResponse<>(false, exception.getCode(), errText);
     }
+
+    @ExceptionHandler(value = {TokenException.class})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public <T> ApiResponse<T> sendTokenError(TokenException exception, HttpServletRequest request) {
+        String requestUrl = request.getRequestURI();
+        String errText =exception.getText();
+        logger.error("occurs error when execute url ={} ,message {}", requestUrl, exception.getMessage());
+        return new ApiResponse<>(false, exception.getCode(), errText);
+    }
+
+
+
 
 
 //    @ExceptionHandler(value = {Exception.class})

@@ -53,7 +53,7 @@ public class TimerConfig {
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
 
     //没分钟的第30秒执行
-    @Scheduled(cron = "30 * * * * ?")
+    @Scheduled(cron = "*/30 * * * * ?")
     public void Time() {
         // 查询所有需要超时报警的设备
         List<TimeoutEquipment> timeoutEquipments = hospitalInfoMapper.getTimeoutEquipment();
