@@ -1,6 +1,7 @@
 package com.hc.application;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentMonitorCommand;
 import com.hc.dto.InstrumentConfigDTO;
@@ -76,6 +77,9 @@ public class InstrumentMonitorApplication {
                 }
                 if(configIdMap.containsKey(res.getInstrumentconfigid())){
                     res.setInstrumentconfigname(configIdMap.get(res.getInstrumentconfigid()).get(0).getInstrumentconfigname());
+                }
+                if(StringUtils.isEmpty(res.getUnit())){
+                    res.setUnit("");
                 }
             });
             page.setRecords(list);

@@ -208,28 +208,6 @@ public class AppEquipmentInfoApplication {
     }
 
     /**
-     * 过滤一个Eno对应多个Ino的值（有线设备）
-     * 只取index=0的值
-     * @param list
-     * @return
-     */
-    private List<MonitorEquipmentDto> filterEno(List<MonitorEquipmentDto> list) {
-        Map<String, List<MonitorEquipmentDto>> collect1 = list.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
-        List<MonitorEquipmentDto>  removeList = new ArrayList<>();
-        for (String eno : collect1.keySet()) {
-            if (collect1.get(eno).size()>1) {
-                List<MonitorEquipmentDto> list1 = collect1.get(eno);
-                list1.remove(0);
-                removeList.addAll(list1);
-            }
-        }
-        if(CollectionUtils.isNotEmpty(removeList)){
-            list.removeAll(removeList);
-        }
-        return list;
-    }
-
-    /**
      * 获取探头标头(用于前端展示)
      * @param probeInfoDtoList
      * @return
