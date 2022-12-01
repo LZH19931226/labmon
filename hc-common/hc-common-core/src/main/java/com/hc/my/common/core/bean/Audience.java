@@ -16,5 +16,5 @@ public class Audience {
     private  String clientId ="098f6bcd4621d373cade4e832627b4f6";
     private  String base64Secret="MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY";
     private  String name="hc";
-    private  int expiresSecond=(int)(Duration.ofMinutes(1).getSeconds()*1000);
+    private  int expiresSecond=(int)(Duration.ofMinutes(360).getSeconds()*1000);
 }
