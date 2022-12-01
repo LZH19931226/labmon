@@ -49,5 +49,8 @@ public class InstrumentmonitorPo  implements Serializable {
 
 	/** 通道 */
 	private String channel;
+
+	/** 单位 */
+	private String unit;
 }
 

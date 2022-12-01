@@ -100,6 +100,7 @@ public class InstrumentMonitorApplication {
         obj.setLowlimit(res.getLowlimit());
         obj.setHighlimit(res.getHighlimit());
         obj.setChannel(res.getChannel());
+        obj.setUnit(res.getUnit());
         return obj;
     }
 

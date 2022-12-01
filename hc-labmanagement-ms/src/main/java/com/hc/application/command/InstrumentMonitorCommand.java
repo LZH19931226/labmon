@@ -63,6 +63,11 @@ public class InstrumentMonitorCommand {
     private String channel;
 
     /**
+     * 单位
+     */
+    private String unit;
+
+    /**
      * 最高限值
      */
     private List<InstrumentmonitorDTO> instrumentmonitorDTOList;
