@@ -124,7 +124,7 @@ public class InstrumentparamconfigApplication {
                 .setChannel(instrumentParamConfigCommand.getChannel())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime())
                 .setFirsttime(new Date())
-                .setUnit(instrumentParamConfigCommand.getUnit())
+                .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "":instrumentParamConfigCommand.getUnit())
                 .setSaturation(instrumentParamConfigCommand.getSaturation());
         instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
 
@@ -376,7 +376,7 @@ public class InstrumentparamconfigApplication {
                         .warningphone(configDTO.getWarningphone())
                         .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
                         .saturation(configDTO.getSaturation())
-                        .unit(configDTO.getUnit())
+                        .unit(StringUtils.isEmpty(configDTO.getUnit()) ? "":configDTO.getUnit())
                         .build();
                 list.add(build);
             }
