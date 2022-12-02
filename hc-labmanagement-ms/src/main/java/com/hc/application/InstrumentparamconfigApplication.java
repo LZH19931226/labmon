@@ -292,7 +292,7 @@ public class InstrumentparamconfigApplication {
                 .setChannel(instrumentParamConfigCommand.getChannel())
                 .setSaturation(instrumentParamConfigCommand.getSaturation())
                 .setCalibration(instrumentParamConfigCommand.getCalibration())
-                .setUnit(instrumentParamConfigCommand.getUnit())
+                .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "":instrumentParamConfigCommand.getUnit())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
     }
 
