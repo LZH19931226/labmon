@@ -41,38 +41,46 @@ public class NettyUtil {
     }
 
 
+    //在EventLoop的支持线程外使用channel
     private void writeDataByte(ChannelHandlerContext ctx, Object sendData) {
         if (ctx == null) return;
-        try {
-            ByteBuf data = buildData(sendData);
-            ctx.write(data);
-            ctx.flush();
-        } catch (Exception e) {
-            log.error("发送数据异常", e);
-        }
+        Channel channel = ctx.channel();
+        channel.eventLoop().execute(() -> {
+            ByteBuf data = null;
+            try {
+                data = buildData(sendData);
+            } catch (DecoderException e) {
+                e.printStackTrace();
+            }
+            channel.writeAndFlush(data);
+        });
+//        try {
+//            ByteBuf data = buildData(sendData);
+//            ctx.write(data);
+//            ctx.flush();
+//        } catch (Exception e) {
+//            log.error("发送数据异常", e);
+//        }
     }
 
     private void writeDataByte(Channel channel, Object sendData) {
         if (channel == null) return;
-        try {
-            ByteBuf data = buildData(sendData);
-            channel.write(data);
-            channel.flush();
-        } catch (Exception e) {
-            log.error("发送数据异常", e);
-        }
-    }
-
-
-    private void writeDataBytedelphi(Channel channel, byte[] sendData) {
-        if (channel == null) return;
-        try {
-            ByteBuf data = buildDatadelphi(sendData);
-            channel.write(data);
-            channel.flush();
-        } catch (Exception e) {
-            log.error("发送数据异常", e);
-        }
+        channel.eventLoop().execute(() -> {
+            ByteBuf data = null;
+            try {
+                data = buildData(sendData);
+            } catch (DecoderException e) {
+                e.printStackTrace();
+            }
+            channel.writeAndFlush(data);
+        });
+//        try {
+//            ByteBuf data = buildData(sendData);
+//            channel.write(data);
+//            channel.flush();
+//        } catch (Exception e) {
+//            log.error("发送数据异常", e);
+//        }
     }
 
     private static ByteBuf buildData(Object sendData) throws DecoderException {

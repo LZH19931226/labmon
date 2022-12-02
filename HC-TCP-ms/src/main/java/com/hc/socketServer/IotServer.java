@@ -45,7 +45,8 @@ public class IotServer {
 	@PostConstruct
 	public void start() {
 		//删除之前所有缓存得通道信息
-		//tcpClientApi.deleteHashKey(TcpServiceEnum.CHANNELCLIENT.getCode());
+		tcpClientApi.deleteHashKey(TcpServiceEnum.CHANNELCLIENT.getCode());
+
 		log.info("启动服务器 " + tcpSocket);
 		new Thread(() -> {
 			try{
@@ -57,7 +58,7 @@ public class IotServer {
 	}
 	
 	@PreDestroy
-	public void stop() throws Exception{
+	public void stop() {
 		log.info("停止服务器 " + tcpSocket);
 		serverChannel.close();
 		serverChannel.parent().close();
