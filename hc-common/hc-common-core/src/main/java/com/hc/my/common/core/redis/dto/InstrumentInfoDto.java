@@ -63,4 +63,7 @@ public class InstrumentInfoDto {
 
     /** 设备探头状态 */
     private String state;
+
+    /** 单位 */
+    private String unit;
 }

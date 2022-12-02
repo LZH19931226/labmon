@@ -90,5 +90,10 @@ public class InstrumentparamconfigPo implements Serializable {
      */
     private String state;
 
+    /**
+     * 单位
+     */
+    private String unit;
+
 }
 

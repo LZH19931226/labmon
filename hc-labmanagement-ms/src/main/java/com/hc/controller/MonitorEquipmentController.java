@@ -34,7 +34,6 @@ public class MonitorEquipmentController {
     @PostMapping("/findEquipmentInfo")
     @ApiOperation("分页查询设备信息")
     public Page<MonitorEquipmentVo> getEquipmentInfo(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
-        //return monitorEquipmentApplication.getEquipmentInfoList(monitorEquipmentCommand);
         return monitorEquipmentApplication.getEquipmentInfo(monitorEquipmentCommand);
     }
 

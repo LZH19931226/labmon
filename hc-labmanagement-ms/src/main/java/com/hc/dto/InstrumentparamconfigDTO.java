@@ -123,7 +123,8 @@ public class InstrumentparamconfigDTO implements Serializable {
     /** 探头状态 0为正常 1为报警中*/
     private String state;
 
-
+    /** 单位 */
+    private String unit;
 }
 
 

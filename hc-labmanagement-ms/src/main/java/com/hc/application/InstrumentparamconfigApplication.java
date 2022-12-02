@@ -124,6 +124,7 @@ public class InstrumentparamconfigApplication {
                 .setChannel(instrumentParamConfigCommand.getChannel())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime())
                 .setFirsttime(new Date())
+                .setUnit(instrumentParamConfigCommand.getUnit())
                 .setSaturation(instrumentParamConfigCommand.getSaturation());
         instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
 
@@ -163,6 +164,7 @@ public class InstrumentparamconfigApplication {
                 .setLowLimit(instrumentParamConfigCommand.getLowlimit())
                 .setHighLimit(instrumentParamConfigCommand.getHighlimit())
                 .setWarningPhone(instrumentParamConfigCommand.getWarningphone())
+                .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "" : instrumentParamConfigCommand.getUnit())
                 .setCalibration(instrumentParamConfigCommand.getCalibration());
         probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
     }
@@ -290,6 +292,7 @@ public class InstrumentparamconfigApplication {
                 .setChannel(instrumentParamConfigCommand.getChannel())
                 .setSaturation(instrumentParamConfigCommand.getSaturation())
                 .setCalibration(instrumentParamConfigCommand.getCalibration())
+                .setUnit(instrumentParamConfigCommand.getUnit())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
     }
 
@@ -373,6 +376,7 @@ public class InstrumentparamconfigApplication {
                         .warningphone(configDTO.getWarningphone())
                         .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
                         .saturation(configDTO.getSaturation())
+                        .unit(configDTO.getUnit())
                         .build();
                 list.add(build);
             }

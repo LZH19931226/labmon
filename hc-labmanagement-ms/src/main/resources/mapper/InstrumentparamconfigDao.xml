@@ -53,7 +53,8 @@
         b.hospitalcode,
         a.instrumentno,
         a.calibration,
-        a.instrumentparamconfigNO as instrumentparamconfigno
+        a.instrumentparamconfigNO as instrumentparamconfigno,
+        a.unit
     FROM instrumentparamconfig a
              LEFT JOIN monitorinstrument b 		ON a.instrumentno = b.instrumentno
              LEFT JOIN monitorinstrumenttype c ON c.instrumenttypeid = a.instrumenttypeid

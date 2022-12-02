@@ -128,5 +128,8 @@ public class InstrumentparamconfigVo implements Serializable {
 
     /**探头类型名称  */
     private String instrumenttypename;
+
+    /** 单位 */
+    private String unit;
 }
 

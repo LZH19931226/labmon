@@ -119,4 +119,9 @@ public class InstrumentparamconfigCommand {
      * 设备类型名称
      */
     private String equipmentTypeName;
+
+    /**
+     * 单位
+     */
+    private String unit;
 }
