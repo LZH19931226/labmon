@@ -438,9 +438,43 @@ public class InstrumentparamconfigApplication {
                     InstrumentparamconfigVo.builder()
                             .instrumentconfigid(s.getInstrumentconfigid())
                             .instrumentconfigname(s.getInstrumentconfigname())
+                            .unit(StringUtils.isEmpty(s.getUnit()) ? "":s.getUnit())
                             .build()
             );
         });
         return instrumentParamConfigVos;
+    }
+
+    /**
+     * 同步探头单位
+     */
+    public void syncProbeUnit() {
+        //1.查出所有的探头信息
+        List<InstrumentparamconfigDTO> probeList = instrumentparamconfigService.list();
+        if(CollectionUtils.isEmpty(probeList)){
+            return;
+        }
+        //2.查出所有的instrumentMonitor表信息
+        List<InstrumentmonitorDTO> instrumentmonitorDTOS = instrumentmonitorService.selectMonitorEquipmentAll();
+        if(CollectionUtils.isEmpty(instrumentmonitorDTOS)){
+            return;
+        }
+        //通过typeId+configId分组
+        Map<String, List<InstrumentmonitorDTO>> tidCidMap = instrumentmonitorDTOS.stream().collect(Collectors.groupingBy(res -> res.getInstrumenttypeid() + "" + res.getInstrumentconfigid()));
+        //3.遍历所有的探头信息
+        for (InstrumentparamconfigDTO instrumentparamconfigDTO : probeList) {
+            Integer instrumentTypeId = instrumentparamconfigDTO.getInstrumenttypeid();
+            Integer instrumentConfigId = instrumentparamconfigDTO.getInstrumentconfigid();
+            if(!tidCidMap.containsKey(instrumentTypeId.toString()+instrumentConfigId)){
+                continue;
+            }
+            String unit = tidCidMap.get(instrumentTypeId.toString() + instrumentConfigId).get(0).getUnit();
+            instrumentparamconfigDTO.setUnit(StringUtils.isEmpty(unit) ? "":unit);
+        }
+        long start = System.currentTimeMillis();
+        //5.更新探头表
+        instrumentparamconfigService.updateBatch(probeList);
+        long time = System.currentTimeMillis() - start;
+        System.out.println("用时："+time);
     }
 }

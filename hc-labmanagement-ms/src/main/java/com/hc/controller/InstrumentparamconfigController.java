@@ -3,10 +3,12 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.InstrumentparamconfigApplication;
 import com.hc.application.command.InstrumentparamconfigCommand;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,6 +67,7 @@ public class InstrumentparamconfigController {
        return  instrumentparamconfigApplication.getEquipmentUnAddMonitorTypeByNo(equipmentNo);
     }
 
+    @JwtIgnore
     @GetMapping("/getInstrumentMonitorInfo")
     @ApiOperation("查询医院探头监测的信息")
     public List<InstrumentmonitorDto> selectInstrumentMonitorInfo(@RequestParam("hospitalCode") String hospitalCode){
@@ -80,5 +83,12 @@ public class InstrumentparamconfigController {
     @ApiOperation("更新最新一次的报警时间(用于每小时只报警一次)")
     public void editWarningTime(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningTime") String warningTime){
         instrumentparamconfigApplication.editWarningTime(instrumentParamConfigNo,warningTime);
+    }
+
+    @JwtIgnore
+    @GetMapping("/syncProbeUnit")
+    @ApiOperation("同步探头单位")
+    public void syncProbeUnit(){
+        instrumentparamconfigApplication.syncProbeUnit();
     }
 }

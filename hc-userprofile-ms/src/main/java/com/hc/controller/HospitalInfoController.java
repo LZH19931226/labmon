@@ -6,6 +6,7 @@ import com.hc.appliction.command.UserScheduleCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserSchedulingModel;
 import com.hc.command.labmanagement.model.hospital.HospitalCommand;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserSchedulingVo;
@@ -98,6 +99,7 @@ public class HospitalInfoController {
      * 查询医院id集合
      * @return
      */
+    @JwtIgnore
     @GetMapping("/findHospitalCodeList")
     public List<String> findHospitalCodeList(){
         return hospitalInfoApplication.selectHospitalCodeList();
@@ -107,6 +109,7 @@ public class HospitalInfoController {
      * 获取医院集合
      * @return
      */
+    @JwtIgnore
     @GetMapping("/getAllHospitalInfo")
     public List<HospitalInfoDto> getAllHospitalInfo(){
         return hospitalInfoApplication.getAllHospitalInfo();

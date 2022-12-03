@@ -187,8 +187,7 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
      */
     @Override
     public void updateBatch(List<InstrumentparamconfigDTO> list) {
-        List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
-        instrumentparamconfigRepository.updateBatchById(convert);
+        instrumentparamconfigRepository.updateBatch(list);
     }
 
     /**
@@ -223,5 +222,11 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public void batchProbeAlarmState(List<String> probeIds, String warningPhone) {
         instrumentparamconfigRepository.batchProbeAlarmState(probeIds,warningPhone);
+    }
+
+    @Override
+    public List<InstrumentparamconfigDTO> list() {
+        List<InstrumentparamconfigPo> list = instrumentparamconfigRepository.list();
+        return BeanConverter.convert(list,InstrumentparamconfigDTO.class);
     }
 }

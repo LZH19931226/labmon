@@ -209,4 +209,10 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
         instrumentParamConfigPoLambdaUpdateWrapper.set(InstrumentparamconfigPo::getWarningphone, warningPhone);
         instrumentparamconfigDao.update(new InstrumentparamconfigPo(),instrumentParamConfigPoLambdaUpdateWrapper);
     }
+
+    @Override
+    public void updateBatch(List<InstrumentparamconfigDTO> list) {
+        List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
+        instrumentparamconfigDao.updateBatch(convert);
+    }
 }

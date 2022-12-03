@@ -19,7 +19,8 @@
     <select id="selectInstrumentparamconfigByEqNo" resultType="com.hc.dto.InstrumentConfigDTO">
         SELECT
             t3.instrumentconfigid,
-            t3.instrumentconfigname
+            t3.instrumentconfigname,
+            t2.unit
             FROM
             monitorinstrument t1
             LEFT JOIN instrumentmonitor t2 ON t1.instrumenttypeid = t2.instrumenttypeid

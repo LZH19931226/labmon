@@ -58,4 +58,7 @@ public class ProbeInfoDto {
     /** 饱和值 */
     private BigDecimal saturation;
 
+    /** 单位 */
+    private String unit;
+
 }

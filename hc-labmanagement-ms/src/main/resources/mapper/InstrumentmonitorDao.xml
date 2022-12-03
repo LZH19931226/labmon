@@ -44,7 +44,8 @@
             a.calibration,
             e.alwayalarm,
             e.equipmentno,
-            ifnull( a.warningphone, '0' ) warningphone
+            ifnull( a.warningphone, '0' ) warningphone,
+            a.unit
         FROM
             instrumentparamconfig a
                 LEFT JOIN monitorinstrumenttype b ON a.instrumenttypeid = b.instrumenttypeid

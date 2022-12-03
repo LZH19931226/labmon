@@ -1,5 +1,6 @@
 package com.hc.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class InstrumentConfigDTO implements Serializable {
      */
     @ApiModelProperty(value = "监控参数类型名称")
     private String instrumentconfigname;
+
+    @TableField(exist = false)
+    private String unit;
 
 }
 

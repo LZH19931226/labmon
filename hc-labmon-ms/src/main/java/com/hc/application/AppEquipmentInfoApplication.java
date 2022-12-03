@@ -321,6 +321,13 @@ public class AppEquipmentInfoApplication {
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
             probeInfoDto.setState(state==null?"0":state);
             probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
+            if(StringUtils.isNotBlank(instrumentParamConfigDto.getUnit())){
+                String unit = instrumentParamConfigDto.getUnit();
+                probeInfoDto.setUnit(unit);
+                probeInfoDto.setValue(probeInfoDto.getValue()+unit);
+            }else {
+                probeInfoDto.setUnit("");
+            }
         }
     }
 

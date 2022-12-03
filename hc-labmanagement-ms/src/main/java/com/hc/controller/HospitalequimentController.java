@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.HospitalequimentApplication;
 import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
@@ -62,6 +63,7 @@ public class HospitalequimentController {
         return hospitalequimentApplication.findHospitalEquipmentTypeByCode(hospitalCode);
     }
 
+    @JwtIgnore
     @GetMapping("/getAllHospitalEquipmentTypeInfo")
     @ApiOperation("获取所有的设备类型信息")
     public List<HospitalEquipmentTypeInfoDto> getAllHospitalEquipmentTypeInfo(){
