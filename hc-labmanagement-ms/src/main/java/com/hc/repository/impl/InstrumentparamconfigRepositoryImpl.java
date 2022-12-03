@@ -213,6 +213,6 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     @Override
     public void updateBatch(List<InstrumentparamconfigDTO> list) {
         List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
-        instrumentparamconfigDao.updateBatch(convert);
+        instrumentparamconfigDao.updateBatchData(convert);
     }
 }

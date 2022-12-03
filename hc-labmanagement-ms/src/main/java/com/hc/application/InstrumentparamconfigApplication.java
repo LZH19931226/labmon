@@ -471,9 +471,10 @@ public class InstrumentparamconfigApplication {
             String unit = tidCidMap.get(instrumentTypeId.toString() + instrumentConfigId).get(0).getUnit();
             instrumentparamconfigDTO.setUnit(StringUtils.isEmpty(unit) ? "":unit);
         }
+        List<InstrumentparamconfigDTO> collect = probeList.stream().filter(res -> !StringUtils.isEmpty(res.getUnit())).collect(Collectors.toList());
         long start = System.currentTimeMillis();
         //5.更新探头表
-        instrumentparamconfigService.updateBatch(probeList);
+        instrumentparamconfigService.updateBatch(collect);
         long time = System.currentTimeMillis() - start;
         System.out.println("用时："+time);
     }

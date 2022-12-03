@@ -15,6 +15,12 @@
                                LEFT JOIN instrumentparamconfig t2  ON t1.instrumentno = t2.instrumentno
                       WHERE t1.equipmentno = #{equipmentNo} ) a)
     </update>
+    <update id="updateBatchData">
+        replace into instrumentparamconfig values
+        <foreach collection="list" item="res"  index="index" separator=",">
+            (#{res.instrumentparamconfigno},#{res.instrumentno},#{res.instrumentconfigid},#{res.instrumentname},#{res.lowlimit},#{res.highlimit},#{res.instrumenttypeid},#{res.warningphone},#{res.pushtime},#{res.warningtime},#{res.channel},#{res.alarmtime},#{res.calibration},#{res.firsttime},#{res.saturation},#{res.state},#{res.unit})
+        </foreach>
+    </update>
 
     <select id="selectInstrumentparamconfigByEqNo" resultType="com.hc.dto.InstrumentConfigDTO">
         SELECT
