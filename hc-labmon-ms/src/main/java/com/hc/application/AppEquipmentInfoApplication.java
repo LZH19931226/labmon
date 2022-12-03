@@ -24,6 +24,7 @@ import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.RegularUtil;
 import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
@@ -321,12 +322,10 @@ public class AppEquipmentInfoApplication {
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
             probeInfoDto.setState(state==null?"0":state);
             probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
-            if(StringUtils.isNotBlank(instrumentParamConfigDto.getUnit())){
+            if(StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())){
                 String unit = instrumentParamConfigDto.getUnit();
                 probeInfoDto.setUnit(unit);
                 probeInfoDto.setValue(probeInfoDto.getValue()+unit);
-            }else {
-                probeInfoDto.setUnit("");
             }
         }
     }
