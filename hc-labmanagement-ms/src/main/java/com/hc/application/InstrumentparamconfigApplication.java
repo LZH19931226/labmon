@@ -182,7 +182,7 @@ public class InstrumentparamconfigApplication {
         InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
         //获取用户名称
         UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(!ObjectUtils.isEmpty(userId)){
+        if(null!=userInfo){
             infoCommand.setUsername(userInfo.getUsername());
         }
         //获取医院信息

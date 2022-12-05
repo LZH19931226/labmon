@@ -32,6 +32,7 @@ public class HospitalequimentController {
     private HospitalequimentApplication hospitalequimentApplication;
 
 
+    @JwtIgnore
     @PostMapping("/addHospitalEquimentType")
     @ApiOperation("新增医院设备类型")
     public void addHospitalEquimentType(@RequestBody HospitalEquimentTypeCommand hospitalEquimentTypeCommand){
@@ -57,6 +58,7 @@ public class HospitalequimentController {
         hospitalequimentApplication.deleteHospitalEquimentType(hospitalCode,equipmenttypeid);
     }
 
+    @JwtIgnore
     @GetMapping("/findHospitalEuipmentTypeInfo")
     @ApiOperation("获取设备类型集合")
     public List<HospitalEquipmentTypeModel> findHospitalEquipmentTypeByCode(@RequestParam("hospitalCode")String hospitalCode){

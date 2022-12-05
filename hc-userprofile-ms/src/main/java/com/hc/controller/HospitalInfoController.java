@@ -89,6 +89,7 @@ public class HospitalInfoController {
         return hospitalInfoApplication.selectScheduleWeekByCode(hospitalCode);
     }
 
+    @JwtIgnore
     @GetMapping("/findHospitalInfo")
     @ApiOperation("查询医院信息")
     public HospitalMadel findHospitalInfo(@RequestParam(value = "hospitalCode") String hospitalCode){
@@ -120,6 +121,7 @@ public class HospitalInfoController {
      * @param hospitalCode
      * @return
      */
+    @JwtIgnore
     @GetMapping("/findHospitalScheduleInfo")
     @ApiOperation("获取当天的排班人员")
     public List<UserSchedulingModel> getHospitalScheduleInfo(@RequestParam("hospitalCode") String hospitalCode){
