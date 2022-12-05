@@ -126,6 +126,9 @@ public class AppEquipmentInfoApplication {
         Page<ProbeCurrentInfoDto> page = new Page<>(probeCommand.getPageCurrent(),probeCommand.getPageSize());
         //分页查询设备信息
         List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page,probeCommand);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
         //在查出monitorinstrument信息
         List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
         List<MonitorinstrumentDto> monitorInstrumentDTOList =  monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
