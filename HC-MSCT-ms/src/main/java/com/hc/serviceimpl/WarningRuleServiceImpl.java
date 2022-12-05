@@ -40,10 +40,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     private HospitalRedisApi hospitalRedisApi;
     @Autowired
     private AlmMsgService almMsgService;
-
-    @Autowired
-    private WarningrecordRepository warningrecordRepository;
-
     /**
      * 进来的默认都是启用报警的
      * 先判断医院   、  在进行判断是否三次报警

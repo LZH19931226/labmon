@@ -79,6 +79,7 @@ public class InstrumentparamconfigController {
      * @param instrumentParamConfigNo 探头检测信息id
      * @param warningTime 报警时间
      */
+    @JwtIgnore
     @PutMapping("/editProbeWarningTime")
     @ApiOperation("更新最新一次的报警时间(用于每小时只报警一次)")
     public void editWarningTime(@RequestParam("instrumentParamConfigNo")String instrumentParamConfigNo,@RequestParam("warningTime") String warningTime){
