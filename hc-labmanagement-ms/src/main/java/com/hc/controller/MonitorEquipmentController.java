@@ -69,18 +69,21 @@ public class MonitorEquipmentController {
         return monitorEquipmentApplication.getAllMonitorEquipmentInfo();
     }
 
+    @JwtIgnore
     @GetMapping("/getHospitalUPS")
     @ApiOperation("获取医院ups的设备no集合")
     public List<SnDeviceDto> getEquipmentNoList(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
         return monitorEquipmentApplication.getEquipmentNoList(hospitalCode,equipmentTypeId);
     }
 
+    @JwtIgnore
     @GetMapping("/getMonitorEquipmentInfoByEno")
     @ApiOperation("获取监控设备查询信息")
     public SnDeviceDto selectMonitorEquipmentInfoByEno(@RequestParam("equipmentNo")String equipmentNo){
         return monitorEquipmentApplication.selectMonitorEquipmentInfoByEno(equipmentNo);
     }
 
+    @JwtIgnore
     @GetMapping("/getMonitorEquipmentInfoByHCode")
     @ApiOperation("获取医院的设备信息")
     public List<SnDeviceDto> getMonitorEquipmentInfoByHCode(@RequestParam("hospitalCode") String hospitalCode){

@@ -6,6 +6,7 @@ import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.vo.backlog.OperationlogVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,7 @@ public class OperationlogController {
     private OperationlogApplication operationlogApplication;
 
 
+    @JwtIgnore
     @PostMapping("/addHospitalOperationlog")
     @ApiOperation("新增医院管理操作日志")
     public void addHospitalOperationlog(@RequestBody HospitalOperationLogCommand hospitalOperationLogCommand){
@@ -46,6 +48,7 @@ public class OperationlogController {
         operationlogApplication.addHospitalEquipmentOperationLogCommand(hospitalEquipmentOperationLogCommand);
     }
 
+    @JwtIgnore
     @PostMapping("/addUserRightLogInfo")
     @ApiOperation("新增用户")
      public void addUserRightLog(@RequestBody UserRightInfoCommand userRightInfoCommand){
