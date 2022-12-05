@@ -76,13 +76,13 @@
     <if test=" equipmentTypeId != null and equipmentTypeId != ''">
         and e.equipmenttypeid = #{equipmentTypeId}
     </if>
-    <if test="instrumentNo != null and instrumentNo != ''">
-        and b.instrumentno = #{instrumentNo}
+    <if test="equipmentNo != null and equipmentNo != ''">
+        and d.equipmentno = #{equipmentNo}
     </if>
     <if test="sn != null and sn != ''">
         and b.sn  like concat('%',#{sn},'%')
     </if>
-    order by instrumentconfigid
+    order by hospitalcode
     </select>
 
 
