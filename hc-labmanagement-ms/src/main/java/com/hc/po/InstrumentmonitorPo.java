@@ -1,5 +1,6 @@
 package com.hc.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,5 +53,17 @@ public class InstrumentmonitorPo  implements Serializable {
 
 	/** 单位 */
 	private String unit;
+
+	/**
+	 * 样式最小值
+	 */
+	@TableField(value = "style_mix")
+	private String styleMin;
+
+	/**
+	 * 样式最大值
+	 */
+	@TableField(value = "style_max")
+	private String styleMax;
 }
 

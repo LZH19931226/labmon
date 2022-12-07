@@ -81,6 +81,12 @@ public class InstrumentMonitorApplication {
                 if(StringUtils.isEmpty(res.getUnit())){
                     res.setUnit("");
                 }
+                if(StringUtils.isEmpty(res.getStyleMin())){
+                    res.setStyleMin("");
+                }
+                if(StringUtils.isEmpty(res.getStyleMax())){
+                    res.setStyleMax("");
+                }
             });
             page.setRecords(list);
         }
@@ -105,6 +111,8 @@ public class InstrumentMonitorApplication {
         obj.setHighlimit(res.getHighlimit());
         obj.setChannel(res.getChannel());
         obj.setUnit(res.getUnit());
+        obj.setStyleMax(res.getStyleMax());
+        obj.setStyleMin(res.getStyleMin());
         return obj;
     }
 
