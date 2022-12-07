@@ -68,6 +68,16 @@ public class InstrumentMonitorCommand {
     private String unit;
 
     /**
+     * 样式最小值
+     */
+    private String styleMin;
+
+    /**
+     * 样式最大值
+     */
+    private String styleMax;
+
+    /**
      * 最高限值
      */
     private List<InstrumentmonitorDTO> instrumentmonitorDTOList;

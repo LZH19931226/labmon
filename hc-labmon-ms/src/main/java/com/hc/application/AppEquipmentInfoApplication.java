@@ -130,7 +130,7 @@ public class AppEquipmentInfoApplication {
             return null;
         }
         //在查出monitorinstrument信息
-        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).distinct().collect(Collectors.toList());
         List<MonitorinstrumentDto> monitorInstrumentDTOList =  monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
         Map<String, List<MonitorinstrumentDto>> enoAndMiMap = new HashMap<>();
         if(CollectionUtils.isNotEmpty(monitorInstrumentDTOList)){
