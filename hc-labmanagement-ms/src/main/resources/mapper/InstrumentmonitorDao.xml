@@ -65,8 +65,5 @@
         <if test="instrumentTypeId != null">
             and instrumenttypeid = #{instrumentTypeId}
         </if>
-        <if test="instrumentConfigId != null">
-            and instrumentconfigid = #{instrumentConfigId}
-        </if>
     </select>
 </mapper>

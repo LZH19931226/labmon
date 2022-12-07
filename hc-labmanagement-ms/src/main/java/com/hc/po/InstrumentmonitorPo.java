@@ -57,7 +57,7 @@ public class InstrumentmonitorPo  implements Serializable {
 	/**
 	 * 样式最小值
 	 */
-	@TableField(value = "style_mix")
+	@TableField(value = "style_min")
 	private String styleMin;
 
 	/**
