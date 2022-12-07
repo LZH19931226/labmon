@@ -210,9 +210,4 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
         instrumentparamconfigDao.update(new InstrumentparamconfigPo(),instrumentParamConfigPoLambdaUpdateWrapper);
     }
 
-    @Override
-    public void updateBatch(List<InstrumentparamconfigDTO> list) {
-        List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
-        instrumentparamconfigDao.updateBatchData(convert);
-    }
 }

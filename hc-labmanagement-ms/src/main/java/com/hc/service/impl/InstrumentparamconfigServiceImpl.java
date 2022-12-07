@@ -187,7 +187,8 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
      */
     @Override
     public void updateBatch(List<InstrumentparamconfigDTO> list) {
-        instrumentparamconfigRepository.updateBatch(list);
+        List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
+        instrumentparamconfigRepository.updateBatchById(convert);
     }
 
     /**
