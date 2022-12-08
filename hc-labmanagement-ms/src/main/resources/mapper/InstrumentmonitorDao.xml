@@ -57,13 +57,21 @@
 
     <select id="listByPage" resultType="com.hc.dto.InstrumentmonitorDTO">
        select
-           *
+           t1.instrumentconfigid,
+           t1.instrumenttypeid,
+           t1.lowlimit,
+           t1.highlimit,
+           t1.saturation,
+           t1.channel,
+           t1.unit,
+           t1.style_min styleMin,
+           t1.style_max styleMax
         from
-            instrumentmonitor
+            instrumentmonitor t1
         where
             1 = 1
         <if test="instrumentTypeId != null">
-            and instrumenttypeid = #{instrumentTypeId}
+            and t1.instrumenttypeid = #{instrumentTypeId}
         </if>
     </select>
 </mapper>
