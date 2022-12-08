@@ -881,6 +881,8 @@ public class MonitorEquipmentApplication {
                 .saturation(res.getSaturation())
                 .channel(StringUtils.isEmpty(res.getChannel())?"":res.getChannel())
                 .unit(StringUtils.isEmpty(res.getUnit())?"":res.getUnit())
+                .styleMax(StringUtils.isEmpty(res.getStyleMax())?"":res.getStyleMax())
+                .styleMin(StringUtils.isEmpty(res.getStyleMin())?"":res.getStyleMin())
                 .build();
     }
 
