@@ -230,4 +230,9 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
         List<InstrumentparamconfigPo> list = instrumentparamconfigRepository.list();
         return BeanConverter.convert(list,InstrumentparamconfigDTO.class);
     }
+
+    @Override
+    public void updateBatchData(List<InstrumentparamconfigDTO> probeList) {
+        instrumentparamconfigRepository.updateBatchData(probeList);
+    }
 }

@@ -210,4 +210,8 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
         instrumentparamconfigDao.update(new InstrumentparamconfigPo(),instrumentParamConfigPoLambdaUpdateWrapper);
     }
 
+    @Override
+    public void updateBatchData(List<InstrumentparamconfigDTO> probeList) {
+        instrumentparamconfigDao.updateBatchData(probeList);
+    }
 }

@@ -14,15 +14,6 @@ public interface InstrumentParamConfigDao extends BaseMapper<InstrumentParamConf
     @Select("select * from instrumentparamconfig t1 LEFT JOIN  instrumentconfig t2 ON t2.instrumentconfigid = t1.instrumentconfigid  where instrumentparamconfigNO = #{instrumentParamConfigNo}")
     InstrumentParamConfigDto getProbeInfo(String instrumentParamConfigNo);
 
-    @Select("SELECT\n" +
-            "\tt3.instrumentconfigName,\n" +
-            "\tt1.lowlimit,\n" +
-            "\tt1.highlimit\n" +
-            "FROM\n" +
-            "\tinstrumentparamconfig t1\n" +
-            "LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno\n" +
-            "LEFT JOIN instrumentconfig t3 ON t1.instrumentconfigid = t3.instrumentconfigid\n" +
-            "WHERE t2.equipmentno = #{equipmentNo}")
     List<InstrumentParamConfigDto> getInstrumentParamConfigByENo(String equipmentNo);
 
     List<InstrumentParamConfigDto> getInstrumentParamConfigByENoList(@Param("eNoList") List<String> eNoList);

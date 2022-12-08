@@ -476,12 +476,21 @@ public class InstrumentparamconfigApplication {
             if(!tidCidMap.containsKey(instrumentTypeId.toString()+instrumentConfigId)){
                 continue;
             }
-            String unit = tidCidMap.get(instrumentTypeId.toString() + instrumentConfigId).get(0).getUnit();
+            List<InstrumentmonitorDTO> instrumentmonitorDTOList = tidCidMap.get(instrumentTypeId.toString() + instrumentConfigId);
+            if(CollectionUtils.isEmpty(instrumentmonitorDTOList)){
+                continue;
+            }
+            InstrumentmonitorDTO instrumentmonitorDTO = instrumentmonitorDTOList.get(0);
+            String unit = instrumentmonitorDTO.getUnit();
+            String styleMin = instrumentmonitorDTO.getStyleMin();
+            String styleMax = instrumentmonitorDTO.getStyleMax();
             instrumentparamconfigDTO.setUnit(StringUtils.isEmpty(unit) ? "":unit);
+            instrumentparamconfigDTO.setStyleMin(StringUtils.isEmpty(styleMin) ? "":styleMin);
+            instrumentparamconfigDTO.setStyleMax(StringUtils.isEmpty(styleMax) ? "":styleMax);
         }
         long start = System.currentTimeMillis();
         //5.更新探头表
-        instrumentparamconfigService.updateBatch(probeList);
+        instrumentparamconfigService.updateBatchData(probeList);
         long time = System.currentTimeMillis() - start;
         System.out.println("用时："+time);
     }
