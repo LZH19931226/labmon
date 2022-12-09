@@ -68,8 +68,12 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME)
     public void onMessage1(String messageContent) {
-        msctMessage(messageContent);
-
+        try {
+            msctMessage(messageContent);
+        }catch (Exception e){
+          e.printStackTrace();
+          return;
+        }
     }
 
 
@@ -78,7 +82,12 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME1)
     public void onMessage2(String messageContent) {
-        msctMessage(messageContent);
+        try {
+            msctMessage(messageContent);
+        }catch (Exception e){
+            e.printStackTrace();
+            return;
+        }
 
     }
 
@@ -88,7 +97,12 @@ public class SocketMessageListener {
      */
     @StreamListener(BaoJinMsg.EXCHANGE_NAME2)
     public void onMessage3(String messageContent) {
-        msctMessage(messageContent);
+        try {
+            msctMessage(messageContent);
+        }catch (Exception e){
+            e.printStackTrace();
+            return;
+        }
     }
 
     /**
