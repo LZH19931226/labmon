@@ -450,18 +450,24 @@ public class EquipmentInfoServiceHelp {
         if (CollectionUtils.isNotEmpty(list)) {
             curveDataModel.setMaxNum(list.get(0).getHighLimit()+"");
             curveDataModel.setMinNum(list.get(0).getLowLimit()+"");
+            curveDataModel.setStyleMin(list.get(0).getStyleMin()+"");
+            curveDataModel.setStyleMax(list.get(0).getStyleMax()+"");
         }else {
             OptionalDouble max = listdata.stream().mapToDouble(Double::parseDouble).max();
             if (max.isPresent()) {
                 curveDataModel.setMaxNum(max.getAsDouble()+"");
+                curveDataModel.setStyleMax(max.getAsDouble()+"");
             }else {
                 curveDataModel.setMaxNum("");
+                curveDataModel.setStyleMax("");
             }
             OptionalDouble min = listdata.stream().mapToDouble(Double::parseDouble).min();
             if (min.isPresent()) {
                 curveDataModel.setMinNum(min.getAsDouble()+"");
+                curveDataModel.setStyleMin(min.getAsDouble()+"");
             }else {
                 curveDataModel.setMinNum("");
+                curveDataModel.setStyleMin("");
             }
         }
         List<SeriesDataModel> seriesDataModelList = new ArrayList<SeriesDataModel>();

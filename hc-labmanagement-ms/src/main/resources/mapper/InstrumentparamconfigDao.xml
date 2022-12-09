@@ -18,7 +18,7 @@
     <update id="updateBatchData">
         replace into instrumentparamconfig values
         <foreach collection="list" item="res"  index="index" separator=",">
-            (#{res.instrumentparamconfigno},#{res.instrumentno},#{res.instrumentconfigid},#{res.instrumentname},#{res.lowlimit},#{res.highlimit},#{res.instrumenttypeid},#{res.warningphone},#{res.pushtime},#{res.warningtime},#{res.channel},#{res.alarmtime},#{res.calibration},#{res.firsttime},#{res.saturation},#{res.state},#{res.unit})
+            (#{res.instrumentparamconfigno},#{res.instrumentno},#{res.instrumentconfigid},#{res.instrumentname},#{res.lowlimit},#{res.highlimit},#{res.instrumenttypeid},#{res.warningphone},#{res.pushtime},#{res.warningtime},#{res.channel},#{res.alarmtime},#{res.calibration},#{res.firsttime},#{res.saturation},#{res.state},#{res.unit},#{res.styleMin},#{res.styleMax})
         </foreach>
     </update>
 
@@ -61,7 +61,9 @@
         a.instrumentno,
         a.calibration,
         a.instrumentparamconfigNO as instrumentparamconfigno,
-        a.unit
+        a.unit,
+        a.style_min styleMin,
+        a.style_max styleMax
     FROM instrumentparamconfig a
              LEFT JOIN monitorinstrument b 		ON a.instrumentno = b.instrumentno
              LEFT JOIN monitorinstrumenttype c ON c.instrumenttypeid = a.instrumenttypeid

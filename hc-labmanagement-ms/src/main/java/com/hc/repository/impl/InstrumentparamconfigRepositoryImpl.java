@@ -211,8 +211,7 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     }
 
     @Override
-    public void updateBatch(List<InstrumentparamconfigDTO> list) {
-        List<InstrumentparamconfigPo> convert = BeanConverter.convert(list, InstrumentparamconfigPo.class);
-        instrumentparamconfigDao.updateBatchData(convert);
+    public void updateBatchData(List<InstrumentparamconfigDTO> probeList) {
+        instrumentparamconfigDao.updateBatchData(probeList);
     }
 }

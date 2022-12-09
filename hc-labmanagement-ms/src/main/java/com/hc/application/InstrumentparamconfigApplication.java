@@ -125,6 +125,8 @@ public class InstrumentparamconfigApplication {
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime())
                 .setFirsttime(new Date())
                 .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "":instrumentParamConfigCommand.getUnit())
+                .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
+                .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
                 .setSaturation(instrumentParamConfigCommand.getSaturation());
         instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
 
@@ -165,6 +167,8 @@ public class InstrumentparamconfigApplication {
                 .setHighLimit(instrumentParamConfigCommand.getHighlimit())
                 .setWarningPhone(instrumentParamConfigCommand.getWarningphone())
                 .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "" : instrumentParamConfigCommand.getUnit())
+                .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
+                .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
                 .setCalibration(instrumentParamConfigCommand.getCalibration());
         probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
     }
@@ -293,6 +297,8 @@ public class InstrumentparamconfigApplication {
                 .setSaturation(instrumentParamConfigCommand.getSaturation())
                 .setCalibration(instrumentParamConfigCommand.getCalibration())
                 .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "":instrumentParamConfigCommand.getUnit())
+                .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
+                .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
     }
 
@@ -377,6 +383,8 @@ public class InstrumentparamconfigApplication {
                         .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
                         .saturation(configDTO.getSaturation())
                         .unit(StringUtils.isEmpty(configDTO.getUnit()) ? "":configDTO.getUnit())
+                        .styleMax(StringUtils.isEmpty(configDTO.getStyleMax()) ? "":configDTO.getStyleMax())
+                        .styleMin(StringUtils.isEmpty(configDTO.getStyleMin()) ? "":configDTO.getStyleMin())
                         .build();
                 list.add(build);
             }
@@ -468,12 +476,21 @@ public class InstrumentparamconfigApplication {
             if(!tidCidMap.containsKey(instrumentTypeId.toString()+instrumentConfigId)){
                 continue;
             }
-            String unit = tidCidMap.get(instrumentTypeId.toString() + instrumentConfigId).get(0).getUnit();
+            List<InstrumentmonitorDTO> instrumentmonitorDTOList = tidCidMap.get(instrumentTypeId.toString() + instrumentConfigId);
+            if(CollectionUtils.isEmpty(instrumentmonitorDTOList)){
+                continue;
+            }
+            InstrumentmonitorDTO instrumentmonitorDTO = instrumentmonitorDTOList.get(0);
+            String unit = instrumentmonitorDTO.getUnit();
+            String styleMin = instrumentmonitorDTO.getStyleMin();
+            String styleMax = instrumentmonitorDTO.getStyleMax();
             instrumentparamconfigDTO.setUnit(StringUtils.isEmpty(unit) ? "":unit);
+            instrumentparamconfigDTO.setStyleMin(StringUtils.isEmpty(styleMin) ? "":styleMin);
+            instrumentparamconfigDTO.setStyleMax(StringUtils.isEmpty(styleMax) ? "":styleMax);
         }
         long start = System.currentTimeMillis();
         //5.更新探头表
-        instrumentparamconfigService.updateBatch(probeList);
+        instrumentparamconfigService.updateBatchData(probeList);
         long time = System.currentTimeMillis() - start;
         System.out.println("用时："+time);
     }

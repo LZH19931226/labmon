@@ -142,5 +142,7 @@ public interface InstrumentparamconfigService{
      * @return
      */
     List<InstrumentparamconfigDTO> list();
+
+    void updateBatchData(List<InstrumentparamconfigDTO> probeList);
 }
 
