@@ -13,12 +13,27 @@
             </pattern>
         </encoder>
     </appender>
-    <appender name="LOGSTASH"
-              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <appender name="LOGSTASH"  class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+<!--        <destination>172.24.58.152:9600</destination>-->
+<!--        <queueSize>1048576</queueSize>-->
+<!--        <encoder charset="GB2312" class="net.logstash.logback.encoder.LogstashEncoder" />-->
         <destination>172.24.58.152:9600</destination>
         <queueSize>1048576</queueSize>
-        <encoder charset="GB2312"
-                 class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "service": "hc-datapase-ms",
+                        "rest": "%msg%n"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
     </appender>
     <logger name="jdbc.sqltiming" level="DEBUG"/>
     <logger name="com.ibatis" level="DEBUG" />
