@@ -43,7 +43,7 @@ public class SocketMessageListener {
                 snData.setNowTime(new Date());
                 snData.setData(messageContent);
                 //推送mq
-                //randomPush(snData);
+                randomPush(snData);
                 log.info("数据解析服务解析完成推送到队列:{}",JsonUtil.toJson(snData));
             });
         }catch (Exception e){
