@@ -14,34 +14,30 @@
             </pattern>
         </encoder>
     </appender>
-    <appender name="LOGSTASH"
-              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>172.24.58.150:9600</destination>
-        <encoder charset="UTF-8"
-                 class="net.logstash.logback.encoder.LogstashEncoder" />
-    </appender>
-<!--    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">-->
-<!--        <encoder>-->
-<!--            &lt;!&ndash;<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>&ndash;&gt;-->
-<!--            <pattern>{"_namespace_":"hc-labmanagement-ms","_log_":"%msg%n"}</pattern>-->
-<!--        </encoder>-->
-<!--        <topic>labmanagement</topic>-->
-<!--        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />-->
-<!--        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />-->
-
-<!--        &lt;!&ndash; Optional parameter to use a fixed partition &ndash;&gt;-->
-<!--        &lt;!&ndash; <partition>0</partition> &ndash;&gt;-->
-
-<!--        &lt;!&ndash; Optional parameter to include log timestamps into the kafka message &ndash;&gt;-->
-<!--        &lt;!&ndash; <appendTimestamp>true</appendTimestamp> &ndash;&gt;-->
-
-<!--        &lt;!&ndash; each <producerConfig> translates to regular kafka-client config (format: key=value) &ndash;&gt;-->
-<!--        &lt;!&ndash; producer configs are documented here: https://kafka.apache.org/documentation.html#newproducerconfigs &ndash;&gt;-->
-<!--        &lt;!&ndash; bootstrap.servers is the only mandatory producerConfig &ndash;&gt;-->
-<!--        <producerConfig>bootstrap.servers=172.24.58.150:9092,172.24.58.151:9092,172.24.58.152:9092</producerConfig>-->
-
-<!--        &lt;!&ndash; this is the fallback appender if kafka is not available. &ndash;&gt;-->
+<!--    <appender name="LOGSTASH"-->
+<!--              class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--        <destination>172.24.58.150:9600</destination>-->
+<!--        <encoder charset="UTF-8"-->
+<!--                 class="net.logstash.logback.encoder.LogstashEncoder" />-->
 <!--    </appender>-->
+    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "service": "hc-labmanagement-ms",
+                        "msg": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <topic>labmanagement</topic>
+        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+        <producerConfig>bootstrap.servers=172.24.58.150:9092,172.24.58.151:9092,172.24.58.152:9092</producerConfig>
+    </appender>
 
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
@@ -61,12 +57,12 @@
     <!-- 也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root". -->
     <logger name="com.hc" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="kafkaAppender"/>
     </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="kafkaAppender"/>
     </root>
 
 </configuration>

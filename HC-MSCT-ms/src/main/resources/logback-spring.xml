@@ -14,34 +14,33 @@
             </pattern>
         </encoder>
     </appender>
-    <!-- 按照每天生成日志文件 -->
-    <!--    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-    <!--        <file>logs/tcp.log</file>-->
-    <!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-    <!--            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;-->
-    <!--            <FileNamePattern>./tcp/tcp.%d{yyyy-MM-dd}.log</FileNamePattern>-->
-    <!--            <MaxHistory>30</MaxHistory>-->
-    <!--        </rollingPolicy>-->
-    <!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
-    <!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
-    <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n-->
-    <!--            </pattern>-->
-    <!--        </layout>-->
-    <!--    </appender>-->
-    <appender name="LOGSTASH"
-              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>172.24.58.151:9600</destination>
-        <encoder charset="UTF-8"
-                 class="net.logstash.logback.encoder.LogstashEncoder" />
+
+<!--    <appender name="LOGSTASH"-->
+<!--              class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--        <destination>172.24.58.151:9600</destination>-->
+<!--        <encoder charset="UTF-8"-->
+<!--                 class="net.logstash.logback.encoder.LogstashEncoder" />-->
+<!--    </appender>-->
+
+    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "service": "hc-msct-ms",
+                        "msg": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <topic>msct</topic>
+        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+        <producerConfig>bootstrap.servers=172.24.58.150:9092,172.24.58.151:9092,172.24.58.152:9092</producerConfig>
     </appender>
-    <!--    <appender name ="ASYNC" class= "ch.qos.logback.classic.AsyncAppender">-->
-    <!--        &lt;!&ndash; 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 &ndash;&gt;-->
-    <!--        <discardingThreshold >0</discardingThreshold>-->
-    <!--        &lt;!&ndash; 更改默认的队列的深度,该值会影响性能.默认值为256 &ndash;&gt;-->
-    <!--        <queueSize>512</queueSize>-->
-    <!--        &lt;!&ndash; 添加附加的appender,最多只能添加一个 &ndash;&gt;-->
-    <!--        <appender-ref ref ="FILE"/>-->
-    <!--    </appender>-->
+
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
     <!-- <loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。-->
@@ -62,44 +61,8 @@
         <appender-ref ref="STDOUT"/>
         <!--        <appender-ref ref="FILE"/>-->
         <!--        <appender-ref ref="ASYNC"/>-->
-        <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="kafkaAppender"/>
     </root>
 
 </configuration>
-<!--<configuration>-->
-<!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
-<!--        <encoder>-->
-<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
-<!--        </encoder>-->
-<!--    </appender>-->
 
-<!--    &lt;!&ndash; This is the kafkaAppender &ndash;&gt;-->
-<!--    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">-->
-<!--        <encoder>-->
-<!--            &lt;!&ndash;<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>&ndash;&gt;-->
-<!--            <pattern>{"_namespace_":"hc-msct-ms","_log_":"%msg%n"}</pattern>-->
-<!--        </encoder>-->
-<!--        <topic>msct</topic>-->
-<!--        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />-->
-<!--        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />-->
-
-<!--        &lt;!&ndash; Optional parameter to use a fixed partition &ndash;&gt;-->
-<!--        &lt;!&ndash; <partition>0</partition> &ndash;&gt;-->
-
-<!--        &lt;!&ndash; Optional parameter to include log timestamps into the kafka message &ndash;&gt;-->
-<!--        &lt;!&ndash; <appendTimestamp>true</appendTimestamp> &ndash;&gt;-->
-
-<!--        &lt;!&ndash; each <producerConfig> translates to regular kafka-client config (format: key=value) &ndash;&gt;-->
-<!--        &lt;!&ndash; producer configs are documented here: https://kafka.apache.org/documentation.html#newproducerconfigs &ndash;&gt;-->
-<!--        &lt;!&ndash; bootstrap.servers is the only mandatory producerConfig &ndash;&gt;-->
-<!--        <producerConfig>bootstrap.servers=172.24.58.150:9092,172.24.58.151:9092,172.24.58.152:9092</producerConfig>-->
-
-<!--        &lt;!&ndash; this is the fallback appender if kafka is not available. &ndash;&gt;-->
-<!--    </appender>-->
-
-<!--    <root level="info">-->
-
-<!--        <appender-ref ref="STDOUT"/>&ndash;&gt;-->
-<!--        <appender-ref ref="kafkaAppender" />-->
-<!--    </root>-->
-<!--</configuration>-->
