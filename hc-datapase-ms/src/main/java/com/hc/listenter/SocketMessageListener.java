@@ -33,6 +33,7 @@ public class SocketMessageListener {
         try {
             ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
             String data = model.getData();
+            String logId = model.getLogId();
             //获取到的原始数据进行解析
             List<ParamaterModel> paseData = service.paseData(data);
             if (CollectionUtils.isEmpty(paseData)) {
@@ -42,6 +43,7 @@ public class SocketMessageListener {
             paseData.forEach(snData -> {
                 snData.setNowTime(new Date());
                 snData.setData(messageContent);
+                snData.setLogId(logId);
                 //推送mq
                 randomPush(snData);
                 log.info("数据解析服务解析完成推送到队列:{}",JsonUtil.toJson(snData));
@@ -54,7 +56,6 @@ public class SocketMessageListener {
 
     public void randomPush(ParamaterModel model) {
         //生成全局id标记
-        model.setLogId(UniqueHash.Id());
         int a = new Random().nextInt(3);
         if (a == 0) {
             messagePushService.pushMessage(JsonUtil.toJson(model));
