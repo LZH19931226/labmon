@@ -623,6 +623,9 @@ public class AppEquipmentInfoApplication {
                 String str =  listToStr(list,userMap);
                 detailInfo.setPhoneCallUser(str);
             }
+            List<String> list1 = getNoticeList(mailCallUser,phoneCallUser,userMap);
+            detailInfo.setInfoNoticeList(list1);
+
             String instrumentparamconfigno = detailInfo.getInstrumentparamconfigno();
             if(!stringListMap.containsKey(instrumentparamconfigno)){
                 continue;
@@ -635,6 +638,45 @@ public class AppEquipmentInfoApplication {
             }
         }
         return detailInfos;
+    }
+
+    /**
+     * 获取消息通知集合
+     * @param mailCallUser
+     * @param phoneCallUser
+     * @return
+     */
+    private List<String> getNoticeList(String mailCallUser, String phoneCallUser,Map<String, List<UserRightDto>> userMap) {
+        List<String> list = new ArrayList<>();
+        //1.都为空时
+        if(StringUtils.isBlank(mailCallUser) && StringUtils.isBlank(phoneCallUser)){
+            return null;
+        }
+        //2.都不为空时
+        if(!StringUtils.isBlank(mailCallUser) && !StringUtils.isBlank(phoneCallUser)){
+            List<String>  mailList= Arrays.asList(mailCallUser.split("/"));
+            List<String>  phoneList= Arrays.asList(phoneCallUser.split("/"));
+            List<String> sameList = mailList.stream().filter(phoneList::contains).collect(Collectors.toList());
+            sameList.forEach(res->{
+                list.add(res + SysConstants.PHONE_SMS_NOTIFICATIONS);
+            });
+            List<String> strings = new ArrayList<>(CollectionUtils.removeAll(mailList, sameList));
+            if (strings.size() > 0) {
+                mailList.forEach(res -> list.add(res + SysConstants.SMS_NOTIFICATIONS));
+            } else {
+                phoneList.forEach(res -> list.add(res + SysConstants.PHONE_NOTIFICATIONS));
+            }
+            return list;
+        }
+        //3.有一个为空
+        if (StringUtils.isBlank(mailCallUser)) {
+            List<String>  phoneList= Arrays.asList(phoneCallUser.split("/"));
+            phoneList.forEach(res -> list.add(res + SysConstants.PHONE_NOTIFICATIONS));
+        }else {
+            List<String>  mailList= Arrays.asList(mailCallUser.split("/"));
+            mailList.forEach(res -> list.add(res + SysConstants.SMS_NOTIFICATIONS));
+        }
+        return list;
     }
 
     private String listToStr(List<String> list, Map<String, List<UserRightDto>> userMap) {
@@ -713,6 +755,8 @@ public class AppEquipmentInfoApplication {
                     probeAlarmState.setInstrumentConfigId(res.getInstrumentconfigid());
                     probeAlarmState.setInstrumentNo(res.getInstrumentno());
                     probeAlarmState.setEName(CurrentProbeInfoEnum.from(res.getInstrumentconfigid()).getProbeEName());
+                    probeAlarmState.setLowLimit(res.getLowLimit().toString());
+                    probeAlarmState.setHighLimit(res.getHighLimit().toString());
                     list1.add(probeAlarmState);
                 });
                 if (CollectionUtils.isNotEmpty(list1)) {

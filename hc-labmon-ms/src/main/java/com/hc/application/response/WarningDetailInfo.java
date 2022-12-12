@@ -3,6 +3,7 @@ package com.hc.application.response;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class WarningDetailInfo {
@@ -68,4 +69,9 @@ public class WarningDetailInfo {
 
     /** 设备英文名称 */
     private String eName;
+
+    /**
+     * 消息通知集合
+     * */
+    private List<String> infoNoticeList;
 }
