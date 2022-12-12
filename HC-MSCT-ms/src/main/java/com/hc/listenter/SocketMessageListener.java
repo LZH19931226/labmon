@@ -42,8 +42,6 @@ public class SocketMessageListener {
     @Autowired
     private WarningService warningService;
     @Autowired
-    private SendrecordService sendrecordService;
-    @Autowired
     private UserrightDao userrightDao;
     @Autowired
     private SoundLightApi soundLightApi;
@@ -144,7 +142,7 @@ public class SocketMessageListener {
             return;
         }
         //通知信息
-        sendrecordService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString());
+        warningService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString());
         //保存到数据库
         sendTimeoutRecordService.saveTimeOutRecord(userrightByHospitalcodeAAndTimeout,hospitalcode,eqTypeName.toString(),count.toString());
     }
@@ -181,7 +179,7 @@ public class SocketMessageListener {
                     return;
                 }
                 //异步推送报警短信
-                warningrecord = sendrecordService.pushNotification(userList, model, hospitalInfoDto);
+                warningrecord = warningService.pushNotification(userList, model, hospitalInfoDto);
                 //如果该医院开启了声光报警则需要推送声光报警指令
                 if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
                     soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
