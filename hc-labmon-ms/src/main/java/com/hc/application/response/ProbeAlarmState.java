@@ -20,4 +20,8 @@ public class ProbeAlarmState {
 
     private String instrumentNo;
 
+    private String lowLimit;
+
+    private String highLimit;
+
 }
