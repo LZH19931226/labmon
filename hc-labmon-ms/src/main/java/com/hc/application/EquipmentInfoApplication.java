@@ -28,6 +28,7 @@ import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.FileUtil;
+import com.hc.my.common.core.util.ObjectConvertUtils;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.HospitalEquipmentService;
 import com.hc.service.InstrumentMonitorInfoService;
@@ -44,6 +45,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.hc.my.common.core.util.ObjectConvertUtils.getObjectToMap;
 
 /**
  * @author hc
@@ -751,7 +754,7 @@ public class EquipmentInfoApplication {
             else{
                 monitorequipmentlastdata.setCurrentups("正常");
             }
-            Map<String, Object> objectMap = getObjectToMap(monitorequipmentlastdata);
+            Map<String, Object> objectMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
             //过滤map 只取list存在的key的map
             filterMap(objectMap,list);
             mapList.add(objectMap);
@@ -782,7 +785,7 @@ public class EquipmentInfoApplication {
         List<Map<String,Object>> mapList = new ArrayList<>();
         updateLastData(monitorEquipmentLastDataInfo);
         for (Monitorequipmentlastdata monitorequipmentlastdata : monitorEquipmentLastDataInfo) {
-            Map<String, Object> objectMap = getObjectToMap(monitorequipmentlastdata);
+            Map<String, Object> objectMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
             //过滤map 只取list存在的key的map
             filterMap(objectMap,tittleList);
             mapList.add(objectMap);
@@ -864,35 +867,4 @@ public class EquipmentInfoApplication {
         }
         return name;
     }
-
-    /**
-     * 对象转map
-     * @param obj
-     * @return
-     */
-    public static Map<String, Object> getObjectToMap(Object obj)  {
-        Map<String, Object> map = new HashMap<String, Object>();
-        Class<?> cla = obj.getClass();
-        Field[] fields = cla.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            String keyName = field.getName();
-            Object value = null;
-            try {
-                value = field.get(obj);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-            if (value == null) {
-                value = "";
-            }
-            if(value instanceof Date){
-                value = DateUtils.paseDatetime((Date) value);
-            }
-            map.put(keyName, value);
-        }
-        return map;
-    }
-
-
 }

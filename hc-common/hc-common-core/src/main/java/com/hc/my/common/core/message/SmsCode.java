@@ -1,4 +1,4 @@
-package com.hc.util;
+package com.hc.my.common.core.message;
 
 public class SmsCode {
 

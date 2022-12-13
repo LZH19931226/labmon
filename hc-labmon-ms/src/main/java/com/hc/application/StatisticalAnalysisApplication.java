@@ -1,17 +1,31 @@
 package com.hc.application;
 
-import com.hc.application.response.StatisticalResult;
-import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.AlarmNoticeCommand;
+import com.hc.application.response.AlarmNoticeResult;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.HospitalInfoDto;
+import com.hc.dto.LabMessengerPublishTaskDto;
 import com.hc.dto.MonitorEquipmentDto;
+import com.hc.dto.UserRightDto;
+import com.hc.my.common.core.message.MailCode;
+import com.hc.my.common.core.message.SmsCode;
+import com.hc.my.common.core.struct.Context;
+import com.hc.my.common.core.util.ExcelExportUtils;
+import com.hc.my.common.core.util.FileUtil;
+import com.hc.my.common.core.util.ObjectConvertUtils;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.HospitalInfoService;
+import com.hc.service.LabMessengerPublishTaskService;
+import com.hc.service.UserRightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +40,14 @@ public class StatisticalAnalysisApplication {
 
     @Autowired
     private EquipmentInfoService equipmentInfoService;
+
+    @Autowired
+    private LabMessengerPublishTaskService labMessengerPublishTaskService;
+
+    @Autowired
+    private UserRightService userRightService;
+
+
     /**
      * 查询医院设备报警数量
      * @param time
@@ -116,5 +138,81 @@ public class StatisticalAnalysisApplication {
         return name;
     }
 
+    /**
+     * 获取报警通知
+     * @param alarmNoticeCommand
+     * @return
+     */
+    public Page<AlarmNoticeResult> getAlarmNotice(AlarmNoticeCommand alarmNoticeCommand) {
+        Page<AlarmNoticeResult> page = new Page(alarmNoticeCommand.getPageCurrent(),alarmNoticeCommand.getPageSize());
+        List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList =  labMessengerPublishTaskService.getAlarmNoticeInfo(page,alarmNoticeCommand);
+        if(CollectionUtils.isEmpty(labMessengerPublishTaskDtoList)){
+            return null;
+        }
+        List<UserRightDto> userRightDtoList = new ArrayList<>();
+        if(StringUtils.isEmpty(alarmNoticeCommand.getPhoneNum())){
+            userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
+        }else {
+            userRightDtoList = userRightService. getUserRightInfo(alarmNoticeCommand);
+        }
+        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+        List<AlarmNoticeResult> list = processData(labMessengerPublishTaskDtoList,phoneMap);
+        page.setRecords(list);
+        return page;
+    }
+
+    private List<AlarmNoticeResult> processData(List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList, Map<String, List<UserRightDto>> phoneMap) {
+        List<AlarmNoticeResult> list = new ArrayList<>();
+        String lang = Context.getLang();
+        for (LabMessengerPublishTaskDto labMessengerPublishTaskDto : labMessengerPublishTaskDtoList) {
+            AlarmNoticeResult alarmNoticeResult = new AlarmNoticeResult();
+            alarmNoticeResult.setDataLoggingTime(labMessengerPublishTaskDto.getPublishTime());
+            alarmNoticeResult.setPublishType(labMessengerPublishTaskDto.getPublishType());
+            alarmNoticeResult.setPhoneNum(labMessengerPublishTaskDto.getPublishKey());
+            Integer status = labMessengerPublishTaskDto.getStatus();
+            boolean bool =  status == 2 && "OK".equals(labMessengerPublishTaskDto.getRemark());
+            alarmNoticeResult.setState(bool ? "success" : "fail");
+            if(bool){
+                alarmNoticeResult.setFReason("");
+            }else {
+                String remark = labMessengerPublishTaskDto.getRemark();
+                String publishType = labMessengerPublishTaskDto.getPublishType();
+                alarmNoticeResult.setFReason("SMS".equals(publishType) ? SmsCode.SmsCodeParse(remark) : MailCode.MailCodePase(remark));
+            }
+//            if("zh".equals(lang)){
+                alarmNoticeResult.setMailContent(labMessengerPublishTaskDto.getMessageCover()+"出现异常,请尽快查看");
+//            }else {
+//                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageCover()));
+//            }
+            if (phoneMap.containsKey(labMessengerPublishTaskDto.getPublishKey())) {
+                alarmNoticeResult.setUserName(phoneMap.get(labMessengerPublishTaskDto.getPublishKey()).get(0).getUsername());
+            }else {
+                alarmNoticeResult.setUserName("");
+            }
+            list.add(alarmNoticeResult);
+        }
+        return list;
+    }
+
+    public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response) {
+        //1.获取报警通知模板
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmNoticeModel();
+        //2.查出数据库信息
+        List<LabMessengerPublishTaskDto> alarmNoticeInfo = labMessengerPublishTaskService.getAlarmNoticeInfo(null, alarmNoticeCommand);
+        if(CollectionUtils.isEmpty(alarmNoticeInfo)){
+            return;
+        }
+        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
+        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+        List<AlarmNoticeResult> alarmNoticeResults = processData(alarmNoticeInfo, phoneMap);
+        //获取属性map
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (AlarmNoticeResult alarmNoticeResult : alarmNoticeResults) {
+            Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(alarmNoticeResult);
+            mapList.add(objectToMap);
+        }
+        System.out.println(mapList);
+        FileUtil.exportExcel(ExcelExportUtils.ALARM_NOTICE,beanList,mapList,response);
+    }
 }
 
