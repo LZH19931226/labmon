@@ -105,10 +105,10 @@ public enum CurrentProbeInfoEnum {
     CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2",null),
     LIQUIDLEVEL(45,"liquidLevel","液位","mm");
 
-    private int instrumentConfigId;
-    private String probeEName;
-    private String probeCName;
-    private String unit;
+    private final int instrumentConfigId;
+    private final String probeEName;
+    private final String probeCName;
+    private final String unit;
 
     public static CurrentProbeInfoEnum from(int instrumentConfigId) {
         return Arrays

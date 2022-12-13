@@ -401,4 +401,15 @@ public class DateUtils {
         stringBuilder.deleteCharAt(stringBuilder.length()-1);
         return stringBuilder.toString();
     }
+
+
+    /**
+     * 获取时间的月份和年
+     * @param time YYYY-MM-dd HH:mm:ss
+     * @return MM-dd
+     */
+    public static String getMMdd(String time){
+        Date date = parseDate(time);
+        return dateFormatMMdd.format(date);
+    }
 }

@@ -1,6 +1,8 @@
 package com.hc.clickhouse.repository;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 
@@ -21,4 +23,6 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName,String ym);
 
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo1(String startTime, String endTime, String equipmentNo, String ym);
+
+    List<Monitorequipmentlastdata> getEquipmentData(Page page,EquipmentDataParam dataParam);
 }

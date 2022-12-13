@@ -3,8 +3,13 @@ package com.hc.application;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmNoticeCommand;
+import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.AlarmNoticeResult;
+import com.hc.application.response.SummaryOfAlarmsResult;
+import com.hc.clickhouse.param.EquipmentDataParam;
+import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
+import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.HospitalInfoDto;
 import com.hc.dto.LabMessengerPublishTaskDto;
@@ -13,9 +18,7 @@ import com.hc.dto.UserRightDto;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
 import com.hc.my.common.core.struct.Context;
-import com.hc.my.common.core.util.ExcelExportUtils;
-import com.hc.my.common.core.util.FileUtil;
-import com.hc.my.common.core.util.ObjectConvertUtils;
+import com.hc.my.common.core.util.*;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.HospitalInfoService;
 import com.hc.service.LabMessengerPublishTaskService;
@@ -47,6 +50,8 @@ public class StatisticalAnalysisApplication {
     @Autowired
     private UserRightService userRightService;
 
+    @Autowired
+    private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
 
     /**
      * 查询医院设备报警数量
@@ -213,6 +218,43 @@ public class StatisticalAnalysisApplication {
         }
         System.out.println(mapList);
         FileUtil.exportExcel(ExcelExportUtils.ALARM_NOTICE,beanList,mapList,response);
+    }
+
+    /**
+     * 获取设备数据
+     * @param equipmentDataCommand
+     */
+    public Page<Monitorequipmentlastdata> getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
+        //分页查询
+        Page<Monitorequipmentlastdata> page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
+        String startTime = equipmentDataCommand.getStartTime();
+        String yearMonth = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(yearMonth);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getEquipmentData(page,dataParam);
+        if (CollectionUtils.isEmpty(lastDataList)) {
+            return null;
+        }
+        page.setRecords(lastDataList);
+        return page;
+    }
+
+    /**
+     * 获取报警数量
+     * @param equipmentDataCommand
+     */
+    public SummaryOfAlarmsResult getSummaryOfAlarms(EquipmentDataCommand equipmentDataCommand) {
+        String startTime = equipmentDataCommand.getStartTime();
+        String ym = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(ym);
+        EquipmentDataParam convert = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Warningrecord> wrList = warningrecordRepository.getSummaryOfAlarms(convert);
+        List<String> timeList = wrList.stream().map(Warningrecord::getTime).map(DateUtils::getMMdd).collect(Collectors.toList());
+        List<Long> numList = wrList.stream().map(Warningrecord::getNum).collect(Collectors.toList());
+        SummaryOfAlarmsResult summaryOfAlarmsResult = new SummaryOfAlarmsResult();
+        summaryOfAlarmsResult.setTimeList(timeList);
+        summaryOfAlarmsResult.setNumList(numList);
+        return summaryOfAlarmsResult;
     }
 }
 

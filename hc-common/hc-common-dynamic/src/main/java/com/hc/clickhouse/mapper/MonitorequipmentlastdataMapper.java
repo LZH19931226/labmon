@@ -1,5 +1,7 @@
 package com.hc.clickhouse.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import org.apache.ibatis.annotations.Insert;
@@ -199,4 +201,6 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
                                                                     @Param("endTime")String endTime,
                                                                     @Param("equipmentNo") String equipmentNo,
                                                                     @Param("ym") String ym);
+
+    List<Monitorequipmentlastdata> getEquipmentData(Page page,@Param("param") EquipmentDataParam dataParam);
 }

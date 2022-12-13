@@ -1,6 +1,7 @@
 package com.hc.clickhouse.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Warningrecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,6 @@ public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
             "lab_mon.warningrecord " +
             "WHERE toYYYYMM ( inputdatetime ) IN ( #{time} ) GROUP BY hospitalcode ,equipmentno  order BY  hospitalcode ")
     List<Warningrecord> getWarningInfoByTime(@Param("time") String time);
+
+    List<Warningrecord> getSummaryOfAlarms(@Param("param") EquipmentDataParam convert);
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.clickhouse.mapper.WarningrecordMapper">
+
+
+    <select id="getSummaryOfAlarms" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+        toStartOfDay(inputdatetime) time,
+	    COUNT(*) num
+        FROM lab_mon.warningrecord
+        WHERE toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+        and formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN #{param.startTime} AND #{param.endTime}
+        group by toStartOfDay(inputdatetime)
+        ORDER BY time
+    </select>
+</mapper>

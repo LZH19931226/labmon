@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.WarningrecordMapper;
+import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +77,10 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     @Override
     public List<Warningrecord> getWarningInfoByTime(String time) {
         return warningrecordMapper.getWarningInfoByTime(time);
+    }
+
+    @Override
+    public List<Warningrecord> getSummaryOfAlarms(EquipmentDataParam convert) {
+        return warningrecordMapper.getSummaryOfAlarms(convert);
     }
 }

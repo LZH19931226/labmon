@@ -1,8 +1,10 @@
 package com.hc.clickhouse.repository.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.MonitorequipmentlastdataMapper;
+import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
@@ -51,5 +53,10 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   @Override
   public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo1(String startTime, String endTime, String equipmentNo, String ym) {
     return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfo1(startTime,endTime,equipmentNo,ym);
+  }
+
+  @Override
+  public List<Monitorequipmentlastdata> getEquipmentData(Page page,EquipmentDataParam dataParam) {
+    return monitorequipmentlastdataMapper.getEquipmentData(page,dataParam);
   }
 }
