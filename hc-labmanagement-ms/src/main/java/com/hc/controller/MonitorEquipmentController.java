@@ -5,6 +5,7 @@ import com.hc.application.MonitorEquipmentApplication;
 import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
+import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
 import io.swagger.annotations.Api;
@@ -30,6 +31,14 @@ public class MonitorEquipmentController {
     @ApiOperation("获取硬件设备类型对应监控探头信息")
     private List<MonitorinstrumenttypeVo> getHardwareTypeProbeInformation(@RequestParam("equipmentTypeId") String equipmentTypeId){
         return monitorEquipmentApplication.getHardwareTypeProbeInformation(equipmentTypeId);
+    }
+
+    /**
+     *
+     * */
+    @GetMapping("/getInstrumentMonitorInfo")
+    private List<InstrumentmonitorVo> getProbeInfoByITypeId(@RequestParam("instrumentTypeId") String instrumentTypeId){
+        return monitorEquipmentApplication.getProbeInfoByITypeId(instrumentTypeId);
     }
 
     @PostMapping("/findEquipmentInfo")

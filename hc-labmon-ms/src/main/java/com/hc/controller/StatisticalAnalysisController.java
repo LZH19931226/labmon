@@ -40,6 +40,20 @@ public class StatisticalAnalysisController {
     public Page<Monitorequipmentlastdata> getEquipmentData(@RequestBody EquipmentDataCommand equipmentDataCommand){
         return statisticalAnalysisApplication.getEquipmentData(equipmentDataCommand);
     }
+
+
+    /**
+     * 导出设备数据
+     * @param equipmentDataCommand
+     * @param response
+     */
+    @JwtIgnore
+    @GetMapping("/exportEquipmentData")
+    public void exportEquipmentData(EquipmentDataCommand equipmentDataCommand,HttpServletResponse response){
+        statisticalAnalysisApplication.exportEquipmentData(equipmentDataCommand,response);
+    }
+
+
     /**
      * 自定义查询 接口2.查询报警汇总图
      */

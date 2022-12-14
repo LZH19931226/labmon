@@ -9,6 +9,7 @@ public class ExcelExportUtils {
 
     public static final String ALARM_NOTICE = "报警通知数据汇总";
     public static final String ALARM_US_NOTICE = "ALARM_NOTICE_DATA";
+    public static final String EQUIPMENT_DATA = "设备数据汇总";
 
     /**
      * 获取报警通知模板
@@ -39,4 +40,12 @@ public class ExcelExportUtils {
         beanList.add(new ExcelExportEntity("MAIL_CONTENT","mailContent"));
         return beanList;
     }
+
+    public static List<ExcelExportEntity> getEquipmentData(String name,String field){
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        beanList.add(new ExcelExportEntity("记录时间","inputdatetime"));
+        beanList.add(new ExcelExportEntity(name,field));
+        return beanList;
+    }
+
 }

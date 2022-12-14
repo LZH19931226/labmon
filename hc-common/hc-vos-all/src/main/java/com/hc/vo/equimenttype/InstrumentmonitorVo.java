@@ -132,5 +132,20 @@ public class InstrumentmonitorVo implements Serializable {
      * 样式最大值
      */
     private String styleMax;
+
+    /**
+     * 字段
+     */
+    private String field;
+
+    /**
+     * 中文名称
+     */
+    private String cName;
+
+    /**
+     * 英文名称
+     */
+    private String eName;
 }
 

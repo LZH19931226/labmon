@@ -12,6 +12,7 @@ import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.constant.enums.SysConstants;
@@ -883,6 +884,7 @@ public class MonitorEquipmentApplication {
                 .unit(StringUtils.isEmpty(res.getUnit())?"":res.getUnit())
                 .styleMax(StringUtils.isEmpty(res.getStyleMax())?"":res.getStyleMax())
                 .styleMin(StringUtils.isEmpty(res.getStyleMin())?"":res.getStyleMin())
+                .field(DataFieldEnum.from(instrumentconfig.getInstrumentconfigname()).getLastDataField())
                 .build();
     }
 
@@ -1106,5 +1108,31 @@ public class MonitorEquipmentApplication {
         monitorEquipmentService.updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(hospitalCode,equipmentTypeId,warningPhone);
         //同步更新缓存探头配置
         updateProbeRedis(instrumentParamConfigDtoList,warningPhone,hospitalCode);
+    }
+
+    /**
+     * 通过instrumentTypeId 获取instrumentConfig信息
+     * @param instrumentTypeId
+     * @return
+     */
+    public List<InstrumentmonitorVo> getProbeInfoByITypeId(String instrumentTypeId) {
+        List<MonitorinstrumenttypeDTO> monitorinstrumenttypeDTOS = instrumentmonitorService.selectMonitorEquipmentType(instrumentTypeId);
+        List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTOS.get(0).getInstrumentmonitorDTOS();
+        List<InstrumentmonitorVo> list = new ArrayList<>();
+        for (InstrumentmonitorDTO instrumentmonitorDTO : instrumentmonitorDTOS) {
+            String instrumentconfigname = instrumentmonitorDTO.getInstrumentconfigname();
+            DataFieldEnum from = DataFieldEnum.from(instrumentconfigname);
+            String cName = from.getCName();
+            String lastDataField = from.getLastDataField();
+            InstrumentmonitorVo instrumentmonitorVo = InstrumentmonitorVo
+                    .builder()
+                    .cName(cName)
+                    .field(lastDataField)
+                    .highlimit(instrumentmonitorDTO.getHighlimit())
+                    .lowlimit(instrumentmonitorDTO.getLowlimit())
+                    .build();
+            list.add(instrumentmonitorVo);
+        }
+        return list;
     }
 }

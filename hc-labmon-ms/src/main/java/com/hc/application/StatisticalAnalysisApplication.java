@@ -15,6 +15,7 @@ import com.hc.dto.HospitalInfoDto;
 import com.hc.dto.LabMessengerPublishTaskDto;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.UserRightDto;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
 import com.hc.my.common.core.struct.Context;
@@ -26,6 +27,7 @@ import com.hc.service.UserRightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
@@ -255,6 +257,32 @@ public class StatisticalAnalysisApplication {
         summaryOfAlarmsResult.setTimeList(timeList);
         summaryOfAlarmsResult.setNumList(numList);
         return summaryOfAlarmsResult;
+    }
+
+    /**
+     * 导出设备数据
+     * @param equipmentDataCommand
+     * @param response
+     */
+    public void exportEquipmentData(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
+        String startTime = equipmentDataCommand.getStartTime();
+        String yearMonth = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(yearMonth);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata> equipmentData = monitorequipmentlastdataRepository.getEquipmentData(null, dataParam);
+        //设置tittle
+        String field = equipmentDataCommand.getField();
+        DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+        String cName = dataFieldEnum.getCName();
+        String unit = dataFieldEnum.getUnit();
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(cName + unit, field);
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (Monitorequipmentlastdata equipmentDatum : equipmentData) {
+            Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
+            mapList.add(objectToMap);
+        }
+        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
+
     }
 }
 

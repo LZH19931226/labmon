@@ -37,7 +37,7 @@ public enum CurrentProbeInfoEnum {
     //当前湿度
     CURRENTHUMIDITY(5,"currenthumidity","湿度","%"),
     //左路温度  左舱室温度
-    CURRENTLEFTTEMPERATURE(23,"currentlefttemperature","左舱室温度","%"),
+    CURRENTLEFTTEMPERATURE(23,"currentlefttemperature","左舱室温度","℃"),
     //右路温度  右舱室温度
     CURRENTRIGTHTEMPERATURE(24,"currentrigthtemperature","右舱室温度","℃"),
     //培养箱气流
