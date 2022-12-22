@@ -34,4 +34,26 @@
     </select>
 
 
+    <select id="getEquipmentPacketData" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+        equipmentno,
+        inputdatetime,
+        sn
+        from
+        lab_mon.monitorequipmentlastdata
+        WHERE
+        toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+        AND hospitalcode = #{param.hospitalCode}
+        AND equipmentno = #{param.equipmentNo}
+        AND cmdid ='88'
+        ORDER BY inputdatetime
+    </select>
+
+    <select id="getPacketLossColumnar" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        select formatDateTime(inputdatetime,'%Y-%m-%d')  as remark1,count(1) remark2
+        from lab_mon.monitorequipmentlastdata
+        WHERE hospitalcode = #{param.hospitalCode} and cmdid ='88' and toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )  and equipmentno = #{param.equipmentNo}
+        group by remark1 order by remark1;
+    </select>
+
 </mapper>

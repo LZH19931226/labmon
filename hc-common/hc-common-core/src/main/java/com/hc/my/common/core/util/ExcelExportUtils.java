@@ -48,4 +48,19 @@ public class ExcelExportUtils {
         return beanList;
     }
 
+    public static List<ExcelExportEntity> getPacketLossLog(boolean isCh){
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        if (isCh){
+            beanList.add(new ExcelExportEntity("心跳包记录时间","inputdatetime"));
+            beanList.add(new ExcelExportEntity("设备SN","sn"));
+            beanList.add(new ExcelExportEntity("心跳包数据","remark1"));
+        }else {
+            beanList.add(new ExcelExportEntity("heartbeat_time","inputdatetime"));
+            beanList.add(new ExcelExportEntity("sn_num","sn"));
+            beanList.add(new ExcelExportEntity("heartbeat_data","remark1"));
+        }
+
+        return beanList;
+    }
+
 }

@@ -59,4 +59,19 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   public List<Monitorequipmentlastdata> getEquipmentData(Page page,EquipmentDataParam dataParam) {
     return monitorequipmentlastdataMapper.getEquipmentData(page,dataParam);
   }
+
+  @Override
+  public List<Monitorequipmentlastdata> getEquipmentPacketData(Page page, EquipmentDataParam dataParam) {
+    return monitorequipmentlastdataMapper.getEquipmentPacketData(page,dataParam);
+  }
+
+  @Override
+  public List<Monitorequipmentlastdata> getPacketLossColumnar(EquipmentDataParam dataParam) {
+    return monitorequipmentlastdataMapper.getPacketLossColumnar(dataParam);
+  }
+
+  @Override
+  public List<Monitorequipmentlastdata> getPacketLoss(EquipmentDataParam dataParam) {
+    return monitorequipmentlastdataMapper.getEquipmentPacketData(null,dataParam);
+  }
 }

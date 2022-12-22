@@ -203,4 +203,10 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
                                                                     @Param("ym") String ym);
 
     List<Monitorequipmentlastdata> getEquipmentData(Page page,@Param("param") EquipmentDataParam dataParam);
+
+
+    List<Monitorequipmentlastdata> getEquipmentPacketData(Page page, @Param("param")EquipmentDataParam dataParam);
+
+    List<Monitorequipmentlastdata> getPacketLossColumnar(@Param("param")EquipmentDataParam dataParam);
+
 }

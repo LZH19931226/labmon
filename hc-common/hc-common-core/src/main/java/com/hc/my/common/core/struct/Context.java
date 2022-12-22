@@ -43,6 +43,11 @@ public class Context {
         return lang;
     }
 
+    public static boolean IsCh(){
+        String lang = getLang();
+        return StringUtils.equalsIgnoreCase(lang,"zh");
+    }
+
 
     /**
      * 获取Request

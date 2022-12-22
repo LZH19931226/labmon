@@ -12,6 +12,11 @@ public class EquipmentDataParam {
     private String equipmentNo;
 
     /**
+     * 医院id
+     */
+    private String hospitalCode;
+
+    /**
      * 查询字段
      */
     private String field;

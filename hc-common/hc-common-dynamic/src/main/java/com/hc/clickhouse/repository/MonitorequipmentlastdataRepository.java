@@ -25,4 +25,10 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo1(String startTime, String endTime, String equipmentNo, String ym);
 
     List<Monitorequipmentlastdata> getEquipmentData(Page page,EquipmentDataParam dataParam);
+
+    List<Monitorequipmentlastdata> getEquipmentPacketData(Page page, EquipmentDataParam dataParam);
+
+    List<Monitorequipmentlastdata> getPacketLossColumnar(EquipmentDataParam dataParam);
+
+    List<Monitorequipmentlastdata> getPacketLoss(EquipmentDataParam dataParam);
 }

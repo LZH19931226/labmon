@@ -3,12 +3,13 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.SystemDataApplication;
 import com.hc.application.command.EquipmentDataCommand;
+import com.hc.application.response.SummaryOfAlarmsResult;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/system")
@@ -23,5 +24,17 @@ public class SystemDataController {
         return systemDataApplication.findPacketLossLog(equipmentDataCommand);
     }
 
+    @PostMapping("/getPacketLossColumnar")
+    @ApiOperation("获取柱状图心跳丢包率")
+    public SummaryOfAlarmsResult getPacketLossColumnar(@RequestBody EquipmentDataCommand equipmentDataCommand){
+        return systemDataApplication.getPacketLossColumnar(equipmentDataCommand);
+    }
+
+    @GetMapping("/exportPacketLossLog")
+    @ApiOperation("excel导出心跳详情数据")
+    @JwtIgnore
+    public void exportPacketLossLog(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response){
+        systemDataApplication.exportPacketLossLog(equipmentDataCommand,response);
+    }
 
 }
