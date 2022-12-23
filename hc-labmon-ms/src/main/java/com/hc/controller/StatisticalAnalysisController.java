@@ -5,13 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.StatisticalAnalysisApplication;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
+import com.hc.application.response.PointInTimeDataTableResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.dto.CurveInfoDto;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/as")
@@ -63,6 +66,30 @@ public class StatisticalAnalysisController {
         return statisticalAnalysisApplication.getSummaryOfAlarms(equipmentDataCommand);
     }
 
+    /**
+     * 时间点查询 接口3,曲线
+     */
+    @PostMapping("/getThePointInTimeDataCurve")
+    public Map<String,CurveInfoDto> getThePointInTimeDataCurve(@RequestBody EquipmentDataCommand equipmentDataCommand){
+        return statisticalAnalysisApplication.getThePointInTimeDataCurve(equipmentDataCommand);
+    }
+
+    /**
+     * 时间点查询 接口4：表格
+     */
+    @PostMapping("/getThePointInTimeDataTable")
+    public   List<PointInTimeDataTableResult> getThePointInTimeDataTable(@RequestBody EquipmentDataCommand equipmentDataCommand){
+       return statisticalAnalysisApplication.getThePointInTimeDataTable(equipmentDataCommand);
+    }
+
+    /**
+     * 时间点查询 接口5：导出excel
+     */
+    @JwtIgnore
+    @GetMapping("/exportDatePoint")
+    public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse){
+         statisticalAnalysisApplication.exportDatePoint(equipmentDataCommand,httpServletResponse);
+    }
 
     /*
     报警数据查询
@@ -77,6 +104,7 @@ public class StatisticalAnalysisController {
         return statisticalAnalysisApplication.getAlarmNotice(alarmNoticeCommand);
     }
 
+
     /**
      * 导出报警数据
      */
@@ -85,4 +113,5 @@ public class StatisticalAnalysisController {
     public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response){
         statisticalAnalysisApplication.exportAlarmNotice(alarmNoticeCommand,response);
     }
+
 }

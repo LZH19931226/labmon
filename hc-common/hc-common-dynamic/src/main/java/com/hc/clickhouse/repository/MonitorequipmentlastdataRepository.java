@@ -31,4 +31,6 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     List<Monitorequipmentlastdata> getPacketLossColumnar(EquipmentDataParam dataParam);
 
     List<Monitorequipmentlastdata> getPacketLoss(EquipmentDataParam dataParam);
+
+    List<Monitorequipmentlastdata> getLastDataByTime(EquipmentDataParam dataParam);
 }

@@ -209,4 +209,6 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
 
     List<Monitorequipmentlastdata> getPacketLossColumnar(@Param("param")EquipmentDataParam dataParam);
 
+
+    List<Monitorequipmentlastdata> getLastDataByTime(@Param("param") EquipmentDataParam dataParam);
 }

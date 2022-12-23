@@ -2,6 +2,7 @@ package com.hc.clickhouse.param;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -38,6 +39,11 @@ public class EquipmentDataParam {
 
     /** 年月(用于查询数据库) */
     private String yearMonth;
+
+    private String minTime;
+
+    private String maxTime;
+
 
     @Data
     public static class Filter{

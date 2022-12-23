@@ -1,7 +1,9 @@
 package com.hc.application.command;
 
 import lombok.Data;
+import org.omg.CORBA.PRIVATE_MEMBER;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,11 +21,13 @@ public class EquipmentDataCommand {
 
     /**
      * 开始时间
+     * 格式：YYYY-MM-dd HH:mm:ss
      */
     private String startTime;
 
     /**
      * 结束时间
+     * 格式：YYYY-MM-dd HH:mm:ss
      */
     private String endTime;
 
@@ -40,6 +44,18 @@ public class EquipmentDataCommand {
 
     /** 分页大小 */
     private Integer pageSize;
+
+    private List<String> timeList;
+
+    /**
+     *格式：HH:mm
+     */
+    private String maxTime;
+
+    /**
+     * 格式：HH:mm
+     */
+    private String minTime;
 
     @Data
     public static class Filter{

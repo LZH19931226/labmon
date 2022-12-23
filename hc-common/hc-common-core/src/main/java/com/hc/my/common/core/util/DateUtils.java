@@ -56,6 +56,45 @@ public class DateUtils {
         }
     }
 
+    /**
+     * 当前时间是否在此时间区间时分内
+     * 例如： 2022-11-12 01:00:00(nowTime)   2022-11-11 00:00:00(startTime) 2022-11-11 02:00:00(endTime) true
+     * @param nowTime
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static boolean whetherItIsIn(Date nowTime, Date startTime, Date endTime) {
+        if (nowTime.getTime() == startTime.getTime()
+                || nowTime.getTime() == endTime.getTime()) {
+            return true;
+        }
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+        date.set(Calendar.YEAR,2022);
+        date.set(Calendar.MONTH,1);
+        date.set(Calendar.DATE,1);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+        begin.set(Calendar.YEAR,2022);
+        begin.set(Calendar.MONTH,1);
+        begin.set(Calendar.DATE,1);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+        end.set(Calendar.YEAR,2022);
+        end.set(Calendar.MONTH,1);
+        end.set(Calendar.DATE,1);
+        //统一年月日后对比
+        if (date.after(begin) && date.before(end)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * 解析时间
@@ -205,15 +244,29 @@ public class DateUtils {
     }
 
     /**
+     * 获取前一个小时的时间
+     * @param date
+     * @return "yyyy-MM-dd HH:mm:ss"
+     */
+    public static Date getPreviousHour(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR_OF_DAY,-1);
+        return cal.getTime();
+    }
+
+    /**
      *  转换日期格式
      * @param date
-     * @return "HH-mm"
+     * @return "HH:mm"
      */
     public static String dateReduceHHmm(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        Date time = cal.getTime();
-        return parseDatetime(time);
+        int hours = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+        String h = hours > 9 ? String.valueOf(hours) : "0"+hours;
+        return minute > 9 ? h+":"+minute : h+":0"+minute;
     }
 
     /**

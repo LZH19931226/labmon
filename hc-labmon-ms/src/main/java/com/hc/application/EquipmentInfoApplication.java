@@ -650,8 +650,8 @@ public class EquipmentInfoApplication {
             flag = true;
         }
         return flag ?
-                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(list,map,true):
-                EquipmentInfoServiceHelp.getCurveFirst(list,map,true);
+                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(list,map,flag):
+                EquipmentInfoServiceHelp.getCurveFirst(list,map,flag);
     }
 
     /**

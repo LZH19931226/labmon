@@ -34,5 +34,22 @@
         ORDER BY inputdatetime
     </select>
 
+    <select id="getLastDataByTime" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+          equipmentno,
+          ${param.field},
+          inputdatetime
+        FROM
+            lab_mon.monitorequipmentlastdata
+        WHERE toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+          AND formatDateTime ( inputdatetime, '%H:%M' ) BETWEEN #{param.minTime} AND #{param.maxTime}
+          AND equipmentno = #{param.equipmentNo}
+        <if test="param.filterList != null">
+            <foreach collection="param.filterList" item="res">
+                and ${res.field} <![CDATA[${res.condition}]]> #{res.value}
+            </foreach>
+        </if>
+    </select>
+
 
 </mapper>

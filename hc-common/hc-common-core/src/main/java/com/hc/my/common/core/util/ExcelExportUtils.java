@@ -3,6 +3,7 @@ package com.hc.my.common.core.util;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ExcelExportUtils {
@@ -63,4 +64,21 @@ public class ExcelExportUtils {
         return beanList;
     }
 
+    public static List<ExcelExportEntity> getDatePoint(List<Date> dateList,boolean isCh) {
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        if(isCh){
+            beanList.add(new ExcelExportEntity("查询日期","date"));
+            dateList.forEach(res->{
+                String hHmm = DateUtils.dateReduceHHmm(res);
+                beanList.add(new ExcelExportEntity(hHmm,hHmm));
+            });
+        }else {
+            beanList.add(new ExcelExportEntity("query date","date"));
+            dateList.forEach(res->{
+                String hHmm = DateUtils.dateReduceHHmm(res);
+                beanList.add(new ExcelExportEntity(hHmm,hHmm));
+            });
+        }
+        return beanList;
+    }
 }

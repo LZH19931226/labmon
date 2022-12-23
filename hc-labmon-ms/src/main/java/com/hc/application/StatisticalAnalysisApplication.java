@@ -1,29 +1,28 @@
 package com.hc.application;
 
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.AlarmNoticeResult;
+import com.hc.application.response.PointInTimeDataTableResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
+import com.hc.application.response.TableResult;
 import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
-import com.hc.dto.HospitalInfoDto;
-import com.hc.dto.LabMessengerPublishTaskDto;
-import com.hc.dto.MonitorEquipmentDto;
-import com.hc.dto.UserRightDto;
+import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
-import com.hc.service.EquipmentInfoService;
-import com.hc.service.HospitalInfoService;
-import com.hc.service.LabMessengerPublishTaskService;
-import com.hc.service.UserRightService;
+import com.hc.service.*;
+import com.hc.util.EquipmentInfoServiceHelp;
+import org.apache.velocity.util.ArrayListWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -33,6 +32,8 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.hc.my.common.core.util.ObjectConvertUtils.getObjectToMap;
 
 @Component
 public class StatisticalAnalysisApplication {
@@ -54,6 +55,9 @@ public class StatisticalAnalysisApplication {
 
     @Autowired
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
+
+    @Autowired
+    private InstrumentParamConfigService instrumentParamConfigService;
 
     /**
      * 查询医院设备报警数量
@@ -282,6 +286,259 @@ public class StatisticalAnalysisApplication {
             mapList.add(objectToMap);
         }
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
+
+    }
+
+    /**
+     * 时间点查询
+     * @param equipmentDataCommand
+     */
+    public Map<String,CurveInfoDto> getThePointInTimeDataCurve(EquipmentDataCommand equipmentDataCommand) {
+        List<String> timeList = equipmentDataCommand.getTimeList();
+        if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
+            return null;
+        }
+        //排列
+        List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        System.out.println(dateList);
+        Date minTime = dateList.get(0);
+        Date maxTime = dateList.get(dateList.size() - 1);
+        equipmentDataCommand.setMinTime(DateUtils.dateReduceHHmm(DateUtils.getPreviousHour(minTime)));
+        equipmentDataCommand.setMaxTime(DateUtils.dateReduceHHmm(maxTime));
+        String startTime = equipmentDataCommand.getStartTime();
+        String ym = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(ym);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        if(CollectionUtils.isEmpty(lastDataList)){
+            return null;
+        }
+        Map<String, List<InstrumentParamConfigDto>> strListMap = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentDataCommand.getEquipmentNo());
+        //以时间进行分组
+        Map<String,CurveInfoDto> map = new HashMap<>();
+        for (Date date : dateList) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.MINUTE,-30);
+            Date start = cal.getTime();
+            List<Monitorequipmentlastdata> collect = lastDataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(collect)){
+                continue;
+            }
+            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,equipmentDataCommand.getField());
+            if(CollectionUtils.isEmpty(monitorEquipmentLastDataList)){
+                continue;
+            }
+            CurveInfoDto curveFirst = EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataList, strListMap, true);
+            map.put(DateUtils.dateReduceHHmm(date),curveFirst);
+        }
+        return map;
+    }
+
+    private List<Monitorequipmentlastdata> filterData(List<Monitorequipmentlastdata> lastDataList, String field) {
+        //先以时间（MM-dd）分组
+        Map<String,List<Monitorequipmentlastdata>>  map = new HashMap<>();
+        for (Monitorequipmentlastdata lastData : lastDataList) {
+            Date inputdatetime = lastData.getInputdatetime();
+            String time = DateUtils.paseDateMMdd(inputdatetime);
+            List<Monitorequipmentlastdata> list;
+            if (map.containsKey(time)) {
+                list = map.get(time);
+            }else {
+                list = new ArrayList<>();
+            }
+            list.add(lastData);
+            map.put(time,list);
+        }
+        List<Monitorequipmentlastdata> list = new ArrayList<>();
+        for (String time : map.keySet()) {
+            Monitorequipmentlastdata monitorequipmentlastdata = listToObject(map.get(time), field);
+            list.add(monitorequipmentlastdata);
+        }
+        return list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
+    }
+
+    /**
+     * list转化为对象
+     * @param monitorequipmentlastdataList
+     * @return
+     */
+    private Monitorequipmentlastdata listToObject(List<Monitorequipmentlastdata> monitorequipmentlastdataList,String field) {
+        //将list排序以时间递增
+        List<Monitorequipmentlastdata> lastDataList =
+                monitorequipmentlastdataList.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
+        Map<String,Object> map = new HashMap<>();
+        //随着数组的遍历该设备的探头监测信息都会被替换成为最新的(也就是离当前时间点最近的有效值)
+        for (Monitorequipmentlastdata monitorequipmentlastdata : lastDataList) {
+            Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
+            filterMap(objectToMap,field);
+            for (String fieldName : objectToMap.keySet()) {
+                if (map.containsKey(fieldName)) {
+                    Object object = map.get(fieldName);
+                    if (!ObjectUtils.isEmpty(objectToMap.get(fieldName))) {
+                        object = objectToMap.get(fieldName);
+                    }
+                    map.put(fieldName,object);
+                }else {
+                    map.put(fieldName,objectToMap.get(fieldName));
+                }
+            }
+        }
+        return JSON.parseObject(JSON.toJSONString(map),Monitorequipmentlastdata.class);
+    }
+
+    /**
+     * 过滤map
+     * @param objectMap
+     */
+    private void filterMap(Map<String, Object> objectMap,String field) {
+        List<String> list = new ArrayList<>();
+        list.add("inputdatetime");
+        list.add("remark1");
+        list.add(field);
+        Iterator<String> iterator = objectMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            if(!list.contains(next)){
+                iterator.remove();
+                objectMap.remove(next);
+            }
+        }
+    }
+
+    /**
+     * 时间点查询表格
+     * @param equipmentDataCommand
+     */
+    public   List<PointInTimeDataTableResult> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
+        List<String> timeList = equipmentDataCommand.getTimeList();
+        if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
+            return null;
+        }
+        //排列
+        List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        System.out.println(dateList);
+        Date minTime = dateList.get(0);
+        Date maxTime = dateList.get(dateList.size() - 1);
+        equipmentDataCommand.setMinTime(DateUtils.dateReduceHHmm(DateUtils.getPreviousHour(minTime)));
+        equipmentDataCommand.setMaxTime(DateUtils.dateReduceHHmm(maxTime));
+        String startTime = equipmentDataCommand.getStartTime();
+        String ym = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(ym);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        if(CollectionUtils.isEmpty(lastDataList)){
+            return null;
+        }
+        List<Monitorequipmentlastdata> list = new ArrayList<>();
+        for (Date date : dateList) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.MINUTE,-30);
+            Date start = cal.getTime();
+            lastDataList.forEach(res->res.setRemark1(DateUtils.dateReduceHHmm(date)));
+            List<Monitorequipmentlastdata> collect = lastDataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(collect)){
+                continue;
+            }
+            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,equipmentDataCommand.getField());
+            list.addAll(monitorEquipmentLastDataList);
+        }
+        List<Monitorequipmentlastdata> collect1 = list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
+        Map<String, List<Monitorequipmentlastdata>> collect = collect1.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+        List<PointInTimeDataTableResult> results = new ArrayList<>();
+        for (String date : collect.keySet()) {
+            PointInTimeDataTableResult datePoint = new PointInTimeDataTableResult();
+            datePoint.setDate(date);
+            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = collect.get(date);
+            Map<String, List<Monitorequipmentlastdata>> listMap = monitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getRemark1));
+            List<TableResult> listResult = new ArrayList<>();
+            for (Date time : dateList) {
+                TableResult tableResult = new TableResult();
+                String hHmm = DateUtils.dateReduceHHmm(time);
+                tableResult.setDatePoint(hHmm);
+                tableResult.setField(equipmentDataCommand.getField());
+                tableResult.setValue("");
+                if(listMap.containsKey(hHmm)){
+                    Monitorequipmentlastdata monitorequipmentlastdata = listMap.get(hHmm).get(0);
+                    Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
+                    String str =(String) objectToMap.get(equipmentDataCommand.getField());
+                    tableResult.setValue(str);
+                }
+                listResult.add(tableResult);
+            }
+            datePoint.setList(listResult);
+            results.add(datePoint);
+        }
+        return results.stream().sorted(Comparator.comparing(PointInTimeDataTableResult::getDate)).collect(Collectors.toList());
+    }
+
+    public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse) {
+        List<String> timeList = equipmentDataCommand.getTimeList();
+        if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
+            return;
+        }
+        //排列
+        List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        System.out.println(dateList);
+        Date minTime = dateList.get(0);
+        Date maxTime = dateList.get(dateList.size() - 1);
+        equipmentDataCommand.setMinTime(DateUtils.dateReduceHHmm(DateUtils.getPreviousHour(minTime)));
+        equipmentDataCommand.setMaxTime(DateUtils.dateReduceHHmm(maxTime));
+        String startTime = equipmentDataCommand.getStartTime();
+        String ym = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(ym);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        if(CollectionUtils.isEmpty(lastDataList)){
+            return;
+        }
+        List<Monitorequipmentlastdata> list = new ArrayList<>();
+        for (Date date : dateList) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.MINUTE,-30);
+            Date start = cal.getTime();
+            lastDataList.forEach(res->res.setRemark1(DateUtils.dateReduceHHmm(date)));
+            List<Monitorequipmentlastdata> collect = lastDataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(collect)){
+                continue;
+            }
+            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,equipmentDataCommand.getField());
+            list.addAll(monitorEquipmentLastDataList);
+        }
+        List<Monitorequipmentlastdata> collect1 = list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
+        Map<String, List<Monitorequipmentlastdata>> collect = collect1.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+       List<Map<String,Object>> mapList = new ArrayList<>();
+        for (String date : collect.keySet()) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("date",date);
+            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = collect.get(date);
+            Map<String, List<Monitorequipmentlastdata>> listMap = monitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getRemark1));
+            for (Date time : dateList) {
+                String hHmm = DateUtils.dateReduceHHmm(time);
+                String value = "";
+                if(listMap.containsKey(hHmm)){
+                    Monitorequipmentlastdata monitorequipmentlastdata = listMap.get(hHmm).get(0);
+                    Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
+                    value =(String) objectToMap.get(equipmentDataCommand.getField());
+                }
+                map.put(hHmm,value);
+            }
+            mapList.add(map);
+        }
+        mapList.sort(Comparator.comparing(res->res.get("date").toString()));
+        boolean flag = Context.IsCh();
+        //获取tittle
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,flag);
+        //fileName
+        String fileName = null;
+        if (flag) {
+            fileName = "时间点导出结果";
+        }else {
+            fileName = "date_time_export_result";
+        }
+        FileUtil.exportExcel(fileName,beanList,mapList,httpServletResponse);
 
     }
 }
