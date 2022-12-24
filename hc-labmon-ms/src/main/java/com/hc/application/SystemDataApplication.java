@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -104,7 +105,9 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)){
             return null;
         }
+
         Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
+
         List<eqTypeAlarmNumCountDto>  eqTypeAlarmNumCountDtos1 =new ArrayList<>();
             eqTypeMap.forEach((k,v)->{
                 eqTypeAlarmNumCountDto  eqTypeAlarmNumCountDto  = new eqTypeAlarmNumCountDto();
@@ -113,15 +116,19 @@ public class SystemDataApplication {
                 eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
                 int count = 0;
                 List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
-                for (Warningrecord warningrecord : warningInfos){
-                    String equipmentno = warningrecord.getEquipmentno();
+                Iterator<Warningrecord> iterator = warningInfos.iterator();
+                while (iterator.hasNext()){
+                    Warningrecord next = iterator.next();
+                    String equipmentno = next.getEquipmentno();
                     if (eqNos.contains(equipmentno)){
                         count++;
+                        iterator.remove();
                     }
                 }
                 eqTypeAlarmNumCountDto.setAlarmCount(count);
                 eqTypeAlarmNumCountDtos1.add(eqTypeAlarmNumCountDto);
             });
+
         return eqTypeAlarmNumCountDtos1;
     }
 }
