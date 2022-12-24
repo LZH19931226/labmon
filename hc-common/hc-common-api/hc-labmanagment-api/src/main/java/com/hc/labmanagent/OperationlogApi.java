@@ -1,6 +1,7 @@
 package com.hc.labmanagent;
 
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
+import com.hc.command.labmanagement.operation.ExportLogCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.my.common.core.bean.ApiResponse;
@@ -35,4 +36,6 @@ public interface OperationlogApi {
     @GetMapping("/hospitalequimentType/findHospitalEuipmentTypeInfo")
     ApiResponse<List<HospitalEquipmentTypeModel>> findHospitalEquipmentTypeByCode(@RequestParam("hospitalCode")String hospitalCode);
 
+    @PostMapping("operationlog/addExportLog")
+     void addExportLog(@RequestBody ExportLogCommand exportLogCommand);
 }

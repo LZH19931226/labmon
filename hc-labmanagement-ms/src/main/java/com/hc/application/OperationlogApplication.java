@@ -2,6 +2,7 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.OperationLogCommand;
+import com.hc.command.labmanagement.operation.ExportLogCommand;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
@@ -67,12 +68,11 @@ public class OperationlogApplication {
         Page<OperationlogVo> page = new Page<>(pageCurrent,pageSize);
         List<OperationlogDTO> operationlogDTO =  operationlogService.findAllLogInfo(page,operationLogCommand);
         List<OperationlogVo> list = new ArrayList<>();
-        String lang = Context.getLang();
         if(CollectionUtils.isNotEmpty(operationlogDTO)){
             operationlogDTO.forEach(res->{
                 OperationlogVo build = OperationlogVo.builder()
-                        .opeartiontype(editOperateType(res.getOpeartiontype(),lang))
-                        .functionname(editFunctionName(res.getFunctionname(),lang))
+                        .opeartiontype(editOperateType(res.getOpeartiontype()))
+                        .functionname(editFunctionName(res.getFunctionname()))
                         .hospitalname(res.getHospitalname())
                         .equipmentname(res.getEquipmentname())
                         .username(res.getUsername())
@@ -86,16 +86,13 @@ public class OperationlogApplication {
         return page;
     }
 
-    public String editOperateType(String code,String lang){
-        if("en".equals(lang)){
-            OperationLogEunmDerailEnum from = OperationLogEunmDerailEnum.from(code);
-            return from.name();
-        }
-        return code;
+    public String editOperateType(String code){
+        OperationLogEunmDerailEnum from = OperationLogEunmDerailEnum.from(code);
+        return Context.IsCh() ? from.getMessage() : from.name();
     }
 
-    public String editFunctionName(String message,String lang){
-        if("en".equals(lang)){
+    public String editFunctionName(String message){
+        if(!Context.IsCh()){
             OperationLogEunm operationLogEunm = OperationLogEunm.from(message);
             return operationLogEunm.name();
         }
@@ -103,4 +100,7 @@ public class OperationlogApplication {
     }
 
 
+    public void addExportLog(ExportLogCommand exportLogCommand) {
+        operationlogService.addExportLog(exportLogCommand);
+    }
 }

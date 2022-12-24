@@ -12,4 +12,6 @@ public interface UserRightService {
     List<UserRightDto> getallByHospitalCode(String hospitalCode);
 
     List<UserRightDto> getUserRightInfo(AlarmNoticeCommand alarmNoticeCommand);
+
+    UserRightDto getUserRightInfoByUserId(String userId);
 }
