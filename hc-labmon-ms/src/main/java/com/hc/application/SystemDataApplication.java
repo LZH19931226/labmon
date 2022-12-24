@@ -6,18 +6,22 @@ import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
+import com.hc.clickhouse.repository.WarningrecordRepository;
+import com.hc.dto.eqTypeAlarmNumCountDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
-import org.apache.commons.lang3.StringUtils;
+import com.hc.repository.HospitalEquipmentRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,6 +29,10 @@ public class SystemDataApplication {
 
     @Autowired
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
+    @Autowired
+    private WarningrecordRepository warningrecordRepository;
+    @Autowired
+    private HospitalEquipmentRepository  hospitalEquipmentRepository;
 
 
     public Page findPacketLossLog(EquipmentDataCommand equipmentDataCommand) {
@@ -82,5 +90,38 @@ public class SystemDataApplication {
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
 
 
+    }
+
+    public List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCount(EquipmentDataCommand equipmentDataCommand) {
+        String hospitalCode = equipmentDataCommand.getHospitalCode();
+        //获取报警设备
+        List<Warningrecord> warningInfos = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
+        if (CollectionUtils.isEmpty(warningInfos)){
+            return null;
+        }
+        //获取该医院底下设备类型数量
+        List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos  = hospitalEquipmentRepository.findEquipmentByHosCode(hospitalCode);
+        if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)){
+            return null;
+        }
+        Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
+        List<eqTypeAlarmNumCountDto>  eqTypeAlarmNumCountDtos1 =new ArrayList<>();
+            eqTypeMap.forEach((k,v)->{
+                eqTypeAlarmNumCountDto  eqTypeAlarmNumCountDto  = new eqTypeAlarmNumCountDto();
+                eqTypeAlarmNumCountDto.setEquipmenttypeid(k);
+                eqTypeAlarmNumCountDto.setEquipmenttypename(v.get(0).getEquipmenttypename());
+                eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
+                int count = 0;
+                List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
+                for (Warningrecord warningrecord : warningInfos){
+                    String equipmentno = warningrecord.getEquipmentno();
+                    if (eqNos.contains(equipmentno)){
+                        count++;
+                    }
+                }
+                eqTypeAlarmNumCountDto.setAlarmCount(count);
+                eqTypeAlarmNumCountDtos1.add(eqTypeAlarmNumCountDto);
+            });
+        return eqTypeAlarmNumCountDtos1;
     }
 }

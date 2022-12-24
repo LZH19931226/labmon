@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.SystemDataApplication;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.SummaryOfAlarmsResult;
+import com.hc.dto.eqTypeAlarmNumCountDto;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/system")
@@ -36,5 +38,12 @@ public class SystemDataController {
     public void exportPacketLossLog(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response){
         systemDataApplication.exportPacketLossLog(equipmentDataCommand,response);
     }
+
+    @PostMapping("/eqTypeAlarmNumCount")
+    @ApiOperation("设备类型报警数量统计")
+    public List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCount(@RequestBody EquipmentDataCommand equipmentDataCommand){
+      return systemDataApplication.eqTypeAlarmNumCount(equipmentDataCommand);
+    }
+
 
 }

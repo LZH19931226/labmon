@@ -25,4 +25,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
     List<Warningrecord> getWarningInfoByTime(String time);
 
     List<Warningrecord> getSummaryOfAlarms(EquipmentDataParam convert);
+
+    List<Warningrecord> getWarningEquuipmentInfos(String hospitalCode, String startTime, String endTime);
 }

@@ -20,6 +20,12 @@ public class EquipmentDataCommand {
     private String field;
 
     /**
+     *  医院id
+     *
+     */
+    private String hospitalCode;
+
+    /**
      * 开始时间
      * 格式：YYYY-MM-dd HH:mm:ss
      */
