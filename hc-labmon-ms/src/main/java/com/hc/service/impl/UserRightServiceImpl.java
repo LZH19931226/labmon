@@ -40,4 +40,9 @@ public class UserRightServiceImpl implements UserRightService {
                 .eq(UserRightDto::getHospitalCode, alarmNoticeCommand.getHospitalCode())
                 .eq(UserRightDto::getPhoneNum,alarmNoticeCommand.getPhoneNum()));
     }
+
+    @Override
+    public UserRightDto getUserRightInfoByUserId(String userId) {
+        return userRightRepository.getOne(Wrappers.lambdaQuery(new UserRightDto()).eq(UserRightDto::getUserid,userId));
+    }
 }

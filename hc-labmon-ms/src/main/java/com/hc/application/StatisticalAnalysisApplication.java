@@ -14,15 +14,17 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
+import com.hc.command.labmanagement.operation.ExportLogCommand;
 import com.hc.dto.*;
+import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.service.*;
 import com.hc.util.EquipmentInfoServiceHelp;
-import org.apache.velocity.util.ArrayListWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -58,6 +60,9 @@ public class StatisticalAnalysisApplication {
 
     @Autowired
     private InstrumentParamConfigService instrumentParamConfigService;
+
+    @Autowired
+    private OperationlogApi operationlogApi;
 
     /**
      * 查询医院设备报警数量
@@ -222,7 +227,7 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(alarmNoticeResult);
             mapList.add(objectToMap);
         }
-        System.out.println(mapList);
+        buildLogInfo(Context.getUserId(),ExcelExportUtils.ALARM_NOTICE, OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(ExcelExportUtils.ALARM_NOTICE,beanList,mapList,response);
     }
 
@@ -285,6 +290,7 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             mapList.add(objectToMap);
         }
+        buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA, OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
 
     }
@@ -538,8 +544,25 @@ public class StatisticalAnalysisApplication {
         }else {
             fileName = "date_time_export_result";
         }
+        buildLogInfo(Context.getUserId(),fileName, OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(fileName,beanList,mapList,httpServletResponse);
+    }
 
+    private void buildLogInfo(String userId, String fileName,String exportCode) {
+        ExportLogCommand exportLogCommand = new ExportLogCommand();
+        UserRightDto userRightDto =  userRightService.getUserRightInfoByUserId(userId);
+        if(null != userRightDto){
+            String hospitalCode = userRightDto.getHospitalCode();
+            HospitalInfoDto hospitalInfoDto = hospitalInfoService.selectOne(hospitalCode);
+            String username = userRightDto.getUsername();
+            exportLogCommand.setHospitalCode(hospitalCode);
+            exportLogCommand.setUsername(username);
+            exportLogCommand.setHospitalName(hospitalInfoDto.getHospitalName());
+        }
+        exportLogCommand.setOperationType(exportCode);
+        exportLogCommand.setMenuName(fileName);
+        exportLogCommand.setFunctionName(fileName);
+        operationlogApi.addExportLog(exportLogCommand);
     }
 }
 

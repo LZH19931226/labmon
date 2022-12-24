@@ -6,10 +6,7 @@ import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
-import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
-import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
-import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
-import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
+import com.hc.command.labmanagement.operation.*;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
 import com.hc.dto.OperationlogDTO;
@@ -18,6 +15,7 @@ import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
 import com.hc.repository.OperationlogRepository;
 import com.hc.repository.OperationlogdetailRepository;
+import com.hc.service.HospitalequimentService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.service.OperationlogService;
 import com.hc.vo.backlog.OperationlogVo;
@@ -37,9 +35,6 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Autowired
     private OperationlogdetailRepository operationlogdetailRepository;
-
-    @Autowired
-    private MonitorinstrumentService monitorinstrumentService;
 
     /**
      * 添加用户日志信息
@@ -547,6 +542,18 @@ public class OperationlogServiceImpl implements OperationlogService {
             }
             operationlogdetailRepository.saveBatch(operationlogdetailPos);
         }
+    }
+
+    @Override
+    public void addExportLog(ExportLogCommand exportLogCommand) {
+        OperationlogPo operationlogPo = new OperationlogPo();
+        operationlogPo.setLogid(UUID.randomUUID().toString().replaceAll("-", ""));
+        operationlogPo.setFunctionname(exportLogCommand.getFunctionName());
+        operationlogPo.setOpeartiontype(exportLogCommand.getOperationType());
+        operationlogPo.setUsername(exportLogCommand.getUsername());
+        operationlogPo.setOperationtime(new Date());
+        operationlogPo.setHospitalname(exportLogCommand.getHospitalName());
+        operationlogRepository.save(operationlogPo);
     }
 
     /**

@@ -3,10 +3,7 @@ package com.hc.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.OperationLogCommand;
-import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
-import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
-import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
-import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
+import com.hc.command.labmanagement.operation.*;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.dto.OperationlogDTO;
 import com.hc.vo.backlog.OperationlogVo;
@@ -37,5 +34,7 @@ public interface OperationlogService{
      * @return
      * */
     List<OperationlogDTO> findAllLogInfo(Page<OperationlogVo> page, OperationLogCommand operationLogCommand);
+
+    void addExportLog(ExportLogCommand exportLogCommand);
 }
 

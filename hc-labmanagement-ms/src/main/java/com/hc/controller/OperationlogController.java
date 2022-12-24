@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.OperationlogApplication;
 import com.hc.application.command.OperationLogCommand;
+import com.hc.command.labmanagement.operation.ExportLogCommand;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
@@ -58,5 +59,10 @@ public class OperationlogController {
      @PostMapping("/findAllLogInfo")
     public Page<OperationlogVo> getAllLogInfo(@RequestBody OperationLogCommand operationLogCommand){
         return operationlogApplication.findAllLogInfo(operationLogCommand);
+    }
+
+    @PostMapping("/addExportLog")
+    public void addExportLog(@RequestBody ExportLogCommand exportLogCommand){
+        operationlogApplication.addExportLog(exportLogCommand);
     }
 }

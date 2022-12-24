@@ -11,7 +11,8 @@ import java.util.Arrays;
 public enum OperationLogEunmDerailEnum {
     ADD("0", "新增"),
     EDIT("1","修改"),
-    REMOVE("2","删除");
+    REMOVE("2","删除"),
+    EXPORT("3","导出");
     String code;
     String message;
 
