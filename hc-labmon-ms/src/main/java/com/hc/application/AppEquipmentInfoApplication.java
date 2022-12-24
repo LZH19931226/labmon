@@ -328,7 +328,7 @@ public class AppEquipmentInfoApplication {
             if(StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())){
                 String unit = instrumentParamConfigDto.getUnit();
                 probeInfoDto.setUnit(unit);
-                probeInfoDto.setValue(probeInfoDto.getValue()+unit);
+                probeInfoDto.setValue(probeInfoDto.getValue());
             }
         }
     }
