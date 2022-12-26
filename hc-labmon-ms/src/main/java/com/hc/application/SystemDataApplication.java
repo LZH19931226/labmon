@@ -9,6 +9,7 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
+import com.hc.dto.WarningRecordInfoDto;
 import com.hc.dto.eqTypeAlarmNumCountDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
@@ -130,5 +131,13 @@ public class SystemDataApplication {
             });
 
         return eqTypeAlarmNumCountDtos1;
+    }
+
+    public List<Warningrecord> getWarningRecordInfo(String hospitalCode, Integer count) {
+        List<Warningrecord> warningRecordList = warningrecordRepository.getWarningInfoByCode(hospitalCode,count);
+        if(CollectionUtils.isEmpty(warningRecordList)){
+            return null;
+        }
+        return warningRecordList;
     }
 }
