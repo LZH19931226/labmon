@@ -88,4 +88,9 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     public List<Warningrecord> getWarningEquuipmentInfos(String hospitalCode, String startTime, String endTime) {
         return warningrecordMapper.getWarningEquuipmentInfos(hospitalCode, startTime, endTime);
     }
+
+    @Override
+    public List<Warningrecord> getWarningInfoByCode(String hospitalCode, Integer count) {
+        return warningrecordMapper.getWarningEquuipmentInfos(hospitalCode,count);
+    }
 }

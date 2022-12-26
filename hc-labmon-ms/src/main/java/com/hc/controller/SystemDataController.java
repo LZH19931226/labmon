@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.SystemDataApplication;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.SummaryOfAlarmsResult;
+import com.hc.clickhouse.po.Warningrecord;
+import com.hc.dto.WarningRecordInfoDto;
 import com.hc.dto.eqTypeAlarmNumCountDto;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +45,12 @@ public class SystemDataController {
     @ApiOperation("设备类型报警数量统计")
     public List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCount(@RequestBody EquipmentDataCommand equipmentDataCommand){
       return systemDataApplication.eqTypeAlarmNumCount(equipmentDataCommand);
+    }
+
+    @GetMapping("/getWarningRecordInfo")
+    @ApiOperation("近期报警数据")
+    public List<Warningrecord> getWarningRecordInfo(@RequestParam("hospitalCode")String hospitalCode, @RequestParam("count")Integer count){
+        return systemDataApplication.getWarningRecordInfo(hospitalCode,count);
     }
 
 

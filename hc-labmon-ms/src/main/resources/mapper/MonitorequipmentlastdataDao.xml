@@ -25,7 +25,7 @@
         toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
         and formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN #{param.startTime} AND #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
-        AND currenttemperature != ''
+        AND ${param.field} != ''
         <if test="param.filterList != null">
             <foreach collection="param.filterList" item="res">
                 and ${res.field} <![CDATA[${res.condition}]]> #{res.value}

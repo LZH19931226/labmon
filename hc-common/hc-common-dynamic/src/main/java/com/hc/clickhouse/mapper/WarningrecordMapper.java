@@ -42,4 +42,6 @@ public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
     List<Warningrecord> getWarningInfoByTime(@Param("time") String time);
 
     List<Warningrecord> getSummaryOfAlarms(@Param("param") EquipmentDataParam convert);
+
+    List<Warningrecord> getWarningEquuipmentInfos(@Param("hospitalCode") String hospitalCode,@Param("count") Integer count);
 }

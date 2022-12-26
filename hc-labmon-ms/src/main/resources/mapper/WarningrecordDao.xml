@@ -14,4 +14,17 @@
         group by toStartOfDay(inputdatetime)
         ORDER BY time
     </select>
+
+    <!--hospitalCode count  -->
+    <select id="getWarningEquuipmentInfos" resultType="com.hc.clickhouse.po.Warningrecord">
+        select
+            *
+        from
+         lab_mon.warningrecord
+        where hospitalcode = #{hospitalCode}
+        order by inputdatetime DESC
+        <if test="count != null">
+            limit ${count}
+        </if>
+    </select>
 </mapper>
