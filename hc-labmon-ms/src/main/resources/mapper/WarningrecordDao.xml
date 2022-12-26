@@ -27,4 +27,16 @@
             limit ${count}
         </if>
     </select>
+
+    <select id="getAlarmDeviceNum" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            equipmentno,
+            COUNT(*) num
+        FROM
+            lab_mon.warningrecord
+        WHERE formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN  #{param.startTime} AND #{param.endTime}
+        GROUP BY equipmentno
+        order BY num DESC
+        LIMIT 5
+    </select>
 </mapper>

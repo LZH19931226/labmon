@@ -9,13 +9,12 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
-import com.hc.dto.EquipmentTypeNumDto;
-import com.hc.dto.InstrumentTypeNumDto;
-import com.hc.dto.eqTypeAlarmNumCountDto;
+import com.hc.dto.*;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
+import com.hc.service.EquipmentInfoService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,6 +40,9 @@ public class SystemDataApplication {
 
     @Autowired
     private InstrumentMonitorInfoRepository instrumentMonitorInfoRepository;
+
+    @Autowired
+    private EquipmentInfoService equipmentInfoService;
 
 
     public Page findPacketLossLog(EquipmentDataCommand equipmentDataCommand) {
@@ -195,5 +197,34 @@ public class SystemDataApplication {
             eqTypeAlarmNumCountDtos.add(eqTypeAlarmNumCountDto);
         }
         return eqTypeAlarmNumCountDtos;
+    }
+
+
+    public List<AlarmEquipmentNumDto> getAlarmDeviceNum(EquipmentDataCommand equipmentDataCommand) {
+        EquipmentDataParam convert = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Warningrecord> list =  warningrecordRepository.getAlarmDeviceNum(convert);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        List<String> eNoList = list.stream().map(Warningrecord::getEquipmentno).collect(Collectors.toList());
+        Map<String, List<Warningrecord>> eNoWMap = list.stream().collect(Collectors.groupingBy(Warningrecord::getEquipmentno));
+        List<MonitorEquipmentDto> monitorEquipmentList = equipmentInfoService.batchGetEquipmentInfo(eNoList);
+        Map<String, List<MonitorEquipmentDto>> eNoMap = monitorEquipmentList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
+
+        List<AlarmEquipmentNumDto> equipmentDtoList = new ArrayList<>();
+        for (Warningrecord warningrecord : list) {
+            AlarmEquipmentNumDto alarmEquipmentNumDto = new AlarmEquipmentNumDto();
+            String equipmentNo = warningrecord.getEquipmentno();
+            alarmEquipmentNumDto.setEquipmentNo(equipmentNo);
+            MonitorEquipmentDto monitorEquipmentDto = eNoMap.get(equipmentNo).get(0);
+            Warningrecord warningRecord = eNoWMap.get(equipmentNo).get(0);
+            String equipmentName = monitorEquipmentDto.getEquipmentname();
+            String sn = monitorEquipmentDto.getSn();
+            alarmEquipmentNumDto.setEquipmentName(equipmentName);
+            alarmEquipmentNumDto.setSn(sn);
+            alarmEquipmentNumDto.setNum(warningRecord.getNum());
+            equipmentDtoList.add(alarmEquipmentNumDto);
+        }
+        return equipmentDtoList;
     }
 }
