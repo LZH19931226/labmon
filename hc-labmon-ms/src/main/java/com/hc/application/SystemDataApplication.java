@@ -9,11 +9,13 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
-import com.hc.dto.WarningRecordInfoDto;
+import com.hc.dto.EquipmentTypeNumDto;
+import com.hc.dto.InstrumentTypeNumDto;
 import com.hc.dto.eqTypeAlarmNumCountDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
+import com.hc.repository.InstrumentMonitorInfoRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,10 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,7 +37,10 @@ public class SystemDataApplication {
     @Autowired
     private WarningrecordRepository warningrecordRepository;
     @Autowired
-    private HospitalEquipmentRepository hospitalEquipmentRepository;
+    private HospitalEquipmentRepository  hospitalEquipmentRepository;
+
+    @Autowired
+    private InstrumentMonitorInfoRepository instrumentMonitorInfoRepository;
 
 
     public Page findPacketLossLog(EquipmentDataCommand equipmentDataCommand) {
@@ -71,22 +80,22 @@ public class SystemDataApplication {
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getPacketLoss(dataParam);
-        if (CollectionUtils.isEmpty(lastDataList)) {
+        if (CollectionUtils.isEmpty(lastDataList)){
             return;
         }
         boolean isCh = Context.IsCh();
         List<ExcelExportEntity> beanList = ExcelExportUtils.getPacketLossLog(isCh);
-        List<Map<String, Object>> mapList = new ArrayList<>();
+        List<Map<String,Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata equipmentDatum : lastDataList) {
-            if (isCh) {
+            if (isCh){
                 equipmentDatum.setRemark1("成功接收心跳包数据");
-            } else {
+            }else {
                 equipmentDatum.setRemark1("Heartbeat packet data was successfully received");
             }
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             mapList.add(objectToMap);
         }
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA, beanList, mapList, response);
+        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
 
 
     }
@@ -95,47 +104,61 @@ public class SystemDataApplication {
         String hospitalCode = equipmentDataCommand.getHospitalCode();
         //获取报警设备
         List<Warningrecord> warningInfos = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
-        if (CollectionUtils.isEmpty(warningInfos)) {
+        if (CollectionUtils.isEmpty(warningInfos)){
             return null;
         }
         //获取该医院底下设备类型数量
-        List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos = hospitalEquipmentRepository.findEquipmentByHosCode(hospitalCode);
-        if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)) {
+        List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos  = hospitalEquipmentRepository.findEquipmentByHosCode(hospitalCode);
+        if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)){
             return null;
         }
 
         Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
 
-        List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos1 = new ArrayList<>();
-        eqTypeMap.forEach((k, v) -> {
-            eqTypeAlarmNumCountDto eqTypeAlarmNumCountDto = new eqTypeAlarmNumCountDto();
-            eqTypeAlarmNumCountDto.setEquipmenttypeid(k);
-            eqTypeAlarmNumCountDto.setEquipmenttypename(v.get(0).getEquipmenttypename());
-            eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
-            int count = 0;
-            List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
-            Iterator<Warningrecord> iterator = warningInfos.iterator();
-            while (iterator.hasNext()) {
-                Warningrecord next = iterator.next();
-                String equipmentno = next.getEquipmentno();
-                if (eqNos.contains(equipmentno)) {
-                    count++;
-                    iterator.remove();
+        List<eqTypeAlarmNumCountDto>  eqTypeAlarmNumCountDtos1 =new ArrayList<>();
+            eqTypeMap.forEach((k,v)->{
+                eqTypeAlarmNumCountDto  eqTypeAlarmNumCountDto  = new eqTypeAlarmNumCountDto();
+                eqTypeAlarmNumCountDto.setEquipmenttypeid(k);
+                eqTypeAlarmNumCountDto.setEquipmenttypename(v.get(0).getEquipmenttypename());
+                eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
+                int count = 0;
+                List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
+                Iterator<Warningrecord> iterator = warningInfos.iterator();
+                while (iterator.hasNext()){
+                    Warningrecord next = iterator.next();
+                    String equipmentno = next.getEquipmentno();
+                    if (eqNos.contains(equipmentno)){
+                        count++;
+                        iterator.remove();
+                    }
                 }
-            }
-            eqTypeAlarmNumCountDto.setAlarmCount(count);
-            eqTypeAlarmNumCountDtos1.add(eqTypeAlarmNumCountDto);
-        });
+                eqTypeAlarmNumCountDto.setAlarmCount(count);
+                eqTypeAlarmNumCountDtos1.add(eqTypeAlarmNumCountDto);
+            });
 
         return eqTypeAlarmNumCountDtos1;
     }
 
     public List<Warningrecord> getWarningRecordInfo(String hospitalCode, Integer count) {
-        List<Warningrecord> warningRecordList = warningrecordRepository.getWarningInfoByCode(hospitalCode, count);
-        if (CollectionUtils.isEmpty(warningRecordList)) {
+        List<Warningrecord> warningRecordList = warningrecordRepository.getWarningInfoByCode(hospitalCode,count);
+        if(CollectionUtils.isEmpty(warningRecordList)){
             return null;
         }
         return warningRecordList;
+    }
+
+    /**
+     * 获取设备数量占比
+     * @param equipmentDataCommand
+     */
+    public List<EquipmentTypeNumDto> getEquipmentNumProportion(EquipmentDataCommand equipmentDataCommand) {
+        //获取设备类型数量
+        return hospitalEquipmentRepository.getEquipmentTypeNum(equipmentDataCommand);
+
+    }
+
+    public List<InstrumentTypeNumDto> getInstrumentNum(EquipmentDataCommand equipmentDataCommand) {
+        return instrumentMonitorInfoRepository.getEquipmentTypeNum(equipmentDataCommand);
     }
 
     public List<eqTypeAlarmNumCountDto> getEqAlarmPeriod(EquipmentDataCommand equipmentDataCommand) {

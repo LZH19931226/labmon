@@ -24,4 +24,18 @@
             #{id}
         </foreach>
     </select>
+
+    <select id="getEquipmentTypeNum" resultType="com.hc.dto.InstrumentTypeNumDto">
+        SELECT
+            t1.instrumenttypeid,
+            t2.instrumenttypename,
+            count(t1.instrumentno) num
+        FROM
+            monitorinstrument t1
+                LEFT JOIN monitorinstrumenttype t2  on t1.instrumenttypeid = t2.instrumenttypeid
+        WHERE
+            t1.hospitalcode = #{param.hospitalCode}
+        GROUP BY t1.instrumenttypeid
+        ORDER BY t1.instrumenttypeid
+    </select>
 </mapper>

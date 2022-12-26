@@ -5,7 +5,8 @@ import com.hc.application.SystemDataApplication;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.clickhouse.po.Warningrecord;
-import com.hc.dto.WarningRecordInfoDto;
+import com.hc.dto.EquipmentTypeNumDto;
+import com.hc.dto.InstrumentTypeNumDto;
 import com.hc.dto.eqTypeAlarmNumCountDto;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
@@ -58,5 +59,15 @@ public class SystemDataController {
     public List<eqTypeAlarmNumCountDto> getEqAlarmPeriod(@RequestBody EquipmentDataCommand equipmentDataCommand){
         return systemDataApplication.getEqAlarmPeriod(equipmentDataCommand);
     }
+    @PostMapping("getEquipmentNumProportion")
+    @ApiOperation("获取不同类型设备数量")
+    public List<EquipmentTypeNumDto> getEquipmentNumProportion(@RequestBody EquipmentDataCommand equipmentDataCommand){
+        return systemDataApplication.getEquipmentNumProportion(equipmentDataCommand);
+    }
 
+    @PostMapping("/getInstrumentNum")
+    @ApiOperation("获取不同设备数量")
+    public List<InstrumentTypeNumDto> getInstrumentNum(@RequestBody EquipmentDataCommand equipmentDataCommand){
+        return systemDataApplication.getInstrumentNum(equipmentDataCommand);
+    }
 }

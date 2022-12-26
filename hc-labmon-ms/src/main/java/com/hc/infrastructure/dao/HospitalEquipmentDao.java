@@ -1,6 +1,8 @@
 package com.hc.infrastructure.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hc.application.command.EquipmentDataCommand;
+import com.hc.dto.EquipmentTypeNumDto;
 import com.hc.dto.HospitalEquipmentDto;
 import com.hc.dto.eqTypeAlarmNumCountDto;
 import org.apache.ibatis.annotations.Param;
@@ -23,15 +25,17 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
             "ON het.equipmenttypeid = he.equipmenttypeid  LEFT JOIN hospitalofreginfo hor ON hor.hospitalcode = he.hospitalcode  WHERE he.hospitalcode = #{hospitalCode}")
     List<HospitalEquipmentDto> findHospitalEquipmentTypeByCode(String hospitalCode);
 
-    @Select("SELECT\n" +
-            "\tt1.equipmentno,\n" +
-            "\tt2.equipmenttypeid,\n" +
-            "\tt2.equipmenttypename,\n" +
-            "\tt2.equipmenttypename_us \n" +
-            "FROM\n" +
-            "\tmonitorequipment t1\n" +
-            "\tLEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid \n" +
-            "WHERE\n" +
-            "\tt1.hospitalcode = #{hospitalCode} ")
+    @Select("SELECT " +
+            "t1.equipmentno," +
+            "t2.equipmenttypeid," +
+            "t2.equipmenttypename," +
+            "t2.equipmenttypename_us " +
+            "FROM " +
+            "monitorequipment t1" +
+            "LEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid " +
+            "WHERE " +
+            "t1.hospitalcode = #{hospitalCode} ")
     List<eqTypeAlarmNumCountDto> findEquipmentByHosCode(@Param("hospitalCode") String hospitalCode);
+
+    List<EquipmentTypeNumDto> getEquipmentTypeNum(@Param("param") EquipmentDataCommand equipmentDataCommand);
 }

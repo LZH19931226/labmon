@@ -26,6 +26,11 @@ public class EquipmentDataCommand {
     private String hospitalCode;
 
     /**
+     * 设备是否启用（0=未启用 1=启用 空为全部）
+     */
+    private String clientVisible;
+
+    /**
      * 开始时间
      * 格式：YYYY-MM-dd HH:mm:ss
      */

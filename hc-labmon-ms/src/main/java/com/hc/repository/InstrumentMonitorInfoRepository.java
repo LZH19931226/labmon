@@ -1,6 +1,8 @@
 package com.hc.repository;
 
+import com.hc.application.command.EquipmentDataCommand;
 import com.hc.dto.InstrumentMonitorInfoDto;
+import com.hc.dto.InstrumentTypeNumDto;
 
 import java.util.List;
 
@@ -12,4 +14,6 @@ public interface InstrumentMonitorInfoRepository {
      * @return 仪器监视器信息集合
      */
     List<InstrumentMonitorInfoDto> selectInstrumentMonitorInfoByEqNo(List<String> equipmentNoList);
+
+    List<InstrumentTypeNumDto> getEquipmentTypeNum(EquipmentDataCommand equipmentDataCommand);
 }

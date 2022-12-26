@@ -1,6 +1,8 @@
 package com.hc.repository.impl;
 
+import com.hc.application.command.EquipmentDataCommand;
 import com.hc.dto.InstrumentMonitorInfoDto;
+import com.hc.dto.InstrumentTypeNumDto;
 import com.hc.infrastructure.dao.InstrumentMonitorInfoDao;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import org.apache.commons.collections4.CollectionUtils;
@@ -24,5 +26,10 @@ public class InstrumentMonitorInfoRepositoryImpl implements InstrumentMonitorInf
     public List<InstrumentMonitorInfoDto> selectInstrumentMonitorInfoByEqNo(List<String> equipmentNoList) {
         List<InstrumentMonitorInfoDto> instrumentMonitorInfoDtoList = instrumentMonitorInfoDao.selectInstrumentMonitorInfoByEqNo(equipmentNoList);
         return CollectionUtils.isEmpty(instrumentMonitorInfoDtoList)?null:instrumentMonitorInfoDtoList;
+    }
+
+    @Override
+    public List<InstrumentTypeNumDto> getEquipmentTypeNum(EquipmentDataCommand equipmentDataCommand) {
+        return instrumentMonitorInfoDao.getEquipmentTypeNum(equipmentDataCommand);
     }
 }
