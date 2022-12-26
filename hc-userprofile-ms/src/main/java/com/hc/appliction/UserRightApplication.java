@@ -214,7 +214,7 @@ public class UserRightApplication {
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .hospitalInfoVo(hospitalInfoVo)
-                .nickname(userRightDto.getNickname())
+                .nickname(StringUtils.isEmpty(userRightDto.getNickname())?userRightDto.getUsername():userRightDto.getNickname())
                 .token(token)
                 .build();
     }
@@ -250,7 +250,7 @@ public class UserRightApplication {
                 .pwd(userRightDto.getPwd())
                 .isUse(userRightDto.getIsUse())
                 .userid(userRightDto.getUserid())
-                .nickname(userRightDto.getNickname())
+                .nickname(StringUtils.isEmpty(userRightDto.getNickname())?userRightDto.getUsername():userRightDto.getNickname())
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .token(token)
@@ -319,6 +319,7 @@ public class UserRightApplication {
                 .userType(userRightCommand.getUserType())
                 .hospitalName(userRightCommand.getHospitalName())
                 .token(userRightCommand.getToken())
+                .nickname(StringUtils.isEmpty(userRightCommand.getNickname())?userRightCommand.getUsername():userRightCommand.getNickname())
                 .lang(userRightCommand.getLang())
                 .build();
     }
