@@ -16,7 +16,7 @@
     </select>
 
     <!--hospitalCode count  -->
-    <select id="getWarningEquuipmentInfos" resultType="com.hc.clickhouse.po.Warningrecord">
+    <select id="getWarningEquuipmentCounts" resultType="com.hc.clickhouse.po.Warningrecord">
         select
             *
         from

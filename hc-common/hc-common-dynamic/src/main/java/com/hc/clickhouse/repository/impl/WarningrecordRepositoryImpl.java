@@ -91,6 +91,6 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
 
     @Override
     public List<Warningrecord> getWarningInfoByCode(String hospitalCode, Integer count) {
-        return warningrecordMapper.getWarningEquuipmentInfos(hospitalCode,count);
+        return warningrecordMapper.getWarningEquuipmentCounts(hospitalCode,count);
     }
 }

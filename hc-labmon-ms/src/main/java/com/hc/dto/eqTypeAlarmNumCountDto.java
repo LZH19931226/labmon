@@ -16,5 +16,7 @@ public class eqTypeAlarmNumCountDto implements Serializable {
     private String equipmenttypenameUs;
     /** 设备编号 */
     private String equipmentno;
+    /** 设备报警时段 */
+    private String alarmPeriod;
 
 }

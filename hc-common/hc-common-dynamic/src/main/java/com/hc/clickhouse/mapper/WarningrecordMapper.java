@@ -43,5 +43,5 @@ public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
 
     List<Warningrecord> getSummaryOfAlarms(@Param("param") EquipmentDataParam convert);
 
-    List<Warningrecord> getWarningEquuipmentInfos(@Param("hospitalCode") String hospitalCode,@Param("count") Integer count);
+    List<Warningrecord> getWarningEquuipmentCounts(@Param("hospitalCode") String hospitalCode,@Param("count") Integer count);
 }

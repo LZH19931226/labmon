@@ -53,5 +53,10 @@ public class SystemDataController {
         return systemDataApplication.getWarningRecordInfo(hospitalCode,count);
     }
 
+    @PostMapping("/getEqAlarmPeriod")
+    @ApiOperation("设备报警时段分布")
+    public List<eqTypeAlarmNumCountDto> getEqAlarmPeriod(@RequestBody EquipmentDataCommand equipmentDataCommand){
+        return systemDataApplication.getEqAlarmPeriod(equipmentDataCommand);
+    }
 
 }

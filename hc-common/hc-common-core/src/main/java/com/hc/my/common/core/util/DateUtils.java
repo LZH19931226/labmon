@@ -6,11 +6,11 @@ import org.springframework.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.*;
 
 /**
  * @author LiuZhiHao
@@ -185,9 +185,18 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException {
-        System.out.println(getCurrentYYMM());
+        Date date = DateUtils.initDateByDay();
+        for (int i = 1; i <= 12; i++) {
+            Date addHour = DateUtils.getAddHour(date, 2 * (i - 1));
+            Date endTime ;
+            if (i==12){
+                endTime =DateUtils.getEndOfDay();
+            }else {
+                endTime =DateUtils.getAddHour(date, i*2);
+            }
+            System.out.println(addHour+"======"+endTime);
+        }
     }
-
     /**
      * 以 yyyy-MM-dd HH:mm:ss 的格式解析String
      * @param str
@@ -254,6 +263,39 @@ public class DateUtils {
         cal.add(Calendar.HOUR_OF_DAY,-1);
         return cal.getTime();
     }
+
+    /**
+     * 获得当天零时零分零秒
+     * @return
+     */
+    public static Date initDateByDay(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    // 获得某天最大时间 2022-12-09 23:59:59
+    public static Date getEndOfDay() {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(new Date().getTime()), ZoneId.systemDefault());
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * 获取累加之后的时间
+     * @param date
+     * @return "yyyy-MM-dd HH:mm:ss"
+     */
+    public static Date getAddHour(Date date,int hour) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR_OF_DAY,hour);
+        return cal.getTime();
+    }
+
 
     /**
      *  转换日期格式
