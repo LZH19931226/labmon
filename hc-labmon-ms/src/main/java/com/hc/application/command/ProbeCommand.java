@@ -20,6 +20,11 @@ public class ProbeCommand {
     private String equipmentName;
 
     /**
+     * 状态（0为正常，1为报警中）
+     * */
+    private String state;
+
+    /**
      * 分页大小
      */
     private Long pageSize;
