@@ -77,9 +77,14 @@ public class AppEquipmentInfoApplication {
      * @param hospitalCode
      * @return
      */
-    public List<HospitalEquipmentDto> getEquipmentNum(String hospitalCode) {
+    public List<HospitalEquipmentDto> getEquipmentNum(String hospitalCode,String tags) {
         //查出医院的设备类型
-        List<HospitalEquipmentDto> hospitalEquipmentDto =  hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
+        List<HospitalEquipmentDto> hospitalEquipmentDto = null;
+        if (StringUtils.equals(tags,"PC")){
+            hospitalEquipmentDto=  hospitalEquipmentService.selectHospitalEquipmentInfoByPc(hospitalCode);
+        }else {
+            hospitalEquipmentDto=  hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
+        }
         if (CollectionUtils.isEmpty(hospitalEquipmentDto)) {
            throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE);
         }
@@ -93,24 +98,23 @@ public class AppEquipmentInfoApplication {
         for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
             String equipmentTypeId = equipmentDto.getEquipmentTypeId();
             List<InstrumentParamConfigDto> list = eqTypeIdMap.get(equipmentTypeId);
-            if (CollectionUtils.isEmpty(list)) {
-                continue;
-            }
-            Map<String, List<InstrumentParamConfigDto>> map = list.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
             long alarmNum = 0;
             long normalNum = 0;
-            for (String equipmentNo : map.keySet()) {
-                List<InstrumentParamConfigDto> list1 = map.get(equipmentNo);
-                long count = list1.stream().filter(res -> StringUtils.equals("1", res.getState())).count();
-                if(count>0){
-                    alarmNum++;
-                }else {
-                    normalNum++;
+            if (CollectionUtils.isNotEmpty(list)) {
+                Map<String, List<InstrumentParamConfigDto>> map = list.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
+                for (String equipmentNo : map.keySet()) {
+                    List<InstrumentParamConfigDto> list1 = map.get(equipmentNo);
+                    long count = list1.stream().filter(res -> StringUtils.equals("1", res.getState())).count();
+                    if (count > 0) {
+                        alarmNum++;
+                    } else {
+                        normalNum++;
+                    }
                 }
             }
             equipmentDto.setAlarmNum(String.valueOf(alarmNum));
             equipmentDto.setNormalNum(String.valueOf(normalNum));
-            equipmentDto.setTotalNum(String.valueOf(alarmNum+normalNum));
+            equipmentDto.setTotalNum(String.valueOf(alarmNum + normalNum));
             dtoList.add(equipmentDto);
         }
         return dtoList;

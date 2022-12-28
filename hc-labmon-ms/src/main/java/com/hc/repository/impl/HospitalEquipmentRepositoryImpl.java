@@ -42,4 +42,9 @@ public class HospitalEquipmentRepositoryImpl extends ServiceImpl<HospitalEquipme
     public List<EquipmentTypeNumDto> getEquipmentTypeNum(EquipmentDataCommand equipmentDataCommand) {
         return hospitalEquipmentDao.getEquipmentTypeNum(equipmentDataCommand);
     }
+
+    @Override
+    public List<HospitalEquipmentDto> selectHospitalEquipmentInfoByPc(String hospitalCode) {
+        return hospitalEquipmentDao.selectHospitalEquipmentInfoByPc(hospitalCode);
+    }
 }

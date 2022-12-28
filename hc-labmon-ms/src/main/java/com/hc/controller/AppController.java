@@ -31,8 +31,8 @@ public class AppController {
     /*首页*/
     @GetMapping("/getEquipmentNum")
     @ApiOperation("获取首页设备数量信息")
-    public List<HospitalEquipmentDto> getEquipmentNum(@Param("hospitalCode")String hospitalCode){
-        return equipmentInfoAppApplication.getEquipmentNum(hospitalCode);
+    public List<HospitalEquipmentDto> getEquipmentNum(@Param("hospitalCode")String hospitalCode,@Param("tags")String  tags){
+        return equipmentInfoAppApplication.getEquipmentNum(hospitalCode,tags);
     }
 
     /*设备当前值*/
