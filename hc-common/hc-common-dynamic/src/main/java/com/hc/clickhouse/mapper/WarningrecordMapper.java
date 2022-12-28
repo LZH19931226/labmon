@@ -30,7 +30,8 @@ public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
                                        @Param("endTime") String endTime);
 
     @Select("select * from lab_mon.warningrecord where equipmentno = #{equipmentNo} and formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M:%S') BETWEEN #{startTime} and #{endTime} order by inputdatetime desc")
-    List<Warningrecord> getWarningRecordDetailInfo(@Param("equipmentNo") String equipmentNo,
+    List<Warningrecord> getWarningRecordDetailInfo(Page page,
+            @Param("equipmentNo") String equipmentNo,
                                                    @Param("startTime") String startTime,
                                                    @Param("endTime") String endTime);
 

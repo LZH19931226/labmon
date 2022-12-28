@@ -85,7 +85,7 @@ public class AppController {
 
     @PostMapping("getWarningDetailInfo")
     @ApiOperation("获取设备报警详情信息")
-    public List<WarningDetailInfo> getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
+    public Page getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
         return equipmentInfoAppApplication.getWarningDetailInfo(warningCommand);
     }
 

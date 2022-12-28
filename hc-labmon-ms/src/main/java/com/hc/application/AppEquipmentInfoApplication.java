@@ -599,11 +599,12 @@ public class AppEquipmentInfoApplication {
      * @param warningCommand
      * @return
      */
-    public List<WarningDetailInfo> getWarningDetailInfo(WarningCommand warningCommand) {
+    public Page getWarningDetailInfo(WarningCommand warningCommand) {
         String equipmentNo = warningCommand.getEquipmentNo();
         String startTime = warningCommand.getStartTime();
         String endTime = warningCommand.getEndTime();
-        List<Warningrecord> warningRecordList = warningrecordRepository.getWarningRecordDetailInfo(equipmentNo, startTime, endTime);
+        Page page = new Page(warningCommand.getPageCurrent(),warningCommand.getPageSize());
+        List<Warningrecord> warningRecordList = warningrecordRepository.getWarningRecordDetailInfo(page,equipmentNo, startTime, endTime);
         if (CollectionUtils.isEmpty(warningRecordList)) {
             return null;
         }
@@ -649,7 +650,8 @@ public class AppEquipmentInfoApplication {
                 detailInfo.setEName(CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName());
             }
         }
-        return detailInfos;
+        page.setRecords(detailInfos);
+        return page;
     }
 
     /**

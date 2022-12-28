@@ -53,8 +53,8 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
      * @return
      */
     @Override
-    public List<Warningrecord> getWarningRecordDetailInfo(String equipmentNo, String startTime, String endTime) {
-        return warningrecordMapper.getWarningRecordDetailInfo(equipmentNo, startTime, endTime);
+    public List<Warningrecord> getWarningRecordDetailInfo(Page page ,String equipmentNo, String startTime, String endTime) {
+        return warningrecordMapper.getWarningRecordDetailInfo(page,equipmentNo, startTime, endTime);
     }
 
     /**
