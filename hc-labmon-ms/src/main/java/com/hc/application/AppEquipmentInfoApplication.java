@@ -6,6 +6,7 @@ import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
 import com.hc.application.response.*;
+import com.hc.clickhouse.param.CurveParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
@@ -28,6 +29,7 @@ import com.hc.my.common.core.util.RegularUtil;
 import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
+import com.hc.util.CurveUtils;
 import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -390,7 +392,11 @@ public class AppEquipmentInfoApplication {
         String sn = curveCommand.getSn();
         String equipmentNo = curveCommand.getEquipmentNo();
         String ym = DateUtils.getYearMonth(startTime,endTime);
-        List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquipmentLastDataInfo1(startTime,endTime,equipmentNo,ym);
+        CurveParam curveParam = BeanConverter.convert(curveCommand, CurveParam.class);
+        curveParam.setYearMonth(ym);
+        List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquuipmentLastList(curveParam);
+
+
         if(org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
@@ -399,9 +405,10 @@ public class AppEquipmentInfoApplication {
         if(StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4,6))){
             flag = true;
         }
+//        CurveInfoDto curveInfoDto =  CurveUtils.getCurveFirst(lastDataModelList,curveCommand.getInstrumentConfigIdList(),map);
         return flag ?
-                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList,map,false):
-                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList,map,false);
+                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList,map, true):
+                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList,map, false);
     }
 
     /**
@@ -437,8 +444,9 @@ public class AppEquipmentInfoApplication {
         String hospitalCode = warningCommand.getHospitalCode();
         String startTime = warningCommand.getStartTime();
         String endTime = warningCommand.getEndTime();
+        Page page = new Page<>(warningCommand.getPageCurrent(),warningCommand.getPageSize());
         //查询医院的报警信息
-        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfo(hospitalCode,startTime,endTime);
+        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfo(page,hospitalCode,startTime,endTime);
         if(CollectionUtils.isEmpty(warningRecord)){
             return null;
         }

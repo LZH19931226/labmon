@@ -115,4 +115,5 @@ public class CurveInfoDto {
     @ApiModelProperty("液位")
     private CurveDataModel liquidLevel;
 
+
 }
