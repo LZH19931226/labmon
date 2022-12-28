@@ -35,7 +35,7 @@ public enum DataFieldEnum {
     TEMP10("TEMP10","currenttemperature10","温度十","TEMP10","℃"),
     LEFT_TEMP("LEFTTEMP","currentlefttemperature","左舱室温度","TEMPERATURE_IN_THE_LEFT_COMPARTMENT","℃"),
     RIGHT_TEMP("RIGHTTEMP","currentrigthtemperature","右舱室温度","TEMPERATURE_IN_THE_RIGHT_COMPARTMENT","℃"),
-    AIR_FLOW("气流","currentairflow","气流","AIRFLOW","ml/min"),
+    AIR_FLOW("气流","currentairflow1","气流","AIRFLOW","ml/min"),
     DIFF_TEMP("DIFFTEMP","currenttemperaturediff","温差","TEMPERATURE_DIFFERENCE","℃"),
     PM5("PM5","currentpm5","PM5","PM5","L/MIN"),
     PM05("PM0.5","currentpm05","PM05","PM05","L/MIN"),

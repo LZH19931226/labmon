@@ -396,7 +396,6 @@ public class AppEquipmentInfoApplication {
         curveParam.setYearMonth(ym);
         List<Monitorequipmentlastdata> lastDataModelList  =  monitorequipmentlastdataRepository.getMonitorEquuipmentLastList(curveParam);
 
-
         if(org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
@@ -405,10 +404,10 @@ public class AppEquipmentInfoApplication {
         if(StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4,6))){
             flag = true;
         }
-//        CurveInfoDto curveInfoDto =  CurveUtils.getCurveFirst(lastDataModelList,curveCommand.getInstrumentConfigIdList(),map);
-        return flag ?
-                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList,map, true):
-                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList,map, false);
+        return CurveUtils.getCurveFirst(lastDataModelList,curveCommand.getInstrumentConfigIdList(),map);
+//        return flag ?
+//                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList,map, true):
+//                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList,map, false);
     }
 
     /**
@@ -440,7 +439,7 @@ public class AppEquipmentInfoApplication {
      * （报警了的记录）
      * @return
      */
-    public List<WarningRecordInfo> getWarningInfo(WarningCommand warningCommand) {
+    public Page getWarningInfo(WarningCommand warningCommand) {
         String hospitalCode = warningCommand.getHospitalCode();
         String startTime = warningCommand.getStartTime();
         String endTime = warningCommand.getEndTime();
@@ -532,7 +531,8 @@ public class AppEquipmentInfoApplication {
         if(CollectionUtils.isNotEmpty(removeList)){
             list.removeAll(removeList);
         }
-        return list;
+        page.setRecords(list);
+        return page;
     }
 
     /**

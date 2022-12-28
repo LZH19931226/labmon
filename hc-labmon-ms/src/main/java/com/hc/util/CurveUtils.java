@@ -15,7 +15,8 @@ public class CurveUtils {
 
     public static CurveInfoDto getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, List<String> instrumentConfigIdList, Map<String, List<InstrumentParamConfigDto>> map) {
         Map<String, List<String>> containerMap = getList(instrumentConfigIdList);
-        instrumentConfigIdList.add("inputdatetime");
+        String time = "inputdatetime";
+        instrumentConfigIdList.add(time);
         for (Monitorequipmentlastdata monitorequipmentlastdata : lastDataModelList) {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
             filterMap(objectToMap,instrumentConfigIdList);
@@ -25,17 +26,16 @@ public class CurveUtils {
                 stringList.add(str);
             }
         }
-        instrumentConfigIdList.remove("inputdatetime");
+        instrumentConfigIdList.remove(time);
         CurveInfoDto curveInfoDto = new CurveInfoDto();
         for (String field : instrumentConfigIdList) {
             List<String> valueList = containerMap.get(field);
-            List<String> timeList = containerMap.get("inputdatetime");
+            List<String> timeList = containerMap.get(time);
             String lastDataField = DataFieldEnum.fromByLastDataField(field).getLastDataField();
             CurveDataModel curveDataModel = generateCurveDataModel(valueList, timeList, map.get(lastDataField));
             setCurveInfo(curveInfoDto,curveDataModel,field);
         }
-
-        return null;
+        return curveInfoDto;
     }
 
     /**
@@ -57,6 +57,95 @@ public class CurveUtils {
                 break;
             case "currenthumidity":
                 curveInfoDto.setRh(curveDataModel);
+                break;
+            case "currentairflow":
+                curveInfoDto.setPress(curveDataModel);
+                break;
+            case "currentqc":
+                curveInfoDto.setQc(curveDataModel);
+                break;
+            case "currentpm25":
+                curveInfoDto.setPm25(curveDataModel);
+                break;
+            case "currentpm10":
+                curveInfoDto.setPm10(curveDataModel);
+                break;
+            case "currentformaldehyde":
+                curveInfoDto.setJq(curveDataModel);
+                break;
+            case "currenttemperature1":
+                curveInfoDto.setTemp1(curveDataModel);
+                break;
+            case "currenttemperature2":
+                curveInfoDto.setTemp2(curveDataModel);
+                break;
+            case "currenttemperature3":
+                curveInfoDto.setTemp3(curveDataModel);
+                break;
+            case "currenttemperature4":
+                curveInfoDto.setTemp4(curveDataModel);
+                break;
+            case "currenttemperature5":
+                curveInfoDto.setTemp5(curveDataModel);
+                break;
+            case "currenttemperature6":
+                curveInfoDto.setTemp6(curveDataModel);
+                break;
+            case "currenttemperature7":
+                curveInfoDto.setTemp7(curveDataModel);
+                break;
+            case "currenttemperature8":
+                curveInfoDto.setTemp8(curveDataModel);
+                break;
+            case "currenttemperature9":
+                curveInfoDto.setTemp9(curveDataModel);
+                break;
+            case "currenttemperature10":
+                curveInfoDto.setTemp10(curveDataModel);
+                break;
+            case "currentlefttemperature":
+                curveInfoDto.setLefttemp(curveDataModel);
+                break;
+            case "currentrigthtemperature":
+                curveInfoDto.setRighttemp(curveDataModel);
+                break;
+            case "currentairflow1":
+                curveInfoDto.setAirflow(curveDataModel);
+                break;
+            case "PM5":
+                curveInfoDto.setPm5(curveDataModel);
+                break;
+            case "PM05":
+                curveInfoDto.setPm05(curveDataModel);
+                break;
+            case "currentleftcovertemperature":
+                curveInfoDto.setLeftcovertemp(curveDataModel);
+                break;
+            case "currentleftendtemperature":
+                curveInfoDto.setLeftendtemp(curveDataModel);
+                break;
+            case "currentleftairflow":
+                curveInfoDto.setLeftair(curveDataModel);
+                break;
+            case "currentrightcovertemperature":
+                curveInfoDto.setRightcovertemp(curveDataModel);
+                break;
+            case "currentrightendtemperature":
+                curveInfoDto.setRightendtemp(curveDataModel);
+                break;
+            case "currentrightairflow":
+                curveInfoDto.setRightair(curveDataModel);
+                break;
+            case "currentn2":
+                curveInfoDto.setN2(curveDataModel);
+                break;
+            case "leftCompartmentHumidity":
+                curveInfoDto.setLeftCompartmentHumidity(curveDataModel);
+                break;
+            case "rightCompartmentHumidity":
+                curveInfoDto.setRightCompartmentHumidity(curveDataModel);
+                break;
+            default:
                 break;
         }
     }
