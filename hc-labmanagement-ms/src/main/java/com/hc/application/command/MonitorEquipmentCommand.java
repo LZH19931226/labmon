@@ -101,6 +101,9 @@ public class MonitorEquipmentCommand {
      */
     private String upsNotice;
 
+    /** 设备地址 */
+    private String address;
+
     /**
      * 报警时间段
      */

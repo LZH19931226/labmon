@@ -51,5 +51,20 @@
         </if>
     </select>
 
+    <select id="getMonitorEquuipmentLastList" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+      select
+          equipmentno,
+          <foreach collection="param.instrumentConfigIdList" item="field" >
+              ${field},
+          </foreach>
+          inputdatetime
+      from
+        lab_mon.monitorequipmentlastdata
+      where
+        toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+        AND formatDateTime ( inputdatetime, '%Y-%m-%d %H:%M:%S' ) BETWEEN #{param.startTime} AND #{param.endTime}
+        AND equipmentno = #{param.equipmentNo}
+    </select>
+
 
 </mapper>

@@ -105,5 +105,8 @@ public class 	MonitorEquipmentVo  implements Serializable {
 
 	/** 市电恢复通知 0和空为未开启 1为开启 */
 	private String upsNotice;
+
+	/** 设备地址 */
+	private String address;
 }
 

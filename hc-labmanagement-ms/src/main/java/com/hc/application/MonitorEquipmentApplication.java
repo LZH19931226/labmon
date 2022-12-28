@@ -139,7 +139,6 @@ public class MonitorEquipmentApplication {
                 warningTimeVos =  bulidWarningTimeVoList(monitorequipmentwarningtimeDTOList);
             }
 
-
             boolean flag = true;
             String channel = null;
             String instrumenttypename = null;
@@ -179,6 +178,7 @@ public class MonitorEquipmentApplication {
                     .sn(sn==null?"":sn)
                     .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                     .warningTimeList(warningTimeVos)
+                    .address(monitorEquipmentDto.getAddress())
                     .build();
             list.add(monitorEquipmentVo);
         }
@@ -278,6 +278,7 @@ public class MonitorEquipmentApplication {
                 .setEquipmentTypeId(monitorEquipmentCommand.getEquipmentTypeId())
                 .setEquipmentNo(equipmentNo)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
+                .setAddress(monitorEquipmentCommand.getAddress())
                 .setCreateTime(new Date());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
@@ -485,6 +486,7 @@ public class MonitorEquipmentApplication {
                 .setChannel(monitorEquipmentCommand.getChannel())
                 .setWarningTimeList(warningTimeDTOs)
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
+                .setAddress(monitorEquipmentCommand.getAddress())
                 .setRemark(monitorEquipmentCommand.getRemark());
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
     }
@@ -574,6 +576,7 @@ public class MonitorEquipmentApplication {
                 .setEquipmentBrand(monitorEquipmentCommand.getEquipmentBrand())
                 .setRemark(monitorEquipmentCommand.getRemark())
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
+                .setAddress(monitorEquipmentCommand.getAddress())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
@@ -706,6 +709,7 @@ public class MonitorEquipmentApplication {
                 .setSn(monitorEquipmentCommand.getSn())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
+                .setAddress(monitorEquipmentCommand.getAddress())
                 .setWarningTimeList(warningTimeDTOs);
     }
 

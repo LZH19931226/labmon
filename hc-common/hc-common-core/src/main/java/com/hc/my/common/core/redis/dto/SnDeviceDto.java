@@ -67,4 +67,7 @@ public class SnDeviceDto implements Serializable {
 
     /** 市电恢复通知 */
     private String upsNotice;
+
+    /** 设备地址 */
+    private String address;
 }

@@ -55,6 +55,7 @@ public enum DataFieldEnum {
     DOOR2("DOOR2","currentdoorstate2","报警信号2","ALARM2",""),
     outerCO2("outerCO2","currentcarbondioxide","内置CO2","BUILT-IN CO2","%"),
     outerO2("outerO2","currento2","内置O2","BUILT-IN O2","%");
+
     private final String imField;
 
     private final String lastDataField;

@@ -2,6 +2,7 @@ package com.hc.clickhouse.repository;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hc.clickhouse.param.CurveParam;
 import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
@@ -33,4 +34,6 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     List<Monitorequipmentlastdata> getPacketLoss(EquipmentDataParam dataParam);
 
     List<Monitorequipmentlastdata> getLastDataByTime(EquipmentDataParam dataParam);
+
+    List<Monitorequipmentlastdata> getMonitorEquuipmentLastList(CurveParam curveParam);
 }

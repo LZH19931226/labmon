@@ -2,6 +2,8 @@ package com.hc.application.command;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CurveCommand {
 
@@ -12,4 +14,6 @@ public class CurveCommand {
     private String endTime;
 
     private String sn;
+
+    private List<String>  instrumentConfigIdList;
 }

@@ -76,4 +76,7 @@ public class MonitorEquipmentPo implements Serializable {
     /** 市电恢复通知 0和空为不开启 1为开启 */
     @TableField(value = "ups_notice")
     private String upsNotice;
+
+    /** 设备地址 */
+    private String address;
 }
