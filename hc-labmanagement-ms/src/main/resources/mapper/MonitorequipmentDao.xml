@@ -99,6 +99,7 @@
             me.equipmentname equipmentName,
             me.remark remark,
             me.ups_notice upsNotice,
+            me.address address,
             h.hospitalname hospitalName,
             met.equipmenttypename equipmentTypeName,
             met.equipmenttypename_us equipmentTypeNameUs
