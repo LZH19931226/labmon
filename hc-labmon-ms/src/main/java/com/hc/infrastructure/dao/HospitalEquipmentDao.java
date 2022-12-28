@@ -38,4 +38,13 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
     List<eqTypeAlarmNumCountDto> findEquipmentByHosCode(@Param("hospitalCode") String hospitalCode);
 
     List<EquipmentTypeNumDto> getEquipmentTypeNum(@Param("param") EquipmentDataCommand equipmentDataCommand);
+
+    @Select("SELECT\n" +
+            "\tt2.equipmenttypename,\n" +
+            "\tt1.* \n" +
+            "FROM\n" +
+            "\tmonitorequipmenttype t2\n" +
+            "\tLEFT JOIN hospitalequiment t1 ON t1.equipmenttypeid = t2.equipmenttypeid \n" +
+            "\tAND t1.hospitalcode = #{hospitalCode}")
+    List<HospitalEquipmentDto> selectHospitalEquipmentInfoByPc(@Param("hospitalCode")String hospitalCode);
 }
