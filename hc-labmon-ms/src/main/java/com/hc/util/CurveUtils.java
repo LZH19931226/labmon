@@ -1,5 +1,6 @@
 package com.hc.util;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.curvemodel.SeriesDataModel;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
@@ -22,6 +23,9 @@ public class CurveUtils {
             filterMap(objectToMap,instrumentConfigIdList);
             for (String field : instrumentConfigIdList) {
                 String str =  (String)objectToMap.get(field);
+                if(StringUtils.isBlank(str)){
+                    continue;
+                }
                 List<String> stringList = containerMap.get(field);
                 stringList.add(str);
             }
