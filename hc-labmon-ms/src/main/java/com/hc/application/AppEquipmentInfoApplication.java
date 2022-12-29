@@ -440,9 +440,7 @@ public class AppEquipmentInfoApplication {
 
 
     public List<WarningRecordInfo> getWarningInfoList(WarningCommand warningCommand){
-        String startTime = warningCommand.getStartTime();
-        String ymd = startTime.substring(0, 10);
-        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfoList(warningCommand.getHospitalCode(),ymd);
+        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfoList(warningCommand.getHospitalCode(),warningCommand.getStartTime());
         if(CollectionUtils.isEmpty(warningRecord)){
             return null;
         }
