@@ -39,4 +39,23 @@
         order BY num DESC
         LIMIT 5
     </select>
+
+    <select id="getWarningInfoList" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            *
+        FROM
+            lab_mon.warningrecord
+        WHERE
+            formatDateTime ( inputdatetime, '%Y-%m-%d' ) = #{ymd}
+          AND equipmentno IN (
+            SELECT
+                equipmentno
+            FROM
+                ( SELECT equipmentno, formatDateTime ( MAX( inputdatetime ), '%Y-%m-%d' ) time1 FROM lab_mon.warningrecord WHERE hospitalcode = #{hospitalCode} GROUP BY equipmentno ORDER BY time1 )
+            WHERE
+                time1 = #{ymd}
+        )
+          AND hospitalcode = #{hospitalCode}
+    </select>
+
 </mapper>

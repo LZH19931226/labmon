@@ -38,15 +38,6 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     }
 
     /**
-     * @param hospitalCode
-     * @return
-     */
-    @Override
-    public List<Warningrecord> getWarningInfo(Page page,String hospitalCode, String startTime, String endTime) {
-        return warningrecordMapper.getWarningInfo(page,hospitalCode, startTime, endTime);
-    }
-
-    /**
      * @param equipmentNo
      * @param startTime
      * @param endTime
@@ -97,5 +88,10 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     @Override
     public List<Warningrecord> getAlarmDeviceNum(EquipmentDataParam convert) {
         return warningrecordMapper.getAlarmDeviceNum(convert);
+    }
+
+    @Override
+    public List<Warningrecord> getWarningInfoList(String hospitalCode, String ymd) {
+        return warningrecordMapper.getWarningInfoList(hospitalCode,ymd);
     }
 }

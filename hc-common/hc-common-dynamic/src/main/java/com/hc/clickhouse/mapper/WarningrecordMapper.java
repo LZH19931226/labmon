@@ -18,12 +18,8 @@ public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
     @Select("select * from lab_mon.warningrecord where equipmentno = #{equipmentNo}")
     List<Warningrecord> getWarningRecordInfo(String equipmentNo);
 
-    @Select("select * from lab_mon.warningrecord where hospitalcode = #{hospitalCode} and formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M:%S') BETWEEN #{startTime} and #{endTime}")
-    List<Warningrecord> getWarningInfo(Page page,
-                                       @Param("hospitalCode") String hospitalCode,
-                                       @Param("startTime") String startTime,
-                                       @Param("endTime") String endTime);
-
+    List<Warningrecord> getWarningInfoList(@Param("hospitalCode") String hospitalCode,
+                                           @Param("ymd") String ymd);
     @Select("select hospitalcode,equipmentno,inputdatetime from lab_mon.warningrecord where hospitalcode = #{hospitalCode} and formatDateTime(inputdatetime ,'%Y-%m-%d %H:%M:%S') BETWEEN #{startTime} and #{endTime}")
     List<Warningrecord> getWarningEquuipmentInfos(@Param("hospitalCode") String hospitalCode,
                                        @Param("startTime") String startTime,

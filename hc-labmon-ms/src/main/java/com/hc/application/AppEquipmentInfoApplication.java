@@ -438,107 +438,54 @@ public class AppEquipmentInfoApplication {
         return warningRecordInfo.stream().filter(res ->!StringUtils.equals("1", res.getMsgflag())).collect(Collectors.toList());
     }
 
-    /**
-     * 获取医院报警记录
-     * （报警了的记录）
-     * @return
-     */
-    public Page getWarningInfo(WarningCommand warningCommand) {
-        String hospitalCode = warningCommand.getHospitalCode();
+
+    public List<WarningRecordInfo> getWarningInfoList(WarningCommand warningCommand){
         String startTime = warningCommand.getStartTime();
-        String endTime = warningCommand.getEndTime();
-        Page page = new Page<>(warningCommand.getPageCurrent(),warningCommand.getPageSize());
-        //查询医院的报警信息
-        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfo(page,hospitalCode,startTime,endTime);
+        String ymd = startTime.substring(0, 10);
+        List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfoList(warningCommand.getHospitalCode(),ymd);
         if(CollectionUtils.isEmpty(warningRecord)){
             return null;
         }
-        //过滤医院报警信息
-        warningRecord = filterAlarmMessages(warningRecord);
-
-        //获取eno集合 和 探头主键集合
-        List<String> equipmentNoList = warningRecord.stream().map(Warningrecord::getEquipmentno).distinct().collect(Collectors.toList());
-        List<String> configParamNoList = warningRecord.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
-
-        //批量获取设备探头信息
-        List<InstrumentParamConfigDto> paramConfigDtoList =  instrumentParamConfigService.batchGetProbeInfo(configParamNoList);
-        Map<String, List<InstrumentParamConfigDto>> paramConfigDtoMap = new HashMap<>();
-        if(CollectionUtils.isNotEmpty(paramConfigDtoList)){
-            paramConfigDtoMap =  paramConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
-        }
-        //设备探头报警数量
-        long count = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getState())).count();
+        List<String> enoList = warningRecord.stream().map(Warningrecord::getEquipmentno).distinct().collect(Collectors.toList());
+        List<String> ipcNoList = warningRecord.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
+        Map<String, List<Warningrecord>> enoAndWrMap = warningRecord.stream().collect(Collectors.groupingBy(Warningrecord::getEquipmentno));
         //获取设备信息
-        List<MonitorEquipmentDto> equipmentDtoList =  equipmentInfoService.batchGetEquipmentInfo(equipmentNoList);
-        Map<String, List<MonitorEquipmentDto>> equipmentNoMap = new HashMap<>();
-        if(CollectionUtils.isNotEmpty(equipmentDtoList)){
-            equipmentNoMap = equipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
-        }
-
-        //获取设备报警时间段
-        List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS =  warningTimeService.getWarningInfo(hospitalCode);
-        Map<String, List<MonitorEquipmentWarningTimeDTO>> eidMap = new HashMap<>();
-        if(CollectionUtils.isNotEmpty(warningTimeDTOS)){
-            // 设备时间段map
-            eidMap = warningTimeDTOS.stream().collect(Collectors.groupingBy(MonitorEquipmentWarningTimeDTO::getEquipmentid));
-        }
-
-        //获取医院设备信息
-        List<HospitalEquipmentDto> dtoList = hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
-        Map<String, List<HospitalEquipmentDto>> eqTypeIdMap =  new HashMap<>();
-        if (!CollectionUtils.isEmpty(dtoList)) {
-            //设备类型时间段map
-            eqTypeIdMap  =  dtoList.stream().collect(Collectors.groupingBy(HospitalEquipmentDto::getEquipmentTypeId));
-        }
+        List<MonitorEquipmentDto> equipmentDtoList = equipmentInfoService.batchGetEquipmentInfo(enoList);
+        Map<String, List<MonitorEquipmentDto>> enoAndEInfoMap = equipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
+        //获取探头信息
+        List<InstrumentParamConfigDto> instrumentParamConfigDtoList = instrumentParamConfigService.batchGetProbeInfo(ipcNoList);
+        Map<String, List<InstrumentParamConfigDto>> ipcNoAndProbeMap = instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
         List<WarningRecordInfo> list = new ArrayList<>();
-        List<WarningRecordInfo> removeList = new ArrayList<>();
-        for (Warningrecord warningrecord : warningRecord) {
+        for (String eno : enoList) {
             WarningRecordInfo warningRecordInfo = new WarningRecordInfo();
-            String equipmentNo = warningrecord.getEquipmentno();
-            warningRecordInfo.setInputDateTime(warningrecord.getInputdatetime());
-            warningRecordInfo.setWarningValue(warningrecord.getWarningValue());
-            warningRecordInfo.setEquipmentNo(equipmentNo);
-            if(count>0){
-                warningRecordInfo.setState(1L);
-            }else {
-                warningRecordInfo.setState(0L);
-            }
-            //设置设备信息和设备报警时段
-            if(equipmentNoMap.containsKey(equipmentNo) && CollectionUtils.isNotEmpty(equipmentNoMap.get(equipmentNo)) && !ObjectUtils.isEmpty(equipmentNoMap.get(equipmentNo).get(0))){
-                MonitorEquipmentDto monitorEquipmentDto = equipmentNoMap.get(equipmentNo).get(0);
-                warningRecordInfo.setEquipmentName(monitorEquipmentDto.getEquipmentname());
-                warningRecordInfo.setSn(monitorEquipmentDto.getSn());
-                warningRecordInfo.setEquipmentTypeId(monitorEquipmentDto.getEquipmenttypeid());
-                String alwayalarm = monitorEquipmentDto.getAlwayalarm();
-                if(StringUtils.isBlank(alwayalarm)){
-                    alwayalarm = "0";
+            //设置设备信息
+            if(enoAndWrMap.containsKey(eno)){
+                Warningrecord warningrecord = enoAndWrMap.get(eno).get(0);
+                String instrumentParamConfigNo = warningrecord.getInstrumentparamconfigno();
+                //设置探头信息
+                if(ipcNoAndProbeMap.containsKey(instrumentParamConfigNo)){
+                    InstrumentParamConfigDto instrumentParamConfigDto = ipcNoAndProbeMap.get(instrumentParamConfigNo).get(0);
+                    warningRecordInfo.setEName(CurrentProbeInfoEnum.from(instrumentParamConfigDto.getInstrumentconfigid()).getProbeEName());
                 }
-                buildWarningTimeList(equipmentNo,monitorEquipmentDto,warningRecordInfo,eidMap,eqTypeIdMap);
-            }
-            //设置探头当前值信息
-            String instrumentParamConfigNo = warningrecord.getInstrumentparamconfigno();
-            if(paramConfigDtoMap.containsKey(instrumentParamConfigNo)){
-                List<InstrumentParamConfigDto> list1 = paramConfigDtoMap.get(instrumentParamConfigNo);
-                InstrumentParamConfigDto instrumentParamConfigDto = list1.get(0);
-                warningRecordInfo.setEName(CurrentProbeInfoEnum.from(instrumentParamConfigDto.getInstrumentconfigid()).getProbeEName());
-                warningRecordInfo.setInstrumentParamConfigDto(instrumentParamConfigDto);
-                warningRecordInfo.setLowLimit(instrumentParamConfigDto.getLowLimit().toString());
-                warningRecordInfo.setHighLimit(instrumentParamConfigDto.getHighLimit().toString());
-            }else {
-                //未匹配到的探头id不展示
-                removeList.add(warningRecordInfo);
-            }
-            if(!ObjectUtils.isEmpty(warningRecordInfo)){
-                list.add(warningRecordInfo);
-            }
-        }
-        if(CollectionUtils.isNotEmpty(removeList)){
-            list.removeAll(removeList);
-        }
-        page.setRecords(list);
-        return page;
-    }
+                warningRecordInfo.setAlwayalarm(warningrecord.getAlwayalarm());
+                warningRecordInfo.setAlarmRules(warningrecord.getAlarmTime());
+                warningRecordInfo.setHighLimit(warningrecord.getHighLimit());
+                warningRecordInfo.setLowLimit(warningrecord.getLowLimit());
+                warningRecordInfo.setInputDateTime(warningrecord.getInputdatetime());
+                warningRecordInfo.setWarningValue(warningrecord.getWarningValue());
 
+            }
+            if(enoAndEInfoMap.containsKey(eno)){
+                MonitorEquipmentDto monitorEquipmentDto = enoAndEInfoMap.get(eno).get(0);
+                warningRecordInfo.setEquipmentNo(eno);
+                warningRecordInfo.setEquipmentName(monitorEquipmentDto.getEquipmentname());
+                warningRecordInfo.setEquipmentTypeId(monitorEquipmentDto.getEquipmenttypeid());
+                warningRecordInfo.setSn(monitorEquipmentDto.getSn());
+            }
+            list.add(warningRecordInfo);
+        }
+        return list;
+    }
     /**
      * 过滤报警信息
      * 每个设备取最新的一条数据

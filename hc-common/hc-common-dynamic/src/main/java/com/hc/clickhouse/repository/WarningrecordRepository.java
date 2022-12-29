@@ -14,8 +14,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
 
     List<Warningrecord> getWarningRecordInfo(String equipmentNo);
 
-    List<Warningrecord> getWarningInfo(Page page,String hospitalCode,String startTime,String endTime);
-
     List<Warningrecord> getWarningRecordDetailInfo(Page page,String equipmentNo, String startTime, String endTime);
 
     void saveWarningInfo(Warningrecord warningrecord);
@@ -31,4 +29,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
     List<Warningrecord> getWarningInfoByCode(String hospitalCode, Integer count);
 
     List<Warningrecord> getAlarmDeviceNum(EquipmentDataParam convert);
+
+    List<Warningrecord> getWarningInfoList(String hospitalCode, String ymd);
 }
