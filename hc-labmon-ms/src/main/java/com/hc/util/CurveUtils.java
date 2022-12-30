@@ -39,8 +39,8 @@ public class CurveUtils {
                 Curve curve = containerMap.get(field);
                 List<String> dataList = curve.getDataList();
                 List<String> dateList = curve.getDateList();
-                String lastDataField = DataFieldEnum.fromByLastDataField(field).getLastDataField();
-                CurveDataModel curveDataModel = generateCurveDataModel(dataList, dateList, map.get(lastDataField));
+                String imField = DataFieldEnum.fromByLastDataField(field).getImField();
+                CurveDataModel curveDataModel = generateCurveDataModel(dataList, dateList, map.get(imField));
                 setCurveInfo(curveInfoDto,curveDataModel,field);
             }
         }
@@ -208,7 +208,6 @@ public class CurveUtils {
                     break;
             }
         }
-        map.put("inputdatetime",new Curve());
         return map;
     }
 
@@ -220,6 +219,9 @@ public class CurveUtils {
      */
     private static void setCurveInfo(CurveInfoDto curveInfoDto, CurveDataModel curveDataModel, String field) {
         switch (field){
+            case "currento2":
+                curveInfoDto.setO2(curveDataModel);
+                break;
             case "currenttemperature":
                 curveInfoDto.setTemp(curveDataModel);
                 break;
