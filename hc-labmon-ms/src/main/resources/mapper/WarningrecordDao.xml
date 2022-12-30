@@ -10,7 +10,8 @@
 	    COUNT(*) num
         FROM lab_mon.warningrecord
         WHERE toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
-        and formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN #{param.startTime} AND #{param.endTime}
+          and inputdatetime <![CDATA[>=]]> #{startTime}
+          and inputdatetime <![CDATA[<=]]> #{endTime}
         group by toStartOfDay(inputdatetime)
         ORDER BY time
     </select>
@@ -34,7 +35,9 @@
             COUNT(*) num
         FROM
             lab_mon.warningrecord
-        WHERE formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN  #{param.startTime} AND #{param.endTime}
+        WHERE
+          inputdatetime <![CDATA[>=]]> #{startTime}
+          and inputdatetime <![CDATA[<=]]> #{endTime}
         GROUP BY equipmentno
         order BY num DESC
         LIMIT 5
@@ -56,6 +59,43 @@
                 time1 = #{ymd}
         )
           AND hospitalcode = #{hospitalCode}
+    </select>
+
+    <select id="getWarningInfoByTime" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            hospitalcode,
+            equipmentno,
+            COUNT(instrumentparamconfigno) num
+        FROM
+            lab_mon.warningrecord
+        WHERE
+            toYYYYMM ( inputdatetime ) IN (#{time})
+        GROUP BY
+            hospitalcode,
+            equipmentno
+        ORDER BY
+            hospitalcode
+    </select>
+
+    <select id="getWarningRecordDetailInfo" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            *
+        FROM
+            lab_mon.warningrecord
+        WHERE
+            equipmentno = #{equipmentNo}
+            and inputdatetime <![CDATA[>=]]> #{startTime}
+            and inputdatetime <![CDATA[<=]]> #{endTime}
+        order by inputdatetime desc
+    </select>
+
+    <select id="getWarningEquuipmentInfos" resultType="com.hc.clickhouse.po.Warningrecord">
+        select
+            hospitalcode,equipmentno,inputdatetime
+        from lab_mon.warningrecord
+        where hospitalcode = #{hospitalCode}
+          and inputdatetime <![CDATA[>=]]> #{startTime}
+          and inputdatetime <![CDATA[<=]]> #{endTime}
     </select>
 
 </mapper>

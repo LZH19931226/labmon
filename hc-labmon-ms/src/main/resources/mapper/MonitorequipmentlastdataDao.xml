@@ -62,8 +62,95 @@
         lab_mon.monitorequipmentlastdata
       where
         toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
-        AND formatDateTime ( inputdatetime, '%Y-%m-%d %H:%M:%S' ) BETWEEN #{param.startTime} AND #{param.endTime}
+        AND inputdatetime <![CDATA[>=]]> #{param.startTime} AND inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
+    </select>
+
+    <select id="getMonitorEquipmentLastDataInfo1" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+        *
+        FROM
+        lab_mon.monitorequipmentlastdata
+        WHERE
+        toYYYYMM ( inputdatetime ) IN (
+        $ { ym })
+        AND inputdatetime <![CDATA[>=]]> #{startTime}
+        AND  inputdatetime <![CDATA[<=]]> #{endTime}
+        AND equipmentno  = #{equipmentNo}
+        ORDER BY inputdatetime ASC
+    </select>
+
+    <select id="getWarningCurveData" resultType="com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto">
+        SELECT
+        inputdatetime,
+        ${instrumentConfigName}
+        FROM
+        lab_mon.monitorequipmentlastdata
+        WHERE
+        toYYYYMM ( inputdatetime ) IN (#{ym})
+        and equipmentno  = #{equipmentNo}
+        AND  inputdatetime <![CDATA[>=]]> #{startTime}
+        AND  inputdatetime <![CDATA[<=]]>  #{endTime}
+        ORDER BY inputdatetime ASC
+
+    </select>
+
+    <select id="getLastDataByEnoAndMonth" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+            *
+        FROM
+            lab_mon.monitorequipmentlastdata
+        WHERE
+            toYYYYMM ( inputdatetime ) IN (#{ym})
+          AND  inputdatetime <![CDATA[>=]]> #{startTime}
+          AND  inputdatetime <![CDATA[<=]]>  #{endTime}
+          AND equipmentno = #{equipmentNo}
+          AND formatDateTime ( inputdatetime, '%Y-%m' ) = #{month}
+    </select>
+    <select id="getMonitorEquipmentLastDataInfoByDate"
+            resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+            *
+        FROM
+            lab_mon.monitorequipmentlastdata
+        WHERE
+            hospitalcode = #{hospitalCode}
+
+          AND inputdatetime IN (
+            SELECT
+                MAX( inputdatetime )
+            FROM
+                lab_mon.monitorequipmentlastdata
+            WHERE
+                hospitalcode = #{hospitalCode}
+              AND formatDateTime ( inputdatetime, '%Y-%m-%d' ) = #{date}
+              AND formatDateTime ( inputdatetime, '%H:%M:%S' ) BETWEEN #{startTime} and #{endTime}
+            GROUP BY
+                equipmentno
+        )
+        ORDER BY
+            inputdatetime ASC
+    </select>
+
+    <select id="getMonitorEquipmentLastDataInfoByPeriod"
+            resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT DISTINCT
+            (*)
+        FROM
+            lab_mon.monitorequipmentlastdata
+        WHERE
+                inputdatetime IN (
+                SELECT
+                    MAX( inputdatetime ) AS time
+        FROM
+            lab_mon.monitorequipmentlastdata
+        WHERE
+            toYYYYMM ( inputdatetime ) IN ( #{month} )
+          AND formatDateTime ( inputdatetime, '%H:%M' ) BETWEEN #{startTime} AND #{endTime}
+          AND hospitalcode = #{hospitalCode}
+        GROUP BY formatDateTime ( inputdatetime, '%d' ), equipmentno )
+        ORDER BY
+            inputdatetime
     </select>
 
 
