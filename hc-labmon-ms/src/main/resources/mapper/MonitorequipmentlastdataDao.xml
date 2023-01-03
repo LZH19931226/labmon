@@ -23,7 +23,8 @@
         lab_mon.monitorequipmentlastdata
         WHERE
         toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
-        and formatDateTime(inputdatetime,'%Y-%m-%d %H:%M:%S') BETWEEN #{param.startTime} AND #{param.endTime}
+        AND inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
         AND ${param.field} != ''
         <if test="param.filterList != null">
@@ -107,6 +108,7 @@
           AND equipmentno = #{equipmentNo}
           AND formatDateTime ( inputdatetime, '%Y-%m' ) = #{month}
     </select>
+
     <select id="getMonitorEquipmentLastDataInfoByDate"
             resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
         SELECT

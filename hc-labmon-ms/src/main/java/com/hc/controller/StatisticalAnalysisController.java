@@ -47,7 +47,6 @@ public class StatisticalAnalysisController {
         return statisticalAnalysisApplication.getEquipmentData(equipmentDataCommand);
     }
 
-
     /**
      * 导出设备数据
      * @param equipmentDataCommand

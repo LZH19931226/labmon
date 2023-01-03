@@ -409,9 +409,6 @@ public class AppEquipmentInfoApplication {
             flag = true;
         }
         return CurveUtils.getCurveFirst(lastDataModelList,curveCommand.getInstrumentConfigIdList(),map);
-//        return flag ?
-//                EquipmentInfoServiceHelp.getCurveFirstByMT300DC(lastDataModelList,map, true):
-//                EquipmentInfoServiceHelp.getCurveFirst(lastDataModelList,map, false);
     }
 
     /**

@@ -299,7 +299,7 @@ public class StatisticalAnalysisApplication {
      * 时间点查询
      * @param equipmentDataCommand
      */
-    public Map<String,CurveInfoDto> getThePointInTimeDataCurve(EquipmentDataCommand equipmentDataCommand) {
+    public Map<String,CurveInfoDto>  getThePointInTimeDataCurve(EquipmentDataCommand equipmentDataCommand) {
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
             return null;
