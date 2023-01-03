@@ -21,39 +21,14 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   @Autowired
   private  MonitorequipmentlastdataMapper monitorequipmentlastdataMapper;
 
-    @Override
-    public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo(String date, String equipmentNo,String ym) {
-      return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfo(date,equipmentNo,ym);
-    }
-
-  @Override
-  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByPeriod(String hospitalCode, String startTime, String endTime, String month) {
-    return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfoByPeriod(hospitalCode,startTime,endTime,month);
-  }
-
-  @Override
-  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfoByDate(String hospitalCode, String startTime, String endTime, String date) {
-    return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfoByDate(hospitalCode,startTime,endTime,date);
-  }
-
   @Override
   public void batchInsert(List<Monitorequipmentlastdata> convert) {
     monitorequipmentlastdataMapper.insertBatchSomeColumn(convert);
   }
 
   @Override
-  public List<Monitorequipmentlastdata> getLastDataByEnoAndMonth(String equipmentNo, String startTime, String endTime, String date,String ym) {
-    return monitorequipmentlastdataMapper.getLastDataByEnoAndMonth(equipmentNo,startTime,endTime,date,ym);
-  }
-
-  @Override
   public List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName,String ym) {
     return monitorequipmentlastdataMapper.getWarningCurveData(equipmentNo,startTime,endTime,instrumentConfigName,ym);
-  }
-
-  @Override
-  public List<Monitorequipmentlastdata> getMonitorEquipmentLastDataInfo1(String startTime, String endTime, String equipmentNo, String ym) {
-    return monitorequipmentlastdataMapper.getMonitorEquipmentLastDataInfo1(startTime,endTime,equipmentNo,ym);
   }
 
   @Override

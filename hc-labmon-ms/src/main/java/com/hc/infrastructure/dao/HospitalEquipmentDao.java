@@ -21,10 +21,6 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
             "t1.hospitalcode = #{hospitalCode}")
     List<HospitalEquipmentDto> hospitalEquipmentDao(@Param("hospitalCode") String hospitalCode);
 
-    @Select("SELECT het.equipmenttypeid,het.equipmenttypename,hor.hospitalname,he.orderno FROM hospitalequiment he LEFT JOIN monitorequipmenttype het " +
-            "ON het.equipmenttypeid = he.equipmenttypeid  LEFT JOIN hospitalofreginfo hor ON hor.hospitalcode = he.hospitalcode  WHERE he.hospitalcode = #{hospitalCode}")
-    List<HospitalEquipmentDto> findHospitalEquipmentTypeByCode(String hospitalCode);
-
     @Select("SELECT " +
             "t1.equipmentno," +
             "t2.equipmenttypeid," +

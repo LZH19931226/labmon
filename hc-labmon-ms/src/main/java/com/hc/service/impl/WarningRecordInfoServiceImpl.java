@@ -16,11 +16,6 @@ public class WarningRecordInfoServiceImpl implements WarningRecordInfoService {
     private WarningRecordInfoRepository warningRecordInfoRepository;
 
     @Override
-    public List<WarningRecordInfoDto> selectAll() {
-        return warningRecordInfoRepository.list();
-    }
-
-    @Override
     public WarningRecordInfoDto selectWarningRecordInfo(String pkId) {
         return warningRecordInfoRepository.getOne(Wrappers.lambdaQuery(new WarningRecordInfoDto()).eq(WarningRecordInfoDto::getWarningrecordid,pkId));
     }

@@ -12,8 +12,6 @@ public interface HospitalEquipmentRepository extends IService<HospitalEquipmentD
 
     List<HospitalEquipmentDto> selectHospitalEquipmentInfo(String hospitalCode);
 
-    List<HospitalEquipmentDto> findHospitalEquipmentTypeByCode(String hospitalCode);
-
     List<eqTypeAlarmNumCountDto> findEquipmentByHosCode(String hospitalCode);
 
     List<EquipmentTypeNumDto> getEquipmentTypeNum(EquipmentDataCommand equipmentDataCommand);

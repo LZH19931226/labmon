@@ -30,7 +30,6 @@ import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.util.CurveUtils;
-import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -64,9 +63,6 @@ public class AppEquipmentInfoApplication {
 
     @Autowired
     private WarningrecordRepository warningrecordRepository;
-
-    @Autowired
-    private WarningTimeService warningTimeService;
 
     @Autowired
     private MonitorEquipmentApi monitorEquipmentApi;
@@ -435,7 +431,6 @@ public class AppEquipmentInfoApplication {
         return warningRecordInfo.stream().filter(res ->!StringUtils.equals("1", res.getMsgflag())).collect(Collectors.toList());
     }
 
-
     public List<WarningRecordInfo> getWarningInfoList(WarningCommand warningCommand){
         List<Warningrecord> warningRecord =  warningrecordRepository.getWarningInfoList(warningCommand.getHospitalCode(),warningCommand.getStartTime());
         if(CollectionUtils.isEmpty(warningRecord)){
@@ -480,60 +475,6 @@ public class AppEquipmentInfoApplication {
             list.add(warningRecordInfo);
         }
         return list;
-    }
-    /**
-     * 过滤报警信息
-     * 每个设备取最新的一条数据
-     * @param warningRecord
-     */
-    private List<Warningrecord> filterAlarmMessages(List<Warningrecord> warningRecord) {
-        List<Warningrecord> list = new ArrayList<>();
-        Map<String, List<Warningrecord>> map = warningRecord.stream().collect(Collectors.groupingBy(Warningrecord::getEquipmentno));
-        for (String s : map.keySet()) {
-            List<Warningrecord> warningrecordList = map.get(s);
-            List<Warningrecord> collect = warningrecordList.stream().sorted(Comparator.comparing(Warningrecord::getInputdatetime).reversed()).collect(Collectors.toList());
-            Warningrecord warningrecord = collect.get(0);
-            if (!ObjectUtils.isEmpty(warningrecord)) {
-                list.add(warningrecord);
-            }
-        }
-        return list;
-    }
-
-    private void buildWarningTimeList(String equipmentNo, MonitorEquipmentDto monitorEquipmentDto, WarningRecordInfo warningRecordInfo, Map<String, List<MonitorEquipmentWarningTimeDTO>> eidMap, Map<String, List<HospitalEquipmentDto>> eqTypeIdMap) {
-        String alwaysAlarm = monitorEquipmentDto.getAlwayalarm();
-        String equipmentTypeId = monitorEquipmentDto.getEquipmenttypeid();
-        if (StringUtils.equals("1",alwaysAlarm)) {
-            warningRecordInfo.setAlwayalarm(alwaysAlarm);
-            return;
-        }
-        //非全天报警，有时间段
-        if (eidMap.containsKey(equipmentNo)) {
-            List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS = eidMap.get(equipmentNo);
-            warningRecordInfo.setAlwayalarm(alwaysAlarm);
-            warningRecordInfo.setAlarmRules(buildHhSsTimeFormart(warningTimeDTOS));
-            return;
-        }
-        //非全天报警，无时间段 判断设备类型
-        if (eqTypeIdMap.containsKey(equipmentTypeId) && !ObjectUtils.isEmpty(eqTypeIdMap.get(equipmentTypeId).get(0))) {
-            HospitalEquipmentDto hospitalEquipmentDto = eqTypeIdMap.get(equipmentTypeId).get(0);
-            String alwaysAlarm1 = hospitalEquipmentDto.getAlwaysAlarm();
-            if(StringUtils.isBlank(alwaysAlarm1)){
-                alwaysAlarm1 = "0";
-            }
-            //全天报警
-            if (StringUtils.equals("1",alwaysAlarm1)) {
-                warningRecordInfo.setAlwayalarm(alwaysAlarm1);
-                return;
-            }
-            //非全天报警，有时间段
-            if (eidMap.containsKey(equipmentTypeId)) {
-                List<MonitorEquipmentWarningTimeDTO> warningTimeDTOS = eidMap.get(equipmentTypeId);
-                warningRecordInfo.setAlwayalarm(alwaysAlarm1);
-                warningRecordInfo.setAlarmRules(buildHhSsTimeFormart(warningTimeDTOS));
-                return;
-            }
-        }
     }
 
     /**
@@ -647,30 +588,6 @@ public class AppEquipmentInfoApplication {
         }
         stringBuilder.deleteCharAt(stringBuilder.length()-1);
         return stringBuilder.toString();
-    }
-
-    /**
-     * 将日期转换为字符串,拼接对应时间格式
-     */
-    public String buildHhSsTimeFormart(List<MonitorEquipmentWarningTimeDTO> monitorEquipmentWarningTimes){
-        if (CollectionUtils.isNotEmpty(monitorEquipmentWarningTimes)){
-            StringBuilder timeBuffer = new StringBuilder();
-            for (int i = 0; i < monitorEquipmentWarningTimes.size(); i++) {
-                MonitorEquipmentWarningTimeDTO monitorEquipmentWarningTimeDTO = monitorEquipmentWarningTimes.get(i);
-                Date endtime = monitorEquipmentWarningTimeDTO.getEndtime();
-                Date begintime = monitorEquipmentWarningTimeDTO.getBegintime();
-                if (null!=begintime && null!= endtime){
-                    timeBuffer.append(DateUtils.parseDatetime(begintime));
-                    timeBuffer.append("~");
-                    timeBuffer.append(DateUtils.parseDatetime(endtime));
-                    if(i != monitorEquipmentWarningTimes.size()-1){
-                        timeBuffer.append(",");
-                    }
-                }
-            }
-            return timeBuffer.toString();
-        }
-        return  "";
     }
 
     public Page getAlarmSystemInfo(ProbeCommand probeCommand) {

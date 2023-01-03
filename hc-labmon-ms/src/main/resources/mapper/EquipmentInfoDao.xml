@@ -3,91 +3,6 @@
 
 <mapper namespace="com.hc.infrastructure.dao.EquipmentInfoDao">
 
-    <select id="getSns" resultType="com.hc.dto.MonitorinstrumentDto">
-
-    select equipmentno,sn from monitorinstrument where equipmentno in
-    <foreach collection="equipmentNoList" item="id" open="(" close=")" separator="," index="index">
-        #{id}
-    </foreach>
-    </select>
-
-    <select id="getLowLimitList" resultType="com.hc.dto.MonitorinstrumentDto">
-        SELECT
-        m.*,
-        a.lowlimit
-        FROM
-        monitorinstrument m
-        LEFT JOIN (
-        SELECT
-            instrumentno,
-            lowlimit
-        FROM
-            instrumentparamconfig
-        WHERE
-            instrumentconfigid = '11'
-          AND instrumenttypeid IN ( 4, 6, 12, 13, 14 )) a ON m.instrumentno = a.instrumentno
-        where 1=1 AND m.equipmentno in
-        <foreach collection="equipmentNoList" item="eno" open="(" close=")" separator="," index="index">
-           #{eno}
-        </foreach>
-    </select>
-
-
-    <select id="getEquipmentInfoByCodeAndTypeId" resultType="com.hc.dto.MonitorEquipmentDto">
-        select
-         t1.*,
-         t2.sn
-        from monitorequipment t1
-          LEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno
-        WHERE t1.hospitalcode = #{hospitalCode}
-          AND t1.equipmenttypeid = #{equipmentTypeId}
-          AND t1.clientvisible = '1'
-    </select>
-
-    <select id="getCurveInfo" resultType="com.hc.vo.labmon.model.MonitorEquipmentLastDataModel">
-        select
-            b.inputdatetime,
-            b.currenttemperature,  -- 温度
-            b.currentcarbondioxide, -- co2
-            b.currento2,  -- o2
-            b.currentairflow,  -- 气流  压力
---      b.currentdoorstate,  -- 开关门记录暂时不做记录
-            b.currenthumidity,  -- 湿度
-            b.currentvoc,  -- 空气质量  voc
-            b.currentformaldehyde, -- 甲醛
-            b.currentpm25,  -- pm2.5
-            b.currentpm10,   -- pm10
-            b.currentairflow1,
-            b.currenttemperature1,
-            b.currenttemperature2,
-            b.currenttemperature3,
-            b.currenttemperature4,
-            b.currenttemperature5,
-            b.currenttemperature6,
-            b.currenttemperature7,
-            b.currenttemperature8,
-            b.currenttemperature9,
-            b.currenttemperature10,
-            b.currentlefttemperature,
-            b.currentrigthtemperature,
-            b.currenttemperaturediff,
-            b.currentpm5,
-            b.currentpm05,
-            b.currentleftendtemperature,
-            b.currentleftcovertemperature,
-            b.currentleftairflow,
-            b.currentrightcovertemperature,
-            b.currentrightendtemperature,
-            b.currentrightairflow,
-            b.currentn2,
-            b.leftCompartmentHumidity,
-            b.rightCompartmentHumidity
-        from ${tableName} b
-        where
-            str_to_date(inputdatetime,'%Y-%m-%d') = #{date}
-           and a.equipmentno = #{equipmentNo}
-        order by b.inputdatetime
-    </select>
 
     <select id="batchGetEquipmentInfo" resultType="com.hc.dto.MonitorEquipmentDto">
         select
@@ -110,18 +25,6 @@
         from
             monitorequipment t1
         left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno
-    </select>
-
-    <select id="selectInstrumentConfigIdByENo" resultType="integer">
-        SELECT
-            t3.instrumentconfigid
-        FROM
-            monitorequipment t1
-                LEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno
-                LEFT JOIN instrumentparamconfig t3 ON t2.instrumentno = t3.instrumentno
-        WHERE
-            t1.equipmentno = #{equipmentNo}
-        order by instrumentconfigid
     </select>
 
     <select id="getEquipmentInfoByPage" resultType="com.hc.dto.MonitorEquipmentDto">

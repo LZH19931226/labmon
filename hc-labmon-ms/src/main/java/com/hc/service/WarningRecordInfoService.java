@@ -5,7 +5,6 @@ import com.hc.dto.WarningRecordInfoDto;
 import java.util.List;
 
 public interface WarningRecordInfoService {
-    List<WarningRecordInfoDto> selectAll();
 
     WarningRecordInfoDto selectWarningRecordInfo(String pkId);
 

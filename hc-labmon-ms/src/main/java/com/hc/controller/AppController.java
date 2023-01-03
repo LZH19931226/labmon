@@ -70,7 +70,7 @@ public class AppController {
         return equipmentInfoAppApplication.getNumUnreadDeviceAlarms(equipmentNo);
     }
 
-    @PostMapping("/getEuipmentCurveInfo")
+    @PostMapping("/getEquipmentCurveInfo")
     @ApiOperation("查询app设备曲线值")
     public CurveInfoDto getCurveInfo(@RequestBody CurveCommand curveCommand){
         return equipmentInfoAppApplication.getCurveFirst(curveCommand);

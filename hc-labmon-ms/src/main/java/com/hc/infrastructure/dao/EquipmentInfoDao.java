@@ -15,20 +15,6 @@ import java.util.List;
 
 public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
 
-    List<MonitorEquipmentDto> getEquipmentInfoByCodeAndTypeId(@Param("hospitalCode") String hospitalCode,@Param("equipmentTypeId") String equipmentTypeId);
-
-    List<MonitorinstrumentDto> getSns(@Param("equipmentNoList") List<String> equipmentNoList);
-
-    @Select("SELECT  c.lowlimit  FROM monitorequipment a LEFT JOIN monitorinstrument b ON a.equipmentno = b.equipmentno left join instrumentparamconfig c on b.instrumentno = c.instrumentno where a.equipmentno = #{equipmentNo} and ifnull(b.instrumentno,'xxx') !='xxx'  and c.instrumentconfigid = 11 limit 1")
-    String getLowlimit(@Param("equipmentNo") String equipmentNo);
-
-    List<MonitorinstrumentDto> getLowLimitList(@Param("equipmentNoList") List<String> equipmentNoList);
-
-
-    List<MonitorEquipmentLastDataModel> getCurveInfo(@Param("date") String date,
-                                                     @Param("equipmentNo") String equipmentNo,
-                                                     @Param("tableName") String tableName);
-
     @Select("select t1.*,t2.instrumenttypeid,t2.sn from monitorequipment t1 left join monitorinstrument t2 on t1.equipmentno = t2.equipmentno where t1.equipmentno = #{equipmentNo} ")
     MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo);
 
@@ -38,16 +24,4 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
     List<MonitorEquipmentDto> batchGetEquipmentInfo(@Param("equipmentNoList") List<String> equipmentNoList);
 
     List<MonitorEquipmentDto> getAll();
-
-    List<Integer> selectInstrumentConfigIdByENo(String equipmentNo);
-
-    @Select("SELECT\n" +
-            "\tt3.instrumentparamconfigNO,\n" +
-            "\tt3.warningphone\n" +
-            "FROM\n" +
-            "\tmonitorequipment t1\n" +
-            "\tLEFT JOIN monitorinstrument t2 ON t1.equipmentno = t2.equipmentno\n" +
-            "\tLEFT JOIN instrumentparamconfig t3 on t2.instrumentno = t3.instrumentno\n" +
-            "\tWHERE t1.hospitalcode = #{hospitalCode} AND t1.equipmenttypeid = #{equipmentTypeId}")
-    List<InstrumentParamConfigDto> selectProbeByHosCodeAndEqTypeId(@Param("hospitalCode") String hospitalCode,@Param("equipmentTypeId") String equipmentTypeId);
 }

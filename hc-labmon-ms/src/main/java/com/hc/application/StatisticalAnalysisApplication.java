@@ -306,11 +306,6 @@ public class StatisticalAnalysisApplication {
         }
         //排列
         List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-        System.out.println(dateList);
-        Date minTime = dateList.get(0);
-        Date maxTime = dateList.get(dateList.size() - 1);
-        equipmentDataCommand.setMinTime(DateUtils.dateReduceHHmm(DateUtils.getPreviousHour(minTime)));
-        equipmentDataCommand.setMaxTime(DateUtils.dateReduceHHmm(maxTime));
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
@@ -423,11 +418,6 @@ public class StatisticalAnalysisApplication {
         }
         //排列
         List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-        System.out.println(dateList);
-        Date minTime = dateList.get(0);
-        Date maxTime = dateList.get(dateList.size() - 1);
-        equipmentDataCommand.setMinTime(DateUtils.dateReduceHHmm(DateUtils.getPreviousHour(minTime)));
-        equipmentDataCommand.setMaxTime(DateUtils.dateReduceHHmm(maxTime));
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
@@ -479,6 +469,11 @@ public class StatisticalAnalysisApplication {
         return results.stream().sorted(Comparator.comparing(PointInTimeDataTableResult::getDate)).collect(Collectors.toList());
     }
 
+    /**
+     * 导出时间点数据
+     * @param equipmentDataCommand
+     * @param httpServletResponse
+     */
     public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse) {
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
@@ -486,11 +481,6 @@ public class StatisticalAnalysisApplication {
         }
         //排列
         List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-        System.out.println(dateList);
-        Date minTime = dateList.get(0);
-        Date maxTime = dateList.get(dateList.size() - 1);
-        equipmentDataCommand.setMinTime(DateUtils.dateReduceHHmm(DateUtils.getPreviousHour(minTime)));
-        equipmentDataCommand.setMaxTime(DateUtils.dateReduceHHmm(maxTime));
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
