@@ -31,4 +31,6 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
     List<Warningrecord> getAlarmDeviceNum(EquipmentDataParam convert);
 
     List<Warningrecord> getWarningInfoList(String hospitalCode, String ymd);
+
+    void batchInsert(List<Warningrecord> convert);
 }

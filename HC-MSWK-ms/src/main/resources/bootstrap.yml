@@ -1,6 +1,6 @@
 #此配置缺省使用 local profile便于于本地调试。
 spring:
   profiles:
-    active: test
+    active: dev
   main:
     allow-bean-definition-overriding: true

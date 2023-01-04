@@ -18,12 +18,15 @@ import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.esm.EquipmentState;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.WarningrecordRedisInfo;
+import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.SoundLightUtils;
 import com.hc.po.Userright;
 import com.hc.service.*;
 import com.hc.tcp.SoundLightApi;
 import com.hc.utils.JsonUtil;
+import com.hc.warning.WarningApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +63,9 @@ public class SocketMessageListener {
 
     @Autowired
     private SendTimeoutRecordService sendTimeoutRecordService;
+
+    @Autowired
+    private WarningApi warningApi;
 
     /**
      * 监听报警信息
@@ -188,7 +194,9 @@ public class SocketMessageListener {
                 sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
             }
             //不满足报警规则,但是超量程的数据也需要记录
-            warningrecordRepository.save(warningrecord);
+            //将信息推送到redis,再批量插入
+            WarningrecordRedisInfo convert = BeanConverter.convert(warningrecord, WarningrecordRedisInfo.class);
+            warningApi.add(convert);
         }
     }
 

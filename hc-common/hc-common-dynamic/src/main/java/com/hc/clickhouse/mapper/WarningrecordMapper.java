@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface WarningrecordMapper extends BaseMapper<Warningrecord> {
+public interface WarningrecordMapper extends RootMapper<Warningrecord> {
 
 
 

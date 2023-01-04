@@ -94,4 +94,9 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     public List<Warningrecord> getWarningInfoList(String hospitalCode, String ymd) {
         return warningrecordMapper.getWarningInfoList(hospitalCode,ymd);
     }
+
+    @Override
+    public void batchInsert(List<Warningrecord> convert) {
+        warningrecordMapper.insertBatchSomeColumn(convert);
+    }
 }
