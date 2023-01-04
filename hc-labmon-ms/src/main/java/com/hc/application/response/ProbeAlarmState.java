@@ -2,6 +2,8 @@ package com.hc.application.response;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class ProbeAlarmState {
 
@@ -23,5 +25,9 @@ public class ProbeAlarmState {
     private String lowLimit;
 
     private String highLimit;
+
+    private BigDecimal minReferenceValue;
+
+    private BigDecimal maxReferenceValue;
 
 }

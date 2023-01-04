@@ -92,4 +92,9 @@ public class InstrumentparamconfigController {
     public void syncProbeUnit(){
         instrumentparamconfigApplication.syncProbeUnit();
     }
+
+    @PostMapping("/editHighLowLimit")
+    public void editHighLowLimit(@RequestBody InstrumentparamconfigCommand instrumentparamconfigCommand){
+        instrumentparamconfigApplication.editHighLowLimit(instrumentparamconfigCommand);
+    }
 }

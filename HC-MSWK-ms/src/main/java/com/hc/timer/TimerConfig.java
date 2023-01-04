@@ -153,7 +153,7 @@ public class TimerConfig {
     }
 
     //每分钟执行一次
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "*/1 * * * * ?")
     public void Timing() {
         ApiResponse<Long> lastDataListSize = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode());
         if (null == lastDataListSize) {

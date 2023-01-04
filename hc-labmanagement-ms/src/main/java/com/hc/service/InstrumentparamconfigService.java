@@ -144,5 +144,8 @@ public interface InstrumentparamconfigService{
     List<InstrumentparamconfigDTO> list();
 
     void updateBatchData(List<InstrumentparamconfigDTO> probeList);
+
+    void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand);
+
 }
 

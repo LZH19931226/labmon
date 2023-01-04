@@ -1,5 +1,6 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.dto.InstrumentMonitorInfoDto;
 import com.hc.dto.InstrumentTypeNumDto;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class InstrumentMonitorInfoRepositoryImpl implements InstrumentMonitorInfoRepository {
+public class InstrumentMonitorInfoRepositoryImpl extends ServiceImpl<InstrumentMonitorInfoDao,InstrumentMonitorInfoDto> implements InstrumentMonitorInfoRepository {
 
     @Autowired
     private InstrumentMonitorInfoDao instrumentMonitorInfoDao;

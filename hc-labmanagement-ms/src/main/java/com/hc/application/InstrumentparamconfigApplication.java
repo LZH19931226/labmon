@@ -150,27 +150,39 @@ public class InstrumentparamconfigApplication {
      * @param instrumentParamConfigCommand
      */
     private void addProbeRedisInfo(MonitorinstrumentDTO monitorinstrumentDTO, InstrumentparamconfigCommand instrumentParamConfigCommand,String instrumentParamConfigNo) {
-        InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto();
-        instrumentInfoDto.setInstrumentNo(instrumentParamConfigCommand.getInstrumentNo())
-                .setSaturation(instrumentParamConfigCommand.getSaturation())
-                .setInstrumentName(instrumentParamConfigCommand.getInstrumentname())
-                .setEquipmentNo(monitorinstrumentDTO.getEquipmentno())
-                .setInstrumentTypeId(monitorinstrumentDTO.getInstrumenttypeid())
-                .setHospitalCode(instrumentParamConfigCommand.getHospitalCode())
-                .setSn(instrumentParamConfigCommand.getSn())
-                .setEquipmentName(monitorinstrumentDTO.getEquipmentname())
-                .setAlarmTime(instrumentParamConfigCommand.getAlarmtime())
-                .setInstrumentConfigId(instrumentParamConfigCommand.getInstrumentconfigid())
-                .setInstrumentConfigName(instrumentParamConfigCommand.getInstrumentconfigname())
-                .setInstrumentParamConfigNO(instrumentParamConfigNo)
-                .setLowLimit(instrumentParamConfigCommand.getLowlimit())
-                .setHighLimit(instrumentParamConfigCommand.getHighlimit())
-                .setWarningPhone(instrumentParamConfigCommand.getWarningphone())
-                .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "" : instrumentParamConfigCommand.getUnit())
-                .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
-                .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
-                .setCalibration(instrumentParamConfigCommand.getCalibration());
-        probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
+        String hospitalCode = monitorinstrumentDTO.getHospitalcode();
+        InstrumentInfoDto result =
+                probeRedisApi.getProbeRedisInfo(hospitalCode,
+                        instrumentParamConfigCommand.getInstrumentNo() +":"+ instrumentParamConfigCommand.getInstrumentconfigid()).getResult();
+        if(result == null){
+            InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto();
+            instrumentInfoDto.setInstrumentNo(instrumentParamConfigCommand.getInstrumentNo())
+                    .setSaturation(instrumentParamConfigCommand.getSaturation())
+                    .setInstrumentName(instrumentParamConfigCommand.getInstrumentname())
+                    .setEquipmentNo(monitorinstrumentDTO.getEquipmentno())
+                    .setInstrumentTypeId(monitorinstrumentDTO.getInstrumenttypeid())
+                    .setHospitalCode(instrumentParamConfigCommand.getHospitalCode())
+                    .setSn(instrumentParamConfigCommand.getSn())
+                    .setEquipmentName(monitorinstrumentDTO.getEquipmentname())
+                    .setAlarmTime(instrumentParamConfigCommand.getAlarmtime())
+                    .setInstrumentConfigId(instrumentParamConfigCommand.getInstrumentconfigid())
+                    .setInstrumentConfigName(instrumentParamConfigCommand.getInstrumentconfigname())
+                    .setInstrumentParamConfigNO(instrumentParamConfigNo)
+                    .setLowLimit(instrumentParamConfigCommand.getLowlimit())
+                    .setHighLimit(instrumentParamConfigCommand.getHighlimit())
+                    .setWarningPhone(instrumentParamConfigCommand.getWarningphone())
+                    .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "" : instrumentParamConfigCommand.getUnit())
+                    .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
+                    .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
+                    .setCalibration(instrumentParamConfigCommand.getCalibration());
+            probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
+        }else {
+            result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
+            result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
+            probeRedisApi.addProbeRedisInfo(result);
+        }
+
+
     }
 
     /**
@@ -233,40 +245,45 @@ public class InstrumentparamconfigApplication {
     @GlobalTransactional
     public void editInstrumentParamConfig(InstrumentparamconfigCommand instrumentParamConfigCommand) {
         InstrumentparamconfigDTO dto =  instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentParamConfigCommand.getInstrumentparamconfigno());
-        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(instrumentParamConfigCommand.getInstrumentNo());
+        instrumentParamConfigCommand.setInstrumentNo(dto.getInstrumentno());
+        instrumentParamConfigCommand.setInstrumentconfigid(dto.getInstrumentconfigid());
+        MonitorinstrumentDTO monitorinstrumentDTO = monitorinstrumentService.selectMonitorByIno(dto.getInstrumentno());
         String sn = monitorinstrumentDTO.getSn();
         dto.setSn(sn);
         //更新探头信息
         InstrumentparamconfigDTO instrumentparamconfigDTO = buildInstrumentparamconfigDTO(instrumentParamConfigCommand);
         instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
+
         //更新设备
         String newWarningPhone = instrumentParamConfigCommand.getWarningphone();
-        String oldWarningPhone = dto.getWarningphone();
-        String equipmentNo = monitorinstrumentDTO.getEquipmentno();
-        MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
-        monitorEquipmentDto.setEquipmentNo(equipmentNo);
-        //当探头报警开关发生变化时在修改设备的报警开关(有一个探头开启设备开启，所有探头关闭设备关闭)
-        //设备报警开关只作为app报警设置接口查看用
-        if(!newWarningPhone.equals(oldWarningPhone)){
-            build(equipmentNo, monitorEquipmentDto, instrumentparamconfigService);
-            //当修改探头报警状态时更新设备数据库
-            monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
+        if(!StringUtils.isEmpty(newWarningPhone)){
+            String oldWarningPhone = dto.getWarningphone();
+            String equipmentNo = monitorinstrumentDTO.getEquipmentno();
+            MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
+            monitorEquipmentDto.setEquipmentNo(equipmentNo);
+            //当探头报警开关发生变化时在修改设备的报警开关(有一个探头开启设备开启，所有探头关闭设备关闭)
+            //设备报警开关只作为app报警设置接口查看用
+            if(!newWarningPhone.equals(oldWarningPhone)){
+                build(equipmentNo, monitorEquipmentDto, instrumentparamconfigService);
+                //当修改探头报警状态时更新设备数据库
+                monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
-            //更新设备缓存(当报警状态发生改变时修改)
-            SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-            if(!ObjectUtils.isEmpty(result1) && ! newWarningPhone.equals(result1.getWarningSwitch())){
-                result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
-                snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+                //更新设备缓存(当报警状态发生改变时修改)
+                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
+                if(!ObjectUtils.isEmpty(result1) && ! newWarningPhone.equals(result1.getWarningSwitch())){
+                    result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+                    snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+                }
             }
+            //添加日志信息
+            InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                    build(Context.getUserId(),
+                            BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
+                            instrumentParamConfigCommand,
+                            OperationLogEunm.PROBE_MANAGEMENT.getCode(),
+                            OperationLogEunmDerailEnum.EDIT.getCode());
+            operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
         }
-        //添加日志信息
-        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
-                build(Context.getUserId(),
-                        BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
-                        instrumentParamConfigCommand,
-                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
-                        OperationLogEunmDerailEnum.EDIT.getCode());
-        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
 
         //更新redis缓存
         addProbeRedisInfo(monitorinstrumentDTO,instrumentParamConfigCommand,instrumentParamConfigCommand.getInstrumentparamconfigno());
@@ -296,9 +313,9 @@ public class InstrumentparamconfigApplication {
                 .setChannel(instrumentParamConfigCommand.getChannel())
                 .setSaturation(instrumentParamConfigCommand.getSaturation())
                 .setCalibration(instrumentParamConfigCommand.getCalibration())
-                .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "":instrumentParamConfigCommand.getUnit())
-                .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
-                .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
+                .setUnit(instrumentParamConfigCommand.getUnit())
+                .setStyleMax(instrumentParamConfigCommand.getStyleMax())
+                .setStyleMin(instrumentParamConfigCommand.getStyleMin())
                 .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
     }
 
@@ -493,5 +510,11 @@ public class InstrumentparamconfigApplication {
         instrumentparamconfigService.updateBatchData(probeList);
         long time = System.currentTimeMillis() - start;
         System.out.println("用时："+time);
+    }
+
+    public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {
+        String instrumentParamconfigNo = instrumentparamconfigCommand.getInstrumentparamconfigno();
+        instrumentparamconfigService.editHighLowLimit(instrumentparamconfigCommand);
+
     }
 }

@@ -235,4 +235,10 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     public void updateBatchData(List<InstrumentparamconfigDTO> probeList) {
         instrumentparamconfigRepository.updateBatchData(probeList);
     }
+
+    @Override
+    public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {
+        InstrumentparamconfigPo convert = BeanConverter.convert(instrumentparamconfigCommand, InstrumentparamconfigPo.class);
+        instrumentparamconfigRepository.updateById(convert);
+    }
 }

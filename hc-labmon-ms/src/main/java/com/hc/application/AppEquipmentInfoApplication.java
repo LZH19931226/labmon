@@ -28,6 +28,7 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
+import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.*;
 import com.hc.util.CurveUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -69,6 +70,9 @@ public class AppEquipmentInfoApplication {
 
     @Autowired
     private MonitorInstrumentService monitorInstrumentService;
+
+    @Autowired
+    private InstrumentMonitorInfoRepository instrumentMonitorInfoRepository;
 
     /**
      * 获取app首页设备数量
@@ -596,48 +600,60 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isEmpty(equipmentInfoByPage)) {
             return null;
         }
-        List<String> collect = equipmentInfoByPage.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
-        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(collect);
+        List<String> enoList = equipmentInfoByPage.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
         Map<String, List<InstrumentParamConfigDto>> eNoMap = new HashMap<>();
         if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
             eNoMap =  instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
         }
+        List<InstrumentMonitorInfoDto> instrumentMonitorInfoDtoList = instrumentMonitorInfoRepository.list();
+        Map<String, List<InstrumentMonitorInfoDto>> idMap =
+                instrumentMonitorInfoDtoList.stream().collect(Collectors.groupingBy(res -> "" + res.getInstrumenttypeid() + res.getInstrumentconfigid()));
         List<AlarmSystem> list = new ArrayList<>();
-        for (MonitorEquipmentDto monitorEquipmentDto : equipmentInfoByPage) {
+        for (MonitorEquipmentDto next : equipmentInfoByPage) {
             AlarmSystem alarmSystem = new AlarmSystem();
-            alarmSystem.setEquipmentName(monitorEquipmentDto.getEquipmentname());
-            alarmSystem.setSn(monitorEquipmentDto.getSn());
-            alarmSystem.setEquipmentNo(monitorEquipmentDto.getEquipmentno());
-            alarmSystem.setHospitalCode(monitorEquipmentDto.getHospitalcode());
-            if (StringUtils.isBlank(monitorEquipmentDto.getWarningSwitch())) {
-                monitorEquipmentDto.setWarningSwitch("1");
+            alarmSystem.setEquipmentName(next.getEquipmentname());
+            alarmSystem.setSn(next.getSn());
+            alarmSystem.setEquipmentNo(next.getEquipmentno());
+            alarmSystem.setHospitalCode(next.getHospitalcode());
+            if (StringUtils.isBlank(next.getWarningSwitch())) {
+                next.setWarningSwitch("1");
             }
-            if(eNoMap.containsKey(monitorEquipmentDto.getEquipmentno())){
-                List<InstrumentParamConfigDto> paramConfigDtoList = eNoMap.get(monitorEquipmentDto.getEquipmentno());
+            if (eNoMap.containsKey(next.getEquipmentno())) {
+                List<InstrumentParamConfigDto> paramConfigDtoList = eNoMap.get(next.getEquipmentno());
                 long count = paramConfigDtoList.stream().filter(res -> "1".equals(res.getWarningphone())).count();
-                if(count>0){
+                if (count > 0) {
                     alarmSystem.setWarningSwitch("1");
-                }else{
+                } else {
                     alarmSystem.setWarningSwitch("0");
                 }
                 List<ProbeAlarmState> list1 = new ArrayList<>();
-                paramConfigDtoList.forEach(res->{
+                for (InstrumentParamConfigDto instrumentParamConfigDto : paramConfigDtoList) {
                     ProbeAlarmState probeAlarmState = new ProbeAlarmState();
-                    probeAlarmState.setInstrumentParamConfigNo(res.getInstrumentparamconfigno());
-                    probeAlarmState.setWarningPhone(res.getWarningphone());
-                    probeAlarmState.setInstrumentConfigId(res.getInstrumentconfigid());
-                    probeAlarmState.setInstrumentNo(res.getInstrumentno());
-                    probeAlarmState.setEName(CurrentProbeInfoEnum.from(res.getInstrumentconfigid()).getProbeEName());
-                    probeAlarmState.setLowLimit(res.getLowLimit().toString());
-                    probeAlarmState.setHighLimit(res.getHighLimit().toString());
+                    probeAlarmState.setInstrumentParamConfigNo(instrumentParamConfigDto.getInstrumentparamconfigno());
+                    probeAlarmState.setWarningPhone(instrumentParamConfigDto.getWarningphone());
+                    probeAlarmState.setInstrumentConfigId(instrumentParamConfigDto.getInstrumentconfigid());
+                    probeAlarmState.setInstrumentNo(instrumentParamConfigDto.getInstrumentno());
+                    probeAlarmState.setEName(CurrentProbeInfoEnum.from(instrumentParamConfigDto.getInstrumentconfigid()).getProbeEName());
+                    probeAlarmState.setLowLimit(instrumentParamConfigDto.getLowLimit().toString());
+                    probeAlarmState.setHighLimit(instrumentParamConfigDto.getHighLimit().toString());
+                    //设置默认的大小值
+                    Integer instrumentTypeId = instrumentParamConfigDto.getInstrumenttypeid();
+                    Integer instrumentConfigId = instrumentParamConfigDto.getInstrumentconfigid();
+                    if (idMap.containsKey("" + instrumentTypeId + instrumentConfigId)) {
+                        InstrumentMonitorInfoDto instrumentMonitorInfoDto = idMap.get("" + instrumentTypeId + instrumentConfigId).get(0);
+                        probeAlarmState.setMinReferenceValue(instrumentMonitorInfoDto.getLowlimit());
+                        probeAlarmState.setMaxReferenceValue(instrumentMonitorInfoDto.getHighlimit());
+                    }
                     list1.add(probeAlarmState);
-                });
+                }
                 if (CollectionUtils.isNotEmpty(list1)) {
                     alarmSystem.setProbeAlarmStateList(list1);
                 }
             }
             list.add(alarmSystem);
         }
+
         page.setRecords(list);
         return page;
     }
