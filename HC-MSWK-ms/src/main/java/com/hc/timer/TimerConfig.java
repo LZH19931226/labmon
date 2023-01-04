@@ -162,7 +162,7 @@ public class TimerConfig {
     }
 
     //每分钟执行一次
-    @Scheduled(cron = "*/1 * * * *")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void Timing() {
         ApiResponse<Long> lastDataListSize = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode());
         if (null == lastDataListSize) {
@@ -186,7 +186,7 @@ public class TimerConfig {
         monitorequipmentlastdataRepository.batchInsert(convert);
     }
 
-    @Scheduled(cron = "*/1 * * * *")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void waring() {
         ApiResponse<Long> warningRecordSize = warningApi.getWarningRecordSize(MswkServiceEnum.WARNING_RECORD.getCode());
         if (null == warningRecordSize) {
