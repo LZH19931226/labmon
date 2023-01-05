@@ -42,14 +42,12 @@ public class TokenHandle implements HandlerInterceptor {
                 return true;
             }
         }
-
         if (HttpMethod.OPTIONS.name().equals(req.getMethod())) {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             return true;
         }
         // 获取请求头信息authorization信息
         String authHeader = req.getHeader(JwtTokenUtil.AUTH_HEADER_KEY);
-        log.info("url:{},authHeader= {},param:{}", req.getRequestURL().toString(),authHeader,req.getParameterMap());
         if (StringUtils.isEmpty(authHeader)) {
             throw new IedsException(IError.TOKEN);
         }
@@ -66,4 +64,5 @@ public class TokenHandle implements HandlerInterceptor {
         }
         return true;
     }
+
 }

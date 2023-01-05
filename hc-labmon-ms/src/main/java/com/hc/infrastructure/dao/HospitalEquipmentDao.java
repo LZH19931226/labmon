@@ -27,7 +27,7 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
             "t2.equipmenttypename," +
             "t2.equipmenttypename_us " +
             "FROM " +
-            "monitorequipment t1" +
+            "monitorequipment t1 " +
             "LEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid " +
             "WHERE " +
             "t1.hospitalcode = #{hospitalCode} ")
