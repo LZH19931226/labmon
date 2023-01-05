@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @MapperScan(value = {"com.hc.infrastructure.dao","com.hc.clickhouse.mapper"})
 @EnableFeignClients
-//@EnableAuthorizationX
+@EnableAuthorizationX
 public class HcLabMonMsApplication {
 
 	public static void main(String[] args) {
