@@ -44,9 +44,9 @@ public interface SnDeviceRedisApi {
     @ApiOperation("批量获取设备当前值")
     ApiResponse<List<MonitorequipmentlastdataDto>> getTheCurrentValueOfTheDeviceInBatches(@RequestBody EquipmentInfoCommand equipmentInfoCommand);
 
-    @GetMapping("/snDevice//getLastDataListSize")
+    @GetMapping("/snDevice/getLastDataListSize")
     ApiResponse<Long> getLastDataListSize(@RequestParam("listCode") String listCode);
 
-    @GetMapping("/snDevice//getLeftPopLastData")
+    @GetMapping("/snDevice/getLeftPopLastData")
     ApiResponse<MonitorequipmentlastdataDto> getLeftPopLastData(@RequestParam("listCode") String listCode);
 }
