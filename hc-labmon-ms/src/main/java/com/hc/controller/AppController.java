@@ -7,6 +7,7 @@ import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
 import com.hc.application.response.AlarmHand;
+import com.hc.application.response.EquipmentTypeNum;
 import com.hc.application.response.WarningDetailInfo;
 import com.hc.application.response.WarningRecordInfo;
 import com.hc.clickhouse.po.Warningrecord;
@@ -112,4 +113,12 @@ public class AppController {
     public AlarmHand getTheNumberOfAlarmSettingDevices(@RequestBody AlarmSystemCommand alarmSystemCommand){
         return equipmentInfoAppApplication.getTheNumberOfAlarmSettingDevices(alarmSystemCommand);
     }
+
+    @GetMapping("/getEquipmentTypeNum")
+    @ApiOperation("获取医院设备类型设备分类数量")
+    public EquipmentTypeNum getEquipmentTypeNum(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
+        return  equipmentInfoAppApplication.getEquipmentTypeNum(hospitalCode,equipmentTypeId);
+    }
+
+
 }

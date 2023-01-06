@@ -178,6 +178,8 @@ public class SocketMessageListener {
             if (null!=model) {
                 model.setLogId(logId);
                 HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+                //将设备状态信息推送到mq
+                sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
                 //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
                 List<Userright> userList =almMsgService.addUserScheduLing(hospitalcode);
                 if (CollectionUtils.isEmpty(userList)){
@@ -190,8 +192,6 @@ public class SocketMessageListener {
                 if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
                     soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
                 }
-                //将设备状态信息推送到mq
-                sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
             }
             //不满足报警规则,但是超量程的数据也需要记录
             //将信息推送到redis,再批量插入
