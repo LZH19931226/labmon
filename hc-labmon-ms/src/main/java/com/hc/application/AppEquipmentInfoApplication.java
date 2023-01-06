@@ -694,9 +694,12 @@ public class AppEquipmentInfoApplication {
         if(CollectionUtils.isEmpty(instrumentParamConfigDtoList)){
             throw new IedsException(LabSystemEnum.EQUIPMENT_INFO_NOT_FOUND);
         }
+        //过滤instrumentno为空的记录
+        List<InstrumentParamConfigDto> collect = instrumentParamConfigDtoList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+
         //计算设备报警是否启用：一个设备下只要有一个探头设置了报警视为设备开启报警 全未设置报警视为设备未开启报警
         Map<String, List<InstrumentParamConfigDto>> instrumentNoMap =
-                instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentno));
+                collect.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentno));
         int enableNum = 0;
         int disabledNum = 0;
         for (String instrumentNo : instrumentNoMap.keySet()) {
