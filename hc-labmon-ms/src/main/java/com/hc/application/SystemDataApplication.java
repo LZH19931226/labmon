@@ -44,7 +44,7 @@ public class SystemDataApplication {
     @Autowired
     private EquipmentInfoService equipmentInfoService;
 
-
+    //hospitalCode,startTime,equipmentNo,pageSize,pageCurrent
     public Page findPacketLossLog(EquipmentDataCommand equipmentDataCommand) {
         Page<Monitorequipmentlastdata> page = new Page<>(equipmentDataCommand.getPageCurrent(), equipmentDataCommand.getPageSize());
         String startTime = equipmentDataCommand.getStartTime();
@@ -59,6 +59,8 @@ public class SystemDataApplication {
         return page;
     }
 
+
+    //hospitalCode,startTime,equipmentNo
     public SummaryOfAlarmsResult getPacketLossColumnar(EquipmentDataCommand equipmentDataCommand) {
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
@@ -75,7 +77,7 @@ public class SystemDataApplication {
         summaryOfAlarmsResult.setNumList(numList);
         return summaryOfAlarmsResult;
     }
-
+    //hospitalCode,startTime,equipmentNo
     public void exportPacketLossLog(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
@@ -101,7 +103,7 @@ public class SystemDataApplication {
 
 
     }
-
+    //hospitalCode startTime  endTime
     public List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCount(EquipmentDataCommand equipmentDataCommand) {
         String hospitalCode = equipmentDataCommand.getHospitalCode();
         //获取报警设备
@@ -162,7 +164,7 @@ public class SystemDataApplication {
     public List<InstrumentTypeNumDto> getInstrumentNum(EquipmentDataCommand equipmentDataCommand) {
         return instrumentMonitorInfoRepository.getEquipmentTypeNum(equipmentDataCommand);
     }
-
+    //hospitalCode startTime  endTime
     public List<eqTypeAlarmNumCountDto> getEqAlarmPeriod(EquipmentDataCommand equipmentDataCommand) {
         String hospitalCode = equipmentDataCommand.getHospitalCode();
         //获取报警设备

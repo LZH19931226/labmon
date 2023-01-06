@@ -185,17 +185,18 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException {
-        Date date = DateUtils.initDateByDay();
-        for (int i = 1; i <= 12; i++) {
-            Date addHour = DateUtils.getAddHour(date, 2 * (i - 1));
-            Date endTime ;
-            if (i==12){
-                endTime =DateUtils.getEndOfDay();
-            }else {
-                endTime =DateUtils.getAddHour(date, i*2);
-            }
-            System.out.println(addHour+"======"+endTime);
-        }
+//        Date date = DateUtils.initDateByDay();
+//        for (int i = 1; i <= 12; i++) {
+//            Date addHour = DateUtils.getAddHour(date, 2 * (i - 1));
+//            Date endTime ;
+//            if (i==12){
+//                endTime =DateUtils.getEndOfDay();
+//            }else {
+//                endTime =DateUtils.getAddHour(date, i*2);
+//            }
+//            System.out.println(addHour+"======"+endTime);
+//        }
+        System.out.println(getCurrentYYMM());
     }
     /**
      * 以 yyyy-MM-dd HH:mm:ss 的格式解析String
@@ -422,7 +423,11 @@ public class DateUtils {
         LocalDateTime now = LocalDateTime.now();
         int month =now.getMonth().getValue();
         int year = now.getYear();
-        String yymm = String.valueOf(year)+String.valueOf(month);
+        String mon = String.valueOf(month);
+        if(mon.length()==1){
+            mon="0"+mon;
+        }
+        String yymm = year+mon;
         return Integer.parseInt(yymm);
     }
 
