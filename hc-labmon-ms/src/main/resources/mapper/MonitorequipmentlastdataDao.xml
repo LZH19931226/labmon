@@ -12,7 +12,7 @@
         from
         lab_mon.monitorequipmentlastdata
         WHERE
-        toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+        id IN ( #{param.yearMonth} )
         AND inputdatetime <![CDATA[>=]]> #{param.startTime}
         AND inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
@@ -32,7 +32,7 @@
           inputdatetime
         FROM
             lab_mon.monitorequipmentlastdata
-        WHERE toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+        WHERE id IN ( #{param.yearMonth} )
         and inputdatetime <![CDATA[>=]]> #{param.startTime}
         and inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
@@ -53,7 +53,7 @@
       from
         lab_mon.monitorequipmentlastdata
       where
-        toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+        id IN ( #{param.yearMonth} )
         AND inputdatetime <![CDATA[>=]]> #{param.startTime} AND inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
     </select>
@@ -65,7 +65,7 @@
         FROM
         lab_mon.monitorequipmentlastdata
         WHERE
-        toYYYYMM ( inputdatetime ) IN (#{ym})
+        id IN (#{ym})
         and equipmentno  = #{equipmentNo}
         AND  inputdatetime <![CDATA[>=]]> #{startTime}
         AND  inputdatetime <![CDATA[<=]]>  #{endTime}
@@ -81,7 +81,7 @@
         from
             lab_mon.monitorequipmentlastdata
         WHERE
-            toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+            id IN ( #{param.yearMonth} )
           AND hospitalcode = #{param.hospitalCode}
           AND equipmentno = #{param.equipmentNo}
           AND cmdid ='88'
@@ -91,7 +91,7 @@
     <select id="getPacketLossColumnar" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
         select formatDateTime(inputdatetime,'%Y-%m-%d')  as remark1,count(1) remark2
         from lab_mon.monitorequipmentlastdata
-        WHERE hospitalcode = #{param.hospitalCode} and cmdid ='88' and toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )  and equipmentno = #{param.equipmentNo}
+        WHERE hospitalcode = #{param.hospitalCode} and cmdid ='88' and id IN ( #{param.yearMonth} )  and equipmentno = #{param.equipmentNo}
         group by remark1 order by remark1
     </select>
 

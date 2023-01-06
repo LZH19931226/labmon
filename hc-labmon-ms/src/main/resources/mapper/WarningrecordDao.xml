@@ -9,7 +9,7 @@
         toStartOfDay(inputdatetime) time,
 	    COUNT(*) num
         FROM lab_mon.warningrecord
-        WHERE toYYYYMM ( inputdatetime ) IN ( #{param.yearMonth} )
+        WHERE id IN ( #{param.yearMonth} )
           and inputdatetime <![CDATA[>=]]> #{startTime}
           and inputdatetime <![CDATA[<=]]> #{endTime}
         group by toStartOfDay(inputdatetime)
@@ -69,7 +69,7 @@
         FROM
             lab_mon.warningrecord
         WHERE
-            toYYYYMM ( inputdatetime ) IN (#{time})
+            id IN (#{time})
         GROUP BY
             hospitalcode,
             equipmentno
