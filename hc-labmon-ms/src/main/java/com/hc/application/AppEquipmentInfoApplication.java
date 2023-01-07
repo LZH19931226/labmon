@@ -705,10 +705,16 @@ public class AppEquipmentInfoApplication {
             if (map.containsKey(instrumentNo)) {
                 List<InstrumentParamConfigDto> paramConfigDtoList = map.get(instrumentNo);
                 long count = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getWarningphone())).count();
+                long stateNum = paramConfigDtoList.stream().filter(res -> SysConstants.IN_ALARM.equals(res.getState())).count();
                 if (count > 0) {
                     monitorEquipmentDto.setWarningSwitch(SysConstants.IN_ALARM);
                 } else {
                     monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
+                }
+                if(stateNum > 0){
+                    monitorEquipmentDto.setState(SysConstants.IN_ALARM);
+                }else {
+                    monitorEquipmentDto.setState(SysConstants.NORMAL);
                 }
             }
         }
