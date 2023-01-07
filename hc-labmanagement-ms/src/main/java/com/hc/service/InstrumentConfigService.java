@@ -29,7 +29,7 @@ public interface InstrumentConfigService {
      */
     List<InstrumentConfigDTO> selectAllInfo();
 
-    void save(String instrumentConfigName);
+    void save(InstrumentConfigCommand instrumentConfigCommand);
 
     /**
      * 分页查询监控参数类型信息

@@ -67,6 +67,9 @@ public class InstrumentparamconfigApplication {
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
+    @Autowired
+    private InstrumentConfigService instrumentConfigService;
+
     /**
      * 通过设备no获取探头参数信息
      *
@@ -479,14 +482,23 @@ public class InstrumentparamconfigApplication {
         if(CollectionUtils.isEmpty(probeList)){
             return;
         }
+
         //2.查出所有的instrumentMonitor表信息
         List<InstrumentmonitorDTO> instrumentmonitorDTOS = instrumentmonitorService.selectMonitorEquipmentAll();
         if(CollectionUtils.isEmpty(instrumentmonitorDTOS)){
             return;
         }
         //通过typeId+configId分组
-        Map<String, List<InstrumentmonitorDTO>> tidCidMap = instrumentmonitorDTOS.stream().collect(Collectors.groupingBy(res -> res.getInstrumenttypeid() + "" + res.getInstrumentconfigid()));
-        //3.遍历所有的探头信息
+        Map<String, List<InstrumentmonitorDTO>> tidCidMap =
+                instrumentmonitorDTOS.stream().collect(Collectors.groupingBy(res -> res.getInstrumenttypeid() + "" + res.getInstrumentconfigid()));
+
+        //3.查询instrumentconfig表
+        List<InstrumentConfigDTO> instrumentConfigDTOList = instrumentConfigService.list();
+        //通过confid分组
+        Map<Integer, List<InstrumentConfigDTO>> confIdMap =
+                instrumentConfigDTOList.stream().collect(Collectors.groupingBy(InstrumentConfigDTO::getInstrumentconfigid));
+
+        //4.遍历所有的探头信息
         for (InstrumentparamconfigDTO instrumentparamconfigDTO : probeList) {
             Integer instrumentTypeId = instrumentparamconfigDTO.getInstrumenttypeid();
             Integer instrumentConfigId = instrumentparamconfigDTO.getInstrumentconfigid();
@@ -498,18 +510,24 @@ public class InstrumentparamconfigApplication {
                 continue;
             }
             InstrumentmonitorDTO instrumentmonitorDTO = instrumentmonitorDTOList.get(0);
+            //单位
             String unit = instrumentmonitorDTO.getUnit();
+            //样式最小值(用于曲线y轴最小值)
             String styleMin = instrumentmonitorDTO.getStyleMin();
+            //样式最大值(用于曲线y轴最大值)
             String styleMax = instrumentmonitorDTO.getStyleMax();
+            //探头类型分组(用于)
+            if(confIdMap.containsKey(instrumentConfigId)){
+                InstrumentConfigDTO instrumentConfigDTO = confIdMap.get(instrumentConfigId).get(0);
+                String insGroup = instrumentConfigDTO.getInsGroup();
+                instrumentparamconfigDTO.setInsGroup(insGroup);
+            }
             instrumentparamconfigDTO.setUnit(StringUtils.isEmpty(unit) ? "":unit);
             instrumentparamconfigDTO.setStyleMin(StringUtils.isEmpty(styleMin) ? "":styleMin);
             instrumentparamconfigDTO.setStyleMax(StringUtils.isEmpty(styleMax) ? "":styleMax);
         }
-        long start = System.currentTimeMillis();
         //5.更新探头表
         instrumentparamconfigService.updateBatchData(probeList);
-        long time = System.currentTimeMillis() - start;
-        System.out.println("用时："+time);
     }
 
     public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {

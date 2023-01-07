@@ -108,5 +108,12 @@ public class InstrumentparamconfigPo implements Serializable {
     @TableField(value = "style_max")
     private String styleMax;
 
+    /**
+     * 探头类型分组
+     * 同于前端展示
+     */
+    @TableField(value = "ins_group")
+    private String insGroup;
+
 }
 

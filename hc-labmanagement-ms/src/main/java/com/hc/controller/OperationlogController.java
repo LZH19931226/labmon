@@ -61,6 +61,7 @@ public class OperationlogController {
         return operationlogApplication.findAllLogInfo(operationLogCommand);
     }
 
+    @JwtIgnore
     @PostMapping("/addExportLog")
     public void addExportLog(@RequestBody ExportLogCommand exportLogCommand){
         operationlogApplication.addExportLog(exportLogCommand);

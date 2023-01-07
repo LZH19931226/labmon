@@ -45,10 +45,13 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
     }
 
     /**
-     * @param instrumentConfigName
+     *
+     * @param instrumentConfigCommand
      */
     @Override
-    public void save(String instrumentConfigName) {
+    public void save(InstrumentConfigCommand instrumentConfigCommand) {
+        String instrumentConfigName = instrumentConfigCommand.getInstrumentConfigName();
+        String insGroup = instrumentConfigCommand.getInsGroup();
         List<InstrumentconfigPo> list = instrumentconfigRepository.list();
         if(CollectionUtils.isEmpty(list)){
             return;
@@ -65,6 +68,7 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
             instrumentconfigPo.setInstrumentconfigid(list.size()+1);
         }
         instrumentconfigPo.setInstrumentconfigname(instrumentConfigName);
+        instrumentconfigPo.setInsGroup(insGroup);
         instrumentconfigRepository.save(instrumentconfigPo);
     }
 
@@ -86,6 +90,7 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
     public void edit(InstrumentConfigCommand instrumentConfigCommand) {
         String instrumentConfigName = instrumentConfigCommand.getInstrumentConfigName();
         Integer instrumentConfigId = instrumentConfigCommand.getInstrumentConfigId();
+        String insGroup = instrumentConfigCommand.getInsGroup();
         InstrumentConfigDTO instrumentConfigDTO = instrumentconfigRepository.selectInfoByConfigid(instrumentConfigId);
         String oldName = instrumentConfigDTO.getInstrumentconfigname();
         if (instrumentConfigName.equals(oldName)) {
@@ -100,6 +105,7 @@ public class InstrumentconfigServiceImpl implements InstrumentConfigService {
             InstrumentconfigPo instrumentconfigPo = new InstrumentconfigPo();
             instrumentconfigPo.setInstrumentconfigid(instrumentConfigId);
             instrumentconfigPo.setInstrumentconfigname(instrumentConfigName);
+            instrumentconfigPo.setInsGroup(insGroup);
             instrumentconfigRepository.updateById(instrumentconfigPo);
         }
     }

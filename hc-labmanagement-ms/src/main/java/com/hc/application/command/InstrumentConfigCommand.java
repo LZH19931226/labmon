@@ -26,4 +26,9 @@ public class InstrumentConfigCommand {
      * 分页大小
      */
     private Integer pageSize;
+
+    /**
+     * 类型分组
+     */
+    private String insGroup;
 }

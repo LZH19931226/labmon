@@ -25,10 +25,10 @@ public class InstrumentConfigApplication {
 
     /**
      * 新增探头监测类型
-     * @param instrumentConfigName 探头监测类型名称
+     * @param instrumentConfigCommand 探头监测类型名称
      */
-    public void save(String instrumentConfigName) {
-        instrumentConfigService.save(instrumentConfigName);
+    public void save(InstrumentConfigCommand instrumentConfigCommand) {
+        instrumentConfigService.save(instrumentConfigCommand);
     }
 
     /**

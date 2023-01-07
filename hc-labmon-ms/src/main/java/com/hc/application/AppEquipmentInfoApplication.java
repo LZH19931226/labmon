@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -337,9 +338,13 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isNotEmpty(list)) {
             InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
             String state = instrumentParamConfigDto.getState();
+            BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
             probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
-            probeInfoDto.setState(state == null ? "0" : state);
+            probeInfoDto.setState(state == null ? "":state) ;
+            if(instrumentConfigId==11){
+                setState(probeInfoDto,lowLimit,state);
+            }
             probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
             if (StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())) {
                 String unit = instrumentParamConfigDto.getUnit();
@@ -347,6 +352,21 @@ public class AppEquipmentInfoApplication {
                 probeInfoDto.setValue(probeInfoDto.getValue());
             }
         }
+    }
+
+    private void setState(ProbeInfoDto probeInfoDto,  BigDecimal lowLimit,String state) {
+        if(StringUtils.isBlank(state)){
+            probeInfoDto.setState("0");
+        }else {
+            int i = lowLimit.intValue();
+            Integer integer = Integer.valueOf(probeInfoDto.getValue());
+            if(i == integer){
+                probeInfoDto.setState("1");
+            }else {
+                probeInfoDto.setState("0");
+            }
+        }
+
     }
 
     /**

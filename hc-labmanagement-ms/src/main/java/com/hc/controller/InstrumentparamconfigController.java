@@ -88,7 +88,7 @@ public class InstrumentparamconfigController {
 
     @JwtIgnore
     @GetMapping("/syncProbeUnit")
-    @ApiOperation("同步探头单位")
+    @ApiOperation("同步探头信息")
     public void syncProbeUnit(){
         instrumentparamconfigApplication.syncProbeUnit();
     }

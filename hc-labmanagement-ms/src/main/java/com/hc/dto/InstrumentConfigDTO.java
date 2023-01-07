@@ -31,6 +31,12 @@ public class InstrumentConfigDTO implements Serializable {
     @TableField(exist = false)
     private String unit;
 
+    /**
+     * 探头类型分组
+     * 同于前端展示
+     */
+    @TableField(value = "ins_group")
+    private String insGroup;
 }
 
 
