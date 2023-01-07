@@ -278,16 +278,17 @@ public class InstrumentparamconfigApplication {
                     snDeviceRedisApi.updateSnDeviceDtoSync(result1);
                 }
             }
-            //添加日志信息
-            InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
-                    build(Context.getUserId(),
-                            BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
-                            instrumentParamConfigCommand,
-                            OperationLogEunm.PROBE_MANAGEMENT.getCode(),
-                            OperationLogEunmDerailEnum.EDIT.getCode());
-            operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
+
         }
 
+        //添加日志信息
+        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                build(Context.getUserId(),
+                        BeanConverter.convert(dto,InstrumentparamconfigCommand.class),
+                        instrumentParamConfigCommand,
+                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
+                        OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
         //更新redis缓存
         addProbeRedisInfo(monitorinstrumentDTO,instrumentParamConfigCommand,instrumentParamConfigCommand.getInstrumentparamconfigno());
     }

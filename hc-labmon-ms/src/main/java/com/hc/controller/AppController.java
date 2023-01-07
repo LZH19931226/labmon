@@ -12,6 +12,7 @@ import com.hc.application.response.WarningDetailInfo;
 import com.hc.application.response.WarningRecordInfo;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.util.date.DateDto;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
@@ -100,6 +101,7 @@ public class AppController {
         return equipmentInfoAppApplication.getAlarmSystemInfo(probeCommand);
     }
 
+    @JwtIgnore
     @GetMapping("/synchronizedDeviceAlarmSwitch")
     @ApiOperation("同步设备报警开关")
     public void synchronizedDeviceAlarmSwitch(){

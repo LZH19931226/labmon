@@ -385,7 +385,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         String sn = oldInstrumentInfoModel.getSn();
         String sn1 = nowInstrumentInfoModel.getSn();
         String instrumentName = instrumentparamconfigInfoCommand.getInstrumentName();
-        if (!StringUtils.equals(sn1, sn)) {
+        if (StringUtils.isBlank(sn) && StringUtils.isBlank(sn1) && !StringUtils.equals(sn1, sn)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("sn");
@@ -455,7 +455,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         //矫正正负值
         String calibration = oldInstrumentInfoModel.getCalibration();
         String calibration1 = nowInstrumentInfoModel.getCalibration();
-        if (!StringUtils.equals(calibration1, calibration)) {
+        if (StringUtils.isNotBlank(calibration) && StringUtils.isNotBlank(calibration1) && !StringUtils.equals(calibration1, calibration)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("calibration");
@@ -483,7 +483,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         //智能报警次数
         Integer alarmtime = oldInstrumentInfoModel.getAlarmtime();
         Integer alarmtime1 = nowInstrumentInfoModel.getAlarmtime();
-        if (!Objects.equals(alarmtime, alarmtime1)) {
+        if ( alarmtime != null && alarmtime1 != null && !Objects.equals(alarmtime, alarmtime1)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("alarmtime");
@@ -496,7 +496,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         //禁用启用报警
         String warningphone = oldInstrumentInfoModel.getWarningphone();
         String warningphone1 = nowInstrumentInfoModel.getWarningphone();
-        if (!StringUtils.equals(warningphone1, warningphone)) {
+        if (StringUtils.isNotBlank(warningphone) && StringUtils.isNotBlank(warningphone1) && !StringUtils.equals(warningphone1, warningphone)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("warningphone");
