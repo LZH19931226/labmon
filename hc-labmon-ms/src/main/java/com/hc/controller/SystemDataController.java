@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.SystemDataApplication;
 import com.hc.application.command.EquipmentDataCommand;
+import com.hc.application.response.InstrumentTypeNumResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.AlarmEquipmentNumDto;
@@ -68,7 +69,7 @@ public class SystemDataController {
 
     @PostMapping("/getInstrumentNum")
     @ApiOperation("获取不同设备数量")
-    public List<InstrumentTypeNumDto> getInstrumentNum(@RequestBody EquipmentDataCommand equipmentDataCommand){
+    public InstrumentTypeNumResult getInstrumentNum(@RequestBody EquipmentDataCommand equipmentDataCommand){
         return systemDataApplication.getInstrumentNum(equipmentDataCommand);
     }
 

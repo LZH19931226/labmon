@@ -3,6 +3,7 @@ package com.hc.application;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.EquipmentDataCommand;
+import com.hc.application.response.InstrumentTypeNumResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
@@ -15,11 +16,14 @@ import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.EquipmentInfoService;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
@@ -157,13 +161,43 @@ public class SystemDataApplication {
      */
     public List<EquipmentTypeNumDto> getEquipmentNumProportion(EquipmentDataCommand equipmentDataCommand) {
         //获取设备类型数量
-        return hospitalEquipmentRepository.getEquipmentTypeNum(equipmentDataCommand);
+        List<EquipmentTypeNumDto> equipmentTypeNum = hospitalEquipmentRepository.getEquipmentTypeNum(equipmentDataCommand);
+        long sum = equipmentTypeNum.stream().mapToLong(EquipmentTypeNumDto::getEquipmentNum).sum();
+        for (EquipmentTypeNumDto equipmentTypeNumDto : equipmentTypeNum) {
+            Long num = equipmentTypeNumDto.getEquipmentNum();
+            String str = divide(sum, num);
+            equipmentTypeNumDto.setPercentage(str);
+        }
+        return equipmentTypeNum;
 
     }
 
-    public List<InstrumentTypeNumDto> getInstrumentNum(EquipmentDataCommand equipmentDataCommand) {
-        return instrumentMonitorInfoRepository.getEquipmentTypeNum(equipmentDataCommand);
+    public InstrumentTypeNumResult getInstrumentNum(EquipmentDataCommand equipmentDataCommand) {
+        List<InstrumentTypeNumDto> equipmentTypeNumList = instrumentMonitorInfoRepository.getEquipmentTypeNum(equipmentDataCommand);
+        if(CollectionUtils.isEmpty(equipmentTypeNumList)){
+            return null;
+        }
+        InstrumentTypeNumResult instrumentTypeNumResult = new InstrumentTypeNumResult();
+        long sum = equipmentTypeNumList.stream().mapToLong(InstrumentTypeNumDto::getNum).sum();
+        for (InstrumentTypeNumDto instrumentTypeNumDto : equipmentTypeNumList) {
+            Long num = instrumentTypeNumDto.getNum();
+            String str = divide(sum, num);
+            instrumentTypeNumDto.setPercentage(str);
+        }
+        instrumentTypeNumResult.setTotalNum(sum);
+        instrumentTypeNumResult.setInstrumentTypeNumDtoList(equipmentTypeNumList);
+        return instrumentTypeNumResult;
     }
+
+     public String divide(Long totalNum,Long num){
+         BigDecimal num100 = new BigDecimal(num + "");
+         BigDecimal sun100 = new BigDecimal(totalNum + "");
+         BigDecimal divide = num100.divide(sun100, 4, RoundingMode.HALF_UP);
+         String str = divide.multiply(new BigDecimal(100)).toString();
+         return str.substring(0,str.length()-2);
+    }
+
+
     //hospitalCode startTime  endTime
     public List<eqTypeAlarmNumCountDto> getEqAlarmPeriod(EquipmentDataCommand equipmentDataCommand) {
         String hospitalCode = equipmentDataCommand.getHospitalCode();

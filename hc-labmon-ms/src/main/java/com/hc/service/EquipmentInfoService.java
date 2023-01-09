@@ -28,4 +28,5 @@ public interface EquipmentInfoService {
     List<MonitorEquipmentDto> getAll();
 
     void bulkUpdate(List<MonitorEquipmentDto> list);
+
 }

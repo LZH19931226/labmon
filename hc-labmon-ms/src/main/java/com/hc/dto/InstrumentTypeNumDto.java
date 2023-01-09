@@ -15,4 +15,7 @@ public class InstrumentTypeNumDto implements Serializable {
 
     /** 数量 */
     private Long num;
+
+    /** 占比 */
+    private String percentage;
 }

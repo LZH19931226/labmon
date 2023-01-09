@@ -3,6 +3,7 @@ package com.hc.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 public class EquipmentTypeNumDto implements Serializable {
@@ -18,4 +19,7 @@ public class EquipmentTypeNumDto implements Serializable {
 
     /** 设备数量 */
     private Long equipmentNum;
+
+    /** 占比 */
+    private String percentage;
 }
