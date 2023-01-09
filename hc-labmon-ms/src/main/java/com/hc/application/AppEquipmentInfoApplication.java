@@ -136,6 +136,7 @@ public class AppEquipmentInfoApplication {
      */
     public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(ProbeCommand probeCommand) {
         String hospitalCode = probeCommand.getHospitalCode();
+        String state = probeCommand.getState();
         Page<ProbeCurrentInfoDto> page = new Page<>(probeCommand.getPageCurrent(), probeCommand.getPageSize());
         //分页查询设备信息
         List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page, probeCommand);
@@ -162,8 +163,16 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
             instrumentParamConfigMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentconfigid)));
         }
+        Map<String, List<InstrumentParamConfigDto>> enoProbeMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
+
+
         //批量获取设备对应探头当前值信息
         Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
+
+        //获取医院超时报警间隔
+        HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
+        String timeoutRedDuration = hos.getTimeoutRedDuration();
+
         List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
         //遍历设备信息
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
@@ -186,24 +195,65 @@ public class AppEquipmentInfoApplication {
             }
             probeInfo.setEquipmentTypeId(equipmentTypeId);
             Date maxDate = null;
-            if (CollectionUtils.isNotEmpty(probeInfoDtoList)) {
-                //获取探头信息中最大的时间
-                List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
-                maxDate = Collections.max(collect);
-                //构建探头高低值
-                buildProbeHighAndLowValue(equipmentNo, probeInfoDtoList, instrumentParamConfigMap);
-                probeInfo.setProbeInfoDtoList(probeInfoDtoList);
-                //获取标头信息(用于前端展示)
-                List<String> instrumentConfigId = queryTitle(probeInfoDtoList);
-                probeInfo.setInstrumentConfigIdList(instrumentConfigId);
+//            //赋值探头信息,并且过滤state状态
+            if (CollectionUtils.isEmpty(probeInfoDtoList)) {
+                if(StringUtils.equals("1",state) || StringUtils.isBlank(state)){
+                    probeCurrentInfoDtos.add(probeInfo);
+                }
+                continue;
             }
+            //获取探头信息中最大的时间
+            List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
+            maxDate = Collections.max(collect);
             if (maxDate != null) {
                 probeInfo.setInputTime(maxDate);
             }
-            probeCurrentInfoDtos.add(probeInfo);
+            boolean calculateIntervalTime = DateUtils.calculateIntervalTime(new Date(), maxDate, Integer.parseInt(StringUtils.isBlank(timeoutRedDuration) ? "1800":timeoutRedDuration));
+            buildProbeInfoDtoListAndInstrumentConfigIdList(probeInfo,equipmentNo,probeInfoDtoList,instrumentParamConfigMap);
+            long count = probeInfoDtoList.stream().filter(res -> res.getState().equals("1")).count();
+            switch (state){
+                //正常
+                case "0":
+                    if(calculateIntervalTime){
+                        continue;
+                    }
+                    if(count <= 0){
+                        probeCurrentInfoDtos.add(probeInfo);
+                    }
+                    break;
+                //异常
+                case "1":
+                    if(calculateIntervalTime){
+                        continue;
+                    }
+                    if(count > 0){
+                        probeCurrentInfoDtos.add(probeInfo);
+                    }
+                    break;
+                //超时
+                case "2":
+                   if(calculateIntervalTime){
+                       probeCurrentInfoDtos.add(probeInfo);
+                   }
+                   break;
+                //全部
+                default:
+                    probeCurrentInfoDtos.add(probeInfo);
+                    break;
+            }
         }
         page.setRecords(probeCurrentInfoDtos);
+        page.setTotal(probeCurrentInfoDtos.size());
         return page;
+    }
+
+    private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo,String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap) {
+        //构建探头高低值
+        buildProbeHighAndLowValue(equipmentNo, probeInfoDtoList, instrumentParamConfigMap);
+        probeInfo.setProbeInfoDtoList(probeInfoDtoList);
+        //获取标头信息(用于前端展示)
+        List<String> instrumentConfigId = queryTitle(probeInfoDtoList);
+        probeInfo.setInstrumentConfigIdList(instrumentConfigId);
     }
 
     /**
@@ -341,9 +391,9 @@ public class AppEquipmentInfoApplication {
             BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
             probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
-            probeInfoDto.setState(state == null ? "":state) ;
-            if(instrumentConfigId==11){
-                setState(probeInfoDto,lowLimit,state);
+            probeInfoDto.setState(state == null ? "" : state);
+            if (instrumentConfigId == 11) {
+                setState(probeInfoDto, lowLimit, state);
             }
             probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
             if (StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())) {
@@ -354,15 +404,15 @@ public class AppEquipmentInfoApplication {
         }
     }
 
-    private void setState(ProbeInfoDto probeInfoDto,  BigDecimal lowLimit,String state) {
-        if(StringUtils.isBlank(state)){
+    private void setState(ProbeInfoDto probeInfoDto, BigDecimal lowLimit, String state) {
+        if (StringUtils.isBlank(state)) {
             probeInfoDto.setState("0");
-        }else {
+        } else {
             int i = lowLimit.intValue();
             Integer integer = Integer.valueOf(probeInfoDto.getValue());
-            if(i == integer){
+            if (i == integer) {
                 probeInfoDto.setState("1");
-            }else {
+            } else {
                 probeInfoDto.setState("0");
             }
         }
@@ -711,9 +761,9 @@ public class AppEquipmentInfoApplication {
                 } else {
                     monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
                 }
-                if(stateNum > 0){
+                if (stateNum > 0) {
                     monitorEquipmentDto.setState(SysConstants.IN_ALARM);
-                }else {
+                } else {
                     monitorEquipmentDto.setState(SysConstants.NORMAL);
                 }
             }
@@ -762,7 +812,7 @@ public class AppEquipmentInfoApplication {
     }
 
     public EquipmentTypeNum getEquipmentTypeNum(String hospitalCode, String equipmentTypeId) {
-        EquipmentTypeNum   equipmentTypeNum  = new EquipmentTypeNum();
+        EquipmentTypeNum equipmentTypeNum = new EquipmentTypeNum();
 
 
         ProbeCommand probeCommand = new ProbeCommand();
@@ -770,6 +820,7 @@ public class AppEquipmentInfoApplication {
         probeCommand.setPageCurrent(1L);
         probeCommand.setHospitalCode(hospitalCode);
         probeCommand.setEquipmentTypeId(equipmentTypeId);
+        probeCommand.setState("");
         Page<ProbeCurrentInfoDto> theCurrentValueOfTheProbe = getTheCurrentValueOfTheProbe(probeCommand);
         List<ProbeCurrentInfoDto> records = theCurrentValueOfTheProbe.getRecords();
         if (CollectionUtils.isEmpty(records)) {

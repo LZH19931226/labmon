@@ -45,9 +45,6 @@
         <if test = "probeCommand.equipmentName != null and probeCommand.equipmentName != ''">
             and t1.equipmentname like concat('%',#{probeCommand.equipmentName},'%')
         </if>
-        <if test="probeCommand.state != null and probeCommand.state != ''">
-            and t1.state = #{probeCommand.state}
-        </if>
         ORDER BY equipmentname
     </select>
 </mapper>
