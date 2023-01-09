@@ -36,8 +36,8 @@
         FROM
             lab_mon.warningrecord
         WHERE
-          inputdatetime <![CDATA[>=]]> #{startTime}
-          and inputdatetime <![CDATA[<=]]> #{endTime}
+          inputdatetime <![CDATA[>=]]> #{param.startTime}
+          and inputdatetime <![CDATA[<=]]> #{param.endTime}
         GROUP BY equipmentno
         order BY num DESC
         LIMIT 5
