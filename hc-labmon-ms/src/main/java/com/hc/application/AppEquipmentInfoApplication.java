@@ -136,10 +136,10 @@ public class AppEquipmentInfoApplication {
      */
     public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(ProbeCommand probeCommand) {
         String hospitalCode = probeCommand.getHospitalCode();
-        String state = probeCommand.getState();
-        if(StringUtils.isBlank(state)){
+        if(StringUtils.isBlank(probeCommand.getState())){
             probeCommand.setState("");
         }
+        String state = probeCommand.getState();
         Page<ProbeCurrentInfoDto> page = new Page<>(probeCommand.getPageCurrent(), probeCommand.getPageSize());
         //分页查询设备信息
         List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page, probeCommand);
