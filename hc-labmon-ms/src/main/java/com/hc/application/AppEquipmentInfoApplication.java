@@ -841,7 +841,7 @@ public class AppEquipmentInfoApplication {
             //判断设备是否超时
             Date inputTime = probeCurrentInfoDto.getInputTime();
             if (null==inputTime){
-                timeOutCount++;
+                anomalyCount++;
                 continue;
             }
             boolean calculateIntervalTime = DateUtils.calculateIntervalTime(new Date(), inputTime, Integer.parseInt(timeoutRedDuration));
