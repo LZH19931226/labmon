@@ -6,10 +6,7 @@ import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
-import com.hc.application.response.AlarmHand;
-import com.hc.application.response.EquipmentTypeNum;
-import com.hc.application.response.WarningDetailInfo;
-import com.hc.application.response.WarningRecordInfo;
+import com.hc.application.response.*;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
 import com.hc.my.common.core.jwt.JwtIgnore;
@@ -38,7 +35,7 @@ public class AppController {
     /*设备当前值*/
     @PostMapping("/getCurrentProbeInfo")
     @ApiOperation("获取探头当前值(卡片)")
-    public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
+    public CurrentProbeInfoResult getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
         return  equipmentInfoAppApplication.getTheCurrentValueOfTheProbe(probeCommand);
     }
 
@@ -113,12 +110,5 @@ public class AppController {
     public AlarmHand getTheNumberOfAlarmSettingDevices(@RequestBody AlarmSystemCommand alarmSystemCommand){
         return equipmentInfoAppApplication.getTheNumberOfAlarmSettingDevices(alarmSystemCommand);
     }
-
-    @GetMapping("/getEquipmentTypeNum")
-    @ApiOperation("获取医院设备类型设备分类数量")
-    public EquipmentTypeNum getEquipmentTypeNum(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
-        return  equipmentInfoAppApplication.getEquipmentTypeNum(hospitalCode,equipmentTypeId);
-    }
-
 
 }

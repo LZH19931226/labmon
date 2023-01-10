@@ -2,7 +2,7 @@ package com.hc.my.common.core.util;
 
 import com.hc.my.common.core.util.date.DateConstant;
 import com.hc.my.common.core.util.date.DateDto;
-import org.springframework.util.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -182,6 +182,23 @@ public class DateUtils {
     public static boolean calculateIntervalTime(Date nowTime, Date wornTime, int seconds) {
         long timeInterval = (nowTime.getTime() - wornTime.getTime()) / (1000);
         return timeInterval > seconds;
+    }
+
+    /**
+     * 根据输入分钟,计算输入时间与当前时间的时间差
+     * @param wornTime 输入时间
+     * @param minute
+     * @return
+     */
+    public static boolean calculateIntervalTime(Date wornTime, String minute) {
+        int i = 0;
+        if(StringUtils.isBlank(minute)){
+            i=Integer.parseInt("1800");
+        }else {
+            i=Integer.parseInt(minute);
+        }
+        long timeInterval = (new Date().getTime() - wornTime.getTime()) / (1000);
+        return timeInterval > i ;
     }
 
     public static void main(String[] args) throws ParseException {
