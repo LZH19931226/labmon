@@ -10,8 +10,8 @@
 	    COUNT(*) num
         FROM lab_mon.warningrecord
         WHERE id IN ( #{param.yearMonth} )
-          and inputdatetime <![CDATA[>=]]> #{startTime}
-          and inputdatetime <![CDATA[<=]]> #{endTime}
+          and inputdatetime <![CDATA[>=]]> #{param.startTime}
+          and inputdatetime <![CDATA[<=]]> #{param.endTime}
         group by toStartOfDay(inputdatetime)
         ORDER BY time
     </select>

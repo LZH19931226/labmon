@@ -8,13 +8,13 @@ import java.util.List;
 @Data
 public class CurrentProbeInfoResult {
 
-    private Long normalNum;
+    private Integer normalNum;
 
-    private Long totalNum;
+    private Integer totalNum;
 
-    private Long abnormalNum;
+    private Integer abnormalNum;
 
-    private Long timeoutNum;
+    private Integer timeoutNum;
 
     private List<ProbeCurrentInfoDto> probeCurrentInfoDtoList;
 }

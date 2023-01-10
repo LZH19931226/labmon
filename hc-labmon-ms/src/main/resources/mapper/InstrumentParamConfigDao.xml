@@ -5,6 +5,7 @@
     <select id="getInstrumentParamConfigByENoList" resultType="com.hc.dto.InstrumentParamConfigDto">
         SELECT
             t3.equipmentno,
+            t3.equipmenttypeid,
             t1.*
         FROM
             instrumentparamconfig t1
