@@ -307,6 +307,9 @@ public class AppEquipmentInfoApplication {
                 List<ProbeCurrentInfoDto> timeoutList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("2", res.getState())).collect(Collectors.toList());
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(timeoutList);
                 break;
+            default:
+                currentProbeInfoResult.setProbeCurrentInfoDtoList(probeCurrentInfoDtos);
+                break;
         }
         return currentProbeInfoResult;
     }
