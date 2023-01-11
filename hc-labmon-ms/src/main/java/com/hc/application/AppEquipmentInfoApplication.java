@@ -98,47 +98,47 @@ public class AppEquipmentInfoApplication {
             throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE);
         }
         //查询设备信息
-        List<MonitorEquipmentDto> monitorEquipmentDtoList = equipmentInfoService.getAll();
-        if(CollectionUtils.isEmpty(monitorEquipmentDtoList)){
-            return null;
-        }
-        Map<String, List<MonitorEquipmentDto>> etIdMap = monitorEquipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
+//        List<MonitorEquipmentDto> monitorEquipmentDtoList = equipmentInfoService.getAll();
+//        if(CollectionUtils.isEmpty(monitorEquipmentDtoList)){
+//            return null;
+//        }
+       // Map<String, List<MonitorEquipmentDto>> etIdMap = monitorEquipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
 
-        List<String> enoList = monitorEquipmentDtoList.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
-        List<InstrumentParamConfigDto> paramConfigDtoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
-        Map<String, List<InstrumentParamConfigDto>> enoAndProbeMap = paramConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
-
-        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
-        probeRedisCommand.setHospitalCode(hospitalCode);
-        probeRedisCommand.setENoList(enoList);
-        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
-
-        //获取医院超时报警间隔
-        HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
-        String timeoutRedDuration = hos.getTimeoutRedDuration();
+//        List<String> enoList = monitorEquipmentDtoList.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+//        List<InstrumentParamConfigDto> paramConfigDtoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
+//        Map<String, List<InstrumentParamConfigDto>> enoAndProbeMap = paramConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
+//
+//        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
+//        probeRedisCommand.setHospitalCode(hospitalCode);
+//        probeRedisCommand.setENoList(enoList);
+//        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
+//
+//        //获取医院超时报警间隔
+//        HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
+//        String timeoutRedDuration = hos.getTimeoutRedDuration();
 
         //遍历医院的设备类型信息
-        for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
-            String equipmentTypeId = equipmentDto.getEquipmentTypeId();
-            long alarmNum = 0;
-            long normalNum = 0;
-            if(etIdMap.containsKey(equipmentTypeId)){
-                List<MonitorEquipmentDto> monitorEquipmentList = etIdMap.get(equipmentTypeId);
-                //遍历设备信息
-                for (MonitorEquipmentDto monitorEquipmentDto : monitorEquipmentList) {
-                    String equipmentNo = monitorEquipmentDto.getEquipmentno();
-                    //获取探头信息信息
-                    if (enoAndProbeMap.containsKey(equipmentNo) && probeInfoMap.containsKey(equipmentNo)) {
-                        List<ProbeInfoDto> probeInfoDtos = probeInfoMap.get(equipmentNo);
-
-
-
-                    }
-
-                }
-            }
-
-        }
+//        for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
+//            String equipmentTypeId = equipmentDto.getEquipmentTypeId();
+//            long alarmNum = 0;
+//            long normalNum = 0;
+//            if(etIdMap.containsKey(equipmentTypeId)){
+//                List<MonitorEquipmentDto> monitorEquipmentList = etIdMap.get(equipmentTypeId);
+//                //遍历设备信息
+//                for (MonitorEquipmentDto monitorEquipmentDto : monitorEquipmentList) {
+//                    String equipmentNo = monitorEquipmentDto.getEquipmentno();
+//                    //获取探头信息信息
+//                    if (enoAndProbeMap.containsKey(equipmentNo) && probeInfoMap.containsKey(equipmentNo)) {
+//                        List<ProbeInfoDto> probeInfoDtos = probeInfoMap.get(equipmentNo);
+//
+//
+//
+//                    }
+//
+//                }
+//            }
+//
+//        }
 
 
 

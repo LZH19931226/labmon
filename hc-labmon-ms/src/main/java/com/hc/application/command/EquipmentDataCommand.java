@@ -68,6 +68,8 @@ public class EquipmentDataCommand {
      */
     private String minTime;
 
+
+
     @Data
     public static class Filter{
         /** 筛选字段 */

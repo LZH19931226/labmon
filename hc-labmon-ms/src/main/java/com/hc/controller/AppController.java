@@ -12,7 +12,6 @@ import com.hc.dto.*;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.util.date.DateDto;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class AppController {
     /*首页*/
     @GetMapping("/getEquipmentNum")
     @ApiOperation("获取首页设备数量信息")
-    public List<HospitalEquipmentDto> getEquipmentNum(@Param("hospitalCode")String hospitalCode,@Param("tags")String  tags){
+    public List<HospitalEquipmentDto> getEquipmentNum(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("tags")String  tags){
         return equipmentInfoAppApplication.getEquipmentNum(hospitalCode,tags);
     }
 
