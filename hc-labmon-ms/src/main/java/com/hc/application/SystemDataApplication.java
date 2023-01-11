@@ -11,11 +11,13 @@ import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.*;
+import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.EquipmentInfoService;
+import com.hc.service.InstrumentParamConfigService;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,9 @@ public class SystemDataApplication {
 
     @Autowired
     private EquipmentInfoService equipmentInfoService;
+
+    @Autowired
+    private InstrumentParamConfigService instrumentParamConfigService;
 
     //hospitalCode,startTime,equipmentNo,pageSize,pageCurrent
     public Page findPacketLossLog(EquipmentDataCommand equipmentDataCommand) {
@@ -152,6 +157,22 @@ public class SystemDataApplication {
         if(CollectionUtils.isEmpty(warningRecordList)){
             return null;
         }
+        List<String> ipcNoList = warningRecordList.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
+        //获取探头信息
+        List<InstrumentParamConfigDto> instrumentParamConfigDtoList = instrumentParamConfigService.batchGetProbeInfo(ipcNoList);
+        Map<String, List<InstrumentParamConfigDto>> ipcNoMap =
+                instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
+
+        warningRecordList.forEach(res->{
+            String instrumentparamconfigno = res.getInstrumentparamconfigno();
+            if(ipcNoMap.containsKey(instrumentparamconfigno)){
+                InstrumentParamConfigDto instrumentParamConfigDto = ipcNoMap.get(instrumentparamconfigno).get(0);
+                Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
+                String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
+                res.setEName(probeEName);
+            }
+
+        });
         return warningRecordList;
     }
 

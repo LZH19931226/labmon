@@ -84,4 +84,7 @@ public class Warningrecord implements Serializable {
 
     @TableField(exist = false)
     private String time;
+
+    @TableField(exist = false)
+    private String eName;
 }
