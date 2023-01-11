@@ -10,6 +10,7 @@ import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.dto.*;
 import com.hc.hospital.HospitalInfoApi;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.constant.enums.SysConstants;
@@ -379,7 +380,10 @@ public class InstrumentparamconfigApplication {
             instrumentParamConfigList.removeAll(removeList);
             String lang = Context.getLang();
             boolean flag = "en".equals(lang);
+
             for (InstrumentparamconfigDTO configDTO : instrumentParamConfigList) {
+                String instrumentconfigname = configDTO.getInstrumentconfigname();
+                DataFieldEnum dataFieldEnum = DataFieldEnum.from(instrumentconfigname);
                 InstrumentparamconfigVo build = InstrumentparamconfigVo
                         .builder()
                         .instrumentparamconfigno(configDTO.getInstrumentparamconfigno())
@@ -406,6 +410,9 @@ public class InstrumentparamconfigApplication {
                         .unit(StringUtils.isEmpty(configDTO.getUnit()) ? "":configDTO.getUnit())
                         .styleMax(StringUtils.isEmpty(configDTO.getStyleMax()) ? "":configDTO.getStyleMax())
                         .styleMin(StringUtils.isEmpty(configDTO.getStyleMin()) ? "":configDTO.getStyleMin())
+                        .probeCName(dataFieldEnum.getCName())
+                        .probeEName(dataFieldEnum.getEName())
+                        .field(dataFieldEnum.getLastDataField())
                         .build();
                 list.add(build);
             }

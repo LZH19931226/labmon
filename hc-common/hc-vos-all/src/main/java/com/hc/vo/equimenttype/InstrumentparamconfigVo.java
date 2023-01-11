@@ -141,5 +141,11 @@ public class InstrumentparamconfigVo implements Serializable {
      * 样式最大值
      */
     private String styleMax;
+
+    private String probeCName;
+
+    private String probeEName;
+
+    private String field;
 }
 
