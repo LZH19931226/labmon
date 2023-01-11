@@ -90,4 +90,7 @@ public class Warningrecord implements Serializable {
 
     /** 备注 */
     private String remark;
+
+    /**  */
+    private String alertRules;
 }

@@ -13,6 +13,7 @@ import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.WarningRecordInfoDto;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -77,12 +79,23 @@ public class WarningInfoApplication {
                 pkIdMap = warningRecordInfoList.stream().collect(Collectors.groupingBy(WarningRecordInfoDto::getWarningrecordid));
             }
             Map<String, List<WarningRecordInfoDto>> finalPkIdMap = pkIdMap;
-            records.forEach(res->{
+            for (Warningrecord res : records) {
                 String instrumentparamconfigno = res.getInstrumentparamconfigno();
                 if(ipcNoMap.containsKey(instrumentparamconfigno)){
                     InstrumentParamConfigDto instrumentParamConfigDto = ipcNoMap.get(instrumentparamconfigno).get(0);
                     Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
                     String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
+                    String cName = DataFieldEnum.fromByLastDataField(probeEName).getCName();
+                    if(StringUtils.equalsAnyIgnoreCase(probeEName,"currentdoorstate","currentdoorstate2","currentups")){
+                        res.setAlertRules(cName+"异常");
+                    }else {
+                        int i =  new BigDecimal(res.getWarningValue()).compareTo(new BigDecimal(res.getHighLimit()));
+                        if( i > 0 ){
+                            res.setAlertRules(cName + "高于设置的上阀值"+res.getHighLimit());
+                        }else if(i == 0){
+                            res.setAlertRules(cName + "低于设置的下阀值"+res.getLowLimit());
+                        }
+                    }
                     res.setEName(probeEName);
                 }
                 res.setRemark("");
@@ -90,7 +103,7 @@ public class WarningInfoApplication {
                     WarningRecordInfoDto warningRecordInfoDto = finalPkIdMap.get(res.getPkid()).get(0);
                     res.setRemark(StringUtils.isBlank(warningRecordInfoDto.getInfo()) ? "" :warningRecordInfoDto.getInfo());
                 }
-            });
+            }
         }
         page.setRecords(records);
         return page;
