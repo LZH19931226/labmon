@@ -33,7 +33,9 @@
         from
         monitorequipment t1
         where t1.clientvisible = '1' and t1.hospitalcode = #{probeCommand.hospitalCode}
-          and t1.equipmenttypeid = #{probeCommand.equipmentTypeId}
+        <if test = "probeCommand.equipmentTypeId != null and probeCommand.equipmentTypeId != ''">
+            and t1.equipmenttypeid = #{probeCommand.equipmentTypeId}
+        </if>
         <if test = "probeCommand.warningSwitch != null and probeCommand.warningSwitch != ''">
             <if test = 'probeCommand.warningSwitch == 0'>
                 and (t1.warning_switch = #{probeCommand.warningSwitch}  or  t1.warning_switch IS NULL)

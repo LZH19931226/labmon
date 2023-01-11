@@ -53,9 +53,9 @@ public class StatisticalAnalysisController {
      * @param response
      */
     @JwtIgnore
-    @GetMapping("/exportEquipmentData")
+    @PostMapping("/exportEquipmentData")
     @ApiOperation("导出设备数据")
-    public void exportEquipmentData(EquipmentDataCommand equipmentDataCommand,HttpServletResponse response){
+    public void exportEquipmentData(@RequestBody EquipmentDataCommand equipmentDataCommand,HttpServletResponse response){
         statisticalAnalysisApplication.exportEquipmentData(equipmentDataCommand,response);
     }
 

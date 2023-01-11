@@ -87,102 +87,98 @@ public class AppEquipmentInfoApplication {
      * @return
      */
     public List<HospitalEquipmentDto> getEquipmentNum(String hospitalCode, String tags) {
-        //查出医院的设备类型
-        List<HospitalEquipmentDto> hospitalEquipmentDto = null;
+        ProbeCommand probeCommand = new ProbeCommand();
+        probeCommand.setHospitalCode(hospitalCode);
+        Page<ProbeCurrentInfoDto> page = new Page<>(1, 10000);
+        //获取设备
+        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page, probeCommand);
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        //在查出monitorinstrument信息
+        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).distinct().collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
+        probeRedisCommand.setHospitalCode(hospitalCode);
+        probeRedisCommand.setENoList(enoList);
+        //获取设备对象的探头信息
+        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
+        //以设备no分组在以instrumentconfid分组
+        Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
+        if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
+            instrumentParamConfigMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentconfigid)));
+        }
+        //批量获取设备对应探头当前值信息
+        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
+        //获取医院超时报警间隔
+        HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
+        String timeoutRedDuration = hos.getTimeoutRedDuration();
+        Map<String, List<MonitorEquipmentDto>> allEq = list.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
+
+        List<HospitalEquipmentDto> hospitalEquipmentDto = new ArrayList<>();
         if (StringUtils.equals(tags, "PC")) {
             hospitalEquipmentDto = hospitalEquipmentService.selectHospitalEquipmentInfoByPc(hospitalCode);
         } else {
             hospitalEquipmentDto = hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
         }
-        if (CollectionUtils.isEmpty(hospitalEquipmentDto)) {
-            throw new IedsException(LabSystemEnum.HOSPITAL_IS_NOT_BOUND_EQUIPMENT_TYPE);
-        }
-        //查询设备信息
-//        List<MonitorEquipmentDto> monitorEquipmentDtoList = equipmentInfoService.getAll();
-//        if(CollectionUtils.isEmpty(monitorEquipmentDtoList)){
-//            return null;
-//        }
-       // Map<String, List<MonitorEquipmentDto>> etIdMap = monitorEquipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
-
-//        List<String> enoList = monitorEquipmentDtoList.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
-//        List<InstrumentParamConfigDto> paramConfigDtoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
-//        Map<String, List<InstrumentParamConfigDto>> enoAndProbeMap = paramConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
-//
-//        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
-//        probeRedisCommand.setHospitalCode(hospitalCode);
-//        probeRedisCommand.setENoList(enoList);
-//        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
-//
-//        //获取医院超时报警间隔
-//        HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
-//        String timeoutRedDuration = hos.getTimeoutRedDuration();
-
-        //遍历医院的设备类型信息
-//        for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
-//            String equipmentTypeId = equipmentDto.getEquipmentTypeId();
-//            long alarmNum = 0;
-//            long normalNum = 0;
-//            if(etIdMap.containsKey(equipmentTypeId)){
-//                List<MonitorEquipmentDto> monitorEquipmentList = etIdMap.get(equipmentTypeId);
-//                //遍历设备信息
-//                for (MonitorEquipmentDto monitorEquipmentDto : monitorEquipmentList) {
-//                    String equipmentNo = monitorEquipmentDto.getEquipmentno();
-//                    //获取探头信息信息
-//                    if (enoAndProbeMap.containsKey(equipmentNo) && probeInfoMap.containsKey(equipmentNo)) {
-//                        List<ProbeInfoDto> probeInfoDtos = probeInfoMap.get(equipmentNo);
-//
-//
-//
-//                    }
-//
-//                }
-//            }
-//
-//        }
-
-
-
-
-
-
-        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByCode(hospitalCode);
-        if (CollectionUtils.isEmpty(instrumentParamConfigByENoList)) {
-            return null;
-        }
-
-        //批量获取设备对应探头当前值信息
-//        List<String> enoList = instrumentParamConfigByENoList.stream().map(InstrumentParamConfigDto::getEquipmentno).distinct().collect(Collectors.toList());
-
-
-
-
-        instrumentParamConfigByENoList.removeIf(res -> res.getEquipmenttypeid() == null);
-        Map<String, List<InstrumentParamConfigDto>> eqTypeIdMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmenttypeid));
-        List<HospitalEquipmentDto> dtoList = new ArrayList<>();
-        for (HospitalEquipmentDto equipmentDto : hospitalEquipmentDto) {
-            String equipmentTypeId = equipmentDto.getEquipmentTypeId();
-            List<InstrumentParamConfigDto> list = eqTypeIdMap.get(equipmentTypeId);
-            long alarmNum = 0;
-            long normalNum = 0;
-            if (CollectionUtils.isNotEmpty(list)) {
-                Map<String, List<InstrumentParamConfigDto>> map = list.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno));
-                for (String equipmentNo : map.keySet()) {
-                    List<InstrumentParamConfigDto> list1 = map.get(equipmentNo);
-
-                    long count = list1.stream().filter(res -> StringUtils.equals("1", res.getState())).count();
-                    if (count > 0) {
-                        alarmNum++;
+        List<HospitalEquipmentDto> reList = new ArrayList<>();
+        for (HospitalEquipmentDto value : hospitalEquipmentDto) {
+            String eqTypeId = value.getEquipmentTypeId();
+            List<MonitorEquipmentDto> eq = allEq.get(eqTypeId);
+            HospitalEquipmentDto hospitalEquipmentDto1 = new HospitalEquipmentDto();
+            int totalNum = 0;
+            int normalCount = 0;
+            int abnormalCount = 0;
+            int timeoutCount = 0;
+            if (CollectionUtils.isNotEmpty(eq)){
+                totalNum=eq.size();
+                for (MonitorEquipmentDto monitorEquipmentDto : eq) {
+                    String equipmentNo = monitorEquipmentDto.getEquipmentno();
+                    List<ProbeInfoDto> probeInfoDtoList = null;
+                    if (probeInfoMap.containsKey(equipmentNo)) {
+                        probeInfoDtoList = probeInfoMap.get(equipmentNo);
+                    }
+                    ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
+                    if (CollectionUtils.isEmpty(probeInfoDtoList)) {
+                        probeInfo.setState("1");
+                        abnormalCount++;
                     } else {
-                        normalNum++;
+                        Date maxDate;
+                        List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
+                        maxDate = Collections.max(collect);
+                        if (maxDate != null) {
+                            probeInfo.setInputTime(maxDate);
+                        }
+                        buildProbeInfoDtoListAndInstrumentConfigIdList(probeInfo, equipmentNo, probeInfoDtoList, instrumentParamConfigMap, timeoutRedDuration);
+                        switch (probeInfo.getState()) {
+                            case "0":
+                                normalCount++;
+                                probeInfo.setState("0");
+                                break;
+                            case "1":
+                                abnormalCount++;
+                                probeInfo.setState("1");
+                                break;
+                            case "2":
+                                timeoutCount++;
+                                probeInfo.setState("2");
+                                break;
+                        }
                     }
                 }
             }
-            equipmentDto.setAlarmNum(String.valueOf(alarmNum));
-            equipmentDto.setNormalNum(String.valueOf(normalNum));
-            equipmentDto.setTotalNum(String.valueOf(alarmNum + normalNum));
-            dtoList.add(equipmentDto);
+            hospitalEquipmentDto1.setEquipmenttypename(value.getEquipmenttypename());
+            hospitalEquipmentDto1.setEquipmentTypeId(eqTypeId);
+            hospitalEquipmentDto1.setNormalNum(String.valueOf(normalCount));
+            hospitalEquipmentDto1.setTotalNum(String.valueOf(totalNum));
+            hospitalEquipmentDto1.setTimeoutNum(String.valueOf(timeoutCount));
+            hospitalEquipmentDto1.setAlarmNum(String.valueOf(abnormalCount));
+            reList.add(hospitalEquipmentDto1);
         }
-        return dtoList;
+        return reList;
+
     }
 
     /**
