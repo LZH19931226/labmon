@@ -10,6 +10,7 @@
 	    COUNT(*) num
         FROM lab_mon.warningrecord
         WHERE id IN ( #{param.yearMonth} )
+          and equipmentno = #{param.equipmentNo}
           and inputdatetime <![CDATA[>=]]> #{param.startTime}
           and inputdatetime <![CDATA[<=]]> #{param.endTime}
         group by toStartOfDay(inputdatetime)
@@ -54,7 +55,8 @@
             SELECT
                 equipmentno
             FROM
-                ( SELECT equipmentno, formatDateTime ( MAX( inputdatetime ), '%Y-%m-%d' ) time1 FROM lab_mon.warningrecord WHERE hospitalcode = #{hospitalCode} GROUP BY equipmentno ORDER BY time1 )
+                ( SELECT equipmentno, formatDateTime ( MAX( inputdatetime ), '%Y-%m-%d' ) time1
+                  FROM lab_mon.warningrecord WHERE hospitalcode = #{hospitalCode} GROUP BY equipmentno ORDER BY time1 )
             WHERE
                 time1 = #{ymd}
         )
@@ -96,6 +98,21 @@
         where hospitalcode = #{hospitalCode}
           and inputdatetime <![CDATA[>=]]> #{startTime}
           and inputdatetime <![CDATA[<=]]> #{endTime}
+    </select>
+
+    <select id="getWarningRecord" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+        *
+        FROM
+        lab_mon.warningrecord
+        WHERE
+        hospitalcode  = #{param.hospitalCode}
+        AND  inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND  inputdatetime <![CDATA[<=]]> #{param.endTime}
+        <if test="param.equipmentNo != null and param.equipmentNo != ''">
+            AND  equipmentno  = #{param.equipmentNo}
+        </if>
+        ORDER by inputdatetime
     </select>
 
 </mapper>

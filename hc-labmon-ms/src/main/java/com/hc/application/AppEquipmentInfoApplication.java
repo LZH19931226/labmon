@@ -315,9 +315,6 @@ public class AppEquipmentInfoApplication {
     }
 
     private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo,String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
-        //获取标头信息(用于前端展示)
-        List<String> instrumentConfigId = queryTitle(probeInfoDtoList);
-        probeInfo.setInstrumentConfigIdList(instrumentConfigId);
 
         //构建探头高低值
         buildProbeHighAndLowValue(equipmentNo, probeInfoDtoList, instrumentParamConfigMap,timeoutRedDuration);
@@ -331,6 +328,29 @@ public class AppEquipmentInfoApplication {
         }else {
             probeInfo.setState("0");
         }
+        //获取标头信息(用于前端展示)
+        if(instrumentParamConfigMap.containsKey(equipmentNo)){
+            Map<Integer, List<InstrumentParamConfigDto>> integerListMap = instrumentParamConfigMap.get(equipmentNo);
+            List<Integer> collect = new ArrayList<>(integerListMap.keySet());
+            List<String> instrumentConfigId  = queryTitle(collect);
+            probeInfo.setInstrumentConfigIdList(instrumentConfigId);
+            fiterTitle(probeInfo);
+        }
+    }
+
+    private void fiterTitle(ProbeCurrentInfoDto probeInfo) {
+        List<ProbeInfoDto> newProbeInfoDto = new ArrayList<>();
+        List<String> instrumentConfigIdList = new ArrayList<>();
+        List<String> instrumentConfigId = probeInfo.getInstrumentConfigIdList();
+        List<ProbeInfoDto> probeInfoDtoList = probeInfo.getProbeInfoDtoList();
+        for (ProbeInfoDto probeInfoDto : probeInfoDtoList) {
+            if (instrumentConfigId.contains(probeInfoDto.getProbeEName())) {
+                newProbeInfoDto.add(probeInfoDto);
+                instrumentConfigIdList.add(probeInfoDto.getProbeEName());
+            }
+        }
+        probeInfo.setProbeInfoDtoList(newProbeInfoDto);
+        probeInfo.setInstrumentConfigIdList(instrumentConfigIdList);
     }
 
     /**
@@ -355,12 +375,12 @@ public class AppEquipmentInfoApplication {
     /**
      * 获取探头标头(用于前端展示)
      *
-     * @param probeInfoDtoList
+     * @param confIdList
      * @return
      */
-    private List<String> queryTitle(List<ProbeInfoDto> probeInfoDtoList) {
-        return probeInfoDtoList.stream().map(res -> {
-            return CurrentProbeInfoEnum.from(res.getInstrumentConfigId()).getProbeEName();
+    private List<String> queryTitle(List<Integer> confIdList) {
+        return confIdList.stream().map(res -> {
+            return CurrentProbeInfoEnum.from(res).getProbeEName();
         }).collect(Collectors.toList());
     }
 

@@ -11,4 +11,6 @@ public interface WarningRecordInfoService {
     void save(WarningRecordInfoDto warningRecordDto);
 
     void update(WarningRecordInfoDto warningRecordDto);
+
+    List<WarningRecordInfoDto> selectWarningRecordInfoByPkIdList(List<String> pkIdList);
 }

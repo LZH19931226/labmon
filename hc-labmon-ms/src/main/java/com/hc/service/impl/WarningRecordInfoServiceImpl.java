@@ -29,4 +29,9 @@ public class WarningRecordInfoServiceImpl implements WarningRecordInfoService {
     public void update(WarningRecordInfoDto warningRecordDto) {
         warningRecordInfoRepository.updateById(warningRecordDto);
     }
+
+    @Override
+    public List<WarningRecordInfoDto> selectWarningRecordInfoByPkIdList(List<String> pkIdList) {
+        return warningRecordInfoRepository.list(Wrappers.lambdaQuery(new WarningRecordInfoDto()).in(WarningRecordInfoDto::getWarningrecordid,pkIdList));
+    }
 }

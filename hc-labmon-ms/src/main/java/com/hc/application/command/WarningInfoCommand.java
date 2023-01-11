@@ -14,23 +14,27 @@ public class WarningInfoCommand {
 
     private String  pkid;
 
-    private String hospitalcode;
+    private String hospitalCode;
 
-    private String instrumentparamconfigNO;
+    private String startTime;
 
-    private String warningvalue;
+    private String endTime;
 
-    private Date inputdatetime;
+    private String instrumentParamConfigNO;
 
-    private String warningremark;
+    private String warningValue;
 
-    private Integer  pushstate;
+    private Date inputDatetime;
 
-    private Integer msgflag;
+    private String warningRemark;
+
+    private Integer  pushState;
+
+    private Integer msgFlag;
 
     private Integer  isPhone;
 
-    private String equipmentno;
+    private String equipmentNo;
 
     private Integer pageSize;
 

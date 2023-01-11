@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.WarningInfoCommand;
+import com.hc.clickhouse.param.WarningRecordParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
@@ -22,11 +23,14 @@ import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class WarningInfoApplication {
@@ -42,6 +46,8 @@ public class WarningInfoApplication {
 
     @Autowired
     private WarningRecordInfoService warningRecordInfoService;
+
+
     /**
      * 分页获取报警信息
      * @param warningInfoCommand
@@ -49,9 +55,43 @@ public class WarningInfoApplication {
      */
     public  Page<Warningrecord> getWarningRecord(WarningInfoCommand warningInfoCommand) {
         Page<Warningrecord> page = new Page<>(warningInfoCommand.getPageCurrent(),warningInfoCommand.getPageSize());
-        String hospitalCode = warningInfoCommand.getHospitalcode();
-        IPage<Warningrecord> warningRecordIPage = warningrecordRepository.getWarningRecord(page,hospitalCode);
+        WarningRecordParam warningRecordParam = new WarningRecordParam()
+                .setHospitalCode(warningInfoCommand.getHospitalCode())
+                .setEquipmentNo(warningInfoCommand.getEquipmentNo())
+                .setStartTime(warningInfoCommand.getStartTime())
+                .setEndTime(warningInfoCommand.getEndTime());
+        IPage<Warningrecord> warningRecordIPage = warningrecordRepository.getWarningRecord(page,warningRecordParam);
         List<Warningrecord> records = warningRecordIPage.getRecords();
+        if(!CollectionUtils.isEmpty(records)){
+            //设置EName
+            List<String> collect = records.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
+            List<InstrumentParamConfigDto> instrumentParamConfigDtoList = instrumentParamConfigRepository.batchGetProbeInfo(collect);
+            Map<String, List<InstrumentParamConfigDto>> ipcNoMap =
+                    instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
+
+            //设备备注信息
+            List<String> pkIdList = records.stream().map(Warningrecord::getPkid).distinct().collect(Collectors.toList());
+            List<WarningRecordInfoDto> warningRecordInfoList =  warningRecordInfoService.selectWarningRecordInfoByPkIdList(pkIdList);
+            Map<String, List<WarningRecordInfoDto>> pkIdMap = null;
+            if(CollectionUtils.isEmpty(warningRecordInfoList)){
+                pkIdMap = warningRecordInfoList.stream().collect(Collectors.groupingBy(WarningRecordInfoDto::getWarningrecordid));
+            }
+            Map<String, List<WarningRecordInfoDto>> finalPkIdMap = pkIdMap;
+            records.forEach(res->{
+                String instrumentparamconfigno = res.getInstrumentparamconfigno();
+                if(ipcNoMap.containsKey(instrumentparamconfigno)){
+                    InstrumentParamConfigDto instrumentParamConfigDto = ipcNoMap.get(instrumentparamconfigno).get(0);
+                    Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
+                    String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
+                    res.setEName(probeEName);
+                }
+                res.setRemark("");
+                if(finalPkIdMap != null && finalPkIdMap.containsKey(res.getPkid())){
+                    WarningRecordInfoDto warningRecordInfoDto = finalPkIdMap.get(res.getPkid()).get(0);
+                    res.setRemark(StringUtils.isBlank(warningRecordInfoDto.getInfo()) ? "" :warningRecordInfoDto.getInfo());
+                }
+            });
+        }
         page.setRecords(records);
         return page;
     }

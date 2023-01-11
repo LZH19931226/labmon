@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.WarningrecordMapper;
 import com.hc.clickhouse.param.EquipmentDataParam;
+import com.hc.clickhouse.param.WarningRecordParam;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     private WarningrecordMapper warningrecordMapper;
 
     @Override
-    public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page,String hospitalCode) {
-        return page(page, Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getHospitalcode,hospitalCode).orderByDesc(Warningrecord::getInputdatetime));
+    public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page, WarningRecordParam warningRecordParam) {
+        return warningrecordMapper.getWarningRecord(page,warningRecordParam);
     }
 
 
