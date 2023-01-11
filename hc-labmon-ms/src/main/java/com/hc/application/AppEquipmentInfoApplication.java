@@ -484,7 +484,7 @@ public class AppEquipmentInfoApplication {
             BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
             probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
-            probeInfoDto.setState(state);
+            probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
             if (instrumentConfigId == 11) {
                 setState(probeInfoDto, lowLimit, state);
             }
