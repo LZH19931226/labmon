@@ -242,7 +242,7 @@ public class StatisticalAnalysisApplication {
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getEquipmentData(page,dataParam);
         if (CollectionUtils.isEmpty(lastDataList)) {
-            return null;
+            return page;
         }
         List<LastDataResult> convert = BeanConverter.convert(lastDataList, LastDataResult.class);
         DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
