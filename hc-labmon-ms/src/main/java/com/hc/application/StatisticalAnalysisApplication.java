@@ -233,6 +233,7 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public Page getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
+        equipmentDataCommand.getFilterList().removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         //分页查询
         Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
         String startTime = equipmentDataCommand.getStartTime();
