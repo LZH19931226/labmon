@@ -92,9 +92,9 @@ public class StatisticalAnalysisController {
      * 时间点查询 接口3：导出excel
      */
     @JwtIgnore
-    @GetMapping("/exportDatePoint")
+    @PostMapping("/exportDatePoint")
     @ApiOperation("导出excel")
-    public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse){
+    public void exportDatePoint(@RequestBody EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse){
          statisticalAnalysisApplication.exportDatePoint(equipmentDataCommand,httpServletResponse);
     }
 

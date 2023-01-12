@@ -16,6 +16,7 @@ import com.hc.dto.*;
 import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
 import com.hc.my.common.core.struct.Context;
@@ -233,7 +234,11 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public Page getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
-        equipmentDataCommand.getFilterList().removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        if(CollectionUtils.isEmpty(filterList)){
+            throw new IedsException("筛选条件不能为空");
+        }
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         //分页查询
         Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
         String startTime = equipmentDataCommand.getStartTime();
@@ -261,6 +266,11 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public SummaryOfAlarmsResult getSummaryOfAlarms(EquipmentDataCommand equipmentDataCommand) {
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        if(CollectionUtils.isEmpty(filterList)){
+            throw new IedsException("筛选条件不能为空");
+        }
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
