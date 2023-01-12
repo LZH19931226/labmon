@@ -266,11 +266,6 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public SummaryOfAlarmsResult getSummaryOfAlarms(EquipmentDataCommand equipmentDataCommand) {
-        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
-        if(CollectionUtils.isEmpty(filterList)){
-            throw new IedsException("筛选条件不能为空");
-        }
-        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
@@ -303,6 +298,11 @@ public class StatisticalAnalysisApplication {
      * @param response
      */
     public void exportEquipmentData(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        if(CollectionUtils.isEmpty(filterList)){
+            throw new IedsException("筛选条件不能为空");
+        }
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         String startTime = equipmentDataCommand.getStartTime();
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
