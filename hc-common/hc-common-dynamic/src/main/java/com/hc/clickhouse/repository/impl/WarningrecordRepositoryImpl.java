@@ -100,4 +100,9 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     public void batchInsert(List<Warningrecord> convert) {
         warningrecordMapper.insertBatchSomeColumn(convert);
     }
+
+    @Override
+    public Warningrecord getWarningInfo(String pkId, String ym) {
+        return warningrecordMapper.getWarningInfo(pkId,ym);
+    }
 }

@@ -115,4 +115,14 @@
         ORDER by inputdatetime
     </select>
 
+    <select id="getWarningInfo" resultType="com.hc.clickhouse.po.Warningrecord">
+        select
+            *
+        from
+            lab_mon.warningrecord
+        where
+            id IN (#{ym})
+        and pkid = #{pkid}
+    </select>
+
 </mapper>

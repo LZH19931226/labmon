@@ -75,10 +75,9 @@ public class WarningInfoApplication {
             List<String> pkIdList = records.stream().map(Warningrecord::getPkid).distinct().collect(Collectors.toList());
             List<WarningRecordInfoDto> warningRecordInfoList =  warningRecordInfoService.selectWarningRecordInfoByPkIdList(pkIdList);
             Map<String, List<WarningRecordInfoDto>> pkIdMap = null;
-            if(CollectionUtils.isEmpty(warningRecordInfoList)){
+            if(!CollectionUtils.isEmpty(warningRecordInfoList)){
                 pkIdMap = warningRecordInfoList.stream().collect(Collectors.groupingBy(WarningRecordInfoDto::getWarningrecordid));
             }
-            Map<String, List<WarningRecordInfoDto>> finalPkIdMap = pkIdMap;
             for (Warningrecord res : records) {
                 String instrumentparamconfigno = res.getInstrumentparamconfigno();
                 if(ipcNoMap.containsKey(instrumentparamconfigno)){
@@ -99,8 +98,8 @@ public class WarningInfoApplication {
                     res.setEName(probeEName);
                 }
                 res.setRemark("");
-                if(finalPkIdMap != null && finalPkIdMap.containsKey(res.getPkid())){
-                    WarningRecordInfoDto warningRecordInfoDto = finalPkIdMap.get(res.getPkid()).get(0);
+                if(pkIdMap != null && pkIdMap.containsKey(res.getPkid())){
+                    WarningRecordInfoDto warningRecordInfoDto = pkIdMap.get(res.getPkid()).get(0);
                     res.setRemark(StringUtils.isBlank(warningRecordInfoDto.getInfo()) ? "" :warningRecordInfoDto.getInfo());
                 }
             }
@@ -116,7 +115,7 @@ public class WarningInfoApplication {
      */
     public CurveInfoDto getWarningCurveData(String pkId ,String startTime,String endTime ) {
         String ym = DateUtils.getYearMonth(startTime,endTime);
-        Warningrecord warningrecord = warningrecordRepository.getOne(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getPkid, pkId));
+        Warningrecord warningrecord = warningrecordRepository.getWarningInfo(pkId,ym);
         if(ObjectUtils.isEmpty(warningrecord)) {
             return null;
         }

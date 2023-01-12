@@ -43,4 +43,6 @@ public interface WarningrecordMapper extends RootMapper<Warningrecord> {
     List<Warningrecord> getAlarmDeviceNum(@Param("param") EquipmentDataParam convert);
 
     IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page,@Param("param") WarningRecordParam warningRecordParam);
+
+    Warningrecord getWarningInfo(@Param("pkid") String pkId,@Param("ym") String ym);
 }
