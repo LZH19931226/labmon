@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
-import com.hc.application.response.AlarmNoticeResult;
-import com.hc.application.response.PointInTimeDataTableResult;
-import com.hc.application.response.SummaryOfAlarmsResult;
-import com.hc.application.response.TableResult;
+import com.hc.application.response.*;
 import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
@@ -160,7 +157,7 @@ public class StatisticalAnalysisApplication {
      * @return
      */
     public Page<AlarmNoticeResult> getAlarmNotice(AlarmNoticeCommand alarmNoticeCommand) {
-        Page<AlarmNoticeResult> page = new Page(alarmNoticeCommand.getPageCurrent(),alarmNoticeCommand.getPageSize());
+        Page<AlarmNoticeResult> page = new Page<>(alarmNoticeCommand.getPageCurrent(),alarmNoticeCommand.getPageSize());
         List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList =  labMessengerPublishTaskService.getAlarmNoticeInfo(page,alarmNoticeCommand);
         if(CollectionUtils.isEmpty(labMessengerPublishTaskDtoList)){
             return null;
@@ -235,10 +232,11 @@ public class StatisticalAnalysisApplication {
      * 获取设备数据
      * @param equipmentDataCommand
      */
-    public Page<Monitorequipmentlastdata> getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
+    public Page getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
         //分页查询
-        Page<Monitorequipmentlastdata> page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
+        Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
         String startTime = equipmentDataCommand.getStartTime();
+        String field = equipmentDataCommand.getField();
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
@@ -246,7 +244,14 @@ public class StatisticalAnalysisApplication {
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
         }
-        page.setRecords(lastDataList);
+        List<LastDataResult> convert = BeanConverter.convert(lastDataList, LastDataResult.class);
+        DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+        if(null != dataFieldEnum){
+            convert.forEach(res-> {
+                res.setUnit(dataFieldEnum.getUnit());
+            });
+        }
+        page.setRecords(convert);
         return page;
     }
 
