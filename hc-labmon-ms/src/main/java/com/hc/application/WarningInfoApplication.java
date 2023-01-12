@@ -91,7 +91,7 @@ public class WarningInfoApplication {
                         int i =  new BigDecimal(res.getWarningValue()).compareTo(new BigDecimal(res.getHighLimit()));
                         if( i > 0 ){
                             res.setAlertRules(cName + "高于设置的上阀值"+res.getHighLimit());
-                        }else if(i == 0){
+                        }else {
                             res.setAlertRules(cName + "低于设置的下阀值"+res.getLowLimit());
                         }
                     }
