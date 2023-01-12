@@ -1,5 +1,6 @@
 package com.hc.my.common.core.util;
 
+import cn.hutool.core.date.DateUtil;
 import com.hc.my.common.core.util.date.DateConstant;
 import com.hc.my.common.core.util.date.DateDto;
 import org.apache.commons.lang3.StringUtils;
@@ -153,6 +154,27 @@ public class DateUtils {
      */
     public static String getNowDate() {
         return datetimeFormat.format(new Date());
+    }
+
+    /**
+     * 获取两个时间段的所有月日
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return 01-06 01-07
+     */
+    public static List<String> getTimePeriod(String startTime, String endTime) {
+        List<String> list = new ArrayList<>();
+        Date start = DateUtils.parseDate(startTime);
+        Date end = DateUtils.parseDate(endTime);
+        while (start.before(end)) {
+            String md = dateFormatMMdd.format(start);
+            list.add(md);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(start);
+            cal.add(Calendar.DATE,1);
+            start = cal.getTime();
+        }
+        return list;
     }
 
     /**

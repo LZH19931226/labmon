@@ -71,7 +71,7 @@ public class StatisticalAnalysisController {
     }
 
     /**
-     * 时间点查询 接口3,曲线
+     * 时间点查询 接口1,曲线
      */
     @PostMapping("/getThePointInTimeDataCurve")
     @ApiOperation("获取时间点曲线")
@@ -80,7 +80,7 @@ public class StatisticalAnalysisController {
     }
 
     /**
-     * 时间点查询 接口4：表格
+     * 时间点查询 接口2：表格
      */
     @PostMapping("/getThePointInTimeDataTable")
     @ApiOperation("获取时间点数据表")
@@ -89,7 +89,7 @@ public class StatisticalAnalysisController {
     }
 
     /**
-     * 时间点查询 接口5：导出excel
+     * 时间点查询 接口3：导出excel
      */
     @JwtIgnore
     @GetMapping("/exportDatePoint")

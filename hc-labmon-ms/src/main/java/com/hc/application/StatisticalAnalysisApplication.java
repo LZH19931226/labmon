@@ -265,8 +265,21 @@ public class StatisticalAnalysisApplication {
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam convert = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Warningrecord> wrList = warningrecordRepository.getSummaryOfAlarms(convert);
-        List<String> timeList = wrList.stream().map(Warningrecord::getTime).map(DateUtils::getMMdd).collect(Collectors.toList());
-        List<Long> numList = wrList.stream().map(Warningrecord::getNum).collect(Collectors.toList());
+        if(CollectionUtils.isEmpty(wrList)){
+            return null;
+        }
+        Map<String, List<Warningrecord>> wrMap = wrList.stream().collect(Collectors.groupingBy(res->DateUtils.getMMdd(res.getTime())));
+        List<String> timeList  = DateUtils.getTimePeriod(equipmentDataCommand.getStartTime(),equipmentDataCommand.getEndTime());
+
+        List<Long> numList = new ArrayList<>();
+        for (String time : timeList) {
+            if(wrMap.containsKey(time)){
+                Warningrecord warningrecord = wrMap.get(time).get(0);
+                numList.add(warningrecord.getNum());
+            }else {
+                numList.add(0L);
+            }
+        }
         SummaryOfAlarmsResult summaryOfAlarmsResult = new SummaryOfAlarmsResult();
         summaryOfAlarmsResult.setTimeList(timeList);
         summaryOfAlarmsResult.setNumList(numList);
