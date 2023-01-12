@@ -43,7 +43,7 @@ public class StatisticalAnalysisController {
     @JwtIgnore
     @PostMapping("/getEquipmentData")
     @ApiOperation("分页查询")
-    public Page<Monitorequipmentlastdata> getEquipmentData(@RequestBody EquipmentDataCommand equipmentDataCommand){
+    public Page getEquipmentData(@RequestBody EquipmentDataCommand equipmentDataCommand){
         return statisticalAnalysisApplication.getEquipmentData(equipmentDataCommand);
     }
 

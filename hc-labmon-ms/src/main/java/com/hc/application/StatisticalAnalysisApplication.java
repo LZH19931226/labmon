@@ -297,7 +297,6 @@ public class StatisticalAnalysisApplication {
         }
         buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA, OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
-
     }
 
     /**
