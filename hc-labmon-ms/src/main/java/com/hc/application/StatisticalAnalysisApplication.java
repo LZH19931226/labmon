@@ -522,7 +522,7 @@ public class StatisticalAnalysisApplication {
         String field = equipmentDataCommand.getField();
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         List<String> timeList = equipmentDataCommand.getTimeList();
-        if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
+        if(CollectionUtils.isEmpty(timeList)){
             return null;
         }
         //排列
