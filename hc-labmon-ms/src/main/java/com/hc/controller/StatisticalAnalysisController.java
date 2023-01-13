@@ -8,7 +8,6 @@ import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.PointInTimeDataTableResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
-import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.dto.CurveInfoDto;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
@@ -26,15 +25,15 @@ public class StatisticalAnalysisController {
     @Autowired
     private StatisticalAnalysisApplication statisticalAnalysisApplication;
 
-    /**
-     *
-     * @return
-     */
-    @GetMapping("/getStatisticalData")
-    @ApiOperation("获取统计数据")
-    public Map<String, Map<String,Long>> getStatisticalData(@RequestParam("time") String time){
-        return statisticalAnalysisApplication.getStatisticalData(time);
-    }
+//    /**
+//     *
+//     * @return
+//     */
+//    @GetMapping("/getStatisticalData")
+//    @ApiOperation("获取统计数据")
+//    public Map<String, Map<String,Long>> getStatisticalData(@RequestParam("time") String time){
+//        return statisticalAnalysisApplication.getStatisticalData(time);
+//    }
     /*
     * 设备数据查询
     * */
