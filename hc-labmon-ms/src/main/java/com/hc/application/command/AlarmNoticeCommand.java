@@ -40,5 +40,5 @@ public class AlarmNoticeCommand {
     private Integer pageCurrent;
 
 
-    private String usrId;
+    private String userId;
 }
