@@ -38,4 +38,7 @@ public class AlarmNoticeCommand {
      * 当前分页
      */
     private Integer pageCurrent;
+
+
+    private String usrId;
 }

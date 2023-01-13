@@ -106,7 +106,7 @@ public class StatisticalAnalysisController {
      * @return
      */
     @PostMapping("/getAlarmNotice")
-    @ApiOperation("获取报警数据")
+    @ApiOperation("获取通知查询")
     public Page getAlarmNotice(@RequestBody AlarmNoticeCommand alarmNoticeCommand){
         return statisticalAnalysisApplication.getAlarmNotice(alarmNoticeCommand);
     }
@@ -117,7 +117,7 @@ public class StatisticalAnalysisController {
      */
     @JwtIgnore
     @GetMapping("/exportAlarmNotice")
-    @ApiOperation("导出报警数据")
+    @ApiOperation("报警通知查询导出")
     public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response){
         statisticalAnalysisApplication.exportAlarmNotice(alarmNoticeCommand,response);
     }

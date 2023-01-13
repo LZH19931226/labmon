@@ -225,7 +225,7 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(alarmNoticeResult);
             mapList.add(objectToMap);
         }
-        buildLogInfo(Context.getUserId(),ExcelExportUtils.ALARM_NOTICE, OperationLogEunmDerailEnum.EXPORT.getCode());
+        buildLogInfo(alarmNoticeCommand.getUsrId(),ExcelExportUtils.ALARM_NOTICE, OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(ExcelExportUtils.ALARM_NOTICE,beanList,mapList,response);
     }
 
