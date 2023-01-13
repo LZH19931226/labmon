@@ -3,6 +3,7 @@ package com.hc.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.StatisticalAnalysisApplication;
+import com.hc.application.command.AlarmDataCommand;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.PointInTimeDataTableResult;
@@ -84,7 +85,7 @@ public class StatisticalAnalysisController {
      */
     @PostMapping("/getThePointInTimeDataTable")
     @ApiOperation("获取时间点数据表")
-    public   List<PointInTimeDataTableResult> getThePointInTimeDataTable(@RequestBody EquipmentDataCommand equipmentDataCommand){
+    public    List<Map<String,String>> getThePointInTimeDataTable(@RequestBody EquipmentDataCommand equipmentDataCommand){
        return statisticalAnalysisApplication.getThePointInTimeDataTable(equipmentDataCommand);
     }
 
@@ -102,19 +103,19 @@ public class StatisticalAnalysisController {
     报警数据查询
      */
     /**
-     * 获取报警数据
+     * 报警通知 接口1：获取报警通知数据
      * @param alarmNoticeCommand
      * @return
      */
     @PostMapping("/getAlarmNotice")
-    @ApiOperation("获取报警数据")
+    @ApiOperation("获取报警通知数据")
     public Page getAlarmNotice(@RequestBody AlarmNoticeCommand alarmNoticeCommand){
         return statisticalAnalysisApplication.getAlarmNotice(alarmNoticeCommand);
     }
 
 
     /**
-     * 导出报警数据
+     * 报警通知 接口2：导出报警数据
      */
     @JwtIgnore
     @GetMapping("/exportAlarmNotice")
@@ -123,4 +124,12 @@ public class StatisticalAnalysisController {
         statisticalAnalysisApplication.exportAlarmNotice(alarmNoticeCommand,response);
     }
 
+    /**
+     * 报警汇总 接口1：分页查询报警数据
+     */
+    @PostMapping("/getAlarmData")
+    @ApiOperation("分页获取报警汇总数据")
+    public Page getAlarmData(@RequestBody  AlarmDataCommand alarmDataCommand){
+        return statisticalAnalysisApplication.getAlarmData(alarmDataCommand);
+    }
 }

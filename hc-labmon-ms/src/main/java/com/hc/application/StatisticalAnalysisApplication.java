@@ -3,6 +3,7 @@ package com.hc.application;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.AlarmDataCommand;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.*;
@@ -444,11 +445,12 @@ public class StatisticalAnalysisApplication {
      * 时间点查询表格
      * @param equipmentDataCommand
      */
-    public   List<PointInTimeDataTableResult> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
+    public    List<Map<String,String>> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
         List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
         if(CollectionUtils.isEmpty(filterList)){
             throw new IedsException("筛选条件不能为空");
         }
+        String field = equipmentDataCommand.getField();
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
@@ -464,7 +466,7 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(lastDataList)){
             return null;
         }
-        List<Monitorequipmentlastdata> list = new ArrayList<>();
+        List<Monitorequipmentlastdata> filterLastDataList = new ArrayList<>();
         for (Date date : dateList) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
@@ -475,36 +477,28 @@ public class StatisticalAnalysisApplication {
             if(CollectionUtils.isEmpty(collect)){
                 continue;
             }
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,equipmentDataCommand.getField());
-            list.addAll(monitorEquipmentLastDataList);
+            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,field);
+            filterLastDataList.addAll(monitorEquipmentLastDataList);
         }
-        List<Monitorequipmentlastdata> collect1 = list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-        Map<String, List<Monitorequipmentlastdata>> collect = collect1.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
-        List<PointInTimeDataTableResult> results = new ArrayList<>();
-        for (String date : collect.keySet()) {
-            PointInTimeDataTableResult datePoint = new PointInTimeDataTableResult();
-            datePoint.setDate(date);
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = collect.get(date);
-            Map<String, List<Monitorequipmentlastdata>> listMap = monitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getRemark1));
-            List<TableResult> listResult = new ArrayList<>();
-            for (Date time : dateList) {
-                TableResult tableResult = new TableResult();
-                String hHmm = DateUtils.dateReduceHHmm(time);
-                tableResult.setDatePoint(hHmm);
-                tableResult.setField(equipmentDataCommand.getField());
-                tableResult.setValue("");
-                if(listMap.containsKey(hHmm)){
-                    Monitorequipmentlastdata monitorequipmentlastdata = listMap.get(hHmm).get(0);
-                    Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
-                    String str =(String) objectToMap.get(equipmentDataCommand.getField());
-                    tableResult.setValue(str);
-                }
-                listResult.add(tableResult);
+        List<Monitorequipmentlastdata> inputTimeList = filterLastDataList.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
+        Map<String, List<Monitorequipmentlastdata>> inputTimeMap = inputTimeList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+
+        String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+        List<Map<String,String>> list = new ArrayList<>();
+        for (String date : inputTimeMap.keySet()) {
+            Map<String,String>  map = new HashMap<>();
+            map.put("date",date);
+            map.put("unit",unit);
+            List<Monitorequipmentlastdata> monitorEquipmentLastData = inputTimeMap.get(date);
+            for (Monitorequipmentlastdata lastData : monitorEquipmentLastData) {
+                String remark1 = lastData.getRemark1();
+                Map<String, Object> objectToMap = getObjectToMap(lastData);
+                String str =(String) objectToMap.get(field);
+                map.put(remark1,str);
             }
-            datePoint.setList(listResult);
-            results.add(datePoint);
+            list.add(map);
         }
-        return results.stream().sorted(Comparator.comparing(PointInTimeDataTableResult::getDate)).collect(Collectors.toList());
+        return  list;
     }
 
     /**
@@ -591,6 +585,18 @@ public class StatisticalAnalysisApplication {
         exportLogCommand.setMenuName(fileName);
         exportLogCommand.setFunctionName(fileName);
         operationlogApi.addExportLog(exportLogCommand);
+    }
+
+    /**
+     *
+     * @param alarmDataCommand
+     * @return
+     */
+    public Page getAlarmData(AlarmDataCommand alarmDataCommand) {
+        //分页查询设备报警数量
+        Page page = new Page<>(alarmDataCommand.getPageCurrent(),alarmDataCommand.getPageSize());
+//        List<Warningrecord> list = warningrecordRepository.getAlarmData(page,alarmDataCommand);
+        return null;
     }
 }
 

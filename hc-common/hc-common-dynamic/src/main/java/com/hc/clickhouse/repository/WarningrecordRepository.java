@@ -36,4 +36,5 @@ public interface WarningrecordRepository extends IService<Warningrecord> {
     void batchInsert(List<Warningrecord> convert);
 
     Warningrecord getWarningInfo(String pkId, String ym);
+
 }
