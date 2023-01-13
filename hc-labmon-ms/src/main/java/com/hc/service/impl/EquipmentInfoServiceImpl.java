@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.ProbeCommand;
 import com.hc.dto.MonitorEquipmentDto;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EquipmentInfoServiceImpl implements EquipmentInfoService {
@@ -60,5 +62,11 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public void bulkUpdate(List<MonitorEquipmentDto> list) {
         equipmentInfoRepository.updateBatchById(list);
+    }
+
+    @Override
+    public List<String> getEnoList(String hospitalCode) {
+        List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto()).select(MonitorEquipmentDto::getEquipmentno).eq(MonitorEquipmentDto::getHospitalcode, hospitalCode));
+        return list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
     }
 }

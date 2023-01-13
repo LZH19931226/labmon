@@ -95,4 +95,8 @@ public class Warningrecord implements Serializable {
     /**  */
     @TableField(exist = false)
     private String alertRules;
+
+    private String equipmentName;
+
+    private String equipmentTypeName;
 }

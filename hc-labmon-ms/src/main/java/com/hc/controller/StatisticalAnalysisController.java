@@ -132,4 +132,13 @@ public class StatisticalAnalysisController {
     public Page getAlarmData(@RequestBody  AlarmDataCommand alarmDataCommand){
         return statisticalAnalysisApplication.getAlarmData(alarmDataCommand);
     }
+
+    /**
+     * 报警汇总 接口2：导出查询报警数据
+     */
+    @PostMapping("/exportAlarmData")
+    @ApiOperation("导出查询报警数据")
+    public void exportAlarmData(@RequestBody AlarmDataCommand alarmDataCommand,HttpServletResponse response){
+        statisticalAnalysisApplication.exportAlarmData(alarmDataCommand,response);
+    }
 }

@@ -7,7 +7,7 @@
     <select id="batchGetEquipmentInfo" resultType="com.hc.dto.MonitorEquipmentDto">
         select
             t1.*,
-            t3.equipmenttypename,
+            t3.equipmenttypename equipmentTypeName,
             t2.sn
         from
             monitorequipment t1

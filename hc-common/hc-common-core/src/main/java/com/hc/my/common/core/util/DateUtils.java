@@ -76,20 +76,23 @@ public class DateUtils {
         date.set(Calendar.YEAR,2022);
         date.set(Calendar.MONTH,1);
         date.set(Calendar.DATE,1);
+        Date time1 = date.getTime();
 
         Calendar begin = Calendar.getInstance();
         begin.setTime(startTime);
         begin.set(Calendar.YEAR,2022);
         begin.set(Calendar.MONTH,1);
         begin.set(Calendar.DATE,1);
+        Date time2 = begin.getTime();
 
         Calendar end = Calendar.getInstance();
         end.setTime(endTime);
         end.set(Calendar.YEAR,2022);
         end.set(Calendar.MONTH,1);
         end.set(Calendar.DATE,1);
+        Date time3 = end.getTime();
         //统一年月日后对比
-        if (date.after(begin) && date.before(end)) {
+        if (time1.after(time2) && time1.before(time3)) {
             return true;
         } else {
             return false;

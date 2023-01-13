@@ -98,4 +98,7 @@ public class MonitorEquipmentDto implements Serializable {
     /** 设备型号id  */
     private String instrumenttypeid;
 
+    @TableField(exist = false)
+    private String equipmentTypeName;
+
 }

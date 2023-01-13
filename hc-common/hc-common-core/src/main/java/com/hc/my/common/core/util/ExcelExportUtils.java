@@ -12,6 +12,8 @@ public class ExcelExportUtils {
     public static final String ALARM_US_NOTICE = "ALARM_NOTICE_DATA";
     public static final String EQUIPMENT_DATA = "设备数据汇总";
 
+    public static final String ALARM_SUMMARY = "报警汇总";
+
     /**
      * 获取报警通知模板
      */
@@ -81,4 +83,13 @@ public class ExcelExportUtils {
         }
         return beanList;
     }
+
+    public static List<ExcelExportEntity> getAlarmData(boolean isCh) {
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        beanList.add(new ExcelExportEntity("设备类型","equipmentTypeName"));
+        beanList.add(new ExcelExportEntity("设备名称","equipmentName"));
+        beanList.add(new ExcelExportEntity("设备报警次数","num"));
+        return beanList;
+    }
+
 }

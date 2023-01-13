@@ -336,7 +336,7 @@ public class StatisticalAnalysisApplication {
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         String field = equipmentDataCommand.getField();
         List<String> timeList = equipmentDataCommand.getTimeList();
-        if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
+        if(CollectionUtils.isEmpty(timeList)){
             return null;
         }
         //排列
@@ -374,14 +374,14 @@ public class StatisticalAnalysisApplication {
                     List<String> xaxis = timePointCurve.getXaxis();
                     List<String> series = timePointCurve.getSeries();
                     xaxis.add(inputTime);
-                    series.add(StringUtils.isEmpty(value) ? "":value);
+                    series.add(StringUtils.isEmpty(value) ? "0":value);
                     map.put(hHmm,timePointCurve);
                 }else {
                     TimePointCurve curve = new TimePointCurve();
                     List<String> xaxis = new ArrayList<>();
                     List<String> series = new ArrayList<>();
                     xaxis.add(inputTime);
-                    series.add(StringUtils.isEmpty(value) ? "":value);
+                    series.add(StringUtils.isEmpty(value) ? "0":value);
                     curve.setXaxis(xaxis);
                     curve.setSeries(series);
                     curve.setName(hHmm);
@@ -662,6 +662,7 @@ public class StatisticalAnalysisApplication {
      * @return
      */
     public Page getAlarmData(AlarmDataCommand alarmDataCommand) {
+        setEquipmentNo(alarmDataCommand);
         //分页查询设备报警数量
         Page page = new Page<>(alarmDataCommand.getPageCurrent(),alarmDataCommand.getPageSize());
         AlarmDataParam alarmDataParam = BeanConverter.convert(alarmDataCommand, AlarmDataParam.class);
@@ -669,10 +670,80 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(list)){
             return page;
         }
-        List<String> enoList = list.stream().map(Warningrecord::getEquipmentno).collect(Collectors.toList());
-        List<MonitorEquipmentDto> monitorEquipmentDtos = equipmentInfoService.batchGetEquipmentInfo(enoList);
+        List<Warningrecord> resultList = transformData(list);
+        page.setRecords(resultList);
+        return page;
+    }
 
-        return null;
+    /**
+     * 导出查询报警数据
+     * @param alarmDataCommand
+     * @param response
+     */
+    public void exportAlarmData(AlarmDataCommand alarmDataCommand, HttpServletResponse response) {
+        setEquipmentNo(alarmDataCommand);
+        AlarmDataParam alarmDataParam = BeanConverter.convert(alarmDataCommand, AlarmDataParam.class);
+        List<Warningrecord> list = warningrecordRepository.getAlarmData(null,alarmDataParam);
+        if(CollectionUtils.isEmpty(list)){
+            return;
+        }
+        //获取标头
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmData(Context.IsCh());
+
+        List<Warningrecord> resultList = transformData(list);
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        resultList.forEach(res->{
+            Map<String, Object> objectToMap = getObjectToMap(res);
+            mapList.add(objectToMap);
+        });
+        buildLogInfo(Context.getUserId(),ExcelExportUtils.ALARM_SUMMARY,OperationLogEunmDerailEnum.EXPORT.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
+    }
+
+    private  List<Warningrecord> transformData(List<Warningrecord> list) {
+        List<String> enoList = list.stream().map(Warningrecord::getEquipmentno).collect(Collectors.toList());
+        List<MonitorEquipmentDto> monitorEquipmentDtoList = equipmentInfoService.batchGetEquipmentInfo(enoList);
+        Map<String, List<MonitorEquipmentDto>> enoMap = monitorEquipmentDtoList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
+        for (Warningrecord warningrecord : list) {
+            String equipmentNo = warningrecord.getEquipmentno();
+            if (enoMap.containsKey(equipmentNo)) {
+                MonitorEquipmentDto monitorEquipmentDto = enoMap.get(equipmentNo).get(0);
+                String equipmentName = monitorEquipmentDto.getEquipmentname();
+                String equipmentTypeName = monitorEquipmentDto.getEquipmentTypeName();
+                warningrecord.setEquipmentName(equipmentName);
+                warningrecord.setEquipmentTypeName(equipmentTypeName);
+            }
+        }
+        return list;
+    }
+
+    private void setEquipmentNo(AlarmDataCommand alarmDataCommand) {
+        String equipmentTypeId = alarmDataCommand.getEquipmentTypeId();
+        String equipmentNo = alarmDataCommand.getEquipmentNo();
+        //情况1：
+        if (StringUtils.isEmpty(equipmentTypeId) && StringUtils.isEmpty(equipmentNo)) {
+            alarmDataCommand.setEquipmentNo("");
+        }
+        //情况2：
+        if(!StringUtils.isEmpty(equipmentTypeId) && StringUtils.isEmpty(equipmentNo)){
+            List<String> enoList =  equipmentInfoService.getEnoList(alarmDataCommand.getHospitalCode());
+            if(!CollectionUtils.isEmpty(enoList) && enoList.size()>1){
+                StringBuilder stringBuilder = new StringBuilder();
+                enoList.forEach(res->{
+                    stringBuilder.append("'").append(res).append("'").append(",");
+                });
+                String substring = stringBuilder.substring(0, stringBuilder.length() - 1);
+                alarmDataCommand.setEquipmentNo(substring);
+            }
+            if(enoList.size() == 1){
+                String eno = enoList.get(0);
+                alarmDataCommand.setEquipmentNo("'"+eno+"'");
+            }
+        }
+        //情况3:
+        if(!StringUtils.isEmpty(equipmentTypeId) && !StringUtils.isEmpty(equipmentNo)){
+            alarmDataCommand.setEquipmentNo("'"+equipmentNo+"'");
+        }
     }
 }
 

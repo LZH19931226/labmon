@@ -136,7 +136,7 @@
         AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
         AND hospitalcode = #{param.hospitalCode}
         <if test="param.equipmentNo != null and param.equipmentNo != ''">
-            and equipmentno = #{param.equipmentNo}
+            and equipmentno in (${param.equipmentNo})
         </if>
         GROUP BY equipmentno
         ORDER by num DESC
