@@ -119,7 +119,7 @@ public class StatisticalAnalysisController {
      */
     @JwtIgnore
     @GetMapping("/exportAlarmNotice")
-    @ApiOperation("导出报警数据")
+    @ApiOperation("报警通知查询导出")
     public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response){
         statisticalAnalysisApplication.exportAlarmNotice(alarmNoticeCommand,response);
     }
