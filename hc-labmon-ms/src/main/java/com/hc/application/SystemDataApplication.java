@@ -20,6 +20,7 @@ import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentParamConfigService;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -97,7 +98,8 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(lastDataList)){
             return;
         }
-        boolean isCh = Context.IsCh();
+        String lang = equipmentDataCommand.getLang();
+        boolean isCh = StringUtils.equals(lang,"zh");
         List<ExcelExportEntity> beanList = ExcelExportUtils.getPacketLossLog(isCh);
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata equipmentDatum : lastDataList) {

@@ -74,6 +74,10 @@ public class EquipmentDataCommand {
     private String minTime;
 
 
+    /**
+     * 中英文
+     */
+    private String lang;
 
     @Data
     public static class Filter{
