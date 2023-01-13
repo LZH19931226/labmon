@@ -15,6 +15,11 @@ public class EquipmentDataCommand {
     private String equipmentNo;
 
     /**
+     * 设备名称
+     */
+    private String equipmentName;
+
+    /**
      * 查询字段
      */
     private String field;

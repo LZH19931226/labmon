@@ -64,6 +64,7 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
         }
+        lastDataList.forEach(s->s.setEquipmentName(equipmentDataCommand.getEquipmentName()));
         page.setRecords(lastDataList);
         return page;
     }
