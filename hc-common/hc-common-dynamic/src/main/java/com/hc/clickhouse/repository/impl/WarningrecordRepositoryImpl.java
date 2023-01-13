@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.WarningrecordMapper;
+import com.hc.clickhouse.param.AlarmDataParam;
 import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.param.WarningRecordParam;
 import com.hc.clickhouse.po.Warningrecord;
@@ -104,5 +105,10 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     @Override
     public Warningrecord getWarningInfo(String pkId, String ym) {
         return warningrecordMapper.getWarningInfo(pkId,ym);
+    }
+
+    @Override
+    public List<Warningrecord> getAlarmData(Page page, AlarmDataParam alarmDataParam) {
+        return warningrecordMapper.getAlarmData(page,alarmDataParam);
     }
 }
