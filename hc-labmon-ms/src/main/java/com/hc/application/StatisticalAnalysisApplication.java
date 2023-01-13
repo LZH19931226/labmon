@@ -328,6 +328,11 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public Map<String,CurveInfoDto>  getThePointInTimeDataCurve(EquipmentDataCommand equipmentDataCommand) {
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        if(CollectionUtils.isEmpty(filterList)){
+            throw new IedsException("筛选条件不能为空");
+        }
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
             return null;
@@ -440,6 +445,11 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public   List<PointInTimeDataTableResult> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        if(CollectionUtils.isEmpty(filterList)){
+            throw new IedsException("筛选条件不能为空");
+        }
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
             return null;
