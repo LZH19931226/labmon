@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class AlarmDataParam {
 
+    private String hospitalCode;
+
     private String equipmentNo;
 
     private String startTime;

@@ -7,10 +7,12 @@
     <select id="batchGetEquipmentInfo" resultType="com.hc.dto.MonitorEquipmentDto">
         select
             t1.*,
+            t3.equipmenttypename,
             t2.sn
         from
             monitorequipment t1
         left join  monitorinstrument t2 on t1.equipmentno = t2.equipmentno
+        left join monitorequipmenttype t3 on t1.equipmenttypeid = t3.equipmenttypeid
         where t1.equipmentno in
         <foreach collection="equipmentNoList" item="eqNo" index="index" open="(" separator="," close=")">
             #{eqNo}

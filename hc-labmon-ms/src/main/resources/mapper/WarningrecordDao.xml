@@ -125,4 +125,21 @@
         and pkid = #{pkid}
     </select>
 
+    <select id="getAlarmData" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+        equipmentno,
+        COUNT(equipmentno) num
+        FROM
+        lab_mon.warningrecord
+        WHERE
+        inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
+        AND hospitalcode = #{param.hospitalCode}
+        <if test="param.equipmentNo != null and param.equipmentNo != ''">
+            and equipmentno = #{param.equipmentNo}
+        </if>
+        GROUP BY equipmentno
+        ORDER by num DESC
+    </select>
+
 </mapper>

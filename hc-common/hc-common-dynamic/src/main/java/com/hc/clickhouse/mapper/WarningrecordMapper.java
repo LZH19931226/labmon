@@ -3,6 +3,7 @@ package com.hc.clickhouse.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.clickhouse.param.AlarmDataParam;
 import com.hc.clickhouse.param.EquipmentDataParam;
 import com.hc.clickhouse.param.WarningRecordParam;
 import com.hc.clickhouse.po.Warningrecord;
@@ -45,4 +46,6 @@ public interface WarningrecordMapper extends RootMapper<Warningrecord> {
     IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page,@Param("param") WarningRecordParam warningRecordParam);
 
     Warningrecord getWarningInfo(@Param("pkid") String pkId,@Param("ym") String ym);
+
+    List<Warningrecord> getAlarmData(Page page,@Param("param") AlarmDataParam alarmDataParam);
 }

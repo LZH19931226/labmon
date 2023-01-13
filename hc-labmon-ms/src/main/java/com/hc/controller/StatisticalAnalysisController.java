@@ -8,6 +8,7 @@ import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.PointInTimeDataTableResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
+import com.hc.application.response.TimePointCurve;
 import com.hc.dto.CurveInfoDto;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
@@ -75,7 +76,7 @@ public class StatisticalAnalysisController {
      */
     @PostMapping("/getThePointInTimeDataCurve")
     @ApiOperation("获取时间点曲线")
-    public Map<String,CurveInfoDto> getThePointInTimeDataCurve(@RequestBody EquipmentDataCommand equipmentDataCommand){
+    public  List<TimePointCurve> getThePointInTimeDataCurve(@RequestBody EquipmentDataCommand equipmentDataCommand){
         return statisticalAnalysisApplication.getThePointInTimeDataCurve(equipmentDataCommand);
     }
 
