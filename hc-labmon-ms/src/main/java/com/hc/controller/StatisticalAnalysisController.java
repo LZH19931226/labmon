@@ -6,6 +6,7 @@ import com.hc.application.StatisticalAnalysisApplication;
 import com.hc.application.command.AlarmDataCommand;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
+import com.hc.application.response.AlarmDataCurveResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.application.response.TimePointCurve;
 import com.hc.my.common.core.jwt.JwtIgnore;
@@ -139,5 +140,14 @@ public class StatisticalAnalysisController {
     @JwtIgnore
     public void exportAlarmData(@RequestBody AlarmDataCommand alarmDataCommand,HttpServletResponse response){
         statisticalAnalysisApplication.exportAlarmData(alarmDataCommand,response);
+    }
+
+    /**
+     * 报警汇总 接口3:报警汇总数据曲线
+     */
+    @PostMapping("/getAlarmDataCurve")
+    @ApiOperation("报警汇总数据曲线")
+    public AlarmDataCurveResult getAlarmDataCurve(@RequestBody AlarmDataCommand alarmDataCommand){
+        return statisticalAnalysisApplication.getAlarmDataCurve(alarmDataCommand);
     }
 }

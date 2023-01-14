@@ -721,7 +721,7 @@ public class StatisticalAnalysisApplication {
         }
         //情况2：
         if(!StringUtils.isEmpty(equipmentTypeId) && StringUtils.isEmpty(equipmentNo)){
-            List<String> enoList =  equipmentInfoService.getEnoList(alarmDataCommand.getHospitalCode());
+            List<String> enoList =  equipmentInfoService.getEnoList(alarmDataCommand.getHospitalCode(),alarmDataCommand.getEquipmentTypeId());
             if(!CollectionUtils.isEmpty(enoList) && enoList.size()>1){
                 StringBuilder stringBuilder = new StringBuilder();
                 enoList.forEach(res->{
@@ -739,6 +739,27 @@ public class StatisticalAnalysisApplication {
         if(!StringUtils.isEmpty(equipmentTypeId) && !StringUtils.isEmpty(equipmentNo)){
             alarmDataCommand.setEquipmentNo("'"+equipmentNo+"'");
         }
+    }
+
+    public AlarmDataCurveResult getAlarmDataCurve(AlarmDataCommand alarmDataCommand) {
+        setEquipmentNo(alarmDataCommand);
+        //分页查询设备报警数量
+        AlarmDataParam alarmDataParam = BeanConverter.convert(alarmDataCommand, AlarmDataParam.class);
+        List<Warningrecord> list = warningrecordRepository.getAlarmData(null,alarmDataParam);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        List<Warningrecord> resultList = transformData(list);
+        AlarmDataCurveResult alarmDataCurveResult = new AlarmDataCurveResult();
+        List<String> equipmentNameList = new ArrayList<>();
+        List<Long> numList = new ArrayList<>();
+        for (Warningrecord warningrecord : resultList) {
+            equipmentNameList.add(warningrecord.getEquipmentName());
+            numList.add(warningrecord.getNum());
+        }
+        alarmDataCurveResult.setEquipmentNameList(equipmentNameList);
+        alarmDataCurveResult.setNumList(numList);
+        return alarmDataCurveResult;
     }
 }
 
