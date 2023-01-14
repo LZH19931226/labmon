@@ -65,8 +65,11 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     }
 
     @Override
-    public List<String> getEnoList(String hospitalCode) {
-        List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto()).select(MonitorEquipmentDto::getEquipmentno).eq(MonitorEquipmentDto::getHospitalcode, hospitalCode));
+    public List<String> getEnoList(String hospitalCode,String equipmentTypeId) {
+        List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                .select(MonitorEquipmentDto::getEquipmentno)
+                .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode)
+                .eq(MonitorEquipmentDto::getEquipmenttypeid,equipmentTypeId));
         return list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
     }
 }
