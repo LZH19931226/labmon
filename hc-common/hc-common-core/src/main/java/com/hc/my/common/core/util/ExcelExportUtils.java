@@ -98,4 +98,15 @@ public class ExcelExportUtils {
         return beanList;
     }
 
+    public static List<ExcelExportEntity> getOperationLog(boolean isCh) {
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        beanList.add(new ExcelExportEntity("操作记录时间","operationtime"));
+        beanList.add(new ExcelExportEntity("用户","username"));
+        beanList.add(new ExcelExportEntity("操作类型","opeartiontype"));
+        beanList.add(new ExcelExportEntity("菜单","functionname"));
+        beanList.add(new ExcelExportEntity("医院","hospitalname"));
+        beanList.add(new ExcelExportEntity("设备名称","equipmentname"));
+        return beanList;
+    }
+
 }
