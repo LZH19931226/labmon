@@ -136,6 +136,7 @@ public class StatisticalAnalysisController {
      */
     @PostMapping("/exportAlarmData")
     @ApiOperation("导出查询报警数据")
+    @JwtIgnore
     public void exportAlarmData(@RequestBody AlarmDataCommand alarmDataCommand,HttpServletResponse response){
         statisticalAnalysisApplication.exportAlarmData(alarmDataCommand,response);
     }
