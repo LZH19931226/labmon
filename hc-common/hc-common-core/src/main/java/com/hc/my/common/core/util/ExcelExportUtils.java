@@ -8,11 +8,17 @@ import java.util.List;
 
 public class ExcelExportUtils {
 
-    public static final String ALARM_NOTICE = "报警通知数据汇总";
-    public static final String ALARM_US_NOTICE = "ALARM_NOTICE_DATA";
-    public static final String EQUIPMENT_DATA = "设备数据汇总";
+    public static final String EQUIPMENT_DATA_CUSTOM = "设备数据自定义查询";
+    public static final String EQUIPMENT_DATA_POINT_IN_TIME = "设备数据时间点查询";
 
-    public static final String ALARM_SUMMARY = "报警汇总";
+    public static final String ALARM_DATA_SUMMARY = "报警数据报警汇总查询";
+    public static final String ALARM_DATA_NOTICE = "报警数据报警通知查询";
+    public static final String ALARM_DATA_TIMEOUT = "报警数据超时数据查询";
+
+    public static final String SYSTEM_DATA_HEARTBEAT = "系统数据丢包率查询";
+
+    public static final String SYSTEM_LOG_OPERATION = "系统日志操作信息";
+
 
     /**
      * 获取报警通知模板

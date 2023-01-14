@@ -20,10 +20,10 @@
               AND publish_key = #{res.phoneNum}
           </if>
           <if test="res.noticeState != null and res.noticeState != ''">
-              <if test="res.noticeState = '0'">
+              <if test = "res.noticeState == '0'.toString() ">
                   and remark = 'OK'
               </if>
-              <if test="res.noticeState = '1'">
+              <if test=" res.noticeState == '1'.toString() ">
                   and remark not in ('OK','')
               </if>
           </if>
