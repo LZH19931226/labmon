@@ -85,7 +85,7 @@ public class StatisticalAnalysisController {
      */
     @PostMapping("/getThePointInTimeDataTable")
     @ApiOperation("获取时间点数据表")
-    public    List<Map<String,String>> getThePointInTimeDataTable(@RequestBody EquipmentDataCommand equipmentDataCommand){
+    public  List<Map<String,String>> getThePointInTimeDataTable(@RequestBody EquipmentDataCommand equipmentDataCommand){
        return statisticalAnalysisApplication.getThePointInTimeDataTable(equipmentDataCommand);
     }
 
