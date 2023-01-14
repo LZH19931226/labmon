@@ -6,10 +6,8 @@ import com.hc.application.StatisticalAnalysisApplication;
 import com.hc.application.command.AlarmDataCommand;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
-import com.hc.application.response.PointInTimeDataTableResult;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.application.response.TimePointCurve;
-import com.hc.dto.CurveInfoDto;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +47,7 @@ public class StatisticalAnalysisController {
     }
 
     /**
-     * 导出设备数据
+     * 自定义查询 接口2:导出设备数据
      * @param equipmentDataCommand
      * @param response
      */
@@ -62,7 +60,7 @@ public class StatisticalAnalysisController {
 
 
     /**
-     * 自定义查询 接口2.查询报警汇总图
+     * 自定义查询 接口3.查询报警汇总图
      */
     @JwtIgnore
     @PostMapping("/getSummaryOfAlarms")
@@ -125,7 +123,7 @@ public class StatisticalAnalysisController {
     }
 
     /**
-     * 报警汇总 接口1：分页查询报警数据
+     * 报警汇总 接口1：分页查询报警汇总数据
      */
     @PostMapping("/getAlarmData")
     @ApiOperation("分页获取报警汇总数据")
@@ -134,7 +132,7 @@ public class StatisticalAnalysisController {
     }
 
     /**
-     * 报警汇总 接口2：导出查询报警数据
+     * 报警汇总 接口2：导出查询报警汇总数据
      */
     @PostMapping("/exportAlarmData")
     @ApiOperation("导出查询报警数据")

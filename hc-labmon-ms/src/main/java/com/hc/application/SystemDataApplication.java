@@ -12,13 +12,11 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
-import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.EquipmentInfoService;
 import com.hc.service.InstrumentParamConfigService;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -111,10 +108,9 @@ public class SystemDataApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             mapList.add(objectToMap);
         }
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
-
-
+        FileUtil.exportExcel(ExcelExportUtils.SYSTEM_DATA_HEARTBEAT,beanList,mapList,response);
     }
+
     //hospitalCode startTime  endTime
     public List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCount(EquipmentDataCommand equipmentDataCommand) {
         String hospitalCode = equipmentDataCommand.getHospitalCode();

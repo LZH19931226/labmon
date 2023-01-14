@@ -226,8 +226,8 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(alarmNoticeResult);
             mapList.add(objectToMap);
         }
-        buildLogInfo(alarmNoticeCommand.getUserId(),ExcelExportUtils.ALARM_NOTICE, OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.ALARM_NOTICE,beanList,mapList,response);
+        buildLogInfo(alarmNoticeCommand.getUserId(),ExcelExportUtils.ALARM_DATA_NOTICE, OperationLogEunmDerailEnum.EXPORT.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.ALARM_DATA_NOTICE,beanList,mapList,response);
     }
 
     /**
@@ -320,8 +320,8 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             mapList.add(objectToMap);
         }
-        buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA, OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
+        buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_CUSTOM, OperationLogEunmDerailEnum.EXPORT.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_CUSTOM,beanList,mapList,response);
     }
 
     /**
@@ -621,15 +621,9 @@ public class StatisticalAnalysisApplication {
         boolean flag = Context.IsCh();
         //获取tittle
         List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,flag);
-        //fileName
-        String fileName = null;
-        if (flag) {
-            fileName = "时间点导出结果";
-        }else {
-            fileName = "date_time_export_result";
-        }
-        buildLogInfo(Context.getUserId(),fileName, OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(fileName,beanList,mapList,httpServletResponse);
+
+        buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME,beanList,mapList,httpServletResponse);
     }
 
     private void filterCondition(EquipmentDataCommand equipmentDataCommand) {
@@ -640,7 +634,7 @@ public class StatisticalAnalysisApplication {
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
     }
 
-    private void buildLogInfo(String userId, String fileName,String exportCode) {
+    private  void buildLogInfo(String userId, String fileName,String exportCode) {
         ExportLogCommand exportLogCommand = new ExportLogCommand();
         UserRightDto userRightDto =  userRightService.getUserRightInfoByUserId(userId);
         if(null != userRightDto){
@@ -697,8 +691,8 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = getObjectToMap(res);
             mapList.add(objectToMap);
         });
-        buildLogInfo(Context.getUserId(),ExcelExportUtils.ALARM_SUMMARY,OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
+        buildLogInfo(Context.getUserId(),ExcelExportUtils.ALARM_DATA_SUMMARY,OperationLogEunmDerailEnum.EXPORT.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.ALARM_DATA_SUMMARY,beanList,mapList,response);
     }
 
     private  List<Warningrecord> transformData(List<Warningrecord> list) {
