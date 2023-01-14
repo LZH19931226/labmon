@@ -329,15 +329,11 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public  List<TimePointCurve>  getThePointInTimeDataCurve(EquipmentDataCommand equipmentDataCommand) {
-        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
-        if(CollectionUtils.isEmpty(filterList)){
-            throw new IedsException("筛选条件不能为空");
-        }
-        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
+        filterCondition(equipmentDataCommand);
         String field = equipmentDataCommand.getField();
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList)){
-            return null;
+            return new ArrayList<>();
         }
         //排列
         List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
@@ -348,7 +344,7 @@ public class StatisticalAnalysisApplication {
         List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
 
         if(CollectionUtils.isEmpty(lastDataList)){
-            return null;
+            return new ArrayList<>();
         }
 
         Map<String, List<Monitorequipmentlastdata>> stringListMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDateMMdd(res.getInputdatetime())));
@@ -514,16 +510,12 @@ public class StatisticalAnalysisApplication {
      * 时间点查询表格
      * @param equipmentDataCommand
      */
-    public    List<Map<String,String>> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
-        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
-        if(CollectionUtils.isEmpty(filterList)){
-            throw new IedsException("筛选条件不能为空");
-        }
+    public   List<Map<String,String>> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
+        filterCondition(equipmentDataCommand);
         String field = equipmentDataCommand.getField();
-        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList)){
-            return null;
+            return new ArrayList<>();
         }
         //排列
         List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
@@ -533,7 +525,7 @@ public class StatisticalAnalysisApplication {
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
         if(CollectionUtils.isEmpty(lastDataList)){
-            return null;
+            return new ArrayList<>();
         }
         List<Monitorequipmentlastdata> filterLastDataList = new ArrayList<>();
         for (Date date : dateList) {
@@ -576,8 +568,9 @@ public class StatisticalAnalysisApplication {
      * @param httpServletResponse
      */
     public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse) {
+        filterCondition(equipmentDataCommand);
         List<String> timeList = equipmentDataCommand.getTimeList();
-        if(CollectionUtils.isEmpty(timeList) || timeList.size()>5){
+        if(CollectionUtils.isEmpty(timeList)){
             return;
         }
         //排列
@@ -637,6 +630,14 @@ public class StatisticalAnalysisApplication {
         }
         buildLogInfo(Context.getUserId(),fileName, OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(fileName,beanList,mapList,httpServletResponse);
+    }
+
+    private void filterCondition(EquipmentDataCommand equipmentDataCommand) {
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        if(CollectionUtils.isEmpty(filterList)){
+            throw new IedsException("筛选条件不能为空");
+        }
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
     }
 
     private void buildLogInfo(String userId, String fileName,String exportCode) {
