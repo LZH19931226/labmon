@@ -690,14 +690,13 @@ public class StatisticalAnalysisApplication {
         }
         //获取标头
         List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmData(Context.IsCh());
-
         List<Warningrecord> resultList = transformData(list);
         List<Map<String,Object>> mapList = new ArrayList<>();
         resultList.forEach(res->{
             Map<String, Object> objectToMap = getObjectToMap(res);
             mapList.add(objectToMap);
         });
-        buildLogInfo(Context.getUserId(),ExcelExportUtils.ALARM_SUMMARY,OperationLogEunmDerailEnum.EXPORT.getCode());
+        buildLogInfo(alarmDataCommand.getUserId(),ExcelExportUtils.ALARM_SUMMARY,OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA,beanList,mapList,response);
     }
 

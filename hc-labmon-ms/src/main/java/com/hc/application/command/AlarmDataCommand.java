@@ -19,4 +19,6 @@ public class AlarmDataCommand {
     private Integer pageCurrent;
 
     private Integer pageSize;
+
+    private String userId;
 }
