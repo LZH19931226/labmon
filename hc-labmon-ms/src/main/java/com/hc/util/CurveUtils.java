@@ -31,7 +31,7 @@ public class CurveUtils {
                 List<String> dataList = curve.getDataList();
                 dataList.add(str);
                 String timeStr =  (String)objectToMap.get("inputdatetime");
-                curve.getDateList().add(DateUtils.getMMdd(timeStr));
+                curve.getDateList().add(DateUtils.getHHmm(timeStr));
             }
         }
         CurveInfoDto curveInfoDto = new CurveInfoDto();

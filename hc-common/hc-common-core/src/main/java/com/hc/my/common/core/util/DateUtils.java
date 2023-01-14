@@ -554,4 +554,15 @@ public class DateUtils {
         Date date = parseDate(time);
         return dateFormatMMdd.format(date);
     }
+
+    /**
+     * 获取时间的月份和年
+     * @param time YYYY-MM-dd HH:mm:ss
+     * @return HH:mm
+     */
+    public static String getHHmm(String time){
+        Date date = parseDate(time);
+        return dateFormatHHmm.format(date);
+    }
+
 }
