@@ -71,6 +71,7 @@ public class SystemDataApplication {
     //hospitalCode,startTime,equipmentNo
     public SummaryOfAlarmsResult getPacketLossColumnar(EquipmentDataCommand equipmentDataCommand) {
         String startTime = equipmentDataCommand.getStartTime();
+        String endTime = equipmentDataCommand.getEndTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
@@ -78,11 +79,26 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
         }
-        SummaryOfAlarmsResult summaryOfAlarmsResult = new SummaryOfAlarmsResult();
-        List<String> timeList = lastDataList.stream().map(Monitorequipmentlastdata::getRemark1).collect(Collectors.toList());
-        summaryOfAlarmsResult.setTimeList(timeList);
-        List<Long> numList = lastDataList.stream().map(s -> Long.parseLong(s.getRemark2())).collect(Collectors.toList());
+        List<String> betweenDate = DateUtils.getBetweenDate(startTime, endTime);
+        SummaryOfAlarmsResult summaryOfAlarmsResult  = new SummaryOfAlarmsResult();
+        List<String>  timeList  =  new ArrayList<>();
+        List<Long>  numList  =  new ArrayList<>();
+        for (String yearMonth : betweenDate) {
+            Long count = 0L ;
+            Iterator<Monitorequipmentlastdata> iterator = lastDataList.iterator();
+            while (iterator.hasNext()){
+                Monitorequipmentlastdata next = iterator.next();
+                String remark1 = next.getRemark1();
+                if (yearMonth.substring(0,10).equals(remark1.substring(0,10))){
+                    count++;
+                    iterator.remove();
+                }
+            }
+            timeList.add(yearMonth.substring(0,10));
+            numList.add(count);
+        }
         summaryOfAlarmsResult.setNumList(numList);
+        summaryOfAlarmsResult.setTimeList(timeList);
         return summaryOfAlarmsResult;
     }
     //hospitalCode,startTime,equipmentNo

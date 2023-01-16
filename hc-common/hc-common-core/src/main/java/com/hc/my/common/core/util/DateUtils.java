@@ -227,18 +227,6 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException {
-//        Date date = DateUtils.initDateByDay();
-//        for (int i = 1; i <= 12; i++) {
-//            Date addHour = DateUtils.getAddHour(date, 2 * (i - 1));
-//            Date endTime ;
-//            if (i==12){
-//                endTime =DateUtils.getEndOfDay();
-//            }else {
-//                endTime =DateUtils.getAddHour(date, i*2);
-//            }
-//            System.out.println(addHour+"======"+endTime);
-//        }
-        System.out.println(getCurrentYYMM());
     }
     /**
      * 以 yyyy-MM-dd HH:mm:ss 的格式解析String
@@ -553,5 +541,25 @@ public class DateUtils {
     public static String getMMdd(String time){
         Date date = parseDate(time);
         return dateFormatMMdd.format(date);
+    }
+
+    public  static  List<String>  getBetweenDate(String beginDate,String endDate) {
+        List<String> dates  = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(datetimeFormat.parse(beginDate));
+            for (long d = cal.getTimeInMillis(); d <= datetimeFormat.parse(endDate).getTime(); d = get_D_Plaus_1(cal)) {
+                String format = datetimeFormat.format(d);
+                dates.add(format);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dates;
+    }
+
+    public static long get_D_Plaus_1(Calendar c) {
+        c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+        return c.getTimeInMillis();
     }
 }
