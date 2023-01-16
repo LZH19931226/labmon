@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -82,9 +83,9 @@ public class SystemDataApplication {
         List<String> betweenDate = DateUtils.getBetweenDate(startTime, endTime);
         SummaryOfAlarmsResult summaryOfAlarmsResult  = new SummaryOfAlarmsResult();
         List<String>  timeList  =  new ArrayList<>();
-        List<Long>  numList  =  new ArrayList<>();
+        List<String>  numList  =  new ArrayList<>();
         for (String yearMonth : betweenDate) {
-            Long count = 0L ;
+            int count = 0;
             Iterator<Monitorequipmentlastdata> iterator = lastDataList.iterator();
             while (iterator.hasNext()){
                 Monitorequipmentlastdata next = iterator.next();
@@ -95,7 +96,11 @@ public class SystemDataApplication {
                 }
             }
             timeList.add(yearMonth.substring(0,10));
-            numList.add(count);
+            //计算丢包率
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setMaximumFractionDigits(0);
+            String result = numberFormat.format((float) (1440 - count) / (float) 1440 * 100);
+            numList.add(result);
         }
         summaryOfAlarmsResult.setNumList(numList);
         summaryOfAlarmsResult.setTimeList(timeList);

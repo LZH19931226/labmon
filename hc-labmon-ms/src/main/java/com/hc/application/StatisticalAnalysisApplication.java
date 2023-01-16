@@ -278,13 +278,13 @@ public class StatisticalAnalysisApplication {
         }
         List<String> timeList  = DateUtils.getTimePeriod(equipmentDataCommand.getStartTime(),equipmentDataCommand.getEndTime());
 
-        List<Long> numList = new ArrayList<>();
+        List<String> numList = new ArrayList<>();
         for (String time : timeList) {
             if(wrMap.containsKey(time)){
                 Warningrecord warningrecord = wrMap.get(time).get(0);
-                numList.add(warningrecord.getNum());
+                numList.add(String.valueOf(warningrecord.getNum()));
             }else {
-                numList.add(0L);
+                numList.add("0");
             }
         }
         SummaryOfAlarmsResult summaryOfAlarmsResult = new SummaryOfAlarmsResult();

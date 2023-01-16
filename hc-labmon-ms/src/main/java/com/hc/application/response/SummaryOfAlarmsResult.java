@@ -9,5 +9,5 @@ public class SummaryOfAlarmsResult {
 
     private List<String> timeList;
 
-    private List<Long> numList;
+    private List<String> numList;
 }
