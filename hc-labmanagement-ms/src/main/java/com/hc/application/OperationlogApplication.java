@@ -1,5 +1,7 @@
 package com.hc.application;
 
+import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
+import cn.hutool.poi.excel.ExcelFileUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.operation.ExportLogCommand;
@@ -12,6 +14,9 @@ import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.struct.Context;
+import com.hc.my.common.core.util.ExcelExportUtils;
+import com.hc.my.common.core.util.FileUtil;
+import com.hc.my.common.core.util.ObjectConvertUtils;
 import com.hc.service.OperationlogService;
 import com.hc.vo.backlog.OperationlogVo;
 import org.apache.commons.collections.CollectionUtils;
@@ -20,9 +25,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -103,4 +110,23 @@ public class OperationlogApplication {
     public void addExportLog(ExportLogCommand exportLogCommand) {
         operationlogService.addExportLog(exportLogCommand);
     }
+
+    public void exportLogInfo(OperationLogCommand operationLogCommand, HttpServletResponse response) {
+        List<OperationlogDTO> operationLogDTO =  operationlogService.findAllLogInfo(null,operationLogCommand);
+        if (CollectionUtils.isEmpty(operationLogDTO)) {
+            return;
+        }
+        //获取导出excel的标头
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getOperationLog(Context.IsCh());
+        //获取给标头赋值的list
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (OperationlogDTO res : operationLogDTO) {
+            res.setFunctionname(editFunctionName(res.getFunctionname()));
+            res.setOpeartiontype(editOperateType(res.getOpeartiontype()));
+            Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(res);
+            mapList.add(objectToMap);
+        }
+        FileUtil.exportExcel(ExcelExportUtils.SYSTEM_LOG_OPERATION,beanList,mapList,response);
+    }
+
 }

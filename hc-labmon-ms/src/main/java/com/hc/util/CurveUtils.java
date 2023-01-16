@@ -7,6 +7,7 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ObjectConvertUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,7 @@ public class CurveUtils {
                 List<String> dataList = curve.getDataList();
                 dataList.add(str);
                 String timeStr =  (String)objectToMap.get("inputdatetime");
-                curve.getDateList().add(timeStr);
+                curve.getDateList().add(DateUtils.getHHmm(timeStr));
             }
         }
         CurveInfoDto curveInfoDto = new CurveInfoDto();

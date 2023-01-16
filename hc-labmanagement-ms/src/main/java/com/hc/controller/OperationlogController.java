@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -57,13 +57,21 @@ public class OperationlogController {
      }
 
      @PostMapping("/findAllLogInfo")
+     @ApiOperation("分页获取日志信息")
     public Page<OperationlogVo> getAllLogInfo(@RequestBody OperationLogCommand operationLogCommand){
         return operationlogApplication.findAllLogInfo(operationLogCommand);
     }
 
     @JwtIgnore
     @PostMapping("/addExportLog")
+    @ApiOperation("新增导出日志")
     public void addExportLog(@RequestBody ExportLogCommand exportLogCommand){
         operationlogApplication.addExportLog(exportLogCommand);
+    }
+
+    @PostMapping("/exportLogInfo")
+    @ApiOperation("导出系统日志")
+    public void exportLogInfo(@RequestBody OperationLogCommand operationLogCommand, HttpServletResponse response){
+        operationlogApplication.exportLogInfo(operationLogCommand,response);
     }
 }

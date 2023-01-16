@@ -543,6 +543,17 @@ public class DateUtils {
         return dateFormatMMdd.format(date);
     }
 
+    /**
+     * 获取时间的月份和年
+     * @param time YYYY-MM-dd HH:mm:ss
+     * @return HH:mm
+     */
+    public static String getHHmm(String time){
+        Date date = parseDate(time);
+        return dateFormatHHmm.format(date);
+    }
+
+
     public  static  List<String>  getBetweenDate(String beginDate,String endDate) {
         List<String> dates  = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
