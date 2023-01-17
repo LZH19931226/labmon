@@ -25,6 +25,11 @@ public class EquipmentDataCommand {
     private String field;
 
     /**
+     * 查询的字段集
+     */
+    private List<String> fieldList;
+
+    /**
      *  医院id
      *
      */

@@ -239,11 +239,14 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(filterList)){
             throw new IedsException("筛选条件不能为空");
         }
+        List<String> fieldList = equipmentDataCommand.getFieldList();
+        if(CollectionUtils.isEmpty(fieldList)){
+            throw new IedsException("查询类型不能为空");
+        }
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         //分页查询
         Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
         String startTime = equipmentDataCommand.getStartTime();
-        String field = equipmentDataCommand.getField();
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
@@ -251,14 +254,21 @@ public class StatisticalAnalysisApplication {
         if (CollectionUtils.isEmpty(lastDataList)) {
             return page;
         }
-        List<LastDataResult> convert = BeanConverter.convert(lastDataList, LastDataResult.class);
-        DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
-        if(null != dataFieldEnum){
-            convert.forEach(res-> {
-                res.setUnit(dataFieldEnum.getUnit());
-            });
+        List<LastDataResult> resultList = new ArrayList<>();
+        for (Monitorequipmentlastdata lastData : lastDataList) {
+            Map<String, Object> objectToMap = getObjectToMap(lastData);
+            ObjectConvertUtils.filterMap(objectToMap,fieldList);
+            for (String field : objectToMap.keySet()) {
+                if(fieldList.contains(field)){
+                    String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+                    String value = (String) objectToMap.get(field);
+                    objectToMap.put(field,StringUtils.isEmpty(value) ? "":value+"("+unit+")");
+                }
+            }
+            LastDataResult result = JSON.parseObject(JSON.toJSONString(objectToMap), LastDataResult.class);
+            resultList.add(result);
         }
-        page.setRecords(convert);
+        page.setRecords(resultList);
         return page;
     }
 
@@ -307,17 +317,15 @@ public class StatisticalAnalysisApplication {
         String startTime = equipmentDataCommand.getStartTime();
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
+        List<String> fieldList = equipmentDataCommand.getFieldList();
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> equipmentData = monitorequipmentlastdataRepository.getEquipmentData(null, dataParam);
         //设置tittle
-        String field = equipmentDataCommand.getField();
-        DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
-        String cName = dataFieldEnum.getCName();
-        String unit = dataFieldEnum.getUnit();
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(cName + unit, field);
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList);
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata equipmentDatum : equipmentData) {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
+            ObjectConvertUtils.filterMap(objectToMap,fieldList);
             mapList.add(objectToMap);
         }
         buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_CUSTOM, OperationLogEunmDerailEnum.EXPORT.getCode());
@@ -352,7 +360,6 @@ public class StatisticalAnalysisApplication {
         Map<String, List<Monitorequipmentlastdata>> dataMap = sortMapByKey(stringListMap);
         Map<String,TimePointCurve> map = new HashMap<>();
         for (String inputTime : dataMap.keySet()) {
-
             List<Monitorequipmentlastdata> dataList = dataMap.get(inputTime);
             //遍历时间点
             for (Date date : dateList) {

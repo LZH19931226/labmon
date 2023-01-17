@@ -17,7 +17,7 @@ import java.util.*;
 
 public class CurveUtils {
 
-    public static CurveInfoDto getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, List<String> instrumentConfigIdList, Map<String, List<InstrumentParamConfigDto>> map) {
+    public static List<Map<String,CurveDataModel>> getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, List<String> instrumentConfigIdList, Map<String, List<InstrumentParamConfigDto>> map) {
         Map<String, Curve> containerMap = getList(instrumentConfigIdList);
         for (Monitorequipmentlastdata monitorequipmentlastdata : lastDataModelList) {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
@@ -34,18 +34,20 @@ public class CurveUtils {
                 curve.getDateList().add(DateUtils.getHHmm(timeStr));
             }
         }
-        CurveInfoDto curveInfoDto = new CurveInfoDto();
+        List<Map<String,CurveDataModel>> list = new ArrayList<>();
         for (String field : instrumentConfigIdList) {
             if(containerMap.containsKey(field)){
+                Map<String,CurveDataModel> resultMap = new HashMap<>();
                 Curve curve = containerMap.get(field);
                 List<String> dataList = curve.getDataList();
                 List<String> dateList = curve.getDateList();
                 String imField = DataFieldEnum.fromByLastDataField(field).getImField();
                 CurveDataModel curveDataModel = generateCurveDataModel(dataList, dateList, map.get(imField));
-                setCurveInfo(curveInfoDto,curveDataModel,field);
+                resultMap.put(field,curveDataModel);
+                list.add(resultMap);
             }
         }
-        return curveInfoDto;
+        return list;
     }
 
     private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list){

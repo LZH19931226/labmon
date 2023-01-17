@@ -1,9 +1,7 @@
 package com.hc.my.common.core.util;
 
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ObjectConvertUtils {
     /**
@@ -33,5 +31,18 @@ public class ObjectConvertUtils {
             map.put(keyName, value);
         }
         return map;
+    }
+
+    public static void filterMap(Map<String, Object> objectMap, List<String> list) {
+        list.add("inputdatetime");
+        Iterator<String> iterator = objectMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            if(!list.contains(next)){
+                iterator.remove();
+                objectMap.remove(next);
+            }
+        }
+        list.remove("inputdatetime");
     }
 }

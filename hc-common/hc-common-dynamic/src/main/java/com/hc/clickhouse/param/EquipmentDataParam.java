@@ -23,6 +23,11 @@ public class EquipmentDataParam {
     private String field;
 
     /**
+     * 查询的字段集
+     */
+    private List<String> fieldList;
+
+    /**
      * 开始时间
      */
     private String startTime;

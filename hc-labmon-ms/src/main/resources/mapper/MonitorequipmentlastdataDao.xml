@@ -7,7 +7,9 @@
     <select id="getEquipmentData" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
         SELECT
         equipmentno,
-        ${param.field},
+        <foreach collection="param.fieldList" item="field" separator="," close=",">
+            ${field}
+        </foreach>
         inputdatetime
         from
         lab_mon.monitorequipmentlastdata
@@ -16,7 +18,6 @@
         AND inputdatetime <![CDATA[>=]]> #{param.startTime}
         AND inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
-        AND ${param.field} != ''
         <if test="param.filterList != null">
             <foreach collection="param.filterList" item="res">
                 and ${res.field} <![CDATA[${res.condition}]]> #{res.value}

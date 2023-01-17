@@ -6,6 +6,7 @@ import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
+import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.response.*;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/app")
@@ -68,7 +70,7 @@ public class AppController {
 
     @PostMapping("/getEquipmentCurveInfo")
     @ApiOperation("查询app设备曲线值")
-    public CurveInfoDto getCurveInfo(@RequestBody CurveCommand curveCommand){
+    public List<Map<String, CurveDataModel>> getCurveInfo(@RequestBody CurveCommand curveCommand){
         return equipmentInfoAppApplication.getCurveFirst(curveCommand);
     }
 

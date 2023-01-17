@@ -1,6 +1,7 @@
 package com.hc.my.common.core.util;
 
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,10 +51,17 @@ public class ExcelExportUtils {
         return beanList;
     }
 
-    public static List<ExcelExportEntity> getEquipmentData(String name,String field){
+    public static List<ExcelExportEntity> getEquipmentData(List<String> fieldList){
         List<ExcelExportEntity> beanList = new ArrayList<>();
         beanList.add(new ExcelExportEntity("记录时间","inputdatetime"));
-        beanList.add(new ExcelExportEntity(name,field));
+        for (String field : fieldList) {
+            DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+            if(null != dataFieldEnum){
+                String cName = dataFieldEnum.getCName();
+                String unit = dataFieldEnum.getUnit();
+                beanList.add(new ExcelExportEntity(cName+"("+unit+")",field));
+            }
+        }
         return beanList;
     }
 
