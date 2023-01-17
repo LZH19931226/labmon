@@ -529,6 +529,8 @@ public class MonitorEquipmentApplication {
         MonitorEquipmentLogCommand monitorEquipmentCommand1 = new MonitorEquipmentLogCommand();
         monitorEquipmentCommand1.setEquipmentName(equipmentName);
         monitorEquipmentCommand1.setClientVisible(newMonitorEquipmentLogCommand.getClientVisible());
+        monitorEquipmentCommand1.setAddress(newMonitorEquipmentLogCommand.getAddress());
+        monitorEquipmentCommand1.setRemark(newMonitorEquipmentLogCommand.getRemark());
         logInfoCommand.setNewMonitorEquipmentLogCommand(monitorEquipmentCommand1);
         logInfoCommand.setOldMonitorEquipmentLogCommand(oldMonitorEquipmentLogCommand);
         return logInfoCommand;
