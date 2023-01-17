@@ -89,10 +89,13 @@
     </select>
 
     <select id="getPacketLossColumnar" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
-        select formatDateTime(inputdatetime,'%Y-%m-%d')  as remark1,count(1) remark2
+        select  toStartOfMinute(inputdatetime)  as remark1,count(*) remark2
         from lab_mon.monitorequipmentlastdata
-        WHERE hospitalcode = #{param.hospitalCode} and cmdid ='88' and id IN ( #{param.yearMonth} )  and equipmentno = #{param.equipmentNo}
-        group by remark1 order by remark1
+        WHERE  cmdid ='88' and id IN ( #{param.yearMonth} )  and equipmentno = #{param.equipmentNo}   AND hospitalcode = #{param.hospitalCode}
+        AND  inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
+        group by toStartOfMinute(inputdatetime)
+        order by toStartOfMinute(inputdatetime)
     </select>
 
 </mapper>

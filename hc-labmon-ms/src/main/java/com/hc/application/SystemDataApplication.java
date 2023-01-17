@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -71,6 +72,7 @@ public class SystemDataApplication {
     //hospitalCode,startTime,equipmentNo
     public SummaryOfAlarmsResult getPacketLossColumnar(EquipmentDataCommand equipmentDataCommand) {
         String startTime = equipmentDataCommand.getStartTime();
+        String endTime = equipmentDataCommand.getEndTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
@@ -78,11 +80,30 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
         }
-        SummaryOfAlarmsResult summaryOfAlarmsResult = new SummaryOfAlarmsResult();
-        List<String> timeList = lastDataList.stream().map(Monitorequipmentlastdata::getRemark1).collect(Collectors.toList());
-        summaryOfAlarmsResult.setTimeList(timeList);
-        List<Long> numList = lastDataList.stream().map(s -> Long.parseLong(s.getRemark2())).collect(Collectors.toList());
+        List<String> betweenDate = DateUtils.getBetweenDate(startTime, endTime);
+        SummaryOfAlarmsResult summaryOfAlarmsResult  = new SummaryOfAlarmsResult();
+        List<String>  timeList  =  new ArrayList<>();
+        List<String>  numList  =  new ArrayList<>();
+        for (String yearMonth : betweenDate) {
+            int count = 0;
+            Iterator<Monitorequipmentlastdata> iterator = lastDataList.iterator();
+            while (iterator.hasNext()){
+                Monitorequipmentlastdata next = iterator.next();
+                String remark1 = next.getRemark1();
+                if (yearMonth.substring(0,10).equals(remark1.substring(0,10))){
+                    count++;
+                    iterator.remove();
+                }
+            }
+            timeList.add(yearMonth.substring(0,10));
+            //计算丢包率
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setMaximumFractionDigits(0);
+            String result = numberFormat.format((float) (1440 - count) / (float) 1440 * 100);
+            numList.add(result);
+        }
         summaryOfAlarmsResult.setNumList(numList);
+        summaryOfAlarmsResult.setTimeList(timeList);
         return summaryOfAlarmsResult;
     }
     //hospitalCode,startTime,equipmentNo
