@@ -6,6 +6,7 @@ import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
+import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.response.*;
 import com.hc.clickhouse.param.CurveParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
@@ -259,6 +260,7 @@ public class AppEquipmentInfoApplication {
                 probeInfo.setState("1");
                 abnormalCount++;
             }else {
+                //获取探头信息中最大的时间
                 Date maxDate = null;
                 List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
                 maxDate = Collections.max(collect);
@@ -282,7 +284,6 @@ public class AppEquipmentInfoApplication {
                 }
             }
             probeCurrentInfoDtos.add(probeInfo);
-            //获取探头信息中最大的时间
         }
         if(StringUtils.isBlank(probeCommand.getState())){
             probeCommand.setState("");
@@ -345,7 +346,8 @@ public class AppEquipmentInfoApplication {
                 instrumentConfigIdList.add(probeInfoDto.getProbeEName());
             }
         }
-        probeInfo.setProbeInfoDtoList(newProbeInfoDto);
+        List<ProbeInfoDto> collect = newProbeInfoDto.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
+        probeInfo.setProbeInfoDtoList(collect);
         probeInfo.setInstrumentConfigIdList(instrumentConfigIdList);
     }
 
@@ -572,7 +574,7 @@ public class AppEquipmentInfoApplication {
      *
      * @return
      */
-    public CurveInfoDto getCurveFirst(CurveCommand curveCommand) {
+    public List<Map<String, CurveDataModel>> getCurveFirst(CurveCommand curveCommand) {
         String startTime = curveCommand.getStartTime();
         String endTime = curveCommand.getEndTime();
         String sn = curveCommand.getSn();
