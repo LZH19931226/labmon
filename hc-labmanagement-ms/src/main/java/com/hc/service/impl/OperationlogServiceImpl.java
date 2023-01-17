@@ -355,7 +355,7 @@ public class OperationlogServiceImpl implements OperationlogService {
 
         String oldAddress = oldEquipmentInfoModel.getAddress();//地址信息
         String newAddress = nowEquipmentInfoModel.getAddress();//地址信息
-        if(StringUtils.isNotBlank(oldAddress) && StringUtils.isNotBlank(newAddress) && !StringUtils.equals(oldAddress,newAddress)){
+        if(!StringUtils.equals(oldAddress,newAddress)){
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("address");
@@ -369,7 +369,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         String oldRemark = oldEquipmentInfoModel.getRemark();
         String nowRemark = nowEquipmentInfoModel.getRemark();
 
-        if(StringUtils.isNotBlank(oldRemark) && StringUtils.isNotBlank(nowRemark) && !StringUtils.equals(oldRemark,nowRemark)){
+        if(!StringUtils.equals(oldRemark,nowRemark)){
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("remark");
