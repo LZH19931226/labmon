@@ -22,4 +22,14 @@ public class MonitorEquipmentLogCommand {
      */
     private String hospitalCode;
 
+    /**
+     * 地址
+     */
+    private String address;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
 }

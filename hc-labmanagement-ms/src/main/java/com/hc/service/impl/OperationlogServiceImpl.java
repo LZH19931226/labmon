@@ -352,6 +352,33 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetail.setFiledvalueprev(clientvisible==null?"":clientvisible.toString());//历史值
             operationlogdetails.add(operationlogdetail);
         }
+
+        String oldAddress = oldEquipmentInfoModel.getAddress();//地址信息
+        String newAddress = nowEquipmentInfoModel.getAddress();//地址信息
+        if(!StringUtils.equals(oldAddress,newAddress)){
+            flag = true;
+            OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
+            operationlogdetail.setFiledname("address");
+            operationlogdetail.setFiledcaption("地址信息");
+            operationlogdetail.setFiledvalue(StringUtils.isBlank(newAddress) ? "" : newAddress);//当前值
+            operationlogdetail.setFiledvalueprev(StringUtils.isBlank(oldAddress) ? "" : oldAddress);//历史值
+            operationlogdetails.add(operationlogdetail);
+
+        }
+
+        String oldRemark = oldEquipmentInfoModel.getRemark();
+        String nowRemark = nowEquipmentInfoModel.getRemark();
+
+        if(!StringUtils.equals(oldRemark,nowRemark)){
+            flag = true;
+            OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
+            operationlogdetail.setFiledname("remark");
+            operationlogdetail.setFiledcaption("备注");
+            operationlogdetail.setFiledvalue(StringUtils.isBlank(nowRemark) ? "":nowRemark);//当前值
+            operationlogdetail.setFiledvalueprev(StringUtils.isBlank(oldRemark) ? "":oldRemark);//历史值
+            operationlogdetails.add(operationlogdetail);
+        }
+
         if (flag) {
             OperationlogPo operationlog = new OperationlogPo();
             String hospitalName = monitorEquipmentLogInfoCommand.getHospitalName();

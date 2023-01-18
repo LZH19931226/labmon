@@ -308,6 +308,15 @@ public class AppEquipmentInfoApplication {
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(probeCurrentInfoDtos);
                 break;
         }
+        return probeSort(currentProbeInfoResult);
+    }
+
+    private CurrentProbeInfoResult probeSort(CurrentProbeInfoResult currentProbeInfoResult) {
+        for (ProbeCurrentInfoDto probeCurrentInfoDto : currentProbeInfoResult.getProbeCurrentInfoDtoList()) {
+            List<ProbeInfoDto> collect =
+                    probeCurrentInfoDto.getProbeInfoDtoList().stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
+            probeCurrentInfoDto.setProbeInfoDtoList(collect);
+        }
         return currentProbeInfoResult;
     }
 
@@ -346,8 +355,7 @@ public class AppEquipmentInfoApplication {
                 instrumentConfigIdList.add(probeInfoDto.getProbeEName());
             }
         }
-        List<ProbeInfoDto> collect = newProbeInfoDto.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
-        probeInfo.setProbeInfoDtoList(collect);
+        probeInfo.setProbeInfoDtoList(newProbeInfoDto);
         probeInfo.setInstrumentConfigIdList(instrumentConfigIdList);
     }
 
