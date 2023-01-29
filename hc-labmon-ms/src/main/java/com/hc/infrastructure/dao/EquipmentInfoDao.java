@@ -24,4 +24,6 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
     List<MonitorEquipmentDto> batchGetEquipmentInfo(@Param("equipmentNoList") List<String> equipmentNoList);
 
     List<MonitorEquipmentDto> getAll();
+
+    List<MonitorEquipmentDto> getEquipmentInfoBySn(@Param("param") ProbeCommand probeCommand);
 }

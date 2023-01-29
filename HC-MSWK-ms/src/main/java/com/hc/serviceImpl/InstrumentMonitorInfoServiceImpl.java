@@ -144,6 +144,12 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 }
                 break;
             case "8d":
+                /**
+                * 后台管理door探头值：1常闭 0常开
+                * mswk服务储存值： doorz  1,3表示0关  2,4表示1开
+                * msct检验报警值：当前值与lowlimit的值相同时为异常 不同时为正常
+                * 卡片页面展示例子： value的值为1(这个1为mswk服务中的储存值及表示为常开)，limit的值为1(表示为后台管理默认值常闭)时为异常
+                * */
                 //查询是否存在开门量（报警信息探头）
                 String doorValue;
                 if ("3".equals(model.getDOORZ()) || "1".equals(model.getDOORZ())) {

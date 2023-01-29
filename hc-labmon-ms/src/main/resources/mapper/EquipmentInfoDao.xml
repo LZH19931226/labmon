@@ -51,4 +51,13 @@
         </if>
         ORDER BY equipmentname
     </select>
+
+    <select id="getEquipmentInfoBySn" resultType="com.hc.dto.MonitorEquipmentDto">
+        SELECT
+            *
+        FROM
+            monitorequipment
+        WHERE
+             equipmentno IN ( SELECT equipmentno FROM monitorinstrument WHERE hospitalcode = #{param.hospitalCode} and sn LIKE concat('%',#{param.sn},'%') )
+    </select>
 </mapper>

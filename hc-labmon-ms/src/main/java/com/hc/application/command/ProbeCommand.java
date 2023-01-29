@@ -36,4 +36,6 @@ public class ProbeCommand {
 
     /** 设备报警开关 */
     private String warningSwitch;
+
+    private String sn;
 }

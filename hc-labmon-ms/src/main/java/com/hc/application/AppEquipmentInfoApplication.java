@@ -193,11 +193,10 @@ public class AppEquipmentInfoApplication {
         String hospitalCode = probeCommand.getHospitalCode();
 
         String state = probeCommand.getState();
-        Page<ProbeCurrentInfoDto> page = new Page<>(1, 10000);
         //分页查询设备信息
-        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page, probeCommand);
+         List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfo(probeCommand);
         if (CollectionUtils.isEmpty(list)) {
-            return null;
+            return new CurrentProbeInfoResult();
         }
         currentProbeInfoResult.setTotalNum(list.size());
         //在查出monitorinstrument信息
@@ -207,9 +206,7 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isNotEmpty(monitorInstrumentDTOList)) {
             enoAndMiMap = monitorInstrumentDTOList.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
         }
-        if (CollectionUtils.isEmpty(list)) {
-            return null;
-        }
+
         ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
         probeRedisCommand.setHospitalCode(hospitalCode);
         probeRedisCommand.setENoList(enoList);
@@ -313,9 +310,12 @@ public class AppEquipmentInfoApplication {
 
     private CurrentProbeInfoResult probeSort(CurrentProbeInfoResult currentProbeInfoResult) {
         for (ProbeCurrentInfoDto probeCurrentInfoDto : currentProbeInfoResult.getProbeCurrentInfoDtoList()) {
-            List<ProbeInfoDto> collect =
-                    probeCurrentInfoDto.getProbeInfoDtoList().stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
-            probeCurrentInfoDto.setProbeInfoDtoList(collect);
+            List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
+            if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
+                List<ProbeInfoDto> collect =
+                        probeInfoDtoList.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
+                probeCurrentInfoDto.setProbeInfoDtoList(collect);
+            }
         }
         return currentProbeInfoResult;
     }
