@@ -6,6 +6,7 @@ import com.hc.application.command.ProbeCommand;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.repository.EquipmentInfoRepository;
 import com.hc.service.EquipmentInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +72,13 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                 .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode)
                 .eq(MonitorEquipmentDto::getEquipmenttypeid,equipmentTypeId));
         return list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentInfo(ProbeCommand probeCommand) {
+        String sn = probeCommand.getSn();
+        return StringUtils.isBlank(sn) ?
+                equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto()).eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode()).like(MonitorEquipmentDto::getEquipmentname,probeCommand.getEquipmentName()))
+                : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
     }
 }

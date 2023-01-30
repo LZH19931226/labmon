@@ -30,4 +30,6 @@ public interface EquipmentInfoService {
     void bulkUpdate(List<MonitorEquipmentDto> list);
 
     List<String> getEnoList(String hospitalCode,String equipmentTypeId);
+
+    List<MonitorEquipmentDto> getEquipmentInfo(ProbeCommand probeCommand);
 }

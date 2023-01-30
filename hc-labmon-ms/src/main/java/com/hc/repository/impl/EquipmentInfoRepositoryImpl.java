@@ -60,4 +60,8 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
         return equipmentInfoDao.getAll();
     }
 
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentInfoBySn(ProbeCommand probeCommand) {
+        return equipmentInfoDao.getEquipmentInfoBySn(probeCommand);
+    }
 }

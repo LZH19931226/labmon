@@ -29,4 +29,6 @@ public interface EquipmentInfoRepository extends IService<MonitorEquipmentDto> {
     List<MonitorEquipmentDto> batchGetEquipmentInfo(List<String> equipmentNoList);
 
     List<MonitorEquipmentDto> getAll();
+
+    List<MonitorEquipmentDto> getEquipmentInfoBySn(ProbeCommand probeCommand);
 }
