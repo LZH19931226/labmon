@@ -26,6 +26,8 @@
         SELECT
             t3.instrumentconfigid,
             t3.instrumentconfigname,
+            t2.lowlimit,
+            t2.highlimit,
             t2.unit
             FROM
             monitorinstrument t1

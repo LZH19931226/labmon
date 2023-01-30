@@ -474,6 +474,8 @@ public class InstrumentparamconfigApplication {
                     InstrumentparamconfigVo.builder()
                             .instrumentconfigid(s.getInstrumentconfigid())
                             .instrumentconfigname(s.getInstrumentconfigname())
+                            .lowlimit(s.getLowlimit())
+                            .highlimit(s.getHighlimit())
                             .unit(StringUtils.isEmpty(s.getUnit()) ? "":s.getUnit())
                             .build()
             );

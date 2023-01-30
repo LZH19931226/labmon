@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author liuzhihao
@@ -37,6 +38,10 @@ public class InstrumentConfigDTO implements Serializable {
      */
     @TableField(value = "ins_group")
     private String insGroup;
+
+    private BigDecimal lowlimit;
+
+    private BigDecimal highlimit;
 }
 
 
