@@ -137,17 +137,12 @@ public class SystemDataApplication {
         String hospitalCode = equipmentDataCommand.getHospitalCode();
         //获取报警设备
         List<Warningrecord> warningInfos = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
-        if (CollectionUtils.isEmpty(warningInfos)){
-            return null;
-        }
         //获取该医院底下设备类型数量
         List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos  = hospitalEquipmentRepository.findEquipmentByHosCode(hospitalCode);
         if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)){
             return null;
         }
-
         Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
-
         List<eqTypeAlarmNumCountDto>  eqTypeAlarmNumCountDtos1 =new ArrayList<>();
             eqTypeMap.forEach((k,v)->{
                 eqTypeAlarmNumCountDto  eqTypeAlarmNumCountDto  = new eqTypeAlarmNumCountDto();
@@ -156,13 +151,15 @@ public class SystemDataApplication {
                 eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
                 int count = 0;
                 List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
-                Iterator<Warningrecord> iterator = warningInfos.iterator();
-                while (iterator.hasNext()){
-                    Warningrecord next = iterator.next();
-                    String equipmentno = next.getEquipmentno();
-                    if (eqNos.contains(equipmentno)){
-                        count++;
-                        iterator.remove();
+                if(CollectionUtils.isNotEmpty(warningInfos)){
+                    Iterator<Warningrecord> iterator = warningInfos.iterator();
+                    while (iterator.hasNext()){
+                        Warningrecord next = iterator.next();
+                        String equipmentno = next.getEquipmentno();
+                        if (eqNos.contains(equipmentno)){
+                            count++;
+                            iterator.remove();
+                        }
                     }
                 }
                 eqTypeAlarmNumCountDto.setAlarmCount(count);
@@ -244,9 +241,9 @@ public class SystemDataApplication {
         String hospitalCode = equipmentDataCommand.getHospitalCode();
         //获取报警设备
         List<Warningrecord> warningInfos = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
-        if (CollectionUtils.isEmpty(warningInfos)) {
-            return null;
-        }
+//        if (CollectionUtils.isEmpty(warningInfos)) {
+//            return null;
+//        }
         List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos = new ArrayList<>();
         Date date = DateUtils.initDateByDay();
         for (int i = 1; i <= 12; i++) {
@@ -259,18 +256,20 @@ public class SystemDataApplication {
             }else {
                 endTime =DateUtils.getAddHour(date, i*2);
             }
-            int counnt = 0;
-            while (iterator.hasNext()) {
-                Warningrecord warningrecord = iterator.next();
-                Date inputdatetime = warningrecord.getInputdatetime();
-                boolean isNowTime = DateUtils.whetherItIsIn(inputdatetime, startTime, endTime);
-                if (isNowTime){
-                    counnt++;
-                    iterator.remove();
+            int count = 0;
+            if (CollectionUtils.isNotEmpty(warningInfos)){
+                while (iterator.hasNext()) {
+                    Warningrecord warningrecord = iterator.next();
+                    Date inputdatetime = warningrecord.getInputdatetime();
+                    boolean isNowTime = DateUtils.whetherItIsIn(inputdatetime, startTime, endTime);
+                    if (isNowTime){
+                        count++;
+                        iterator.remove();
+                    }
                 }
             }
             eqTypeAlarmNumCountDto.setAlarmPeriod(DateUtils.parseDatetime(startTime));
-            eqTypeAlarmNumCountDto.setAlarmCount(counnt);
+            eqTypeAlarmNumCountDto.setAlarmCount(count);
             eqTypeAlarmNumCountDtos.add(eqTypeAlarmNumCountDto);
         }
         return eqTypeAlarmNumCountDtos;
