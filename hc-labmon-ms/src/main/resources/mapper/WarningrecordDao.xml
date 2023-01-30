@@ -39,6 +39,7 @@
         WHERE
           inputdatetime <![CDATA[>=]]> #{param.startTime}
           and inputdatetime <![CDATA[<=]]> #{param.endTime}
+          and hospitalcode = #{param.hospitalCode}
         GROUP BY equipmentno
         order BY num DESC
         LIMIT 5
