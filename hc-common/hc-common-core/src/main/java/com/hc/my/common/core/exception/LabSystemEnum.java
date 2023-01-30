@@ -59,6 +59,8 @@ public enum LabSystemEnum {
     EQUIPMENT_PROBE_AND_DETECTION_TYPE_MISMATCH("设备探头与检测类型不匹配"),
     FAILED_TO_DELETE("删除失败，当前设备已绑定探头"),
     FAILED_TO_UPDATE_DEVICE("修改设备失败，sn已被占用"),
+
+    REMARK_TOO_LONG("备注信息不能超过60个字符"),
     FAILED_TO_ADD_DEVICE("添加设备失败,sn已被占用"),
     START_TIME_OR_END_TIME_CANNOT_BE_EMPTY("开始时间或结束时间不能为空"),
     END_TIME_CANNOT_BE_EARLIER_THAN_START_TIME("结束时间不能早于开始时间"),

@@ -24,11 +24,11 @@ import com.hc.my.common.core.message.SmsCode;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.service.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -525,7 +525,7 @@ public class StatisticalAnalysisApplication {
             return new ArrayList<>();
         }
         //排列
-        List<Date> dateList = timeList.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<Date> dateList = timeList.stream().filter(StringUtils::isNotBlank).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);

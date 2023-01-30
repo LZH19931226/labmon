@@ -247,6 +247,11 @@ public class MonitorEquipmentApplication {
         String sn = monitorEquipmentCommand.getSn().trim();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
         String equipmentTypeId = monitorEquipmentCommand.getEquipmentTypeId();
+        //备注长度限值
+        String remark = monitorEquipmentCommand.getRemark();
+        if(remark.length() > 60){
+            throw new IedsException(LabSystemEnum.REMARK_TOO_LONG);
+        }
         //sn不能重复
         Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn));
         if (integer > 0) {
@@ -545,6 +550,11 @@ public class MonitorEquipmentApplication {
     public void updateMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
+        //备注长度限制
+        String remark = monitorEquipmentCommand.getRemark();
+        if(remark.length() > 60){
+            throw new IedsException(LabSystemEnum.REMARK_TOO_LONG);
+        }
 
         List<MonitorEquipmentDto> equipmentDtoList =
                 monitorEquipmentService.selectMonitorEquipmentInfoByNo(monitorEquipmentCommand.getEquipmentNo());
