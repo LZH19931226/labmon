@@ -344,7 +344,7 @@ public class StatisticalAnalysisApplication {
             return new ArrayList<>();
         }
         //排列
-        List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<Date> dateList = timeList.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
@@ -525,7 +525,7 @@ public class StatisticalAnalysisApplication {
             return new ArrayList<>();
         }
         //排列
-        List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<Date> dateList = timeList.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
@@ -581,7 +581,7 @@ public class StatisticalAnalysisApplication {
             return;
         }
         //排列
-        List<Date> dateList = timeList.stream().map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<Date> dateList = timeList.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
