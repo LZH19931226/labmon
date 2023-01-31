@@ -34,7 +34,7 @@ public class UserBackRepositoryImpl  implements UserBackRepository {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserBackDto userLogin(UserBackPo userBackPo) {
+    public UserBackDto userLogin(UserBackPo userBackPo,String lang) {
 
         String username = userBackPo.getUsername();
         String pwd = userBackPo.getPwd();
@@ -43,10 +43,19 @@ public class UserBackRepositoryImpl  implements UserBackRepository {
                         .eq(UserBackPo::getUsername, username));
 
         if(userPo == null){
-           throw  new IedsException(LabSystemEnum.USER_NOT_EXISTS.name());
+            if(lang.equals("zh")){
+                throw  new IedsException(LabSystemEnum.USER_NOT_EXISTS.getMessage());
+            }else{
+                throw  new IedsException(LabSystemEnum.USER_NOT_EXISTS.name());
+            }
         }
         if(!userPo.getPwd().equals(pwd)){
-            throw  new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.name());
+            if(lang.equals("zh")){
+                throw  new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.getMessage());
+            }else{
+                throw  new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.name());
+            }
+
         }
 
         return BeanConverter.convert(userPo, UserBackDto.class);

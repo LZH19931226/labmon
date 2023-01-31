@@ -19,7 +19,7 @@ public interface UserBackRepository{
      * @param userBackPo 数据传输对象
      * @return UserBackDto
      */
-    UserBackDto userLogin(UserBackPo userBackPo);
+    UserBackDto userLogin(UserBackPo userBackPo,String lang);
 
     /**
      * 修改用户信息
