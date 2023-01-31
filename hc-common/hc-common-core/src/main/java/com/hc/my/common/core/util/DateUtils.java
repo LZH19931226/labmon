@@ -217,13 +217,8 @@ public class DateUtils {
      * @return
      */
     public static boolean calculateIntervalTime(Date wornTime, String minute) {
-        int i = 0;
-        if(StringUtils.isBlank(minute)){
-            i=Integer.parseInt("1800");
-        }else {
-            i=Integer.parseInt(minute);
-        }
-        long timeInterval = (new Date().getTime() - wornTime.getTime()) / (1000);
+        int i=Integer.parseInt(minute);
+        long timeInterval = (new Date().getTime() - wornTime.getTime()) / (1000*60);
         return timeInterval > i ;
     }
 
