@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Getter
 public enum ProbeOutlier {
 
-    NO_SENSOR_IS_CONNECTED("未接温度传感器"),
+    NO_SENSOR_IS_CONNECTED("未接传感器"),
     OUT_OF_TEST_RANGE("超出量程"),
     VALUE_IS_INVALID("值无效"),
     THE_RANGE_FILTER_VALUE_IS_INVALID("量程过滤值无效"),
