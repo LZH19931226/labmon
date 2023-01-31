@@ -257,19 +257,13 @@ public class AppEquipmentInfoApplication {
                 probeInfo.setInstrumentTypeId(String.valueOf(monitorinstrumentDto.getInstrumenttypeid()));
             }
             probeInfo.setEquipmentTypeId(equipmentTypeId);
-            if (CollectionUtils.isEmpty(probeInfoDtoList)) {
+            if(CollectionUtils.isEmpty(probeInfoDtoList)){
                 probeInfo.setState("1");
                 abnormalCount++;
-            } else {
-                //获取探头信息中最大的时间
-                Date maxDate = null;
-                List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
-                maxDate = Collections.max(collect);
-                if (maxDate != null) {
-                    probeInfo.setInputTime(maxDate);
-                }
+            }else {
+
                 buildProbeInfoDtoListAndInstrumentConfigIdList(probeInfo, equipmentNo, probeInfoDtoList, instrumentParamConfigMap, timeoutRedDuration);
-                switch (probeInfo.getState()) {
+                switch (probeInfo.getState()){
                     case "0":
                         normalCount++;
                         probeInfo.setState("0");
@@ -286,13 +280,13 @@ public class AppEquipmentInfoApplication {
             }
             probeCurrentInfoDtos.add(probeInfo);
         }
-        if (StringUtils.isBlank(probeCommand.getState())) {
+        if(StringUtils.isBlank(probeCommand.getState())){
             probeCommand.setState("");
         }
         currentProbeInfoResult.setAbnormalNum(abnormalCount);
-        currentProbeInfoResult.setNormalNum(normalCount);
+        currentProbeInfoResult.setNormalNum( normalCount);
         currentProbeInfoResult.setTimeoutNum(timeoutCount);
-        switch (state) {
+        switch (state){
             case "0":
                 List<ProbeCurrentInfoDto> normalList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("0", res.getState())).collect(Collectors.toList());
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(normalList);
@@ -316,7 +310,7 @@ public class AppEquipmentInfoApplication {
         //探头排序
         for (ProbeCurrentInfoDto probeCurrentInfoDto : currentProbeInfoResult.getProbeCurrentInfoDtoList()) {
             List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
-            if (CollectionUtils.isNotEmpty(probeInfoDtoList)) {
+            if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
                 List<ProbeInfoDto> collect =
                         probeInfoDtoList.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
                 probeCurrentInfoDto.setProbeInfoDtoList(collect);
@@ -328,25 +322,34 @@ public class AppEquipmentInfoApplication {
         return currentProbeInfoResult;
     }
 
-    private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo, String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, String timeoutRedDuration) {
-
+    private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo,String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
+        //获取探头信息中最大的时间
+        Date maxDate = null;
+        List<Date> dates = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
+        maxDate = Collections.max(dates);
+        if (maxDate != null) {
+            probeInfo.setInputTime(maxDate);
+            boolean b = DateUtils.calculateIntervalTime(maxDate, timeoutRedDuration);
+            if(b){
+                probeInfo.setState("2");
+            }
+        }
         //构建探头高低值
-        buildProbeHighAndLowValue(equipmentNo, probeInfoDtoList, instrumentParamConfigMap, timeoutRedDuration);
+        buildProbeHighAndLowValue(equipmentNo, probeInfoDtoList, instrumentParamConfigMap,timeoutRedDuration);
         probeInfo.setProbeInfoDtoList(probeInfoDtoList);
-        long timeout = probeInfoDtoList.stream().filter(res -> res.getState().equals("2")).count();
-        long abnormal = probeInfoDtoList.stream().filter(res -> res.getState().equals("1")).count();
-        if (timeout > 0) {
-            probeInfo.setState("2");
-        } else if (abnormal > 0) {
-            probeInfo.setState("1");
-        } else {
-            probeInfo.setState("0");
+        if(StringUtils.isBlank(probeInfo.getState())){
+            long abnormal = probeInfoDtoList.stream().filter(res -> res.getState().equals("1")).count();
+            if(abnormal>0){
+                probeInfo.setState("1");
+            }else {
+                probeInfo.setState("0");
+            }
         }
         //获取标头信息(用于前端展示)
-        if (instrumentParamConfigMap.containsKey(equipmentNo)) {
+        if(instrumentParamConfigMap.containsKey(equipmentNo)){
             Map<Integer, List<InstrumentParamConfigDto>> integerListMap = instrumentParamConfigMap.get(equipmentNo);
             List<Integer> collect = new ArrayList<>(integerListMap.keySet());
-            List<String> instrumentConfigId = queryTitle(collect);
+            List<String> instrumentConfigId  = queryTitle(collect);
             probeInfo.setInstrumentConfigIdList(instrumentConfigId);
             fiterTitle(probeInfo);
         }
@@ -474,7 +477,7 @@ public class AppEquipmentInfoApplication {
      * @param probeInfoDtoList         探头信息
      * @param instrumentParamConfigMap 探头参数map
      */
-    private void buildProbeHighAndLowValue(String equipmentno, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, String timeoutRedDuration) {
+    private void buildProbeHighAndLowValue(String equipmentno, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
         if (MapUtils.isEmpty(instrumentParamConfigMap)) {
             return;
         }
@@ -508,7 +511,7 @@ public class AppEquipmentInfoApplication {
      * @param instrumentConfigId       检测类型id
      * @param instrumentParamConfigMap 探头参数map
      */
-    private void setProbeHeightAndLowValue(String equipmentno, Integer instrumentConfigId, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> removeList, String timeoutRedDuration) {
+    private void setProbeHeightAndLowValue(String equipmentno, Integer instrumentConfigId, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> removeList,String timeoutRedDuration) {
         if (!instrumentParamConfigMap.containsKey(equipmentno) || !instrumentParamConfigMap.get(equipmentno).containsKey(instrumentConfigId)) {
             removeList.add(probeInfoDto);
         }
@@ -519,7 +522,7 @@ public class AppEquipmentInfoApplication {
             BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
             probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
-            probeInfoDto.setState(StringUtils.isBlank(state) ? "" : state);
+            probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
             if (instrumentConfigId == 11) {
                 setState(probeInfoDto, lowLimit, state);
             }
@@ -529,12 +532,12 @@ public class AppEquipmentInfoApplication {
                 String unit = instrumentParamConfigDto.getUnit();
                 probeInfoDto.setUnit(unit);
                 probeInfoDto.setValue(probeInfoDto.getValue());
-            } else {
+            }else{
                 probeInfoDto.setUnit("");
             }
             //设置状态
             boolean flag = DateUtils.calculateIntervalTime(probeInfoDto.getInputTime(), timeoutRedDuration);
-            if (flag) {
+            if(flag){
                 probeInfoDto.setState("2");
             }
         }
