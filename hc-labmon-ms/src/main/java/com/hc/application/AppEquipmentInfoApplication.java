@@ -258,13 +258,7 @@ public class AppEquipmentInfoApplication {
                 probeInfo.setState("1");
                 abnormalCount++;
             }else {
-                //获取探头信息中最大的时间
-                Date maxDate = null;
-                List<Date> collect = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
-                maxDate = Collections.max(collect);
-                if (maxDate != null) {
-                    probeInfo.setInputTime(maxDate);
-                }
+
                 buildProbeInfoDtoListAndInstrumentConfigIdList(probeInfo, equipmentNo, probeInfoDtoList, instrumentParamConfigMap, timeoutRedDuration);
                 switch (probeInfo.getState()){
                     case "0":
@@ -326,18 +320,27 @@ public class AppEquipmentInfoApplication {
     }
 
     private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo,String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
-
+        //获取探头信息中最大的时间
+        Date maxDate = null;
+        List<Date> dates = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
+        maxDate = Collections.max(dates);
+        if (maxDate != null) {
+            probeInfo.setInputTime(maxDate);
+            boolean b = DateUtils.calculateIntervalTime(maxDate, timeoutRedDuration);
+            if(b){
+                probeInfo.setState("2");
+            }
+        }
         //构建探头高低值
         buildProbeHighAndLowValue(equipmentNo, probeInfoDtoList, instrumentParamConfigMap,timeoutRedDuration);
         probeInfo.setProbeInfoDtoList(probeInfoDtoList);
-        long timeout = probeInfoDtoList.stream().filter(res -> res.getState().equals("2")).count();
-        long abnormal = probeInfoDtoList.stream().filter(res -> res.getState().equals("1")).count();
-        if( timeout > 0){
-            probeInfo.setState("2");
-        }else if(abnormal>0){
-            probeInfo.setState("1");
-        }else {
-            probeInfo.setState("0");
+        if(StringUtils.isBlank(probeInfo.getState())){
+            long abnormal = probeInfoDtoList.stream().filter(res -> res.getState().equals("1")).count();
+            if(abnormal>0){
+                probeInfo.setState("1");
+            }else {
+                probeInfo.setState("0");
+            }
         }
         //获取标头信息(用于前端展示)
         if(instrumentParamConfigMap.containsKey(equipmentNo)){
