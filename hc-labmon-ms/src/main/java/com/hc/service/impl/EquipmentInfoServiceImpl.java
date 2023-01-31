@@ -79,7 +79,11 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         String sn = probeCommand.getSn();
         String equipmentName = probeCommand.getEquipmentName();
         return StringUtils.isBlank(sn) ?
-                equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto()).eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode()).eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId()).like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
+                equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                        .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
+                        .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
+                        .eq(MonitorEquipmentDto::getClientvisible,"1")
+                        .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
                 : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
     }
 }
