@@ -397,7 +397,7 @@ public class StatisticalAnalysisApplication {
             TimePointCurve curve = map.get(key);
             list.add(curve);
         }
-        return list;
+        return list.stream().sorted(Comparator.comparing(TimePointCurve::getName)).collect(Collectors.toList());
     }
 
     public static Map<String, List<Monitorequipmentlastdata>> sortMapByKey(Map<String, List<Monitorequipmentlastdata>> map) {
