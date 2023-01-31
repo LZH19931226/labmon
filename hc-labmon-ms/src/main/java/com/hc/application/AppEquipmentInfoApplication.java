@@ -504,6 +504,8 @@ public class AppEquipmentInfoApplication {
                 String unit = instrumentParamConfigDto.getUnit();
                 probeInfoDto.setUnit(unit);
                 probeInfoDto.setValue(probeInfoDto.getValue());
+            }else{
+                probeInfoDto.setUnit("");
             }
             //设置状态
             boolean flag = DateUtils.calculateIntervalTime(probeInfoDto.getInputTime(), timeoutRedDuration);
