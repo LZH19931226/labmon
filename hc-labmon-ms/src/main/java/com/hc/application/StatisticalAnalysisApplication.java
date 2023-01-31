@@ -517,56 +517,55 @@ public class StatisticalAnalysisApplication {
      * 时间点查询表格
      * @param equipmentDataCommand
      */
-    public   List<Map<String,String>> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
+    public  List<Map<String,String>> getThePointInTimeDataTable(EquipmentDataCommand equipmentDataCommand) {
+        //1.验证参数
         filterCondition(equipmentDataCommand);
         String field = equipmentDataCommand.getField();
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
-        //排列
-        List<Date> dateList = timeList.stream().filter(StringUtils::isNotBlank).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        //2.查询数据源
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
-        if(CollectionUtils.isEmpty(lastDataList)){
-            return new ArrayList<>();
-        }
-        List<Monitorequipmentlastdata> filterLastDataList = new ArrayList<>();
-        for (Date date : dateList) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.MINUTE,-30);
-            Date start = cal.getTime();
-            lastDataList.forEach(res->res.setRemark1(DateUtils.dateReduceHHmm(date)));
-            List<Monitorequipmentlastdata> collect = lastDataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
-            if(CollectionUtils.isEmpty(collect)){
-                continue;
-            }
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,field);
-            filterLastDataList.addAll(monitorEquipmentLastDataList);
-        }
-        List<Monitorequipmentlastdata> inputTimeList = filterLastDataList.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-        Map<String, List<Monitorequipmentlastdata>> inputTimeMap = inputTimeList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+        //3.加工数据
+        //思路：将数据源按照天分组拿到一天的所有数据1，再通过时间点拿到一个时间点前半个小时到这个时间点的数据2，再获取数据2中最靠近时间点的一条数据(有就设置没有就设置为0)
+        Map<String, List<Monitorequipmentlastdata>> dateMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
 
-        String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
         List<Map<String,String>> list = new ArrayList<>();
-        for (String date : inputTimeMap.keySet()) {
-            Map<String,String>  map = new HashMap<>();
+        Calendar cal  = Calendar.getInstance();
+        String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+        for (String date : dateMap.keySet()) {
+            Map<String,String> map = new HashMap<>();
             map.put("date",date);
             map.put("unit",unit);
-            List<Monitorequipmentlastdata> monitorEquipmentLastData = inputTimeMap.get(date);
-            for (Monitorequipmentlastdata lastData : monitorEquipmentLastData) {
-                String remark1 = lastData.getRemark1();
-                Map<String, Object> objectToMap = getObjectToMap(lastData);
-                String str =(String) objectToMap.get(field);
-                map.put(remark1,str);
+            List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
+            for (String timeStr : timeList) {
+                String hHmmTime = DateUtils.getHHmm(timeStr);
+                Date rTime = DateUtils.parseDate(timeStr);
+                cal.setTime(rTime);
+                cal.add(Calendar.MINUTE,-30);
+                Date lTime = cal.getTime();
+                List<Monitorequipmentlastdata> collect = monitorequipmentlastdata.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(),lTime,rTime)).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(collect)){
+                    map.put(hHmmTime,"");
+                    continue;
+                }
+                Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
+                Map<String, Object> objectToMap = getObjectToMap(data);
+                if(objectToMap.containsKey(field)){
+                    String str = (String) objectToMap.get(field);
+                    map.put(hHmmTime,str);
+                }else {
+                    map.put(hHmmTime,"");
+                }
             }
             list.add(map);
         }
-        return  list;
+        return list.stream().sorted(Comparator.comparing(o -> o.get("date"))).collect(Collectors.toList());
     }
 
     /**

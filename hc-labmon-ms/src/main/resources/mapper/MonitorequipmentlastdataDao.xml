@@ -36,6 +36,7 @@
         WHERE id IN ( #{param.yearMonth} )
         and inputdatetime <![CDATA[>=]]> #{param.startTime}
         and inputdatetime <![CDATA[<=]]> #{param.endTime}
+        and ${param.field} != ''
         AND equipmentno = #{param.equipmentNo}
         <if test="param.filterList != null">
             <foreach collection="param.filterList" item="res">
