@@ -122,14 +122,28 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
     public UserRightDto selectUserRight(UserRightCommand userRightCommand) {
         UserRightPo userRightPo = userRightDao.selectOne(Wrappers.lambdaQuery(new UserRightPo())
                 .eq(UserRightPo::getUsername, userRightCommand.getUsername()));
+        String lang = userRightCommand.getLang();
         if(ObjectUtils.isEmpty(userRightPo)){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST.name());
+            if(lang.equals("zh")){
+                throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST.getMessage());
+            }else {
+                throw new IedsException(LabSystemEnum.USERNAME_NOT_EXIST.name());
+            }
         }
         if(!StringUtils.equals(userRightPo.getPwd(),userRightCommand.getPwd())){
-            throw new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.name());
+            if(lang.equals("zh")){
+                throw new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.getMessage());
+            }else{
+                throw new IedsException(LabSystemEnum.USER_ACCOUNT_OR_PASSWORD_ERROR.name());
+            }
         }
         if(userRightPo.getIsUse() != 1L){
-            throw new IedsException(LabSystemEnum.USER_NOT_ENABLED.name());
+            if(lang.equals("zh")){
+                throw new IedsException(LabSystemEnum.USER_NOT_ENABLED.getMessage());
+            }else {
+                throw new IedsException(LabSystemEnum.USER_NOT_ENABLED.name());
+            }
+
         }
         return BeanConverter.convert(userRightPo,UserRightDto.class);
     }

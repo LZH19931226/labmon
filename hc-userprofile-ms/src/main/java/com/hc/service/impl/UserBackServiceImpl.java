@@ -35,16 +35,24 @@ public class UserBackServiceImpl  implements UserBackService {
     @Override
     public UserBackDto userLogin(UserCommand userCommand) {
         String username = userCommand.getUsername();
-        if(StringUtils.isBlank(username)){
-            throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.name());
-        }
-        String pwd = userCommand.getPwd();
-        if(StringUtils.isBlank(pwd)){
-            throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.name());
-        }
         String lang = userCommand.getLang();
         if(StringUtils.isBlank(lang)){
             throw new IedsException(LabSystemEnum.LANG_NOT_NULL.name());
+        }
+        if(StringUtils.isBlank(username)){
+            if(lang.equals("zh")){
+                throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.getMessage());
+            }else {
+                throw new IedsException(LabSystemEnum.USERNAME_NOT_NULL.name());
+            }
+        }
+        String pwd = userCommand.getPwd();
+        if(StringUtils.isBlank(pwd)){
+            if(lang.equals("zh")){
+                throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.getMessage());
+            }else {
+                throw new IedsException(LabSystemEnum.PASSWORD_CAN_NOT_NULL.name());
+            }
         }
         UserBackPo userBackPo =BeanConverter.convert(userCommand, UserBackPo.class);
         return userBackRepository.userLogin(userBackPo);
