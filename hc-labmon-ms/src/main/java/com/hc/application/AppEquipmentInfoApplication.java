@@ -44,6 +44,7 @@ import org.springframework.util.ObjectUtils;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class AppEquipmentInfoApplication {
@@ -309,6 +310,7 @@ public class AppEquipmentInfoApplication {
     }
 
     private CurrentProbeInfoResult probeSort(CurrentProbeInfoResult currentProbeInfoResult) {
+        //探头排序
         for (ProbeCurrentInfoDto probeCurrentInfoDto : currentProbeInfoResult.getProbeCurrentInfoDtoList()) {
             List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
             if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
@@ -317,6 +319,9 @@ public class AppEquipmentInfoApplication {
                 probeCurrentInfoDto.setProbeInfoDtoList(collect);
             }
         }
+        //设备排序
+        List<ProbeCurrentInfoDto> collect = currentProbeInfoResult.getProbeCurrentInfoDtoList().stream().sorted(Comparator.comparing(ProbeCurrentInfoDto::getEquipmentName)).collect(Collectors.toList());
+        currentProbeInfoResult.setProbeCurrentInfoDtoList(collect);
         return currentProbeInfoResult;
     }
 
