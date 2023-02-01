@@ -62,7 +62,9 @@
              ( SELECT equipmentno FROM monitorinstrument WHERE hospitalcode = #{param.hospitalCode}
             and sn LIKE concat('%',#{param.sn},'%') )
             and t1.equipmenttypeid = #{param.equipmentTypeId}
-            and t1.address like  =   concat('%',#{param.address},'%') )
+        <if test ="param.address != null and param.address != ''">
+            and t1.address like  concat('%',#{param.address},'%')
+        </if>
             and t1.clientvisible = '1'
     </select>
 </mapper>
