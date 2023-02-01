@@ -93,7 +93,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                             .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
                             .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
                             .eq(MonitorEquipmentDto::getClientvisible,"1")
-                            .eq(MonitorEquipmentDto::getEquipmenttypeid,address)
+                            .like(MonitorEquipmentDto::getAddress,address)
                             .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
                     : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
         }
