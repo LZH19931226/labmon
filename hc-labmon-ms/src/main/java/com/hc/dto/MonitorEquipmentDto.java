@@ -61,6 +61,12 @@ public class MonitorEquipmentDto implements Serializable {
     @TableField(value = "address")
     private Boolean address;
 
+    /**
+     * 排序字段
+     */
+    @TableField(value = "sort")
+    private int sort;
+
     @TableField(exist = false)
     private String  sn;
 

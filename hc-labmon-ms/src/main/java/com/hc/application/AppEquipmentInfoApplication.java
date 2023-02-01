@@ -319,8 +319,8 @@ public class AppEquipmentInfoApplication {
             }
         }
         //设备排序
-        List<ProbeCurrentInfoDto> collect = currentProbeInfoResult.getProbeCurrentInfoDtoList().stream().sorted(Comparator.comparing(ProbeCurrentInfoDto::getEquipmentName)).collect(Collectors.toList());
-        currentProbeInfoResult.setProbeCurrentInfoDtoList(collect);
+//        List<ProbeCurrentInfoDto> collect = currentProbeInfoResult.getProbeCurrentInfoDtoList().stream().sorted(Comparator.comparing(ProbeCurrentInfoDto::getEquipmentName)).collect(Collectors.toList());
+//        currentProbeInfoResult.setProbeCurrentInfoDtoList(collect);
         return currentProbeInfoResult;
     }
 

@@ -66,5 +66,6 @@
             and t1.address like  concat('%',#{param.address},'%')
         </if>
             and t1.clientvisible = '1'
+         order by t1.sort,t1.equipmentname
     </select>
 </mapper>

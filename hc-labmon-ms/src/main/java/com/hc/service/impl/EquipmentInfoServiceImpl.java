@@ -85,7 +85,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                             .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
                             .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
                             .eq(MonitorEquipmentDto::getClientvisible,"1")
-                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
+                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName)
+                            .orderByAsc(MonitorEquipmentDto::getSort)
+                            .orderByAsc(MonitorEquipmentDto::getEquipmentname)
+                          )
                     : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
         }else {
             return StringUtils.isBlank(sn) ?
@@ -94,7 +97,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
                             .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
                             .eq(MonitorEquipmentDto::getClientvisible,"1")
                             .like(MonitorEquipmentDto::getAddress,address)
-                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
+                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName)
+                            .orderByAsc(MonitorEquipmentDto::getSort)
+                            .orderByAsc(MonitorEquipmentDto::getEquipmentname)
+                    )
                     : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
         }
 
