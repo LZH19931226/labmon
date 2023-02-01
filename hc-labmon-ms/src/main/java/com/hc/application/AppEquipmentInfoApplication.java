@@ -228,7 +228,9 @@ public class AppEquipmentInfoApplication {
         //获取医院超时报警间隔
         HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
         String timeoutRedDuration = hos.getTimeoutRedDuration();
-
+        if(StringUtils.isBlank(timeoutRedDuration)){
+            timeoutRedDuration="30";
+        }
 
         List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
         /*

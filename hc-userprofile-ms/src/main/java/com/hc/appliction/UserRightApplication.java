@@ -184,7 +184,11 @@ public class UserRightApplication {
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
         String phoneNum = userRightDto.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
-            throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.name());
+            if (userRightCommand.getLang().equals("zh")) {
+                throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.getMessage());
+            }else {
+                throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.name());
+            }
         }
         String loginType = userRightCommand.getLoginType();
         String loginStatus = userRightCommand.getLoginStatus();

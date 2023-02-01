@@ -9,6 +9,7 @@ import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ObjectConvertUtils;
+import com.hc.my.common.core.util.RegularUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -23,7 +24,8 @@ public class CurveUtils {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
             filterMap(objectToMap,instrumentConfigIdList);
             for (String field : instrumentConfigIdList) {
-                if(!containerMap.containsKey(field) || !objectToMap.containsKey(field) || StringUtils.isBlank((String)objectToMap.get(field))){
+                //去除不需要展示的数据，去除对象中没有的字段，去除字段值为空的数据，去除数据不含数字的数据
+                if(!containerMap.containsKey(field) || !objectToMap.containsKey(field) || StringUtils.isBlank((String)objectToMap.get(field)) || !RegularUtil.checkContainsNumbers((String)objectToMap.get(field))){
                     continue;
                 }
                 String str =  (String)objectToMap.get(field);
