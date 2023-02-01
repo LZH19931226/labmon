@@ -65,7 +65,7 @@ public class MonitorEquipmentDto implements Serializable {
      * 排序字段
      */
     @TableField(value = "sort")
-    private int sort;
+    private Integer sort;
 
     @TableField(exist = false)
     private String  sn;
