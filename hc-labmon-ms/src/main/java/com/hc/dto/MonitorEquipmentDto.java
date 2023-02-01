@@ -55,6 +55,12 @@ public class MonitorEquipmentDto implements Serializable {
     @TableField(value = "clientvisible")
     private Boolean clientvisible;
 
+    /**
+     * 设备地址
+     */
+    @TableField(value = "address")
+    private Boolean address;
+
     @TableField(exist = false)
     private String  sn;
 

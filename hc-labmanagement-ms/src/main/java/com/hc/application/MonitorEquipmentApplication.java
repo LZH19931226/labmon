@@ -1156,4 +1156,8 @@ public class MonitorEquipmentApplication {
         }
         return list;
     }
+
+    public List<String> getHosEqTypeEqInfo(String hospitalCode, String equipmentTypeId) {
+        return monitorEquipmentService.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
+    }
 }
