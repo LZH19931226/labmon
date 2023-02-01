@@ -142,7 +142,7 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)){
             return null;
         }
-        Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
+        Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().filter(s->StringUtils.isNotEmpty(s.getEquipmenttypeid())).collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
         List<eqTypeAlarmNumCountDto>  eqTypeAlarmNumCountDtos1 =new ArrayList<>();
             eqTypeMap.forEach((k,v)->{
                 eqTypeAlarmNumCountDto  eqTypeAlarmNumCountDto  = new eqTypeAlarmNumCountDto();

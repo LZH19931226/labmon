@@ -30,7 +30,8 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
             "monitorequipment t1 " +
             "LEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid " +
             "WHERE " +
-            "t1.hospitalcode = #{hospitalCode} ")
+            "t1.clientvisible = '1' " +
+            "and  t1.hospitalcode = #{hospitalCode} ")
     List<eqTypeAlarmNumCountDto> findEquipmentByHosCode(@Param("hospitalCode") String hospitalCode);
 
     List<EquipmentTypeNumDto> getEquipmentTypeNum(@Param("param") EquipmentDataCommand equipmentDataCommand);
