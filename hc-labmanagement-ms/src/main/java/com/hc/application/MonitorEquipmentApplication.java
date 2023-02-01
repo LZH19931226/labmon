@@ -32,10 +32,10 @@ import com.hc.vo.equimenttype.WarningTimeVo;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -150,7 +150,7 @@ public class MonitorEquipmentApplication {
 
                 instrumentno = monitorinstrumentDTO.getInstrumentno();
                 //判断设备下有无探头绑定
-                if(!StringUtils.isEmpty(instrumentno) && inoAndParamConfigMap.containsKey(instrumentno)){
+                if(!StringUtils.isBlank(instrumentno) && inoAndParamConfigMap.containsKey(instrumentno)){
                     flag = false;
                 }
                 instrumenttypeid = monitorinstrumentDTO.getInstrumenttypeid();
@@ -158,10 +158,11 @@ public class MonitorEquipmentApplication {
                 sn = monitorinstrumentDTO.getSn();
             }
             MonitorEquipmentVo monitorEquipmentVo = MonitorEquipmentVo.builder()
-                    .alwaysAlarm(StringUtils.isEmpty(monitorEquipmentDto.getAlwaysAlarm()) ? "0":monitorEquipmentDto.getAlwaysAlarm())
+                    .alwaysAlarm(StringUtils.isBlank(monitorEquipmentDto.getAlwaysAlarm()) ? "0":monitorEquipmentDto.getAlwaysAlarm())
                     .channel(channel)
                     .clientVisible(monitorEquipmentDto.getClientVisible())
                     .deleteOrNot(flag)
+                    .sort(monitorEquipmentDto.getSort())
                     .equipmentBrand(monitorEquipmentDto.getEquipmentBrand())
                     .equipmentName(monitorEquipmentDto.getEquipmentName())
                     .equipmentNo(monitorEquipmentDto.getEquipmentNo())
@@ -172,13 +173,13 @@ public class MonitorEquipmentApplication {
                     .instrumentTypeName(instrumenttypename==null?"":instrumenttypename)
                     .instrumentno(instrumentno==null?"":instrumentno)
                     .instrumenttypeid(instrumenttypeid)
-                    .remark(StringUtils.isEmpty(monitorEquipmentDto.getRemark())?"":monitorEquipmentDto.getRemark())
-                    .upsNotice(StringUtils.isEmpty(monitorEquipmentDto.getUpsNotice())?"":monitorEquipmentDto.getUpsNotice())
-                    .saturation(StringUtils.isEmpty(monitorEquipmentDto.getSaturation()) ? "": monitorEquipmentDto.getSaturation())
+                    .remark(StringUtils.isBlank(monitorEquipmentDto.getRemark())?"":monitorEquipmentDto.getRemark())
+                    .upsNotice(StringUtils.isBlank(monitorEquipmentDto.getUpsNotice())?"":monitorEquipmentDto.getUpsNotice())
+                    .saturation(StringUtils.isBlank(monitorEquipmentDto.getSaturation()) ? "": monitorEquipmentDto.getSaturation())
                     .sn(sn==null?"":sn)
                     .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                     .warningTimeList(warningTimeVos)
-                    .address(monitorEquipmentDto.getAddress())
+                    .address(StringUtils.isBlank(monitorEquipmentDto.getAddress())?"":monitorEquipmentDto.getAddress())
                     .build();
             list.add(monitorEquipmentVo);
         }
@@ -284,6 +285,7 @@ public class MonitorEquipmentApplication {
                 .setEquipmentNo(equipmentNo)
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setAddress(monitorEquipmentCommand.getAddress())
+                .setSort(monitorEquipmentCommand.getSort())
                 .setCreateTime(new Date());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
@@ -334,9 +336,9 @@ public class MonitorEquipmentApplication {
                     .setInstrumentno(monitorinstrumentDTO.getInstrumentno())
                     .setInstrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
                     .setSaturation(instrumentmonitorDTO.getSaturation())
-                    .setUnit(StringUtils.isEmpty(instrumentmonitorDTO.getUnit()) ? "":instrumentmonitorDTO.getUnit())
-                    .setStyleMax(StringUtils.isEmpty(instrumentmonitorDTO.getStyleMax())?"":instrumentmonitorDTO.getStyleMax())
-                    .setStyleMin(StringUtils.isEmpty(instrumentmonitorDTO.getStyleMin())?"":instrumentmonitorDTO.getStyleMin())
+                    .setUnit(StringUtils.isBlank(instrumentmonitorDTO.getUnit()) ? "":instrumentmonitorDTO.getUnit())
+                    .setStyleMax(StringUtils.isBlank(instrumentmonitorDTO.getStyleMax())?"":instrumentmonitorDTO.getStyleMax())
+                    .setStyleMin(StringUtils.isBlank(instrumentmonitorDTO.getStyleMin())?"":instrumentmonitorDTO.getStyleMin())
                     .setAlarmtime(3);
             probeList.add(instrumentparamconfigDTO);
         }
@@ -450,9 +452,9 @@ public class MonitorEquipmentApplication {
                     .setWarningPhone("0")
                     .setLowLimit(res.getLowlimit())
                     .setHighLimit(res.getHighlimit())
-                    .setUnit(StringUtils.isEmpty(res.getUnit()) ? "":res.getUnit())
-                    .setStyleMax(StringUtils.isEmpty(res.getStyleMax()) ? "": res.getStyleMax())
-                    .setStyleMin(StringUtils.isEmpty(res.getStyleMin()) ? "": res.getStyleMin());
+                    .setUnit(StringUtils.isBlank(res.getUnit()) ? "":res.getUnit())
+                    .setStyleMax(StringUtils.isBlank(res.getStyleMax()) ? "": res.getStyleMax())
+                    .setStyleMin(StringUtils.isBlank(res.getStyleMin()) ? "": res.getStyleMin());
             list.add(instrumentInfoDto);
         }
         List<String> collect1 = list.stream().map(res -> res.getInstrumentNo() + ":" + res.getInstrumentConfigId()).collect(Collectors.toList());
@@ -487,6 +489,7 @@ public class MonitorEquipmentApplication {
                 .setInstrumentTypeId(monitorinstrumenttypeDTO.getInstrumenttypeid().toString())
                 .setSn(monitorEquipmentCommand.getSn())
                 .setAlarmTime(3L)
+                .setSort(monitorEquipmentCommand.getSort())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
                 .setWarningTimeList(warningTimeDTOs)
@@ -526,7 +529,7 @@ public class MonitorEquipmentApplication {
 
         //新增是设备no为空 修改时不为空
         String equipmentNo = newMonitorEquipmentLogCommand.getEquipmentNo();
-        if(!StringUtils.isEmpty(equipmentNo)){
+        if(!StringUtils.isBlank(equipmentNo)){
             logInfoCommand.setEquipmentNo(equipmentNo);
         }
 
@@ -589,6 +592,7 @@ public class MonitorEquipmentApplication {
                 .setRemark(monitorEquipmentCommand.getRemark())
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
                 .setAddress(monitorEquipmentCommand.getAddress())
+                .setSort(monitorEquipmentCommand.getSort())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
@@ -719,6 +723,7 @@ public class MonitorEquipmentApplication {
                 .setInstrumentName(monitorinstrumenttypeDTO.getInstrumenttypename())
                 .setInstrumentTypeId(String.valueOf(monitorinstrumenttypeDTO.getInstrumenttypeid()))
                 .setSn(monitorEquipmentCommand.getSn())
+                .setSort(monitorEquipmentCommand.getSort())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
                 .setAddress(monitorEquipmentCommand.getAddress())
@@ -865,7 +870,7 @@ public class MonitorEquipmentApplication {
      * @return
      */
     private boolean checkEquipmentId(String equipmentTypeId, String equipmenttypeid) {
-        if(StringUtils.isEmpty(equipmentTypeId)){
+        if(StringUtils.isBlank(equipmentTypeId)){
             return true;
         }
         if(equipmentTypeId.equals(equipmenttypeid)){
@@ -896,10 +901,10 @@ public class MonitorEquipmentApplication {
                 .instrumentconfigname(instrumentconfig.getInstrumentconfigname())
                 .highlimit(res.getHighlimit())
                 .saturation(res.getSaturation())
-                .channel(StringUtils.isEmpty(res.getChannel())?"":res.getChannel())
-                .unit(StringUtils.isEmpty(res.getUnit())?"":res.getUnit())
-                .styleMax(StringUtils.isEmpty(res.getStyleMax())?"":res.getStyleMax())
-                .styleMin(StringUtils.isEmpty(res.getStyleMin())?"":res.getStyleMin())
+                .channel(StringUtils.isBlank(res.getChannel())?"":res.getChannel())
+                .unit(StringUtils.isBlank(res.getUnit())?"":res.getUnit())
+                .styleMax(StringUtils.isBlank(res.getStyleMax())?"":res.getStyleMax())
+                .styleMin(StringUtils.isBlank(res.getStyleMin())?"":res.getStyleMin())
                 .field(DataFieldEnum.from(instrumentconfig.getInstrumentconfigname()).getLastDataField())
                 .build();
     }
