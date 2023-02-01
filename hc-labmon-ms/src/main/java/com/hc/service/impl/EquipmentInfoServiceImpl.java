@@ -78,12 +78,25 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     public List<MonitorEquipmentDto> getEquipmentInfo(ProbeCommand probeCommand) {
         String sn = probeCommand.getSn();
         String equipmentName = probeCommand.getEquipmentName();
-        return StringUtils.isBlank(sn) ?
-                equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
-                        .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
-                        .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
-                        .eq(MonitorEquipmentDto::getClientvisible,"1")
-                        .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
-                : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
+        String address = probeCommand.getAddress();
+        if (StringUtils.isEmpty(address)){
+            return StringUtils.isBlank(sn) ?
+                    equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                            .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
+                            .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
+                            .eq(MonitorEquipmentDto::getClientvisible,"1")
+                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
+                    : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
+        }else {
+            return StringUtils.isBlank(sn) ?
+                    equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                            .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
+                            .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
+                            .eq(MonitorEquipmentDto::getClientvisible,"1")
+                            .eq(MonitorEquipmentDto::getEquipmenttypeid,address)
+                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName))
+                    : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
+        }
+
     }
 }

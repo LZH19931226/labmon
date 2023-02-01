@@ -38,4 +38,9 @@ public class ProbeCommand {
     private String warningSwitch;
 
     private String sn;
+
+    /**
+     * 位置信息
+     */
+    private String address;
 }

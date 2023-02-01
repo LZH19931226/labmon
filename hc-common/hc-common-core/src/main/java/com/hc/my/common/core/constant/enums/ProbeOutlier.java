@@ -23,7 +23,7 @@ public enum ProbeOutlier {
     TEMPERATURE_CONTROL_OFF("温度控制关闭"),
     COMPARTMENT_DOOR_OPEN("仓室门开启"),
     ABNORMAL_TEMPERATURE_CONTROL("温度控制异常"),
-    MAIN_SWITCH_OFF("总开关关闭，但未断电，无显示"),
+    MAIN_SWITCH_OFF("总开关关闭，但未断电,无显示"),
     AIRFLOW_CONTROL_OFF("流量控制关闭"),
     GAS_FLOW_IS_UNSTABLE("气体流量不稳定"),
     LOW_INLET_PRESSURE("进气口压力低"),
