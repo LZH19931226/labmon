@@ -111,7 +111,7 @@
         AND  inputdatetime <![CDATA[>=]]> #{param.startTime}
         AND  inputdatetime <![CDATA[<=]]> #{param.endTime}
         <if test="param.equipmentNo != null and param.equipmentNo != ''">
-            AND  equipmentno  = #{param.equipmentNo}
+            AND  equipmentno  in (${param.equipmentNo})
         </if>
         ORDER by inputdatetime
     </select>

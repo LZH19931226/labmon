@@ -39,4 +39,6 @@ public class WarningInfoCommand {
     private Integer pageSize;
 
     private Integer pageCurrent;
+
+    private String equipmentTypeId;
 }

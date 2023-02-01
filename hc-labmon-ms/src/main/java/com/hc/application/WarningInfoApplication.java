@@ -11,6 +11,7 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentParamConfigDto;
+import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.WarningRecordInfoDto;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
@@ -18,9 +19,13 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
+import com.hc.my.common.core.util.RegularUtil;
+import com.hc.repository.EquipmentInfoRepository;
 import com.hc.repository.InstrumentParamConfigRepository;
+import com.hc.service.EquipmentInfoService;
 import com.hc.service.WarningRecordInfoService;
 import com.hc.util.EquipmentInfoServiceHelp;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,6 +54,9 @@ public class WarningInfoApplication {
     @Autowired
     private WarningRecordInfoService warningRecordInfoService;
 
+    @Autowired
+    private EquipmentInfoRepository equipmentInfoRepository;
+
 
     /**
      * 分页获取报警信息
@@ -56,6 +64,7 @@ public class WarningInfoApplication {
      * @return
      */
     public  Page<Warningrecord> getWarningRecord(WarningInfoCommand warningInfoCommand) {
+        filterEquipmentNo(warningInfoCommand);
         Page<Warningrecord> page = new Page<>(warningInfoCommand.getPageCurrent(),warningInfoCommand.getPageSize());
         WarningRecordParam warningRecordParam = new WarningRecordParam()
                 .setHospitalCode(warningInfoCommand.getHospitalCode())
@@ -88,11 +97,13 @@ public class WarningInfoApplication {
                     if(StringUtils.equalsAnyIgnoreCase(probeEName,"currentdoorstate","currentdoorstate2","currentups")){
                         res.setAlertRules(cName+"异常");
                     }else {
-                        int i =  new BigDecimal(res.getWarningValue()).compareTo(new BigDecimal(res.getHighLimit()));
-                        if( i > 0 ){
-                            res.setAlertRules(cName + "高于设置的上阀值"+res.getHighLimit());
-                        }else {
-                            res.setAlertRules(cName + "低于设置的下阀值"+res.getLowLimit());
+                        if(StringUtils.isNotBlank(res.getWarningValue()) && RegularUtil.checkContainsNumbers(res.getWarningValue())){
+                            int i =  new BigDecimal(res.getWarningValue()).compareTo(new BigDecimal(res.getHighLimit()));
+                            if( i > 0 ){
+                                res.setAlertRules(cName + "高于设置的上阀值"+res.getHighLimit());
+                            }else {
+                                res.setAlertRules(cName + "低于设置的下阀值"+res.getLowLimit());
+                            }
                         }
                     }
                     res.setEName(probeEName);
@@ -106,6 +117,49 @@ public class WarningInfoApplication {
         }
         page.setRecords(records);
         return page;
+    }
+
+    private void filterEquipmentNo(WarningInfoCommand warningInfoCommand) {
+        //分三种情况
+        String hospitalCode = warningInfoCommand.getHospitalCode();
+        String equipmentTypeId = warningInfoCommand.getEquipmentTypeId();
+        String equipmentNo = warningInfoCommand.getEquipmentNo();
+        if(StringUtils.isBlank(equipmentNo)){
+            //1.只输入hospitalCode
+            if(StringUtils.isBlank(equipmentTypeId)){
+                List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                        .select(MonitorEquipmentDto::getEquipmentno)
+                        .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode));
+                if(CollectionUtils.isEmpty(list)){
+                    return;
+                }
+                List<String> enos = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+                String eno = strJoin(enos);
+                warningInfoCommand.setEquipmentNo(eno);
+            }
+            //2.只输入equipmentTypeId hospitalCode
+            else {
+                List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                        .select(MonitorEquipmentDto::getEquipmentno)
+                        .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode)
+                        .eq(MonitorEquipmentDto::getEquipmenttypeid,equipmentTypeId));
+                if(CollectionUtils.isEmpty(list)){
+                    return;
+                }
+                List<String> enos = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+                String eno =strJoin(enos);
+                warningInfoCommand.setEquipmentNo(eno);
+            }
+        }
+    }
+
+    private String strJoin(List<String> enos) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String eno : enos) {
+            stringBuilder.append("'").append(eno).append("'");
+            stringBuilder.append(",");
+        }
+        return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
 
     /**
