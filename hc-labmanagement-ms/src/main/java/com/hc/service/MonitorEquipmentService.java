@@ -83,4 +83,6 @@ public interface MonitorEquipmentService {
     void updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(String hospitalCode, String equipmentTypeId,String warningPhone);
 
     List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand);
+
+    List<String> getHosEqTypeEqInfo(String hospitalCode, String equipmentTypeId);
 }

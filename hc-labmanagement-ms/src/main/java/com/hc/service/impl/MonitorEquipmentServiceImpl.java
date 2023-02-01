@@ -134,4 +134,9 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand) {
         return monitorEquipmentRepository.getMonitorEquipmentList(page,monitorEquipmentCommand);
     }
+
+    @Override
+    public List<String> getHosEqTypeEqInfo(String hospitalCode, String equipmentTypeId) {
+        return monitorEquipmentRepository.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
+    }
 }

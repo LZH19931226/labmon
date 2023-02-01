@@ -105,5 +105,10 @@ public class MonitorEquipmentController {
         return monitorEquipmentApplication.checkSn(sn);
     }
 
+    @GetMapping("/getHosEqTypeEqInfo")
+    @ApiOperation("/获取医院设备类型设备位置信息")
+    public List<String> getHosEqTypeEqInfo(@RequestParam("hospitalCode") String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
+        return  monitorEquipmentApplication.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
+    }
 
 }
