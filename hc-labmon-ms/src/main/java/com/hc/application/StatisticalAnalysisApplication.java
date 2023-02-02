@@ -287,7 +287,6 @@ public class StatisticalAnalysisApplication {
             wrMap = wrList.stream().collect(Collectors.groupingBy(res->DateUtils.getMMdd(res.getTime())));
         }
         List<String> timeList  = DateUtils.getTimePeriod(equipmentDataCommand.getStartTime(),equipmentDataCommand.getEndTime());
-
         List<String> numList = new ArrayList<>();
         for (String time : timeList) {
             if(wrMap.containsKey(time)){
@@ -343,8 +342,10 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
+        //校验日期格式数据
+        List<String> timeLists = DateUtils.filterDate(timeList);
         //排列
-        List<Date> dateList = timeList.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<Date> dateList = timeLists.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
@@ -399,6 +400,7 @@ public class StatisticalAnalysisApplication {
         }
         return list.stream().sorted(Comparator.comparing(TimePointCurve::getName)).collect(Collectors.toList());
     }
+
 
     public static Map<String, List<Monitorequipmentlastdata>> sortMapByKey(Map<String, List<Monitorequipmentlastdata>> map) {
         if (map == null || map.isEmpty()) {
@@ -525,6 +527,7 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
+        List<String> timeLists = DateUtils.filterDate(timeList);
         //2.查询数据源
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
@@ -543,7 +546,7 @@ public class StatisticalAnalysisApplication {
             map.put("date",date);
             map.put("unit",unit);
             List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
-            for (String timeStr : timeList) {
+            for (String timeStr : timeLists) {
                 String hHmmTime = DateUtils.getHHmm(timeStr);
                 //将00:30 改为 00:00 将23:59改为24:00
                 String hhMm = editHhmm(hHmmTime);
@@ -581,8 +584,9 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(timeList)){
             return;
         }
+        List<String> timeLists = DateUtils.filterDate(timeList);
         //排列
-        List<Date> dateList = timeList.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<Date> dateList = timeLists.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
