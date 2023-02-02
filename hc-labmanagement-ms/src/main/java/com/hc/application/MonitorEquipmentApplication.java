@@ -162,7 +162,7 @@ public class MonitorEquipmentApplication {
                     .channel(channel)
                     .clientVisible(monitorEquipmentDto.getClientVisible())
                     .deleteOrNot(flag)
-                    .sort(monitorEquipmentDto.getSort())
+                    .sort(StringUtils.isBlank(monitorEquipmentDto.getSort()) ? "":monitorEquipmentDto.getSort())
                     .equipmentBrand(monitorEquipmentDto.getEquipmentBrand())
                     .equipmentName(monitorEquipmentDto.getEquipmentName())
                     .equipmentNo(monitorEquipmentDto.getEquipmentNo())
