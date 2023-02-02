@@ -1,9 +1,7 @@
 package com.hc.my.common.core.util;
 
-import cn.hutool.core.date.DateUtil;
 import com.hc.my.common.core.util.date.DateConstant;
 import com.hc.my.common.core.util.date.DateDto;
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +23,32 @@ public class DateUtils {
     private static SimpleDateFormat dateFormatHHmm = new SimpleDateFormat("HH:mm");
     private static SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
 
+
+
+    /**
+     * 过滤数组元素,是否满足对应日期格式
+     *
+     * @param list
+     * @return
+     */
+    public static List<String> filterDate(List<String> list) {
+        List<String> timeList = new ArrayList<>();
+        list.forEach(s -> {
+            if (paseDatetimeFormat(s)){
+                timeList.add(s);
+            }
+        });
+        return timeList;
+    }
+
+    public static boolean paseDatetimeFormat(String time) {
+        try {
+            Date parse = datetimeFormat.parse(time);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
 
 
     /**
@@ -61,6 +85,7 @@ public class DateUtils {
      * 当前时间是否在此时间区间时分内
      * （只在同月生效）,只在同月生效,只在同月生效 重要 说三遍
      * 例如： 2022-11-12 01:00:00(nowTime)   2022-11-11 00:00:00(startTime) 2022-11-11 02:00:00(endTime) true
+     *
      * @param nowTime
      * @param startTime
      * @param endTime
@@ -74,23 +99,23 @@ public class DateUtils {
 
         Calendar date = Calendar.getInstance();
         date.setTime(nowTime);
-        date.set(Calendar.YEAR,2022);
-        date.set(Calendar.MONTH,1);
-        date.set(Calendar.DATE,1);
+        date.set(Calendar.YEAR, 2022);
+        date.set(Calendar.MONTH, 1);
+        date.set(Calendar.DATE, 1);
         Date time1 = date.getTime();
 
         Calendar begin = Calendar.getInstance();
         begin.setTime(startTime);
-        begin.set(Calendar.YEAR,2022);
-        begin.set(Calendar.MONTH,1);
-        begin.set(Calendar.DATE,1);
+        begin.set(Calendar.YEAR, 2022);
+        begin.set(Calendar.MONTH, 1);
+        begin.set(Calendar.DATE, 1);
         Date time2 = begin.getTime();
 
         Calendar end = Calendar.getInstance();
         end.setTime(endTime);
-        end.set(Calendar.YEAR,2022);
-        end.set(Calendar.MONTH,1);
-        end.set(Calendar.DATE,1);
+        end.set(Calendar.YEAR, 2022);
+        end.set(Calendar.MONTH, 1);
+        end.set(Calendar.DATE, 1);
         Date time3 = end.getTime();
         //统一年月日后对比
         if (time1.after(time2) && time1.before(time3)) {
@@ -129,14 +154,15 @@ public class DateUtils {
      * @param nowTime 当前时间 HH:mm
      * @author liu
      */
-    public static String parseDatetime(Date nowTime){
+    public static String parseDatetime(Date nowTime) {
         return dateFormatHHmm.format(nowTime);
     }
 
     /**
      * 解析时间
+     *
      * @param date
-     * @return  "HH:mm:ss"
+     * @return "HH:mm:ss"
      */
     public static String paseDateHHmmss(Date date) {
         return simpleDateFormat.format(date);
@@ -144,10 +170,11 @@ public class DateUtils {
 
     /**
      * 解析时间
+     *
      * @param date
      * @return "MM-dd"
      */
-    public static String paseDateMMdd(Date date){
+    public static String paseDateMMdd(Date date) {
         return dateFormatMMdd.format(date);
     }
 
@@ -162,8 +189,9 @@ public class DateUtils {
 
     /**
      * 获取两个时间段的所有月日
+     *
      * @param startTime 开始时间
-     * @param endTime 结束时间
+     * @param endTime   结束时间
      * @return 01-06 01-07
      */
     public static List<String> getTimePeriod(String startTime, String endTime) {
@@ -175,7 +203,7 @@ public class DateUtils {
             list.add(md);
             Calendar cal = Calendar.getInstance();
             cal.setTime(start);
-            cal.add(Calendar.DATE,1);
+            cal.add(Calendar.DATE, 1);
             start = cal.getTime();
         }
         return list;
@@ -212,25 +240,28 @@ public class DateUtils {
 
     /**
      * 根据输入分钟,计算输入时间与当前时间的时间差
+     *
      * @param wornTime 输入时间
      * @param minute
      * @return
      */
     public static boolean calculateIntervalTime(Date wornTime, String minute) {
-        int i=Integer.parseInt(minute);
-        long timeInterval = (new Date().getTime() - wornTime.getTime()) / (1000*60);
-        return timeInterval > i ;
+        int i = Integer.parseInt(minute);
+        long timeInterval = (new Date().getTime() - wornTime.getTime()) / (1000 * 60);
+        return timeInterval > i;
     }
 
     public static void main(String[] args) throws ParseException {
     }
+
     /**
      * 以 yyyy-MM-dd HH:mm:ss 的格式解析String
+     *
      * @param str
      * @return
      */
-    public static Date parseDate(String str){
-        Date date ;
+    public static Date parseDate(String str) {
+        Date date;
         try {
             date = datetimeFormat.parse(str);
         } catch (ParseException e) {
@@ -241,61 +272,66 @@ public class DateUtils {
 
     /**
      * 以 yyyy-MM 的格式解析String
+     *
      * @param str
      * @return year+month
      */
-    public static String parseDateYm(String str){
+    public static String parseDateYm(String str) {
         Date date = parseDate(str);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int month = calendar.get(Calendar.MONTH)+1;
+        int month = calendar.get(Calendar.MONTH) + 1;
         int year = calendar.get(Calendar.YEAR);
-        return month >9 ? ""+year+month : ""+year+"0"+month;
+        return month > 9 ? "" + year + month : "" + year + "0" + month;
     }
 
     /**
      * 获取前一个小时的时间
+     *
      * @param date
      * @return "HH-mm"
      */
-    public static String getPreviousHourHHmm(Date date){
+    public static String getPreviousHourHHmm(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY,-1);
+        cal.add(Calendar.HOUR_OF_DAY, -1);
         Date time = cal.getTime();
         return parseDatetime(time);
     }
 
     /**
      * 获取前一个小时的时间
+     *
      * @param date
      * @return "HH:mm:ss"
      */
     public static String getPreviousHourHHmmss(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY,-1);
+        cal.add(Calendar.HOUR_OF_DAY, -1);
         Date time = cal.getTime();
         return simpleDateFormat.format(time);
     }
 
     /**
      * 获取前一个小时的时间
+     *
      * @param date
      * @return "yyyy-MM-dd HH:mm:ss"
      */
     public static Date getPreviousHour(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY,-1);
+        cal.add(Calendar.HOUR_OF_DAY, -1);
         return cal.getTime();
     }
 
     /**
      * 获得当天零时零分零秒
+     *
      * @return
      */
-    public static Date initDateByDay(){
+    public static Date initDateByDay() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -313,59 +349,61 @@ public class DateUtils {
 
     /**
      * 获取累加之后的时间
+     *
      * @param date
      * @return "yyyy-MM-dd HH:mm:ss"
      */
-    public static Date getAddHour(Date date,int hour) {
+    public static Date getAddHour(Date date, int hour) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY,hour);
+        cal.add(Calendar.HOUR_OF_DAY, hour);
         return cal.getTime();
     }
 
 
     /**
-     *  转换日期格式
+     * 转换日期格式
+     *
      * @param date
      * @return "HH:mm"
      */
-    public static String dateReduceHHmm(Date date){
+    public static String dateReduceHHmm(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int hours = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-        String h = hours > 9 ? String.valueOf(hours) : "0"+hours;
-        return minute > 9 ? h+":"+minute : h+":0"+minute;
+        String h = hours > 9 ? String.valueOf(hours) : "0" + hours;
+        return minute > 9 ? h + ":" + minute : h + ":0" + minute;
     }
 
     /**
      * 获取时间的年月
+     *
      * @param date
      * @return
      */
-    public static String getYearMonth(Date date)
-    {
+    public static String getYearMonth(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        int month = cal.get(Calendar.MONTH)+1;
+        int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
-        return month>9 ? year+"-"+month : year+"-0"+month;
+        return month > 9 ? year + "-" + month : year + "-0" + month;
     }
 
     /**
      * 将时间转化为 yyyy-MM-dd 类型
+     *
      * @param time
      * @return
      */
-    public static Date getYearMonthDate(Date time)
-    {
+    public static Date getYearMonthDate(Date time) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(time);
-        int month = cal.get(Calendar.MONTH)+1;
+        int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
         int date = cal.get(Calendar.HOUR_OF_DAY);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year,month,date);
+        calendar.set(year, month, date);
         return calendar.getTime();
     }
 
@@ -373,7 +411,7 @@ public class DateUtils {
      * 获取两个时间相隔的时间
      *
      * @param startDate 开始时间
-     * @param endDate 结束时间
+     * @param endDate   结束时间
      * @return 时间对象{年，月，日，时，分，秒}
      */
     public static DateDto convert(Date startDate, Date endDate) {
@@ -381,88 +419,91 @@ public class DateUtils {
         long startTime = startDate.getTime();
         //获取结束毫秒数
         long endTime = endDate.getTime();
-        long timeDifference = endTime-startTime;
+        long timeDifference = endTime - startTime;
         //计算秒
-        long time = (timeDifference/1000);
+        long time = (timeDifference / 1000);
         return getDateDto(time);
     }
 
     /**
      * 获取时间对象
+     *
      * @param obj Date或long类型
      * @return 时间对象{年，月，日，时，分，秒}
      */
-    public static DateDto getDateDto(Object obj){
+    public static DateDto getDateDto(Object obj) {
         return obj instanceof Long ? getDateDto(((Long) obj)) :
-                obj instanceof Date ? getDateDto(((Date)obj).getTime()/1000)  : null;
+                obj instanceof Date ? getDateDto(((Date) obj).getTime() / 1000) : null;
     }
 
     /**
      * 获取时间对象
+     *
      * @param time 毫秒
      * @return
      */
-    public static DateDto getDateDto(Long time){
+    public static DateDto getDateDto(Long time) {
         DateDto dateDto = new DateDto();
-        if(time< DateConstant.SECOND_THRESHOLD){
+        if (time < DateConstant.SECOND_THRESHOLD) {
             //设置秒
             dateDto.setSecond(time);
-        }else{
-            long minute =  time/DateConstant.SECOND_THRESHOLD;
-            if(minute < DateConstant.MINUTE_THRESHOLD){
+        } else {
+            long minute = time / DateConstant.SECOND_THRESHOLD;
+            if (minute < DateConstant.MINUTE_THRESHOLD) {
                 //设置分
                 dateDto.setMinute(minute);
-                dateDto.setSecond(time%DateConstant.SECOND_THRESHOLD);
-            }else {
-                long hour = minute/DateConstant.MINUTE_THRESHOLD;
-                if(hour < DateConstant.HOUR_THRESHOLD){
+                dateDto.setSecond(time % DateConstant.SECOND_THRESHOLD);
+            } else {
+                long hour = minute / DateConstant.MINUTE_THRESHOLD;
+                if (hour < DateConstant.HOUR_THRESHOLD) {
                     //设置时
                     dateDto.setHour(hour);
-                }else {
-                    long date = hour/DateConstant.HOUR_THRESHOLD;
-                    if(date < DateConstant.DATE_THRESHOLD){
+                } else {
+                    long date = hour / DateConstant.HOUR_THRESHOLD;
+                    if (date < DateConstant.DATE_THRESHOLD) {
                         //设置日
                         dateDto.setDate(date);
-                    }else {
-                        long month = date/DateConstant.DATE_THRESHOLD;
-                        if(month<DateConstant.MONTH_THRESHOLD){
+                    } else {
+                        long month = date / DateConstant.DATE_THRESHOLD;
+                        if (month < DateConstant.MONTH_THRESHOLD) {
                             //设置月
                             dateDto.setMonth(month);
-                        }else {
-                            Long year = month/DateConstant.MONTH_THRESHOLD;
+                        } else {
+                            Long year = month / DateConstant.MONTH_THRESHOLD;
                             //设置年
                             dateDto.setYear(year);
-                            dateDto.setMonth(month%DateConstant.MONTH_THRESHOLD);
+                            dateDto.setMonth(month % DateConstant.MONTH_THRESHOLD);
                         }
-                        dateDto.setDate(date%DateConstant.DATE_THRESHOLD);
+                        dateDto.setDate(date % DateConstant.DATE_THRESHOLD);
                     }
-                    dateDto.setHour(hour%DateConstant.HOUR_THRESHOLD);
+                    dateDto.setHour(hour % DateConstant.HOUR_THRESHOLD);
                 }
-                dateDto.setMinute(minute%DateConstant.MINUTE_THRESHOLD);
-                dateDto.setSecond(time%DateConstant.SECOND_THRESHOLD);
+                dateDto.setMinute(minute % DateConstant.MINUTE_THRESHOLD);
+                dateDto.setSecond(time % DateConstant.SECOND_THRESHOLD);
             }
         }
         return dateDto;
     }
 
-    public static int getCurrentYYMM(){
+    public static int getCurrentYYMM() {
         LocalDateTime now = LocalDateTime.now();
-        int month =now.getMonth().getValue();
+        int month = now.getMonth().getValue();
         int year = now.getYear();
         String mon = String.valueOf(month);
-        if(mon.length()==1){
-            mon="0"+mon;
+        if (mon.length() == 1) {
+            mon = "0" + mon;
         }
-        String yymm = year+mon;
+        String yymm = year + mon;
         return Integer.parseInt(yymm);
     }
 
     /**
      * 获取年份
+     *
      * @param time 格式为yyyy-MM-dd
      * @return yyyy
      */
-    public static int getYear(String time){
+    public static int getYear(String time) {
         Date date = parseDate(time);
         Calendar instance = Calendar.getInstance();
         instance.setTime(date);
@@ -471,28 +512,30 @@ public class DateUtils {
 
     /**
      * 获取月份
+     *
      * @param time yyyy-MM-dd
      * @return mm
      */
-    public static int getMonth(String time){
+    public static int getMonth(String time) {
         Date date = parseDate(time);
         Calendar instance = Calendar.getInstance();
         instance.setTime(date);
-        return instance.get(Calendar.MONTH)+1;
+        return instance.get(Calendar.MONTH) + 1;
     }
 
     /**
      * 获取两个时间之间所有的年月集合
-     *  开始时间不能大于结束时间
+     * 开始时间不能大于结束时间
+     *
      * @param startTime 开始时间
-     * @param endTime 结束时间
+     * @param endTime   结束时间
      * @return '202201','202202'...
      */
-    public static String getYearMonth(String startTime,String endTime){
+    public static String getYearMonth(String startTime, String endTime) {
         String startYm = DateUtils.parseDateYm(startTime);
         String endYm = DateUtils.parseDateYm(endTime);
         //相同时任意返回一个
-        if(startYm.equals(endYm)){
+        if (startYm.equals(endYm)) {
             return startYm;
         }
 
@@ -502,20 +545,20 @@ public class DateUtils {
         //获取月
         int startMonth = DateUtils.getMonth(startTime);
         int endMonth = DateUtils.getMonth(endTime);
-        list.add(startMonth>9?""+startYear+startMonth:""+startYear+"0"+startMonth);
+        list.add(startMonth > 9 ? "" + startYear + startMonth : "" + startYear + "0" + startMonth);
         Date date = DateUtils.parseDate(startTime);
-        Calendar cal =Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        while(true){
-            cal.add(Calendar.MONTH,1);
+        while (true) {
+            cal.add(Calendar.MONTH, 1);
             int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH) +1;
-            if(year == endYear){
-                if(month>endMonth){
+            int month = cal.get(Calendar.MONTH) + 1;
+            if (year == endYear) {
+                if (month > endMonth) {
                     break;
                 }
             }
-            list.add( month > 9 ? ""+ year + month: ""+year+"0"+month);
+            list.add(month > 9 ? "" + year + month : "" + year + "0" + month);
         }
         StringBuilder stringBuilder = new StringBuilder();
         for (String s : list) {
@@ -524,34 +567,36 @@ public class DateUtils {
             stringBuilder.append("'");
             stringBuilder.append(",");
         }
-        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         return stringBuilder.toString();
     }
 
 
     /**
      * 获取时间的月份和年
+     *
      * @param time YYYY-MM-dd HH:mm:ss
      * @return MM-dd
      */
-    public static String getMMdd(String time){
+    public static String getMMdd(String time) {
         Date date = parseDate(time);
         return dateFormatMMdd.format(date);
     }
 
     /**
      * 获取时间的月份和年
+     *
      * @param time YYYY-MM-dd HH:mm:ss
      * @return HH:mm
      */
-    public static String getHHmm(String time){
+    public static String getHHmm(String time) {
         Date date = parseDate(time);
         return dateFormatHHmm.format(date);
     }
 
 
-    public  static  List<String>  getBetweenDate(String beginDate,String endDate) {
-        List<String> dates  = new ArrayList<>();
+    public static List<String> getBetweenDate(String beginDate, String endDate) {
+        List<String> dates = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         try {
             cal.setTime(datetimeFormat.parse(beginDate));

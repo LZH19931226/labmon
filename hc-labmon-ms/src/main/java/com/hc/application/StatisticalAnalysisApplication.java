@@ -287,7 +287,6 @@ public class StatisticalAnalysisApplication {
             wrMap = wrList.stream().collect(Collectors.groupingBy(res->DateUtils.getMMdd(res.getTime())));
         }
         List<String> timeList  = DateUtils.getTimePeriod(equipmentDataCommand.getStartTime(),equipmentDataCommand.getEndTime());
-
         List<String> numList = new ArrayList<>();
         for (String time : timeList) {
             if(wrMap.containsKey(time)){
@@ -343,8 +342,10 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
+        //校验日期格式数据
+        List<String> timeLists = DateUtils.filterDate(timeList);
         //排列
-        List<Date> dateList = timeList.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<Date> dateList = timeLists.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
@@ -399,6 +400,7 @@ public class StatisticalAnalysisApplication {
         }
         return list.stream().sorted(Comparator.comparing(TimePointCurve::getName)).collect(Collectors.toList());
     }
+
 
     public static Map<String, List<Monitorequipmentlastdata>> sortMapByKey(Map<String, List<Monitorequipmentlastdata>> map) {
         if (map == null || map.isEmpty()) {
