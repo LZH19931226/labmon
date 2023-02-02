@@ -235,17 +235,17 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public Page getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
+        Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
         List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
         if(CollectionUtils.isEmpty(filterList)){
             throw new IedsException("筛选条件不能为空");
         }
         List<String> fieldList = equipmentDataCommand.getFieldList();
         if(CollectionUtils.isEmpty(fieldList)){
-            throw new IedsException("查询类型不能为空");
+            return page;
         }
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         //分页查询
-        Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
         String startTime = equipmentDataCommand.getStartTime();
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
