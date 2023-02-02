@@ -57,11 +57,13 @@ public class CurveUtils {
         curveDataModel.setXaxis(timeList);
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(dataList);
+        //数据库不为空时去数据库中的值
         if (CollectionUtils.isNotEmpty(list)) {
-            curveDataModel.setMaxNum(list.get(0).getHighLimit()+"");
-            curveDataModel.setMinNum(list.get(0).getLowLimit()+"");
-            curveDataModel.setStyleMin(list.get(0).getStyleMin()+"");
-            curveDataModel.setStyleMax(list.get(0).getStyleMax()+"");
+            InstrumentParamConfigDto probe = list.get(0);
+            curveDataModel.setMaxNum(probe.getHighLimit()+"");
+            curveDataModel.setMinNum(probe.getLowLimit()+"");
+            curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? "":probe.getStyleMin());
+            curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? "":probe.getStyleMax());
         }else {
             OptionalDouble max = dataList.stream().mapToDouble(Double::parseDouble).max();
             if (max.isPresent()) {
