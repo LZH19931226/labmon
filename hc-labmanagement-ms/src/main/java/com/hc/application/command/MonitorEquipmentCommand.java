@@ -112,6 +112,6 @@ public class MonitorEquipmentCommand {
     private List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList;
 
     /** 排序 */
-    private Long sort;
+    private String sort;
 
 }

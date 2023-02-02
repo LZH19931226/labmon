@@ -44,7 +44,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     private Long clientVisible;
 
     /** 分类 */
-    private Long sort;
+    private String sort;
 
     /** 全天警报 1=开启 0=关闭 */
     private String alwaysAlarm;

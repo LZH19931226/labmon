@@ -59,7 +59,7 @@ public class 	MonitorEquipmentVo  implements Serializable {
 	 *
 	 */
 	@ApiModelProperty(value="")
-	private Long sort;
+	private String sort;
 	/**
 	 * 全天警报 1=开启 0=关闭
 	 */

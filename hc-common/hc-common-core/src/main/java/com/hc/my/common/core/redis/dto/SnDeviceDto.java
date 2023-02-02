@@ -30,7 +30,7 @@ public class SnDeviceDto implements Serializable {
     private Long clientVisible;
 
     /**  */
-    private Long sort;
+    private String sort;
 
     /** 全天警报 1=开启 0=关闭 */
     private String alwaysAlarm;

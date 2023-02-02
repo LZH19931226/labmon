@@ -58,6 +58,7 @@
         id IN ( #{param.yearMonth} )
         AND inputdatetime <![CDATA[>=]]> #{param.startTime} AND inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
+        order by inputdatetime
     </select>
 
     <select id="getWarningCurveData" resultType="com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto">
