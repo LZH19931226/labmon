@@ -35,7 +35,6 @@
                 LEFT JOIN monitorinstrumenttype t2  on t1.instrumenttypeid = t2.instrumenttypeid
         WHERE
             t1.hospitalcode = #{param.hospitalCode}
-            and t1.clientvisible = '1'
         GROUP BY t1.instrumenttypeid
         ORDER BY t1.instrumenttypeid
     </select>
