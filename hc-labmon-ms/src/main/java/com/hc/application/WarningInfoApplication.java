@@ -150,6 +150,8 @@ public class WarningInfoApplication {
                 String eno =strJoin(enos);
                 warningInfoCommand.setEquipmentNo(eno);
             }
+        }else {
+            warningInfoCommand.setEquipmentNo("'"+warningInfoCommand.getEquipmentNo()+"'");
         }
     }
 
