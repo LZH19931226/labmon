@@ -3,7 +3,6 @@ package com.hc.serviceimpl;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
-import com.hc.hospital.HospitalInfoApi;
 import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.domain.MonitorinstrumentDo;
@@ -19,7 +18,6 @@ import com.hc.po.Userright;
 import com.hc.service.AlmMsgService;
 import com.hc.service.UserScheduLingService;
 import com.hc.service.UserrightService;
-import com.hc.user.UserRightInfoApi;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +32,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class AlmMsgServiceImpl implements AlmMsgService {
-
-    @Autowired
-    private UserRightInfoApi userRightInfoApi;
-
-    @Autowired
-    private HospitalInfoApi hospitalInfoApi;
-
     @Autowired
     private SnDeviceRedisApi snDeviceRedisSync;
     @Autowired
