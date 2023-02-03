@@ -183,6 +183,12 @@ public class InstrumentparamconfigApplication {
         }else {
             result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
             result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
+            result.setSaturation(instrumentParamConfigCommand.getSaturation());
+            result.setStyleMin(instrumentParamConfigCommand.getStyleMin());
+            result.setStyleMax(instrumentParamConfigCommand.getStyleMax());
+            result.setAlarmTime(instrumentParamConfigCommand.getAlarmtime());
+            result.setUnit(instrumentParamConfigCommand.getUnit());
+            result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
             probeRedisApi.addProbeRedisInfo(result);
         }
 
