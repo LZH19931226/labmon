@@ -114,9 +114,12 @@ public class ProbeRedisApplication {
                 continue;
             }
             List<InstrumentInfoDto> convert = BeanConverter.convert(instrumentmonitorDtos, InstrumentInfoDto.class);
+            Map<String,Object> hashMap = new HashMap<>();
             for (InstrumentInfoDto instrumentInfoDto : convert) {
-                addProbeRedisInfo(instrumentInfoDto);
+                //addProbeRedisInfo(instrumentInfoDto);
+                hashMap.put( instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
             }
+            redisUtils.hmset(LabManageMentServiceEnum.P.getCode()+hospitalCode,hashMap);
         }
     }
 
