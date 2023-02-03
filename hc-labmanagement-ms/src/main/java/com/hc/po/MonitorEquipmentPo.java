@@ -51,7 +51,7 @@ public class MonitorEquipmentPo implements Serializable {
 
     /** 分类 */
     @TableField(value = "sort")
-    private String sort;
+    private Integer sort;
 
     /** 全天警报 1=开启 0=关闭 */
     @TableField(value = "alwayalarm")
