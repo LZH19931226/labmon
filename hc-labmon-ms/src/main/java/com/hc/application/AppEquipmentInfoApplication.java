@@ -959,9 +959,9 @@ public class AppEquipmentInfoApplication {
                     }
                 }
                 if(flag){
-                    disabledNum++;
-                }else{
                     enableNum++;
+                }else{
+                    disabledNum++;
                 }
             }
         }
