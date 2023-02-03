@@ -70,6 +70,7 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
                 .select(MonitorEquipmentDto::getEquipmentno)
                 .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode)
+                        .eq(MonitorEquipmentDto::getClientvisible,"1")
                 .eq(MonitorEquipmentDto::getEquipmenttypeid,equipmentTypeId));
         return list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
     }

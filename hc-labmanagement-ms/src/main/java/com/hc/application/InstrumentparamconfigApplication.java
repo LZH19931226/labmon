@@ -26,10 +26,10 @@ import com.hc.service.*;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.function.Function;
@@ -116,23 +116,10 @@ public class InstrumentparamconfigApplication {
         }
 
         String instrumentParamConfigNo = UUID.randomUUID().toString().replaceAll("-", "");
-        InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
-                .setInstrumentparamconfigno(instrumentParamConfigNo)
-                .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
-                .setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
-                .setInstrumentname(instrumentParamConfigCommand.getInstrumentname())
-                .setLowlimit(instrumentParamConfigCommand.getLowlimit())
-                .setHighlimit(instrumentParamConfigCommand.getHighlimit())
-                .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid())
-                .setWarningphone(instrumentParamConfigCommand.getWarningphone())
-                .setChannel(instrumentParamConfigCommand.getChannel())
-                .setAlarmtime(instrumentParamConfigCommand.getAlarmtime())
-                .setFirsttime(new Date())
-                .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "":instrumentParamConfigCommand.getUnit())
-                .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
-                .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
-                .setSaturation(instrumentParamConfigCommand.getSaturation());
-        instrumentparamconfigService.insertInstrumentmonitor(instrumentparamconfigDTO);
+        InstrumentparamconfigDTO convert = BeanConverter.convert(instrumentParamConfigCommand, InstrumentparamconfigDTO.class);
+        convert.setFirsttime(new Date());
+        convert.setInstrumentparamconfigno(instrumentParamConfigNo);
+        instrumentparamconfigService.insertInstrumentmonitor(convert);
 
         //添加日志信息
         InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
@@ -175,20 +162,36 @@ public class InstrumentparamconfigApplication {
                     .setLowLimit(instrumentParamConfigCommand.getLowlimit())
                     .setHighLimit(instrumentParamConfigCommand.getHighlimit())
                     .setWarningPhone(instrumentParamConfigCommand.getWarningphone())
-                    .setUnit(StringUtils.isEmpty(instrumentParamConfigCommand.getUnit()) ? "" : instrumentParamConfigCommand.getUnit())
-                    .setStyleMax(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
-                    .setStyleMin(StringUtils.isEmpty(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
+                    .setUnit(StringUtils.isBlank(instrumentParamConfigCommand.getUnit()) ? "" : instrumentParamConfigCommand.getUnit())
+                    .setStyleMax(StringUtils.isBlank(instrumentParamConfigCommand.getStyleMax()) ? "":instrumentParamConfigCommand.getStyleMax())
+                    .setStyleMin(StringUtils.isBlank(instrumentParamConfigCommand.getStyleMin()) ? "":instrumentParamConfigCommand.getStyleMin())
                     .setCalibration(instrumentParamConfigCommand.getCalibration());
             probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
         }else {
-            result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
-            result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
-            result.setSaturation(instrumentParamConfigCommand.getSaturation());
-            result.setStyleMin(instrumentParamConfigCommand.getStyleMin());
-            result.setStyleMax(instrumentParamConfigCommand.getStyleMax());
-            result.setAlarmTime(instrumentParamConfigCommand.getAlarmtime());
-            result.setUnit(instrumentParamConfigCommand.getUnit());
-            result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
+            if(instrumentParamConfigCommand.getLowlimit()!=null){
+                result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
+            }
+            if(instrumentParamConfigCommand.getHighlimit()!=null){
+                result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
+            }
+            if(instrumentParamConfigCommand.getSaturation()!=null){
+                result.setSaturation(instrumentParamConfigCommand.getSaturation());
+            }
+            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getStyleMin())){
+                result.setStyleMin(instrumentParamConfigCommand.getStyleMin());
+            }
+            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getStyleMax())){
+                result.setStyleMax(instrumentParamConfigCommand.getStyleMax());
+            }
+            if(instrumentParamConfigCommand.getAlarmtime()!=null){
+                result.setAlarmTime(instrumentParamConfigCommand.getAlarmtime());
+            }
+            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getUnit())){
+                result.setUnit(instrumentParamConfigCommand.getUnit());
+            }
+            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getWarningphone())){
+                result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
+            }
             probeRedisApi.addProbeRedisInfo(result);
         }
 
@@ -261,12 +264,12 @@ public class InstrumentparamconfigApplication {
         String sn = monitorinstrumentDTO.getSn();
         dto.setSn(sn);
         //更新探头信息
-        InstrumentparamconfigDTO instrumentparamconfigDTO = buildInstrumentparamconfigDTO(instrumentParamConfigCommand);
-        instrumentparamconfigService.updateInfo(instrumentparamconfigDTO);
+        InstrumentparamconfigDTO convert = BeanConverter.convert(instrumentParamConfigCommand, InstrumentparamconfigDTO.class);
+        instrumentparamconfigService.updateInfo(convert);
 
         //更新设备
         String newWarningPhone = instrumentParamConfigCommand.getWarningphone();
-        if(!StringUtils.isEmpty(newWarningPhone)){
+        if(!StringUtils.isBlank(newWarningPhone)){
             String oldWarningPhone = dto.getWarningphone();
             String equipmentNo = monitorinstrumentDTO.getEquipmentno();
             MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
@@ -308,26 +311,6 @@ public class InstrumentparamconfigApplication {
         }else {
             monitorEquipmentDto.setWarningSwitch(SysConstants.NORMAL);
         }
-    }
-
-    private InstrumentparamconfigDTO buildInstrumentparamconfigDTO(InstrumentparamconfigCommand instrumentParamConfigCommand) {
-        return new InstrumentparamconfigDTO()
-                .setInstrumentparamconfigno(instrumentParamConfigCommand.getInstrumentparamconfigno())
-                .setInstrumentno(instrumentParamConfigCommand.getInstrumentNo())
-                .setInstrumentconfigid(instrumentParamConfigCommand.getInstrumentconfigid())
-                .setInstrumentname(instrumentParamConfigCommand.getInstrumentname())
-                .setLowlimit(instrumentParamConfigCommand.getLowlimit())
-                .setHighlimit(instrumentParamConfigCommand.getHighlimit())
-                .setInstrumenttypeid(instrumentParamConfigCommand.getInstrumenttypeid())
-                .setInstrumentconfigname(instrumentParamConfigCommand.getInstrumentconfigname())
-                .setWarningphone(instrumentParamConfigCommand.getWarningphone())
-                .setChannel(instrumentParamConfigCommand.getChannel())
-                .setSaturation(instrumentParamConfigCommand.getSaturation())
-                .setCalibration(instrumentParamConfigCommand.getCalibration())
-                .setUnit(instrumentParamConfigCommand.getUnit())
-                .setStyleMax(instrumentParamConfigCommand.getStyleMax())
-                .setStyleMin(instrumentParamConfigCommand.getStyleMin())
-                .setAlarmtime(instrumentParamConfigCommand.getAlarmtime());
     }
 
     /**
@@ -382,7 +365,7 @@ public class InstrumentparamconfigApplication {
         List<InstrumentparamconfigVo> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(instrumentParamConfigList)) {
             //去除有探头信息没有设备信息的垃圾数据
-            List<InstrumentparamconfigDTO> removeList = instrumentParamConfigList.stream().filter(res -> StringUtils.isEmpty(res.getHospitalcode())).collect(Collectors.toList());
+            List<InstrumentparamconfigDTO> removeList = instrumentParamConfigList.stream().filter(res -> StringUtils.isBlank(res.getHospitalcode())).collect(Collectors.toList());
             instrumentParamConfigList.removeAll(removeList);
             String lang = Context.getLang();
             boolean flag = "en".equals(lang);
@@ -413,9 +396,9 @@ public class InstrumentparamconfigApplication {
                         .warningphone(configDTO.getWarningphone())
                         .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
                         .saturation(configDTO.getSaturation())
-                        .unit(StringUtils.isEmpty(configDTO.getUnit()) ? "":configDTO.getUnit())
-                        .styleMax(StringUtils.isEmpty(configDTO.getStyleMax()) ? "":configDTO.getStyleMax())
-                        .styleMin(StringUtils.isEmpty(configDTO.getStyleMin()) ? "":configDTO.getStyleMin())
+                        .unit(StringUtils.isBlank(configDTO.getUnit()) ? "":configDTO.getUnit())
+                        .styleMax(StringUtils.isBlank(configDTO.getStyleMax()) ? "":configDTO.getStyleMax())
+                        .styleMin(StringUtils.isBlank(configDTO.getStyleMin()) ? "":configDTO.getStyleMin())
                         .probeCName(dataFieldEnum.getCName())
                         .probeEName(dataFieldEnum.getEName())
                         .field(dataFieldEnum.getLastDataField())
@@ -482,7 +465,7 @@ public class InstrumentparamconfigApplication {
                             .instrumentconfigname(s.getInstrumentconfigname())
                             .lowlimit(s.getLowlimit())
                             .highlimit(s.getHighlimit())
-                            .unit(StringUtils.isEmpty(s.getUnit()) ? "":s.getUnit())
+                            .unit(StringUtils.isBlank(s.getUnit()) ? "":s.getUnit())
                             .build()
             );
         });
@@ -538,9 +521,9 @@ public class InstrumentparamconfigApplication {
                 String insGroup = instrumentConfigDTO.getInsGroup();
                 instrumentparamconfigDTO.setInsGroup(insGroup);
             }
-            instrumentparamconfigDTO.setUnit(StringUtils.isEmpty(unit) ? "":unit);
-            instrumentparamconfigDTO.setStyleMin(StringUtils.isEmpty(styleMin) ? "":styleMin);
-            instrumentparamconfigDTO.setStyleMax(StringUtils.isEmpty(styleMax) ? "":styleMax);
+            instrumentparamconfigDTO.setUnit(StringUtils.isBlank(unit) ? "":unit);
+            instrumentparamconfigDTO.setStyleMin(StringUtils.isBlank(styleMin) ? "":styleMin);
+            instrumentparamconfigDTO.setStyleMax(StringUtils.isBlank(styleMax) ? "":styleMax);
         }
         //5.更新探头表
         instrumentparamconfigService.updateBatchData(probeList);
