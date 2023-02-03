@@ -548,22 +548,24 @@ public class StatisticalAnalysisApplication {
             List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
             for (String timeStr : timeLists) {
                 String hHmmTime = DateUtils.getHHmm(timeStr);
+                //将00:30 改为 00:00 将23:59改为24:00
+                String hhMm = editHhmm(hHmmTime);
                 Date rTime = DateUtils.parseDate(timeStr);
                 cal.setTime(rTime);
                 cal.add(Calendar.MINUTE,-30);
                 Date lTime = cal.getTime();
                 List<Monitorequipmentlastdata> collect = monitorequipmentlastdata.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(),lTime,rTime)).collect(Collectors.toList());
                 if(CollectionUtils.isEmpty(collect)){
-                    map.put(hHmmTime,"");
+                    map.put(hhMm,"");
                     continue;
                 }
                 Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
                 Map<String, Object> objectToMap = getObjectToMap(data);
                 if(objectToMap.containsKey(field)){
                     String str = (String) objectToMap.get(field);
-                    map.put(hHmmTime,str);
+                    map.put(hhMm,str);
                 }else {
-                    map.put(hHmmTime,"");
+                    map.put(hhMm,"");
                 }
             }
             list.add(map);
@@ -622,8 +624,10 @@ public class StatisticalAnalysisApplication {
                     Monitorequipmentlastdata monitorequipmentlastdata = listMap.get(hHmm).get(0);
                     Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
                     value =(String) objectToMap.get(equipmentDataCommand.getField());
+
                 }
-                map.put(hHmm,value);
+                String str =  editHhmm(hHmm);
+                map.put(str,value);
             }
             mapList.add(map);
         }
@@ -634,6 +638,16 @@ public class StatisticalAnalysisApplication {
 
         buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode());
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME,beanList,mapList,httpServletResponse);
+    }
+
+    private String editHhmm(String hHmm) {
+        if(hHmm.equals("00:30")){
+            return "00:00";
+        }
+        if(hHmm.equals("23:59")){
+            return "24:00";
+        }
+        return hHmm;
     }
 
     private void filterCondition(EquipmentDataCommand equipmentDataCommand) {

@@ -1,6 +1,5 @@
 package com.hc.util;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.hc.application.curvemodel.CurveDataModel;
 import com.hc.application.curvemodel.SeriesDataModel;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
@@ -13,6 +12,7 @@ import com.hc.my.common.core.util.RegularUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -57,11 +57,13 @@ public class CurveUtils {
         curveDataModel.setXaxis(timeList);
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(dataList);
+        //数据库不为空时去数据库中的值
         if (CollectionUtils.isNotEmpty(list)) {
-            curveDataModel.setMaxNum(list.get(0).getHighLimit()+"");
-            curveDataModel.setMinNum(list.get(0).getLowLimit()+"");
-            curveDataModel.setStyleMin(list.get(0).getStyleMin()+"");
-            curveDataModel.setStyleMax(list.get(0).getStyleMax()+"");
+            InstrumentParamConfigDto probe = list.get(0);
+            curveDataModel.setMaxNum(probe.getHighLimit()+"");
+            curveDataModel.setMinNum(probe.getLowLimit()+"");
+            curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? "":probe.getStyleMin());
+            curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? "":probe.getStyleMax());
         }else {
             OptionalDouble max = dataList.stream().mapToDouble(Double::parseDouble).max();
             if (max.isPresent()) {
@@ -103,114 +105,8 @@ public class CurveUtils {
         Map<String,Curve> map = new HashMap<>();
         for (String field : list) {
             Curve curve = new Curve();
-            switch (field) {
-                case "currenttemperature":
-                    map.put("currenttemperature",curve);
-                    break;
-                case "currentcarbondioxide":
-                    map.put("currentcarbondioxide",curve);
-                    break;
-                case "currento2":
-                    map.put("currento2",curve);
-                    break;
-                case "currentairflow":
-                    map.put("currentairflow",curve);
-                    break;
-                case "currenthumidity":
-                    map.put("currenthumidity",curve);
-                    break;
-                case "currentvoc":
-                    map.put("currentvoc",curve);
-                    break;
-                case "currentformaldehyde":
-                    map.put("currentformaldehyde",curve);
-                    break;
-                case "currentpm25":
-                    map.put("currentpm25",curve);
-                    break;
-                case "currentpm10":
-                    map.put("currentpm10",curve);
-                    break;
-                case "currentqc":
-                    map.put("currentqc",curve);
-                    break;
-                case "currentairflow1":
-                    map.put("currentairflow1",curve);
-                    break;
-                case "currenttemperature1":
-                    map.put("currenttemperature1",curve);
-                    break;
-                case "currenttemperature2":
-                    map.put("currenttemperature2",curve);
-                    break;
-                case "currenttemperature3":
-                    map.put("currenttemperature3",curve);
-                    break;
-                case "currenttemperature4":
-                    map.put("currenttemperature4",curve);
-                    break;
-                case "currenttemperature5":
-                    map.put("currenttemperature5",curve);
-                    break;
-                case "currenttemperature6":
-                    map.put("currenttemperature6",curve);
-                    break;
-                case "currenttemperature7":
-                    map.put("currenttemperature7",curve);
-                    break;
-                case "currenttemperature8":
-                    map.put("currenttemperature8",curve);
-                    break;
-                case "currenttemperature9":
-                    map.put("currenttemperature9",curve);
-                    break;
-                case "currenttemperature10":
-                    map.put("currenttemperature10",curve);
-                    break;
-                case "currentlefttemperature":
-                    map.put("currentlefttemperature",curve);
-                    break;
-                case "currentrigthtemperature":
-                    map.put("currentrigthtemperature",curve);
-                    break;
-                case "currentpm5":
-                    map.put("currentpm5",curve);
-                    break;
-                case "currentpm05":
-                    map.put("currentpm05",curve);
-                    break;
-                case "currentleftcovertemperature":
-                    map.put("currentleftcovertemperature",curve);
-                    break;
-                case "currentleftendtemperature":
-                    map.put("currentleftendtemperature",curve);
-                    break;
-                case "currentleftairflow":
-                    map.put("currentleftairflow",curve);
-                    break;
-                case "currentrightcovertemperature":
-                    map.put("currentrightcovertemperature",curve);
-                    break;
-                case "currentrightendtemperature":
-                    map.put("currentrightendtemperature",curve);
-                    break;
-                case "currentrightairflow":
-                    map.put("currentrightairflow",curve);
-                    break;
-                case "currentn2":
-                    map.put("currentn2",curve);
-                    break;
-                case "leftCompartmentHumidity":
-                    map.put("leftCompartmentHumidity",curve);
-                    break;
-                case "rightCompartmentHumidity":
-                    map.put("rightCompartmentHumidity",curve);
-                    break;
-                case "liquidLevel":
-                    map.put("liquidLevel",curve);
-                    break;
-                default:
-                    break;
+            if(!StringUtils.equalsAnyIgnoreCase(field,"voltage","currentdoorstate2","currentdoorstate","currentups","currentqcl","qccurrent","power")){
+                map.put(field,curve);
             }
         }
         return map;
