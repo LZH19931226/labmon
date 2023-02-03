@@ -19,4 +19,6 @@ public interface InstrumentParamConfigService {
     List<InstrumentParamConfigDto> getAll();
 
     List<InstrumentParamConfigDto> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
+
+    List<InstrumentParamConfigDto> getInstrumentParamConfigByINo(List<String> iNos);
 }

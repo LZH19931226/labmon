@@ -34,6 +34,7 @@ import com.hc.repository.HospitalInfoRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.*;
 import com.hc.util.CurveUtils;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +45,6 @@ import org.springframework.util.ObjectUtils;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class AppEquipmentInfoApplication {
@@ -923,27 +923,46 @@ public class AppEquipmentInfoApplication {
     public AlarmHand getTheNumberOfAlarmSettingDevices(AlarmSystemCommand alarmSystemCommand) {
         String hospitalCode = alarmSystemCommand.getHospitalCode();
         String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
-        //通过医院id和设备类型id获取所有的探头信息
-        List<InstrumentParamConfigDto> instrumentParamConfigDtoList =
-                instrumentParamConfigService.getInstrumentParamConfigByCodeAndTypeId(hospitalCode, equipmentTypeId);
-        if (CollectionUtils.isEmpty(instrumentParamConfigDtoList)) {
-            throw new IedsException(LabSystemEnum.EQUIPMENT_INFO_NOT_FOUND);
+        //查询设备id
+        List<String> enoList = equipmentInfoService.getEnoList(hospitalCode, equipmentTypeId);
+        if(CollectionUtils.isEmpty(enoList)){
+            return null;
         }
-        //过滤instrumentno为空的记录
-        List<InstrumentParamConfigDto> collect = instrumentParamConfigDtoList.stream().filter(Objects::nonNull).collect(Collectors.toList());
-
-        //计算设备报警是否启用：一个设备下只要有一个探头设置了报警视为设备开启报警 全未设置报警视为设备未开启报警
-        Map<String, List<InstrumentParamConfigDto>> instrumentNoMap =
-                collect.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentno));
+        //获取探头sn信息
+        List<MonitorinstrumentDto> monitorinstrumentDtos = monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
+        if(CollectionUtils.isEmpty(monitorinstrumentDtos)){
+            return null;
+        }
+        List<String> iNos = monitorinstrumentDtos.stream().map(MonitorinstrumentDto::getInstrumentno).collect(Collectors.toList());
+        Map<String, List<MonitorinstrumentDto>> enoMap = monitorinstrumentDtos.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
+        //获取探头信息
+        List<InstrumentParamConfigDto> probeInfos = instrumentParamConfigService.getInstrumentParamConfigByINo(iNos);
+        if(CollectionUtils.isEmpty(probeInfos)){
+            return  null;
+        }
+        Map<String, List<InstrumentParamConfigDto>> inoMap = probeInfos.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentno));
+        //遍历设备信息
         int enableNum = 0;
         int disabledNum = 0;
-        for (String instrumentNo : instrumentNoMap.keySet()) {
-            List<InstrumentParamConfigDto> instrumentParamConfigDtoList1 = instrumentNoMap.get(instrumentNo);
-            long count = instrumentParamConfigDtoList1.stream().filter(res -> "1".equals(res.getWarningphone())).count();
-            if (count > 0) {
-                enableNum++;
-            } else {
-                disabledNum++;
+        for (String eno : enoList) {
+            if(enoMap.containsKey(eno)){
+                boolean flag =false;
+                //有线设备一个eno对应多个ino
+                List<String> inoList = enoMap.get(eno).stream().map(MonitorinstrumentDto::getInstrumentno).collect(Collectors.toList());
+                for (String ino : inoList) {
+                    if(inoMap.containsKey(ino)){
+                        List<InstrumentParamConfigDto> instrumentParamConfigDtoList = inoMap.get(ino);
+                        long count = instrumentParamConfigDtoList.stream().filter(res -> "1".equals(res.getWarningphone())).count();
+                        if(count>0){
+                            flag = true;
+                        }
+                    }
+                }
+                if(flag){
+                    enableNum++;
+                }else{
+                    disabledNum++;
+                }
             }
         }
         AlarmHand alarmHand = new AlarmHand();

@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.repository.InstrumentParamConfigRepository;
 import com.hc.service.InstrumentParamConfigService;
@@ -63,5 +64,10 @@ public class InstrumentParamConfigServiceImpl  implements InstrumentParamConfigS
     @Override
     public List<InstrumentParamConfigDto> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
         return instrumentParamConfigRepository.getInstrumentParamConfigByCodeAndTypeId(hospitalCode,equipmentTypeId);
+    }
+
+    @Override
+    public List<InstrumentParamConfigDto> getInstrumentParamConfigByINo(List<String> iNos) {
+        return instrumentParamConfigRepository.list(Wrappers.lambdaQuery(new InstrumentParamConfigDto()).in(InstrumentParamConfigDto::getInstrumentno,iNos));
     }
 }
