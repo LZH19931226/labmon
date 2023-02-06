@@ -533,8 +533,17 @@ public class InstrumentparamconfigApplication {
 
     @GlobalTransactional
     public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {
-        String instrumentParamconfigNo = instrumentparamconfigCommand.getInstrumentparamconfigno();
         instrumentparamconfigService.editHighLowLimit(instrumentparamconfigCommand);
+        //更新探头缓存
+        String instrumentNo = instrumentparamconfigCommand.getInstrumentNo();
+        Integer instrumentConfigId = instrumentparamconfigCommand.getInstrumentconfigid();
+        String hospitalCode = instrumentparamconfigCommand.getHospitalCode();
+        InstrumentInfoDto result = probeRedisApi.getProbeRedisInfo(hospitalCode, instrumentNo + ":" + instrumentConfigId).getResult();
+        if(null!=result){
+            result.setHighLimit(instrumentparamconfigCommand.getHighlimit());
+            result.setLowLimit(instrumentparamconfigCommand.getLowlimit());
+            probeRedisApi.addProbeRedisInfo(result);
+        }
 
     }
 }

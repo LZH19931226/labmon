@@ -829,6 +829,10 @@ public class AppEquipmentInfoApplication {
             return null;
         }
         List<String> enoList = equipmentInfoByPage.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+        //查询sn表
+        List<MonitorinstrumentDto> monitorinstrumentDtos = monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
+        Map<String, List<MonitorinstrumentDto>> enoInoMap = monitorinstrumentDtos.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
+
         List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
         Map<String, List<InstrumentParamConfigDto>> eNoMap = new HashMap<>();
         if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
@@ -841,7 +845,10 @@ public class AppEquipmentInfoApplication {
         for (MonitorEquipmentDto next : equipmentInfoByPage) {
             AlarmSystem alarmSystem = new AlarmSystem();
             alarmSystem.setEquipmentName(next.getEquipmentname());
-            alarmSystem.setSn(next.getSn());
+            if(enoInoMap.containsKey(next.getEquipmentno())){
+                MonitorinstrumentDto monitorinstrumentDto = enoInoMap.get(next.getEquipmentno()).get(0);
+                alarmSystem.setSn(monitorinstrumentDto.getSn());
+            }
             alarmSystem.setEquipmentNo(next.getEquipmentno());
             alarmSystem.setHospitalCode(next.getHospitalcode());
             if (StringUtils.isBlank(next.getWarningSwitch())) {
