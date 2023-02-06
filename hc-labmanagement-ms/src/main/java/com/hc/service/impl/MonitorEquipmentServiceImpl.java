@@ -139,4 +139,10 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     public List<String> getHosEqTypeEqInfo(String hospitalCode, String equipmentTypeId) {
         return monitorEquipmentRepository.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
     }
+
+
+    @Override
+    public List<String> getSns(String equipmentNo) {
+        return monitorEquipmentRepository.getSns(equipmentNo);
+    }
 }

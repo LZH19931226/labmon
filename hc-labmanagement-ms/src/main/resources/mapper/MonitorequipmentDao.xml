@@ -123,4 +123,12 @@
         order by equipmentName
     </select>
 
+    <select id="getSns" resultType="java.lang.String">
+    select
+           sn
+    from
+         monitorinstrument
+        where equipmentno = #{eno}
+    </select>
+
 </mapper>

@@ -171,4 +171,9 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
         address.addAll(collect);
         return address.stream().filter(StringUtils::isNotEmpty).collect(Collectors.toList());
     }
+
+    @Override
+    public List<String> getSns(String equipmentNo) {
+        return monitorEquipmentDao.getSns(equipmentNo);
+    }
 }

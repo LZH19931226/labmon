@@ -120,4 +120,13 @@
             t1.equipmenttypeid = #{equipmentTypeId}
     </select>
 
+    <select id="getSnInfo" resultType="java.lang.String">
+        select
+             t2.sn
+        from
+    ``       instrumentparamconfig t1
+                  LEFT JOIN instrumentparamconfig t2 ON t2.instrumentno = t1.instrumentno
+        where  t1.instrumentparamconfigNO = #{no}
+    </select>
+
 </mapper>

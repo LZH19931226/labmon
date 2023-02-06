@@ -241,4 +241,9 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
         InstrumentparamconfigPo convert = BeanConverter.convert(instrumentparamconfigCommand, InstrumentparamconfigPo.class);
         instrumentparamconfigRepository.updateById(convert);
     }
+
+    @Override
+    public String getSnInfo(String instrumentParamConfigNo) {
+        return instrumentparamconfigRepository.getSnInfo(instrumentParamConfigNo);
+    }
 }

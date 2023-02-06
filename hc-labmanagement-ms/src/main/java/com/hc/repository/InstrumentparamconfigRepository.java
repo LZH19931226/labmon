@@ -104,4 +104,7 @@ public interface InstrumentparamconfigRepository extends IService <Instrumentpar
     void batchProbeAlarmState(List<String> probeIds, String warningPhone);
 
     void updateBatchData(List<InstrumentparamconfigDTO> probeList);
+
+    String getSnInfo(String instrumentParamConfigNo);
+
 }

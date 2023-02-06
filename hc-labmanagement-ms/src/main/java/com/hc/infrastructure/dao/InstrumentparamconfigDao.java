@@ -58,4 +58,6 @@ public interface InstrumentparamconfigDao extends RootMapper<Instrumentparamconf
     List<InstrumentparamconfigDTO> getInstrumentParamConfigByCodeAndTypeId(@Param("hospitalCode") String hospitalCode,@Param("equipmentTypeId") String equipmentTypeId);
 
     void updateBatchData(List<InstrumentparamconfigDTO> probeList);
+
+    String getSnInfo(@Param("no") String instrumentParamConfigNo);
 }

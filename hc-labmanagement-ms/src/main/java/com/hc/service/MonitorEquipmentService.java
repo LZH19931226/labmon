@@ -85,4 +85,6 @@ public interface MonitorEquipmentService {
     List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page, MonitorEquipmentCommand monitorEquipmentCommand);
 
     List<String> getHosEqTypeEqInfo(String hospitalCode, String equipmentTypeId);
+
+    List<String> getSns(String equipmentNo);
 }

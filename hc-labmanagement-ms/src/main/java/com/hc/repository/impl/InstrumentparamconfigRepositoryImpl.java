@@ -214,4 +214,9 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     public void updateBatchData(List<InstrumentparamconfigDTO> probeList) {
         instrumentparamconfigDao.updateBatchData(probeList);
     }
+
+    @Override
+    public String getSnInfo(String instrumentParamConfigNo) {
+        return instrumentparamconfigDao.getSnInfo(instrumentParamConfigNo);
+    }
 }
