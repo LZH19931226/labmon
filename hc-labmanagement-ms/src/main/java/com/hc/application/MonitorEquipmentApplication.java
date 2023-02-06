@@ -1029,6 +1029,7 @@ public class MonitorEquipmentApplication {
      * 修改探头报警开关
      * @param alarmSystemCommand
      */
+    @GlobalTransactional
     public void updateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
         String instrumentParamConfigNo = alarmSystemCommand.getInstrumentParamConfigNo();
         String warningPhone = alarmSystemCommand.getWarningPhone();

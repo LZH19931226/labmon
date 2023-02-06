@@ -427,6 +427,7 @@ public class InstrumentparamconfigApplication {
      * @param instrumentParamConfigNo 探头检测信息id
      * @param warningTime 报警时间
      */
+    @GlobalTransactional
     public void editWarningTime(String instrumentParamConfigNo, String warningTime){
         instrumentparamconfigService.editWarningTime(instrumentParamConfigNo,warningTime);
     }
@@ -475,6 +476,7 @@ public class InstrumentparamconfigApplication {
     /**
      * 同步探头单位
      */
+    @GlobalTransactional
     public void syncProbeUnit() {
         //1.查出所有的探头信息
         List<InstrumentparamconfigDTO> probeList = instrumentparamconfigService.list();
@@ -529,6 +531,7 @@ public class InstrumentparamconfigApplication {
         instrumentparamconfigService.updateBatchData(probeList);
     }
 
+    @GlobalTransactional
     public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {
         String instrumentParamconfigNo = instrumentparamconfigCommand.getInstrumentparamconfigno();
         instrumentparamconfigService.editHighLowLimit(instrumentparamconfigCommand);

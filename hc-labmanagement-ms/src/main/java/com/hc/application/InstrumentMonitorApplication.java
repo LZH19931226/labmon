@@ -10,6 +10,7 @@ import com.hc.dto.MonitorinstrumenttypeDTO;
 import com.hc.service.InstrumentConfigService;
 import com.hc.service.InstrumentmonitorService;
 import com.hc.service.MonitorinstrumenttypeService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,7 @@ public class InstrumentMonitorApplication {
      * 添加探头高低值
      * @param instrumentMonitorCommand
      */
+    @GlobalTransactional
     public void add(InstrumentMonitorCommand instrumentMonitorCommand) {
         Integer instrumentTypeId = instrumentMonitorCommand.getInstrumentTypeId();
         List<InstrumentmonitorDTO> list = instrumentmonitorService.selectMonitorEquipmentList(instrumentTypeId);
@@ -97,6 +99,7 @@ public class InstrumentMonitorApplication {
      * 修改
      * @param instrumentMonitorCommand
      */
+    @GlobalTransactional
     public void edit(InstrumentMonitorCommand instrumentMonitorCommand) {
         InstrumentmonitorDTO instrumentmonitorDTO= buildInstrumentmonitorDTO(instrumentMonitorCommand);
         instrumentmonitorService.updateInstrumentmonitor(instrumentmonitorDTO);
@@ -120,6 +123,7 @@ public class InstrumentMonitorApplication {
      * 删除高低值字典
      * @param instrumentTypeId
      */
+    @GlobalTransactional
     public void remove(Integer instrumentTypeId,Integer instrumentConfigId) {
         instrumentmonitorService.remove(instrumentTypeId,instrumentConfigId);
     }

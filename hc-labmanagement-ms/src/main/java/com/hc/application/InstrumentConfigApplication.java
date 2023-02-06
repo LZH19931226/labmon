@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentConfigCommand;
 import com.hc.dto.InstrumentConfigDTO;
 import com.hc.service.InstrumentConfigService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,7 @@ public class InstrumentConfigApplication {
      * 新增探头监测类型
      * @param instrumentConfigCommand 探头监测类型名称
      */
+    @GlobalTransactional
     public void save(InstrumentConfigCommand instrumentConfigCommand) {
         instrumentConfigService.save(instrumentConfigCommand);
     }
@@ -50,6 +52,7 @@ public class InstrumentConfigApplication {
      * 更新监测类型
      * @param instrumentConfigCommand
      */
+    @GlobalTransactional
     public void edit(InstrumentConfigCommand instrumentConfigCommand) {
         instrumentConfigService.edit(instrumentConfigCommand);
     }
@@ -58,6 +61,7 @@ public class InstrumentConfigApplication {
      * 删除监测类型
      * @param instrumentConfigId
      */
+    @GlobalTransactional
     public void remove(String instrumentConfigId) {
         instrumentConfigService.remove(instrumentConfigId);
     }
