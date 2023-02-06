@@ -1004,7 +1004,7 @@ public class MonitorEquipmentApplication {
     }
 
     /**
-     * 获取医院的设备信息
+     * 获取医院的设备信息d
      * @param hospitalCode
      * @return
      */

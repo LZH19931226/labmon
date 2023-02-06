@@ -124,8 +124,8 @@
         select
              t2.sn
         from
-    ``       instrumentparamconfig t1
-                  LEFT JOIN instrumentparamconfig t2 ON t2.instrumentno = t1.instrumentno
+          instrumentparamconfig t1
+                  LEFT JOIN monitorinstrument t2 ON t2.instrumentno = t1.instrumentno
         where  t1.instrumentparamconfigNO = #{no}
     </select>
 
