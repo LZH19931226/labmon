@@ -1102,7 +1102,7 @@ public class MonitorEquipmentApplication {
         List<String> sns =  monitorEquipmentService.getSns(equipmentNo);
         if(CollectionUtils.isNotEmpty(sns)){
             for (String sn : sns) {
-                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(alarmSystemCommand.getSn()).getResult();
+                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
                 //更新设备报警状态开关
                 MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
                 monitorEquipmentDto.setEquipmentNo(equipmentNo);
