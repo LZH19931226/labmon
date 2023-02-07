@@ -7,6 +7,7 @@ import com.hc.service.InstrumentConfigService;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class InstrumentConfigApplication {
      * @param instrumentConfigCommand
      * @return
      */
+    @Transactional
     public Page<InstrumentConfigDTO> list(InstrumentConfigCommand instrumentConfigCommand) {
         Integer pageCurrent = instrumentConfigCommand.getPageCurrent();
         Integer pageSize = instrumentConfigCommand.getPageSize();

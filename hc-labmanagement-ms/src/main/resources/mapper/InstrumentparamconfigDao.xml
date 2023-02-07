@@ -99,12 +99,14 @@
 
     <select id="getInstrumentParamConfigInfo" resultType="com.hc.dto.InstrumentparamconfigDTO">
         SELECT
-            t2.hospitalcode,
             t1.*
         FROM
             instrumentparamconfig t1
-                LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
-        WHERE t2.equipmentno = #{equipmentNo}
+        WHERE  t1.instrumentno in
+               (
+               select instrumentno from monitorinstrument  where equipmentno = #{equipmentNo}
+               )
+
     </select>
 
     <select id="getInstrumentParamConfigByCodeAndTypeId" resultType="com.hc.dto.InstrumentparamconfigDTO">
@@ -118,6 +120,10 @@
             t1.hospitalcode = #{hospitalCode}
           AND
             t1.equipmenttypeid = #{equipmentTypeId}
+    </select>
+
+    <select id="getSnByNO" resultType="java.lang.String">
+      select  sn from monitorinstrument where instrumentno in (select instrumentno from )
     </select>
 
     <select id="getSnInfo" resultType="java.lang.String">

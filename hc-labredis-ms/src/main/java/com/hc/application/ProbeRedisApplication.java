@@ -62,10 +62,14 @@ public class ProbeRedisApplication {
      * 批量更新探头缓存信息
      * */
     public void bulkUpdateProbeRedisInfo(ProbeCommand probeCommand) {
+        String hospitalCode = probeCommand.getHospitalCode();
         List<InstrumentInfoDto> instrumentInfoDtoList = probeCommand.getInstrumentInfoDtoList();
+        Map<String,Object> map = new HashMap<>();
         for (InstrumentInfoDto instrumentInfoDto : instrumentInfoDtoList) {
-            addProbeRedisInfo(instrumentInfoDto);
+            map.put(instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(),JSONUtil.toJsonStr(instrumentInfoDto));
         }
+        redisUtils.hmset(LabManageMentServiceEnum.P.getCode()+hospitalCode,map);
+
     }
 
     /***
