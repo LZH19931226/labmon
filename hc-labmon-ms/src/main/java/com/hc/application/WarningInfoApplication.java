@@ -22,10 +22,8 @@ import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.repository.EquipmentInfoRepository;
 import com.hc.repository.InstrumentParamConfigRepository;
-import com.hc.service.EquipmentInfoService;
 import com.hc.service.WarningRecordInfoService;
 import com.hc.util.EquipmentInfoServiceHelp;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,7 +32,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

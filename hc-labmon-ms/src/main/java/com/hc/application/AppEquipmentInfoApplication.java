@@ -34,7 +34,6 @@ import com.hc.repository.HospitalInfoRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.*;
 import com.hc.util.CurveUtils;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -347,11 +346,17 @@ public class AppEquipmentInfoApplication {
                 probeInfo.setState("0");
             }
         }
-        //获取标头信息(用于前端展示)
+        //获取标头信息(用于前端展示),并做过滤
         if(instrumentParamConfigMap.containsKey(equipmentNo)){
             Map<Integer, List<InstrumentParamConfigDto>> integerListMap = instrumentParamConfigMap.get(equipmentNo);
             List<Integer> collect = new ArrayList<>(integerListMap.keySet());
             List<String> instrumentConfigId  = queryTitle(collect);
+            long currentqcl = probeInfoDtoList.stream().filter(res -> res.getInstrumentConfigId() == 7 && res.getProbeEName().equals("currentqcl")).count();
+            //当数据库confid为7 和 缓存中探头confid也为7并且缓存的eName为currentqcl则判断为qcl
+            if(collect.contains(7) && currentqcl >0){
+                instrumentConfigId.remove("currentqc");
+                instrumentConfigId.add("currentqcl");
+            }
             probeInfo.setInstrumentConfigIdList(instrumentConfigId);
             fiterTitle(probeInfo);
         }
