@@ -16,10 +16,7 @@ import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
 import com.hc.labmanagent.MonitorEquipmentApi;
-import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
-import com.hc.my.common.core.constant.enums.ProbeOutlier;
-import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
-import com.hc.my.common.core.constant.enums.SysConstants;
+import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
@@ -349,14 +346,7 @@ public class AppEquipmentInfoApplication {
         //获取标头信息(用于前端展示),并做过滤
         if(instrumentParamConfigMap.containsKey(equipmentNo)){
             Map<Integer, List<InstrumentParamConfigDto>> integerListMap = instrumentParamConfigMap.get(equipmentNo);
-            List<Integer> collect = new ArrayList<>(integerListMap.keySet());
-            List<String> instrumentConfigId  = queryTitle(collect);
-            long currentqcl = probeInfoDtoList.stream().filter(res -> res.getInstrumentConfigId() == 7 && res.getProbeEName().equals("currentqcl")).count();
-            //当数据库confid为7 和 缓存中探头confid也为7并且缓存的eName为currentqcl则判断为qcl
-            if(collect.contains(7) && currentqcl >0){
-                instrumentConfigId.remove("currentqc");
-                instrumentConfigId.add("currentqcl");
-            }
+            List<String> instrumentConfigId  = queryTitle(integerListMap,probeInfo);
             probeInfo.setInstrumentConfigIdList(instrumentConfigId);
             fiterTitle(probeInfo);
         }
@@ -398,14 +388,23 @@ public class AppEquipmentInfoApplication {
 
     /**
      * 获取探头标头(用于前端展示)
-     *
-     * @param confIdList
      * @return
      */
-    private List<String> queryTitle(List<Integer> confIdList) {
-        return confIdList.stream().map(res -> {
+    private List<String> queryTitle( Map<Integer, List<InstrumentParamConfigDto>> integerListMap ,ProbeCurrentInfoDto probeCurrentInfoDto) {
+        List<Integer> collect = new ArrayList<>(integerListMap.keySet());
+        List<String> eNames = collect.stream().map(res -> {
             return CurrentProbeInfoEnum.from(res).getProbeEName();
         }).collect(Collectors.toList());
+        List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
+        //当数据库confid为7 和 缓存中探头confid也为7并且缓存的eName为currentqcl则判断为qcl
+        long currentqcl = probeInfoDtoList.stream().filter(res -> res.getInstrumentConfigId() == 7 && res.getProbeEName().equals(DataFieldEnum.QCL.getLastDataField())).count();
+        if(collect.contains(7) && currentqcl >0){
+            if(eNames.contains(DataFieldEnum.QC.getLastDataField())){
+                eNames.remove(DataFieldEnum.QC.getLastDataField());
+                eNames.add(DataFieldEnum.QCL.getLastDataField());
+            }
+        }
+        return eNames;
     }
 
     /***
