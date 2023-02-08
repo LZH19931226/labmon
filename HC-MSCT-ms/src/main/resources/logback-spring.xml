@@ -22,24 +22,6 @@
 <!--                 class="net.logstash.logback.encoder.LogstashEncoder" />-->
 <!--    </appender>-->
 
-    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <pattern>
-                    <pattern>
-                        {
-                        "service": "hc-msct-ms",
-                        "msg": "%message"
-                        }
-                    </pattern>
-                </pattern>
-            </providers>
-        </encoder>
-        <topic>msct</topic>
-        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
-        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
-        <producerConfig>bootstrap.servers=172.24.58.150:9092,172.24.58.151:9092,172.24.58.152:9092</producerConfig>
-    </appender>
 
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
