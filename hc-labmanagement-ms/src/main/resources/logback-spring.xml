@@ -62,7 +62,7 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="kafkaAppender"/>
+<!--        <appender-ref ref="kafkaAppender"/>-->
     </root>
 
 </configuration>

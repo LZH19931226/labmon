@@ -61,7 +61,7 @@
         <appender-ref ref="STDOUT"/>
         <!--        <appender-ref ref="FILE"/>-->
         <!--        <appender-ref ref="ASYNC"/>-->
-        <appender-ref ref="kafkaAppender"/>
+<!--        <appender-ref ref="kafkaAppender"/>-->
     </root>
 
 </configuration>

@@ -36,7 +36,7 @@
         <producerConfig>bootstrap.servers=172.24.58.150:9092,172.24.58.151:9092,172.24.58.152:9092</producerConfig>
     </appender>
     <root level="info">
-        <appender-ref ref="STDOUT"/>-->
-        <appender-ref ref="kafkaAppender" />
+        <appender-ref ref="STDOUT"/>
+<!--         <appender-ref ref="kafkaAppender" />-->
     </root>
 </configuration>
