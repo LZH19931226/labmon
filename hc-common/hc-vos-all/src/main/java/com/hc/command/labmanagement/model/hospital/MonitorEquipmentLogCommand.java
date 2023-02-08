@@ -32,4 +32,9 @@ public class MonitorEquipmentLogCommand {
      */
     private String remark;
 
+    /**
+     * 报警开关
+     */
+    private String warningSwitch;
+
 }

@@ -2,11 +2,14 @@ package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmSystemCommand;
+import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.application.command.WorkTimeBlockCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.UserBackModel;
+import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
+import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
 import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
 import com.hc.device.ProbeRedisApi;
 import com.hc.device.SnDeviceRedisApi;
@@ -1037,6 +1040,7 @@ public class MonitorEquipmentApplication {
     public void updateProbeAlarmState(AlarmSystemCommand alarmSystemCommand) {
         //更新探头数据库信息
         String instrumentParamConfigNo = alarmSystemCommand.getInstrumentParamConfigNo();
+        InstrumentparamconfigDTO oldProbeInfo = instrumentparamconfigService.getProbeInfoById(instrumentParamConfigNo);
         String warningPhone = alarmSystemCommand.getWarningPhone();
         String equipmentNo = alarmSystemCommand.getEquipmentNo();
         instrumentparamconfigService.updateProbeAlarmState(instrumentParamConfigNo,warningPhone);
@@ -1052,6 +1056,14 @@ public class MonitorEquipmentApplication {
         }
         result.setWarningPhone(warningPhone);
         probeRedisApi.addProbeRedisInfo(result);
+        //更新探头日志
+        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                buildProbeInfo(Context.getUserId(),
+                        oldProbeInfo,
+                        alarmSystemCommand,
+                        OperationLogEunm.APP_ALARM_SET.getCode(),
+                        OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
 
         //根据探头要设置的状态来判断是否需要查询数据库
         //当修改为开启时，直接设置设备报警
@@ -1080,6 +1092,38 @@ public class MonitorEquipmentApplication {
         }
     }
 
+    private InstrumentParamConfigInfoCommand buildProbeInfo(String userId, InstrumentparamconfigDTO old, AlarmSystemCommand alarmSystemCommand, String type, String operationType) {
+        InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
+        //获取用户名称
+        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
+        if(null!=userInfo){
+            infoCommand.setUsername(userInfo.getUsername());
+        }
+        //获取医院信息
+        String hospitalCode = alarmSystemCommand.getHospitalCode();
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+        if(!ObjectUtils.isEmpty(hospitalInfo)){
+            infoCommand.setHospitalName(hospitalInfo.getHospitalName());
+        }
+        //获取设备信息
+        String equipmentNo = alarmSystemCommand.getEquipmentNo();
+        List<MonitorEquipmentDto> monitorEquipmentDtoList = monitorEquipmentService.selectMonitorEquipmentInfoByNo(equipmentNo);
+        MonitorEquipmentDto monitorEquipmentDto = monitorEquipmentDtoList.get(0);
+        if(!ObjectUtils.isEmpty(monitorEquipmentDto)){
+            infoCommand.setEquipmentName(monitorEquipmentDto.getEquipmentName());
+        }
+        infoCommand.setType(type);
+        infoCommand.setOperationType(operationType);
+        InstrumentparamconfigLogCommand nowProbe = new InstrumentparamconfigLogCommand()
+                .setWarningphone(alarmSystemCommand.getWarningPhone());
+        infoCommand.setNewInstrumentparamconfigLogCommand(nowProbe);
+
+        InstrumentparamconfigLogCommand oldProbe = new InstrumentparamconfigLogCommand();
+        oldProbe.setWarningphone(old.getWarningphone());
+        infoCommand.setOldInstrumentparamconfigLogCommand(oldProbe);
+        return infoCommand;
+    }
+
     /**
      * 修改设备报警开关
      * @param alarmSystemCommand
@@ -1098,6 +1142,7 @@ public class MonitorEquipmentApplication {
         //更新探头缓存
         updateProbeRedis(list,warningPhone,hospitalCode);
 
+        MonitorEquipmentDto old = monitorEquipmentService.getMonitorEquipmentById(equipmentNo);
         //通过eno获取设备sn
         List<String> sns =  monitorEquipmentService.getSns(equipmentNo);
         if(CollectionUtils.isNotEmpty(sns)){
@@ -1113,7 +1158,38 @@ public class MonitorEquipmentApplication {
                 snDeviceRedisApi.updateSnDeviceDtoSync(result1);
             }
         }
+        MonitorEquipmentLogInfoCommand log =  buildAppEquipmentInfo(Context.getUserId(),old,alarmSystemCommand,OperationLogEunm.APP_ALARM_SET.getCode(),
+                OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addMonitorEquipmentLogInfo(log);
+    }
 
+    private MonitorEquipmentLogInfoCommand buildAppEquipmentInfo(String userId, MonitorEquipmentDto old, AlarmSystemCommand alarmSystemCommand, String type, String operationType) {
+        MonitorEquipmentLogInfoCommand logInfoCommand = new MonitorEquipmentLogInfoCommand();
+        logInfoCommand.setType(type);
+        logInfoCommand.setOperationType(operationType);
+        String equipmentName = old.getEquipmentName();
+        logInfoCommand.setEquipmentName(equipmentName);
+        //根据医院code获取医院名称
+        String hospitalCode = old.getHospitalCode();
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+        if(!ObjectUtils.isEmpty(hospitalInfo)){
+            logInfoCommand.setHospitalName(hospitalInfo.getHospitalName());
+        }
+
+        //根据useid获取用户信息
+        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
+        if(!ObjectUtils.isEmpty(userInfo)){
+            logInfoCommand.setUsername(userInfo.getUsername());
+        }
+        MonitorEquipmentLogCommand oldEq = new MonitorEquipmentLogCommand();
+        oldEq.setWarningSwitch(old.getWarningSwitch());
+        MonitorEquipmentLogCommand nowEq = new MonitorEquipmentLogCommand();
+        nowEq.setWarningSwitch(alarmSystemCommand.getWarningPhone());
+        nowEq.setEquipmentName(old.getEquipmentName());
+
+        logInfoCommand.setOldMonitorEquipmentLogCommand(oldEq);
+        logInfoCommand.setNewMonitorEquipmentLogCommand(nowEq);
+        return logInfoCommand;
     }
 
     private void updateProbeRedis(List<InstrumentparamconfigDTO> instrumentParamConfigDtoList, String warningPhone, String hospitalCode) {
@@ -1147,6 +1223,7 @@ public class MonitorEquipmentApplication {
         monitorEquipmentService.updateEquipmentWarningSwitchByHospitalCodeAndEquipmentTypeId(hospitalCode,equipmentTypeId,warningPhone);
         //同步更新缓存探头配置
         updateProbeRedis(instrumentParamConfigDtoList,warningPhone,hospitalCode);
+        operationlogService.addAppLog(alarmSystemCommand);
     }
 
     /**

@@ -533,6 +533,8 @@ public class InstrumentparamconfigApplication {
 
     @GlobalTransactional
     public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {
+        String instrumentparamconfigno = instrumentparamconfigCommand.getInstrumentparamconfigno();
+        InstrumentparamconfigDTO instrumentparamconfigDTO = instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentparamconfigno);
         instrumentparamconfigService.editHighLowLimit(instrumentparamconfigCommand);
         //更新探头缓存
         String instrumentNo = instrumentparamconfigCommand.getInstrumentNo();
@@ -544,6 +546,12 @@ public class InstrumentparamconfigApplication {
             result.setLowLimit(instrumentparamconfigCommand.getLowlimit());
             probeRedisApi.addProbeRedisInfo(result);
         }
-
+        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                build(Context.getUserId(),
+                        BeanConverter.convert(instrumentparamconfigDTO,InstrumentparamconfigCommand.class),
+                        instrumentparamconfigCommand,
+                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
+                        OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
     }
 }

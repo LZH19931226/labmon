@@ -11,6 +11,7 @@ import com.hc.repository.InstrumentparamconfigRepository;
 import com.hc.service.InstrumentparamconfigService;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -245,5 +246,12 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     @Override
     public String getSnInfo(String instrumentParamConfigNo) {
         return instrumentparamconfigRepository.getSnInfo(instrumentParamConfigNo);
+    }
+
+    @Override
+    public InstrumentparamconfigDTO getProbeInfoById(String instrumentParamConfigNo) {
+        InstrumentparamconfigPo po = instrumentparamconfigRepository.getOne(Wrappers.lambdaQuery(new InstrumentparamconfigPo())
+                .eq(InstrumentparamconfigPo::getInstrumentparamconfigno, instrumentParamConfigNo));
+        return BeanConverter.convert(po,InstrumentparamconfigDTO.class);
     }
 }

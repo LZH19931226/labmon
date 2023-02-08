@@ -148,5 +148,7 @@ public interface InstrumentparamconfigService{
     void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand);
 
     String getSnInfo(String instrumentParamConfigNo);
+
+    InstrumentparamconfigDTO getProbeInfoById(String instrumentParamConfigNo);
 }
 

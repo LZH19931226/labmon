@@ -16,6 +16,7 @@ public enum OperationLogEunm {
     PROBE_MANAGEMENT("3","探头管理"),
     DEVICE_MANAGEMENT("2","设备管理"),
     DEVICE_TYPE_MANAGEMENT("1","设备类型管理"),
+    APP_ALARM_SET("5","app报警设置"),
     HOSPITAL_MANAGENT("0", "医院管理");
     String code;
     String message;
