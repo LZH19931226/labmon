@@ -74,5 +74,12 @@ public interface MonitorinstrumentService{
     void bulkUpdate(List<MonitorinstrumentDTO> monitorinstrumentDTO);
 
     List<MonitorinstrumentDTO> selectMonitorInstrumentByEnoList(List<String> enoList);
+
+    /**
+     * 根据主键集合查询表信息
+     * @param inoList
+     * @return
+     */
+    List<MonitorinstrumentDTO> selectMonitorByInoList(List<String> inoList);
 }
 

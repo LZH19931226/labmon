@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.clickhouse.mapper.WarningrecordMapper">
+
+
+    <select id="getSummaryOfAlarms" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+        toStartOfDay(inputdatetime) time,
+	    COUNT(*) num
+        FROM lab_mon.warningrecord
+        WHERE id IN ( #{param.yearMonth} )
+          and equipmentno = #{param.equipmentNo}
+          and inputdatetime <![CDATA[>=]]> #{param.startTime}
+          and inputdatetime <![CDATA[<=]]> #{param.endTime}
+        group by toStartOfDay(inputdatetime)
+        ORDER BY time
+    </select>
+
+    <!--hospitalCode count  -->
+    <select id="getWarningEquuipmentCounts" resultType="com.hc.clickhouse.po.Warningrecord">
+        select
+            *
+        from
+         lab_mon.warningrecord
+        where hospitalcode = #{hospitalCode}
+        order by inputdatetime DESC
+        <if test="count != null">
+            limit ${count}
+        </if>
+    </select>
+
+    <select id="getAlarmDeviceNum" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            equipmentno,
+            COUNT(*) num
+        FROM
+            lab_mon.warningrecord
+        WHERE
+          inputdatetime <![CDATA[>=]]> #{param.startTime}
+          and inputdatetime <![CDATA[<=]]> #{param.endTime}
+          and hospitalcode = #{param.hospitalCode}
+        GROUP BY equipmentno
+        order BY num DESC
+        LIMIT 5
+    </select>
+
+    <select id="getWarningInfoList" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            *
+        FROM
+            lab_mon.warningrecord
+        WHERE
+            formatDateTime ( inputdatetime, '%Y-%m-%d' ) = #{ymd}
+          AND equipmentno IN (
+            SELECT
+                equipmentno
+            FROM
+                ( SELECT equipmentno, formatDateTime ( MAX( inputdatetime ), '%Y-%m-%d' ) time1
+                  FROM lab_mon.warningrecord WHERE hospitalcode = #{hospitalCode} GROUP BY equipmentno ORDER BY time1 )
+            WHERE
+                time1 = #{ymd}
+        )
+          AND hospitalcode = #{hospitalCode}
+    </select>
+
+    <select id="getWarningInfoByTime" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            hospitalcode,
+            equipmentno,
+            COUNT(instrumentparamconfigno) num
+        FROM
+            lab_mon.warningrecord
+        WHERE
+            id IN (#{time})
+        GROUP BY
+            hospitalcode,
+            equipmentno
+        ORDER BY
+            hospitalcode
+    </select>
+
+    <select id="getWarningRecordDetailInfo" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+            *
+        FROM
+            lab_mon.warningrecord
+        WHERE
+            equipmentno = #{equipmentNo}
+            and inputdatetime <![CDATA[>=]]> #{startTime}
+            and inputdatetime <![CDATA[<=]]> #{endTime}
+        order by inputdatetime desc
+    </select>
+
+    <select id="getWarningEquuipmentInfos" resultType="com.hc.clickhouse.po.Warningrecord">
+        select
+            hospitalcode,equipmentno,inputdatetime
+        from lab_mon.warningrecord
+        where hospitalcode = #{hospitalCode}
+          and inputdatetime <![CDATA[>=]]> #{startTime}
+          and inputdatetime <![CDATA[<=]]> #{endTime}
+    </select>
+
+    <select id="getWarningRecord" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+        *
+        FROM
+        lab_mon.warningrecord
+        WHERE
+        hospitalcode  = #{param.hospitalCode}
+        AND  inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND  inputdatetime <![CDATA[<=]]> #{param.endTime}
+        <if test="param.equipmentNo != null and param.equipmentNo != ''">
+            AND  equipmentno  in (${param.equipmentNo})
+        </if>
+        ORDER by inputdatetime
+    </select>
+
+    <select id="getWarningInfo" resultType="com.hc.clickhouse.po.Warningrecord">
+        select
+            *
+        from
+            lab_mon.warningrecord
+        where
+            id IN (#{ym})
+        and pkid = #{pkid}
+    </select>
+
+    <select id="getAlarmData" resultType="com.hc.clickhouse.po.Warningrecord">
+        SELECT
+        equipmentno,
+        COUNT(equipmentno) num
+        FROM
+        lab_mon.warningrecord
+        WHERE
+        inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
+        AND hospitalcode = #{param.hospitalCode}
+        <if test="param.equipmentNo != null and param.equipmentNo != ''">
+            and equipmentno in (${param.equipmentNo})
+        </if>
+        GROUP BY equipmentno
+        ORDER by num DESC
+    </select>
+
+</mapper>

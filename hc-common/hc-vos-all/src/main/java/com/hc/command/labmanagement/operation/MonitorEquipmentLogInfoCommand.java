@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class MonitorEquipmentLogInfoCommand {
+
     private String username;
     private String hospitalCode;
     private String hospitalName;

@@ -1,6 +1,9 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hc.dto.MonitorinstrumentDTO;
+import com.hc.my.common.core.util.BeanConverter;
+import com.hc.po.MonitorinstrumentPo;
 import com.hc.repository.MonitorinstrumentRepository;
 import com.hc.service.MonitorinstrumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,5 +112,12 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
     @Override
     public List<MonitorinstrumentDTO> selectMonitorInstrumentByEnoList(List<String> enoList) {
         return monitorinstrumentRepository.getMonitorInstrumentByEnoList(enoList);
+    }
+
+    @Override
+    public List<MonitorinstrumentDTO> selectMonitorByInoList(List<String> inoList) {
+        List<MonitorinstrumentPo> list = monitorinstrumentRepository.list(
+                Wrappers.lambdaQuery(new MonitorinstrumentPo()).in(MonitorinstrumentPo::getInstrumentno, inoList));
+        return BeanConverter.convert(list,MonitorinstrumentDTO.class);
     }
 }

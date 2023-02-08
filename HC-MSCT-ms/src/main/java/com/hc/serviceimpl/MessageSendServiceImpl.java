@@ -8,6 +8,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+
 /**
  * 消息发送实现
  * @author hc
@@ -24,4 +25,5 @@ public class MessageSendServiceImpl implements MessageSendService {
         Message<String> build = MessageBuilder.withPayload(message).build();
          return  socketMessage.getOutputChannel().send(build);
     }
+
 }

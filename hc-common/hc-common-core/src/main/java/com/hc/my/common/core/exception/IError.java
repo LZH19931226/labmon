@@ -40,12 +40,12 @@ public interface IError extends Serializable {
 
         @Override
         public String text() {
-            return "系统异常";
+            return "system error";
         }
 
         @Override
         public String cause() {
-            return "系统异常";
+            return "system error";
         }
     };
 
@@ -61,12 +61,12 @@ public interface IError extends Serializable {
 
         @Override
         public String text() {
-            return "token异常";
+            return "token error";
         }
 
         @Override
         public String cause() {
-            return "token异常";
+            return "token error";
         }
     };
 
@@ -82,12 +82,12 @@ public interface IError extends Serializable {
 
         @Override
         public String text() {
-            return "token超时请重新登陆";
+            return "token time out";
         }
 
         @Override
         public String cause() {
-            return "token超时请重新登陆";
+            return "token time out";
         }
     };
 

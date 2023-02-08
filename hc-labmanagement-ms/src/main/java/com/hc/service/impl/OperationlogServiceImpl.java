@@ -6,10 +6,7 @@ import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
-import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
-import com.hc.command.labmanagement.operation.HospitalOperationLogCommand;
-import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
-import com.hc.command.labmanagement.operation.MonitorEquipmentLogInfoCommand;
+import com.hc.command.labmanagement.operation.*;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
 import com.hc.dto.OperationlogDTO;
@@ -18,6 +15,7 @@ import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
 import com.hc.repository.OperationlogRepository;
 import com.hc.repository.OperationlogdetailRepository;
+import com.hc.service.HospitalequimentService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.service.OperationlogService;
 import com.hc.vo.backlog.OperationlogVo;
@@ -37,9 +35,6 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Autowired
     private OperationlogdetailRepository operationlogdetailRepository;
-
-    @Autowired
-    private MonitorinstrumentService monitorinstrumentService;
 
     /**
      * 添加用户日志信息
@@ -357,6 +352,33 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetail.setFiledvalueprev(clientvisible==null?"":clientvisible.toString());//历史值
             operationlogdetails.add(operationlogdetail);
         }
+
+        String oldAddress = oldEquipmentInfoModel.getAddress();//地址信息
+        String newAddress = nowEquipmentInfoModel.getAddress();//地址信息
+        if(!StringUtils.equals(oldAddress,newAddress)){
+            flag = true;
+            OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
+            operationlogdetail.setFiledname("address");
+            operationlogdetail.setFiledcaption("地址信息");
+            operationlogdetail.setFiledvalue(StringUtils.isBlank(newAddress) ? "" : newAddress);//当前值
+            operationlogdetail.setFiledvalueprev(StringUtils.isBlank(oldAddress) ? "" : oldAddress);//历史值
+            operationlogdetails.add(operationlogdetail);
+
+        }
+
+        String oldRemark = oldEquipmentInfoModel.getRemark();
+        String nowRemark = nowEquipmentInfoModel.getRemark();
+
+        if(!StringUtils.equals(oldRemark,nowRemark)){
+            flag = true;
+            OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
+            operationlogdetail.setFiledname("remark");
+            operationlogdetail.setFiledcaption("备注");
+            operationlogdetail.setFiledvalue(StringUtils.isBlank(nowRemark) ? "":nowRemark);//当前值
+            operationlogdetail.setFiledvalueprev(StringUtils.isBlank(oldRemark) ? "":oldRemark);//历史值
+            operationlogdetails.add(operationlogdetail);
+        }
+
         if (flag) {
             OperationlogPo operationlog = new OperationlogPo();
             String hospitalName = monitorEquipmentLogInfoCommand.getHospitalName();
@@ -390,7 +412,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         String sn = oldInstrumentInfoModel.getSn();
         String sn1 = nowInstrumentInfoModel.getSn();
         String instrumentName = instrumentparamconfigInfoCommand.getInstrumentName();
-        if (!StringUtils.equals(sn1, sn)) {
+        if (StringUtils.isBlank(sn) && StringUtils.isBlank(sn1) && !StringUtils.equals(sn1, sn)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("sn");
@@ -460,7 +482,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         //矫正正负值
         String calibration = oldInstrumentInfoModel.getCalibration();
         String calibration1 = nowInstrumentInfoModel.getCalibration();
-        if (!StringUtils.equals(calibration1, calibration)) {
+        if (StringUtils.isNotBlank(calibration) && StringUtils.isNotBlank(calibration1) && !StringUtils.equals(calibration1, calibration)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("calibration");
@@ -488,7 +510,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         //智能报警次数
         Integer alarmtime = oldInstrumentInfoModel.getAlarmtime();
         Integer alarmtime1 = nowInstrumentInfoModel.getAlarmtime();
-        if (!Objects.equals(alarmtime, alarmtime1)) {
+        if ( alarmtime != null && alarmtime1 != null && !Objects.equals(alarmtime, alarmtime1)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("alarmtime");
@@ -501,7 +523,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         //禁用启用报警
         String warningphone = oldInstrumentInfoModel.getWarningphone();
         String warningphone1 = nowInstrumentInfoModel.getWarningphone();
-        if (!StringUtils.equals(warningphone1, warningphone)) {
+        if (StringUtils.isNotBlank(warningphone) && StringUtils.isNotBlank(warningphone1) && !StringUtils.equals(warningphone1, warningphone)) {
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
             operationlogdetail.setFiledname("warningphone");
@@ -547,6 +569,18 @@ public class OperationlogServiceImpl implements OperationlogService {
             }
             operationlogdetailRepository.saveBatch(operationlogdetailPos);
         }
+    }
+
+    @Override
+    public void addExportLog(ExportLogCommand exportLogCommand) {
+        OperationlogPo operationlogPo = new OperationlogPo();
+        operationlogPo.setLogid(UUID.randomUUID().toString().replaceAll("-", ""));
+        operationlogPo.setFunctionname(exportLogCommand.getFunctionName());
+        operationlogPo.setOpeartiontype(exportLogCommand.getOperationType());
+        operationlogPo.setUsername(exportLogCommand.getUsername());
+        operationlogPo.setOperationtime(new Date());
+        operationlogPo.setHospitalname(exportLogCommand.getHospitalName());
+        operationlogRepository.save(operationlogPo);
     }
 
     /**

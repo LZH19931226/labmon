@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.infrastructure.dao.LabMessengerPublishTaskDao">
+
+
+    <select id="getAlarmNoticeInfo" resultType="com.hc.dto.LabMessengerPublishTaskDto">
+        select
+            publish_time publishTime,
+            publish_key publishKey,
+            publish_type publishType,
+            status,
+            message_cover messageCover,
+            remark
+        FROM
+            lab_messengerpublishtask
+        WHERE
+          publish_time BETWEEN #{res.startTime} AND #{res.endTime}
+          <if test="res.phoneNum !=null and res.phoneNum != ''">
+              AND publish_key = #{res.phoneNum}
+          </if>
+          <if test="res.noticeState != null and res.noticeState != ''">
+              <if test = "res.noticeState == '0'.toString() ">
+                  and remark = 'OK'
+              </if>
+              <if test=" res.noticeState == '1'.toString() ">
+                  and remark not in ('OK','')
+              </if>
+          </if>
+    </select>
+</mapper>

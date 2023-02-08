@@ -1,5 +1,6 @@
 package com.hc.application.curvemodel;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -33,4 +34,14 @@ public class CurveDataModel {
      * 数据集合的最小值
      */
     private String minNum;
+
+    /**
+     * 样式最小值
+     */
+    private String styleMin;
+
+    /**
+     * 样式最大值
+     */
+    private String styleMax;
 }

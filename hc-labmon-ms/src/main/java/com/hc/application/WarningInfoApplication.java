@@ -4,29 +4,37 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.WarningInfoCommand;
+import com.hc.clickhouse.param.WarningRecordParam;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentParamConfigDto;
+import com.hc.dto.MonitorEquipmentDto;
 import com.hc.dto.WarningRecordInfoDto;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
+import com.hc.my.common.core.util.RegularUtil;
+import com.hc.repository.EquipmentInfoRepository;
 import com.hc.repository.InstrumentParamConfigRepository;
 import com.hc.service.WarningRecordInfoService;
 import com.hc.util.EquipmentInfoServiceHelp;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class WarningInfoApplication {
@@ -42,18 +50,115 @@ public class WarningInfoApplication {
 
     @Autowired
     private WarningRecordInfoService warningRecordInfoService;
+
+    @Autowired
+    private EquipmentInfoRepository equipmentInfoRepository;
+
+
     /**
      * 分页获取报警信息
      * @param warningInfoCommand
      * @return
      */
     public  Page<Warningrecord> getWarningRecord(WarningInfoCommand warningInfoCommand) {
+        filterEquipmentNo(warningInfoCommand);
         Page<Warningrecord> page = new Page<>(warningInfoCommand.getPageCurrent(),warningInfoCommand.getPageSize());
-        String hospitalCode = warningInfoCommand.getHospitalcode();
-        IPage<Warningrecord> warningRecordIPage = warningrecordRepository.getWarningRecord(page,hospitalCode);
+        WarningRecordParam warningRecordParam = new WarningRecordParam()
+                .setHospitalCode(warningInfoCommand.getHospitalCode())
+                .setEquipmentNo(warningInfoCommand.getEquipmentNo())
+                .setStartTime(warningInfoCommand.getStartTime())
+                .setEndTime(warningInfoCommand.getEndTime());
+        IPage<Warningrecord> warningRecordIPage = warningrecordRepository.getWarningRecord(page,warningRecordParam);
         List<Warningrecord> records = warningRecordIPage.getRecords();
+        if(!CollectionUtils.isEmpty(records)){
+            //设置EName
+            List<String> collect = records.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
+            List<InstrumentParamConfigDto> instrumentParamConfigDtoList = instrumentParamConfigRepository.batchGetProbeInfo(collect);
+            Map<String, List<InstrumentParamConfigDto>> ipcNoMap =
+                    instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
+
+            //设备备注信息
+            List<String> pkIdList = records.stream().map(Warningrecord::getPkid).distinct().collect(Collectors.toList());
+            List<WarningRecordInfoDto> warningRecordInfoList =  warningRecordInfoService.selectWarningRecordInfoByPkIdList(pkIdList);
+            Map<String, List<WarningRecordInfoDto>> pkIdMap = null;
+            if(!CollectionUtils.isEmpty(warningRecordInfoList)){
+                pkIdMap = warningRecordInfoList.stream().collect(Collectors.groupingBy(WarningRecordInfoDto::getWarningrecordid));
+            }
+            for (Warningrecord res : records) {
+                String instrumentparamconfigno = res.getInstrumentparamconfigno();
+                if(ipcNoMap.containsKey(instrumentparamconfigno)){
+                    InstrumentParamConfigDto instrumentParamConfigDto = ipcNoMap.get(instrumentparamconfigno).get(0);
+                    Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
+                    String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
+                    String cName = DataFieldEnum.fromByLastDataField(probeEName).getCName();
+                    if(StringUtils.equalsAnyIgnoreCase(probeEName,"currentdoorstate","currentdoorstate2","currentups")){
+                        res.setAlertRules(cName+"异常");
+                    }else {
+                        if(StringUtils.isNotBlank(res.getWarningValue()) && RegularUtil.checkContainsNumbers(res.getWarningValue())){
+                            int i =  new BigDecimal(res.getWarningValue()).compareTo(new BigDecimal(res.getHighLimit()));
+                            if( i > 0 ){
+                                res.setAlertRules(cName + "高于设置的上阀值"+res.getHighLimit());
+                            }else {
+                                res.setAlertRules(cName + "低于设置的下阀值"+res.getLowLimit());
+                            }
+                        }
+                    }
+                    res.setEName(probeEName);
+                }
+                res.setRemark("");
+                if(pkIdMap != null && pkIdMap.containsKey(res.getPkid())){
+                    WarningRecordInfoDto warningRecordInfoDto = pkIdMap.get(res.getPkid()).get(0);
+                    res.setRemark(StringUtils.isBlank(warningRecordInfoDto.getInfo()) ? "" :warningRecordInfoDto.getInfo());
+                }
+            }
+        }
         page.setRecords(records);
         return page;
+    }
+
+    private void filterEquipmentNo(WarningInfoCommand warningInfoCommand) {
+        //分三种情况
+        String hospitalCode = warningInfoCommand.getHospitalCode();
+        String equipmentTypeId = warningInfoCommand.getEquipmentTypeId();
+        String equipmentNo = warningInfoCommand.getEquipmentNo();
+        if(StringUtils.isBlank(equipmentNo)){
+            //1.只输入hospitalCode
+            if(StringUtils.isBlank(equipmentTypeId)){
+                List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                        .select(MonitorEquipmentDto::getEquipmentno)
+                        .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode));
+                if(CollectionUtils.isEmpty(list)){
+                    return;
+                }
+                List<String> enos = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+                String eno = strJoin(enos);
+                warningInfoCommand.setEquipmentNo(eno);
+            }
+            //2.只输入equipmentTypeId hospitalCode
+            else {
+                List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                        .select(MonitorEquipmentDto::getEquipmentno)
+                        .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode)
+                        .eq(MonitorEquipmentDto::getEquipmenttypeid,equipmentTypeId));
+                if(CollectionUtils.isEmpty(list)){
+                    return;
+                }
+                List<String> enos = list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
+                String eno =strJoin(enos);
+                warningInfoCommand.setEquipmentNo(eno);
+            }
+        }else {
+            warningInfoCommand.setEquipmentNo("'"+warningInfoCommand.getEquipmentNo()+"'");
+        }
+    }
+
+    private String strJoin(List<String> enos) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String eno : enos) {
+            stringBuilder.append("'").append(eno).append("'");
+            stringBuilder.append(",");
+        }
+        return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
 
     /**
@@ -63,7 +168,7 @@ public class WarningInfoApplication {
      */
     public CurveInfoDto getWarningCurveData(String pkId ,String startTime,String endTime ) {
         String ym = DateUtils.getYearMonth(startTime,endTime);
-        Warningrecord warningrecord = warningrecordRepository.getOne(Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getPkid, pkId));
+        Warningrecord warningrecord = warningrecordRepository.getWarningInfo(pkId,ym);
         if(ObjectUtils.isEmpty(warningrecord)) {
             return null;
         }

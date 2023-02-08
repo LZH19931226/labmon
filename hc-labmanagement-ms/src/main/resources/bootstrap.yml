@@ -10,4 +10,4 @@ spring:
       enabled: true
       resolve-lazily: false
   profiles:
-    active: test
+    active: dev

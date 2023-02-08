@@ -1,6 +1,7 @@
 package com.hc.application;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentMonitorCommand;
 import com.hc.dto.InstrumentConfigDTO;
@@ -9,6 +10,7 @@ import com.hc.dto.MonitorinstrumenttypeDTO;
 import com.hc.service.InstrumentConfigService;
 import com.hc.service.InstrumentmonitorService;
 import com.hc.service.MonitorinstrumenttypeService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +42,7 @@ public class InstrumentMonitorApplication {
      * 添加探头高低值
      * @param instrumentMonitorCommand
      */
+    @GlobalTransactional
     public void add(InstrumentMonitorCommand instrumentMonitorCommand) {
         Integer instrumentTypeId = instrumentMonitorCommand.getInstrumentTypeId();
         List<InstrumentmonitorDTO> list = instrumentmonitorService.selectMonitorEquipmentList(instrumentTypeId);
@@ -77,6 +80,15 @@ public class InstrumentMonitorApplication {
                 if(configIdMap.containsKey(res.getInstrumentconfigid())){
                     res.setInstrumentconfigname(configIdMap.get(res.getInstrumentconfigid()).get(0).getInstrumentconfigname());
                 }
+                if(StringUtils.isEmpty(res.getUnit())){
+                    res.setUnit("");
+                }
+                if(StringUtils.isEmpty(res.getStyleMin())){
+                    res.setStyleMin("");
+                }
+                if(StringUtils.isEmpty(res.getStyleMax())){
+                    res.setStyleMax("");
+                }
             });
             page.setRecords(list);
         }
@@ -87,6 +99,7 @@ public class InstrumentMonitorApplication {
      * 修改
      * @param instrumentMonitorCommand
      */
+    @GlobalTransactional
     public void edit(InstrumentMonitorCommand instrumentMonitorCommand) {
         InstrumentmonitorDTO instrumentmonitorDTO= buildInstrumentmonitorDTO(instrumentMonitorCommand);
         instrumentmonitorService.updateInstrumentmonitor(instrumentmonitorDTO);
@@ -100,6 +113,9 @@ public class InstrumentMonitorApplication {
         obj.setLowlimit(res.getLowlimit());
         obj.setHighlimit(res.getHighlimit());
         obj.setChannel(res.getChannel());
+        obj.setUnit(res.getUnit());
+        obj.setStyleMax(res.getStyleMax());
+        obj.setStyleMin(res.getStyleMin());
         return obj;
     }
 
@@ -107,6 +123,7 @@ public class InstrumentMonitorApplication {
      * 删除高低值字典
      * @param instrumentTypeId
      */
+    @GlobalTransactional
     public void remove(Integer instrumentTypeId,Integer instrumentConfigId) {
         instrumentmonitorService.remove(instrumentTypeId,instrumentConfigId);
     }

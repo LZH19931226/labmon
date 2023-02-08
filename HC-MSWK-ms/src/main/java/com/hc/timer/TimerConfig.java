@@ -2,7 +2,9 @@ package com.hc.timer;
 
 import com.alibaba.fastjson.JSON;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
+import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
+import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.mapper.HospitalInfoMapper;
 import com.hc.model.TimeoutEquipment;
@@ -10,11 +12,13 @@ import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
+import com.hc.my.common.core.redis.dto.WarningrecordRedisInfo;
 import com.hc.my.common.core.redis.namespace.MswkServiceEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.MessagePushService;
 import com.hc.utils.JsonUtil;
+import com.hc.warning.WarningApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -48,12 +52,17 @@ public class TimerConfig {
     @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
+    @Autowired
+    private WarningApi warningApi;
 
     @Autowired
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
 
+    @Autowired
+    private WarningrecordRepository warningrecordRepository;
+
     //没分钟的第30秒执行
-    @Scheduled(cron = "30 * * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void Time() {
         // 查询所有需要超时报警的设备
         List<TimeoutEquipment> timeoutEquipments = hospitalInfoMapper.getTimeoutEquipment();
@@ -153,7 +162,7 @@ public class TimerConfig {
     }
 
     //每分钟执行一次
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void Timing() {
         ApiResponse<Long> lastDataListSize = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode());
         if (null == lastDataListSize) {
@@ -174,7 +183,30 @@ public class TimerConfig {
         convert.forEach(monitorequipmentlastdata -> {
             monitorequipmentlastdata.setId(DateUtils.getCurrentYYMM());
         });
-
         monitorequipmentlastdataRepository.batchInsert(convert);
+    }
+
+    @Scheduled(cron = "0 0/1 * * * ?")
+    public void waring() {
+        ApiResponse<Long> warningRecordSize = warningApi.getWarningRecordSize(MswkServiceEnum.WARNING_RECORD.getCode());
+        if (null == warningRecordSize) {
+            return;
+        }
+        Long size = warningRecordSize.getResult();
+        if (size ==null || size == 0) {
+            return;
+        }
+        List<WarningrecordRedisInfo> list = new ArrayList<>();
+        for (long i = 0; i < size; i++) {
+            WarningrecordRedisInfo warningrecordRedisInfo = warningApi.getLeftPopWarningRecord(MswkServiceEnum.WARNING_RECORD.getCode()).getResult();
+            if (null != warningrecordRedisInfo) {
+                list.add(warningrecordRedisInfo);
+            }
+        }
+        List<Warningrecord> convert = BeanConverter.convert(list, Warningrecord.class);
+        convert.forEach(res -> {
+            res.setId(DateUtils.getCurrentYYMM());
+        });
+        warningrecordRepository.batchInsert(convert);
     }
 }

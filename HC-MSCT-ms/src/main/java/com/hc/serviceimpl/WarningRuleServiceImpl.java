@@ -1,6 +1,7 @@
 package com.hc.serviceimpl;
 
 import com.hc.clickhouse.po.Warningrecord;
+import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.ProbeRedisApi;
 import com.hc.hospital.HospitalRedisApi;
 import com.hc.labmanagent.ProbeInfoApi;
@@ -39,7 +40,6 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     private HospitalRedisApi hospitalRedisApi;
     @Autowired
     private AlmMsgService almMsgService;
-
     /**
      * 进来的默认都是启用报警的
      * 先判断医院   、  在进行判断是否三次报警

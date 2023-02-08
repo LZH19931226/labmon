@@ -184,7 +184,11 @@ public class UserRightApplication {
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
         String phoneNum = userRightDto.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
-            throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.name());
+            if (userRightCommand.getLang().equals("zh")) {
+                throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.getMessage());
+            }else {
+                throw new IedsException(LabSystemEnum.THE_ACCOUNT_IS_THE_REGISTERED_MOBILE_PHONE_NUMBER.name());
+            }
         }
         String loginType = userRightCommand.getLoginType();
         String loginStatus = userRightCommand.getLoginStatus();
@@ -214,7 +218,7 @@ public class UserRightApplication {
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .hospitalInfoVo(hospitalInfoVo)
-                .nickname(userRightDto.getNickname())
+                .nickname(StringUtils.isEmpty(userRightDto.getNickname())?userRightDto.getUsername():userRightDto.getNickname())
                 .token(token)
                 .build();
     }
@@ -250,7 +254,7 @@ public class UserRightApplication {
                 .pwd(userRightDto.getPwd())
                 .isUse(userRightDto.getIsUse())
                 .userid(userRightDto.getUserid())
-                .nickname(userRightDto.getNickname())
+                .nickname(StringUtils.isEmpty(userRightDto.getNickname())?userRightDto.getUsername():userRightDto.getNickname())
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .token(token)
@@ -319,6 +323,7 @@ public class UserRightApplication {
                 .userType(userRightCommand.getUserType())
                 .hospitalName(userRightCommand.getHospitalName())
                 .token(userRightCommand.getToken())
+                .nickname(StringUtils.isEmpty(userRightCommand.getNickname())?userRightCommand.getUsername():userRightCommand.getNickname())
                 .lang(userRightCommand.getLang())
                 .build();
     }

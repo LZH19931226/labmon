@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @MapperScan("com.hc.infrastructure.dao")
 @EnableFeignClients
-@EnableAuthorizationX
+//@EnableAuthorizationX
 public class HcLabManagementMsApplication {
 
 	public static void main(String[] args) {

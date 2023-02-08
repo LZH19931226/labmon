@@ -24,7 +24,7 @@ public class HospitalEquipmentServiceImpl implements HospitalEquipmentService {
     }
 
     @Override
-    public List<HospitalEquipmentDto> findHospitalEquipmentTypeByCode(String hospitalCode) {
-        return hospitalEquipmentRepository.findHospitalEquipmentTypeByCode(hospitalCode);
+    public List<HospitalEquipmentDto> selectHospitalEquipmentInfoByPc(String hospitalCode) {
+        return hospitalEquipmentRepository.selectHospitalEquipmentInfoByPc(hospitalCode);
     }
 }

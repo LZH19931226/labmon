@@ -1,10 +1,13 @@
 package com.hc.repository;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.hc.application.command.EquipmentDataCommand;
 import com.hc.dto.InstrumentMonitorInfoDto;
+import com.hc.dto.InstrumentTypeNumDto;
 
 import java.util.List;
 
-public interface InstrumentMonitorInfoRepository {
+public interface InstrumentMonitorInfoRepository extends IService<InstrumentMonitorInfoDto> {
 
     /**
      *  查询仪器监视器信息集合
@@ -12,4 +15,6 @@ public interface InstrumentMonitorInfoRepository {
      * @return 仪器监视器信息集合
      */
     List<InstrumentMonitorInfoDto> selectInstrumentMonitorInfoByEqNo(List<String> equipmentNoList);
+
+    List<InstrumentTypeNumDto> getEquipmentTypeNum(EquipmentDataCommand equipmentDataCommand);
 }

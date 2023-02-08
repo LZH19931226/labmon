@@ -3,7 +3,9 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.MonitorEquipmentApplication;
 import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
+import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
 import io.swagger.annotations.Api;
@@ -31,10 +33,17 @@ public class MonitorEquipmentController {
         return monitorEquipmentApplication.getHardwareTypeProbeInformation(equipmentTypeId);
     }
 
+    /**
+     *
+     * */
+    @GetMapping("/getInstrumentMonitorInfo")
+    private List<InstrumentmonitorVo> getProbeInfoByITypeId(@RequestParam("instrumentTypeId") String instrumentTypeId){
+        return monitorEquipmentApplication.getProbeInfoByITypeId(instrumentTypeId);
+    }
+
     @PostMapping("/findEquipmentInfo")
     @ApiOperation("分页查询设备信息")
     public Page<MonitorEquipmentVo> getEquipmentInfo(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
-        //return monitorEquipmentApplication.getEquipmentInfoList(monitorEquipmentCommand);
         return monitorEquipmentApplication.getEquipmentInfo(monitorEquipmentCommand);
     }
 
@@ -62,24 +71,28 @@ public class MonitorEquipmentController {
          return monitorEquipmentApplication.selectMonitorEquipmentType(instrumenttypeid);
     }
 
+    @JwtIgnore
     @GetMapping("/getAllMonitorEquipmentInfo")
     @ApiOperation("获取所有的监控设备信息")
     public List<SnDeviceDto> getAllMonitorEquipmentInfo(){
         return monitorEquipmentApplication.getAllMonitorEquipmentInfo();
     }
 
+    @JwtIgnore
     @GetMapping("/getHospitalUPS")
     @ApiOperation("获取医院ups的设备no集合")
     public List<SnDeviceDto> getEquipmentNoList(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
         return monitorEquipmentApplication.getEquipmentNoList(hospitalCode,equipmentTypeId);
     }
 
+    @JwtIgnore
     @GetMapping("/getMonitorEquipmentInfoByEno")
     @ApiOperation("获取监控设备查询信息")
     public SnDeviceDto selectMonitorEquipmentInfoByEno(@RequestParam("equipmentNo")String equipmentNo){
         return monitorEquipmentApplication.selectMonitorEquipmentInfoByEno(equipmentNo);
     }
 
+    @JwtIgnore
     @GetMapping("/getMonitorEquipmentInfoByHCode")
     @ApiOperation("获取医院的设备信息")
     public List<SnDeviceDto> getMonitorEquipmentInfoByHCode(@RequestParam("hospitalCode") String hospitalCode){
@@ -92,5 +105,10 @@ public class MonitorEquipmentController {
         return monitorEquipmentApplication.checkSn(sn);
     }
 
+    @GetMapping("/getHosEqTypeEqInfo")
+    @ApiOperation("/获取医院设备类型设备位置信息")
+    public List<String> getHosEqTypeEqInfo(@RequestParam("hospitalCode") String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
+        return  monitorEquipmentApplication.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
+    }
 
 }

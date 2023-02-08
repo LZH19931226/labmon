@@ -1,24 +1,23 @@
 package com.hc.serviceimpl;
 
 import com.hc.clickhouse.po.Warningrecord;
-import com.hc.command.labmanagement.model.UserSchedulingModel;
 import com.hc.device.SnDeviceRedisApi;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
-import com.hc.hospital.HospitalInfoApi;
 import com.hc.model.HospitalEquipmentTypeInfoModel;
 import com.hc.my.common.core.constant.enums.DictEnum;
 import com.hc.my.common.core.domain.MonitorinstrumentDo;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
 import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
-import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.po.MonitorEquipmentWarningTime;
 import com.hc.po.Monitorinstrument;
 import com.hc.po.UserScheduLing;
+import com.hc.po.Userright;
 import com.hc.service.AlmMsgService;
-import com.hc.user.UserRightInfoApi;
+import com.hc.service.UserScheduLingService;
+import com.hc.service.UserrightService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,26 +32,23 @@ import java.util.stream.Collectors;
 
 @Service
 public class AlmMsgServiceImpl implements AlmMsgService {
-
-    @Autowired
-    private UserRightInfoApi userRightInfoApi;
-
-    @Autowired
-    private HospitalInfoApi hospitalInfoApi;
-
     @Autowired
     private SnDeviceRedisApi snDeviceRedisSync;
     @Autowired
     private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
 
+    @Autowired
+    private UserScheduLingService userScheduLingService;
+
+    @Autowired
+    private UserrightService userrightService;
 
     @Override
-    public List<UserRightRedisDto> addUserScheduLing(String hospitalcode) {
-        List<UserRightRedisDto> list = new ArrayList<>();
+    public List<Userright> addUserScheduLing(String hospitalcode) {
+        List<Userright> list = new ArrayList<>();
         List<String> phones = new ArrayList<>();
         Date date = new Date();
-        List<UserSchedulingModel> userSchedulingModels = hospitalInfoApi.getHospitalScheduleInfo(hospitalcode).getResult();
-        List<UserScheduLing> userScByHosSt1 = BeanConverter.convert(userSchedulingModels,UserScheduLing.class);
+        List<UserScheduLing> userScByHosSt1 = userScheduLingService.getHospitalScheduleInfo(hospitalcode);
         if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
             List<UserScheduLing> lings = new ArrayList<>();
             UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);
@@ -70,19 +66,19 @@ public class AlmMsgServiceImpl implements AlmMsgService {
             }
             if (CollectionUtils.isNotEmpty(lings)) {
                 for (UserScheduLing s : lings) {
-                    UserRightRedisDto userright = new UserRightRedisDto();
+                    Userright userright = new Userright();
                     //排班的人默认都是电话+短信
                     userright.setReminders(null);
                     String userphone = s.getUserphone();
                     if (StringUtils.isNotEmpty(userphone)) {
-                        userright.setPhoneNum(userphone);
+                        userright.setPhonenum(userphone);
                         phones.add(userphone);
                     }
                     list.add(userright);
                 }
             }
         }
-        List<UserRightRedisDto> users = userRightInfoApi.findALLUserRightInfoByHC(hospitalcode).getResult();
+        List<Userright> users =  userrightService.findALLUserRightInfoByHC(hospitalcode);
         if (CollectionUtils.isEmpty(users)) {
             return null;
         }
@@ -92,7 +88,7 @@ public class AlmMsgServiceImpl implements AlmMsgService {
         } else {
             //有排班的人和未排班的人
             if (CollectionUtils.isNotEmpty(phones)) {
-                List<UserRightRedisDto> userRights = users.stream().filter(s -> !phones.contains(s.getPhoneNum())).collect(Collectors.toList());
+                List<Userright> userRights = users.stream().filter(s -> !phones.contains(s.getPhonenum())).collect(Collectors.toList());
                 list.addAll(userRights);
             }
         }

@@ -68,6 +68,10 @@ public class HospitalEquipmentDto {
     @TableField(select = false)
     private String normalNum;
 
+    @TableField(select = false)
+    private String timeoutNum;
+
+
     @TableField(exist = false)
     private String totalNum;
 

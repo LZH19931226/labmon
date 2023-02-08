@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.hc</groupId>
             <artifactId>hc-common-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>

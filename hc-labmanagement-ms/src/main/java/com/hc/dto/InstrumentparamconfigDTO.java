@@ -1,5 +1,6 @@
 package com.hc.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -123,7 +124,25 @@ public class InstrumentparamconfigDTO implements Serializable {
     /** 探头状态 0为正常 1为报警中*/
     private String state;
 
+    /** 单位 */
+    private String unit;
 
+    /**
+     * 样式最小值
+     */
+    private String styleMin;
+
+    /**
+     * 样式最大值
+     */
+    private String styleMax;
+
+    /**
+     * 探头类型分组
+     * 同于前端展示
+     */
+    @TableField(value = "ins_group")
+    private String insGroup;
 }
 
 

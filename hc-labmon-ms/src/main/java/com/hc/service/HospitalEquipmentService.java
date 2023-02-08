@@ -7,5 +7,5 @@ import java.util.List;
 public interface HospitalEquipmentService {
     List<HospitalEquipmentDto> selectHospitalEquipmentInfo(String hospitalCode);
 
-    List<HospitalEquipmentDto> findHospitalEquipmentTypeByCode(String hospitalCode);
+    List<HospitalEquipmentDto> selectHospitalEquipmentInfoByPc(String hospitalCode);
 }

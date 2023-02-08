@@ -6,7 +6,9 @@
 
     <select id="listByPage" resultType="com.hc.dto.InstrumentConfigDTO">
         select
-            *
+        instrumentconfigid,
+        instrumentconfigname,
+        ins_group as insGroup
         from
             instrumentconfig
         where

@@ -79,6 +79,24 @@ public class Warningrecord implements Serializable {
     /**
      *
      */
+    @TableField(exist = false)
     private Long num;
 
+    @TableField(exist = false)
+    private String time;
+
+    @TableField(exist = false)
+    private String eName;
+
+    /** 备注 */
+    @TableField(exist = false)
+    private String remark;
+
+    /**  */
+    @TableField(exist = false)
+    private String alertRules;
+
+    private String equipmentName;
+
+    private String equipmentTypeName;
 }

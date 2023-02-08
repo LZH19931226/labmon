@@ -136,5 +136,17 @@ public interface InstrumentparamconfigService{
     List<InstrumentparamconfigDTO> getInstrumentParamConfigByCodeAndTypeId(String hospitalCode, String equipmentTypeId);
 
     void batchProbeAlarmState(List<String> probeIds, String warningPhone);
+
+    /**
+     * 查出所有的探头信息
+     * @return
+     */
+    List<InstrumentparamconfigDTO> list();
+
+    void updateBatchData(List<InstrumentparamconfigDTO> probeList);
+
+    void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand);
+
+    String getSnInfo(String instrumentParamConfigNo);
 }
 

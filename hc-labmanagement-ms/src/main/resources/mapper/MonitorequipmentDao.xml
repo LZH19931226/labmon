@@ -99,6 +99,8 @@
             me.equipmentname equipmentName,
             me.remark remark,
             me.ups_notice upsNotice,
+            me.address address,
+            me.sort sort,
             h.hospitalname hospitalName,
             met.equipmenttypename equipmentTypeName,
             met.equipmenttypename_us equipmentTypeNameUs
@@ -115,10 +117,18 @@
         <if test ="monitorEquipmentCommand.equipmentName != null and monitorEquipmentCommand.equipmentName != '' ">
             and me.equipmentname like concat("%",#{monitorEquipmentCommand.equipmentName},"%")
         </if>
-        <if test="monitorEquipmentCommand.clientVisible != null and monitorEquipmentCommand.clientVisible!= '' ">
+        <if test="monitorEquipmentCommand.clientVisible != null">
             and me.clientvisible = #{monitorEquipmentCommand.clientVisible}
         </if>
         order by equipmentName
+    </select>
+
+    <select id="getSns" resultType="java.lang.String">
+    select
+           sn
+    from
+         monitorinstrument
+        where equipmentno = #{eno}
     </select>
 
 </mapper>

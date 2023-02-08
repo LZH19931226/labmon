@@ -29,8 +29,8 @@ public class InstrumentConfigController {
 
     @PostMapping("/add")
     @ApiOperation("添加监控参数类型")
-    public void add(@RequestParam("instrumentConfigName") String instrumentConfigName){
-        instrumentconfigApplication.save(instrumentConfigName);
+    public void add(@RequestBody InstrumentConfigCommand instrumentConfigCommand){
+        instrumentconfigApplication.save(instrumentConfigCommand);
     }
 
     @PostMapping("/list")

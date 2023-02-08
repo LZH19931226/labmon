@@ -224,4 +224,26 @@ public class InstrumentparamconfigServiceImpl implements InstrumentparamconfigSe
     public void batchProbeAlarmState(List<String> probeIds, String warningPhone) {
         instrumentparamconfigRepository.batchProbeAlarmState(probeIds,warningPhone);
     }
+
+    @Override
+    public List<InstrumentparamconfigDTO> list() {
+        List<InstrumentparamconfigPo> list = instrumentparamconfigRepository.list();
+        return BeanConverter.convert(list,InstrumentparamconfigDTO.class);
+    }
+
+    @Override
+    public void updateBatchData(List<InstrumentparamconfigDTO> probeList) {
+        instrumentparamconfigRepository.updateBatchData(probeList);
+    }
+
+    @Override
+    public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {
+        InstrumentparamconfigPo convert = BeanConverter.convert(instrumentparamconfigCommand, InstrumentparamconfigPo.class);
+        instrumentparamconfigRepository.updateById(convert);
+    }
+
+    @Override
+    public String getSnInfo(String instrumentParamConfigNo) {
+        return instrumentparamconfigRepository.getSnInfo(instrumentParamConfigNo);
+    }
 }

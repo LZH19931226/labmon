@@ -1,16 +1,19 @@
 package com.hc.serviceimpl;
 
+import com.hc.MessageApi;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.device.ProbeRedisApi;
 import com.hc.model.WarningModel;
-import com.hc.my.common.core.constant.enums.ElkLogDetail;
-import com.hc.my.common.core.constant.enums.SysConstants;
+import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.domain.MonitorinstrumentDo;
+import com.hc.my.common.core.domain.P2PNotify;
 import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.esm.EquipmentState;
+import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.RegularUtil;
+import com.hc.po.Userright;
 import com.hc.service.MessageSendService;
 import com.hc.service.WarningRuleService;
 import com.hc.service.WarningService;
@@ -33,32 +36,27 @@ public class WarningServiceImpl implements WarningService {
     @Autowired
     private ProbeRedisApi probeRedisApi;
     @Autowired
-    private WarningRuleService warningRuleService;
-    @Autowired
     private MessageSendService messageSendService;
 
-    private List<Integer> lowHighRuleInstrumentConfigIds = Arrays.asList(1, 2, 4, 5, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 42, 43,45);
+    private List<Integer> lowHighRuleInstrumentConfigIds = Arrays.asList(1, 2, 4, 5, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 42, 43, 45);
 
     private List<Integer> mainsInstrumentConfigIds = Arrays.asList(10);
 
-    private List<Integer> alarmSignalInstrumentConfigIds = Arrays.asList(11,44);
+    private List<Integer> alarmSignalInstrumentConfigIds = Arrays.asList(11, 44);
 
-    private List<Integer> gasInstrumentConfigIds = Arrays.asList(3,6,7,8,9,12,26,27,28,35,23,24);
+    private List<Integer> gasInstrumentConfigIds = Arrays.asList(3, 6, 7, 8, 9, 12, 26, 27, 28, 35, 23, 24);
 
     private List<Integer> airFlowInstrumentConfigIds = Arrays.asList(25);
 
+
+    @Autowired
+    private MessageApi messageApi;
+
     @Override
-    public WarningModel produceWarn(WarningAlarmDo warningAlarmDo) {
-        // redis缓存中取  当前探头监控类型数据   高低值
+    public Warningrecord checkProbeLowLimit(InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo) {
         String data = warningAlarmDo.getCurrrentData();
-        Integer instrumentconfigid = warningAlarmDo.getInstrumentconfigid();
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         String hospitalcode = monitorinstrument.getHospitalcode();
-        InstrumentInfoDto probe = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + instrumentconfigid).getResult();
-        if (null == probe) {
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER06.getCode()), JsonUtil.toJson(monitorinstrument), warningAlarmDo.getLogId());
-            return null;
-        }
         String warningphone = probe.getWarningPhone();
         if (StringUtils.isEmpty(warningphone)) {
             warningphone = "1";
@@ -72,7 +70,6 @@ public class WarningServiceImpl implements WarningService {
         Integer instrumentConfigId = probe.getInstrumentConfigId();
         String instrumentparamconfigNO = probe.getInstrumentParamConfigNO();
         String equipmentno = probe.getEquipmentNo();
-
         Warningrecord warningrecord = new Warningrecord();
         warningrecord.setEquipmentno(equipmentno);
         warningrecord.setInstrumentparamconfigno(instrumentparamconfigNO);
@@ -84,44 +81,44 @@ public class WarningServiceImpl implements WarningService {
         warningrecord.setHighLimit(probe.getHighLimit().toString());
         //高低值比较探头
         if (lowHighRuleInstrumentConfigIds.contains(instrumentConfigId)) {
-            if (null== lowHighRule(warningrecord,warningAlarmDo, probe)){
-                sendEquimentProbeStatus(probe,warningAlarmDo);
+            if (null == lowHighRule(warningrecord, warningAlarmDo, probe)) {
+                sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
             //市电比较探头
-        }else if (mainsInstrumentConfigIds.contains(instrumentConfigId)){
-            if (null== mainsRule(warningrecord,warningAlarmDo)){
-                sendEquimentProbeStatus(probe,warningAlarmDo);
+        } else if (mainsInstrumentConfigIds.contains(instrumentConfigId)) {
+            if (null == mainsRule(warningrecord, warningAlarmDo)) {
+                sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
             //报警信号比较探头
-        }else if (alarmSignalInstrumentConfigIds.contains(instrumentConfigId)){
-            if (null== alarmSignalRule(warningrecord,warningAlarmDo,probe)){
-                sendEquimentProbeStatus(probe,warningAlarmDo);
+        } else if (alarmSignalInstrumentConfigIds.contains(instrumentConfigId)) {
+            if (null == alarmSignalRule(warningrecord, warningAlarmDo, probe)) {
+                sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
         }
         //气体比较探头
-       else if (gasInstrumentConfigIds.contains(instrumentConfigId)) {
-            if (null== gasRule(warningrecord,warningAlarmDo,probe)){
-                sendEquimentProbeStatus(probe,warningAlarmDo);
+        else if (gasInstrumentConfigIds.contains(instrumentConfigId)) {
+            if (null == gasRule(warningrecord, warningAlarmDo, probe)) {
+                sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
         }
         //气流比较探头
         else if (airFlowInstrumentConfigIds.contains(instrumentConfigId)) {
-            if (null== airFlowRule(warningrecord,warningAlarmDo,probe)){
-                sendEquimentProbeStatus(probe,warningAlarmDo);
+            if (null == airFlowRule(warningrecord, warningAlarmDo, probe)) {
+                sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
-        }else {
+        } else {
             return null;
         }
-       return warningRuleService.warningRule(hospitalcode, warningrecord, probe, warningAlarmDo);
+        return warningrecord;
     }
 
     //需要将报警原因,报警通知到得人员,反写过去
-    public void sendEquimentProbeStatus(InstrumentInfoDto probe,WarningAlarmDo warningAlarmDo){
+    public void sendEquimentProbeStatus(InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo) {
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         //未产生报警记录，正常值情况，就删除
         probeRedisApi.removeProbeWarnInfo(monitorinstrument.getHospitalcode(), probe.getInstrumentParamConfigNO());
@@ -136,7 +133,7 @@ public class WarningServiceImpl implements WarningService {
         equipmentState.setSn(monitorinstrument.getSn());
         String json = JsonUtil.toJson(equipmentState);
         messageSendService.send(json);
-        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()),JsonUtil.toJson(equipmentState),warningAlarmDo.getLogId());
+        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()), JsonUtil.toJson(equipmentState), warningAlarmDo.getLogId());
     }
 
 
@@ -189,7 +186,7 @@ public class WarningServiceImpl implements WarningService {
         return warningrecord;
     }
 
-    private Warningrecord alarmSignalRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo,InstrumentInfoDto probe) {
+    private Warningrecord alarmSignalRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo, InstrumentInfoDto probe) {
         String data = warningAlarmDo.getCurrrentData();
         String equipmentname = probe.getEquipmentName();
         if (StringUtils.equals("1", data)) {
@@ -197,8 +194,8 @@ public class WarningServiceImpl implements WarningService {
         } else {
             data = "0.00";
         }
-        if (probe.getLowLimit().compareTo(new BigDecimal(data))!=0) {
-           return null;
+        if (probe.getLowLimit().compareTo(new BigDecimal(data)) != 0) {
+            return null;
         }
         warningrecord.setWarningremark(equipmentname + "报警信号异常");
         return warningrecord;
@@ -207,13 +204,13 @@ public class WarningServiceImpl implements WarningService {
     private Warningrecord mainsRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo) {
         String data = warningAlarmDo.getCurrrentData();
         if (!StringUtils.equals("1", data)) {
-           return null;
+            return null;
         }
         warningrecord.setWarningremark("市电异常");
         return warningrecord;
     }
 
-    public Warningrecord lowHighRule(Warningrecord warningrecord,WarningAlarmDo warningAlarmDo,InstrumentInfoDto probe) {
+    public Warningrecord lowHighRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo, InstrumentInfoDto probe) {
         String data = warningAlarmDo.getCurrrentData();
         String data1 = warningAlarmDo.getCurrentData1();
         String equipmentname = probe.getEquipmentName();
@@ -235,13 +232,13 @@ public class WarningServiceImpl implements WarningService {
             if (Integer.parseInt(proSn) < 2031) {
                 //当一路温度值存在异常，整个值无效
                 // 当两个值相差3度，值无效
-                if (!checkProbeValue(warningAlarmDo,probe)){
-                   return null;
+                if (!checkProbeValue(warningAlarmDo, probe)) {
+                    return null;
                 }
                 warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
             } else {
                 if (!StringUtils.equals(sns, "17")) {
-                    if (!checkProbeValue(warningAlarmDo,probe)){
+                    if (!checkProbeValue(warningAlarmDo, probe)) {
                         return null;
                     }
                     warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
@@ -265,7 +262,7 @@ public class WarningServiceImpl implements WarningService {
         return warningrecord;
     }
 
-    public boolean  checkProbeValue(WarningAlarmDo warningAlarmDo,InstrumentInfoDto probe){
+    public boolean checkProbeValue(WarningAlarmDo warningAlarmDo, InstrumentInfoDto probe) {
         String data = warningAlarmDo.getCurrrentData();
         String data1 = warningAlarmDo.getCurrentData1();
         if (!RegularUtil.checkContainsNumbers(data1) || Math.abs(new Double(data) - new Double(data1)) > 3) {
@@ -274,5 +271,122 @@ public class WarningServiceImpl implements WarningService {
         return LowHighVerify.verify(probe, data) && LowHighVerify.verify(probe, data1);
     }
 
+
+    @Override
+    public Warningrecord pushNotification(List<Userright> list, WarningModel warningModel, HospitalInfoDto hospitalInfoDto) {
+        String logId = warningModel.getLogId();
+        //获取电话.
+        StringBuilder phoneCallUser = new StringBuilder();
+        StringBuilder mailCallUser = new StringBuilder();
+        for (Userright userright : list) {
+            String reminders = userright.getReminders();
+            String phonenum = userright.getPhonenum();
+            String role = userright.getRole();
+            String equipmentName = warningModel.getEquipmentname();
+            String hospitalName = hospitalInfoDto.getHospitalName();
+            String unit = warningModel.getUnit();
+            String value = warningModel.getValue();
+            //1为运维后台人员
+            if (StringUtils.isNotEmpty(role) && StringUtils.equals(role, "1")) {
+                equipmentName = hospitalName + equipmentName;
+            }
+            //不报警
+            if (StringUtils.equals(reminders, DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
+                continue;
+            }
+            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(), reminders)) {
+                //拨打电话短信
+                buildP2PNotify(phonenum, equipmentName, unit, value, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE));
+                mailCallUser.append(phonenum).append("/");
+                phoneCallUser.append(phonenum).append("/");
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
+            } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
+                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.PHONE));
+                phoneCallUser.append(phonenum).append("/");
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
+            } else if (StringUtils.equals(reminders, DictEnum.SMS.getCode())) {
+                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.SMS));
+                mailCallUser.append(phonenum).append("/");
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
+            }
+        }
+        //修改报警通知人
+        Warningrecord warningrecord = warningModel.getWarningrecord();
+        warningrecord.setPkid(warningrecord.getPkid());
+
+        if(mailCallUser.length()>0
+                && !"null".equals(mailCallUser.toString())
+                && !"".equals(mailCallUser.toString())){
+            mailCallUser.deleteCharAt(mailCallUser.length()-1);
+            warningrecord.setMailCallUser(mailCallUser.toString());
+        }
+
+        if(phoneCallUser.length()>0
+                && !"null".equals(phoneCallUser.toString())
+                && !"".equals(phoneCallUser.toString())){
+            phoneCallUser.deleteCharAt(phoneCallUser.length()-1);
+            warningrecord.setPhoneCallUser(phoneCallUser.toString());
+        }
+        return warningrecord;
+    }
+
+    @Override
+    public void pushTimeOutNotification(List<Userright> userrights, String hospitalName, String eqTypeName, String count) {
+        for (Userright userright : userrights) {
+            String phonenum = userright.getPhonenum();
+            if (StringUtils.isEmpty(phonenum)) {
+                continue;
+            }
+            String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
+            // 超时报警
+            if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),count);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER21.getCode()), JsonUtil.toJson(userright), null);
+            } else if (StringUtils.equals(timeoutwarning, "1")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.PHONE),count);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER19.getCode()), JsonUtil.toJson(userright), null);
+            } else if (StringUtils.equals(timeoutwarning, "2")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.SMS),count);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER20.getCode()), JsonUtil.toJson(userright), null);
+            }
+        }
+    }
+
+
+    public void buildP2PNotify(String phone, String equipmentname, String unit, String value, List<NotifyChannel> notifyChannels) {
+        P2PNotify p2PNotify = new P2PNotify();
+        p2PNotify.setUserId(phone);
+        p2PNotify.setMessageTitle(equipmentname);
+        p2PNotify.setMessageCover(unit);
+        if("LIQUIDLEVEL".equals(unit)){
+            p2PNotify.setMessageCover("液位");
+        }
+        p2PNotify.setMessageIntro(value);
+        p2PNotify.setChannels(notifyChannels);
+        p2PNotify.setMessageBodys(PushType.USUAL_ALARM.name());
+        p2PNotify.setServiceNo("1");
+        messageApi.send(p2PNotify);
+    }
+
+    public void buildTimeOutP2PNotify(String phone,String equipmentname,String unit,String hospitalName,List<NotifyChannel> notifyChannels,String count) {
+        P2PNotify p2PNotify = new P2PNotify();
+        p2PNotify.setUserId(phone);
+        p2PNotify.setMessageTitle(equipmentname);
+        p2PNotify.setMessageCover(unit);
+        if("LIQUIDLEVEL".equals(unit)){
+            p2PNotify.setMessageCover("液位");
+        }
+        p2PNotify.setMessageIntro(hospitalName);
+        p2PNotify.setChannels(notifyChannels);
+        p2PNotify.setMessageBodys(PushType.TIMEOUT_ALARM.name());
+        Map<String, String> paramsMap = new HashMap<String, String>() {
+            {
+                put("timeout", count);
+            }
+        };
+        p2PNotify.setServiceNo("1");
+        p2PNotify.setParams(paramsMap);
+        messageApi.send(p2PNotify);
+    }
 
 }

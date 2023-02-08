@@ -59,7 +59,7 @@ public class 	MonitorEquipmentVo  implements Serializable {
 	 *
 	 */
 	@ApiModelProperty(value="")
-	private Long sort;
+	private Integer sort;
 	/**
 	 * 全天警报 1=开启 0=关闭
 	 */
@@ -105,5 +105,8 @@ public class 	MonitorEquipmentVo  implements Serializable {
 
 	/** 市电恢复通知 0和空为未开启 1为开启 */
 	private String upsNotice;
+
+	/** 设备地址 */
+	private String address;
 }
 

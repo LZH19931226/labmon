@@ -33,14 +33,6 @@ public class TokenHandle implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse httpServletResponse, Object handler) {
-        // 忽略带JwtIgnore注解的请求, 不做后续token认证校验
-//        if (handler instanceof HandlerMethod) {
-//            HandlerMethod handlerMethod = (HandlerMethod) handler;
-//            JwtIgnore jwtIgnore = handlerMethod.getMethodAnnotation(JwtIgnore.class);
-//            if (jwtIgnore != null) {
-//                return true;
-//            }
-//        }
         HandlerMethod handlerMethod=(HandlerMethod)handler;
         Method method=handlerMethod.getMethod();
         //检查是否有passtoken注释，有则跳过认证
@@ -50,14 +42,12 @@ public class TokenHandle implements HandlerInterceptor {
                 return true;
             }
         }
-
         if (HttpMethod.OPTIONS.name().equals(req.getMethod())) {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             return true;
         }
         // 获取请求头信息authorization信息
         String authHeader = req.getHeader(JwtTokenUtil.AUTH_HEADER_KEY);
-        log.info("## authHeader= {}", authHeader);
         if (StringUtils.isEmpty(authHeader)) {
             throw new IedsException(IError.TOKEN);
         }
@@ -74,4 +64,5 @@ public class TokenHandle implements HandlerInterceptor {
         }
         return true;
     }
+
 }

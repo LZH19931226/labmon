@@ -37,7 +37,7 @@ public enum CurrentProbeInfoEnum {
     //当前湿度
     CURRENTHUMIDITY(5,"currenthumidity","湿度","%"),
     //左路温度  左舱室温度
-    CURRENTLEFTTEMPERATURE(23,"currentlefttemperature","左舱室温度","%"),
+    CURRENTLEFTTEMPERATURE(23,"currentlefttemperature","左舱室温度","℃"),
     //右路温度  右舱室温度
     CURRENTRIGTHTEMPERATURE(24,"currentrigthtemperature","右舱室温度","℃"),
     //培养箱气流
@@ -103,12 +103,13 @@ public enum CurrentProbeInfoEnum {
     OUTERO2(43,"outerO2","外置O2探头",null),
     //二路开关量
     CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2",null),
-    LIQUIDLEVEL(45,"liquidLevel","液位","mm");
+    LIQUIDLEVEL(45,"liquidLevel","液位","mm"),
+    QCL(35,"QCL","锁电量","");
 
-    private int instrumentConfigId;
-    private String probeEName;
-    private String probeCName;
-    private String unit;
+    private final int instrumentConfigId;
+    private final String probeEName;
+    private final String probeCName;
+    private final String unit;
 
     public static CurrentProbeInfoEnum from(int instrumentConfigId) {
         return Arrays

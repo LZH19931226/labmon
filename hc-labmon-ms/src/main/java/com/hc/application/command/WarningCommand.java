@@ -27,4 +27,13 @@ public class WarningCommand {
      */
     private String equipmentNo;
 
+    /**
+     * 分页大小
+     */
+    private Long pageSize;
+
+    /**
+     * 当前页
+     */
+    private Long pageCurrent;
 }

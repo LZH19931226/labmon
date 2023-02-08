@@ -101,11 +101,17 @@ public class MonitorEquipmentCommand {
      */
     private String upsNotice;
 
+    /** 设备地址 */
+    private String address;
+
     /**
      * 报警时间段
      */
     private List<MonitorequipmentwarningtimeDTO> warningTimeList;
 
     private List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList;
+
+    /** 排序 */
+    private Integer sort;
 
 }

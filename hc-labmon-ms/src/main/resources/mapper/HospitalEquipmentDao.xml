@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.infrastructure.dao.HospitalEquipmentDao">
+
+    <select id="getEquipmentTypeNum" resultType="com.hc.dto.EquipmentTypeNumDto">
+        SELECT
+            t2.equipmenttypeid equipmentTypeId,
+            t2.equipmenttypename equipmentTypeName,
+            t2.equipmenttypename_us equipmentTypeNameUs,
+            count(t1.equipmentno) equipmentNum
+        FROM
+            monitorequipment t1
+                LEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid
+        WHERE
+            t1.hospitalcode = #{param.hospitalCode}
+          <if test="param.clientVisible != null and param.clientVisible != ''">
+              AND t1.clientvisible = #{param.clientVisible}
+          </if>
+        GROUP BY t2.equipmenttypeid
+        ORDER BY t2.equipmenttypeid
+    </select>
+</mapper>

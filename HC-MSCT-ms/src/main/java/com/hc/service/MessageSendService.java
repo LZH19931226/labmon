@@ -1,5 +1,6 @@
 package com.hc.service;
 
+
 /**
  * 消息发送服务
  * @author hc
@@ -12,4 +13,6 @@ public interface MessageSendService {
      * @return
      */
     boolean send(String message);
+
+
 }

@@ -79,6 +79,7 @@ public class UserRightInfoController {
      * @param hospitalCode 医院id
      * @return
      */
+    @JwtIgnore
     @GetMapping("/getALLHospitalUserRightInfo")
     public List<UserRightRedisDto> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode){
         return userRightApplication.findALLUserRightInfo(hospitalCode);

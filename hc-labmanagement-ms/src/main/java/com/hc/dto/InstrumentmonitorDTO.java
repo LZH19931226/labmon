@@ -1,5 +1,6 @@
 package com.hc.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -123,6 +124,23 @@ public class InstrumentmonitorDTO implements Serializable {
      * 通道
      */
     private String channel;
+
+    /**
+     * 单位
+     */
+    private String unit;
+
+    /**
+     * 样式最小值
+     */
+    @TableField(value = "style_min")
+    private String styleMin;
+
+    /**
+     * 样式最大值
+     */
+    @TableField(value = "style_max")
+    private String styleMax;
 
 }
 

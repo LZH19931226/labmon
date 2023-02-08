@@ -50,12 +50,14 @@ public class UserInfoController {
         userInfoApplication.deleteUserInfo(userid);
     }
 
+    @JwtIgnore
     @GetMapping("/findUserInfo")
     @ApiOperation("获取用户信息")
     public UserBackModel findUserInfo(@RequestParam(value = "userid")String userid){
         return userInfoApplication.findUserInfo(userid);
     }
 
+    @JwtIgnore
     @PostMapping("/addUserInfo")
     @ApiOperation("新增后台用户信息")
     public void addUserInfo(@RequestBody UserCommand userCommand){

@@ -11,6 +11,7 @@ import com.hc.repository.AppManageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -38,7 +39,11 @@ public class AppManageRepositoryImpl extends ServiceImpl<AppVersionManageDao, Ap
         AppVersionManagePo appVersionManagePo = appVersionManageDao.selectOne(Wrappers.lambdaQuery(new AppVersionManagePo()).eq(AppVersionManagePo::getAppId, "1")
                 .orderByDesc(AppVersionManagePo::getCreateTime).last("LIMIT 1"));
         if (null!=appVersionManagePo){
-            return BeanConverter.convert(appVersionManagePo,AppVersionManageDto.class);
+            AppVersionManageDto app = BeanConverter.convert(appVersionManagePo, AppVersionManageDto.class);
+            String apkUrl = app.getApkUrl();
+            File file = new File(apkUrl);
+            app.setApkSize(file.length());
+            return app;
         }
         return null;
     }

@@ -15,11 +15,20 @@
                                LEFT JOIN instrumentparamconfig t2  ON t1.instrumentno = t2.instrumentno
                       WHERE t1.equipmentno = #{equipmentNo} ) a)
     </update>
+    <update id="updateBatchData">
+        replace into instrumentparamconfig values
+        <foreach collection="list" item="res"  index="index" separator=",">
+            (#{res.instrumentparamconfigno},#{res.instrumentno},#{res.instrumentconfigid},#{res.instrumentname},#{res.lowlimit},#{res.highlimit},#{res.instrumenttypeid},#{res.warningphone},#{res.pushtime},#{res.warningtime},#{res.channel},#{res.alarmtime},#{res.calibration},#{res.firsttime},#{res.saturation},#{res.state},#{res.unit},#{res.styleMin},#{res.styleMax},#{res.insGroup})
+        </foreach>
+    </update>
 
     <select id="selectInstrumentparamconfigByEqNo" resultType="com.hc.dto.InstrumentConfigDTO">
         SELECT
             t3.instrumentconfigid,
-            t3.instrumentconfigname
+            t3.instrumentconfigname,
+            t2.lowlimit,
+            t2.highlimit,
+            t2.unit
             FROM
             monitorinstrument t1
             LEFT JOIN instrumentmonitor t2 ON t1.instrumenttypeid = t2.instrumenttypeid
@@ -53,7 +62,10 @@
         b.hospitalcode,
         a.instrumentno,
         a.calibration,
-        a.instrumentparamconfigNO as instrumentparamconfigno
+        a.instrumentparamconfigNO as instrumentparamconfigno,
+        a.unit,
+        a.style_min styleMin,
+        a.style_max styleMax
     FROM instrumentparamconfig a
              LEFT JOIN monitorinstrument b 		ON a.instrumentno = b.instrumentno
              LEFT JOIN monitorinstrumenttype c ON c.instrumenttypeid = a.instrumenttypeid
@@ -68,13 +80,13 @@
     <if test=" equipmentTypeId != null and equipmentTypeId != ''">
         and e.equipmenttypeid = #{equipmentTypeId}
     </if>
-    <if test="instrumentNo != null and instrumentNo != ''">
-        and b.instrumentno = #{instrumentNo}
+    <if test="equipmentNo != null and equipmentNo != ''">
+        and d.equipmentno = #{equipmentNo}
     </if>
     <if test="sn != null and sn != ''">
         and b.sn  like concat('%',#{sn},'%')
     </if>
-    order by instrumentconfigid
+    order by hospitalcode
     </select>
 
 
@@ -87,12 +99,14 @@
 
     <select id="getInstrumentParamConfigInfo" resultType="com.hc.dto.InstrumentparamconfigDTO">
         SELECT
-            t2.hospitalcode,
             t1.*
         FROM
             instrumentparamconfig t1
-                LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
-        WHERE t2.equipmentno = #{equipmentNo}
+        WHERE  t1.instrumentno in
+               (
+               select instrumentno from monitorinstrument  where equipmentno = #{equipmentNo}
+               )
+
     </select>
 
     <select id="getInstrumentParamConfigByCodeAndTypeId" resultType="com.hc.dto.InstrumentparamconfigDTO">
@@ -106,6 +120,19 @@
             t1.hospitalcode = #{hospitalCode}
           AND
             t1.equipmenttypeid = #{equipmentTypeId}
+    </select>
+
+    <select id="getSnByNO" resultType="java.lang.String">
+      select  sn from monitorinstrument where instrumentno in (select instrumentno from )
+    </select>
+
+    <select id="getSnInfo" resultType="java.lang.String">
+        select
+             t2.sn
+        from
+          instrumentparamconfig t1
+                  LEFT JOIN monitorinstrument t2 ON t2.instrumentno = t1.instrumentno
+        where  t1.instrumentparamconfigNO = #{no}
     </select>
 
 </mapper>

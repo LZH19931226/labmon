@@ -7,7 +7,7 @@ package com.hc.my.common.core.jwt;
  **/
 import com.hc.my.common.core.bean.Audience;
 import com.hc.my.common.core.exception.IError;
-import com.hc.my.common.core.exception.IedsException;
+import com.hc.my.common.core.exception.TokenException;
 import com.hc.my.common.core.util.Base64Util;
 import io.jsonwebtoken.*;
 
@@ -42,9 +42,9 @@ public class JwtTokenUtil {
                     .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
                     .parseClaimsJws(jsonWebToken).getBody();
         } catch (ExpiredJwtException  eje) {
-            throw new IedsException(IError.TIMEOUT);
+            throw new TokenException(IError.TIMEOUT);
         } catch (Exception e){
-            throw new IedsException(IError.TOKEN);
+            throw new TokenException(IError.TOKEN);
         }
     }
 
@@ -99,7 +99,7 @@ public class JwtTokenUtil {
             //生成JWT
             return builder.compact();
         } catch (Exception e) {
-            throw new IedsException(IError.TOKEN);
+            throw new TokenException(IError.TOKEN);
         }
     }
 

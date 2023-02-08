@@ -56,4 +56,6 @@ public interface MonitorEquipmentDao extends BaseMapper<MonitorEquipmentPo> {
                                                                       @Param("warningPhone") String warningPhone);
 
     List<MonitorEquipmentDto> getMonitorEquipmentList(Page<MonitorEquipmentVo> page,@Param("monitorEquipmentCommand") MonitorEquipmentCommand monitorEquipmentCommand);
+
+    List<String> getSns(@Param("eno") String equipmentNo);
 }

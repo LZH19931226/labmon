@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.omg.CORBA.INTERNAL;
 
 import java.util.Date;
 import java.util.List;
@@ -44,7 +45,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     private Long clientVisible;
 
     /** 分类 */
-    private Long sort;
+    private Integer sort;
 
     /** 全天警报 1=开启 0=关闭 */
     private String alwaysAlarm;
@@ -87,4 +88,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
 
     /** 市电恢复通知 */
     private String upsNotice;
+
+    /** 设备地址 */
+    private String address;
 }

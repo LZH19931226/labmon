@@ -1,6 +1,7 @@
 package com.hc.infrastructure.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,4 +13,10 @@ public interface RootMapper<T> extends BaseMapper<T> {
      */
     void insertBatchSomeColumn(@Param("list") List<T> list);
 
+
+    /**
+     * 自定义批量插入
+     * @return
+     */
+    int updateBatch(@Param("list") List<T> list);
 }

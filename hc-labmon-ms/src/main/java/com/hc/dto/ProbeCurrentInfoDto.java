@@ -40,6 +40,11 @@ public class ProbeCurrentInfoDto {
     private String equipmentTypeId;
 
     /**
+     * 设备状态
+     */
+    private String state;
+
+    /**
      * 探头集合
      */
     private List<ProbeInfoDto> probeInfoDtoList;

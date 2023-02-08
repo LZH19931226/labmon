@@ -5,6 +5,7 @@
     <select id="getInstrumentParamConfigByENoList" resultType="com.hc.dto.InstrumentParamConfigDto">
         SELECT
             t3.equipmentno,
+            t3.equipmenttypeid,
             t1.*
         FROM
             instrumentparamconfig t1
@@ -58,6 +59,19 @@
             t1.hospitalcode = #{hospitalCode}
           AND
             t1.equipmenttypeid = #{equipmentTypeId}
+    </select>
+    <select id="getInstrumentParamConfigByENo" resultType="com.hc.dto.InstrumentParamConfigDto">
+        SELECT
+            t3.instrumentconfigName,
+            t1.lowlimit,
+            t1.highlimit,
+            t1.style_min styleMin,
+            t1.style_max styleMax
+        FROM
+            instrumentparamconfig t1
+                LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno
+                LEFT JOIN instrumentconfig t3 ON t1.instrumentconfigid = t3.instrumentconfigid
+        WHERE t2.equipmentno = #{equipmentNo}
     </select>
 
 </mapper>

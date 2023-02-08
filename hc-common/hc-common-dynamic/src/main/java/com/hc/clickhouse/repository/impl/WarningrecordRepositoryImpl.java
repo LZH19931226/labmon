@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.clickhouse.mapper.WarningrecordMapper;
+import com.hc.clickhouse.param.AlarmDataParam;
+import com.hc.clickhouse.param.EquipmentDataParam;
+import com.hc.clickhouse.param.WarningRecordParam;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +25,8 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     private WarningrecordMapper warningrecordMapper;
 
     @Override
-    public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page,String hospitalCode) {
-        return page(page, Wrappers.lambdaQuery(new Warningrecord()).eq(Warningrecord::getHospitalcode,hospitalCode).orderByDesc(Warningrecord::getInputdatetime));
+    public IPage<Warningrecord> getWarningRecord(Page<Warningrecord> page, WarningRecordParam warningRecordParam) {
+        return warningrecordMapper.getWarningRecord(page,warningRecordParam);
     }
 
 
@@ -37,23 +40,14 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     }
 
     /**
-     * @param hospitalCode
-     * @return
-     */
-    @Override
-    public List<Warningrecord> getWarningInfo(String hospitalCode, String startTime, String endTime) {
-        return warningrecordMapper.getWarningInfo(hospitalCode, startTime, endTime);
-    }
-
-    /**
      * @param equipmentNo
      * @param startTime
      * @param endTime
      * @return
      */
     @Override
-    public List<Warningrecord> getWarningRecordDetailInfo(String equipmentNo, String startTime, String endTime) {
-        return warningrecordMapper.getWarningRecordDetailInfo(equipmentNo, startTime, endTime);
+    public List<Warningrecord> getWarningRecordDetailInfo(Page page ,String equipmentNo, String startTime, String endTime) {
+        return warningrecordMapper.getWarningRecordDetailInfo(page,equipmentNo, startTime, endTime);
     }
 
     /**
@@ -76,5 +70,45 @@ public class WarningrecordRepositoryImpl extends ServiceImpl<WarningrecordMapper
     @Override
     public List<Warningrecord> getWarningInfoByTime(String time) {
         return warningrecordMapper.getWarningInfoByTime(time);
+    }
+
+    @Override
+    public List<Warningrecord> getSummaryOfAlarms(EquipmentDataParam convert) {
+        return warningrecordMapper.getSummaryOfAlarms(convert);
+    }
+
+    @Override
+    public List<Warningrecord> getWarningEquuipmentInfos(String hospitalCode, String startTime, String endTime) {
+        return warningrecordMapper.getWarningEquuipmentInfos(hospitalCode, startTime, endTime);
+    }
+
+    @Override
+    public List<Warningrecord> getWarningInfoByCode(String hospitalCode, Integer count) {
+        return warningrecordMapper.getWarningEquuipmentCounts(hospitalCode,count);
+    }
+
+    @Override
+    public List<Warningrecord> getAlarmDeviceNum(EquipmentDataParam convert) {
+        return warningrecordMapper.getAlarmDeviceNum(convert);
+    }
+
+    @Override
+    public List<Warningrecord> getWarningInfoList(String hospitalCode, String ymd) {
+        return warningrecordMapper.getWarningInfoList(hospitalCode,ymd);
+    }
+
+    @Override
+    public void batchInsert(List<Warningrecord> convert) {
+        warningrecordMapper.insertBatchSomeColumn(convert);
+    }
+
+    @Override
+    public Warningrecord getWarningInfo(String pkId, String ym) {
+        return warningrecordMapper.getWarningInfo(pkId,ym);
+    }
+
+    @Override
+    public List<Warningrecord> getAlarmData(Page page, AlarmDataParam alarmDataParam) {
+        return warningrecordMapper.getAlarmData(page,alarmDataParam);
     }
 }

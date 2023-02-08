@@ -7,6 +7,7 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.service.InstrumentmonitorService;
 import com.hc.service.MonitorinstrumenttypeService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,7 @@ public class MonitorInstrumentTypeApplication {
      * 添加设备
      * @param monitorInstrumentTypeCommand
      */
+    @GlobalTransactional
     public void add(MonitorInstrumentTypeCommand monitorInstrumentTypeCommand) {
         monitorInstrumentTypeService.add(monitorInstrumentTypeCommand);
     }
@@ -56,6 +58,7 @@ public class MonitorInstrumentTypeApplication {
      * 修改
      * @param monitorInstrumentTypeCommand
      */
+    @GlobalTransactional
     public void edit(MonitorInstrumentTypeCommand monitorInstrumentTypeCommand) {
         monitorInstrumentTypeService.edit(monitorInstrumentTypeCommand);
     }
@@ -64,6 +67,7 @@ public class MonitorInstrumentTypeApplication {
      * 删除
      * @param instrumentTypeId
      */
+    @GlobalTransactional
     public void remove(String instrumentTypeId) {
         int  count = instrumentMonitorService.countByInstrumentTypeId(instrumentTypeId);
         if(count>0){

@@ -1,6 +1,7 @@
 package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.dto.UserRightDto;
 import com.hc.repository.UserRightRepository;
 import com.hc.service.UserRightService;
@@ -31,5 +32,17 @@ public class UserRightServiceImpl implements UserRightService {
     @Override
     public List<UserRightDto> getallByHospitalCode(String hospitalCode) {
         return userRightRepository.list(Wrappers.lambdaQuery(new UserRightDto()).eq(UserRightDto::getHospitalCode, hospitalCode));
+    }
+
+    @Override
+    public List<UserRightDto> getUserRightInfo(AlarmNoticeCommand alarmNoticeCommand) {
+        return userRightRepository.list(Wrappers.lambdaQuery(new UserRightDto())
+                .eq(UserRightDto::getHospitalCode, alarmNoticeCommand.getHospitalCode())
+                .eq(UserRightDto::getPhoneNum,alarmNoticeCommand.getPhoneNum()));
+    }
+
+    @Override
+    public UserRightDto getUserRightInfoByUserId(String userId) {
+        return userRightRepository.getOne(Wrappers.lambdaQuery(new UserRightDto()).eq(UserRightDto::getUserid,userId));
     }
 }

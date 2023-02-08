@@ -1,6 +1,9 @@
 package com.hc.repository.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hc.application.command.EquipmentDataCommand;
 import com.hc.dto.InstrumentMonitorInfoDto;
+import com.hc.dto.InstrumentTypeNumDto;
 import com.hc.infrastructure.dao.InstrumentMonitorInfoDao;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import org.apache.commons.collections4.CollectionUtils;
@@ -10,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class InstrumentMonitorInfoRepositoryImpl implements InstrumentMonitorInfoRepository {
+public class InstrumentMonitorInfoRepositoryImpl extends ServiceImpl<InstrumentMonitorInfoDao,InstrumentMonitorInfoDto> implements InstrumentMonitorInfoRepository {
 
     @Autowired
     private InstrumentMonitorInfoDao instrumentMonitorInfoDao;
@@ -24,5 +27,10 @@ public class InstrumentMonitorInfoRepositoryImpl implements InstrumentMonitorInf
     public List<InstrumentMonitorInfoDto> selectInstrumentMonitorInfoByEqNo(List<String> equipmentNoList) {
         List<InstrumentMonitorInfoDto> instrumentMonitorInfoDtoList = instrumentMonitorInfoDao.selectInstrumentMonitorInfoByEqNo(equipmentNoList);
         return CollectionUtils.isEmpty(instrumentMonitorInfoDtoList)?null:instrumentMonitorInfoDtoList;
+    }
+
+    @Override
+    public List<InstrumentTypeNumDto> getEquipmentTypeNum(EquipmentDataCommand equipmentDataCommand) {
+        return instrumentMonitorInfoDao.getEquipmentTypeNum(equipmentDataCommand);
     }
 }

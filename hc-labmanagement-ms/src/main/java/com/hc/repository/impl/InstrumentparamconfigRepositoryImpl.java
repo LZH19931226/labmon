@@ -97,7 +97,7 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
     @Override
     public List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page, InstrumentparamconfigCommand instrumentparamconfigCommand) {
         return instrumentparamconfigDao.findInstrumentparamconfig(page,instrumentparamconfigCommand.getHospitalCode(),instrumentparamconfigCommand.getEquipmentTypeId(),
-                                                                    instrumentparamconfigCommand.getInstrumentNo(), instrumentparamconfigCommand.getSn());
+                                                                    instrumentparamconfigCommand.getEquipmentNo(), instrumentparamconfigCommand.getSn());
 
     }
 
@@ -208,5 +208,15 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
         instrumentParamConfigPoLambdaUpdateWrapper.in(InstrumentparamconfigPo::getInstrumentparamconfigno, probeIds);
         instrumentParamConfigPoLambdaUpdateWrapper.set(InstrumentparamconfigPo::getWarningphone, warningPhone);
         instrumentparamconfigDao.update(new InstrumentparamconfigPo(),instrumentParamConfigPoLambdaUpdateWrapper);
+    }
+
+    @Override
+    public void updateBatchData(List<InstrumentparamconfigDTO> probeList) {
+        instrumentparamconfigDao.updateBatchData(probeList);
+    }
+
+    @Override
+    public String getSnInfo(String instrumentParamConfigNo) {
+        return instrumentparamconfigDao.getSnInfo(instrumentParamConfigNo);
     }
 }

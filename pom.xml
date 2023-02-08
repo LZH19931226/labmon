@@ -34,6 +34,7 @@
         <module>hc-labredis-ms</module>
         <module>hc-message-ms</module>
         <module>hc-datapase-ms</module>
+        <module>HC-MQTT-ms</module>
     </modules>
 
     <dependencyManagement>
@@ -88,13 +89,13 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
-            <version>2.1.3.RELEASE</version>
-            <scope>compile</scope>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>com.github.danielwegener</groupId>
+            <artifactId>logback-kafka-appender</artifactId>
+            <version>0.2.0-RC2</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

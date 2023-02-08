@@ -6,20 +6,18 @@ import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.CurveCommand;
 import com.hc.application.command.ProbeCommand;
 import com.hc.application.command.WarningCommand;
-import com.hc.application.response.AlarmHand;
-import com.hc.application.response.WarningDetailInfo;
-import com.hc.application.response.WarningRecordInfo;
+import com.hc.application.curvemodel.CurveDataModel;
+import com.hc.application.response.*;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.util.date.DateDto;
 import io.swagger.annotations.ApiOperation;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/app")
@@ -31,14 +29,14 @@ public class AppController {
     /*首页*/
     @GetMapping("/getEquipmentNum")
     @ApiOperation("获取首页设备数量信息")
-    public List<HospitalEquipmentDto> getEquipmentNum(@Param("hospitalCode")String hospitalCode){
-        return equipmentInfoAppApplication.getEquipmentNum(hospitalCode);
+    public List<HospitalEquipmentDto> getEquipmentNum(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("tags")String  tags){
+        return equipmentInfoAppApplication.getEquipmentNum(hospitalCode,tags);
     }
 
     /*设备当前值*/
     @PostMapping("/getCurrentProbeInfo")
     @ApiOperation("获取探头当前值(卡片)")
-    public Page<ProbeCurrentInfoDto> getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
+    public CurrentProbeInfoResult getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
         return  equipmentInfoAppApplication.getTheCurrentValueOfTheProbe(probeCommand);
     }
 
@@ -70,9 +68,9 @@ public class AppController {
         return equipmentInfoAppApplication.getNumUnreadDeviceAlarms(equipmentNo);
     }
 
-    @PostMapping("/getEuipmentCurveInfo")
+    @PostMapping("/getEquipmentCurveInfo")
     @ApiOperation("查询app设备曲线值")
-    public CurveInfoDto getCurveInfo(@RequestBody CurveCommand curveCommand){
+    public List<Map<String, CurveDataModel>> getCurveInfo(@RequestBody CurveCommand curveCommand){
         return equipmentInfoAppApplication.getCurveFirst(curveCommand);
     }
 
@@ -80,12 +78,12 @@ public class AppController {
     @PostMapping("/getWarningInfo")
     @ApiOperation("获取设备报警信息")
     public List<WarningRecordInfo> getWarningInfo(@RequestBody WarningCommand warningCommand){
-        return equipmentInfoAppApplication.getWarningInfo(warningCommand);
+        return equipmentInfoAppApplication.getWarningInfoList(warningCommand);
     }
 
     @PostMapping("getWarningDetailInfo")
     @ApiOperation("获取设备报警详情信息")
-    public List<WarningDetailInfo> getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
+    public Page getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
         return equipmentInfoAppApplication.getWarningDetailInfo(warningCommand);
     }
 
@@ -101,6 +99,7 @@ public class AppController {
         return equipmentInfoAppApplication.getAlarmSystemInfo(probeCommand);
     }
 
+    @JwtIgnore
     @GetMapping("/synchronizedDeviceAlarmSwitch")
     @ApiOperation("同步设备报警开关")
     public void synchronizedDeviceAlarmSwitch(){
@@ -112,4 +111,5 @@ public class AppController {
     public AlarmHand getTheNumberOfAlarmSettingDevices(@RequestBody AlarmSystemCommand alarmSystemCommand){
         return equipmentInfoAppApplication.getTheNumberOfAlarmSettingDevices(alarmSystemCommand);
     }
+
 }

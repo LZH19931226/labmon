@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.clickhouse.mapper.MonitorequipmentlastdataMapper">
+
+
+    <select id="getEquipmentData" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+        equipmentno,
+        <foreach collection="param.fieldList" item="field" separator="," close=",">
+            ${field}
+        </foreach>
+        inputdatetime
+        from
+        lab_mon.monitorequipmentlastdata
+        WHERE
+        id IN ( #{param.yearMonth} )
+        AND inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND inputdatetime <![CDATA[<=]]> #{param.endTime}
+        AND equipmentno = #{param.equipmentNo}
+        <if test="param.filterList != null">
+            <foreach collection="param.filterList" item="res">
+                and ${res.field} <![CDATA[${res.condition}]]> #{res.value}
+            </foreach>
+        </if>
+        ORDER BY inputdatetime
+    </select>
+
+    <select id="getLastDataByTime" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+          equipmentno,
+          ${param.field},
+          inputdatetime
+        FROM
+            lab_mon.monitorequipmentlastdata
+        WHERE id IN ( #{param.yearMonth} )
+        and inputdatetime <![CDATA[>=]]> #{param.startTime}
+        and inputdatetime <![CDATA[<=]]> #{param.endTime}
+        and ${param.field} != ''
+        AND equipmentno = #{param.equipmentNo}
+        <if test="param.filterList != null">
+            <foreach collection="param.filterList" item="res">
+                and ${res.field} <![CDATA[${res.condition}]]> #{res.value}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getMonitorEquuipmentLastList" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+      select
+          equipmentno,
+          <foreach collection="param.instrumentConfigIdList" item="field" >
+              ${field},
+          </foreach>
+          inputdatetime
+      from
+        lab_mon.monitorequipmentlastdata
+      where
+        id IN ( #{param.yearMonth} )
+        AND inputdatetime <![CDATA[>=]]> #{param.startTime} AND inputdatetime <![CDATA[<=]]> #{param.endTime}
+        AND equipmentno = #{param.equipmentNo}
+        order by inputdatetime
+    </select>
+
+    <select id="getWarningCurveData" resultType="com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto">
+        SELECT
+        inputdatetime,
+        ${instrumentConfigName}
+        FROM
+        lab_mon.monitorequipmentlastdata
+        WHERE
+        id IN (#{ym})
+        and equipmentno  = #{equipmentNo}
+        AND  inputdatetime <![CDATA[>=]]> #{startTime}
+        AND  inputdatetime <![CDATA[<=]]>  #{endTime}
+        ORDER BY inputdatetime ASC
+
+    </select>
+
+    <select id="getEquipmentPacketData" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+            equipmentno,
+            inputdatetime,
+            sn
+        from
+            lab_mon.monitorequipmentlastdata
+        WHERE
+            id IN ( #{param.yearMonth} )
+          AND hospitalcode = #{param.hospitalCode}
+          AND equipmentno = #{param.equipmentNo}
+          AND cmdid ='88'
+        ORDER BY inputdatetime
+    </select>
+
+    <select id="getPacketLossColumnar" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        select  toStartOfMinute(inputdatetime)  as remark1,count(*) remark2
+        from lab_mon.monitorequipmentlastdata
+        WHERE  cmdid ='88' and id IN ( #{param.yearMonth} )  and equipmentno = #{param.equipmentNo}   AND hospitalcode = #{param.hospitalCode}
+        AND  inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
+        group by toStartOfMinute(inputdatetime)
+        order by toStartOfMinute(inputdatetime)
+    </select>
+
+</mapper>

@@ -119,5 +119,33 @@ public class InstrumentmonitorVo implements Serializable {
 
     /** 通道 */
     private String channel;
+
+    /** 单位 */
+    private String unit;
+
+    /**
+     * 样式最小值
+     */
+    private String styleMin;
+
+    /**
+     * 样式最大值
+     */
+    private String styleMax;
+
+    /**
+     * 字段
+     */
+    private String field;
+
+    /**
+     * 中文名称
+     */
+    private String cName;
+
+    /**
+     * 英文名称
+     */
+    private String eName;
 }
 

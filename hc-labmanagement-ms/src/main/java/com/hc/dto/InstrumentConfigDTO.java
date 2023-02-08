@@ -1,10 +1,12 @@
 package com.hc.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author liuzhihao
@@ -27,6 +29,19 @@ public class InstrumentConfigDTO implements Serializable {
     @ApiModelProperty(value = "监控参数类型名称")
     private String instrumentconfigname;
 
+    @TableField(exist = false)
+    private String unit;
+
+    /**
+     * 探头类型分组
+     * 同于前端展示
+     */
+    @TableField(value = "ins_group")
+    private String insGroup;
+
+    private BigDecimal lowlimit;
+
+    private BigDecimal highlimit;
 }
 
 

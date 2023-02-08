@@ -2,7 +2,6 @@ package com.hc.util;
 
 import com.hc.my.common.core.constant.enums.ProbeOutlier;
 import com.hc.my.common.core.util.RegularUtil;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;

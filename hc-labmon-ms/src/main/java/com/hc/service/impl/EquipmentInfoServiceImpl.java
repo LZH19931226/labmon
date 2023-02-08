@@ -1,63 +1,23 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.ProbeCommand;
-import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.dto.MonitorEquipmentDto;
-import com.hc.dto.MonitorinstrumentDto;
 import com.hc.repository.EquipmentInfoRepository;
 import com.hc.service.EquipmentInfoService;
-import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EquipmentInfoServiceImpl implements EquipmentInfoService {
 
     @Autowired
     private EquipmentInfoRepository equipmentInfoRepository;
-
-    /**
-     * 查询所有设备当前值信息
-     *
-     * @param hospitalCode    医院id
-     * @param equipmentTypeId 设备类型id
-     * @return 监控设备集合
-     */
-    @Override
-    public List<MonitorEquipmentDto> getEquipmentInfoByCodeAndTypeId(String hospitalCode, String equipmentTypeId) {
-        return equipmentInfoRepository.getEquipmentInfoByCodeAndTypeId(hospitalCode,equipmentTypeId);
-    }
-
-    @Override
-    public List<MonitorinstrumentDto> getSns(List<String> equipmentNoList) {
-        return equipmentInfoRepository.getSns(equipmentNoList);
-    }
-
-    @Override
-    public String getLowlimit(String equipmentNo) {
-        return equipmentInfoRepository.getLowlimit(equipmentNo);
-    }
-
-    @Override
-    public List<MonitorinstrumentDto> getLowLimitList(List<String> equipmentNoList) {
-        return equipmentInfoRepository.getLowLimitList(equipmentNoList);
-    }
-
-    /**
-     * 获取曲线表信息
-     *
-     * @param date 医院id
-     * @param equipmentNo  设备id
-     * @param tableName    查询的表名称
-     * @return
-     */
-    @Override
-    public List<MonitorEquipmentLastDataModel> getCurveInfo(String date, String equipmentNo, String tableName) {
-        return equipmentInfoRepository.getCurveInfo(date,equipmentNo,tableName);
-    }
 
     /**
      * 查询设备信息
@@ -68,23 +28,6 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public MonitorEquipmentDto getEquipmentInfoByNo(String equipmentNo) {
         return equipmentInfoRepository.getEquipmentInfoByNo(equipmentNo);
-    }
-
-    /**
-     * @param hospitalCode
-     * @return
-     */
-    @Override
-    public List<MonitorEquipmentDto> getEquipmentInfoByHospitalCode(String hospitalCode) {
-        return equipmentInfoRepository.getEquipmentInfoByHospitalCode(hospitalCode);
-    }
-
-    /**
-     * @param result
-     */
-    @Override
-    public void update(List<MonitorEquipmentDto> result) {
-        equipmentInfoRepository.updateBatchById(result);
     }
 
     /**
@@ -122,19 +65,45 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         equipmentInfoRepository.updateBatchById(list);
     }
 
-    /**
-     * 查询所有的设备配置ID
-     *
-     * @param equipmentNo
-     * @return
-     */
     @Override
-    public List<Integer> selectInstrumentConfigId(String equipmentNo) {
-        return equipmentInfoRepository.selectInstrumentConfigId(equipmentNo);
+    public List<String> getEnoList(String hospitalCode,String equipmentTypeId) {
+        List<MonitorEquipmentDto> list = equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                .select(MonitorEquipmentDto::getEquipmentno)
+                .eq(MonitorEquipmentDto::getHospitalcode, hospitalCode)
+                        .eq(MonitorEquipmentDto::getClientvisible,"1")
+                .eq(MonitorEquipmentDto::getEquipmenttypeid,equipmentTypeId));
+        return list.stream().map(MonitorEquipmentDto::getEquipmentno).collect(Collectors.toList());
     }
 
     @Override
-    public List<InstrumentParamConfigDto> selectProbeByHosCodeAndEqTypeId(String hospitalCode, String equipmentTypeId) {
-        return equipmentInfoRepository.selectProbeByHosCodeAndEqTypeId(hospitalCode,equipmentTypeId);
+    public List<MonitorEquipmentDto> getEquipmentInfo(ProbeCommand probeCommand) {
+        String sn = probeCommand.getSn();
+        String equipmentName = probeCommand.getEquipmentName();
+        String address = probeCommand.getAddress();
+        if (StringUtils.isEmpty(address)){
+            return StringUtils.isBlank(sn) ?
+                    equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                            .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
+                            .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
+                            .eq(MonitorEquipmentDto::getClientvisible,"1")
+                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName)
+                            .orderByAsc(MonitorEquipmentDto::getSort)
+                            .orderByAsc(MonitorEquipmentDto::getEquipmentname)
+                          )
+                    : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
+        }else {
+            return StringUtils.isBlank(sn) ?
+                    equipmentInfoRepository.list(Wrappers.lambdaQuery(new MonitorEquipmentDto())
+                            .eq(MonitorEquipmentDto::getHospitalcode,probeCommand.getHospitalCode())
+                            .eq(MonitorEquipmentDto::getEquipmenttypeid,probeCommand.getEquipmentTypeId())
+                            .eq(MonitorEquipmentDto::getClientvisible,"1")
+                            .like(MonitorEquipmentDto::getAddress,address)
+                            .like(!StringUtils.isBlank(equipmentName),MonitorEquipmentDto::getEquipmentname,equipmentName)
+                            .orderByAsc(MonitorEquipmentDto::getSort)
+                            .orderByAsc(MonitorEquipmentDto::getEquipmentname)
+                    )
+                    : equipmentInfoRepository.getEquipmentInfoBySn(probeCommand);
+        }
+
     }
 }

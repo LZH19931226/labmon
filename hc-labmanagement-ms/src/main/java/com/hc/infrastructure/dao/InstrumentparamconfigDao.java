@@ -32,14 +32,14 @@ public interface InstrumentparamconfigDao extends RootMapper<Instrumentparamconf
      * @param page
      * @param hospitalCode
      * @param equipmentTypeId
-     * @param instrumentNo
+     * @param equipmentNo
      * @param sn
      * @return
      */
     List<InstrumentparamconfigDTO> findInstrumentparamconfig(Page<InstrumentparamconfigVo> page,
                                                              @Param("hospitalCode") String hospitalCode,
                                                              @Param("equipmentTypeId") String equipmentTypeId,
-                                                             @Param("instrumentNo") String instrumentNo,
+                                                             @Param("equipmentNo") String equipmentNo,
                                                              @Param("sn") String sn);
 
     /**
@@ -56,4 +56,8 @@ public interface InstrumentparamconfigDao extends RootMapper<Instrumentparamconf
     void batchUpdateProbeAlarmState(@Param("warningPhone") String warningPhone, @Param("equipmentNo") String equipmentNo);
 
     List<InstrumentparamconfigDTO> getInstrumentParamConfigByCodeAndTypeId(@Param("hospitalCode") String hospitalCode,@Param("equipmentTypeId") String equipmentTypeId);
+
+    void updateBatchData(List<InstrumentparamconfigDTO> probeList);
+
+    String getSnInfo(@Param("no") String instrumentParamConfigNo);
 }

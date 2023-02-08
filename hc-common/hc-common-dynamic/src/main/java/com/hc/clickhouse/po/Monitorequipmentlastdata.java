@@ -263,4 +263,6 @@ public class Monitorequipmentlastdata implements Serializable {
     /** 预留字段10 */
     private String remark10;
 
+    @TableField(exist = false )
+    private String equipmentName;
 }

@@ -24,4 +24,6 @@ public class MybatisPlusConfig {
     public CustomSqlInjector customSqlInjector(){
         return new CustomSqlInjector();
     }
+
+
 }

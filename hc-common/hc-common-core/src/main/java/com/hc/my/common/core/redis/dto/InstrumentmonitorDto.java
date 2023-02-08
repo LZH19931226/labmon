@@ -100,4 +100,9 @@ public class InstrumentmonitorDto {
      * 报警电话
      */
     private String warningphone;
+
+    /**
+     * 单位
+     */
+    private String unit;
 }

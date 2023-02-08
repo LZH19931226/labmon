@@ -85,4 +85,10 @@ public class AppVersionManageDto {
      * 分页大小
      */
     private Integer pageSize;
+
+    /**
+     * apk大小
+     */
+    private long apkSize;
+
 }

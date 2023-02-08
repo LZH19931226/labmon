@@ -118,4 +118,18 @@ public class InstrumentParamConfigDto  implements Serializable {
 
     /** 探头状态 */
     private String state;
+
+    /** 单位 */
+    private String unit;
+
+    /**
+     * 样式最小值
+     */
+    private String styleMin;
+
+    /**
+     * 样式最大值
+     */
+    private String styleMax;
+
 }
