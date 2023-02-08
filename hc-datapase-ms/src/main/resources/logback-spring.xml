@@ -17,24 +17,6 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <pattern>
-                    <pattern>
-                        {
-                        "service": "hc-datapase-ms",
-                        "msg": "%message"
-                        }
-                    </pattern>
-                </pattern>
-            </providers>
-        </encoder>
-        <topic>datapase</topic>
-        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
-        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
-        <producerConfig>bootstrap.servers=172.24.58.150:9092,172.24.58.151:9092,172.24.58.152:9092</producerConfig>
-    </appender>
     <root level="info">
         <appender-ref ref="STDOUT"/>
 <!--         <appender-ref ref="kafkaAppender" />-->
