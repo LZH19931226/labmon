@@ -104,10 +104,14 @@ public class UserRightServiceImpl implements UserRightService {
         String phoneNum = userRightCommand.getPhoneNum();
         if(StringUtils.isNotEmpty(phoneNum)){
             //判断phonenum有没有修改，如修改了在用修改的手机号和医院查记录数量大于0是手机号重复抛出异常
-            if(!userRightDto.getPhoneNum().equals(phoneNum)){
-                int i = userRightRepository.selectUserRightByCodeAndPhone(userRightDto.getHospitalCode(), userRightCommand.getPhoneNum());
-                if (i>0) {
-                    throw new IedsException(LabSystemEnum.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER);
+            //未考虑历史数据问题,历史数据无手机号现在需要新增手机号这里会报错
+            String oldPhoneNum = userRightDto.getPhoneNum();
+            if(StringUtils.isNotEmpty(oldPhoneNum)){
+                if(!StringUtils.equals(oldPhoneNum,phoneNum)){
+                    int i = userRightRepository.selectUserRightByCodeAndPhone(userRightDto.getHospitalCode(), userRightCommand.getPhoneNum());
+                    if (i>0) {
+                        throw new IedsException(LabSystemEnum.HOSPITALS_CANNOT_HAVE_THE_SAME_MOBILE_NUMBER);
+                    }
                 }
             }
         }
