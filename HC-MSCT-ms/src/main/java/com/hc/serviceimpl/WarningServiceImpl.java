@@ -188,7 +188,7 @@ public class WarningServiceImpl implements WarningService {
         if (probe.getLowLimit().compareTo(new BigDecimal(data)) != 0) {
             return null;
         }
-        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + "报警信号异常");
+        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + (data.equals("1.00")?"常闭":"常开"));
         return warningrecord;
     }
 
