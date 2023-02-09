@@ -12,6 +12,7 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
+import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
@@ -187,6 +188,9 @@ public class SystemDataApplication {
                 Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
                 String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
                 res.setEName(probeEName);
+            }
+            if (!Context.IsCh()){
+           //The temperature of the device name is abnormal  Abnormal data is
             }
 
         });

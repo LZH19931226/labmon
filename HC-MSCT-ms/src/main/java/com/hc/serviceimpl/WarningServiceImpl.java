@@ -9,6 +9,7 @@ import com.hc.my.common.core.domain.MonitorinstrumentDo;
 import com.hc.my.common.core.domain.P2PNotify;
 import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.esm.EquipmentState;
+import com.hc.my.common.core.probe.ProbeConfigIds;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
@@ -37,17 +38,6 @@ public class WarningServiceImpl implements WarningService {
     private ProbeRedisApi probeRedisApi;
     @Autowired
     private MessageSendService messageSendService;
-
-    private List<Integer> lowHighRuleInstrumentConfigIds = Arrays.asList(1, 2, 4, 5, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 42, 43, 45);
-
-    private List<Integer> mainsInstrumentConfigIds = Arrays.asList(10);
-
-    private List<Integer> alarmSignalInstrumentConfigIds = Arrays.asList(11, 44);
-
-    private List<Integer> gasInstrumentConfigIds = Arrays.asList(3, 6, 7, 8, 9, 12, 26, 27, 28, 35, 23, 24);
-
-    private List<Integer> airFlowInstrumentConfigIds = Arrays.asList(25);
-
 
     @Autowired
     private MessageApi messageApi;
@@ -80,33 +70,33 @@ public class WarningServiceImpl implements WarningService {
         warningrecord.setLowLimit(probe.getLowLimit().toString());
         warningrecord.setHighLimit(probe.getHighLimit().toString());
         //高低值比较探头
-        if (lowHighRuleInstrumentConfigIds.contains(instrumentConfigId)) {
+        if (ProbeConfigIds.lowHighRuleInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == lowHighRule(warningrecord, warningAlarmDo, probe)) {
                 sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
             //市电比较探头
-        } else if (mainsInstrumentConfigIds.contains(instrumentConfigId)) {
-            if (null == mainsRule(warningrecord, warningAlarmDo)) {
+        } else if (ProbeConfigIds.mainsInstrumentConfigIds.contains(instrumentConfigId)) {
+            if (null == mainsRule(warningrecord, warningAlarmDo,probe)) {
                 sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
             //报警信号比较探头
-        } else if (alarmSignalInstrumentConfigIds.contains(instrumentConfigId)) {
+        } else if (ProbeConfigIds.alarmSignalInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == alarmSignalRule(warningrecord, warningAlarmDo, probe)) {
                 sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
         }
         //气体比较探头
-        else if (gasInstrumentConfigIds.contains(instrumentConfigId)) {
+        else if (ProbeConfigIds.gasInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == gasRule(warningrecord, warningAlarmDo, probe)) {
                 sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
             }
         }
         //气流比较探头
-        else if (airFlowInstrumentConfigIds.contains(instrumentConfigId)) {
+        else if (ProbeConfigIds.airFlowInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == airFlowRule(warningrecord, warningAlarmDo, probe)) {
                 sendEquimentProbeStatus(probe, warningAlarmDo);
                 return null;
@@ -142,30 +132,30 @@ public class WarningServiceImpl implements WarningService {
         String equipmentname = probe.getEquipmentName();
         String unit = warningAlarmDo.getUnit();
         if ("A".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未获取到数据");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：未获取到数据");
             return null;
         } else if ("B".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：流量控制关闭");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：流量控制关闭");
             return null;
         } else if ("C".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：气体流量不稳定");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：气体流量不稳定");
             return null;
         } else if ("D".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：气口压力低");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：气口压力低");
             return null;
         } else if ("E".equals(data)) {
             //产生报警
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：未获取到数据");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：未获取到数据");
         } else if ("F".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：总开关关闭，但未断电");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：总开关关闭，但未断电");
             return null;
             //I M O为98协议上传的气流状态 需要报警的模型
         } else if ("I".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：发生漏气报警事件");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：发生漏气报警事件");
         } else if ("M".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备漏气报警");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：设备漏气报警");
         } else if ("O".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为：设备气压低报警");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：设备气压低报警");
         } else {
             return null;
         }
@@ -182,13 +172,14 @@ public class WarningServiceImpl implements WarningService {
         if (!LowHighVerify.verify(probe, data)) {
             return null;
         }
-        warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
         return warningrecord;
     }
 
     private Warningrecord alarmSignalRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo, InstrumentInfoDto probe) {
         String data = warningAlarmDo.getCurrrentData();
         String equipmentname = probe.getEquipmentName();
+        String unit = warningAlarmDo.getUnit();
         if (StringUtils.equals("1", data)) {
             data = "1.00";
         } else {
@@ -197,16 +188,18 @@ public class WarningServiceImpl implements WarningService {
         if (probe.getLowLimit().compareTo(new BigDecimal(data)) != 0) {
             return null;
         }
-        warningrecord.setWarningremark(equipmentname + "报警信号异常");
+        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + "报警信号异常");
         return warningrecord;
     }
 
-    private Warningrecord mainsRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo) {
+    private Warningrecord mainsRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo, InstrumentInfoDto probe) {
         String data = warningAlarmDo.getCurrrentData();
+        String equipmentname = probe.getEquipmentName();
+        String unit = warningAlarmDo.getUnit();
         if (!StringUtils.equals("1", data)) {
             return null;
         }
-        warningrecord.setWarningremark("市电异常");
+        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + "市电异常");
         return warningrecord;
     }
 
@@ -221,7 +214,7 @@ public class WarningServiceImpl implements WarningService {
         //表示CO2  、氧气、温度  、 培养箱湿度
         if (!RegularUtil.checkContainsNumbers(data)) {
             //未接传感器
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常原因为:" + data);
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常原因为:" + data);
             return null;
         }
         if (StringUtils.isNotEmpty(data1)) {
@@ -235,19 +228,19 @@ public class WarningServiceImpl implements WarningService {
                 if (!checkProbeValue(warningAlarmDo, probe)) {
                     return null;
                 }
-                warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
             } else {
                 if (!StringUtils.equals(sns, "17")) {
                     if (!checkProbeValue(warningAlarmDo, probe)) {
                         return null;
                     }
-                    warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+                    warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
                 }
                 //获取二路温度探头设置的值
                 InstrumentInfoDto mt200mHighLimit = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + 14).getResult();
                 //大于最大值
                 if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
-                    warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+                    warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
                 } else {
                     return null;
                 }
@@ -255,7 +248,7 @@ public class WarningServiceImpl implements WarningService {
         }
         //高低值判断
         if (LowHighVerify.verify(probe, data)) {
-            warningrecord.setWarningremark(equipmentname + "的" + unit + "异常," + "异常数据为:" + data);
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
         } else {
             return null;
         }
