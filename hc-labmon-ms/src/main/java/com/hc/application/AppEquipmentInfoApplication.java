@@ -170,7 +170,7 @@ public class AppEquipmentInfoApplication {
                     }
                 }
             }
-            hospitalEquipmentDto1.setEquipmenttypename(value.getEquipmenttypename());
+            hospitalEquipmentDto1.setEquipmenttypename(Context.IsCh()?value.getEquipmenttypename():value.getEquipmenttypenameUs());
             hospitalEquipmentDto1.setEquipmentTypeId(eqTypeId);
             hospitalEquipmentDto1.setNormalNum(String.valueOf(normalCount));
             hospitalEquipmentDto1.setTotalNum(String.valueOf(totalNum));
