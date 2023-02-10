@@ -20,7 +20,7 @@ public interface UserRightInfoApi {
     @GetMapping("/userRight/getALLHospitalUserRightInfo")
     ApiResponse<List<UserRightRedisDto>> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode);
 
-    @GetMapping("/getUserName")
+    @GetMapping("/userRight/getUserName")
     ApiResponse<String> getUserName(@RequestParam("userId") String userId);
 
 }
