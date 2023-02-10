@@ -28,6 +28,7 @@ import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
@@ -86,6 +87,9 @@ public class MonitorEquipmentApplication {
 
     @Autowired
     private ProbeRedisApi probeRedisApi;
+
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
     /**
      * 分页获取监控设备信息
      *  (用户新增设备页面选择设备后出现的探头检测信息)
@@ -1095,9 +1099,9 @@ public class MonitorEquipmentApplication {
     private InstrumentParamConfigInfoCommand buildProbeInfo(String userId, InstrumentparamconfigDTO old, AlarmSystemCommand alarmSystemCommand, String type, String operationType) {
         InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
         //获取用户名称
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(null!=userInfo){
-            infoCommand.setUsername(userInfo.getUsername());
+        String userName = userRightInfoApi.getUserName(userId).getResult();
+        if(!StringUtils.isBlank(userName)){
+            infoCommand.setUsername(userName);
         }
         //获取医院信息
         String hospitalCode = alarmSystemCommand.getHospitalCode();
@@ -1177,9 +1181,9 @@ public class MonitorEquipmentApplication {
         }
 
         //根据useid获取用户信息
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(!ObjectUtils.isEmpty(userInfo)){
-            logInfoCommand.setUsername(userInfo.getUsername());
+        String userName = userRightInfoApi.getUserName(userId).getResult();
+        if(!StringUtils.isEmpty(userName)){
+            logInfoCommand.setUsername(userName);
         }
         MonitorEquipmentLogCommand oldEq = new MonitorEquipmentLogCommand();
         oldEq.setWarningSwitch(old.getWarningSwitch());

@@ -98,7 +98,7 @@ public class WarningInfoApplication {
                     if(StringUtils.equalsAnyIgnoreCase(probeEName,"currentdoorstate","currentdoorstate2","currentups")){
                         res.setAlertRules(cName+"异常");
                         if (flag) {
-                            res.setAlertRules(cName+" abnormal");
+                            res.setAlertRules(eName+" abnormal");
                         }
                     }else {
                         if(StringUtils.isNotBlank(res.getWarningValue()) && RegularUtil.checkContainsNumbers(res.getWarningValue())){

@@ -192,4 +192,9 @@ public class UserRightServiceImpl implements UserRightService {
     public Boolean checkPhoneNum(UserRightCommand userRightCommand) {
         return userRightRepository.checkPhoneNum(userRightCommand);
     }
+
+    @Override
+    public String getUserName(String userId) {
+        return userRightRepository.getUserName(userId);
+    }
 }
