@@ -10,4 +10,4 @@ spring:
       discovery:
         server-addr: cdh02:8848
         namespace: dev
-        ip: cdh03
+#        ip: cdh03
