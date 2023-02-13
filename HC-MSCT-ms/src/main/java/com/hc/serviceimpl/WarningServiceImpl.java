@@ -132,30 +132,30 @@ public class WarningServiceImpl implements WarningService {
         String equipmentname = probe.getEquipmentName();
         String unit = warningAlarmDo.getUnit();
         if ("A".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：未获取到数据");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:未获取到数据");
             return null;
         } else if ("B".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：流量控制关闭");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:流量控制关闭");
             return null;
         } else if ("C".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：气体流量不稳定");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:气体流量不稳定");
             return null;
         } else if ("D".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：气口压力低");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:气口压力低");
             return null;
         } else if ("E".equals(data)) {
             //产生报警
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：未获取到数据");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:未获取到数据");
         } else if ("F".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：总开关关闭，但未断电");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:总开关关闭，但未断电");
             return null;
             //I M O为98协议上传的气流状态 需要报警的模型
         } else if ("I".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：发生漏气报警事件");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:发生漏气报警事件");
         } else if ("M".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：设备漏气报警");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:设备漏气报警");
         } else if ("O".equals(data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为：设备气压低报警");
+            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:设备气压低报警");
         } else {
             return null;
         }

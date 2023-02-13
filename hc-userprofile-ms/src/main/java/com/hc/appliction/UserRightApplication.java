@@ -353,4 +353,8 @@ public class UserRightApplication {
     public Boolean checkPhoneNum(UserRightCommand userRightCommand) {
         return userRightService.checkPhoneNum(userRightCommand);
     }
+
+    public String getUserName(String userId) {
+        return userRightService.getUserName(userId);
+    }
 }

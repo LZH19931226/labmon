@@ -8,6 +8,7 @@ import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,5 +102,12 @@ public class UserRightInfoController {
     @ApiOperation("检验手机号是否重复")
     public Boolean checkPhoneNum(@RequestBody UserRightCommand userRightCommand){
         return  userRightApplication.checkPhoneNum(userRightCommand);
+    }
+
+    @JwtIgnore
+    @GetMapping("/getUserName")
+    @ApiOperation("获取用户信息")
+    public String getUserName(@RequestParam("userId") String userId){
+        return  userRightApplication.getUserName(userId);
     }
 }

@@ -21,7 +21,7 @@ public enum DataFieldEnum {
     PM25("PM2.5","currentpm25","PM2.5","PM2.5","L/MIN"),
     PM10("PM10","currentpm10","PM10","PM10","L/MIN"),
     UPS("UPS","currentups","适配器供电","UPS",""),
-    DOOR("DOOR","currentdoorstate","报警信号","ALARM",""),
+    DOOR("DOOR","currentdoorstate","报警信号","DOOR",""),
     HCHO("甲醛","currentformaldehyde","甲醛","HCHO","N2/MPa"),
     TEMP1("TEMP1","currenttemperature1","温度一","TEMP1","℃"),
     TEMP2("TEMP2","currenttemperature2","温度二","TEMP2","℃"),
@@ -52,7 +52,7 @@ public enum DataFieldEnum {
     voltage("voltage","voltage","电压","VOLTAGE","mV"),
     power("power","power","功率","POWER","W"),
     LIQUIDLEVEL("LIQUIDLEVEL","liquidLevel","液位","LIQUID_LEVEL","mm"),
-    DOOR2("DOOR2","currentdoorstate2","报警信号2","ALARM2",""),
+    DOOR2("DOOR2","currentdoorstate2","报警信号2","DOOR2",""),
     outerCO2("outerCO2","currentcarbondioxide","内置CO2","BUILT-IN CO2","%"),
     current("current","qccurrent","电流","ELECTRIC_CURRENT","mA"),
     outerO2("outerO2","currento2","内置O2","BUILT-IN O2","%");

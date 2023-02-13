@@ -24,6 +24,7 @@ import com.hc.repository.OperationlogdetailRepository;
 import com.hc.service.HospitalequimentService;
 import com.hc.service.MonitorinstrumentService;
 import com.hc.service.OperationlogService;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.backlog.OperationlogVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +47,8 @@ public class OperationlogServiceImpl implements OperationlogService {
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
 
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
     /**
      * 添加用户日志信息
      * @param userRightInfoCommand
@@ -629,11 +632,11 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogPo.setHospitalname(hospitalInfo.getHospitalName());
         }
         //根据useid获取用户信息
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(Context.getUserId()).getResult();
-        if(!ObjectUtils.isEmpty(userInfo)){
-            operationlogPo.setUsername(userInfo.getUsername());
+        String username = userRightInfoApi.getUserName(Context.getUserId()).getResult();
+        if(!StringUtils.isEmpty(username)){
+            operationlogPo.setUsername(username);
         }
-        operationlogPo.setFunctionname(OperationLogEunm.APP_ALARM_SET.getCode());
+        operationlogPo.setFunctionname(OperationLogEunm.APP_EDIT_EQ_TYPE.getMessage());
         operationlogPo.setOpeartiontype(OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogPo.setOperationtime(new Date());
         operationlogRepository.save(operationlogPo);

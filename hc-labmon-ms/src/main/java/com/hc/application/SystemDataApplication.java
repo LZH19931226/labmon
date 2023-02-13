@@ -12,6 +12,7 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
@@ -183,16 +184,18 @@ public class SystemDataApplication {
 
         warningRecordList.forEach(res->{
             String instrumentparamconfigno = res.getInstrumentparamconfigno();
-            if(ipcNoMap.containsKey(instrumentparamconfigno)){
+            if(ipcNoMap.containsKey(instrumentparamconfigno)) {
                 InstrumentParamConfigDto instrumentParamConfigDto = ipcNoMap.get(instrumentparamconfigno).get(0);
                 Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
                 String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
+                DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(probeEName);
                 res.setEName(probeEName);
+                if (!Context.IsCh()) {
+                    //The temperature of the device name is abnormal  Abnormal data is
+                    String eRemark = AlarmInfoUtils.setTypeName(res.getWarningremark(),dataFieldEnum.getEName());
+                    res.setWarningremark(eRemark);
+                }
             }
-            if (!Context.IsCh()){
-           //The temperature of the device name is abnormal  Abnormal data is
-            }
-
         });
         return warningRecordList;
     }

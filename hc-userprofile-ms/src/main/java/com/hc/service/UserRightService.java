@@ -79,4 +79,6 @@ public interface UserRightService {
      * @return
      */
     Boolean checkPhoneNum(UserRightCommand userRightCommand);
+
+    String getUserName(String userId);
 }
