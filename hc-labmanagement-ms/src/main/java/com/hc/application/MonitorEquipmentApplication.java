@@ -1187,6 +1187,7 @@ public class MonitorEquipmentApplication {
         }
         MonitorEquipmentLogCommand oldEq = new MonitorEquipmentLogCommand();
         oldEq.setWarningSwitch(old.getWarningSwitch());
+        oldEq.setEquipmentName(old.getEquipmentName());
         MonitorEquipmentLogCommand nowEq = new MonitorEquipmentLogCommand();
         nowEq.setWarningSwitch(alarmSystemCommand.getWarningPhone());
         nowEq.setEquipmentName(old.getEquipmentName());
