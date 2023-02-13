@@ -79,7 +79,7 @@ public class OperationlogApplication {
             operationlogDTO.forEach(res->{
                 OperationlogVo build = OperationlogVo.builder()
                         .opeartiontype(editOperateType(res.getOpeartiontype()))
-                        .functionname(editFunctionName(res.getFunctionname()))
+                        .functionname(editFunctionName(res.getPlatform()))
                         .hospitalname(res.getHospitalname())
                         .equipmentname(res.getEquipmentname())
                         .username(res.getUsername())
@@ -98,12 +98,12 @@ public class OperationlogApplication {
         return Context.IsCh() ? from.getMessage() : from.name();
     }
 
-    public String editFunctionName(String message){
+    public String editFunctionName(String code){
+        OperationLogEunm operationLogEunm = OperationLogEunm.fromCode(code);
         if(!Context.IsCh()){
-            OperationLogEunm operationLogEunm = OperationLogEunm.from(message);
             return operationLogEunm.name();
         }
-        return message;
+        return operationLogEunm.getMessage();
     }
 
 
