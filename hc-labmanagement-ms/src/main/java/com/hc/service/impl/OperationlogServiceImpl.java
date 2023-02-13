@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.OperationLogCommand;
@@ -17,8 +18,12 @@ import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.struct.Context;
+import com.hc.po.InstrumentmonitorPo;
+import com.hc.po.MonitorequipmenttypePo;
 import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
+import com.hc.repository.InstrumentmonitorRepository;
+import com.hc.repository.MonitorequipmenttypeRepository;
 import com.hc.repository.OperationlogRepository;
 import com.hc.repository.OperationlogdetailRepository;
 import com.hc.service.HospitalequimentService;
@@ -49,6 +54,9 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Autowired
     private UserRightInfoApi userRightInfoApi;
+
+    @Autowired
+    private MonitorequipmenttypeRepository monitorequipmenttypeRepository;
     /**
      * 添加用户日志信息
      * @param userRightInfoCommand
@@ -636,8 +644,11 @@ public class OperationlogServiceImpl implements OperationlogService {
         if(!StringUtils.isEmpty(username)){
             operationlogPo.setUsername(username);
         }
+        String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
+        MonitorequipmenttypePo one = monitorequipmenttypeRepository.getOne(Wrappers.lambdaQuery(new MonitorequipmenttypePo()).eq(MonitorequipmenttypePo::getEquipmenttypeid, equipmentTypeId));
         operationlogPo.setFunctionname(OperationLogEunm.APP_EDIT_EQ_TYPE.getMessage());
         operationlogPo.setOpeartiontype(OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogPo.setEquipmentname(Context.IsCh() ? one.getEquipmenttypename() : one.getEquipmenttypename_us());
         operationlogPo.setOperationtime(new Date());
         operationlogRepository.save(operationlogPo);
     }
