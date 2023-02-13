@@ -34,7 +34,7 @@ public enum OperationLogEunm {
     public static OperationLogEunm fromCode(String code){
         return Arrays
                 .stream(OperationLogEunm.values())
-                .filter(res->code.equals(res.getMessage()))
+                .filter(res->code.equals(res.getCode()))
                 .findFirst()
                 .orElseThrow(()-> new IedsException("Illegal enum value {}", code));
     }
