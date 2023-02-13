@@ -31,4 +31,11 @@ public enum OperationLogEunm {
                 .findFirst()
                 .orElseThrow(()-> new IedsException("Illegal enum value {}", message));
     }
+    public static OperationLogEunm fromCode(String code){
+        return Arrays
+                .stream(OperationLogEunm.values())
+                .filter(res->code.equals(res.getCode()))
+                .findFirst()
+                .orElseThrow(()-> new IedsException("Illegal enum value {}", code));
+    }
 }

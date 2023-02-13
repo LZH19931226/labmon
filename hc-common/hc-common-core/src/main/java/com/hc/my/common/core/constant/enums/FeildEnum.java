@@ -32,6 +32,7 @@ public enum FeildEnum {
     CALIBRATE_POSITIVE_AND_NEGATIVE_VALUES("校正正负值"),
     PASSAGEWAY("通道"),
     INTELLIGENT_ALARM_TIMES("智能报警次数"),
+    ALARM_SWITCH("报警开关"),
     ALARM_DISABLE_ENABLE("报警禁用启用");
     private String message;
 
