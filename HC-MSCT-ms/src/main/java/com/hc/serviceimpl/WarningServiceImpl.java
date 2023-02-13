@@ -48,15 +48,6 @@ public class WarningServiceImpl implements WarningService {
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         String hospitalcode = monitorinstrument.getHospitalcode();
         String warningphone = probe.getWarningPhone();
-        if (StringUtils.isEmpty(warningphone)) {
-            warningphone = "1";
-        }
-        /*1.判断该设备是否开启报警服务*/
-        if (StringUtils.equals("0", warningphone)) {
-            //不启用报警，直接过滤信息
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER07.getCode()), JsonUtil.toJson(probe), warningAlarmDo.getLogId());
-            return null;
-        }
         Integer instrumentConfigId = probe.getInstrumentConfigId();
         String instrumentparamconfigNO = probe.getInstrumentParamConfigNO();
         String equipmentno = probe.getEquipmentNo();
@@ -102,6 +93,15 @@ public class WarningServiceImpl implements WarningService {
                 return null;
             }
         } else {
+            return null;
+        }
+        if (StringUtils.isEmpty(warningphone)) {
+            warningphone = "1";
+        }
+        /*1.判断该设备是否开启报警服务*/
+        if (StringUtils.equals("0", warningphone)) {
+            //不启用报警，直接过滤信息
+            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER07.getCode()), JsonUtil.toJson(probe), warningAlarmDo.getLogId());
             return null;
         }
         return warningrecord;
