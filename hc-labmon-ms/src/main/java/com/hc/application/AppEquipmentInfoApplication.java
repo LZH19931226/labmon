@@ -731,7 +731,7 @@ public class AppEquipmentInfoApplication {
         List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(hospitalCode);
         Map<String, List<UserRightDto>> userMap = new HashMap<>();
         if (CollectionUtils.isNotEmpty(userRightDtoList)) {
-            userMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+            userMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         }
         List<String> collect = warningRecordList.stream().map(Warningrecord::getInstrumentparamconfigno).collect(Collectors.toList());
         List<WarningDetailInfo> detailInfos = BeanConverter.convert(warningRecordList, WarningDetailInfo.class);
