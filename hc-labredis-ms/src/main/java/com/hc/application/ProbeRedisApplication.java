@@ -215,6 +215,7 @@ public class ProbeRedisApplication {
         String hospitalCode = probeInfoDto.getHospitalCode();
         String equipmentNo = probeInfoDto.getEquipmentNo();
         Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
+        String eName = probeInfoDto.getProbeEName();
         if(redisUtils.hHasKey(hospitalCode,equipmentNo)){
             Object object = redisUtils.hget(hospitalCode, equipmentNo);
             List<ProbeInfoDto> probeInfoDTO = JSON.parseObject((String) JSONObject.toJSON(object), new TypeReference<List<ProbeInfoDto>>(){});
@@ -222,7 +223,10 @@ public class ProbeRedisApplication {
                 List<ProbeInfoDto> removeList = new ArrayList<>();
                 for (ProbeInfoDto infoDto : probeInfoDTO) {
                     Integer configId = infoDto.getInstrumentConfigId();
-                    if(Objects.equals(configId, instrumentConfigId)){
+                    String probeEName = infoDto.getProbeEName();
+                    //通常情况：判断id和Ename相同时 过滤点
+                    //特殊情况：id为7时 有两种探头(qc,qcl)但是Ename不同
+                    if(Objects.equals(configId, instrumentConfigId) && Objects.equals(probeEName,eName)){
                         removeList.add(infoDto);
                     }
                 }
