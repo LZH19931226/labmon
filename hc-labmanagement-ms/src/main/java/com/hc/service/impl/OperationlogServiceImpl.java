@@ -55,8 +55,6 @@ public class OperationlogServiceImpl implements OperationlogService {
     @Autowired
     private UserRightInfoApi userRightInfoApi;
 
-    @Autowired
-    private MonitorequipmenttypeRepository monitorequipmenttypeRepository;
     /**
      * 添加用户日志信息
      * @param userRightInfoCommand
@@ -644,12 +642,11 @@ public class OperationlogServiceImpl implements OperationlogService {
         if(!StringUtils.isEmpty(username)){
             operationlogPo.setUsername(username);
         }
-        String equipmentTypeId = alarmSystemCommand.getEquipmentTypeId();
-        MonitorequipmenttypePo one = monitorequipmenttypeRepository.getOne(Wrappers.lambdaQuery(new MonitorequipmenttypePo()).eq(MonitorequipmenttypePo::getEquipmenttypeid, equipmentTypeId));
         operationlogPo.setFunctionname(OperationLogEunm.APP_EDIT_EQ_TYPE.getMessage());
         operationlogPo.setOpeartiontype(OperationLogEunmDerailEnum.EDIT.getCode());
-        operationlogPo.setEquipmentname(Context.IsCh() ? one.getEquipmenttypename() : one.getEquipmenttypename_us());
+        operationlogPo.setEquipmentname(alarmSystemCommand.getEquipmentTypeId());
         operationlogPo.setOperationtime(new Date());
+        operationlogPo.setPlatform(OperationLogEunm.APP_EDIT_EQ_TYPE.getCode());
         operationlogRepository.save(operationlogPo);
     }
 }
