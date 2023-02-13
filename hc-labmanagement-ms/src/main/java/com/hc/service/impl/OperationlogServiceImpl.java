@@ -636,7 +636,7 @@ public class OperationlogServiceImpl implements OperationlogService {
         if(!StringUtils.isEmpty(username)){
             operationlogPo.setUsername(username);
         }
-        operationlogPo.setFunctionname(OperationLogEunm.APP_ALARM_SET.getMessage());
+        operationlogPo.setFunctionname(OperationLogEunm.APP_EDIT_EQ_TYPE.getMessage());
         operationlogPo.setOpeartiontype(OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogPo.setOperationtime(new Date());
         operationlogRepository.save(operationlogPo);

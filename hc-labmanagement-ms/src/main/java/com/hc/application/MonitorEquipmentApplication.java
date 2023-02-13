@@ -1065,7 +1065,7 @@ public class MonitorEquipmentApplication {
                 buildProbeInfo(Context.getUserId(),
                         oldProbeInfo,
                         alarmSystemCommand,
-                        OperationLogEunm.APP_ALARM_SET.getCode(),
+                        OperationLogEunm.APP_EDIT_PROBE.getCode(),
                         OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
 
@@ -1162,7 +1162,7 @@ public class MonitorEquipmentApplication {
                 snDeviceRedisApi.updateSnDeviceDtoSync(result1);
             }
         }
-        MonitorEquipmentLogInfoCommand log =  buildAppEquipmentInfo(Context.getUserId(),old,alarmSystemCommand,OperationLogEunm.APP_ALARM_SET.getCode(),
+        MonitorEquipmentLogInfoCommand log =  buildAppEquipmentInfo(Context.getUserId(),old,alarmSystemCommand,OperationLogEunm.APP_EDIT_EQ.getCode(),
                 OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogService.addMonitorEquipmentLogInfo(log);
     }
