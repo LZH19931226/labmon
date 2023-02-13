@@ -60,7 +60,7 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
 
     @Select("select count(*) from userright where username = #{userName}" )
     Integer checkUsername(String userName);
-    @Select("select username from userright where username = #{userId}" )
+    @Select("select username from userright where userid = #{userId}" )
     String getUserName(@Param("userId") String userId);
 
 //    /**

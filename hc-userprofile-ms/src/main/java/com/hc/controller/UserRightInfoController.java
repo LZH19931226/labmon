@@ -104,6 +104,7 @@ public class UserRightInfoController {
         return  userRightApplication.checkPhoneNum(userRightCommand);
     }
 
+    @JwtIgnore
     @GetMapping("/getUserName")
     @ApiOperation("获取用户信息")
     public String getUserName(@RequestParam("userId") String userId){
