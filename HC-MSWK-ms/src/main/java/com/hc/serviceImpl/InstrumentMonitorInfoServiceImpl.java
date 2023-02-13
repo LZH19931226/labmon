@@ -70,7 +70,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             monitorequipmentlastdata.setCurrenttemperature(calibration);
                             BuildProbeInfoDto(hospitalcode, equipmentno,
                                     CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), calibration,
-                                    CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                                    CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                             //执行报警服务
                             WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                             list.add(warningAlarmDo);
@@ -82,7 +82,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                                 monitorequipmentlastdata.setCurrenttemperature(calibration);
                                 BuildProbeInfoDto(hospitalcode, equipmentno,
                                         CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), calibration,
-                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                                 WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                                 list.add(WarningAlarmDo);
                             }
@@ -95,13 +95,13 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             monitorequipmentlastdata.setCurrentqcl(qc);
                             BuildProbeInfoDto(hospitalcode, equipmentno,
                                     CurrentProbeInfoEnum.CURRENTQCL.getInstrumentConfigId(), qc,
-                                    CurrentProbeInfoEnum.CURRENTQCL.getProbeEName());
+                                    CurrentProbeInfoEnum.CURRENTQCL.getProbeEName(),instrumentno);
                         } else {
                             //常规液氮罐电量
                             monitorequipmentlastdata.setCurrentqc(qc);
                             BuildProbeInfoDto(hospitalcode, equipmentno,
                                     CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), qc,
-                                    CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                                    CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                         }
                         WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                         list.add(WarningAlarmDo);
@@ -114,7 +114,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), model.getCO2(),
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(WarningAlarmDo);
                 }
@@ -122,7 +122,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(model.getO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), model.getO2(),
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(WarningAlarmDo);
                 }
@@ -138,7 +138,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentups(ups);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(), ups,
-                            CurrentProbeInfoEnum.CURRENTUPS.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTUPS.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(ups, monitorinstrument, model.getNowTime(), 10, "市电");
                     list.add(WarningAlarmDo);
                 }
@@ -166,13 +166,13 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentdoorstate(doorValue);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId(), doorValue,
-                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getProbeEName(),instrumentno);
                     WarningAlarmDoor = showModelUtils.procWarnModel(doorValue, monitorinstrument, model.getNowTime(), 11, "DOOR");
                 } else {
                     monitorequipmentlastdata.setCurrentdoorstate2(doorValue);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTDOORSTATE2.getInstrumentConfigId(), doorValue,
-                            CurrentProbeInfoEnum.CURRENTDOORSTATE2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTDOORSTATE2.getProbeEName(),instrumentno);
                     WarningAlarmDoor = showModelUtils.procWarnModel(doorValue, monitorinstrument, model.getNowTime(), 44, "DOOR2");
                 }
                 list.add(WarningAlarmDoor);
@@ -183,7 +183,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentvoc(model.getVOC());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTVOC.getInstrumentConfigId(), model.getVOC(),
-                            CurrentProbeInfoEnum.CURRENTVOC.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTVOC.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getVOC(), monitorinstrument, model.getNowTime(), 3, "空气质量");
                     list.add(WarningAlarmDo);
                 }
@@ -191,7 +191,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentformaldehyde(model.getOX());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(), model.getOX(),
-                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getOX(), monitorinstrument, model.getNowTime(), 12, "甲醛");
                     list.add(WarningAlarmDo);
                 }
@@ -199,7 +199,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm10(model.getPM10());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM10.getInstrumentConfigId(), model.getPM10(),
-                            CurrentProbeInfoEnum.CURRENTPM10.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM10.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getPM10(), monitorinstrument, model.getNowTime(), 9, "PM10");
                     list.add(WarningAlarmDo);
                 }
@@ -207,7 +207,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm25(model.getPM25());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM25.getInstrumentConfigId(), model.getPM25(),
-                            CurrentProbeInfoEnum.CURRENTPM25.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM25.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getPM25(), monitorinstrument, model.getNowTime(), 8, "PM2.5");
                     list.add(WarningAlarmDo);
                 }
@@ -216,7 +216,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitorequipmentlastdata.setCurrentairflow(model.getPRESS());
                         BuildProbeInfoDto(hospitalcode, equipmentno,
                                 CurrentProbeInfoEnum.CURRENTAIRFLOW.getInstrumentConfigId(), model.getPRESS(),
-                                CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName());
+                                CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName(),instrumentno);
                         WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getPRESS(), monitorinstrument, model.getNowTime(), 6, "压力");
                         list.add(WarningAlarmDo);
                     }
@@ -226,7 +226,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                         monitorequipmentlastdata.setCurrenthumidity(model.getRH());
                         BuildProbeInfoDto(hospitalcode, equipmentno,
                                 CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(), model.getRH(),
-                                CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                                CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName(),instrumentno);
                         WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度");
                         list.add(WarningAlarmDo);
                     }
@@ -238,7 +238,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), model.getCO2(),
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(WarningAlarmDo);
                 }
@@ -246,7 +246,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(model.getO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), model.getO2(),
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(WarningAlarmDo);
                 }
@@ -254,7 +254,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(WarningAlarmDo);
                 }
@@ -265,7 +265,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(WarningAlarmDo);
                 }
@@ -277,7 +277,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), model.getCO2(),
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(WarningAlarmDo1);
                 }
@@ -287,7 +287,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrenthumidity(model.getRH());
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(), model.getRH(),
-                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo2 = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度");
                 list.add(WarningAlarmDo2);
                 break;
@@ -301,7 +301,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrentvoc(voc1);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTVOC.getInstrumentConfigId(), voc1,
-                        CurrentProbeInfoEnum.CURRENTVOC.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTVOC.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo3 = showModelUtils.procWarnModel(voc1, monitorinstrument, model.getNowTime(), 3, "空气质量");
                 list.add(WarningAlarmDo3);
                 break;
@@ -315,7 +315,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrentpm25(Double.toString(integer2));
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTPM25.getInstrumentConfigId(), Double.toString(integer2),
-                        CurrentProbeInfoEnum.CURRENTPM25.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTPM25.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo4 = showModelUtils.procWarnModel(Double.toString(integer2), monitorinstrument, model.getNowTime(), 8, "PM2.5");
                 list.add(WarningAlarmDo4);
                 break;
@@ -326,7 +326,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(model.getO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), model.getO2(),
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo5 = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(WarningAlarmDo5);
                 }
@@ -337,7 +337,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentqc(model.getQC());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), model.getQC(),
-                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo6 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                     list.add(WarningAlarmDo6);
                 }
@@ -351,7 +351,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrentups(ups);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(), ups,
-                        CurrentProbeInfoEnum.CURRENTUPS.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTUPS.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo7 = showModelUtils.procWarnModel(model.getUPS(), monitorinstrument, model.getNowTime(), 10, "市电");
                 list.add(WarningAlarmDo7);
                 break;
@@ -368,7 +368,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentdoorstate(DOOR);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId(), DOOR,
-                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTDOORSTATE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo8 = showModelUtils.procWarnModel(DOOR, monitorinstrument, model.getNowTime(), 11, "DOOR");
                     list.add(WarningAlarmDo8);
                 }
@@ -379,7 +379,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentformaldehyde(model.getOX());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(), model.getOX(),
-                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo9 = showModelUtils.procWarnModel(model.getOX(), monitorinstrument, model.getNowTime(), 12, "甲醛");
                     list.add(WarningAlarmDo9);
                 }
@@ -394,7 +394,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm10(Double.toString(v));
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM10.getInstrumentConfigId(), Double.toString(v),
-                            CurrentProbeInfoEnum.CURRENTPM10.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM10.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo10 = showModelUtils.procWarnModel(Double.toString(v), monitorinstrument, model.getNowTime(), 9, "PM10");
                     list.add(WarningAlarmDo10);
                 }
@@ -410,7 +410,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow(Double.toString(integer1));
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW.getInstrumentConfigId(), Double.toString(integer1),
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo11 = showModelUtils.procWarnModel(Double.toString(integer1), monitorinstrument, model.getNowTime(), 6, "压力");
                     list.add(WarningAlarmDo11);
                 }
@@ -420,7 +420,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentlefttemperature(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 23, "左舱室温度");
                     list.add(WarningAlarmDo);
                 }
@@ -428,7 +428,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrigthtemperature(model.getTEMP2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getInstrumentConfigId(), model.getTEMP2(),
-                            CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 24, "右舱室温度");
                     list.add(WarningAlarmDo);
                 }
@@ -436,7 +436,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow1(model.getAirflow());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW1.getInstrumentConfigId(), model.getAirflow(),
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getAirflow(), monitorinstrument, model.getNowTime(), 25, "气流");
                     list.add(WarningAlarmDo);
                 }
@@ -447,7 +447,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(WarningAlarmDo);
                 }
@@ -455,20 +455,20 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(model.getO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), model.getO2(),
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(WarningAlarmDo1);
                 }
                 monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), model.getCO2(),
-                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo22 = showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
                 list.add(WarningAlarmDo22);
                 monitorequipmentlastdata.setCurrenthumidity(model.getRH());
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(), model.getRH(),
-                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo23 = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "RH");
                 list.add(WarningAlarmDo23);
                 break;
@@ -483,25 +483,25 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrenttemperature5(model.getTEMP5());
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), model.getO2(),
-                        CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), model.getCO2(),
-                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getInstrumentConfigId(), model.getTEMP(),
-                        CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName(),instrumentno);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), model.getTEMP2(),
-                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(), model.getTEMP3(),
-                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName(),instrumentno);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getInstrumentConfigId(), model.getTEMP4(),
-                        CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName(),instrumentno);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getInstrumentConfigId(), model.getTEMP5(),
-                        CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo8 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 13, "一路温度");
                 WarningAlarmDo WarningAlarmDo16 = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 14, "二路温度");
                 WarningAlarmDo WarningAlarmDo19 = showModelUtils.procWarnModel(model.getTEMP3(), monitorinstrument, model.getNowTime(), 15, "三路温度");
@@ -521,21 +521,21 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());  //液氮罐温度
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                 WarningAlarmDo warningMqMode90 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                 list.add(warningMqMode90);
                 monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());// 室温
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), model.getTEMP2(),
-                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                 monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3()); // 壁温
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(), model.getTEMP3(),
-                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName(),instrumentno);
                 monitorequipmentlastdata.setCurrentqc(model.getQC());
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), model.getQC(),
-                        CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo90 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                 list.add(WarningAlarmDo90);
                 if (RegularUtil.checkContainsNumbers(model.getTEMP2()) && RegularUtil.checkContainsNumbers(model.getTEMP3())) {
@@ -549,7 +549,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperaturediff(format);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getInstrumentConfigId(), format,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo900 = showModelUtils.procWarnModel(format, monitorinstrument, model.getNowTime(), 26, "温差");
                     list.add(WarningAlarmDo900);
                 }
@@ -563,7 +563,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(calibration);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                     if (RegularUtil.checkContainsNumbers(model.getTEMP())) {
                         if (StringUtils.isNotEmpty(model.getTEMP2())) {
@@ -571,7 +571,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                                 monitorequipmentlastdata.setCurrenttemperature(ProbeOutlier.VALUE_IS_INVALID.getCode());
                                 BuildProbeInfoDto(hospitalcode, equipmentno,
                                         CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), ProbeOutlier.VALUE_IS_INVALID.getCode(),
-                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                                        CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                             }
                             WarningAlarmDo97.setCurrentData1(model.getTEMP4());
                         }
@@ -585,7 +585,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature2(temp21);// 室温
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), model.getTEMP2(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                 }
                 String temp31 = model.getTEMP3();
                 InstrumentInfoDto temp39c = probeRedisApi.getProbeRedisInfo(hospitalcode, instrumentno + ":15").getResult();
@@ -594,12 +594,12 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature3(temp31); // 壁温
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(), model.getTEMP3(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName(),instrumentno);
                 }
                 monitorequipmentlastdata.setCurrentqcl(model.getQC());
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTQCL.getInstrumentConfigId(), model.getQC(),
-                        CurrentProbeInfoEnum.CURRENTQCL.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTQCL.getProbeEName(),instrumentno);
                 WarningAlarmDo WarningAlarmDo99 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "锁电量");
                 list.add(WarningAlarmDo99);
                 if (RegularUtil.checkContainsNumbers(temp21) && RegularUtil.checkContainsNumbers(temp31)) {
@@ -613,7 +613,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperaturediff(format);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getInstrumentConfigId(), format,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATUREDIFF.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo900 = showModelUtils.procWarnModel(format, monitorinstrument, model.getNowTime(), 26, "温差");
                     list.add(WarningAlarmDo900);
                 }
@@ -624,7 +624,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(WarningAlarmDo97);
@@ -634,7 +634,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), model.getCO2(),
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo warningCO2Model = showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(warningCO2Model);
                 }
@@ -643,7 +643,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(model.getO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), model.getO2(),
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo warningO2Model = showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(warningO2Model);
                 }
@@ -652,7 +652,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenthumidity(model.getRH());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(), model.getRH(),
-                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName(),instrumentno);
                     WarningAlarmDo warningRhModel = showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度");
                     list.add(warningRhModel);
                 }
@@ -661,7 +661,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm5(model.getPM50());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM5.getInstrumentConfigId(), model.getPM50(),
-                            CurrentProbeInfoEnum.CURRENTPM5.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM5.getProbeEName(),instrumentno);
                     WarningAlarmDo warningPm5Model = showModelUtils.procWarnModel(model.getPM50(), monitorinstrument, model.getNowTime(), 27, "PM5");
                     list.add(warningPm5Model);
                 }
@@ -670,7 +670,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm05(model.getPM05());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM05.getInstrumentConfigId(), model.getPM05(),
-                            CurrentProbeInfoEnum.CURRENTPM05.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM05.getProbeEName(),instrumentno);
                     WarningAlarmDo warningPM05Model = showModelUtils.procWarnModel(model.getPM05(), monitorinstrument, model.getNowTime(), 28, "PM05");
                     list.add(warningPM05Model);
                 }
@@ -679,7 +679,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentformaldehyde(model.getOX());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(), model.getOX(),
-                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName(),instrumentno);
                     WarningAlarmDo warningOxModel = showModelUtils.procWarnModel(model.getOX(), monitorinstrument, model.getNowTime(), 12, "甲醛");
                     list.add(warningOxModel);
                 }
@@ -690,7 +690,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow1(airflow2);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW1.getInstrumentConfigId(), airflow2,
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName(),instrumentno);
                     //只有airFlow 是 I M O才报警生成报警模型
                     if (StringUtils.equalsAnyIgnoreCase(airflow2, "I", "M", "O")) {
                         WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(airflow2, monitorinstrument, model.getNowTime(), 25, "气流");
@@ -705,7 +705,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature1(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName(),instrumentno);
                     WarningAlarmDo warningTempModel = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 13, "一路温度");
                     list.add(warningTempModel);
                 }
@@ -713,7 +713,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature2(model.getTEMP2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), model.getTEMP2(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                     WarningAlarmDo warningTemp2Model = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 14, "二路温度");
                     list.add(warningTemp2Model);
                 }
@@ -721,7 +721,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature3(model.getTEMP3());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(), model.getTEMP3(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName(),instrumentno);
                     WarningAlarmDo warningTemp3Model = showModelUtils.procWarnModel(model.getTEMP3(), monitorinstrument, model.getNowTime(), 15, "三路温度");
                     list.add(warningTemp3Model);
                 }
@@ -729,7 +729,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature4(model.getTEMP4());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getInstrumentConfigId(), model.getTEMP4(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName(),instrumentno);
                     WarningAlarmDo warningTemp4Model = showModelUtils.procWarnModel(model.getTEMP4(), monitorinstrument, model.getNowTime(), 16, "四路温度");
                     list.add(warningTemp4Model);
                 }
@@ -737,7 +737,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature5(model.getTEMP5());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getInstrumentConfigId(), model.getTEMP5(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName(),instrumentno);
                     WarningAlarmDo warningTemp5Model = showModelUtils.procWarnModel(model.getTEMP5(), monitorinstrument, model.getNowTime(), 17, "五路温度");
                     list.add(warningTemp5Model);
                 }
@@ -745,28 +745,28 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature6(model.getTEMP6());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getInstrumentConfigId(), model.getTEMP6(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getTEMP6(), monitorinstrument, model.getNowTime(), 18, "六路温度"));
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP7())) {
                     monitorequipmentlastdata.setCurrenttemperature7(model.getTEMP7());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getInstrumentConfigId(), model.getTEMP7(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getTEMP7(), monitorinstrument, model.getNowTime(), 19, "七路温度"));
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP8())) {
                     monitorequipmentlastdata.setCurrenttemperature8(model.getTEMP8());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getInstrumentConfigId(), model.getTEMP8(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getTEMP8(), monitorinstrument, model.getNowTime(), 20, "八路温度"));
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP9())) {
                     monitorequipmentlastdata.setCurrenttemperature9(model.getTEMP9());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getInstrumentConfigId(), model.getTEMP9(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getTEMP9(), monitorinstrument, model.getNowTime(), 21, "九路温度"));
                 }
                 //十路温度
@@ -774,7 +774,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature10(model.getTEMP10());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getInstrumentConfigId(), model.getTEMP10(),
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getTEMP10(), monitorinstrument, model.getNowTime(), 22, "十路温度"));
                 }
                 // CO2
@@ -782,7 +782,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(model.getCO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), model.getCO2(),
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getCO2(), monitorinstrument, model.getNowTime(), 1, "CO2"));
                 }
 
@@ -791,7 +791,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(model.getO2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), model.getO2(),
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getO2(), monitorinstrument, model.getNowTime(), 2, "O2"));
                 }
                 //流量1
@@ -799,7 +799,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm05(model.getPM05());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM05.getInstrumentConfigId(), model.getPM05(),
-                            CurrentProbeInfoEnum.CURRENTPM05.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM05.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getPM05(), monitorinstrument, model.getNowTime(), 28, "PM05"));
                 }
                 //流量2
@@ -807,7 +807,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm5(model.getPM50());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM5.getInstrumentConfigId(), model.getPM50(),
-                            CurrentProbeInfoEnum.CURRENTPM5.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM5.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getPM50(), monitorinstrument, model.getNowTime(), 27, "PM5"));
                 }
                 //气压1
@@ -815,7 +815,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenthumidity(model.getRH());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(), model.getRH(),
-                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getRH(), monitorinstrument, model.getNowTime(), 5, "湿度"));
                 }
                 //气压2
@@ -823,7 +823,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentformaldehyde(model.getOX());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(), model.getOX(),
-                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName(),instrumentno);
                     list.add(showModelUtils.procWarnModel(model.getOX(), monitorinstrument, model.getNowTime(), 12, "甲醛"));
                 }
                 break;
@@ -833,7 +833,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentleftcovertemperature(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTCOVERTEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENTLEFTCOVERTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTCOVERTEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 29, "左盖板温度");
                     list.add(WarningAlarmDo97);
@@ -844,7 +844,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentleftendtemperature(model.getTEMP2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTENDTEMPERATURE.getInstrumentConfigId(), model.getTEMP2(),
-                            CurrentProbeInfoEnum.CURRENTLEFTENDTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTENDTEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 30, "左底板温度");
                     list.add(WarningAlarmDo97);
@@ -854,7 +854,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentleftairflow(model.getTEMP3());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getInstrumentConfigId(), model.getTEMP3(),
-                            CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP3(), monitorinstrument, model.getNowTime(), 31, "左气流");
                     list.add(WarningAlarmDo97);
@@ -864,7 +864,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrightcovertemperature(model.getTEMP4());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getInstrumentConfigId(), model.getTEMP4(),
-                            CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP4(), monitorinstrument, model.getNowTime(), 32, "右盖板温度");
                     list.add(WarningAlarmDo97);
@@ -874,7 +874,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrightendtemperature(model.getTEMP5());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTRIGHTENDTEMPERATURE.getInstrumentConfigId(), model.getTEMP5(),
-                            CurrentProbeInfoEnum.CURRENTRIGHTENDTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTRIGHTENDTEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP5(), monitorinstrument, model.getNowTime(), 33, "右底板温度");
                     list.add(WarningAlarmDo97);
@@ -884,7 +884,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrightairflow(model.getTEMP6());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTRIGHTAIRFLOW.getInstrumentConfigId(), model.getTEMP6(),
-                            CurrentProbeInfoEnum.CURRENTRIGHTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTRIGHTAIRFLOW.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP6(), monitorinstrument, model.getNowTime(), 34, "右气流");
                     list.add(WarningAlarmDo97);
@@ -938,12 +938,12 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), monitorequipmentlastdata.getCurrenttemperature(),
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     String currenttemperature2 = monitorequipmentlastdata.getCurrenttemperature2();
                     if (StringUtils.isNotEmpty(currenttemperature2)) {
                         BuildProbeInfoDto(hospitalcode, equipmentno,
                                 CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), currenttemperature2,
-                                CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                                CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                     }
                 }
 
@@ -951,7 +951,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentqc(model.getQC());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), model.getQC(),
-                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo98 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                     list.add(WarningAlarmDo98);
                 }
@@ -962,7 +962,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentleftcovertemperature(model.getTEMP());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTCOVERTEMPERATURE.getInstrumentConfigId(), model.getTEMP(),
-                            CurrentProbeInfoEnum.CURRENTLEFTCOVERTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTCOVERTEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP(), monitorinstrument, model.getNowTime(), 29, "左舱室顶部温度");
                     list.add(WarningAlarmDo97);
@@ -972,7 +972,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrightcovertemperature(model.getTEMP2());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTRIGHTCOVERTEMPERATURE.getInstrumentConfigId(), model.getTEMP2(),
-                            CurrentProbeInfoEnum.CURRENTRIGHTCOVERTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTRIGHTCOVERTEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP2(), monitorinstrument, model.getNowTime(), 30, "右舱室顶部温度");
                     list.add(WarningAlarmDo97);
@@ -982,7 +982,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentleftendtemperature(model.getTEMP3());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTENDTEMPERATURE.getInstrumentConfigId(), model.getTEMP3(),
-                            CurrentProbeInfoEnum.CURRENTLEFTENDTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTENDTEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP3(), monitorinstrument, model.getNowTime(), 32, "左舱室底部温度");
                     list.add(WarningAlarmDo97);
@@ -992,7 +992,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrightendtemperature(model.getTEMP4());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTRIGHTENDTEMPERATURE.getInstrumentConfigId(), model.getTEMP4(),
-                            CurrentProbeInfoEnum.CURRENTRIGHTENDTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTRIGHTENDTEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP4(), monitorinstrument, model.getNowTime(), 33, "右舱室底部温度");
                     list.add(WarningAlarmDo97);
@@ -1002,7 +1002,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(model.getTEMP5());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), model.getTEMP5(),
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP5(), monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(WarningAlarmDo97);
@@ -1012,7 +1012,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow1(model.getTEMP6());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW1.getInstrumentConfigId(), model.getTEMP6(),
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(model.getTEMP6(), monitorinstrument, model.getNowTime(), 25, "气流");
                     list.add(WarningAlarmDo97);
@@ -1025,7 +1025,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature1(temp1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getInstrumentConfigId(), temp1,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp1, monitorinstrument, model.getNowTime(), 13, "舱室1温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1034,7 +1034,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature2(temp2);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), temp2,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp2, monitorinstrument, model.getNowTime(), 14, "舱室2温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1043,7 +1043,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature3(temp3);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(), temp3,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp3, monitorinstrument, model.getNowTime(), 15, "舱室3温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1052,7 +1052,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature4(temp4);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getInstrumentConfigId(), temp4,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp4, monitorinstrument, model.getNowTime(), 16, "舱室4温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1061,7 +1061,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature5(temp5);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getInstrumentConfigId(), temp5,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp5, monitorinstrument, model.getNowTime(), 17, "舱室5温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1070,7 +1070,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature6(temp6);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getInstrumentConfigId(), temp6,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp6, monitorinstrument, model.getNowTime(), 18, "舱室6温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1079,7 +1079,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature7(temp7);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getInstrumentConfigId(), temp7,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp7, monitorinstrument, model.getNowTime(), 19, "舱室7温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1088,7 +1088,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature8(temp8);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getInstrumentConfigId(), temp8,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp8, monitorinstrument, model.getNowTime(), 20, "舱室8温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1099,7 +1099,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature9(temp9);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getInstrumentConfigId(), temp9,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp9, monitorinstrument, model.getNowTime(), 21, "舱室9温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1108,7 +1108,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature10(temp10);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getInstrumentConfigId(), temp10,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp10, monitorinstrument, model.getNowTime(), 22, "舱室10温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1117,7 +1117,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(o22);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), o22,
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(o22, monitorinstrument, model.getNowTime(), 2, "O2浓度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1126,7 +1126,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentn2(n2);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTN2.getInstrumentConfigId(), n2,
-                            CurrentProbeInfoEnum.CURRENTN2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTN2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(n2, monitorinstrument, model.getNowTime(), 36, "N2压力");
                     list.add(WarningAlarmDo97);
                 }
@@ -1135,7 +1135,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(co21);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), co21,
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(co21, monitorinstrument, model.getNowTime(), 1, "CO2浓度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1145,7 +1145,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow(press1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW.getInstrumentConfigId(), press1,
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(press1, monitorinstrument, model.getNowTime(), 6, "CO2压力");
                     list.add(WarningAlarmDo97);
                 }
@@ -1155,7 +1155,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow1(airflow1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW1.getInstrumentConfigId(), airflow1,
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW1.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(airflow1, monitorinstrument, model.getNowTime(), 25, "气体流量");
                     list.add(WarningAlarmDo97);
                 }
@@ -1167,7 +1167,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentlefttemperature(leftCompartmentTemp);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getInstrumentConfigId(), leftCompartmentTemp,
-                            CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTTEMPERATURE.getProbeEName(),instrumentno);
                     //生成报警模型，到MSCT处理
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(leftCompartmentTemp, monitorinstrument, model.getNowTime(), 23, "左舱室温度");
                     list.add(WarningAlarmDo97);
@@ -1177,7 +1177,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentleftairflow(leftCompartmentFlow);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getInstrumentConfigId(), leftCompartmentFlow,
-                            CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTLEFTAIRFLOW.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(leftCompartmentFlow, monitorinstrument, model.getNowTime(), 31, "左舱室流量");
                     list.add(WarningAlarmDo97);
                 }
@@ -1186,7 +1186,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setLeftCompartmentHumidity(leftCompartmentHumidity);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.LEFTCOMPARTMENTHUMIDITY.getInstrumentConfigId(), leftCompartmentHumidity,
-                            CurrentProbeInfoEnum.LEFTCOMPARTMENTHUMIDITY.getProbeEName());
+                            CurrentProbeInfoEnum.LEFTCOMPARTMENTHUMIDITY.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(leftCompartmentHumidity, monitorinstrument, model.getNowTime(), 37, "左舱室湿度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1195,7 +1195,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrigthtemperature(rightCompartmentTemp);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getInstrumentConfigId(), rightCompartmentTemp,
-                            CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTRIGTHTEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(rightCompartmentTemp, monitorinstrument, model.getNowTime(), 24, "右舱室温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1204,7 +1204,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentrightairflow(rightCompartmentFlow);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTRIGHTAIRFLOW.getInstrumentConfigId(), rightCompartmentFlow,
-                            CurrentProbeInfoEnum.CURRENTRIGHTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTRIGHTAIRFLOW.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(rightCompartmentFlow, monitorinstrument, model.getNowTime(), 34, "右舱室流量");
                     list.add(WarningAlarmDo97);
                 }
@@ -1213,7 +1213,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setRightCompartmentHumidity(rightCompartmentHumidity);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.RIGHTCOMPARTMENTHUMIDITY.getInstrumentConfigId(), rightCompartmentHumidity,
-                            CurrentProbeInfoEnum.RIGHTCOMPARTMENTHUMIDITY.getProbeEName());
+                            CurrentProbeInfoEnum.RIGHTCOMPARTMENTHUMIDITY.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(rightCompartmentHumidity, monitorinstrument, model.getNowTime(), 38, "右舱室湿度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1226,7 +1226,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentups(ups1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(), ups1,
-                            CurrentProbeInfoEnum.CURRENTUPS.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTUPS.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(ups1, monitorinstrument, model.getNowTime(), 10, "适配器供电状态");
                     list.add(WarningAlarmDo97);
                 }
@@ -1235,7 +1235,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setVoltage(voltage);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.VOLTAGE.getInstrumentConfigId(), voltage,
-                            CurrentProbeInfoEnum.VOLTAGE.getProbeEName());
+                            CurrentProbeInfoEnum.VOLTAGE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(voltage, monitorinstrument, model.getNowTime(), 39, "电池电压");
                     list.add(WarningAlarmDo97);
                 }
@@ -1246,7 +1246,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(temp);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), temp,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp, monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1255,7 +1255,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(o21);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), o21,
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(o21, monitorinstrument, model.getNowTime(), 2, "O2浓度百分比");
                     list.add(WarningAlarmDo97);
                 }
@@ -1264,7 +1264,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(co2);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), co2,
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(co2, monitorinstrument, model.getNowTime(), 1, "CO2浓度百分比");
                     list.add(WarningAlarmDo97);
                 }
@@ -1273,7 +1273,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenthumidity(rh);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(), rh,
-                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(rh, monitorinstrument, model.getNowTime(), 5, "湿度百分比");
                     list.add(WarningAlarmDo97);
                 }
@@ -1284,7 +1284,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature1(temp11);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getInstrumentConfigId(), temp11,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp11, monitorinstrument, model.getNowTime(), 13, "舱室1温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1293,7 +1293,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature2(temp12);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), temp12,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp12, monitorinstrument, model.getNowTime(), 14, "舱室2温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1302,7 +1302,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature3(temp13);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(), temp13,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp13, monitorinstrument, model.getNowTime(), 15, "舱室3温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1311,7 +1311,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature4(temp14);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getInstrumentConfigId(), temp14,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp14, monitorinstrument, model.getNowTime(), 16, "舱室4温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1320,7 +1320,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature5(temp15);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getInstrumentConfigId(), temp15,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp15, monitorinstrument, model.getNowTime(), 17, "舱室5温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1329,7 +1329,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature6(temp16);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getInstrumentConfigId(), temp16,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp16, monitorinstrument, model.getNowTime(), 18, "舱室6温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1338,7 +1338,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(o23);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), o23,
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(o23, monitorinstrument, model.getNowTime(), 2, "O2浓度百分比");
                     list.add(WarningAlarmDo97);
                 }
@@ -1347,7 +1347,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(co22);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), co22,
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(co22, monitorinstrument, model.getNowTime(), 1, "CO2浓度百分比");
                     list.add(WarningAlarmDo97);
                 }
@@ -1358,7 +1358,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(temp17);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), temp17,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp17, monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1367,7 +1367,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(co23);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), co23,
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(co23, monitorinstrument, model.getNowTime(), 1, "CO2");
                     list.add(WarningAlarmDo97);
                 }
@@ -1376,7 +1376,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(o24);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), o24,
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(o24, monitorinstrument, model.getNowTime(), 2, "O2");
                     list.add(WarningAlarmDo97);
                 }
@@ -1385,7 +1385,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenthumidity(rh1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTHUMIDITY.getInstrumentConfigId(), rh1,
-                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(rh1, monitorinstrument, model.getNowTime(), 5, "湿度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1394,7 +1394,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow(press2);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW.getInstrumentConfigId(), press2,
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(press2, monitorinstrument, model.getNowTime(), 6, "压力");
                     list.add(WarningAlarmDo97);
                 }
@@ -1403,7 +1403,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm25(pm252);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM25.getInstrumentConfigId(), pm252,
-                            CurrentProbeInfoEnum.CURRENTPM25.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM25.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(pm252, monitorinstrument, model.getNowTime(), 8, "PM2.5");
                     list.add(WarningAlarmDo1);
                 }
@@ -1412,7 +1412,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentpm10(pm102);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTPM10.getInstrumentConfigId(), pm102,
-                            CurrentProbeInfoEnum.CURRENTPM10.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTPM10.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(pm102, monitorinstrument, model.getNowTime(), 9, "PM10");
                     list.add(WarningAlarmDo1);
                 }
@@ -1421,7 +1421,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentformaldehyde(ox);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getInstrumentConfigId(), ox,
-                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTFORMALDEHYDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(ox, monitorinstrument, model.getNowTime(), 12, "甲醛");
                     list.add(WarningAlarmDo1);
                 }
@@ -1430,7 +1430,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentvoc(voc2);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTVOC.getInstrumentConfigId(), voc2,
-                            CurrentProbeInfoEnum.CURRENTVOC.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTVOC.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(voc2, monitorinstrument, model.getNowTime(), 3, "空气质量");
                     list.add(WarningAlarmDo1);
                 }
@@ -1441,7 +1441,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setQccurrent(current);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.QCCURRENT.getInstrumentConfigId(), current,
-                            CurrentProbeInfoEnum.QCCURRENT.getProbeEName());
+                            CurrentProbeInfoEnum.QCCURRENT.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(current, monitorinstrument, model.getNowTime(), 40, "电流");
                     list.add(WarningAlarmDo1);
                 }
@@ -1450,7 +1450,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setVoltage(voltage1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.VOLTAGE.getInstrumentConfigId(), voltage1,
-                            CurrentProbeInfoEnum.VOLTAGE.getProbeEName());
+                            CurrentProbeInfoEnum.VOLTAGE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(voltage1, monitorinstrument, model.getNowTime(), 39, "电压");
                     list.add(WarningAlarmDo1);
                 }
@@ -1459,7 +1459,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setPower(power);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.POWER.getInstrumentConfigId(), power,
-                            CurrentProbeInfoEnum.POWER.getProbeEName());
+                            CurrentProbeInfoEnum.POWER.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(power, monitorinstrument, model.getNowTime(), 41, "功率");
                     list.add(WarningAlarmDo1);
                 }
@@ -1468,7 +1468,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentqc(qc);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), qc,
-                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo1 = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
                     list.add(WarningAlarmDo1);
                 }
@@ -1489,34 +1489,34 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
 
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.PROBE1.getInstrumentConfigId(), probe1data,
-                        probe1model);
+                        probe1model,instrumentno);
 
                 monitorequipmentlastdata.setProbe2data(probe2data);
                 monitorequipmentlastdata.setProbe2model(probe2model);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.PROBE2.getInstrumentConfigId(), probe2data,
-                        probe2model);
+                        probe2model,instrumentno);
 
                 monitorequipmentlastdata.setProbe3data(probe3data);
                 monitorequipmentlastdata.setProbe3model(probe3model);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.PROBE3.getInstrumentConfigId(), probe3data,
-                        probe3model);
+                        probe3model,instrumentno);
 
                 monitorequipmentlastdata.setCurrentcarbondioxide(co24);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), co24,
-                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
 
                 monitorequipmentlastdata.setCurrento2(o2);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), o2,
-                        CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
 
                 monitorequipmentlastdata.setCurrentvoc(voc3);
                 BuildProbeInfoDto(hospitalcode, equipmentno,
                         CurrentProbeInfoEnum.CURRENTVOC.getInstrumentConfigId(), voc3,
-                        CurrentProbeInfoEnum.CURRENTVOC.getProbeEName());
+                        CurrentProbeInfoEnum.CURRENTVOC.getProbeEName(),instrumentno);
 
                 WarningAlarmDo probeWaringModel1;
                 if (StringUtils.equalsIgnoreCase(probe1model, ProbeOutlierMt310.THE_TEMPERATURE.getCode())) {
@@ -1565,7 +1565,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(calibration);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), calibration,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(calibration, monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(warningAlarmDo);
@@ -1575,7 +1575,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentqc(mt100Qc);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), mt100Qc,
-                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(mt100Qc, monitorinstrument, model.getNowTime(), 7, "电量");
                     list.add(WarningAlarmDo);
                 }
@@ -1587,7 +1587,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setLiquidLevel(liquidLevel);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.LIQUIDLEVEL.getInstrumentConfigId(), liquidLevel,
-                            CurrentProbeInfoEnum.LIQUIDLEVEL.getProbeEName());
+                            CurrentProbeInfoEnum.LIQUIDLEVEL.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(liquidLevel, monitorinstrument, model.getNowTime(), 45, "液位");
                     list.add(warningAlarmDo);
@@ -1598,7 +1598,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature(modelTEMP);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getInstrumentConfigId(), modelTEMP,
-                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo warningAlarmDo = showModelUtils.procWarnModel(modelTEMP, monitorinstrument, model.getNowTime(), 4, "温度");
                     list.add(warningAlarmDo);
@@ -1609,7 +1609,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentqc(modelQC);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), modelQC,
-                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                     //执行报警服务
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(modelQC, monitorinstrument, model.getNowTime(), 7, "电量");
                     list.add(WarningAlarmDo);
@@ -1622,7 +1622,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature1(temp18);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getInstrumentConfigId(), temp18,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE1.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp18, monitorinstrument, model.getNowTime(), 13, "舱室1温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1631,7 +1631,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature2(temp22);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getInstrumentConfigId(), temp22,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp22, monitorinstrument, model.getNowTime(), 14, "舱室2温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1640,7 +1640,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature3(temp32);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getInstrumentConfigId(), temp32,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE3.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp32, monitorinstrument, model.getNowTime(), 15, "舱室3温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1649,7 +1649,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature4(temp41);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getInstrumentConfigId(), temp41,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE4.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp41, monitorinstrument, model.getNowTime(), 16, "舱室4温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1658,7 +1658,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature5(temp51);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getInstrumentConfigId(), temp51,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE5.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp51, monitorinstrument, model.getNowTime(), 17, "舱室5温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1667,7 +1667,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature6(temp61);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getInstrumentConfigId(), temp61,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE6.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp61, monitorinstrument, model.getNowTime(), 18, "舱室6温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1676,7 +1676,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature7(temp71);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getInstrumentConfigId(), temp71,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE7.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp71, monitorinstrument, model.getNowTime(), 19, "舱室7温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1687,7 +1687,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature8(temp81);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getInstrumentConfigId(), temp81,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE8.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp81, monitorinstrument, model.getNowTime(), 20, "舱室8温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1696,7 +1696,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature9(temp91);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getInstrumentConfigId(), temp91,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE9.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp91, monitorinstrument, model.getNowTime(), 21, "舱室9温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1705,7 +1705,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrenttemperature10(temp101);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getInstrumentConfigId(), temp101,
-                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTTEMPERATURE10.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(temp101, monitorinstrument, model.getNowTime(), 22, "舱室10温度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1714,7 +1714,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrento2(o25);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId(), o25,
-                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTO2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(o25, monitorinstrument, model.getNowTime(), 2, "O2浓度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1723,7 +1723,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentn2(n21);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTN2.getInstrumentConfigId(), n21,
-                            CurrentProbeInfoEnum.CURRENTN2.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTN2.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(n21, monitorinstrument, model.getNowTime(), 36, "N2压力");
                     list.add(WarningAlarmDo97);
                 }
@@ -1732,7 +1732,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentcarbondioxide(co25);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId(), co25,
-                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(co25, monitorinstrument, model.getNowTime(), 1, "CO2浓度");
                     list.add(WarningAlarmDo97);
                 }
@@ -1742,7 +1742,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     monitorequipmentlastdata.setCurrentairflow(press3);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW.getInstrumentConfigId(), press3,
-                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName());
+                            CurrentProbeInfoEnum.CURRENTAIRFLOW.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(press3, monitorinstrument, model.getNowTime(), 6, "CO2压力");
                     list.add(WarningAlarmDo97);
                 }
@@ -1758,7 +1758,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         return new BigDecimal(a).divide(new BigDecimal(b), 2, BigDecimal.ROUND_HALF_UP).toString();
     }
 
-    public void BuildProbeInfoDto(String hospitalCode, String equipmentNo, int instrumentConfigId, String value, String probeEName) {
+    public void BuildProbeInfoDto(String hospitalCode, String equipmentNo, int instrumentConfigId, String value, String probeEName,String instrumentno) {
         ProbeInfoDto probeInfoDto = new ProbeInfoDto();
         probeInfoDto.setInputTime(new Date());
         probeInfoDto.setInstrumentConfigId(instrumentConfigId);
@@ -1766,6 +1766,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
         probeInfoDto.setEquipmentNo(equipmentNo);
         probeInfoDto.setValue(value);
         probeInfoDto.setProbeEName(probeEName);
+        probeInfoDto.setInstrumentNo(instrumentno);
         //调用redis缓存
         probeRedisApi.addCurrentProbeValueInfo(probeInfoDto);
     }
