@@ -672,6 +672,10 @@ public class AppEquipmentInfoApplication {
      * @return
      */
     public List<Map<String, CurveDataModel>> getCurveFirst(CurveCommand curveCommand) {
+        List<String> instrumentConfigIdList = curveCommand.getInstrumentConfigIdList();
+        if(CollectionUtils.isEmpty(instrumentConfigIdList)){
+            return new ArrayList<>();
+        }
         String startTime = curveCommand.getStartTime();
         String endTime = curveCommand.getEndTime();
         String sn = curveCommand.getSn();

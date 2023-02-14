@@ -62,8 +62,8 @@ public class CurveUtils {
             InstrumentParamConfigDto probe = list.get(0);
             curveDataModel.setMaxNum(probe.getHighLimit()+"");
             curveDataModel.setMinNum(probe.getLowLimit()+"");
-            curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? "":probe.getStyleMin());
-            curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? "":probe.getStyleMax());
+            curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? probe.getHighLimit()+"":probe.getStyleMin());
+            curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? probe.getLowLimit()+"":probe.getStyleMax());
         }else {
             OptionalDouble max = dataList.stream().mapToDouble(Double::parseDouble).max();
             if (max.isPresent()) {
