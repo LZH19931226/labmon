@@ -570,6 +570,7 @@ public class AppEquipmentInfoApplication {
         String str = instrumentNo + ":"+instrumentConfigId;
         if (!instrumentParamConfigMap.containsKey(equipmentno) || !instrumentParamConfigMap.get(equipmentno).containsKey(str)) {
             removeList.add(probeInfoDto);
+            return;
         }
         Map<String, List<InstrumentParamConfigDto>> stringListMap = instrumentParamConfigMap.get(equipmentno);
         List<InstrumentParamConfigDto> list = stringListMap.get(str);
