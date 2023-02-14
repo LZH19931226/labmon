@@ -104,9 +104,9 @@ public class AppEquipmentInfoApplication {
         //获取设备对象的探头信息
         List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
         //以设备no分组在以instrumentconfid分组
-        Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
+        Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
         if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
-            instrumentParamConfigMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentconfigid)));
+            instrumentParamConfigMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(res->res.getInstrumentno()+":"+res.getInstrumentconfigid())));
         }
         //批量获取设备对应探头当前值信息
         Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
@@ -213,9 +213,9 @@ public class AppEquipmentInfoApplication {
         //获取设备对象的探头信息
         List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
         //以设备no分组在以instrumentconfid分组
-        Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
+        Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
         if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
-            instrumentParamConfigMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentconfigid)));
+            instrumentParamConfigMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(res->res.getInstrumentno()+":"+res.getInstrumentconfigid())));
         }
 
         //批量获取设备对应探头当前值信息
@@ -320,7 +320,7 @@ public class AppEquipmentInfoApplication {
         return currentProbeInfoResult;
     }
 
-    private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo,String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
+    private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo,String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
         //获取探头信息中最大的时间
         Date maxDate = null;
         List<Date> dates = probeInfoDtoList.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
@@ -345,7 +345,7 @@ public class AppEquipmentInfoApplication {
         }
         //获取标头信息(用于前端展示),并做过滤
         if(instrumentParamConfigMap.containsKey(equipmentNo)){
-            Map<Integer, List<InstrumentParamConfigDto>> integerListMap = instrumentParamConfigMap.get(equipmentNo);
+            Map<String, List<InstrumentParamConfigDto>> integerListMap = instrumentParamConfigMap.get(equipmentNo);
             List<String> instrumentConfigId  = queryTitle(integerListMap,probeInfo);
             probeInfo.setInstrumentConfigIdList(instrumentConfigId);
             fiterTitle(probeInfo);
@@ -390,18 +390,23 @@ public class AppEquipmentInfoApplication {
      * 获取探头标头(用于前端展示)
      * @return
      */
-    private List<String> queryTitle( Map<Integer, List<InstrumentParamConfigDto>> integerListMap ,ProbeCurrentInfoDto probeCurrentInfoDto) {
-        List<Integer> collect = new ArrayList<>(integerListMap.keySet());
-        List<String> eNames = collect.stream().map(res -> {
-            return CurrentProbeInfoEnum.from(res).getProbeEName();
-        }).collect(Collectors.toList());
+    private List<String> queryTitle( Map<String, List<InstrumentParamConfigDto>> integerListMap ,ProbeCurrentInfoDto probeCurrentInfoDto) {
+        //探头信息
         List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
-        //当数据库confid为7 和 缓存中探头confid也为7并且缓存的eName为currentqcl则判断为qcl
-        long currentqcl = probeInfoDtoList.stream().filter(res -> res.getInstrumentConfigId() == 7 && res.getProbeEName().equals(DataFieldEnum.QCL.getLastDataField())).count();
-        if(collect.contains(7) && currentqcl >0){
-            if(eNames.contains(DataFieldEnum.QC.getLastDataField())){
-                eNames.remove(DataFieldEnum.QC.getLastDataField());
-                eNames.add(DataFieldEnum.QCL.getLastDataField());
+        Map<String, List<ProbeInfoDto>> inoMap = probeInfoDtoList.stream().collect(Collectors.groupingBy(res->res.getInstrumentNo()+":"+res.getInstrumentConfigId()));
+        List<String> eNames = new ArrayList<>();
+        for (String str : integerListMap.keySet()) {
+            int i = str.indexOf(":");
+            String instrumentNo = str.substring(0, i);
+            String config = str.substring(i+1);
+            //当config为35时并且不包含ino:35 但包含ino:7时
+            if(StringUtils.equals("35",config) && !inoMap.containsKey(str) && inoMap.containsKey(instrumentNo+":"+"7")){
+                String eName = inoMap.get(instrumentNo+":"+"7").get(0).getProbeEName();
+                eNames.add(eName);
+            }
+            if(inoMap.containsKey(str)){
+                String eName = inoMap.get(str).get(0).getProbeEName();
+                eNames.add(eName);
             }
         }
         return eNames;
@@ -483,25 +488,29 @@ public class AppEquipmentInfoApplication {
      * @param probeInfoDtoList         探头信息
      * @param instrumentParamConfigMap 探头参数map
      */
-    private void buildProbeHighAndLowValue(String equipmentno, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
+    private void buildProbeHighAndLowValue(String equipmentno, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
         if (MapUtils.isEmpty(instrumentParamConfigMap)) {
             return;
         }
         List<ProbeInfoDto> remove = new ArrayList<>();
         for (ProbeInfoDto probeInfoDto : probeInfoDtoList) {
             Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
+            String instrumentNo = probeInfoDto.getInstrumentNo();
             switch (instrumentConfigId) {
+                case 7:
+                    setQcProbe(equipmentno,instrumentNo , instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
+                    break;
                 //MT310DC
                 case 101:
                 case 102:
                 case 103:
                     String probeEName = probeInfoDto.getProbeEName();
                     instrumentConfigId = getInstrumentConfigId(probeEName, instrumentConfigId);
-                    setProbeHeightAndLowValue(equipmentno, instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
+                    setProbeHeightAndLowValue(equipmentno, instrumentNo, instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
                     break;
                 //其他设备
                 default:
-                    setProbeHeightAndLowValue(equipmentno, instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
+                    setProbeHeightAndLowValue(equipmentno,instrumentNo , instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
                     break;
             }
         }
@@ -510,18 +519,17 @@ public class AppEquipmentInfoApplication {
         }
     }
 
-    /**
-     * 设置探头高低值
-     *
-     * @param equipmentno              设备no
-     * @param instrumentConfigId       检测类型id
-     * @param instrumentParamConfigMap 探头参数map
-     */
-    private void setProbeHeightAndLowValue(String equipmentno, Integer instrumentConfigId, Map<String, Map<Integer, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> removeList,String timeoutRedDuration) {
-        if (!instrumentParamConfigMap.containsKey(equipmentno) || !instrumentParamConfigMap.get(equipmentno).containsKey(instrumentConfigId)) {
-            removeList.add(probeInfoDto);
+    private void setQcProbe(String equipmentno, String instrumentNo, Integer instrumentConfigId, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> remove, String timeoutRedDuration) {
+        String str = instrumentNo + ":"+instrumentConfigId;
+        String str2 = instrumentNo + ":"+"35";
+        Map<String, List<InstrumentParamConfigDto>> stringListMap = instrumentParamConfigMap.get(equipmentno);
+        if(!instrumentParamConfigMap.containsKey(equipmentno)){
+            remove.add(probeInfoDto);
         }
-        List<InstrumentParamConfigDto> list = instrumentParamConfigMap.get(equipmentno).get(instrumentConfigId);
+        if(!stringListMap.containsKey(str) && !stringListMap.containsKey(str2)){
+            remove.add(probeInfoDto);
+        }
+        List<InstrumentParamConfigDto> list = stringListMap.containsKey(str) ? stringListMap.get(str) : stringListMap.get(str2);
         if (CollectionUtils.isNotEmpty(list)) {
             InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
             String state = instrumentParamConfigDto.getState();
@@ -529,6 +537,51 @@ public class AppEquipmentInfoApplication {
             probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
             probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
+            probeInfoDto.setInstrumentNo(instrumentNo);
+            if (instrumentConfigId == 11) {
+                setState(probeInfoDto, lowLimit, state);
+            }
+            //设置值和单位
+            probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
+            if (StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())) {
+                String unit = instrumentParamConfigDto.getUnit();
+                probeInfoDto.setUnit(unit);
+                probeInfoDto.setValue(probeInfoDto.getValue());
+            }else{
+                probeInfoDto.setUnit("");
+            }
+            //设置状态
+            boolean flag = DateUtils.calculateIntervalTime(probeInfoDto.getInputTime(), timeoutRedDuration);
+            if(flag){
+                probeInfoDto.setState("2");
+            }
+        }
+    }
+
+
+    /**
+     * 设置探头高低值
+     *
+     * @param equipmentno              设备no
+     * @param instrumentConfigId       检测类型id
+     * @param instrumentParamConfigMap 探头参数map
+     */
+    private void setProbeHeightAndLowValue(String equipmentno,String instrumentNo, Integer instrumentConfigId, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> removeList,String timeoutRedDuration) {
+        String str = instrumentNo + ":"+instrumentConfigId;
+        if (!instrumentParamConfigMap.containsKey(equipmentno) || !instrumentParamConfigMap.get(equipmentno).containsKey(str)) {
+            removeList.add(probeInfoDto);
+        }
+        Map<String, List<InstrumentParamConfigDto>> stringListMap = instrumentParamConfigMap.get(equipmentno);
+        List<InstrumentParamConfigDto> list = stringListMap.get(str);
+        instrumentParamConfigMap.get(equipmentno);
+        if (CollectionUtils.isNotEmpty(list)) {
+            InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
+            String state = instrumentParamConfigDto.getState();
+            BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
+            probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
+            probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
+            probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
+            probeInfoDto.setInstrumentNo(instrumentNo);
             if (instrumentConfigId == 11) {
                 setState(probeInfoDto, lowLimit, state);
             }
@@ -619,6 +672,10 @@ public class AppEquipmentInfoApplication {
      * @return
      */
     public List<Map<String, CurveDataModel>> getCurveFirst(CurveCommand curveCommand) {
+        List<String> instrumentConfigIdList = curveCommand.getInstrumentConfigIdList();
+        if(CollectionUtils.isEmpty(instrumentConfigIdList)){
+            return new ArrayList<>();
+        }
         String startTime = curveCommand.getStartTime();
         String endTime = curveCommand.getEndTime();
         String sn = curveCommand.getSn();
