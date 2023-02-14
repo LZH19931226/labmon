@@ -396,6 +396,14 @@ public class AppEquipmentInfoApplication {
         Map<String, List<ProbeInfoDto>> inoMap = probeInfoDtoList.stream().collect(Collectors.groupingBy(res->res.getInstrumentNo()+":"+res.getInstrumentConfigId()));
         List<String> eNames = new ArrayList<>();
         for (String str : integerListMap.keySet()) {
+            int i = str.indexOf(":");
+            String instrumentNo = str.substring(0, i);
+            String config = str.substring(i+1);
+            //当config为35时并且不包含ino:35 但包含ino:7时
+            if(StringUtils.equals("35",config) && !inoMap.containsKey(str) && inoMap.containsKey(instrumentNo+":"+"7")){
+                String eName = inoMap.get(instrumentNo+":"+"7").get(0).getProbeEName();
+                eNames.add(eName);
+            }
             if(inoMap.containsKey(str)){
                 String eName = inoMap.get(str).get(0).getProbeEName();
                 eNames.add(eName);
@@ -489,6 +497,9 @@ public class AppEquipmentInfoApplication {
             Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
             String instrumentNo = probeInfoDto.getInstrumentNo();
             switch (instrumentConfigId) {
+                case 7:
+                    setQcProbe(equipmentno,instrumentNo , instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
+                    break;
                 //MT310DC
                 case 101:
                 case 102:
@@ -508,6 +519,46 @@ public class AppEquipmentInfoApplication {
         }
     }
 
+    private void setQcProbe(String equipmentno, String instrumentNo, Integer instrumentConfigId, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> remove, String timeoutRedDuration) {
+        String str = instrumentNo + ":"+instrumentConfigId;
+        String str2 = instrumentNo + ":"+"35";
+        Map<String, List<InstrumentParamConfigDto>> stringListMap = instrumentParamConfigMap.get(equipmentno);
+        if(!instrumentParamConfigMap.containsKey(equipmentno)){
+            remove.add(probeInfoDto);
+        }
+        if(!stringListMap.containsKey(str) && !stringListMap.containsKey(str2)){
+            remove.add(probeInfoDto);
+        }
+        List<InstrumentParamConfigDto> list = stringListMap.containsKey(str) ? stringListMap.get(str) : stringListMap.get(str2);
+        if (CollectionUtils.isNotEmpty(list)) {
+            InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
+            String state = instrumentParamConfigDto.getState();
+            BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
+            probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
+            probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
+            probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
+            probeInfoDto.setInstrumentNo(instrumentNo);
+            if (instrumentConfigId == 11) {
+                setState(probeInfoDto, lowLimit, state);
+            }
+            //设置值和单位
+            probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
+            if (StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())) {
+                String unit = instrumentParamConfigDto.getUnit();
+                probeInfoDto.setUnit(unit);
+                probeInfoDto.setValue(probeInfoDto.getValue());
+            }else{
+                probeInfoDto.setUnit("");
+            }
+            //设置状态
+            boolean flag = DateUtils.calculateIntervalTime(probeInfoDto.getInputTime(), timeoutRedDuration);
+            if(flag){
+                probeInfoDto.setState("2");
+            }
+        }
+    }
+
+
     /**
      * 设置探头高低值
      *
@@ -520,7 +571,8 @@ public class AppEquipmentInfoApplication {
         if (!instrumentParamConfigMap.containsKey(equipmentno) || !instrumentParamConfigMap.get(equipmentno).containsKey(str)) {
             removeList.add(probeInfoDto);
         }
-        List<InstrumentParamConfigDto> list = instrumentParamConfigMap.get(equipmentno).get(str);
+        Map<String, List<InstrumentParamConfigDto>> stringListMap = instrumentParamConfigMap.get(equipmentno);
+        List<InstrumentParamConfigDto> list = stringListMap.get(str);
         instrumentParamConfigMap.get(equipmentno);
         if (CollectionUtils.isNotEmpty(list)) {
             InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
