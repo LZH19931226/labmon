@@ -440,8 +440,8 @@ public class InstrumentparamconfigApplication {
     public List<InstrumentparamconfigVo> getEquipmentUnAddMonitorTypeByNo(String equipmentNo) {
         //获取设备的探头的监测类型
         List<InstrumentConfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
-        if(CollectionUtils.isEmpty(instrumentConfigList)){
-            return null;
+        if(CollectionUtils.isEmpty(instrumentConfigList) || instrumentConfigList.get(0) == null){
+            return new ArrayList<>();
         }
         //获取设备已添加的探头监测类型
         List<String> instrumentConfigIdList  = instrumentparamconfigService.getEquipmentAddProbeInfo(equipmentNo);
@@ -449,9 +449,12 @@ public class InstrumentparamconfigApplication {
         if(CollectionUtils.isNotEmpty(instrumentConfigIdList)){
             List<InstrumentConfigDTO> removeList = new ArrayList<>();
             instrumentConfigList.forEach(res->{
-                if (instrumentConfigIdList.contains(String.valueOf(res.getInstrumentconfigid()))) {
-                    removeList.add(res);
+                if(!ObjectUtils.isEmpty(res)){
+                    if (instrumentConfigIdList.contains(String.valueOf(res.getInstrumentconfigid()))) {
+                        removeList.add(res);
+                    }
                 }
+
             });
             if(CollectionUtils.isNotEmpty(removeList)){
                 instrumentConfigList.removeAll(removeList);
