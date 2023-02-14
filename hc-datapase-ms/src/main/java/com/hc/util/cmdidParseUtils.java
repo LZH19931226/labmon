@@ -1716,16 +1716,16 @@ public class cmdidParseUtils {
             // F0   == 未获取到数据
             paramaterModel.setN2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
-            String n2 = paramaterModelUtils.electricity(substring5);
-            paramaterModel.setN2(CustomUtils.agreementAll(n2,"0","103"));
+            String n2 = paramaterModelUtils.electricity2(substring5);
+            paramaterModel.setN2(CustomUtils.agreementAll(n2,"0","0.103"));
         }
         String substring6 = cmd.substring(50, 52);//CO2压力
         if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.F0.getCode())) {
             // F0   == 未获取到数据
             paramaterModel.setPRESS(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
-            String press = paramaterModelUtils.electricity(substring6);
-            paramaterModel.setPRESS(CustomUtils.agreementAll(press,"0","103"));
+            String press = paramaterModelUtils.electricity2(substring6);
+            paramaterModel.setPRESS(CustomUtils.agreementAll(press,"0","0.103"));
         }
 
         paramaterModel.setSN(sn);
