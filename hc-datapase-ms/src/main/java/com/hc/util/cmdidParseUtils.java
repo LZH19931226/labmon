@@ -1573,13 +1573,16 @@ public class cmdidParseUtils {
             String pasetemperature1 = paseCmdIdB1(substring3);
             pasetemperature1 = CustomUtils.tempB1(pasetemperature1);
             paramaterModel.setTEMP2(pasetemperature1);
-            //计算两个数的差不得大于3，否则设置值无效
-            Long temp1 = Long.valueOf(pasetemperature);
-            Long temp2 = Long.valueOf(pasetemperature1);
-            long abs = Math.abs(temp1-temp2);
-            if(abs>3){
-                paramaterModel.setTEMP(ProbeOutlier.VALUE_IS_INVALID.getCode());
-                paramaterModel.setTEMP2(ProbeOutlier.VALUE_IS_INVALID.getCode());
+            //超过范围为字符时候,两路温度都不比较差值
+            if (RegularUtil.checkContainsNumbers(pasetemperature)&&RegularUtil.checkContainsNumbers(pasetemperature1)){
+                //计算两个数的差不得大于3，否则设置值无效
+                Long temp1 = Long.valueOf(pasetemperature);
+                Long temp2 = Long.valueOf(pasetemperature1);
+                long abs = Math.abs(temp1-temp2);
+                if(abs>3){
+                    paramaterModel.setTEMP(ProbeOutlier.VALUE_IS_INVALID.getCode());
+                    paramaterModel.setTEMP2(ProbeOutlier.VALUE_IS_INVALID.getCode());
+                }
             }
         }
 
