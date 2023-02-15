@@ -116,7 +116,7 @@ public class AppEquipmentInfoApplication {
         if (StringUtils.isEmpty(timeoutRedDuration)){
             timeoutRedDuration="30";
         }
-        Map<String, List<MonitorEquipmentDto>> allEq = list.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
+        Map<String, List<MonitorEquipmentDto>> allEq = list.stream().filter(res->StringUtils.isNotBlank(res.getEquipmenttypeid())).collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmenttypeid));
 
         List<HospitalEquipmentDto> hospitalEquipmentDto = new ArrayList<>();
         if (StringUtils.equals(tags, "PC")) {
