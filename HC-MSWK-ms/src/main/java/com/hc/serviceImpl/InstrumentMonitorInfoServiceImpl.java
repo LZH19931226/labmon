@@ -88,24 +88,24 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             }
                         }
                     }
-                    if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
-                        String qc = model.getQC();
-                        if (StringUtils.endsWithAny(snType, "02", "18")) {
-                            //液氮罐锁电量
-                            monitorequipmentlastdata.setCurrentqcl(qc);
-                            BuildProbeInfoDto(hospitalcode, equipmentno,
-                                    CurrentProbeInfoEnum.CURRENTQCL.getInstrumentConfigId(), qc,
-                                    CurrentProbeInfoEnum.CURRENTQCL.getProbeEName(),instrumentno);
-                        } else {
-                            //常规液氮罐电量
-                            monitorequipmentlastdata.setCurrentqc(qc);
-                            BuildProbeInfoDto(hospitalcode, equipmentno,
-                                    CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), qc,
-                                    CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
-                        }
-                        WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
-                        list.add(WarningAlarmDo);
+                }
+                if (StringUtils.isNotEmpty(model.getQC()) && !StringUtils.equals(model.getQC(), "0")) {
+                    String qc = model.getQC();
+                    if (StringUtils.endsWithAny(snType, "02", "18")) {
+                        //液氮罐锁电量
+                        monitorequipmentlastdata.setCurrentqcl(qc);
+                        BuildProbeInfoDto(hospitalcode, equipmentno,
+                                CurrentProbeInfoEnum.CURRENTQCL.getInstrumentConfigId(), qc,
+                                CurrentProbeInfoEnum.CURRENTQCL.getProbeEName(),instrumentno);
+                    } else {
+                        //常规液氮罐电量
+                        monitorequipmentlastdata.setCurrentqc(qc);
+                        BuildProbeInfoDto(hospitalcode, equipmentno,
+                                CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId(), qc,
+                                CurrentProbeInfoEnum.CURRENTQC.getProbeEName(),instrumentno);
                     }
+                    WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(model.getQC(), monitorinstrument, model.getNowTime(), 7, "电量");
+                    list.add(WarningAlarmDo);
                 }
                 break;
             case "87":
