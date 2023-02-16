@@ -776,7 +776,6 @@ public class MonitorEquipmentApplication {
             //删除redis缓存
             if(!ObjectUtils.isEmpty(dto)){
                 snDeviceRedisApi.deleteSnDeviceDto(dto.getSn(),equipmentNo);
-                snDeviceRedisApi.deleteCurrentInfo(dto.getHospitalcode(),dto.getEquipmentno());
             }
         }
     }

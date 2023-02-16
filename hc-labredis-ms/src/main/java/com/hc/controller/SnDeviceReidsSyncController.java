@@ -72,17 +72,6 @@ public class SnDeviceReidsSyncController {
     }
 
     /**
-     * 删除设备当前值
-     * @param hospitalCode 医院id
-     * @param equipmentNo 设备id
-     */
-    @DeleteMapping("/deleteCurrentDataInfo")
-    @ApiOperation("删除设备当前值")
-    public void deleteCurrentInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo){
-        snDeviceReidsSyncApplocation.remove(hospitalCode,equipmentNo);
-    }
-
-    /**
      * 批量获取设备当前值
      * @param equipmentInfoCommand 设备参数
      * @return

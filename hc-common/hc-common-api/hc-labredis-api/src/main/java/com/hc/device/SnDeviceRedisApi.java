@@ -36,10 +36,6 @@ public interface SnDeviceRedisApi {
     @ApiOperation("新增更新设备当前值信息")
     void updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto);
 
-    @DeleteMapping("/snDevice/deleteCurrentDataInfo")
-    @ApiOperation("删除设备当前值")
-    void deleteCurrentInfo(@RequestParam("hospitalCode") String hospitalCode, @RequestParam("equipmentNo") String equipmentNo);
-
     @PostMapping("/snDevice/getTheCurrentValueOfTheDeviceInBatches")
     @ApiOperation("批量获取设备当前值")
     ApiResponse<List<MonitorequipmentlastdataDto>> getTheCurrentValueOfTheDeviceInBatches(@RequestBody EquipmentInfoCommand equipmentInfoCommand);
