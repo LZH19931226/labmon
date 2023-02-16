@@ -282,7 +282,7 @@ public class InstrumentparamconfigApplication {
                 monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
                 //更新设备缓存(当报警状态发生改变时修改)
-                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
+                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn,equipmentNo).getResult();
                 if(!ObjectUtils.isEmpty(result1) && ! newWarningPhone.equals(result1.getWarningSwitch())){
                     result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
                     snDeviceRedisApi.updateSnDeviceDtoSync(result1);

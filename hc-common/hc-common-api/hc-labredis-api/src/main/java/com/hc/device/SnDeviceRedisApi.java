@@ -21,11 +21,16 @@ public interface SnDeviceRedisApi {
 
     @GetMapping("/snDevice/getSnDeviceDto")
     @ApiOperation("获取设备缓存信息")
-    ApiResponse<SnDeviceDto> getSnDeviceDto(@RequestParam("sn") String sn);
+    ApiResponse<List<SnDeviceDto>> getSnDeviceDto(@RequestParam("sn") String sn);
+
+
+    @GetMapping("/getSnDevice")
+    @ApiOperation("获取设备缓存信息")
+    ApiResponse<SnDeviceDto> getSnDeviceDto(@RequestParam("sn") String sn,@RequestParam("equipmentNo") String equipmentNo);
 
     @GetMapping("/snDevice/deleteSnDeviceDto")
     @ApiOperation("删除设备信息缓存")
-    void deleteSnDeviceDto(@RequestParam("sn") String sn);
+    void deleteSnDeviceDto(@RequestParam("sn") String sn,@RequestParam("equipmentNo") String equipmentNo);
 
     @PostMapping("/snDevice/updateSnCurrentInfo")
     @ApiOperation("新增更新设备当前值信息")

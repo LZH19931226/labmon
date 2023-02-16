@@ -6,6 +6,7 @@
         SELECT
             t3.equipmentno,
             t3.equipmenttypeid,
+            t2.channel iChannel,
             t1.*
         FROM
             instrumentparamconfig t1

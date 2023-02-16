@@ -676,7 +676,7 @@ public class MonitorEquipmentApplication {
         //更新redis缓存
         //判断sn是否被修改，如果是就需要先删除该sn的redis信息，重新put信息
         if(!flag){
-            snDeviceRedisApi.deleteSnDeviceDto(oldSn);
+            snDeviceRedisApi.deleteSnDeviceDto(oldSn,equipmentDto.getEquipmentNo());
         }
         List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
         SnDeviceDto snDeviceDto =  buildSnDeviceDto(monitorEquipmentCommand,monitorinstrumenttypeDTO,warningTimeDTOs);
@@ -775,7 +775,7 @@ public class MonitorEquipmentApplication {
         for (MonitorinstrumentDTO dto : monitorinstrumentDTO) {
             //删除redis缓存
             if(!ObjectUtils.isEmpty(dto)){
-                snDeviceRedisApi.deleteSnDeviceDto(dto.getSn());
+                snDeviceRedisApi.deleteSnDeviceDto(dto.getSn(),equipmentNo);
                 snDeviceRedisApi.deleteCurrentInfo(dto.getHospitalcode(),dto.getEquipmentno());
             }
         }
@@ -1090,9 +1090,11 @@ public class MonitorEquipmentApplication {
         //更新设备缓存
         String sn =  instrumentparamconfigService.getSnInfo(instrumentParamConfigNo);
         if(StringUtils.isNotBlank(sn)){
-            SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-            result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
-            snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+            SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn,equipmentNo).getResult();
+            if(result1!=null){
+                result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+                snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+            }
         }
     }
 
@@ -1151,15 +1153,17 @@ public class MonitorEquipmentApplication {
         List<String> sns =  monitorEquipmentService.getSns(equipmentNo);
         if(CollectionUtils.isNotEmpty(sns)){
             for (String sn : sns) {
-                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-                //更新设备报警状态开关
-                MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
-                monitorEquipmentDto.setEquipmentNo(equipmentNo);
-                monitorEquipmentDto.setWarningSwitch(warningPhone);
-                monitorEquipmentService.updateEquipmentWarningSwitch(monitorEquipmentDto);
-                //更新设备缓存
-                result1.setWarningSwitch(warningPhone);
-                snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn,equipmentNo).getResult();
+                if(result1 != null){
+                    //更新设备报警状态开关
+                    MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
+                    monitorEquipmentDto.setEquipmentNo(equipmentNo);
+                    monitorEquipmentDto.setWarningSwitch(warningPhone);
+                    monitorEquipmentService.updateEquipmentWarningSwitch(monitorEquipmentDto);
+                    //更新设备缓存
+                    result1.setWarningSwitch(warningPhone);
+                    snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+                }
             }
         }
         MonitorEquipmentLogInfoCommand log =  buildAppEquipmentInfo(Context.getUserId(),old,alarmSystemCommand,OperationLogEunm.APP_EDIT_EQ.getCode(),

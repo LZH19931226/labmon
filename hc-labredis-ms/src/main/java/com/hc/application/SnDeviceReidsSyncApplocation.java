@@ -11,15 +11,12 @@ import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.redis.namespace.MswkServiceEnum;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -36,7 +33,28 @@ public class SnDeviceReidsSyncApplocation {
      * @param snDeviceDto
      */
     public void updateSnDeviceDtoSync(SnDeviceDto snDeviceDto) {
-        redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),snDeviceDto.getSn(), JSONUtil.toJsonStr(snDeviceDto));
+        String sn = snDeviceDto.getSn();
+        String equipmentNo = snDeviceDto.getEquipmentNo();
+        List<SnDeviceDto> snDevices = getSnDeviceDto(sn);
+        if(snDevices==null){
+            List<SnDeviceDto> list = new ArrayList<>();
+            list.add(snDeviceDto);
+            redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),snDeviceDto.getSn(), JSONUtil.toJsonStr(list));
+        } else{
+            List<SnDeviceDto> removeList = new ArrayList<>();
+            for (SnDeviceDto snDevice : snDevices) {
+                String eno = snDevice.getEquipmentNo();
+                if(eno.equals(equipmentNo)){
+                    removeList.add(snDevice);
+                }
+            }
+            if(!CollectionUtils.isEmpty(removeList)){
+                snDevices.removeAll(removeList);
+            }
+            snDevices.add(snDeviceDto);
+            redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),snDeviceDto.getSn(), JSONUtil.toJsonStr(snDevices));
+        }
+
     }
 
     /**
@@ -44,20 +62,43 @@ public class SnDeviceReidsSyncApplocation {
      * @param sn
      * @return
      */
-    public SnDeviceDto getSnDeviceDto(String sn) {
+    public List<SnDeviceDto> getSnDeviceDto(String sn) {
         Object snInfo = redisUtils.hget(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn);
-        if (null==snInfo){
+        if(snInfo==null){
             return null;
         }
-        return JSONUtil.toBean((String) snInfo,SnDeviceDto.class);
+        return JSON.parseArray((String) snInfo, SnDeviceDto.class);
+    }
+
+    /**
+     * 获取设备redis缓存信息
+     * @param sn
+     * @param equipmentNo
+     * @return
+     */
+    public SnDeviceDto getSnDeviceDto(String sn, String equipmentNo) {
+        List<SnDeviceDto> snDevices = getSnDeviceDto(sn);
+        if(CollectionUtils.isEmpty(snDevices)){
+            return null;
+        }
+        for (SnDeviceDto snDevice : snDevices) {
+            if(equipmentNo.equals(snDevice.getEquipmentNo())){
+                return snDevice;
+            }
+        }
+        return null;
     }
 
     /**
      * 删除设备redis缓存信息
      * @param sn
      */
-    public void deleteSnDeviceDto(String sn) {
-        redisUtils.hdel(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn);
+    public void deleteSnDeviceDto(String sn,String equipmentNo) {
+        List<SnDeviceDto> snDevices = getSnDeviceDto(sn);
+        if(CollectionUtils.isNotEmpty(snDevices)){
+            List<SnDeviceDto> removeList = snDevices.stream().filter(res -> !StringUtils.equals(equipmentNo,res.getEquipmentNo())).collect(Collectors.toList());
+            redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn, JSONUtil.toJsonStr(removeList));
+        }
     }
 
     /**
@@ -156,7 +197,7 @@ public class SnDeviceReidsSyncApplocation {
             if(StringUtils.isEmpty(sn)){
                 continue;
             }
-            redisUtils.hset(LabManageMentServiceEnum.DEVICEINFO.getCode(),sn,JSONUtil.toJsonStr(snDeviceDto));
+            updateSnDeviceDtoSync(snDeviceDto);
         }
     }
 
@@ -171,4 +212,6 @@ public class SnDeviceReidsSyncApplocation {
         }
        return JSON.parseObject((String)object, new TypeReference<MonitorequipmentlastdataDto>(){});
     }
+
+
 }

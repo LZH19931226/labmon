@@ -116,31 +116,32 @@ public class SocketMessageListener {
         //MT500  MT600判断
         //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
-        Monitorinstrument monitorinstrument = mtJudgeService.checkProbe(model);
-        if (monitorinstrument == null) {
+        List<Monitorinstrument> monitorinstruments = mtJudgeService.checkProbe(model);
+        if (CollectionUtils.isEmpty(monitorinstruments)) {
             return;
         }
-
-        //执行数据写入 、 报警推送
-        List<WarningAlarmDo> warningAlarmDos = instrumentMonitorInfoService.save(model, monitorinstrument);
-        //报警消息处理
-        if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
-            for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
-                warningAlarmDo.setLogId(logId);
-                String waringAlarmDo = JsonUtil.toJson(warningAlarmDo);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
-                switch (topic) {
-                    case "1":
-                        service.pushMessage1(waringAlarmDo);
-                        break;
-                    case "2":
-                        service.pushMessage2(waringAlarmDo);
-                        break;
-                    case "3":
-                        service.pushMessage3(waringAlarmDo);
-                        break;
-                    default:
-                        break;
+        for (Monitorinstrument monitorinstrument : monitorinstruments) {
+            //执行数据写入 、 报警推送
+            List<WarningAlarmDo> warningAlarmDos = instrumentMonitorInfoService.save(model, monitorinstrument);
+            //报警消息处理
+            if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
+                for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
+                    warningAlarmDo.setLogId(logId);
+                    String waringAlarmDo = JsonUtil.toJson(warningAlarmDo);
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
+                    switch (topic) {
+                        case "1":
+                            service.pushMessage1(waringAlarmDo);
+                            break;
+                        case "2":
+                            service.pushMessage2(waringAlarmDo);
+                            break;
+                        case "3":
+                            service.pushMessage3(waringAlarmDo);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }

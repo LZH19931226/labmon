@@ -55,7 +55,7 @@ public class UpsServiceImpl implements UpsService {
                 return;
             }
             //此处根据设备判断设备有没有开启恢复断电报警功能,没有的话,则不需要后续
-            boolean noticeForOpen = upsNoticeForOpen(sn);
+            boolean noticeForOpen = upsNoticeForOpen(sn,equipmentno);
             if(!noticeForOpen){
                 return;
             }
@@ -82,7 +82,7 @@ public class UpsServiceImpl implements UpsService {
             }
 
             //此处根据设备判断设备有没有开启恢复断电报警功能,没有的话,则不需要后续
-            boolean noticeForOpen = upsNoticeForOpen(sn);
+            boolean noticeForOpen = upsNoticeForOpen(sn,equipmentno);
             if(!noticeForOpen){
                 return;
             }
@@ -106,8 +106,8 @@ public class UpsServiceImpl implements UpsService {
     public void sendSms(ParamaterModel model, String equipmentno, String hospitalcode){
         List<UserRightRedisDto> userList = addUserScheduLing(hospitalcode);
         //获取设备缓存信息
-        SnDeviceDto snDeviceDto = snDeviceRedisApi.getSnDeviceDto(model.getSN()).getResult();
-        if(CollectionUtils.isNotEmpty(userList)){
+        SnDeviceDto snDeviceDto = snDeviceRedisApi.getSnDeviceDto(model.getSN(),equipmentno).getResult();
+        if(CollectionUtils.isNotEmpty(userList) && snDeviceDto != null){
             String equipmentName = snDeviceDto.getEquipmentName();
             //调用短信接口
             for (UserRightRedisDto userRightRedisDto : userList) {
@@ -174,12 +174,14 @@ public class UpsServiceImpl implements UpsService {
     }
 
     /** 探头是开启市电恢复提醒 */
-    public boolean upsNoticeForOpen(String sn){
-        SnDeviceDto snDeviceDto = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-        String upsNotice = snDeviceDto.getUpsNotice();
-        //0和空表示未开启
-        if(StringUtils.isBlank(upsNotice) || "0".equals(upsNotice)){
-            return false;
+    public boolean upsNoticeForOpen(String sn,String eno){
+        SnDeviceDto snDevice = snDeviceRedisApi.getSnDeviceDto(sn,eno).getResult();
+        if(snDevice != null){
+            String upsNotice = snDevice.getUpsNotice();
+            //0和空表示未开启
+            if(StringUtils.isBlank(upsNotice) || "0".equals(upsNotice)){
+                return false;
+            }
         }
         return true;
     }

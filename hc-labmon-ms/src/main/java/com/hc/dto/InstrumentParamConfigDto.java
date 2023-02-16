@@ -116,6 +116,9 @@ public class InstrumentParamConfigDto  implements Serializable {
     @TableField(exist = false)
     private String instrumenttypename;
 
+    @TableField(exist = false)
+    private String iChannel;
+
     /** 探头状态 */
     private String state;
 
