@@ -222,7 +222,13 @@ public class AppEquipmentInfoApplication {
         //以设备no分组在以instrumentconfid分组
         Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
         if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
-            instrumentParamConfigMap = instrumentParamConfigByENoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(res->res.getInstrumentno()+":"+res.getInstrumentconfigid())));
+            List<InstrumentParamConfigDto> collect1 = instrumentParamConfigByENoList.stream().map(res -> {
+                if (11 == res.getInstrumentconfigid() && StringUtils.equals("2", res.getIChannel())) {
+                    res.setInstrumentconfigid(44);
+                }
+                return res;
+            }).collect(Collectors.toList());
+            instrumentParamConfigMap = collect1.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(res->res.getInstrumentno()+":"+res.getInstrumentconfigid())));
         }
 
         //批量获取设备对应探头当前值信息

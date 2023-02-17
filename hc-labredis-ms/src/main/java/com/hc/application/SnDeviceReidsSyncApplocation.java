@@ -111,30 +111,6 @@ public class SnDeviceReidsSyncApplocation {
     }
 
     /**
-     * 获取当前设备的值
-     * @param hospitalCode 医院id
-     * @param equipmentNo 设备id
-     * @return
-     */
-    public List<MonitorequipmentlastdataDto> getCurrentInfo(String hospitalCode,String equipmentNo){
-        Object lastData = redisUtils.hget(MswkServiceEnum.L.getCode() + hospitalCode, equipmentNo);
-        if(ObjectUtils.isEmpty(lastData)){
-            return null;
-        }
-        cn.hutool.json.JSONArray objects = JSONUtil.parseArray(lastData);
-       return  objects.toList(MonitorequipmentlastdataDto.class);
-    }
-
-    /**
-     * 清除redis信息
-     * @param hospitalCode 医院id
-     * @param equipmentNo 设备id
-     */
-    public void remove(String hospitalCode, String equipmentNo) {
-        redisUtils.hdel(MswkServiceEnum.L.getCode() +hospitalCode,equipmentNo);
-    }
-
-    /**
      * 批量获取设备当前值
      */
     public  List<MonitorequipmentlastdataDto> getTheCurrentValue(EquipmentInfoCommand equipmentInfoCommand) {
