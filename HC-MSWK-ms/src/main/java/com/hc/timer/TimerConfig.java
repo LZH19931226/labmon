@@ -61,7 +61,7 @@ public class TimerConfig {
     @Autowired
     private WarningrecordRepository warningrecordRepository;
 
-    //没分钟的第30秒执行
+    //每30分钟执行一次
     @Scheduled(cron = "0 0/30 * * * ?")
     public void Time() {
         // 查询所有需要超时报警的设备
