@@ -129,8 +129,6 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 break;
             case "89":
                 if (!StringUtils.isEmpty(model.getUPS())) {
-                    //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1,2,5变成 3,4
-                    upsService.sendInfo(model, equipmentno, hospitalcode);
                     String ups = "1"; // 表示市电异常
                     if ("3".equals(model.getUPS()) || "4".equals(model.getUPS())) {
                         ups = "0";//市电正常
@@ -141,6 +139,8 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                             CurrentProbeInfoEnum.CURRENTUPS.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo = showModelUtils.procWarnModel(ups, monitorinstrument, model.getNowTime(), 10, "市电");
                     list.add(WarningAlarmDo);
+                    //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1,2,5变成 3,4
+                    upsService.sendInfo(model, equipmentno, hospitalcode);
                 }
                 break;
             case "8d":
@@ -1222,13 +1222,13 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                 String ups1 = model.getUPS();
                 if (StringUtils.isNotEmpty(ups1)) {
                     //获取探头上一次缓存状态于当前状态对比,仅有断->通状态才做恢复市电提醒 1变成0
-                    upsService.sendInfo(model, equipmentno, hospitalcode);
                     monitorequipmentlastdata.setCurrentups(ups1);
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTUPS.getInstrumentConfigId(), ups1,
                             CurrentProbeInfoEnum.CURRENTUPS.getProbeEName(),instrumentno);
                     WarningAlarmDo WarningAlarmDo97 = showModelUtils.procWarnModel(ups1, monitorinstrument, model.getNowTime(), 10, "适配器供电状态");
                     list.add(WarningAlarmDo97);
+                    upsService.sendInfo(model, equipmentno, hospitalcode);
                 }
                 String voltage = model.getVoltage();
                 if (StringUtils.isNotEmpty(voltage)) {

@@ -24,7 +24,7 @@ public interface SnDeviceRedisApi {
     ApiResponse<List<SnDeviceDto>> getSnDeviceDto(@RequestParam("sn") String sn);
 
 
-    @GetMapping("/getSnDevice")
+    @GetMapping("/snDevice/getSnDevice")
     @ApiOperation("获取设备缓存信息")
     ApiResponse<SnDeviceDto> getSnDeviceDto(@RequestParam("sn") String sn,@RequestParam("equipmentNo") String equipmentNo);
 
