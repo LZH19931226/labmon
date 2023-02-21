@@ -59,9 +59,6 @@ public class SocketMessageListener {
     @Autowired
     private WarningRuleService warningRuleService;
     @Autowired
-    private WarningrecordRepository warningrecordRepository;
-
-    @Autowired
     private SendTimeoutRecordService sendTimeoutRecordService;
 
     @Autowired

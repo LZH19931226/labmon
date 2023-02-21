@@ -249,7 +249,6 @@ public class MonitorEquipmentApplication {
      */
     @GlobalTransactional
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
-        String sn = monitorEquipmentCommand.getSn().trim();
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
         String equipmentTypeId = monitorEquipmentCommand.getEquipmentTypeId();
         //备注长度限值
@@ -257,11 +256,11 @@ public class MonitorEquipmentApplication {
         if(remark.length() > 60){
             throw new IedsException(LabSystemEnum.REMARK_TOO_LONG);
         }
-        //sn不能重复
-        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn));
-        if (integer > 0) {
-            throw new IedsException(LabSystemEnum.FAILED_TO_ADD_DEVICE);
-        }
+        //允许sn号重复
+//        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn));
+//        if (integer > 0) {
+//            throw new IedsException(LabSystemEnum.FAILED_TO_ADD_DEVICE);
+//        }
 
         //判断同医院设备名称是否有重复
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
