@@ -6,6 +6,7 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorinstrumentPo;
 import com.hc.repository.MonitorinstrumentRepository;
 import com.hc.service.MonitorinstrumentService;
+import com.sun.crypto.provider.PBEWithMD5AndDESCipher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -119,5 +120,11 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         List<MonitorinstrumentPo> list = monitorinstrumentRepository.list(
                 Wrappers.lambdaQuery(new MonitorinstrumentPo()).in(MonitorinstrumentPo::getInstrumentno, inoList));
         return BeanConverter.convert(list,MonitorinstrumentDTO.class);
+    }
+
+    @Override
+    public void insertBatch(List<MonitorinstrumentDTO> miList) {
+        List<MonitorinstrumentPo> convert = BeanConverter.convert(miList, MonitorinstrumentPo.class);
+        monitorinstrumentRepository.saveBatch(convert);
     }
 }

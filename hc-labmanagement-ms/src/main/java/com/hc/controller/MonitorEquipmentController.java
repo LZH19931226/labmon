@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.MonitorEquipmentApplication;
 import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.application.command.WiredEqCommand;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.vo.equimenttype.InstrumentmonitorVo;
@@ -109,6 +110,11 @@ public class MonitorEquipmentController {
     @ApiOperation("/获取医院设备类型设备位置信息")
     public List<String> getHosEqTypeEqInfo(@RequestParam("hospitalCode") String hospitalCode,@RequestParam("equipmentTypeId")String equipmentTypeId){
         return  monitorEquipmentApplication.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
+    }
+
+    @PostMapping("/addWiredEquipment")
+    public void addWiredEquipment(@RequestBody WiredEqCommand wiredEqCommand){
+        monitorEquipmentApplication.addWiredEquipment(wiredEqCommand);
     }
 
 }

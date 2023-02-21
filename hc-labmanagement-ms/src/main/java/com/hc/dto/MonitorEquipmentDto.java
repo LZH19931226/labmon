@@ -86,7 +86,7 @@ public class MonitorEquipmentDto extends MonitorEquipmentPo {
     /** 备注 */
     private String remark;
 
-    /** 市电恢复通知 */
+    /** 市电恢复通知 0为关闭 1为开启 */
     private String upsNotice;
 
     /** 设备地址 */
