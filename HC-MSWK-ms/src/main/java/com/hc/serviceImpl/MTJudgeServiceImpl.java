@@ -90,6 +90,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
             monitorinstrument.setInstrumenttypeid(StringUtils.isEmpty(instrumentTypeId)?null:Integer.valueOf(instrumentTypeId));
             monitorinstrument.setSn(snDeviceDto.getSn());
             monitorinstrument.setInstrumentname(snDeviceDto.getInstrumentName());
+            monitorinstrument.setClientvisible(0 != snDeviceDto.getClientVisible());
             list.add(monitorinstrument);
         }
         return list;

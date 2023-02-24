@@ -121,6 +121,10 @@ public class SocketMessageListener {
             return;
         }
         for (Monitorinstrument monitorinstrument : monitorinstruments) {
+            //设备未启用数据需要抛弃
+            if (!monitorinstrument.getClientvisible()){
+                continue;
+            }
             //执行数据写入 、 报警推送
             List<WarningAlarmDo> warningAlarmDos = instrumentMonitorInfoService.save(model, monitorinstrument);
             //报警消息处理
