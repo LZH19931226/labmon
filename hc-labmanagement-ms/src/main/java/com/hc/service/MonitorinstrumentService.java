@@ -81,5 +81,7 @@ public interface MonitorinstrumentService{
      * @return
      */
     List<MonitorinstrumentDTO> selectMonitorByInoList(List<String> inoList);
+
+    void insertBatch(List<MonitorinstrumentDTO> miList);
 }
 
