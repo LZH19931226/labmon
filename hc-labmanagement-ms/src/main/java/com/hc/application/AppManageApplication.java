@@ -6,6 +6,7 @@ import com.hc.dto.AppVersionManageDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.FileUtils;
 import com.hc.service.AppManageService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -77,9 +78,8 @@ public class AppManageApplication {
     }
 
     public void downloadNow(HttpServletResponse httpServletResponse) {
-        AppVersionManageDto appVersionManageDto = appManageService.getLatest();
-        if(appVersionManageDto != null){
-            String appName = appVersionManageDto.getAppName();
+        String appName = appManageService.getLatest();
+        if(StringUtils.isNotBlank(appName)){
             FileUtils.download(appName,path,httpServletResponse);
         }
     }

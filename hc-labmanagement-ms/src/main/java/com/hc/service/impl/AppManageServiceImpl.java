@@ -65,7 +65,7 @@ public class AppManageServiceImpl implements AppManageService {
     }
 
     @Override
-    public AppVersionManageDto getLatest() {
+    public String getLatest() {
         return appManageRepository.getLatest();
     }
 }

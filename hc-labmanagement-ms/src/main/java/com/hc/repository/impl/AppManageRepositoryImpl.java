@@ -49,7 +49,7 @@ public class AppManageRepositoryImpl extends ServiceImpl<AppVersionManageDao, Ap
     }
 
     @Override
-    public AppVersionManageDto getLatest() {
+    public String getLatest() {
         return appVersionManageDao.getLatest();
     }
 }

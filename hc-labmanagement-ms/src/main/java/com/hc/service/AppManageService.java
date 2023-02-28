@@ -22,6 +22,6 @@ public interface AppManageService {
 
     AppVersionManageDto getAppNewVersion();
 
-    AppVersionManageDto getLatest();
+    String getLatest();
 
 }

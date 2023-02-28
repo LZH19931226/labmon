@@ -20,5 +20,5 @@ public interface AppManageRepository extends IService<AppVersionManagePo> {
 
     AppVersionManageDto getAppNewVersion();
 
-    AppVersionManageDto getLatest();
+    String getLatest();
 }
