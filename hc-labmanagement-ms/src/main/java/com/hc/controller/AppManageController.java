@@ -59,4 +59,11 @@ public class AppManageController {
     public AppVersionManageDto getAppNewVersion(){
         return appManageApplication.getAppNewVersion();
     }
+
+    @JwtIgnore
+    @GetMapping("/downloadNow")
+    @ApiOperation(value = "下载最新的app")
+    public void downloadNow(HttpServletResponse httpServletResponse){
+        appManageApplication.downloadNow(httpServletResponse);
+    }
 }

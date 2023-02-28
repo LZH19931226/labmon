@@ -22,4 +22,6 @@ public interface AppVersionManageDao extends BaseMapper<AppVersionManagePo> {
      * @return
      */
     List<AppVersionManageDto> listByPage(Page page,@Param("appVersionManageDto") AppVersionManageDto appVersionManageDto);
+
+    AppVersionManageDto getLatest();
 }

@@ -23,4 +23,8 @@
             and app_name like concat('%',#{appVersionManageDto.appName},'%')
         </if>
     </select>
+
+    <select id="getLatest" resultType="com.hc.dto.AppVersionManageDto">
+        SELECT * FROM version_upgrade ORDER BY create_time LIMIT 1
+    </select>
 </mapper>

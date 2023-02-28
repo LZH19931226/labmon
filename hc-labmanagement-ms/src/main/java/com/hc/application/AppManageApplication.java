@@ -75,4 +75,12 @@ public class AppManageApplication {
     public AppVersionManageDto getAppNewVersion() {
         return appManageService.getAppNewVersion();
     }
+
+    public void downloadNow(HttpServletResponse httpServletResponse) {
+        AppVersionManageDto appVersionManageDto = appManageService.getLatest();
+        if(appVersionManageDto != null){
+            String appName = appVersionManageDto.getAppName();
+            FileUtils.download(appName,path,httpServletResponse);
+        }
+    }
 }
