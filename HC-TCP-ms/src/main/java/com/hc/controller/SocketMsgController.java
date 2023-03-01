@@ -22,7 +22,7 @@ public class SocketMsgController {
 
 
 	@GetMapping("/sendMsg")
-	@ApiOperation("暂时只支持mt600/mt1100设备查询对应服务器  通道信息")
+	@ApiOperation("暂时只支持mt600/mt1100设备查询对应服务器通道信息")
 	public void sendMsg(@RequestParam("sn") String sn, @RequestParam("message") String message){
 		mtOnlineBeanService.sendMsg(sn,message);
 	}

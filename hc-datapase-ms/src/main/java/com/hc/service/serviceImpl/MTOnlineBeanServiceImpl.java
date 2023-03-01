@@ -313,7 +313,7 @@ public class MTOnlineBeanServiceImpl implements MTOnlineBeanService {
 
 
     public static void main(String[] args) {
-        ParamaterModel ab = cmdidParseUtils.Paser85("4843850f31373238303530303031c847ffff444223", "2214310001", "85");
+        ParamaterModel ab = cmdidParseUtils.paseB1("4843b11a32333032343830303132006116e1806e80c80001000064004455e823", "2302480005", "11");
         System.out.println(ab);
     }
 

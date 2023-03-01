@@ -632,12 +632,14 @@ public class AppEquipmentInfoApplication {
     }
 
     /**
-     * MT310根据ename返回检测的id
+     * MT310，转换外置探头
      *
      * @param probeEName         探头的英文名称
      * @param instrumentConfigId 探头检测id
      */
     private Integer getInstrumentConfigId(String probeEName, int instrumentConfigId) {
+        //内置 VOC/O2/CO2  3/2/1
+        //外置 温度/湿度/O2/CO2  4/5/43/42
         switch (probeEName) {
             //温度
             case "1":
@@ -649,11 +651,11 @@ public class AppEquipmentInfoApplication {
                 break;
             //O2浓度
             case "3":
-                instrumentConfigId = CurrentProbeInfoEnum.CURRENTO2.getInstrumentConfigId();
+                instrumentConfigId = CurrentProbeInfoEnum.OUTERO2.getInstrumentConfigId();
                 break;
             //CO2浓度
             case "4":
-                instrumentConfigId = CurrentProbeInfoEnum.CURRENTCARBONDIOXIDE.getInstrumentConfigId();
+                instrumentConfigId = CurrentProbeInfoEnum.OUTERCO2.getInstrumentConfigId();
                 break;
             default:
                 break;
