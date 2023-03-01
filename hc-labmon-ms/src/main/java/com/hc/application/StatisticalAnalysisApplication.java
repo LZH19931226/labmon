@@ -352,6 +352,12 @@ public class StatisticalAnalysisApplication {
             boolean flag1 = false;
             boolean flag2 = false;
             for (String field : objectToMap.keySet()) {
+                //记录时间
+                if(StringUtils.equals(field,"inputdatetime")){
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put("inputdatetime",value);
+                }
+
                 //内置探头
                 if(StringUtils.equals(field,"currentcarbondioxide") && fieldList.contains(field)){
                     String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
