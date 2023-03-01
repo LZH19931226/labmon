@@ -596,6 +596,7 @@ public class AppEquipmentInfoApplication {
             probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
             probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
             probeInfoDto.setInstrumentNo(instrumentNo);
+            probeInfoDto.setInstrumentConfigId(instrumentConfigId);
             if (instrumentConfigId == 11) {
                 setState(probeInfoDto, lowLimit, state);
             }
