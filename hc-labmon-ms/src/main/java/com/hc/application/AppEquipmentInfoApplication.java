@@ -362,6 +362,7 @@ public class AppEquipmentInfoApplication {
             List<String> instrumentConfigId  = queryTitle(integerListMap,probeInfo);
             probeInfo.setInstrumentConfigIdList(instrumentConfigId);
             fiterTitle(probeInfo);
+
         }
     }
 
@@ -417,7 +418,7 @@ public class AppEquipmentInfoApplication {
                 String eName = inoMap.get(instrumentNo+":"+"7").get(0).getProbeEName();
                 eNames.add(eName);
             }
-            if(inoMap.containsKey(str)){
+            if(inoMap.containsKey(str)) {
                 String eName = inoMap.get(str).get(0).getProbeEName();
                 eNames.add(eName);
             }
@@ -597,6 +598,23 @@ public class AppEquipmentInfoApplication {
             probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
             probeInfoDto.setInstrumentNo(instrumentNo);
             probeInfoDto.setInstrumentConfigId(instrumentConfigId);
+            String eName = probeInfoDto.getProbeEName();
+            if(StringUtils.equalsAny(eName,"1","2","3","4")){
+                switch (eName){
+                    case "1":
+                        probeInfoDto.setProbeEName("currenttemperature");
+                        break;
+                    case "2":
+                        probeInfoDto.setProbeEName("currenthumidity");
+                        break;
+                    case "3":
+                        probeInfoDto.setProbeEName("outerO2");
+                        break;
+                    case "4":
+                        probeInfoDto.setProbeEName("outerCO2");
+                        break;
+                }
+            }
             if (instrumentConfigId == 11) {
                 setState(probeInfoDto, lowLimit, state);
             }
