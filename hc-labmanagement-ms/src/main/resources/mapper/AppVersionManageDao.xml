@@ -23,4 +23,9 @@
             and app_name like concat('%',#{appVersionManageDto.appName},'%')
         </if>
     </select>
+    <select id="getLatest" resultType="java.lang.String">
+        SELECT app_name as appName FROM version_upgrade ORDER BY create_time desc LIMIT 1
+    </select>
+
+
 </mapper>

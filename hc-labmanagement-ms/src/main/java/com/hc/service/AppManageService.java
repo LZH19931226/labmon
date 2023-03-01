@@ -21,4 +21,7 @@ public interface AppManageService {
     void remove(Integer id);
 
     AppVersionManageDto getAppNewVersion();
+
+    String getLatest();
+
 }
