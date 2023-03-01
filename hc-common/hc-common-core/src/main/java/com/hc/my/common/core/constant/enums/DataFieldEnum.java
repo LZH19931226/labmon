@@ -53,9 +53,10 @@ public enum DataFieldEnum {
     power("power","power","功率","POWER","W"),
     LIQUIDLEVEL("LIQUIDLEVEL","liquidLevel","液位","LIQUID_LEVEL","mm"),
     DOOR2("DOOR2","currentdoorstate2","报警信号2","DOOR2",""),
-    outerCO2("outerCO2","currentcarbondioxide","内置CO2","BUILT-IN CO2","%"),
     current("current","qccurrent","电流","ELECTRIC_CURRENT","mA"),
-    outerO2("outerO2","currento2","内置O2","BUILT-IN O2","%");
+    //outerCO2,outerO2实际在lastdata表中不存在会在查询中转化为model 和 data
+    outerCO2("outerCO2","outerCO2","内置CO2","BUILT-IN CO2","%"),
+    outerO2("outerO2","outerO2","内置O2","BUILT-IN O2","%");
 
     private final String imField;
 

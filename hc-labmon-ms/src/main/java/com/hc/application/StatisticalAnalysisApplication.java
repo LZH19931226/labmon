@@ -14,6 +14,7 @@ import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.command.labmanagement.operation.ExportLogCommand;
+import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
 import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
@@ -21,6 +22,8 @@ import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
+import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.service.*;
@@ -30,7 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,6 +43,9 @@ import static com.hc.my.common.core.util.ObjectConvertUtils.getObjectToMap;
 
 @Component
 public class StatisticalAnalysisApplication {
+
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
 
     @Autowired
     private WarningrecordRepository warningrecordRepository;
@@ -234,16 +242,28 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public Page getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
-        Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
+        //过滤filter为空的信息
         List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
-        if(CollectionUtils.isEmpty(filterList)){
-            throw new IedsException("筛选条件不能为空");
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
+
+        //获取设备信息
+        String equipmentNo = equipmentDataCommand.getEquipmentNo();
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String instrumenttypeid = equipmentInfoByNo.getInstrumenttypeid();
+        Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
+        switch (instrumenttypeid){
+            case "112":
+                return getEquipmentMt310DcData(equipmentDataCommand,page);
+            default:
+                return getEquipmentDefultData(equipmentDataCommand,page);
         }
+    }
+
+    private Page getEquipmentDefultData(EquipmentDataCommand equipmentDataCommand,Page page) {
         List<String> fieldList = equipmentDataCommand.getFieldList();
         if(CollectionUtils.isEmpty(fieldList)){
             return page;
         }
-        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         //分页查询
         String startTime = equipmentDataCommand.getStartTime();
         String yearMonth = DateUtils.parseDateYm(startTime);
@@ -269,6 +289,202 @@ public class StatisticalAnalysisApplication {
         }
         page.setRecords(resultList);
         return page;
+    }
+
+    /**
+     * 培养箱310DC
+     * @param equipmentDataCommand
+     * @return
+     */
+    public Page getEquipmentMt310DcData(EquipmentDataCommand equipmentDataCommand,Page page){
+        //获取设备信息
+        String equipmentNo = equipmentDataCommand.getEquipmentNo();
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String hospitalCode = equipmentInfoByNo.getHospitalcode();
+
+        List<String> fieldList = equipmentDataCommand.getFieldList();
+        //过滤filter为空的信息
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
+        String instrumenttypeid = equipmentInfoByNo.getInstrumenttypeid();
+        Map<String,String> map = new HashMap<>();
+        if(StringUtils.equals("112",instrumenttypeid)){
+            map.put("outerO2",null);
+            map.put("outerCO2",null);
+            map.put("currenttemperature",null);
+            map.put("currenthumidity",null);
+            //如果是112为310Dc特殊设备
+            //获取设备当前值来确认外置探头的位置
+            List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalCode, equipmentNo).getResult();
+            for (ProbeInfoDto probeInfoDto : result) {
+                if(probeInfoDto.getInstrumentConfigId()==101){
+                    String eName = probeInfoDto.getProbeEName();
+                    setMap(eName,map,"1",fieldList);
+                    fieldList.add("probe1model");
+                    fieldList.add("probe1data");
+                }
+                if(probeInfoDto.getInstrumentConfigId()==102){
+                    String eName = probeInfoDto.getProbeEName();
+                    setMap(eName,map,"2",fieldList);
+                    fieldList.add("probe2model");
+                    fieldList.add("probe2data");
+                }
+                if(probeInfoDto.getInstrumentConfigId()==103){
+                    String eName = probeInfoDto.getProbeEName();
+                    setMap(eName,map,"3",fieldList);
+                    fieldList.add("probe3model");
+                    fieldList.add("probe3data");
+                }
+            }
+        }
+        //分页查询
+        String startTime = equipmentDataCommand.getStartTime();
+        String yearMonth = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(yearMonth);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getEquipmentData(page,dataParam);
+        List<LastDataResult> resultList = new ArrayList<>();
+        for (Monitorequipmentlastdata lastData : lastDataList) {
+            Map<String, Object> objectToMap = getObjectToMap(lastData);
+            Map<String,Object> resultMap = new HashMap<>();
+            ObjectConvertUtils.filterMap(objectToMap,fieldList);
+            boolean flag1 = false;
+            boolean flag2 = false;
+            for (String field : objectToMap.keySet()) {
+                //记录时间
+                if(StringUtils.equals(field,"inputdatetime")){
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put("inputdatetime",value);
+                }
+
+                //内置探头
+                if(StringUtils.equals(field,"currentcarbondioxide") && fieldList.contains(field)){
+                    String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put(field,StringUtils.isEmpty(value) ? "":RegularUtil.checkContainsNumbers(value) ? value+"("+unit+")":"");
+                }
+                if(StringUtils.equals(field,"currento2") && fieldList.contains(field)){
+                    String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put(field,StringUtils.isEmpty(value) ? "":value+"("+unit+")");
+                }
+                if(StringUtils.equals(field,"currentvoc") && fieldList.contains(field)){
+                    String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put(field,StringUtils.isEmpty(value) ? "":value+"("+unit+")");
+                }
+
+                //外置Co2探头
+                if( map.containsKey("outerCO2") && !flag1){
+                    String model = map.get("outerCO2");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("outerCO2","");
+                    }else{
+                        if(StringUtils.equals(model,"1")){
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("outerCO2",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currentcarbondioxide").getUnit()+")");
+                            flag1 = true;
+                        }
+                        if(StringUtils.equals(model,"2")){
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("outerCO2",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currentcarbondioxide").getUnit()+")");
+                            flag1 = true;
+                        }
+                        if(StringUtils.equals(model,"3")){
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("outerCO2",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currentcarbondioxide").getUnit()+")");
+                            flag1 = true;
+                        }
+                    }
+                }
+                //外置O2探头
+                if( map.containsKey("outerO2") && !flag2){
+                    String model = map.get("outerO2");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("outerO2","");
+                    }else {
+                        if (StringUtils.equals(model, "1")) {
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("outerO2", StringUtils.isEmpty(value) ? "" : value + "(" + DataFieldEnum.fromByLastDataField("currento2").getUnit() + ")");
+                            flag2 = true;
+                        }
+                        if (StringUtils.equals(model, "2")) {
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("outerO2", StringUtils.isEmpty(value) ? "" : value + "(" + DataFieldEnum.fromByLastDataField("currento2").getUnit() + ")");
+                            flag2 = true;
+                        }
+                        if (StringUtils.equals(model, "3")) {
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("outerO2", StringUtils.isEmpty(value) ? "" : value + "(" + DataFieldEnum.fromByLastDataField("currento2").getUnit() + ")");
+                            flag2 = true;
+                        }
+                    }
+                }
+                //外置温度探头
+                if(StringUtils.equals(field,"currenttemperature") && map.containsKey("currenttemperature")){
+                    String model = map.get("currenttemperature");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("currenttemperature","");
+                    }else {
+                        if(StringUtils.equals(model,"1")){
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("currenttemperature",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenttemperature").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"2")){
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("currenttemperature",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenttemperature").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"3")){
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("currenttemperature",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenttemperature").getUnit()+")");
+                        }
+                    }
+                }
+                //外置湿度探头
+                if(StringUtils.equals(field,"currenthumidity") && map.containsKey("currenthumidity")){
+                    String model = map.get("currenthumidity");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("currenthumidity","");
+                    }else {
+                        if(StringUtils.equals(model,"1")){
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("currenthumidity",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenthumidity").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"2")){
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("currenthumidity",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenthumidity").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"3")){
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("currenthumidity",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenthumidity").getUnit()+")");
+                        }
+                    }
+                }
+            }
+            LastDataResult result = JSON.parseObject(JSON.toJSONString(resultMap), LastDataResult.class);
+            resultList.add(result);
+        }
+        page.setRecords(resultList);
+        return page;
+    }
+
+    private void setMap(String eName, Map<String, String> map,String str,List<String> fieldList) {
+        switch (eName){
+            case "1":
+                map.put("currenttemperature",str);
+                break;
+            case "2":
+                map.put("currenthumidity",str);
+                break;
+            case "3":
+                map.put("outerCO2",str);
+                fieldList.remove("outerCO2");
+                break;
+            case "4":
+                map.put("outerO2",str);
+                fieldList.remove("outerO2");
+                break;
+        }
     }
 
     /**

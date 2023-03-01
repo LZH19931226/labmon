@@ -257,4 +257,10 @@ public class LastDataResult {
 
     /** 单位*/
     private String unit;
+
+    /** 外置探头co2 */
+    private String outerCO2;
+
+    /** 外置探头o2 */
+    private String outerO2;
 }
