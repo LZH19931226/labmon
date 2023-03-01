@@ -178,7 +178,6 @@ public class StatisticalAnalysisApplication {
 
     private List<AlarmNoticeResult> processData(List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList, Map<String, List<UserRightDto>> phoneMap) {
         List<AlarmNoticeResult> list = new ArrayList<>();
-        String lang = Context.getLang();
         for (LabMessengerPublishTaskDto labMessengerPublishTaskDto : labMessengerPublishTaskDtoList) {
             AlarmNoticeResult alarmNoticeResult = new AlarmNoticeResult();
             alarmNoticeResult.setDataLoggingTime(labMessengerPublishTaskDto.getPublishTime());
@@ -407,6 +406,7 @@ public class StatisticalAnalysisApplication {
             return null;
         }
         TreeMap<String, List<Monitorequipmentlastdata>> sortMap = new TreeMap<>(new Comparator<String>() {
+            @Override
             public int compare(String obj1, String obj2) {
                 return obj1.compareTo(obj2);//升序排序
             }

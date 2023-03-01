@@ -621,7 +621,7 @@ public class AppEquipmentInfoApplication {
             probeInfoDto.setState("0");
         } else {
             int i = lowLimit.intValue();
-            Integer integer = Integer.valueOf(probeInfoDto.getValue());
+            int integer = Integer.parseInt(probeInfoDto.getValue());
             if (i == integer) {
                 probeInfoDto.setState("1");
             } else {

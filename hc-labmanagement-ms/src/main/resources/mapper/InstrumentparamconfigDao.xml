@@ -86,7 +86,7 @@
     <if test="sn != null and sn != ''">
         and b.sn  like concat('%',#{sn},'%')
     </if>
-    order by hospitalcode
+    order by g.hospitalcode
     </select>
 
 
