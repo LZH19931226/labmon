@@ -37,7 +37,7 @@ public class AppController {
     @PostMapping("/getCurrentProbeInfo")
     @ApiOperation("获取探头当前值(卡片)")
     public CurrentProbeInfoResult getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
-        return  equipmentInfoAppApplication.getTheCurrentValueOfTheProbe(probeCommand);
+        return  equipmentInfoAppApplication.getProbeCurrentV(probeCommand);
     }
 
     /**
