@@ -239,12 +239,15 @@ public class WarningServiceImpl implements WarningService {
                 }
                 //获取二路温度探头设置的值
                 InstrumentInfoDto mt200mHighLimit = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + 14).getResult();
-                //大于最大值
-                if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
-                    warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
-                } else {
-                    return null;
+                if(null!=mt200mHighLimit){
+                    //大于最大值
+                    if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
+                        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+                    } else {
+                        return null;
+                    }
                 }
+                return null;
             }
         }
         //高低值判断
