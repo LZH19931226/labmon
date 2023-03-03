@@ -49,7 +49,7 @@
         <if test="clientVisible != null">
         and me.clientvisible = #{clientVisible}
         </if>
-        order by equipmentName
+        order by h.hospitalname
     </select>
 
     <select id="getAllMonitorEquipmentInfo" resultType="com.hc.dto.MonitorEquipmentDto">
@@ -120,7 +120,7 @@
         <if test="monitorEquipmentCommand.clientVisible != null">
             and me.clientvisible = #{monitorEquipmentCommand.clientVisible}
         </if>
-        order by equipmentName
+        order by me.equipmentname
     </select>
 
     <select id="getSns" resultType="java.lang.String">

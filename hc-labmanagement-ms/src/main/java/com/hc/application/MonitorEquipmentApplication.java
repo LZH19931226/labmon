@@ -109,8 +109,10 @@ public class MonitorEquipmentApplication {
         //根据mino查询出所有的探头信息,在通过ino分组
         List<String> inoList = monitorInstrumentDTOList.stream().map(MonitorinstrumentDTO::getInstrumentno).collect(Collectors.toList());
         List<InstrumentparamconfigDTO> instrumentParamConfigDTOList =  instrumentparamconfigService.slectInfo(inoList);
-        Map<String, List<InstrumentparamconfigDTO>> inoAndParamConfigMap = instrumentParamConfigDTOList.stream().collect(Collectors.groupingBy(InstrumentparamconfigDTO::getInstrumentno));
-
+        Map<String, List<InstrumentparamconfigDTO>> inoAndParamConfigMap = new HashMap<>();
+        if(CollectionUtils.isNotEmpty(instrumentParamConfigDTOList)){
+            inoAndParamConfigMap = instrumentParamConfigDTOList.stream().collect(Collectors.groupingBy(InstrumentparamconfigDTO::getInstrumentno));
+        }
         //查询所有的探头检测信息，在通过监测confid分组
         List<InstrumentConfigDTO> instrumentConfigList = instrumentconfigService.selectAllInfo();
         Map<Integer, InstrumentConfigDTO> instrumentConfigMap = instrumentConfigList.stream().collect(Collectors.toMap(InstrumentConfigDTO::getInstrumentconfigid, t -> t));
