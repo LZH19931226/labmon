@@ -116,7 +116,7 @@ public class SystemDataApplication {
     }
     //hospitalCode,startTime,equipmentNo
     public void exportPacketLossLog(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
-        String startTime = equipmentDataCommand.getStartTime();
+            String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
