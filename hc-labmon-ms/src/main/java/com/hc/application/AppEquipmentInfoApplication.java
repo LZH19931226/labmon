@@ -434,9 +434,7 @@ public class AppEquipmentInfoApplication {
         String state = probeCommand.getState();
         CurrentProbeInfoResult currentProbeInfoResult = new CurrentProbeInfoResult();
         //分页查询设备信息 获取设备 未禁用的设备
-        /** 1.分页修改*/
-        Page<ProbeCurrentInfoDto> page = new Page<>(1, 10000);
-        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page, probeCommand);
+        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfo(probeCommand);
         if (CollectionUtils.isEmpty(list)) {
             return null;
         }
@@ -465,7 +463,7 @@ public class AppEquipmentInfoApplication {
         HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, probeCommand.getHospitalCode()));
         String timeoutRedDuration = hos.getTimeoutRedDuration();
         if (StringUtils.isEmpty(timeoutRedDuration)){
-            timeoutRedDuration="30";
+            timeoutRedDuration = SysConstants.TIMEOUT_RED_DURATION;
         }
 
         List<ProbeCurrentInfoDto> probeCurrentInfos = new ArrayList<>();
@@ -488,18 +486,19 @@ public class AppEquipmentInfoApplication {
             List<InstrumentParamConfigDto> instrumentParamConfigs = enoAndProbeMap.get(equipmentNo);
             if(CollectionUtils.isEmpty(instrumentParamConfigs) || null == probeInfoMap.get(equipmentNo)){
                 abnormalCount++;
-                probeInfo.setState("1");
+                probeInfo.setState(SysConstants.EQ_ABNORMAL);
             }
             else
             {
                 //设置探头信息
                 List<ProbeInfoDto> probeInfoList = probeInfoMap.get(equipmentNo);
-                //mt310修改configid
-                if(StringUtils.equals(probeInfo.getInstrumentTypeId(),"112")){
+                //mt310修改configid和eName
+                if(StringUtils.equals(probeInfo.getInstrumentTypeId(),SysConstants.EQ_MT310DC)){
                     for (ProbeInfoDto probeInfoDto : probeInfoList) {
                         Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
                         String probeEName = probeInfoDto.getProbeEName();
                         instrumentConfigId = getInstrumentConfigId(probeEName, instrumentConfigId);
+                        setEName(probeInfoDto,probeEName);
                         probeInfoDto.setInstrumentConfigId(instrumentConfigId);
                     }
                 }
@@ -513,16 +512,20 @@ public class AppEquipmentInfoApplication {
                     String instrumentNo = configDto.getInstrumentno();
                     Integer configId = configDto.getInstrumentconfigid();
                     //解决旧数据door2
-                    if(StringUtils.equals("2",configDto.getIChannel()) && configId ==11){
-                        configId = 44;
-                    }
-                    //qcl
-                    if(configId==35){
-                        configId=7;
+                    if(StringUtils.equals(SysConstants.CHANNEL_2,configDto.getIChannel()) && configId ==CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId()){
+                        configId = CurrentProbeInfoEnum.CURRENTDOORSTATE2.getInstrumentConfigId();
                     }
                     String inoConfigId =  instrumentNo+":"+configId;
                     if(null == inoConfigMap.get(inoConfigId)){
                         continue;
+                    }
+                    ProbeInfoDto probeRedis;
+                    //解决qc与qcl数据库相同config相同，而缓存不同
+                    if(configId != CurrentProbeInfoEnum.CURRENTQC.getInstrumentConfigId()){
+                        probeRedis = inoConfigMap.get(inoConfigId).get(0);
+                    }else{
+                        String inoConfigId2 =  instrumentNo+":"+CurrentProbeInfoEnum.QCL.getInstrumentConfigId();
+                        probeRedis = inoConfigMap.containsKey(inoConfigId) ? inoConfigMap.get(inoConfigId).get(0) : inoConfigMap.get(inoConfigId2).get(0);
                     }
                     probeInfoDto.setHighLimit(configDto.getHighLimit());
                     probeInfoDto.setLowLimit(configDto.getLowLimit());
@@ -530,36 +533,19 @@ public class AppEquipmentInfoApplication {
                     probeInfoDto.setInstrumentNo(instrumentNo);
                     probeInfoDto.setInstrumentConfigId(configId);
                     probeInfoDto.setUnit(StringUtils.isBlank(configDto.getUnit())?"":configDto.getUnit());
-                    ProbeInfoDto probeRedis = inoConfigMap.get(inoConfigId).get(0);
                     probeInfoDto.setValue(probeRedis.getValue());
                     probeInfoDto.setProbeEName(probeRedis.getProbeEName());
                     probeInfoDto.setInputTime(probeRedis.getInputTime());
-                    probeInfoDto.setState(StringUtils.isBlank(probeRedis.getState())?"0":probeRedis.getState());
-                    if(configId == 11 || configId == 44){
+                    //缓存中没有找到探头状态时默认为正常
+                    probeInfoDto.setState(StringUtils.isBlank(probeRedis.getState())?SysConstants.EQ_NORMAL:probeRedis.getState());
+                    //当config为11和44时，通过缓存的当前值和最低比较来计算探头的状态
+                    if(configId == CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId() || configId == CurrentProbeInfoEnum.CURRENTDOORSTATE2.getInstrumentConfigId()){
                         int i = configDto.getLowLimit().intValue();
                         int integer = Integer.parseInt(probeInfoDto.getValue());
                         if (i == integer) {
-                            probeInfoDto.setState("1");
+                            probeInfoDto.setState(SysConstants.EQ_ABNORMAL);
                         } else {
-                            probeInfoDto.setState("0");
-                        }
-                    }
-                    String eName = probeRedis.getProbeEName();
-                    if(StringUtils.equalsAny(eName,"1","2","3","4")){
-                        switch (eName){
-                            case "1":
-                                probeInfoDto.setProbeEName("currenttemperature");
-                                break;
-                            case "2":
-                                probeInfoDto.setProbeEName("currenthumidity");
-                                break;
-                            case "3":
-                                probeInfoDto.setProbeEName("outerO2");
-                                break;
-                            case "4":
-                                probeInfoDto.setProbeEName("outerCO2");
-                                break;
-
+                            probeInfoDto.setState(SysConstants.EQ_NORMAL);
                         }
                     }
                     probeInfoDto.setInstrumentConfigId(configId);
@@ -569,30 +555,31 @@ public class AppEquipmentInfoApplication {
                     probeInfo.setProbeInfoDtoList(probeInfos);
                     probeInfo.setInstrumentConfigIdList(probeInfos.stream().map(ProbeInfoDto::getProbeEName).collect(Collectors.toList()));
                     List<Date> collect = probeInfos.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
-                    //设置最新的时间
+                    //获取最新的时间
                     maxDate = Collections.max(collect);
                     if (maxDate != null) {
                         probeInfo.setInputTime(maxDate);
                         boolean b = DateUtils.calculateIntervalTime(maxDate, timeoutRedDuration);
                         if(b){
                             timeoutCount++;
-                            probeInfo.setState("2");
+                            probeInfo.setState(SysConstants.EQ_TIMEOUT);
                         }
                     }
-                    //设置设备状态
+                    //设备没有超时时，通过探头状态来获取设备状态(有一个探头异常，设备就是异常的，所有探头正常，设备才正常)
                     if(StringUtils.isBlank(probeInfo.getState())){
-                        long abnormal = probeInfos.stream().filter(res -> StringUtils.equals(res.getState(),"1")).count();
+                        long abnormal = probeInfos.stream().filter(res -> StringUtils.equals(res.getState(),SysConstants.EQ_ABNORMAL)).count();
                         if(abnormal>0){
                             abnormalCount++;
-                            probeInfo.setState("1");
+                            probeInfo.setState(SysConstants.EQ_ABNORMAL);
                         }else {
                             normalCount++;
-                            probeInfo.setState("0");
+                            probeInfo.setState(SysConstants.EQ_NORMAL);
                         }
                     }
                 }else {
+                    //没有探头信息时判断设备时异常设备
                     abnormalCount++;
-                    probeInfo.setState("1");
+                    probeInfo.setState(SysConstants.EQ_ABNORMAL);
                 }
             }
             probeCurrentInfos.add(probeInfo);
@@ -603,32 +590,52 @@ public class AppEquipmentInfoApplication {
         currentProbeInfoResult.setTimeoutNum(timeoutCount);
         currentProbeInfoResult.setProbeCurrentInfoDtoList(probeCurrentInfos);
         switch (state){
-            case "0":
-                List<ProbeCurrentInfoDto> normalList = probeCurrentInfos.stream().filter(res -> StringUtils.equals("0", res.getState())).collect(Collectors.toList());
+            case SysConstants.EQ_NORMAL:
+                List<ProbeCurrentInfoDto> normalList = probeCurrentInfos.stream().filter(res -> StringUtils.equals(SysConstants.EQ_NORMAL, res.getState())).peek(this::sort).collect(Collectors.toList());
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(normalList);
                 break;
-            case "1":
-                List<ProbeCurrentInfoDto> abnormalList = probeCurrentInfos.stream().filter(res -> StringUtils.equals("1", res.getState())).collect(Collectors.toList());
+            case SysConstants.EQ_ABNORMAL:
+                List<ProbeCurrentInfoDto> abnormalList = probeCurrentInfos.stream().filter(res -> StringUtils.equals(SysConstants.EQ_ABNORMAL, res.getState())).peek(this::sort).collect(Collectors.toList());
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(abnormalList);
                 break;
-            case "2":
-                List<ProbeCurrentInfoDto> timeoutList = probeCurrentInfos.stream().filter(res -> StringUtils.equals("2", res.getState())).collect(Collectors.toList());
+            case SysConstants.EQ_TIMEOUT:
+                List<ProbeCurrentInfoDto> timeoutList = probeCurrentInfos.stream().filter(res -> StringUtils.equals(SysConstants.EQ_TIMEOUT, res.getState())).peek(this::sort).collect(Collectors.toList());
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(timeoutList);
                 break;
             default:
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(probeCurrentInfos);
+                List<ProbeCurrentInfoDto> collect1 = probeCurrentInfos.stream().peek(this::sort).collect(Collectors.toList());
+                currentProbeInfoResult.setProbeCurrentInfoDtoList(collect1);
                 break;
         }
-        //探头排序
-        for (ProbeCurrentInfoDto probeCurrentInfoDto : currentProbeInfoResult.getProbeCurrentInfoDtoList()) {
-            List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
-            if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
-                List<ProbeInfoDto> collect =
-                        probeInfoDtoList.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
-                probeCurrentInfoDto.setProbeInfoDtoList(collect);
+        return currentProbeInfoResult;
+    }
+
+    private void sort(ProbeCurrentInfoDto res) {
+        List<ProbeInfoDto> probeInfoDtoList = res.getProbeInfoDtoList();
+        if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
+            List<ProbeInfoDto> collect =
+                    probeInfoDtoList.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
+            res.setProbeInfoDtoList(collect);
+        }
+    }
+
+    private void setEName(ProbeInfoDto probeInfoDto, String probeEName) {
+        if(StringUtils.equalsAny(probeEName,SysConstants.MT310DC_TEMP,SysConstants.MT310DC_RH,SysConstants.MT310DC_O2,SysConstants.MT310DC_CO2)){
+            switch (probeEName){
+                case "1":
+                    probeInfoDto.setProbeEName(CurrentProbeInfoEnum.CURRENT_TEMPERATURE.getProbeEName());
+                    break;
+                case "2":
+                    probeInfoDto.setProbeEName(CurrentProbeInfoEnum.CURRENTHUMIDITY.getProbeEName());
+                    break;
+                case "3":
+                    probeInfoDto.setProbeEName(CurrentProbeInfoEnum.OUTERO2.getProbeEName());
+                    break;
+                case "4":
+                    probeInfoDto.setProbeEName(CurrentProbeInfoEnum.OUTERCO2.getProbeEName());
+                    break;
             }
         }
-        return currentProbeInfoResult;
     }
 
     private void buildProbeInfo(ProbeCurrentInfoDto probeInfo, List<ProbeInfoDto> probeRedisInfo, List<InstrumentParamConfigDto> configDtoList) {
