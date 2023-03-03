@@ -19,6 +19,12 @@ public enum OperationLogEunm {
     APP_EDIT_PROBE("5","app修改探头"),
     APP_EDIT_EQ("6","app修改设备"),
     APP_EDIT_EQ_TYPE("7","app修改设备类型"),
+    CUSTOM_QUERY("8","自定义查询"),
+    TIMEOUT_POINT_QUERY("9","时间点查询"),
+    ALARM_SUMMARY_QUERY("10","报警汇总查询"),
+    ALARM_NOTIFICATION_QUERY("11","报警通知查询"),
+    PACKET_LOSS_QUERY("12","丢包情况查询"),
+    OPERATION_LOG_QUERY("13","操作日志查询"),
     HOSPITAL_MANAGENT("0", "医院管理");
     String code;
     String message;

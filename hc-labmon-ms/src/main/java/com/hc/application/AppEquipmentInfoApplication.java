@@ -189,149 +189,141 @@ public class AppEquipmentInfoApplication {
 
     }
 
-    /**
-     * 获取探头当前值
-     *
-     * @param probeCommand 参数对象
-     * @return 分页对象
-     */
-    public CurrentProbeInfoResult getTheCurrentValueOfTheProbe(ProbeCommand probeCommand) {
-        CurrentProbeInfoResult currentProbeInfoResult = new CurrentProbeInfoResult();
-        String hospitalCode = probeCommand.getHospitalCode();
 
-        String state = probeCommand.getState();
-        //分页查询设备信息
-        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfo(probeCommand);
-        if (CollectionUtils.isEmpty(list)) {
-            return new CurrentProbeInfoResult();
-        }
-        currentProbeInfoResult.setTotalNum(list.size());
-        //在查出monitorinstrument信息
-        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).distinct().collect(Collectors.toList());
-        List<MonitorinstrumentDto> monitorInstrumentDTOList = monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
-        Map<String, List<MonitorinstrumentDto>> enoAndMiMap = new HashMap<>();
-        if (CollectionUtils.isNotEmpty(monitorInstrumentDTOList)) {
-            enoAndMiMap = monitorInstrumentDTOList.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
-        }
+//    public CurrentProbeInfoResult getTheCurrentValueOfTheProbe(ProbeCommand probeCommand) {
+//        CurrentProbeInfoResult currentProbeInfoResult = new CurrentProbeInfoResult();
+//        String hospitalCode = probeCommand.getHospitalCode();
+//
+//        String state = probeCommand.getState();
+//        //分页查询设备信息
+//        List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfo(probeCommand);
+//        if (CollectionUtils.isEmpty(list)) {
+//            return new CurrentProbeInfoResult();
+//        }
+//        currentProbeInfoResult.setTotalNum(list.size());
+//        //在查出monitorinstrument信息
+//        List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).distinct().collect(Collectors.toList());
+//        List<MonitorinstrumentDto> monitorInstrumentDTOList = monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
+//        Map<String, List<MonitorinstrumentDto>> enoAndMiMap = new HashMap<>();
+//        if (CollectionUtils.isNotEmpty(monitorInstrumentDTOList)) {
+//            enoAndMiMap = monitorInstrumentDTOList.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
+//        }
+//
+//        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
+//        probeRedisCommand.setHospitalCode(hospitalCode);
+//        probeRedisCommand.setENoList(enoList);
+//        //获取设备对象的探头信息
+//        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
+//        //以设备no分组在以instrumentconfid分组
+//        Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
+//        if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
+//            List<InstrumentParamConfigDto> collect1 = instrumentParamConfigByENoList.stream().map(res -> {
+//                if (11 == res.getInstrumentconfigid() && StringUtils.equals("2", res.getIChannel())) {
+//                    res.setInstrumentconfigid(44);
+//                }
+//                return res;
+//            }).collect(Collectors.toList());
+//            instrumentParamConfigMap = collect1.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(res->res.getInstrumentno()+":"+res.getInstrumentconfigid())));
+//        }
+//
+//        //批量获取设备对应探头当前值信息
+//        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
+//
+//        //获取医院超时报警间隔
+//        HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
+//        String timeoutRedDuration = hos.getTimeoutRedDuration();
+//        if(StringUtils.isBlank(timeoutRedDuration)){
+//            timeoutRedDuration="30";
+//        }
+//
+//        List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
+//        /*
+//         * 1.遍历设备信息赋值
+//         * */
+//        int normalCount = 0;
+//        int abnormalCount = 0;
+//        int timeoutCount = 0;
+//
+//        for (MonitorEquipmentDto monitorEquipmentDto : list) {
+//            String equipmentName = monitorEquipmentDto.getEquipmentname();
+//            String equipmentNo = monitorEquipmentDto.getEquipmentno();
+//            String equipmentTypeId = monitorEquipmentDto.getEquipmenttypeid();
+//            List<ProbeInfoDto> probeInfoDtoList = null;
+//            if (probeInfoMap.containsKey(equipmentNo)) {
+//                probeInfoDtoList = probeInfoMap.get(equipmentNo);
+//                //中英文切换
+//                zhAndEn(probeInfoDtoList);
+//            }
+//            ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
+//            probeInfo.setEquipmentName(equipmentName);
+//            probeInfo.setEquipmentNo(equipmentNo);
+//            if (MapUtils.isNotEmpty(enoAndMiMap) && enoAndMiMap.containsKey(equipmentNo)) {
+//                MonitorinstrumentDto monitorinstrumentDto = enoAndMiMap.get(equipmentNo).get(0);
+//                probeInfo.setSn(monitorinstrumentDto.getSn());
+//                probeInfo.setInstrumentTypeId(String.valueOf(monitorinstrumentDto.getInstrumenttypeid()));
+//            }
+//            probeInfo.setEquipmentTypeId(equipmentTypeId);
+//            if(CollectionUtils.isEmpty(probeInfoDtoList)){
+//                probeInfo.setState("1");
+//                abnormalCount++;
+//            }else {
+//
+//                buildProbeInfoDtoListAndInstrumentConfigIdList(probeInfo, equipmentNo, probeInfoDtoList, instrumentParamConfigMap, timeoutRedDuration);
+//                switch (probeInfo.getState()){
+//                    case "0":
+//                        normalCount++;
+//                        probeInfo.setState("0");
+//                        break;
+//                    case "1":
+//                        abnormalCount++;
+//                        probeInfo.setState("1");
+//                        break;
+//                    case "2":
+//                        timeoutCount++;
+//                        probeInfo.setState("2");
+//                        break;
+//                }
+//            }
+//            probeCurrentInfoDtos.add(probeInfo);
+//        }
+//        if(StringUtils.isBlank(probeCommand.getState())){
+//            probeCommand.setState("");
+//        }
+//        currentProbeInfoResult.setAbnormalNum(abnormalCount);
+//        currentProbeInfoResult.setNormalNum( normalCount);
+//        currentProbeInfoResult.setTimeoutNum(timeoutCount);
+//        switch (state){
+//            case "0":
+//                List<ProbeCurrentInfoDto> normalList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("0", res.getState())).collect(Collectors.toList());
+//                currentProbeInfoResult.setProbeCurrentInfoDtoList(normalList);
+//                break;
+//            case "1":
+//                List<ProbeCurrentInfoDto> abnormalList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("1", res.getState())).collect(Collectors.toList());
+//                currentProbeInfoResult.setProbeCurrentInfoDtoList(abnormalList);
+//                break;
+//            case "2":
+//                List<ProbeCurrentInfoDto> timeoutList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("2", res.getState())).collect(Collectors.toList());
+//                currentProbeInfoResult.setProbeCurrentInfoDtoList(timeoutList);
+//                break;
+//            default:
+//                currentProbeInfoResult.setProbeCurrentInfoDtoList(probeCurrentInfoDtos);
+//                break;
+//        }
+//        return probeSort(currentProbeInfoResult);
+//    }
 
-        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
-        probeRedisCommand.setHospitalCode(hospitalCode);
-        probeRedisCommand.setENoList(enoList);
-        //获取设备对象的探头信息
-        List<InstrumentParamConfigDto> instrumentParamConfigByENoList = instrumentParamConfigService.getInstrumentParamConfigByENoList(enoList);
-        //以设备no分组在以instrumentconfid分组
-        Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap = null;
-        if (CollectionUtils.isNotEmpty(instrumentParamConfigByENoList)) {
-            List<InstrumentParamConfigDto> collect1 = instrumentParamConfigByENoList.stream().map(res -> {
-                if (11 == res.getInstrumentconfigid() && StringUtils.equals("2", res.getIChannel())) {
-                    res.setInstrumentconfigid(44);
-                }
-                return res;
-            }).collect(Collectors.toList());
-            instrumentParamConfigMap = collect1.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getEquipmentno, Collectors.groupingBy(res->res.getInstrumentno()+":"+res.getInstrumentconfigid())));
-        }
-
-        //批量获取设备对应探头当前值信息
-        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApi.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand).getResult();
-
-        //获取医院超时报警间隔
-        HospitalInfoDto hos = hospitalInfoRepository.getOne(Wrappers.lambdaQuery(new HospitalInfoDto()).eq(HospitalInfoDto::getHospitalCode, hospitalCode));
-        String timeoutRedDuration = hos.getTimeoutRedDuration();
-        if(StringUtils.isBlank(timeoutRedDuration)){
-            timeoutRedDuration="30";
-        }
-
-        List<ProbeCurrentInfoDto> probeCurrentInfoDtos = new ArrayList<>();
-        /*
-         * 1.遍历设备信息赋值
-         * */
-        int normalCount = 0;
-        int abnormalCount = 0;
-        int timeoutCount = 0;
-
-        for (MonitorEquipmentDto monitorEquipmentDto : list) {
-            String equipmentName = monitorEquipmentDto.getEquipmentname();
-            String equipmentNo = monitorEquipmentDto.getEquipmentno();
-            String equipmentTypeId = monitorEquipmentDto.getEquipmenttypeid();
-            List<ProbeInfoDto> probeInfoDtoList = null;
-            if (probeInfoMap.containsKey(equipmentNo)) {
-                probeInfoDtoList = probeInfoMap.get(equipmentNo);
-                //中英文切换
-                zhAndEn(probeInfoDtoList);
-            }
-            ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
-            probeInfo.setEquipmentName(equipmentName);
-            probeInfo.setEquipmentNo(equipmentNo);
-            if (MapUtils.isNotEmpty(enoAndMiMap) && enoAndMiMap.containsKey(equipmentNo)) {
-                MonitorinstrumentDto monitorinstrumentDto = enoAndMiMap.get(equipmentNo).get(0);
-                probeInfo.setSn(monitorinstrumentDto.getSn());
-                probeInfo.setInstrumentTypeId(String.valueOf(monitorinstrumentDto.getInstrumenttypeid()));
-            }
-            probeInfo.setEquipmentTypeId(equipmentTypeId);
-            if(CollectionUtils.isEmpty(probeInfoDtoList)){
-                probeInfo.setState("1");
-                abnormalCount++;
-            }else {
-
-                buildProbeInfoDtoListAndInstrumentConfigIdList(probeInfo, equipmentNo, probeInfoDtoList, instrumentParamConfigMap, timeoutRedDuration);
-                switch (probeInfo.getState()){
-                    case "0":
-                        normalCount++;
-                        probeInfo.setState("0");
-                        break;
-                    case "1":
-                        abnormalCount++;
-                        probeInfo.setState("1");
-                        break;
-                    case "2":
-                        timeoutCount++;
-                        probeInfo.setState("2");
-                        break;
-                }
-            }
-            probeCurrentInfoDtos.add(probeInfo);
-        }
-        if(StringUtils.isBlank(probeCommand.getState())){
-            probeCommand.setState("");
-        }
-        currentProbeInfoResult.setAbnormalNum(abnormalCount);
-        currentProbeInfoResult.setNormalNum( normalCount);
-        currentProbeInfoResult.setTimeoutNum(timeoutCount);
-        switch (state){
-            case "0":
-                List<ProbeCurrentInfoDto> normalList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("0", res.getState())).collect(Collectors.toList());
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(normalList);
-                break;
-            case "1":
-                List<ProbeCurrentInfoDto> abnormalList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("1", res.getState())).collect(Collectors.toList());
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(abnormalList);
-                break;
-            case "2":
-                List<ProbeCurrentInfoDto> timeoutList = probeCurrentInfoDtos.stream().filter(res -> StringUtils.equals("2", res.getState())).collect(Collectors.toList());
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(timeoutList);
-                break;
-            default:
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(probeCurrentInfoDtos);
-                break;
-        }
-        return probeSort(currentProbeInfoResult);
-    }
-
-    private CurrentProbeInfoResult probeSort(CurrentProbeInfoResult currentProbeInfoResult) {
-        //探头排序
-        for (ProbeCurrentInfoDto probeCurrentInfoDto : currentProbeInfoResult.getProbeCurrentInfoDtoList()) {
-            List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
-            if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
-                List<ProbeInfoDto> collect =
-                        probeInfoDtoList.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
-                probeCurrentInfoDto.setProbeInfoDtoList(collect);
-            }
-        }
-        //设备排序
-//        List<ProbeCurrentInfoDto> collect = currentProbeInfoResult.getProbeCurrentInfoDtoList().stream().sorted(Comparator.comparing(ProbeCurrentInfoDto::getEquipmentName)).collect(Collectors.toList());
-//        currentProbeInfoResult.setProbeCurrentInfoDtoList(collect);
-        return currentProbeInfoResult;
-    }
+//    private CurrentProbeInfoResult probeSort(CurrentProbeInfoResult currentProbeInfoResult) {
+//        //探头排序
+//        for (ProbeCurrentInfoDto probeCurrentInfoDto : currentProbeInfoResult.getProbeCurrentInfoDtoList()) {
+//            List<ProbeInfoDto> probeInfoDtoList = probeCurrentInfoDto.getProbeInfoDtoList();
+//            if(CollectionUtils.isNotEmpty(probeInfoDtoList)){
+//                List<ProbeInfoDto> collect =
+//                        probeInfoDtoList.stream().sorted(Comparator.comparing(ProbeInfoDto::getInstrumentConfigId)).collect(Collectors.toList());
+//                probeCurrentInfoDto.setProbeInfoDtoList(collect);
+//            }
+//        }
+//        return currentProbeInfoResult;
+//    }
 
     private void buildProbeInfoDtoListAndInstrumentConfigIdList(ProbeCurrentInfoDto probeInfo,String equipmentNo, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
         //获取探头信息中最大的时间
@@ -532,7 +524,12 @@ public class AppEquipmentInfoApplication {
                     probeInfoDto.setSaturation(configDto.getSaturation());
                     probeInfoDto.setInstrumentNo(instrumentNo);
                     probeInfoDto.setInstrumentConfigId(configId);
-                    probeInfoDto.setUnit(StringUtils.isBlank(configDto.getUnit())?"":configDto.getUnit());
+                    //当返回的值不为数字时，unit返回为空
+                    if(StringUtils.isNotBlank(configDto.getUnit()) && RegularUtil.checkContainsNumbers(probeRedis.getValue())){
+                        probeInfoDto.setUnit(configDto.getUnit());
+                    }else {
+                        probeInfoDto.setUnit("");
+                    }
                     probeInfoDto.setValue(probeRedis.getValue());
                     probeInfoDto.setProbeEName(probeRedis.getProbeEName());
                     probeInfoDto.setInputTime(probeRedis.getInputTime());

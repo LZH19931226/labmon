@@ -13,11 +13,14 @@ import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.EquipmentInfoService;
+import com.hc.service.ExportLogService;
 import com.hc.service.InstrumentParamConfigService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -53,6 +56,9 @@ public class SystemDataApplication {
 
     @Autowired
     private InstrumentParamConfigService instrumentParamConfigService;
+
+    @Autowired
+    private ExportLogService exportLogService;
 
     //hospitalCode,startTime,equipmentNo,pageSize,pageCurrent
     public Page findPacketLossLog(EquipmentDataCommand equipmentDataCommand) {
@@ -131,6 +137,7 @@ public class SystemDataApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             mapList.add(objectToMap);
         }
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.SYSTEM_DATA_HEARTBEAT, OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.PACKET_LOSS_QUERY.getCode());
         FileUtil.exportExcel(ExcelExportUtils.SYSTEM_DATA_HEARTBEAT,beanList,mapList,response);
     }
 
