@@ -221,7 +221,7 @@ public class StatisticalAnalysisApplication {
             return;
         }
         List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
-        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> alarmNoticeResults = processData(alarmNoticeInfo, phoneMap);
         //获取属性map
         List<Map<String,Object>> mapList = new ArrayList<>();
