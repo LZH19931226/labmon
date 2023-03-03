@@ -888,7 +888,7 @@ public class StatisticalAnalysisApplication {
         exportLogCommand.setOperationType(exportCode);
         exportLogCommand.setMenuName(fileName);
         exportLogCommand.setFunctionName(fileName);
-        exportLogCommand.setPlatform(exportCode);
+        exportLogCommand.setPlatform(fileName);
         operationlogApi.addExportLog(exportLogCommand);
     }
 
