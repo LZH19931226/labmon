@@ -17,11 +17,11 @@ import java.util.*;
  * 描述:
  **/
 public class DateUtils {
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static SimpleDateFormat dateFormatHHmm = new SimpleDateFormat("HH:mm");
-    private static SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat dateFormatHHmm = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
 
 
 
