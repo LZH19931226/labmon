@@ -608,6 +608,7 @@ public class OperationlogServiceImpl implements OperationlogService {
     public void addExportLog(ExportLogCommand exportLogCommand) {
         OperationlogPo operationlogPo = new OperationlogPo();
         operationlogPo.setLogid(UUID.randomUUID().toString().replaceAll("-", ""));
+        operationlogPo.setPlatform(exportLogCommand.getPlatform());
         operationlogPo.setFunctionname(exportLogCommand.getFunctionName());
         operationlogPo.setOpeartiontype(exportLogCommand.getOperationType());
         operationlogPo.setUsername(exportLogCommand.getUsername());

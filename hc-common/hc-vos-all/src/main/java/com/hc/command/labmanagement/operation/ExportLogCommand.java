@@ -10,4 +10,5 @@ public class ExportLogCommand {
     private String username;
     private String functionName;
     private String hospitalName;
+    private String platform;
 }
