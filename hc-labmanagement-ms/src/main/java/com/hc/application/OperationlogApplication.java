@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -94,11 +95,17 @@ public class OperationlogApplication {
     }
 
     public String editOperateType(String code){
+        if(StringUtils.isEmpty(code)){
+            return null;
+        }
         OperationLogEunmDerailEnum from = OperationLogEunmDerailEnum.from(code);
         return Context.IsCh() ? from.getMessage() : from.name();
     }
 
     public String editFunctionName(String code){
+        if(StringUtils.isEmpty(code)){
+            return null;
+        }
         OperationLogEunm operationLogEunm = OperationLogEunm.fromCode(code);
         if(!Context.IsCh()){
             return operationLogEunm.name();
