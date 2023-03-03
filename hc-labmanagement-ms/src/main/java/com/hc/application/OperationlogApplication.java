@@ -128,7 +128,7 @@ public class OperationlogApplication {
         //获取给标头赋值的list
         List<Map<String, Object>> mapList = new ArrayList<>();
         for (OperationlogDTO res : operationLogDTO) {
-            res.setFunctionname(editFunctionName(res.getFunctionname()));
+            res.setFunctionname(editFunctionName(res.getPlatform()));
             res.setOpeartiontype(editOperateType(res.getOpeartiontype()));
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(res);
             mapList.add(objectToMap);

@@ -174,7 +174,7 @@ public class StatisticalAnalysisApplication {
         }else {
             userRightDtoList = userRightService. getUserRightInfo(alarmNoticeCommand);
         }
-        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> list = processData(labMessengerPublishTaskDtoList,phoneMap);
         page.setRecords(list);
         return page;
