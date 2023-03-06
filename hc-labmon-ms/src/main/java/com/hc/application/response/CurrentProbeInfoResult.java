@@ -3,6 +3,7 @@ package com.hc.application.response;
 import com.hc.dto.ProbeCurrentInfoDto;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,5 +17,5 @@ public class CurrentProbeInfoResult {
 
     private Integer timeoutNum;
 
-    private List<ProbeCurrentInfoDto> probeCurrentInfoDtoList;
+    private List<ProbeCurrentInfoDto> probeCurrentInfoDtoList = new ArrayList<>();
 }

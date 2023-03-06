@@ -428,13 +428,13 @@ public class AppEquipmentInfoApplication {
         //分页查询设备信息 获取设备 未禁用的设备
         List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfo(probeCommand);
         if (CollectionUtils.isEmpty(list)) {
-            return null;
+            return currentProbeInfoResult;
         }
         //在查出monitorinstrument信息
         List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).distinct().collect(Collectors.toList());
         List<MonitorinstrumentDto> monitorInstrumentDTOList = monitorInstrumentService.selectMonitorInstrumentByEnoList(enoList);
         if (CollectionUtils.isEmpty(monitorInstrumentDTOList)) {
-            return null;
+            return currentProbeInfoResult;
         }
         Map<String, List<MonitorinstrumentDto>> enoAndMiMap = monitorInstrumentDTOList.stream().collect(Collectors.groupingBy(MonitorinstrumentDto::getEquipmentno));
         //获取设备对象的探头信息
