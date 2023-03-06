@@ -24,6 +24,7 @@ import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.Mt310DCUtils;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.my.common.core.util.date.DateDto;
 import com.hc.my.common.core.util.DateUtils;
@@ -946,21 +947,20 @@ public class AppEquipmentInfoApplication {
         String startTime = curveCommand.getStartTime();
         String endTime = curveCommand.getEndTime();
         String sn = curveCommand.getSn();
+        String eqSnAbbreviation = sn.substring(4, 6);
         String equipmentNo = curveCommand.getEquipmentNo();
         String ym = DateUtils.getYearMonth(startTime, endTime);
         CurveParam curveParam = BeanConverter.convert(curveCommand, CurveParam.class);
+        if(ProbeOutlierMt310.THREE_ONE.getCode().equals(eqSnAbbreviation)){
+            curveCommand.setInstrumentConfigIdList(Mt310DCUtils.get310DCFields(curveParam.getInstrumentConfigIdList()));
+        }
         curveParam.setYearMonth(ym);
         List<Monitorequipmentlastdata> lastDataModelList = monitorequipmentlastdataRepository.getMonitorEquuipmentLastList(curveParam);
-
         if (org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
-        boolean flag = false;
-        if (StringUtils.isNotEmpty(sn) && ProbeOutlierMt310.THREE_ONE.getCode().equals(sn.substring(4, 6))) {
-            flag = true;
-        }
-        return CurveUtils.getCurveFirst(lastDataModelList, curveCommand.getInstrumentConfigIdList(), map);
+        return CurveUtils.getCurveFirst(lastDataModelList, instrumentConfigIdList, map,eqSnAbbreviation);
     }
 
     /**

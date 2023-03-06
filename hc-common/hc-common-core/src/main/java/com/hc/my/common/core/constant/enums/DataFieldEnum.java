@@ -3,7 +3,6 @@ package com.hc.my.common.core.constant.enums;
 import com.hc.my.common.core.exception.IedsException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -53,7 +52,7 @@ public enum DataFieldEnum {
     power("power","power","功率","POWER","W"),
     LIQUIDLEVEL("LIQUIDLEVEL","liquidLevel","液位","LIQUID_LEVEL","mm"),
     DOOR2("DOOR2","currentdoorstate2","报警信号2","DOOR2",""),
-    current("current","qccurrent","电流","ELECTRIC_CURRENT","mA"),
+    CURRENT("current","qccurrent","电流","ELECTRIC_CURRENT","mA"),
     //outerCO2,outerO2实际在lastdata表中不存在会在查询中转化为model 和 data
     outerCO2("outerCO2","outerCO2","内置CO2","BUILT-IN CO2","%"),
     outerO2("outerO2","outerO2","内置O2","BUILT-IN O2","%");

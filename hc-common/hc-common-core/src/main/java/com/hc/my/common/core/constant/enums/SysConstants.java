@@ -17,18 +17,25 @@ public class SysConstants {
     public  static final  String EQ_ABNORMAL = "1";
     public  static final  String EQ_TIMEOUT = "2";
 
+    /** 通过截取sn5、6位 等到设备*/
+    public static final String MT310_SN = "31";
+    public static final String INPUT_DATETIME = "inputdatetime";
     /** 设备MT310DC 的设备监测类型编号*/
     public static final String EQ_MT310DC = "112";
 
-    /** MT310DC 温度的EName */
+    /** MT310DC 缓存中的Eanme */
     public static final String MT310DC_TEMP = "1";
-    /** MT310DC 湿度 的EName */
     public static final String MT310DC_RH = "2";
-    /** MT310DC 氧气的EName */
     public static final String MT310DC_O2 = "3";
-    /** MT310DC 二氧化碳的EName */
     public static final String MT310DC_CO2 = "4";
-
+    /** MT310 曲线字段 */
+    public static final String MT310DC_DATA_CO2 = "currentcarbondioxide";
+    public static final String MT310DC_DATA_O2 = "currento2";
+    public static final String MT310DC_DATA_VOC = "currentvoc";
+    public static final String MT310DC_DATA_TEMP = "currenttemperature";
+    public static final String MT310DC_DATA_RH = "currenthumidity";
+    public static final String MT310DC_DATA_OUTER_O2 = "outerO2";
+    public static final String MT310DC_DATA_OUTER_CO2 = "outerCO2";
 
     /** 通道2 */
     public static final String CHANNEL_2 = "2";
