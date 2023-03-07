@@ -459,10 +459,10 @@ public class AppEquipmentInfoApplication {
             timeoutRedDuration = SysConstants.TIMEOUT_RED_DURATION;
         }
 
-        List<ProbeCurrentInfoDto> probeCurrentInfos = new ArrayList<>();
-        int normalCount = 0;
-        int abnormalCount = 0;
-        int timeoutCount = 0;
+        List<ProbeCurrentInfoDto> normalList = new ArrayList<>();
+        List<ProbeCurrentInfoDto> abnormalList = new ArrayList<>();
+        List<ProbeCurrentInfoDto> timeoutList = new ArrayList<>();
+
         //遍历设备信息构建卡片对象
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
             //设置设备信息
@@ -479,8 +479,8 @@ public class AppEquipmentInfoApplication {
             //获取数据库探头信息
             List<InstrumentParamConfigDto> instrumentParamConfigs = enoAndProbeMap.get(equipmentNo);
             if(CollectionUtils.isEmpty(instrumentParamConfigs) || null == probeInfoMap.get(equipmentNo)){
-                abnormalCount++;
                 probeInfo.setState(SysConstants.EQ_ABNORMAL);
+                abnormalList.add(probeInfo);
             }
             else
             {
@@ -537,7 +537,7 @@ public class AppEquipmentInfoApplication {
                     probeInfoDto.setInputTime(probeRedis.getInputTime());
                     //缓存中没有找到探头状态时默认为正常
                     probeInfoDto.setState(StringUtils.isBlank(probeRedis.getState())?SysConstants.EQ_NORMAL:probeRedis.getState());
-                    //当config为11和44时，通过缓存的当前值和最低比较来计算探头的状态
+                    //当config为11和44时，通过缓存的当前值和最低值比较来计算探头的状态
                     if(configId == CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId() || configId == CurrentProbeInfoEnum.CURRENTDOORSTATE2.getInstrumentConfigId()){
                         int i = configDto.getLowLimit().intValue();
                         int integer = Integer.parseInt(probeInfoDto.getValue());
@@ -560,50 +560,50 @@ public class AppEquipmentInfoApplication {
                         probeInfo.setInputTime(maxDate);
                         boolean b = DateUtils.calculateIntervalTime(maxDate, timeoutRedDuration);
                         if(b){
-                            timeoutCount++;
                             probeInfo.setState(SysConstants.EQ_TIMEOUT);
+                            timeoutList.add(probeInfo);
                         }
                     }
                     //设备没有超时时，通过探头状态来获取设备状态(有一个探头异常，设备就是异常的，所有探头正常，设备才正常)
                     if(StringUtils.isBlank(probeInfo.getState())){
                         long abnormal = probeInfos.stream().filter(res -> StringUtils.equals(res.getState(),SysConstants.EQ_ABNORMAL)).count();
                         if(abnormal>0){
-                            abnormalCount++;
                             probeInfo.setState(SysConstants.EQ_ABNORMAL);
+                            abnormalList.add(probeInfo);
                         }else {
-                            normalCount++;
                             probeInfo.setState(SysConstants.EQ_NORMAL);
+                            normalList.add(probeInfo);
                         }
                     }
                 }else {
                     //没有探头信息时判断设备时异常设备
-                    abnormalCount++;
                     probeInfo.setState(SysConstants.EQ_ABNORMAL);
+                    abnormalList.add(probeInfo);
                 }
             }
-            probeCurrentInfos.add(probeInfo);
         }
         currentProbeInfoResult.setTotalNum(list.size());
-        currentProbeInfoResult.setAbnormalNum(abnormalCount);
-        currentProbeInfoResult.setNormalNum( normalCount);
-        currentProbeInfoResult.setTimeoutNum(timeoutCount);
-        currentProbeInfoResult.setProbeCurrentInfoDtoList(probeCurrentInfos);
+        currentProbeInfoResult.setAbnormalNum(abnormalList.size());
+        currentProbeInfoResult.setNormalNum(normalList.size());
+        currentProbeInfoResult.setTimeoutNum(timeoutList.size());
         switch (state){
             case SysConstants.EQ_NORMAL:
-                List<ProbeCurrentInfoDto> normalList = probeCurrentInfos.stream().filter(res -> StringUtils.equals(SysConstants.EQ_NORMAL, res.getState())).peek(this::sort).collect(Collectors.toList());
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(normalList);
+                List<ProbeCurrentInfoDto> normals = normalList.stream().peek(this::sort).collect(Collectors.toList());
+                currentProbeInfoResult.setProbeCurrentInfoDtoList(normals);
                 break;
             case SysConstants.EQ_ABNORMAL:
-                List<ProbeCurrentInfoDto> abnormalList = probeCurrentInfos.stream().filter(res -> StringUtils.equals(SysConstants.EQ_ABNORMAL, res.getState())).peek(this::sort).collect(Collectors.toList());
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(abnormalList);
+                List<ProbeCurrentInfoDto> abnormals = abnormalList.stream().peek(this::sort).collect(Collectors.toList());
+                currentProbeInfoResult.setProbeCurrentInfoDtoList(abnormals);
                 break;
             case SysConstants.EQ_TIMEOUT:
-                List<ProbeCurrentInfoDto> timeoutList = probeCurrentInfos.stream().filter(res -> StringUtils.equals(SysConstants.EQ_TIMEOUT, res.getState())).peek(this::sort).collect(Collectors.toList());
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(timeoutList);
+                List<ProbeCurrentInfoDto> timeouts = timeoutList.stream().peek(this::sort).collect(Collectors.toList());
+                currentProbeInfoResult.setProbeCurrentInfoDtoList(timeouts);
                 break;
             default:
-                List<ProbeCurrentInfoDto> collect1 = probeCurrentInfos.stream().peek(this::sort).collect(Collectors.toList());
-                currentProbeInfoResult.setProbeCurrentInfoDtoList(collect1);
+                normalList.addAll(abnormalList);
+                normalList.addAll(timeoutList);
+                List<ProbeCurrentInfoDto> totals = normalList.stream().peek(this::sort).collect(Collectors.toList());
+                currentProbeInfoResult.setProbeCurrentInfoDtoList(totals);
                 break;
         }
         return currentProbeInfoResult;
