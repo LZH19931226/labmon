@@ -926,7 +926,7 @@ public class StatisticalAnalysisApplication {
         //获取tittle
         List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,flag);
 
-//        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME,beanList,mapList,httpServletResponse);
 
     }
