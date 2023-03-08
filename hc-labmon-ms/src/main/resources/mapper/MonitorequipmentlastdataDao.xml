@@ -101,4 +101,17 @@
         order by toStartOfMinute(inputdatetime)
     </select>
 
+    <select id="getMT310DcLastDataByTime" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+        equipmentno,
+        ${param.field},
+        inputdatetime
+        FROM
+        lab_mon.monitorequipmentlastdata
+        WHERE id IN ( #{param.yearMonth} )
+        and inputdatetime <![CDATA[>=]]> #{param.startTime}
+        and inputdatetime <![CDATA[<=]]> #{param.endTime}
+        AND equipmentno = #{param.equipmentNo}
+    </select>
+
 </mapper>

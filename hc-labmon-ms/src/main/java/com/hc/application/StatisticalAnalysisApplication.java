@@ -563,6 +563,10 @@ public class StatisticalAnalysisApplication {
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_CUSTOM,beanList,mapList,response);
     }
 
+    /**
+     * 过滤objMap 将以mt310的格式返回 值带单位
+     * map："key":"value(单位)"
+     */
     private void mt310cFilter(Map<String, Object> objectToMap,List<String> fieldList) {
         editObjMap(objectToMap,(String)objectToMap.get("probe1model"),(String)objectToMap.get("probe1data"));
         editObjMap(objectToMap,(String)objectToMap.get("probe2model"),(String)objectToMap.get("probe2data"));
@@ -570,6 +574,24 @@ public class StatisticalAnalysisApplication {
         ObjectConvertUtils.filterMap(objectToMap,fieldList);
     }
 
+    /**
+     * 过滤objMap 将以mt310的格式返回 值不带单位
+     * map："key":"value"
+     *
+     */
+    private void mt310DcFilter(Map<String, Object> objectToMap,List<String> fieldList) {
+        editObjectMap(objectToMap,(String)objectToMap.get("probe1model"),(String)objectToMap.get("probe1data"));
+        editObjectMap(objectToMap,(String)objectToMap.get("probe2model"),(String)objectToMap.get("probe2data"));
+        editObjectMap(objectToMap,(String)objectToMap.get("probe3model"),(String)objectToMap.get("probe3data"));
+        ObjectConvertUtils.filterMap(objectToMap,fieldList);
+    }
+
+    /**
+     * map 中value是有单位的
+     * @param objectToMap
+     * @param model
+     * @param data
+     */
     private  void editObjMap(Map<String, Object> objectToMap,String model,String data){
         switch (model){
             case SysConstants.MT310DC_TEMP:
@@ -592,16 +614,42 @@ public class StatisticalAnalysisApplication {
     }
 
     /**
+     * map 中value是无单位的
+     * @param objectToMap
+     * @param model
+     * @param data
+     */
+    private  void editObjectMap(Map<String, Object> objectToMap,String model,String data){
+        switch (model){
+            case SysConstants.MT310DC_TEMP:
+                objectToMap.put(SysConstants.MT310DC_DATA_TEMP,data);
+                break;
+            case SysConstants.MT310DC_RH:
+                objectToMap.put(SysConstants.MT310DC_DATA_RH,data);
+                break;
+            case SysConstants.MT310DC_O2:
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_O2,data);
+                break;
+            case SysConstants.MT310DC_CO2:
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_CO2,data);
+                break;
+        }
+    }
+
+
+    /**
      * 时间点查询
      * @param equipmentDataCommand
      */
     public  List<TimePointCurve>  getThePointInTimeDataCurve(EquipmentDataCommand equipmentDataCommand) {
+        //校验筛选条件不能为空
         filterCondition(equipmentDataCommand);
         String field = equipmentDataCommand.getField();
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
+        String instrumentTypeId = monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
         //校验日期格式数据
         List<String> timeLists = DateUtils.filterDate(timeList);
         //排列
@@ -610,17 +658,25 @@ public class StatisticalAnalysisApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
-        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        boolean flag = SysConstants.EQ_MT310DC.equals(instrumentTypeId);
+        List<Monitorequipmentlastdata> lastDataList = null;
+        if(flag){
+            dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
+            lastDataList =  monitorequipmentlastdataRepository.getMT310DcLastDataByTime(dataParam);
+        }else {
+            lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        }
 
         if(CollectionUtils.isEmpty(lastDataList)){
             return new ArrayList<>();
         }
-
+        //根据天分组
         Map<String, List<Monitorequipmentlastdata>> stringListMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDateMMdd(res.getInputdatetime())));
 
         Map<String, List<Monitorequipmentlastdata>> dataMap = sortMapByKey(stringListMap);
         Map<String,TimePointCurve> map = new HashMap<>();
         for (String inputTime : dataMap.keySet()) {
+            //获取当天的数据
             List<Monitorequipmentlastdata> dataList = dataMap.get(inputTime);
             //遍历时间点
             for (Date date : dateList) {
@@ -629,8 +685,12 @@ public class StatisticalAnalysisApplication {
                 cal.add(Calendar.MINUTE,-30);
                 Date start = cal.getTime();
                 List<Monitorequipmentlastdata> list = dataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
+                //取字段数据都是最新的对象
                 Monitorequipmentlastdata lastObject = listToObject(list);
                 Map<String, Object> objectToMap = getObjectToMap(lastObject);
+                if(flag){
+                    mt310DcFilter(objectToMap,new ArrayList<>(Collections.singletonList(field)));
+                }
                 String value =  (String)objectToMap.get(field);
                 String hHmm = DateUtils.dateReduceHHmm(date);
                 if(map.containsKey(hHmm)){
@@ -788,13 +848,24 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
+        String instrumentTypeId  = monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
+        boolean flag = SysConstants.EQ_MT310DC.equals(instrumentTypeId);
         List<String> timeLists = DateUtils.filterDate(timeList);
         //2.查询数据源
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
-        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        List<Monitorequipmentlastdata> lastDataList;
+        if(flag){
+            dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
+            lastDataList = monitorequipmentlastdataRepository.getMT310DcLastDataByTime(dataParam);
+        }else {
+            lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        }
+        if(CollectionUtils.isEmpty(lastDataList)){
+            return  new ArrayList<>();
+        }
         //3.加工数据
         //思路：将数据源按照天分组拿到一天的所有数据1，再通过时间点拿到一个时间点前半个小时到这个时间点的数据2，再获取数据2中最靠近时间点的一条数据(有就设置没有就设置为0)
         Map<String, List<Monitorequipmentlastdata>> dateMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
@@ -822,6 +893,9 @@ public class StatisticalAnalysisApplication {
                 }
                 Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
                 Map<String, Object> objectToMap = getObjectToMap(data);
+                if(flag){
+                    mt310DcFilter(objectToMap,new ArrayList<>(Collections.singletonList(field)));
+                }
                 if(objectToMap.containsKey(field)){
                     String str = (String) objectToMap.get(field);
                     map.put(hhMm,str);
@@ -833,72 +907,81 @@ public class StatisticalAnalysisApplication {
         }
         return list.stream().sorted(Comparator.comparing(o -> o.get("date"))).collect(Collectors.toList());
     }
-
-    /**
-     * 导出时间点数据
-     * @param equipmentDataCommand
-     * @param httpServletResponse
-     */
     public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse) {
+        //1.验证参数
         filterCondition(equipmentDataCommand);
+        String field = equipmentDataCommand.getField();
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList)){
             return;
         }
+        String instrumentTypeId  = monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
+        boolean flag = SysConstants.EQ_MT310DC.equals(instrumentTypeId);
         List<String> timeLists = DateUtils.filterDate(timeList);
         //排列
         List<Date> dateList = timeLists.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        //2.查询数据源
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
-        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        List<Monitorequipmentlastdata> lastDataList;
+        if(flag){
+            dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
+            lastDataList = monitorequipmentlastdataRepository.getMT310DcLastDataByTime(dataParam);
+        }else {
+            lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        }
         if(CollectionUtils.isEmpty(lastDataList)){
             return;
         }
-        List<Monitorequipmentlastdata> list = new ArrayList<>();
-        for (Date date : dateList) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.MINUTE,-30);
-            Date start = cal.getTime();
-            lastDataList.forEach(res->res.setRemark1(DateUtils.dateReduceHHmm(date)));
-            List<Monitorequipmentlastdata> collect = lastDataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
-            if(CollectionUtils.isEmpty(collect)){
-                continue;
-            }
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,equipmentDataCommand.getField());
-            list.addAll(monitorEquipmentLastDataList);
-        }
-        List<Monitorequipmentlastdata> collect1 = list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-        Map<String, List<Monitorequipmentlastdata>> collect = collect1.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
-       List<Map<String,Object>> mapList = new ArrayList<>();
-        for (String date : collect.keySet()) {
+        //3.加工数据
+        //思路：将数据源按照天分组拿到一天的所有数据1，再通过时间点拿到一个时间点前半个小时到这个时间点的数据2，再获取数据2中最靠近时间点的一条数据(有就设置没有就设置为0)
+        Map<String, List<Monitorequipmentlastdata>> dateMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+
+        List<Map<String,Object>> list = new ArrayList<>();
+        Calendar cal  = Calendar.getInstance();
+        String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+        for (String date : dateMap.keySet()) {
             Map<String,Object> map = new HashMap<>();
             map.put("date",date);
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = collect.get(date);
-            Map<String, List<Monitorequipmentlastdata>> listMap = monitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getRemark1));
-            for (Date time : dateList) {
-                String hHmm = DateUtils.dateReduceHHmm(time);
-                String value = "";
-                if(listMap.containsKey(hHmm)){
-                    Monitorequipmentlastdata monitorequipmentlastdata = listMap.get(hHmm).get(0);
-                    Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
-                    value =(String) objectToMap.get(equipmentDataCommand.getField());
-
+            map.put("unit",unit);
+            List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
+            for (String timeStr : timeLists) {
+                String hHmmTime = DateUtils.getHHmm(timeStr);
+                //将00:30 改为 00:00 将23:59改为24:00
+                String hhMm = editHhmm(hHmmTime);
+                Date rTime = DateUtils.parseDate(timeStr);
+                cal.setTime(rTime);
+                cal.add(Calendar.MINUTE,-30);
+                Date lTime = cal.getTime();
+                List<Monitorequipmentlastdata> collect = monitorequipmentlastdata.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(),lTime,rTime)).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(collect)){
+                    map.put(hhMm,"");
+                    continue;
                 }
-                String str =  editHhmm(hHmm);
-                map.put(str,value);
+                Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
+                Map<String, Object> objectToMap = getObjectToMap(data);
+                if(flag){
+                    mt310cFilter(objectToMap,new ArrayList<>(Collections.singletonList(field)));
+                }
+                if(objectToMap.containsKey(field)){
+                    String str = (String) objectToMap.get(field);
+                    DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+                    map.put(hhMm,str+"("+dataFieldEnum.getUnit()+")");
+                }else {
+                    map.put(hhMm,"");
+                }
             }
-            mapList.add(map);
+            list.add(map);
         }
-        mapList.sort(Comparator.comparing(res->res.get("date").toString()));
-        boolean flag = Context.IsCh();
+        List<Map<String, Object>> mapList = list.stream().sorted(Comparator.comparing(o -> (String) o.get("date"))).collect(Collectors.toList());
         //获取tittle
         List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,flag);
 
-        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
+//        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME,beanList,mapList,httpServletResponse);
+
     }
 
     private String editHhmm(String hHmm) {

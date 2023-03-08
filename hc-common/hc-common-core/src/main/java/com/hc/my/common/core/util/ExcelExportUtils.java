@@ -98,6 +98,22 @@ public class ExcelExportUtils {
         return beanList;
     }
 
+    public static List<ExcelExportEntity> getDatePoint1(List<String> dateList,boolean isCh) {
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        if(isCh){
+            beanList.add(new ExcelExportEntity("查询日期","date"));
+            dateList.forEach(res->{
+                beanList.add(new ExcelExportEntity(res,res));
+            });
+        }else {
+            beanList.add(new ExcelExportEntity("query date","date"));
+            dateList.forEach(res->{
+                beanList.add(new ExcelExportEntity(res,res));
+            });
+        }
+        return beanList;
+    }
+
     public static List<ExcelExportEntity> getAlarmData(boolean isCh) {
         List<ExcelExportEntity> beanList = new ArrayList<>();
         beanList.add(new ExcelExportEntity("设备类型","equipmentTypeName"));

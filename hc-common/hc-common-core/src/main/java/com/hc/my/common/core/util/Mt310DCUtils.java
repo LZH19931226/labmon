@@ -2,6 +2,7 @@ package com.hc.my.common.core.util;
 
 import com.hc.my.common.core.constant.enums.ProbeOutlierMt310;
 import com.hc.my.common.core.constant.enums.SysConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,15 @@ public class Mt310DCUtils {
         if(count>0){
             list.addAll(Arrays.asList("probe1model","probe1data","probe2model","probe2data","probe3model","probe3data"));
         }
+    }
+
+    public static String get310DCList(String field){
+        //外置探头有：outerCO2,outerO2,currenttemperature,currenthumidity
+        if(StringUtils.equalsAny(field,SysConstants.MT310DC_DATA_OUTER_O2, SysConstants.MT310DC_DATA_OUTER_CO2, SysConstants.MT310DC_DATA_TEMP, SysConstants.MT310DC_DATA_RH)){
+            field = "probe1model,probe1data,probe2model,probe2data,probe3model,probe3data";
+            return field;
+        }
+        return field;
     }
 
     public static List<String> get310DCFields(List<String > list){

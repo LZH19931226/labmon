@@ -29,4 +29,6 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     List<Monitorequipmentlastdata> getLastDataByTime(EquipmentDataParam dataParam);
 
     List<Monitorequipmentlastdata> getMonitorEquuipmentLastList(CurveParam curveParam);
+
+    List<Monitorequipmentlastdata> getMT310DcLastDataByTime(EquipmentDataParam dataParam);
 }

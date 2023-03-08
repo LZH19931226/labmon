@@ -33,4 +33,5 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
 
     List<Monitorequipmentlastdata> getMonitorEquuipmentLastList(@Param("param")CurveParam curveParam);
 
+    List<Monitorequipmentlastdata> getMT310DcLastDataByTime(@Param("param")EquipmentDataParam dataParam);
 }
