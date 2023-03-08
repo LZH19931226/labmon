@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MonitorInstrumentRepository {
     List<MonitorinstrumentDto> selectMonitorInstrumentByEnoList(List<String> enoList);
+
+    String getInstrumentTypeId(String equipmentNo);
 }

@@ -16,4 +16,12 @@
         </foreach>
     </select>
 
+    <select id="getInstrumentTypeId" resultType="java.lang.String">
+        select
+            instrumenttypeid
+        from
+            monitorinstrument
+        where  equipmentno = #{equipmentNo}
+    </select>
+
 </mapper>

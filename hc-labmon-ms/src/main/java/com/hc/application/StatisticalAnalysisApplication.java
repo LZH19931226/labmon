@@ -13,13 +13,15 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
-import com.hc.command.labmanagement.operation.ExportLogCommand;
 import com.hc.device.ProbeRedisApi;
-import com.hc.dto.*;
-import com.hc.labmanagent.OperationlogApi;
+import com.hc.dto.HospitalInfoDto;
+import com.hc.dto.LabMessengerPublishTaskDto;
+import com.hc.dto.MonitorEquipmentDto;
+import com.hc.dto.UserRightDto;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
@@ -65,6 +67,9 @@ public class StatisticalAnalysisApplication {
 
     @Autowired
     private ExportLogService exportLogService;
+
+    @Autowired
+    private MonitorInstrumentService monitorInstrumentService;
 
 
     /**
@@ -528,6 +533,22 @@ public class StatisticalAnalysisApplication {
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
         List<String> fieldList = equipmentDataCommand.getFieldList();
+        String instrumentTypeId =  monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
+        if(SysConstants.EQ_MT310DC.equals(instrumentTypeId)){
+            EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+            Mt310DCUtils.get310DCFields(dataParam.getFieldList());
+            List<Monitorequipmentlastdata> equipmentData = monitorequipmentlastdataRepository.getEquipmentData(null, dataParam);
+            List<Map<String,Object>> resultList = new ArrayList<>();
+            for (Monitorequipmentlastdata equipmentDatum : equipmentData) {
+                Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
+                mt310cFilter(objectToMap,fieldList);
+                resultList.add(objectToMap);
+            }
+            List<ExcelExportEntity> mt310DCEqData = ExcelExportUtils.getMT310DCEqData(Context.IsCh(),fieldList);
+            exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_CUSTOM, OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
+            FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_CUSTOM,mt310DCEqData,resultList,response);
+            return;
+        }
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> equipmentData = monitorequipmentlastdataRepository.getEquipmentData(null, dataParam);
         //设置tittle
@@ -540,6 +561,34 @@ public class StatisticalAnalysisApplication {
         }
         exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_CUSTOM, OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
         FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_CUSTOM,beanList,mapList,response);
+    }
+
+    private void mt310cFilter(Map<String, Object> objectToMap,List<String> fieldList) {
+        editObjMap(objectToMap,(String)objectToMap.get("probe1model"),(String)objectToMap.get("probe1data"));
+        editObjMap(objectToMap,(String)objectToMap.get("probe2model"),(String)objectToMap.get("probe2data"));
+        editObjMap(objectToMap,(String)objectToMap.get("probe3model"),(String)objectToMap.get("probe3data"));
+        ObjectConvertUtils.filterMap(objectToMap,fieldList);
+    }
+
+    private  void editObjMap(Map<String, Object> objectToMap,String model,String data){
+        switch (model){
+            case SysConstants.MT310DC_TEMP:
+                DataFieldEnum dataFieldEnum1 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_TEMP);
+                objectToMap.put(SysConstants.MT310DC_DATA_TEMP,data+"("+dataFieldEnum1.getUnit()+")");
+                break;
+            case SysConstants.MT310DC_RH:
+                DataFieldEnum dataFieldEnum2 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_RH);
+                objectToMap.put(SysConstants.MT310DC_DATA_RH,data+"("+dataFieldEnum2.getUnit()+")");
+                break;
+            case SysConstants.MT310DC_O2:
+                DataFieldEnum dataFieldEnum3 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_OUTER_O2);
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_O2,data+"("+dataFieldEnum3.getUnit()+")");
+                break;
+            case SysConstants.MT310DC_CO2:
+                DataFieldEnum dataFieldEnum4 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_OUTER_CO2);
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_CO2,data+"("+dataFieldEnum4.getUnit()+")");
+                break;
+        }
     }
 
     /**

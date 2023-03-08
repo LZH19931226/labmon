@@ -108,12 +108,81 @@ public class ExcelExportUtils {
 
     public static List<ExcelExportEntity> getOperationLog(boolean isCh) {
         List<ExcelExportEntity> beanList = new ArrayList<>();
-        beanList.add(new ExcelExportEntity("操作记录时间","operationtime"));
-        beanList.add(new ExcelExportEntity("用户","username"));
-        beanList.add(new ExcelExportEntity("操作类型","opeartiontype"));
-        beanList.add(new ExcelExportEntity("菜单","functionname"));
-        beanList.add(new ExcelExportEntity("医院","hospitalname"));
-        beanList.add(new ExcelExportEntity("设备名称","equipmentname"));
+        if(isCh){
+            beanList.add(new ExcelExportEntity("操作记录时间","operationtime"));
+            beanList.add(new ExcelExportEntity("用户","username"));
+            beanList.add(new ExcelExportEntity("操作类型","opeartiontype"));
+            beanList.add(new ExcelExportEntity("菜单","functionname"));
+            beanList.add(new ExcelExportEntity("医院","hospitalname"));
+            beanList.add(new ExcelExportEntity("设备名称","equipmentname"));
+        }else {
+            beanList.add(new ExcelExportEntity("TIME","operationtime"));
+            beanList.add(new ExcelExportEntity("USERNAME","username"));
+            beanList.add(new ExcelExportEntity("OPERATION_TYPE","opeartiontype"));
+            beanList.add(new ExcelExportEntity("MENU","functionname"));
+            beanList.add(new ExcelExportEntity("HOSPITAL","hospitalname"));
+            beanList.add(new ExcelExportEntity("EQ_NAME","equipmentname"));
+        }
+
+        return beanList;
+    }
+
+    /**
+     * 获取MT310DC的excel标头
+     * @return
+     */
+    public static List<ExcelExportEntity> getMT310DCEqData(boolean isCh) {
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        if(isCh){
+            beanList.add(new ExcelExportEntity("记录时间","inputdatetime"));
+            beanList.add(new ExcelExportEntity("O2","currento2"));
+            beanList.add(new ExcelExportEntity("CO2","currentcarbondioxide"));
+            beanList.add(new ExcelExportEntity("VOC","currentvoc"));
+            beanList.add(new ExcelExportEntity("外置探头温度","currenttemperature"));
+            beanList.add(new ExcelExportEntity("外置探头湿度","currenthumidity"));
+            beanList.add(new ExcelExportEntity("外置探头O2","outerO2"));
+            beanList.add(new ExcelExportEntity("外置探头CO2","outerCO2"));
+        }else {
+            beanList.add(new ExcelExportEntity("TIME","inputdatetime"));
+            beanList.add(new ExcelExportEntity("O2","currento2"));
+            beanList.add(new ExcelExportEntity("CO2","currentcarbondioxide"));
+            beanList.add(new ExcelExportEntity("VOC","currentvoc"));
+            beanList.add(new ExcelExportEntity("EXTERNAL_PROBE_TEMP","currenttemperature"));
+            beanList.add(new ExcelExportEntity("EXTERNAL_PROBE_RH","currenthumidity"));
+            beanList.add(new ExcelExportEntity("EXTERNAL_PROBE_CO2","outerO2"));
+            beanList.add(new ExcelExportEntity("EXTERNAL_PROBE_O2","outerCO2"));
+        }
+        return beanList;
+    }
+
+    public static List<ExcelExportEntity> getMT310DCEqData(boolean isCh,List<String> fields) {
+        List<ExcelExportEntity> beanList = new ArrayList<>();
+        beanList.add(isCh ? new ExcelExportEntity("记录时间","inputdatetime") : new ExcelExportEntity("TIME","inputdatetime"));
+        for (String field : fields) {
+            switch (field){
+                case "currento2":
+                    beanList.add(new ExcelExportEntity("O2","currento2"));
+                    break;
+                case "currentcarbondioxide":
+                    beanList.add(new ExcelExportEntity("CO2","currentcarbondioxide"));
+                    break;
+                case "currentvoc":
+                    beanList.add(new ExcelExportEntity("VOC","currentvoc"));
+                    break;
+                case "currenttemperature":
+                    beanList.add(isCh ? new ExcelExportEntity("外置探头温度","currenttemperature"):new ExcelExportEntity("EXTERNAL_PROBE_TEMP","currenttemperature"));
+                    break;
+                case "currenthumidity":
+                    beanList.add(isCh ? new ExcelExportEntity("外置探头湿度","currenthumidity") : new ExcelExportEntity("EXTERNAL_PROBE_RH","currenthumidity"));
+                    break;
+                case "outerO2":
+                    beanList.add(isCh ? new ExcelExportEntity("外置探头O2","outerO2") :new ExcelExportEntity("EXTERNAL_PROBE_CO2","outerO2"));
+                    break;
+                case "outerCO2":
+                    beanList.add(isCh ? new ExcelExportEntity("外置探头CO2","outerCO2") : new ExcelExportEntity("EXTERNAL_PROBE_O2","outerCO2"));
+                    break;
+            }
+        }
         return beanList;
     }
 
