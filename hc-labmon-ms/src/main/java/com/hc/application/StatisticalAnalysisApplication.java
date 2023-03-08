@@ -698,14 +698,14 @@ public class StatisticalAnalysisApplication {
                     List<String> xaxis = timePointCurve.getXaxis();
                     List<String> series = timePointCurve.getSeries();
                     xaxis.add(inputTime);
-                    series.add(StringUtils.isEmpty(value) ? "0":value);
+                    series.add(StringUtils.isEmpty(value)?"0":RegularUtil.checkContainsNumbers(value) ? value:"0");
                     map.put(hHmm,timePointCurve);
                 }else {
                     TimePointCurve curve = new TimePointCurve();
                     List<String> xaxis = new ArrayList<>();
                     List<String> series = new ArrayList<>();
                     xaxis.add(inputTime);
-                    series.add(StringUtils.isEmpty(value) ? "0":value);
+                    series.add(StringUtils.isEmpty(value)?"0":RegularUtil.checkContainsNumbers(value) ? value:"0");
                     curve.setXaxis(xaxis);
                     curve.setSeries(series);
                     curve.setName(hHmm);
@@ -734,58 +734,6 @@ public class StatisticalAnalysisApplication {
         });
         sortMap.putAll(map);
         return sortMap;
-    }
-
-    private List<Monitorequipmentlastdata> filterData(List<Monitorequipmentlastdata> lastDataList, String field) {
-        //先以时间（MM-dd）分组
-        Map<String,List<Monitorequipmentlastdata>>  map = new HashMap<>();
-        for (Monitorequipmentlastdata lastData : lastDataList) {
-            Date inputdatetime = lastData.getInputdatetime();
-            String time = DateUtils.paseDateMMdd(inputdatetime);
-            List<Monitorequipmentlastdata> list;
-            if (map.containsKey(time)) {
-                list = map.get(time);
-            }else {
-                list = new ArrayList<>();
-            }
-            list.add(lastData);
-            map.put(time,list);
-        }
-        List<Monitorequipmentlastdata> list = new ArrayList<>();
-        for (String time : map.keySet()) {
-            Monitorequipmentlastdata monitorequipmentlastdata = listToObject(map.get(time), field);
-            list.add(monitorequipmentlastdata);
-        }
-        return list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-    }
-
-    /**
-     * list转化为对象
-     * @param monitorequipmentlastdataList
-     * @return
-     */
-    private Monitorequipmentlastdata listToObject(List<Monitorequipmentlastdata> monitorequipmentlastdataList,String field) {
-        //将list排序以时间递增
-        List<Monitorequipmentlastdata> lastDataList =
-                monitorequipmentlastdataList.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-        Map<String,Object> map = new HashMap<>();
-        //随着数组的遍历该设备的探头监测信息都会被替换成为最新的(也就是离当前时间点最近的有效值)
-        for (Monitorequipmentlastdata monitorequipmentlastdata : lastDataList) {
-            Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
-            filterMap(objectToMap,field);
-            for (String fieldName : objectToMap.keySet()) {
-                if (map.containsKey(fieldName)) {
-                    Object object = map.get(fieldName);
-                    if (!ObjectUtils.isEmpty(objectToMap.get(fieldName))) {
-                        object = objectToMap.get(fieldName);
-                    }
-                    map.put(fieldName,object);
-                }else {
-                    map.put(fieldName,objectToMap.get(fieldName));
-                }
-            }
-        }
-        return JSON.parseObject(JSON.toJSONString(map),Monitorequipmentlastdata.class);
     }
 
     /**
