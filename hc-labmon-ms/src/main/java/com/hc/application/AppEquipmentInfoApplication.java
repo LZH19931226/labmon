@@ -532,7 +532,7 @@ public class AppEquipmentInfoApplication {
                     }else {
                         probeInfoDto.setUnit("");
                     }
-                    probeInfoDto.setValue(probeRedis.getValue());
+                    probeInfoDto.setValue(changeString(probeRedis.getValue(),Context.IsCh()));
                     probeInfoDto.setProbeEName(probeRedis.getProbeEName());
                     probeInfoDto.setInputTime(probeRedis.getInputTime());
                     //缓存中没有找到探头状态时默认为正常
@@ -607,6 +607,25 @@ public class AppEquipmentInfoApplication {
                 break;
         }
         return currentProbeInfoResult;
+    }
+
+    /**
+     * 将不是数字的字符串转化通过中英文改成新的字符串
+     * 参数：String，Boolean
+     * 返回：string
+     */
+    private String changeString(String str, Boolean isChinese) {
+        String result = "";
+        if (StringUtils.isBlank(str) || RegularUtil.checkContainsNumbers(str)) {
+            return str;
+        }
+        if (isChinese) {
+            result = str;
+        } else {
+            result = ProbeOutlier.from(str).name();
+        }
+        return result;
+
     }
 
     private void sort(ProbeCurrentInfoDto res) {
