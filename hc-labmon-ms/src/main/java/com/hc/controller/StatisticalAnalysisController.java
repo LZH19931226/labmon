@@ -117,9 +117,9 @@ public class StatisticalAnalysisController {
      * 报警通知 接口2：导出报警数据
      */
     @JwtIgnore
-    @GetMapping("/exportAlarmNotice")
+    @PostMapping("/exportAlarmNotice")
     @ApiOperation("报警通知查询导出")
-    public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response){
+    public void exportAlarmNotice(@RequestBody AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response){
         statisticalAnalysisApplication.exportAlarmNotice(alarmNoticeCommand,response);
     }
 
