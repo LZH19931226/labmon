@@ -459,10 +459,13 @@ public class AppEquipmentInfoApplication {
             timeoutRedDuration = SysConstants.TIMEOUT_RED_DURATION;
         }
 
+        //获取用户信息 判断是否是实施人员
+        UserRightDto userRightDto = userRightService.getUserRightInfoByUserId(Context.getUserId());
+        boolean isRole = null != userRightDto && (SysConstants.IMPLEMENTERS.equals(userRightDto.getRole()));
+
         List<ProbeCurrentInfoDto> normalList = new ArrayList<>();
         List<ProbeCurrentInfoDto> abnormalList = new ArrayList<>();
         List<ProbeCurrentInfoDto> timeoutList = new ArrayList<>();
-
         //遍历设备信息构建卡片对象
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
             //设置设备信息
@@ -476,9 +479,11 @@ public class AppEquipmentInfoApplication {
             probeInfo.setEquipmentNo(equipmentNo);
             probeInfo.setEquipmentName(monitorEquipmentDto.getEquipmentname());
             probeInfo.setEquipmentTypeId(probeCommand.getEquipmentTypeId());
-            probeInfo.setCompany(monitorEquipmentDto.getCompany());
-            probeInfo.setBrand(monitorEquipmentDto.getBrand());
-            probeInfo.setModel(monitorEquipmentDto.getModel());
+            if(isRole){
+                probeInfo.setCompany(monitorEquipmentDto.getCompany());
+                probeInfo.setBrand(monitorEquipmentDto.getBrand());
+                probeInfo.setModel(monitorEquipmentDto.getModel());
+            }
             //获取数据库探头信息
             List<InstrumentParamConfigDto> instrumentParamConfigs = enoAndProbeMap.get(equipmentNo);
             if(CollectionUtils.isEmpty(instrumentParamConfigs) || null == probeInfoMap.get(equipmentNo)){

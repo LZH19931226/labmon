@@ -42,4 +42,7 @@ public class SysConstants {
 
     /** 设备超时变红默认时间 */
     public static final String TIMEOUT_RED_DURATION = "30";
+
+    /** 实施人员 */
+    public static final String IMPLEMENTERS = "1";
 }
