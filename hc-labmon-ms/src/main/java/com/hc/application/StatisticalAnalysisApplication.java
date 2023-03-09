@@ -1016,6 +1016,7 @@ public class StatisticalAnalysisApplication {
         //情况1：
         if (StringUtils.isEmpty(equipmentTypeId) && StringUtils.isEmpty(equipmentNo)) {
             alarmDataCommand.setEquipmentNo("");
+            return;
         }
         //情况2：
         if(!StringUtils.isEmpty(equipmentTypeId) && StringUtils.isEmpty(equipmentNo)){
@@ -1027,10 +1028,16 @@ public class StatisticalAnalysisApplication {
                 });
                 String substring = stringBuilder.substring(0, stringBuilder.length() - 1);
                 alarmDataCommand.setEquipmentNo(substring);
+                return;
             }
             if(enoList.size() == 1){
                 String eno = enoList.get(0);
                 alarmDataCommand.setEquipmentNo("'"+eno+"'");
+                return;
+            }
+            if(enoList.size()==0){
+                alarmDataCommand.setEquipmentNo("'NO_DATA'");
+                return;
             }
         }
         //情况3:
