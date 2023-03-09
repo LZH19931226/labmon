@@ -113,6 +113,7 @@ public class MonitorEquipmentController {
     }
 
     @PostMapping("/addWiredEquipment")
+    @ApiOperation("/新增有线设备")
     public void addWiredEquipment(@RequestBody WiredEqCommand wiredEqCommand){
         monitorEquipmentApplication.addWiredEquipment(wiredEqCommand);
     }
