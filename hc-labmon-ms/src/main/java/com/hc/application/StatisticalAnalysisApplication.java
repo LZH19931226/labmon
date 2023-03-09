@@ -970,7 +970,7 @@ public class StatisticalAnalysisApplication {
     }
 
     /**
-     * 导出查询报警数据
+     * 导出查询报警汇总数据
      * @param alarmDataCommand
      * @param response
      */

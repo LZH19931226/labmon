@@ -107,8 +107,6 @@ public class ExcelExportUtils {
         return model;
     }
 
-
-
     /**
      * 获取报警通知模板
      */
@@ -192,9 +190,16 @@ public class ExcelExportUtils {
 
     public static List<ExcelExportEntity> getAlarmData(boolean isCh) {
         List<ExcelExportEntity> beanList = new ArrayList<>();
-        beanList.add(new ExcelExportEntity("设备类型","equipmentTypeName"));
-        beanList.add(new ExcelExportEntity("设备名称","equipmentName"));
-        beanList.add(new ExcelExportEntity("设备报警次数","num"));
+        if(isCh){
+            beanList.add(new ExcelExportEntity("设备类型","equipmentTypeName"));
+            beanList.add(new ExcelExportEntity("设备名称","equipmentName"));
+            beanList.add(new ExcelExportEntity("设备报警次数","num"));
+        }else {
+            beanList.add(new ExcelExportEntity("EQUIPMENT_TYPE","equipmentTypeName"));
+            beanList.add(new ExcelExportEntity("EQUIPMENT_NAME","equipmentName"));
+            beanList.add(new ExcelExportEntity("NUMBER_OF_ALARMS","num"));
+        }
+
         return beanList;
     }
 
