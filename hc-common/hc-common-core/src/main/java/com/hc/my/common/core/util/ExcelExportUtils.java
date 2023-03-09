@@ -181,7 +181,7 @@ public class ExcelExportUtils {
         if(isCh){
             beanList.add(new ExcelExportEntity("查询日期","date"));
         }else {
-            beanList.add(new ExcelExportEntity("query date","date"));
+            beanList.add(new ExcelExportEntity("TIME","date"));
         }
         dateList.forEach(res->{
             String hHmm = DateUtils.dateReduceHHmm(res);
