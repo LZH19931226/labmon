@@ -1,6 +1,5 @@
 package com.hc.application.command;
 
-import com.hc.dto.MonitorinstrumentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +40,15 @@ public class WiredEqCommand {
 
     /** 设备型号 */
     private String equipmentBrand;
+
+    /** 公司 */
+    private String company;
+
+    /** 品牌*/
+    private String brand;
+
+    /** 型号 */
+    private String model;
 
     private List<InstrumentparamconfigCommand> probeList;
 

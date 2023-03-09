@@ -1285,6 +1285,9 @@ public class MonitorEquipmentApplication {
                 .setEquipmentTypeId(wiredEqCommand.getEquipmentTypeId())
                 .setAddress(wiredEqCommand.getAddress())
                 .setSort(wiredEqCommand.getSort())
+                .setCompany(wiredEqCommand.getCompany())
+                .setBrand(wiredEqCommand.getBrand())
+                .setModel(wiredEqCommand.getModel())
                 .setCreateTime(new Date());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
