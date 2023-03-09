@@ -187,6 +187,7 @@ public class StatisticalAnalysisApplication {
 
     private List<AlarmNoticeResult> processData(List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList, Map<String, List<UserRightDto>> phoneMap) {
         List<AlarmNoticeResult> list = new ArrayList<>();
+        boolean isCh = Context.IsCh();
         for (LabMessengerPublishTaskDto labMessengerPublishTaskDto : labMessengerPublishTaskDtoList) {
             AlarmNoticeResult alarmNoticeResult = new AlarmNoticeResult();
             alarmNoticeResult.setDataLoggingTime(labMessengerPublishTaskDto.getPublishTime());
@@ -200,13 +201,13 @@ public class StatisticalAnalysisApplication {
             }else {
                 String remark = labMessengerPublishTaskDto.getRemark();
                 String publishType = labMessengerPublishTaskDto.getPublishType();
-                alarmNoticeResult.setFReason("SMS".equals(publishType) ? SmsCode.SmsCodeParse(remark) : MailCode.MailCodePase(remark));
+                alarmNoticeResult.setFReason("SMS".equals(publishType) ? (isCh ? SmsCode.SmsCodeParse(remark) : remark):(isCh ? MailCode.MailCodePase(remark): remark));
             }
-//            if("zh".equals(lang)){
+            if(Context.IsCh()){
                 alarmNoticeResult.setMailContent(labMessengerPublishTaskDto.getMessageCover()+"出现异常,请尽快查看");
-//            }else {
-//                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageCover()));
-//            }
+            }else {
+                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageCover()));
+            }
             if (phoneMap.containsKey(labMessengerPublishTaskDto.getPublishKey())) {
                 alarmNoticeResult.setUserName(phoneMap.get(labMessengerPublishTaskDto.getPublishKey()).get(0).getUsername());
             }else {
@@ -219,7 +220,7 @@ public class StatisticalAnalysisApplication {
 
     public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response) {
         //1.获取报警通知模板
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmNoticeModel();
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmNoticeModel(Context.IsCh());
         //2.查出数据库信息
         List<LabMessengerPublishTaskDto> alarmNoticeInfo = labMessengerPublishTaskService.getAlarmNoticeInfo(null, alarmNoticeCommand);
         if(CollectionUtils.isEmpty(alarmNoticeInfo)){
@@ -552,7 +553,7 @@ public class StatisticalAnalysisApplication {
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> equipmentData = monitorequipmentlastdataRepository.getEquipmentData(null, dataParam);
         //设置tittle
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList);
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList,Context.IsCh());
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata equipmentDatum : equipmentData) {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);

@@ -20,48 +20,55 @@ public class ExcelExportUtils {
 
     public static final String SYSTEM_LOG_OPERATION = "系统日志操作信息";
 
-
     /**
      * 获取报警通知模板
      */
-    public static List<ExcelExportEntity> getAlarmNoticeModel(){
+    public static List<ExcelExportEntity> getAlarmNoticeModel(boolean isCh){
         List<ExcelExportEntity> beanList = new ArrayList<>();
-        beanList.add(new ExcelExportEntity("数据记录时间","dataLoggingTime"));
-        beanList.add(new ExcelExportEntity("通知人员","userName"));
-        beanList.add(new ExcelExportEntity("通知的手机号","phoneNum"));
-        beanList.add(new ExcelExportEntity("通知类型","publishType"));
-        beanList.add(new ExcelExportEntity("通知状态","state"));
-        beanList.add(new ExcelExportEntity("失败原因","fReason"));
-        beanList.add(new ExcelExportEntity("邮件内容","mailContent"));
+        if(isCh){
+            beanList.add(new ExcelExportEntity("数据记录时间","dataLoggingTime"));
+            beanList.add(new ExcelExportEntity("通知人员","userName"));
+            beanList.add(new ExcelExportEntity("通知的手机号","phoneNum"));
+            beanList.add(new ExcelExportEntity("通知类型","publishType"));
+            beanList.add(new ExcelExportEntity("通知状态","state"));
+            beanList.add(new ExcelExportEntity("失败原因","fReason"));
+            beanList.add(new ExcelExportEntity("邮件内容","mailContent"));
+        }else {
+            beanList.add(new ExcelExportEntity("TIME","dataLoggingTime"));
+            beanList.add(new ExcelExportEntity("NOTIFY_STAFF","userName"));
+            beanList.add(new ExcelExportEntity("MOBILE_PHONE","phoneNum"));
+            beanList.add(new ExcelExportEntity("NOTIFICATION_TYPE","publishType"));
+            beanList.add(new ExcelExportEntity("NOTIFICATION_STATUS","state"));
+            beanList.add(new ExcelExportEntity("REASONS_FOR_FAILURE","fReason"));
+            beanList.add(new ExcelExportEntity("MAIL_CONTENT","mailContent"));
+        }
         return beanList;
     }
 
-    /**
-     * 获取英文报警通知模板
-     */
-    public static List<ExcelExportEntity> getUsAlarmNoticeModel(){
+    public static List<ExcelExportEntity> getEquipmentData(List<String> fieldList,boolean isCh){
         List<ExcelExportEntity> beanList = new ArrayList<>();
-        beanList.add(new ExcelExportEntity("TIME","dataLoggingTime"));
-        beanList.add(new ExcelExportEntity("NOTIFY_PEOPLE","userName"));
-        beanList.add(new ExcelExportEntity("NOTIFY_PHONE","phoneNum"));
-        beanList.add(new ExcelExportEntity("NOTIFY_TYPE","publishType"));
-        beanList.add(new ExcelExportEntity("NOTIFY_STATE","state"));
-        beanList.add(new ExcelExportEntity("FAIL_REASON","fReason"));
-        beanList.add(new ExcelExportEntity("MAIL_CONTENT","mailContent"));
-        return beanList;
-    }
-
-    public static List<ExcelExportEntity> getEquipmentData(List<String> fieldList){
-        List<ExcelExportEntity> beanList = new ArrayList<>();
-        beanList.add(new ExcelExportEntity("记录时间","inputdatetime"));
-        for (String field : fieldList) {
-            DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
-            if(null != dataFieldEnum){
-                String cName = dataFieldEnum.getCName();
-                String unit = dataFieldEnum.getUnit();
-                beanList.add(new ExcelExportEntity(cName+"("+unit+")",field));
+        if(isCh){
+            beanList.add(new ExcelExportEntity("记录时间","inputdatetime"));
+            for (String field : fieldList) {
+                DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+                if(null != dataFieldEnum){
+                    String cName = dataFieldEnum.getCName();
+                    String unit = dataFieldEnum.getUnit();
+                    beanList.add(new ExcelExportEntity(cName+"("+unit+")",field));
+                }
+            }
+        }else {
+            beanList.add(new ExcelExportEntity("Time","inputdatetime"));
+            for (String field : fieldList) {
+                DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+                if(null != dataFieldEnum){
+                    String eName = dataFieldEnum.getEName();
+                    String unit = dataFieldEnum.getUnit();
+                    beanList.add(new ExcelExportEntity(eName+"("+unit+")",field));
+                }
             }
         }
+
         return beanList;
     }
 
