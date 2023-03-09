@@ -186,6 +186,9 @@ public class MonitorEquipmentApplication {
                     .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
                     .warningTimeList(warningTimeVos)
                     .address(StringUtils.isBlank(monitorEquipmentDto.getAddress())?"":monitorEquipmentDto.getAddress())
+                    .company(monitorEquipmentDto.getCompany())
+                    .brand(monitorEquipmentDto.getBrand())
+                    .model(monitorEquipmentDto.getModel())
                     .build();
             list.add(monitorEquipmentVo);
         }
@@ -291,6 +294,9 @@ public class MonitorEquipmentApplication {
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setAddress(monitorEquipmentCommand.getAddress())
                 .setSort(monitorEquipmentCommand.getSort())
+                .setCompany(monitorEquipmentCommand.getCompany())
+                .setBrand(monitorEquipmentCommand.getBrand())
+                .setModel(monitorEquipmentCommand.getModel())
                 .setCreateTime(new Date());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
@@ -598,6 +604,9 @@ public class MonitorEquipmentApplication {
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
                 .setAddress(monitorEquipmentCommand.getAddress())
                 .setSort(monitorEquipmentCommand.getSort())
+                .setCompany(monitorEquipmentCommand.getCompany())
+                .setBrand(monitorEquipmentCommand.getBrand())
+                .setModel(monitorEquipmentCommand.getModel())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 

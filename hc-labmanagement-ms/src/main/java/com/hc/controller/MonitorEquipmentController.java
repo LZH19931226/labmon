@@ -35,9 +35,10 @@ public class MonitorEquipmentController {
     }
 
     /**
-     *
+     *获取设备配置信息
      * */
     @GetMapping("/getInstrumentMonitorInfo")
+    @ApiOperation("获取设备配置信息")
     private List<InstrumentmonitorVo> getProbeInfoByITypeId(@RequestParam("instrumentTypeId") String instrumentTypeId){
         return monitorEquipmentApplication.getProbeInfoByITypeId(instrumentTypeId);
     }

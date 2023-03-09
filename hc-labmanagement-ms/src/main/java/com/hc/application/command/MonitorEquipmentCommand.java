@@ -114,4 +114,13 @@ public class MonitorEquipmentCommand {
     /** 排序 */
     private Integer sort;
 
+    /** 公司 */
+    private String company;
+
+    /** 品牌*/
+    private String brand;
+
+    /** 型号 */
+    private String model;
+
 }

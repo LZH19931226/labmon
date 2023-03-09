@@ -79,4 +79,13 @@ public class MonitorEquipmentPo implements Serializable {
 
     /** 设备地址 */
     private String address;
+
+    /** 公司 */
+    private String company;
+
+    /** 品牌*/
+    private String brand;
+
+    /** 型号 */
+    private String model;
 }

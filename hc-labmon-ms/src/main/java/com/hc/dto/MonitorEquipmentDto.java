@@ -107,6 +107,15 @@ public class MonitorEquipmentDto implements Serializable {
     @TableField(value = "warning_switch")
     private String warningSwitch;
 
+    /** 公司 */
+    private String company;
+
+    /** 品牌*/
+    private String brand;
+
+    /** 型号 */
+    private String model;
+
     @TableField(exist = false)
     private String instrumentNo;
 
