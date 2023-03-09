@@ -44,6 +44,16 @@ public class ProbeCurrentInfoDto {
      */
     private String state;
 
+    /** 公司 */
+    private String company;
+
+    /** 品牌*/
+    private String brand;
+
+    /** 型号 */
+    private String model;
+
+
     /**
      * 探头集合
      */

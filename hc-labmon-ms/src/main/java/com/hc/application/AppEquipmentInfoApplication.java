@@ -476,6 +476,9 @@ public class AppEquipmentInfoApplication {
             probeInfo.setEquipmentNo(equipmentNo);
             probeInfo.setEquipmentName(monitorEquipmentDto.getEquipmentname());
             probeInfo.setEquipmentTypeId(probeCommand.getEquipmentTypeId());
+            probeInfo.setCompany(monitorEquipmentDto.getCompany());
+            probeInfo.setBrand(monitorEquipmentDto.getBrand());
+            probeInfo.setModel(monitorEquipmentDto.getModel());
             //获取数据库探头信息
             List<InstrumentParamConfigDto> instrumentParamConfigs = enoAndProbeMap.get(equipmentNo);
             if(CollectionUtils.isEmpty(instrumentParamConfigs) || null == probeInfoMap.get(equipmentNo)){
