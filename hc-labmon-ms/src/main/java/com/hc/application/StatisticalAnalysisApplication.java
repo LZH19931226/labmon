@@ -235,8 +235,8 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(alarmNoticeResult);
             mapList.add(objectToMap);
         }
-        exportLogService.buildLogInfo(alarmNoticeCommand.getUserId(),ExcelExportUtils.ALARM_DATA_NOTICE, OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.ALARM_NOTIFICATION_QUERY.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.ALARM_DATA_NOTICE,beanList,mapList,response);
+        exportLogService.buildLogInfo(alarmNoticeCommand.getUserId(),ExcelExportUtils.getAlarmDataNoticeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.ALARM_NOTIFICATION_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getAlarmDataNoticeModel(),beanList,mapList,response);
     }
 
     /**
@@ -527,7 +527,7 @@ public class StatisticalAnalysisApplication {
     public void exportEquipmentData(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
         List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
         if(CollectionUtils.isEmpty(filterList)){
-            throw new IedsException("筛选条件不能为空");
+                throw new IedsException("FILTER_NOT_NULL");
         }
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         String startTime = equipmentDataCommand.getStartTime();
@@ -546,8 +546,8 @@ public class StatisticalAnalysisApplication {
                 resultList.add(objectToMap);
             }
             List<ExcelExportEntity> mt310DCEqData = ExcelExportUtils.getMT310DCEqData(Context.IsCh(),fieldList);
-            exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_CUSTOM, OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
-            FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_CUSTOM,mt310DCEqData,resultList,response);
+            exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
+            FileUtil.exportExcel(ExcelExportUtils.getEquipmentDataModel(),mt310DCEqData,resultList,response);
             return;
         }
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
@@ -560,8 +560,8 @@ public class StatisticalAnalysisApplication {
             ObjectConvertUtils.filterMap(objectToMap,fieldList);
             mapList.add(objectToMap);
         }
-        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_CUSTOM, OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_CUSTOM,beanList,mapList,response);
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getEquipmentDataModel(),beanList,mapList,response);
     }
 
     /**
@@ -925,10 +925,10 @@ public class StatisticalAnalysisApplication {
         }
         List<Map<String, Object>> mapList = list.stream().sorted(Comparator.comparing(o -> (String) o.get("date"))).collect(Collectors.toList());
         //获取tittle
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,flag);
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,Context.IsCh());
 
-        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME,beanList,mapList,httpServletResponse);
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataPointInTimeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getEquipmentDataPointInTimeModel(),beanList,mapList,httpServletResponse);
 
     }
 
@@ -990,8 +990,8 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = getObjectToMap(res);
             mapList.add(objectToMap);
         });
-        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.ALARM_DATA_SUMMARY,OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.ALARM_SUMMARY_QUERY.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.ALARM_DATA_SUMMARY,beanList,mapList,response);
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getAlarmDataSummaryModel(),OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.ALARM_SUMMARY_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getAlarmDataSummaryModel(),beanList,mapList,response);
     }
 
     private  List<Warningrecord> transformData(List<Warningrecord> list) {

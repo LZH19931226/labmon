@@ -1,7 +1,6 @@
 package com.hc.application;
 
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.hutool.poi.excel.ExcelFileUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.operation.ExportLogCommand;
@@ -133,7 +132,6 @@ public class OperationlogApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(res);
             mapList.add(objectToMap);
         }
-        FileUtil.exportExcel(ExcelExportUtils.SYSTEM_LOG_OPERATION,beanList,mapList,response);
+        FileUtil.exportExcel(ExcelExportUtils.getSystemLogOperationModel(),beanList,mapList,response);
     }
-
 }

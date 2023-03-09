@@ -2,6 +2,7 @@ package com.hc.my.common.core.util;
 
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
+import com.hc.my.common.core.struct.Context;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,15 +11,103 @@ import java.util.List;
 public class ExcelExportUtils {
 
     public static final String EQUIPMENT_DATA_CUSTOM = "设备数据自定义查询";
+    public static final String EQUIPMENT_DATA_CUSTOM_US = "EQUIPMENT_DATA_CUSTOM";
     public static final String EQUIPMENT_DATA_POINT_IN_TIME = "设备数据时间点查询";
+    public static final String EQUIPMENT_DATA_POINT_IN_TIME_US = "EQUIPMENT_DATA_POINT_IN_TIME";
 
     public static final String ALARM_DATA_SUMMARY = "报警数据报警汇总查询";
+    public static final String ALARM_DATA_SUMMARY_US = "ALARM_DATA_SUMMARY";
     public static final String ALARM_DATA_NOTICE = "报警数据报警通知查询";
+    public static final String ALARM_DATA_NOTICE_US = "ALARM_DATA_NOTICE";
+
+
     public static final String ALARM_DATA_TIMEOUT = "报警数据超时数据查询";
 
     public static final String SYSTEM_DATA_HEARTBEAT = "系统数据丢包率查询";
+    public static final String SYSTEM_DATA_HEARTBEAT_US = "SYSTEM_DATA_HEARTBEAT";
 
     public static final String SYSTEM_LOG_OPERATION = "系统日志操作信息";
+    public static final String SYSTEM_LOG_OPERATION_US = "SYSTEM_LOG_OPERATION";
+
+    /**
+     * 获取设备数据自定义查询 返回string
+     */
+    public static String getEquipmentDataModel() {
+        String model = "";
+        if (Context.IsCh()) {
+            model = EQUIPMENT_DATA_CUSTOM;
+        } else {
+            model = EQUIPMENT_DATA_CUSTOM_US;
+        }
+        return model;
+    }
+
+    /**
+     * 获取设备数据时间点查询 返回string
+     */
+    public static String getEquipmentDataPointInTimeModel() {
+        String model = "";
+        if (Context.IsCh()) {
+            model = EQUIPMENT_DATA_POINT_IN_TIME;
+        } else {
+            model = EQUIPMENT_DATA_POINT_IN_TIME_US;
+        }
+        return model;
+    }
+
+    /**
+     * 获取报警数据报警汇总查询 返回string
+     */
+    public static String getAlarmDataSummaryModel() {
+        String model = "";
+        if (Context.IsCh()) {
+            model = ALARM_DATA_SUMMARY;
+        } else {
+            model = ALARM_DATA_SUMMARY_US;
+        }
+        return model;
+    }
+
+    /**
+     * 获取报警数据报警通知查询 返回string
+     */
+    public static String getAlarmDataNoticeModel() {
+        String model = "";
+        if (Context.IsCh()) {
+            model = ALARM_DATA_NOTICE;
+        } else {
+            model = ALARM_DATA_NOTICE_US;
+        }
+        return model;
+    }
+
+    /**
+     * 获取系统数据丢包率查询 返回string
+     */
+    public static String getSystemDataHeartbeatModel() {
+        String model = "";
+        if (Context.IsCh()) {
+            model = SYSTEM_DATA_HEARTBEAT;
+        } else {
+            model = SYSTEM_DATA_HEARTBEAT_US;
+        }
+        return model;
+    }
+
+    /**
+     * 获取系统日志操作信息
+     */
+    public static String getSystemLogOperationModel() {
+        String model = "";
+        if (Context.IsCh()) {
+            model = SYSTEM_LOG_OPERATION;
+        } else {
+            model = SYSTEM_LOG_OPERATION_US;
+        }
+        return model;
+    }
+
+
 
     /**
      * 获取报警通知模板
@@ -91,17 +180,13 @@ public class ExcelExportUtils {
         List<ExcelExportEntity> beanList = new ArrayList<>();
         if(isCh){
             beanList.add(new ExcelExportEntity("查询日期","date"));
-            dateList.forEach(res->{
-                String hHmm = DateUtils.dateReduceHHmm(res);
-                beanList.add(new ExcelExportEntity(hHmm,hHmm));
-            });
         }else {
             beanList.add(new ExcelExportEntity("query date","date"));
-            dateList.forEach(res->{
-                String hHmm = DateUtils.dateReduceHHmm(res);
-                beanList.add(new ExcelExportEntity(hHmm,hHmm));
-            });
         }
+        dateList.forEach(res->{
+            String hHmm = DateUtils.dateReduceHHmm(res);
+            beanList.add(new ExcelExportEntity(hHmm,hHmm));
+        });
         return beanList;
     }
 

@@ -137,8 +137,8 @@ public class SystemDataApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             mapList.add(objectToMap);
         }
-        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.SYSTEM_DATA_HEARTBEAT, OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.PACKET_LOSS_QUERY.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.SYSTEM_DATA_HEARTBEAT,beanList,mapList,response);
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getSystemDataHeartbeatModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.PACKET_LOSS_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getSystemDataHeartbeatModel(),beanList,mapList,response);
     }
 
     //hospitalCode startTime  endTime
