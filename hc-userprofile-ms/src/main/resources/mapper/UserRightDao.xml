@@ -13,6 +13,7 @@
         UNION
 
         SELECT username FROM userright WHERE userid = #{userId}
+        limit 1
     </select>
 
     <select id="findUserRightList" resultType="com.hc.dto.UserRightDto">
