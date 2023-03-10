@@ -8,7 +8,6 @@ import com.hc.my.common.core.redis.dto.InstrumentmonitorDto;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,6 +93,7 @@ public class InstrumentparamconfigController {
     }
 
     @PostMapping("/editHighLowLimit")
+    @ApiOperation("修改app高低值")
     public void editHighLowLimit(@RequestBody InstrumentparamconfigCommand instrumentparamconfigCommand){
         instrumentparamconfigApplication.editHighLowLimit(instrumentparamconfigCommand);
     }

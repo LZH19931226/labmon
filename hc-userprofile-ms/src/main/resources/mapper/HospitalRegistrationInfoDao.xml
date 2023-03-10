@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.infrastructure.dao.HospitalRegistrationInfoDao">
+
+
+    <select id="selectListByHospital" resultType="com.hc.dto.HospitalRegistrationInfoDto">
+        SELECT
+        hospitalcode hospitalCode,
+        hospitalname hospitalName,
+        isenable  isEnable,
+        hospitalfullname hospitalFullName,
+        alwayalarm AS alwaysAlarm,
+        begintime beginTime,
+        endtime endTime,
+        timeout,update_time AS updateTime,
+        timeInterval,
+        update_by AS updateBy ,
+        timeout_red_duration as timeoutRedDuration,
+        factor as factor,
+        sound_light_alarm as soundLightAlarm
+        FROM hospitalofreginfo where 1=1
+        <if test = "hospitalName != null  and hospitalName != ''">
+            and hospitalname like concat("%", #{hospitalName},"%")
+        </if>
+        <if  test = "isEnable != null and isEnable != '' ">
+            and isenable = #{isEnable}
+        </if>
+
+    </select>
+
+    <select id="selectHospitalName" resultType="com.hc.po.HospitalEquipmentPo">
+        select
+            *
+        from
+            hospitalofreginfo
+        where hospitalname = #{hospitalName}
+          and hospitalcode != #{hospitalCode}
+    </select>
+
+    <select id="selectHospitalCodeList" resultType="java.lang.String">
+        select hospitalcode from hospitalofreginfo
+    </select>
+</mapper>
+
+

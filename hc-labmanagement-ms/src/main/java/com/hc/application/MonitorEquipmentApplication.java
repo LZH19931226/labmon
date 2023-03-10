@@ -533,9 +533,9 @@ public class MonitorEquipmentApplication {
         }
 
         //根据useid获取用户信息
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(!ObjectUtils.isEmpty(userInfo)){
-            logInfoCommand.setUsername(userInfo.getUsername());
+        String userName = userRightInfoApi.getUserName(userId).getResult();
+        if(StringUtils.isNotEmpty(userName)){
+            logInfoCommand.setUsername(userName);
         }
 
         //新增是设备no为空 修改时不为空

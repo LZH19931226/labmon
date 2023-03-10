@@ -6,7 +6,6 @@ import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.po.HospitalEquipmentPo;
 import com.hc.po.HospitalRegistrationInfoPo;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -22,29 +21,6 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
      * @param isEnable 是否启用
      * @return 医院信息传输对象集合
      */
-    @Select("<script>"+
-            "SELECT " +
-            "hospitalcode hospitalCode," +
-            "hospitalname hospitalName," +
-            "isenable  isEnable," +
-            "hospitalfullname hospitalFullName," +
-            "alwayalarm AS alwaysAlarm," +
-            "begintime beginTime," +
-            "endtime endTime," +
-            "timeout,update_time AS updateTime," +
-            "timeInterval," +
-            "update_by AS updateBy ," +
-            "timeout_red_duration as timeoutRedDuration, " +
-            "factor as factor, " +
-            "sound_light_alarm as soundLightAlarm " +
-            "FROM hospitalofreginfo where 1=1 " +
-            "<if test = 'hospitalName != null  and hospitalName != \"\"'> " +
-            "and hospitalname like concat('%', #{hospitalName},'%')" +
-            "</if> " +
-            "<if  test = 'isEnable != null and isEnable != \"\" '> " +
-            "and isenable = #{isEnable}"+
-            "</if>" +
-            "</script>")
     List<HospitalRegistrationInfoDto> selectListByHospital(Page page,
                                                            @Param(value = "hospitalName") String hospitalName,
                                                            @Param(value = "isEnable") String isEnable);
@@ -56,9 +32,8 @@ public interface HospitalRegistrationInfoDao extends BaseMapper<HospitalRegistra
      * @param hospitalCode 医院编码
      * @return 医院设备对象
      */
-    @Select("select * from hospitalofreginfo where hospitalname = #{hospitalName}  and hospitalcode != #{hospitalCode}")
     HospitalEquipmentPo selectHospitalName(@Param("hospitalName") String hospitalName, @Param("hospitalCode") String hospitalCode);
 
-    @Select("select hospitalcode from hospitalofreginfo")
+
     List<String> selectHospitalCodeList();
 }

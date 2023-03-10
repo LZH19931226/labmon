@@ -3,7 +3,6 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
-import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
 import com.hc.device.ProbeRedisApi;
@@ -23,6 +22,7 @@ import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
@@ -198,6 +198,10 @@ public class InstrumentparamconfigApplication {
 
     }
 
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
+
+
     /**
      * 构建InstrumentParamConfigInfoCommand对象
      * @param userId 用户id
@@ -210,9 +214,9 @@ public class InstrumentparamconfigApplication {
     private InstrumentParamConfigInfoCommand build(String userId, InstrumentparamconfigCommand old, InstrumentparamconfigCommand newInfo, String type, String operationType) {
         InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
         //获取用户名称
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(null!=userInfo){
-            infoCommand.setUsername(userInfo.getUsername());
+        String username = userRightInfoApi.getUserName(userId).getResult();
+        if(StringUtils.isNotBlank(username)){
+            infoCommand.setUsername(username);
         }
         //获取医院信息
         String instrumentNo =  old.getInstrumentNo() != null ? old.getInstrumentNo() : newInfo.getInstrumentNo();
@@ -549,6 +553,7 @@ public class InstrumentparamconfigApplication {
             result.setLowLimit(instrumentparamconfigCommand.getLowlimit());
             probeRedisApi.addProbeRedisInfo(result);
         }
+
         InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
                 build(Context.getUserId(),
                         BeanConverter.convert(instrumentparamconfigDTO,InstrumentparamconfigCommand.class),

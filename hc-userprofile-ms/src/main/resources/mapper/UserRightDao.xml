@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.infrastructure.dao.UserRightDao">
+
+    <update id="checkUsername">
+        select count(*) from userright where username = #{userName}
+    </update>
+
+    <select id="getUserName" resultType="java.lang.String">
+        SELECT username FROM userback WHERE userid = #{userId}
+
+        UNION
+
+        SELECT username FROM userright WHERE userid = #{userId}
+    </select>
+
+    <select id="findUserRightList" resultType="com.hc.dto.UserRightDto">
+        SELECT
+        u.userid userid
+        ,u.username username
+        ,u.pwd pwd
+        ,u.nickname nickname
+        ,h.hospitalname hospitalName
+        ,h.hospitalcode hospitalCode
+        ,u.phonenum  phoneNum
+        ,u.isuse isUse
+        ,u.usertype userType
+        ,u.devicetype deviceType
+        ,u.timeout timeout
+        ,u.timeoutwarning timeoutWarning
+        ,u.reminders reminders
+        ,u.role role
+        FROM userright u
+        LEFT JOIN hospitalofreginfo h ON u.hospitalcode = h.hospitalcode
+        where 1=1
+        <if test = "hospitalCode !=null and hospitalCode != ''">
+            and h.hospitalcode = #{hospitalCode}
+        </if>
+        <if test = "isUse != null">
+            and u.isuse  = #{isUse}
+        </if>
+        <if test = "username != null and username != ''">
+            and (u.nickname like concat('%',#{username},'%') or u.phonenum like concat('%',#{username},'%'))
+        </if>
+
+    </select>
+</mapper>
+
+
