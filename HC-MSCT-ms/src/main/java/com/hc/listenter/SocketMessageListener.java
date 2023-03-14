@@ -186,9 +186,13 @@ public class SocketMessageListener {
                 //异步推送报警短信
                 warningrecord = warningService.pushNotification(userList, model, hospitalInfoDto);
                 //如果该医院开启了声光报警则需要推送声光报警指令
-                if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
-                    soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
+                String soundLightAlarm = hospitalInfoDto.getSoundLightAlarm();
+                if(StringUtils.isNotEmpty(soundLightAlarm)){
+                    if (StringUtils.equals(soundLightAlarm, DictEnum.TURN_ON.getCode())){
+                        soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
+                    }
                 }
+
             }
             //不满足报警规则,但是超量程的数据也需要记录
             //将信息推送到redis,再批量插入
