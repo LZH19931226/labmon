@@ -243,7 +243,9 @@ public class SystemDataApplication {
                 }
             }
         });
+
         return warningRecordList;
+
     }
 
     /**
@@ -385,6 +387,6 @@ public class SystemDataApplication {
             equipmentDtoList.add(alarmEquipmentNumDto);
 
         });
-        return equipmentDtoList;
+        return equipmentDtoList.stream().sorted(Comparator.comparing(AlarmEquipmentNumDto::getNum).reversed()).collect(Collectors.toList());
     }
 }

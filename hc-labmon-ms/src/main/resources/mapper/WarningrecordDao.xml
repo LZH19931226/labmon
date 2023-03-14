@@ -99,6 +99,7 @@
         where hospitalcode = #{hospitalCode}
           and inputdatetime <![CDATA[>=]]> #{startTime}
           and inputdatetime <![CDATA[<=]]> #{endTime}
+        ORDER by inputdatetime desc
     </select>
 
     <select id="getWarningRecord" resultType="com.hc.clickhouse.po.Warningrecord">
