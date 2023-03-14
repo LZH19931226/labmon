@@ -223,6 +223,7 @@ public class WarningServiceImpl implements WarningService {
             //老版本mt200m判断逻辑生产周大于20年15周为新的mt200m报警逻辑更改
             String proSn = sn.substring(0, 4);
             String sns = sn.substring(4, 6);
+
             if (Integer.parseInt(proSn) < 2031) {
                 //当一路温度值存在异常，整个值无效
                 // 当两个值相差3度，值无效
@@ -231,23 +232,22 @@ public class WarningServiceImpl implements WarningService {
                 }
                 warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
             } else {
-                if (!StringUtils.equals(sns, "17")) {
+                if (StringUtils.equals(sns, "17")){
+                    InstrumentInfoDto mt200mHighLimit = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + 14).getResult();
+                    if(null!=mt200mHighLimit){
+                        //大于最大值
+                        if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
+                            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+                        } else {
+                            return null;
+                        }
+                    }
+                }else {
                     if (!checkProbeValue(warningAlarmDo, probe)) {
                         return null;
                     }
                     warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
                 }
-                //获取二路温度探头设置的值
-                InstrumentInfoDto mt200mHighLimit = probeRedisApi.getProbeRedisInfo(hospitalcode, monitorinstrument.getInstrumentno() + ":" + 14).getResult();
-                if(null!=mt200mHighLimit){
-                    //大于最大值
-                    if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
-                        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
-                    } else {
-                        return null;
-                    }
-                }
-                return null;
             }
         }
         //高低值判断

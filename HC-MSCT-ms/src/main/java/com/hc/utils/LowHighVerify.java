@@ -2,6 +2,7 @@ package com.hc.utils;
 
 
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.util.RegularUtil;
 
 import java.math.BigDecimal;
 
@@ -43,9 +44,11 @@ public class LowHighVerify {
     }
 
     public static void main(String[] args){
-
-
-
+        InstrumentInfoDto probe = new InstrumentInfoDto();
+        probe.setLowLimit(new BigDecimal(-190));
+        probe.setHighLimit(new BigDecimal(-200));
+        System.out.println( !verify(probe, "-185.24"));
+        System.out.println(!RegularUtil.checkContainsNumbers("-185.24"));
     }
 
 
