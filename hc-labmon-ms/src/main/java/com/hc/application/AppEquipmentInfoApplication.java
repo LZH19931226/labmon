@@ -489,6 +489,8 @@ public class AppEquipmentInfoApplication {
             if(CollectionUtils.isEmpty(instrumentParamConfigs) || null == probeInfoMap.get(equipmentNo)){
                 probeInfo.setState(SysConstants.EQ_ABNORMAL);
                 abnormalList.add(probeInfo);
+                probeInfo.setInstrumentConfigIdList(new ArrayList<>());
+                probeInfo.setProbeInfoDtoList(new ArrayList<>());
             }
             else
             {
