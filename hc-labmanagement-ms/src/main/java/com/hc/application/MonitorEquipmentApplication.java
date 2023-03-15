@@ -267,10 +267,10 @@ public class MonitorEquipmentApplication {
 
         //判断同医院设备名称是否有重复
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
-        Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
-        if(integer1>0){
-            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
-        }
+//        Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+//        if(integer1>0){
+//            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
+//        }
 
         //插入到monitorequipment表中
         String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
@@ -564,13 +564,13 @@ public class MonitorEquipmentApplication {
                 monitorEquipmentService.selectMonitorEquipmentInfoByNo(monitorEquipmentCommand.getEquipmentNo());
         MonitorEquipmentDto equipmentDto = equipmentDtoList.get(0);
         //判断设备名称有没有修改
-        if(!equipmentName.equals(equipmentDto.getEquipmentName())){
-            //修改时用判断该医院下设备名称是否已存在
-            Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
-            if(integer>0){
-                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
-            }
-        }
+//        if(!equipmentName.equals(equipmentDto.getEquipmentName())){
+//            //修改时用判断该医院下设备名称是否已存在
+//            Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+//            if(integer>0){
+//                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
+//            }
+//        }
         //用于redis判断sn是否修改
         String newSn = monitorEquipmentCommand.getSn();
         String oldSn = equipmentDto.getSn();
