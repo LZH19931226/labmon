@@ -1179,10 +1179,10 @@ public class cmdidParseUtils {
     }
 
     public static void main(String[] args) {
-        String id = "48 43 B0 11 32 31 35 30 31 39 30 30 30 31 0E 74 0E 74 50 7C 25 AC 23";
+        String id = "4843a51a323031363036303030390e7501ab025e270f0e780000000000006d23";
         String s = id.replaceAll(" ", "");
 //        String s="48439110313830383939303032380E7300B102276823";
-        ParamaterModel paramaterModel = paseB0(s, "2150190001", "b0");
+        ParamaterModel paramaterModel = paseA5(s, "2016060009", "a5");
         System.out.println(paramaterModel);
     }
 
@@ -1275,7 +1275,7 @@ public class cmdidParseUtils {
         paramaterModel.setCO2(CustomUtils.agreementAll(co2,"0","20"));
         String substring4 = cmd.substring(40, 44);
         String rh = paseAir(substring4);
-        paramaterModel.setRH(CustomUtils.agreementAll(rh,"0","99"));
+        paramaterModel.setRH(CustomUtils.agreementAll(rh,"10","100"));
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
