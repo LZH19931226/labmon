@@ -182,7 +182,7 @@ public class StatisticalAnalysisApplication {
         }
         List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList =  labMessengerPublishTaskService.getAlarmNoticeInfo(page,alarmNoticeCommand);
         if(CollectionUtils.isEmpty(labMessengerPublishTaskDtoList)){
-            return null;
+            return page;
         }
         Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> list = processData(labMessengerPublishTaskDtoList,phoneMap);
