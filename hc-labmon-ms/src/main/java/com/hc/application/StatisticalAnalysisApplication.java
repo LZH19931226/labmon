@@ -169,15 +169,20 @@ public class StatisticalAnalysisApplication {
      */
     public Page<AlarmNoticeResult> getAlarmNotice(AlarmNoticeCommand alarmNoticeCommand) {
         Page<AlarmNoticeResult> page = new Page<>(alarmNoticeCommand.getPageCurrent(),alarmNoticeCommand.getPageSize());
+        List<UserRightDto> userRightDtoList = new ArrayList<>();
+        //判断是否输入手机号，没有就查询该医院所有的手机号
+        if(StringUtils.isEmpty(alarmNoticeCommand.getPhoneNum())){
+            userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
+        }
+        if(CollectionUtils.isNotEmpty(userRightDtoList)){
+            List<String> collect = userRightDtoList.stream().map(UserRightDto::getPhoneNum).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+            alarmNoticeCommand.setPhones(collect);
+        }else {
+            alarmNoticeCommand.setPhones(Collections.singletonList(alarmNoticeCommand.getPhoneNum()));
+        }
         List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList =  labMessengerPublishTaskService.getAlarmNoticeInfo(page,alarmNoticeCommand);
         if(CollectionUtils.isEmpty(labMessengerPublishTaskDtoList)){
             return null;
-        }
-        List<UserRightDto> userRightDtoList = new ArrayList<>();
-        if(StringUtils.isEmpty(alarmNoticeCommand.getPhoneNum())){
-            userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
-        }else {
-            userRightDtoList = userRightService. getUserRightInfo(alarmNoticeCommand);
         }
         Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> list = processData(labMessengerPublishTaskDtoList,phoneMap);
@@ -219,14 +224,22 @@ public class StatisticalAnalysisApplication {
     }
 
     public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response) {
-        //1.获取报警通知模板
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmNoticeModel(Context.IsCh());
+        //判断是否输入手机号，没有就查询该医院所有的手机号
+        List<UserRightDto> userRightDtoList = new ArrayList<>();
+        if(StringUtils.isEmpty(alarmNoticeCommand.getPhoneNum())){
+            userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
+        }
+        if(CollectionUtils.isNotEmpty(userRightDtoList)){
+            List<String> collect = userRightDtoList.stream().map(UserRightDto::getPhoneNum).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+            alarmNoticeCommand.setPhones(collect);
+        }else {
+            alarmNoticeCommand.setPhones(Collections.singletonList(alarmNoticeCommand.getPhoneNum()));
+        }
         //2.查出数据库信息
         List<LabMessengerPublishTaskDto> alarmNoticeInfo = labMessengerPublishTaskService.getAlarmNoticeInfo(null, alarmNoticeCommand);
         if(CollectionUtils.isEmpty(alarmNoticeInfo)){
             return;
         }
-        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
         Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> alarmNoticeResults = processData(alarmNoticeInfo, phoneMap);
         //获取属性map
@@ -235,6 +248,8 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(alarmNoticeResult);
             mapList.add(objectToMap);
         }
+        //获取报警通知模板
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmNoticeModel(Context.IsCh());
         exportLogService.buildLogInfo(alarmNoticeCommand.getUserId(),ExcelExportUtils.getAlarmDataNoticeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.ALARM_NOTIFICATION_QUERY.getCode());
         FileUtil.exportExcel(ExcelExportUtils.getAlarmDataNoticeModel(),beanList,mapList,response);
     }

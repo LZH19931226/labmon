@@ -2,6 +2,8 @@ package com.hc.application.command;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AlarmNoticeCommand {
     /**
@@ -41,4 +43,6 @@ public class AlarmNoticeCommand {
 
 
     private String userId;
+
+    private List<String> phones;
 }
