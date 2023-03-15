@@ -1,12 +1,15 @@
 package com.hc.command.labmanagement.model.hospital;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author user
@@ -79,4 +82,33 @@ public class HospitalCommand {
 
     /** 是否设置因子登录1为设置空为未设置 */
     private String factor;
+
+    /** 医院 */
+    private List<LabHosWarningTime> hosWarningTimes;
+
+
+     public static class LabHosWarningTime{
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime beginTime;
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime endTime;
+
+        public LocalDateTime getBeginTime() {
+            return beginTime;
+        }
+
+        public void setBeginTime(LocalDateTime beginTime) {
+            this.beginTime = beginTime;
+        }
+
+        public LocalDateTime getEndTime() {
+            return endTime;
+        }
+
+        public void setEndTime(LocalDateTime endTime) {
+            this.endTime = endTime;
+        }
+    }
 }

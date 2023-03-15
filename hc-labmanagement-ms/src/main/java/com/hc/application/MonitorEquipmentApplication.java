@@ -3,7 +3,6 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.*;
 import com.hc.command.labmanagement.model.HospitalMadel;
-import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
@@ -118,9 +117,9 @@ public class MonitorEquipmentApplication {
         Map<Integer, InstrumentConfigDTO> instrumentConfigMap = instrumentConfigList.stream().collect(Collectors.toMap(InstrumentConfigDTO::getInstrumentconfigid, t -> t));
 
         //根据eno查询报警时段信息
-        List<MonitorequipmentwarningtimeDTO> monitorEquipmentWarningTimeDTOList = monitorequipmentwarningtimeService.selectWarningtimeByEnoList(enoList);
-        Map<String, List<MonitorequipmentwarningtimeDTO>> monitorEquipmentWarningTimeMaps =
-                monitorEquipmentWarningTimeDTOList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid));
+//        List<MonitorequipmentwarningtimeDTO> monitorEquipmentWarningTimeDTOList = monitorequipmentwarningtimeService.selectWarningtimeByEnoList(enoList);
+//        Map<String, List<MonitorequipmentwarningtimeDTO>> monitorEquipmentWarningTimeMaps =
+//                monitorEquipmentWarningTimeDTOList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid));
 
         //构建返回信息集合
         List<MonitorEquipmentVo> list = new ArrayList<>();
@@ -138,12 +137,12 @@ public class MonitorEquipmentApplication {
 
             }
 
-            //构建warningTimeList
-            List<WarningTimeVo> warningTimeVos = new ArrayList<>();
-            if(monitorEquipmentWarningTimeMaps.containsKey(equipmentNo)){
-                List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOList = monitorEquipmentWarningTimeMaps.get(equipmentNo);
-                warningTimeVos =  bulidWarningTimeVoList(monitorequipmentwarningtimeDTOList);
-            }
+//            //构建warningTimeList
+//            List<WarningTimeVo> warningTimeVos = new ArrayList<>();
+//            if(monitorEquipmentWarningTimeMaps.containsKey(equipmentNo)){
+//                List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOList = monitorEquipmentWarningTimeMaps.get(equipmentNo);
+//                warningTimeVos =  bulidWarningTimeVoList(monitorequipmentwarningtimeDTOList);
+//            }
 
             boolean flag = true;
             String channel = null;
@@ -184,7 +183,7 @@ public class MonitorEquipmentApplication {
                     .saturation(StringUtils.isBlank(monitorEquipmentDto.getSaturation()) ? "": monitorEquipmentDto.getSaturation())
                     .sn(sn==null?"":sn)
                     .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
-                    .warningTimeList(warningTimeVos)
+//                    .warningTimeList(warningTimeVos)
                     .address(StringUtils.isBlank(monitorEquipmentDto.getAddress())?"":monitorEquipmentDto.getAddress())
                     .company(monitorEquipmentDto.getCompany())
                     .brand(monitorEquipmentDto.getBrand())
@@ -255,7 +254,6 @@ public class MonitorEquipmentApplication {
     @GlobalTransactional
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
         String hospitalCode = monitorEquipmentCommand.getHospitalCode();
-        String equipmentTypeId = monitorEquipmentCommand.getEquipmentTypeId();
         //备注长度限值
         String remark = monitorEquipmentCommand.getRemark();
         if(remark.length() > 60){
@@ -269,16 +267,10 @@ public class MonitorEquipmentApplication {
 
         //判断同医院设备名称是否有重复
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
-        Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
-        if(integer1>0){
-            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
-        }
-
-        //判断医院是否存在设备类型
-        HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode, equipmentTypeId);
-        if(ObjectUtils.isEmpty(hospitalequimentDTO)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_DEVICE_TYPE_DOES_NOT_EXIST);
-        }
+//        Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+//        if(integer1>0){
+//            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
+//        }
 
         //插入到monitorequipment表中
         String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
@@ -315,19 +307,19 @@ public class MonitorEquipmentApplication {
                 .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
         monitorinstrumentService.insertMonitorinstrumentInfo(monitorinstrumentDTO);
 
-        //插入报警时段
-        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
-        if (CollectionUtils.isNotEmpty(warningTimeList)) {
-            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
-            //检测时间是否重叠
-            checkWorkTime(workTimeBlockCommandList);
-            warningTimeList.forEach(res -> {
-                res.setHospitalcode(monitorEquipmentCommand.getHospitalCode())
-                        .setEquipmentid(monitorinstrumentDTO.getEquipmentno())
-                        .setEquipmentcategory("EQ");
-            });
-            monitorequipmentwarningtimeService.insetWarningtimeList(warningTimeList);
-        }
+//        //插入报警时段
+//        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
+//        if (CollectionUtils.isNotEmpty(warningTimeList)) {
+//            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
+//            //检测时间是否重叠
+//            checkWorkTime(workTimeBlockCommandList);
+//            warningTimeList.forEach(res -> {
+//                res.setHospitalcode(monitorEquipmentCommand.getHospitalCode())
+//                        .setEquipmentid(monitorinstrumentDTO.getEquipmentno())
+//                        .setEquipmentcategory("EQ");
+//            });
+//            monitorequipmentwarningtimeService.insetWarningtimeList(warningTimeList);
+//        }
 
         //插入探头参数表
         List<InstrumentparamconfigDTO> probeList = new ArrayList<>();
@@ -362,7 +354,7 @@ public class MonitorEquipmentApplication {
         operationlogService.addMonitorEquipmentLogInfo(build);
 
         //设备信息存入redis
-        updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO,warningTimeList);
+        updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO);
 
         //探头信息存入redis
         updateProbeRedisInfo(instrumentNo,instrumentName,equipmentNo,monitorEquipmentCommand,probeList);
@@ -418,7 +410,7 @@ public class MonitorEquipmentApplication {
     public Date buildTime(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.set(Calendar.YEAR,1970);
+        cal.set(Calendar.YEAR,2000);
         cal.set(Calendar.MONTH,1);
         cal.set(Calendar.DATE,1);
         return cal.getTime();
@@ -484,8 +476,7 @@ public class MonitorEquipmentApplication {
      * @param instrumentNo
      * @param monitorinstrumenttypeDTO
      */
-    public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO,List<MonitorequipmentwarningtimeDTO> warningTimeList){
-        List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
+    public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO){
         //存入redis
         SnDeviceDto snDeviceDto = new SnDeviceDto()
                 .setEquipmentNo(equipmentNo)
@@ -503,7 +494,6 @@ public class MonitorEquipmentApplication {
                 .setSort(monitorEquipmentCommand.getSort())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
-                .setWarningTimeList(warningTimeDTOs)
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
                 .setAddress(monitorEquipmentCommand.getAddress())
                 .setRemark(monitorEquipmentCommand.getRemark());
@@ -574,13 +564,13 @@ public class MonitorEquipmentApplication {
                 monitorEquipmentService.selectMonitorEquipmentInfoByNo(monitorEquipmentCommand.getEquipmentNo());
         MonitorEquipmentDto equipmentDto = equipmentDtoList.get(0);
         //判断设备名称有没有修改
-        if(!equipmentName.equals(equipmentDto.getEquipmentName())){
-            //修改时用判断该医院下设备名称是否已存在
-            Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
-            if(integer>0){
-                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
-            }
-        }
+//        if(!equipmentName.equals(equipmentDto.getEquipmentName())){
+//            //修改时用判断该医院下设备名称是否已存在
+//            Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+//            if(integer>0){
+//                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
+//            }
+//        }
         //用于redis判断sn是否修改
         String newSn = monitorEquipmentCommand.getSn();
         String oldSn = equipmentDto.getSn();
@@ -621,26 +611,26 @@ public class MonitorEquipmentApplication {
         }
         monitorinstrumentService.bulkUpdate(monitorinstrumentDTO);
 
-        //修改报警时间（monitorequipmentwarningtime）
-        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
-        if (CollectionUtils.isNotEmpty(warningTimeList)) {
-            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
-            //检测时间是否重叠
-            checkWorkTime(workTimeBlockCommandList);
-            List<MonitorequipmentwarningtimeDTO> updateList = warningTimeList.stream().filter(res -> res.getTimeblockid() != null).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(updateList)) {
-                monitorequipmentwarningtimeService.updateList(updateList);
-            }
-            List<MonitorequipmentwarningtimeDTO> insertList = warningTimeList.stream().filter(res -> res.getTimeblockid() == null).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(insertList)) {
-                insertList.forEach(res -> {
-                    res.setEquipmentid(monitorEquipmentCommand.getEquipmentNo())
-                            .setEquipmentcategory("EQ")
-                            .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
-                });
-                monitorequipmentwarningtimeService.insetWarningtimeList(insertList);
-            }
-        }
+//        //修改报警时间（monitorequipmentwarningtime）
+//        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
+//        if (CollectionUtils.isNotEmpty(warningTimeList)) {
+//            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
+//            //检测时间是否重叠
+//            checkWorkTime(workTimeBlockCommandList);
+//            List<MonitorequipmentwarningtimeDTO> updateList = warningTimeList.stream().filter(res -> res.getTimeblockid() != null).collect(Collectors.toList());
+//            if (CollectionUtils.isNotEmpty(updateList)) {
+//                monitorequipmentwarningtimeService.updateList(updateList);
+//            }
+//            List<MonitorequipmentwarningtimeDTO> insertList = warningTimeList.stream().filter(res -> res.getTimeblockid() == null).collect(Collectors.toList());
+//            if (CollectionUtils.isNotEmpty(insertList)) {
+//                insertList.forEach(res -> {
+//                    res.setEquipmentid(monitorEquipmentCommand.getEquipmentNo())
+//                            .setEquipmentcategory("EQ")
+//                            .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
+//                });
+//                monitorequipmentwarningtimeService.insetWarningtimeList(insertList);
+//            }
+//        }
 
         List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList = monitorEquipmentCommand.getDeleteWarningTimeList();
         if (CollectionUtils.isNotEmpty(deleteWarningTimeList)) {
@@ -685,8 +675,7 @@ public class MonitorEquipmentApplication {
         if(!flag){
             snDeviceRedisApi.deleteSnDeviceDto(oldSn,equipmentDto.getEquipmentNo());
         }
-        List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
-        SnDeviceDto snDeviceDto =  buildSnDeviceDto(monitorEquipmentCommand,monitorinstrumenttypeDTO,warningTimeDTOs);
+        SnDeviceDto snDeviceDto =  buildSnDeviceDto(monitorEquipmentCommand,monitorinstrumenttypeDTO);
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
 
         //更新探头redis信息
@@ -719,10 +708,9 @@ public class MonitorEquipmentApplication {
      * 构建redis设备对象
      * @param monitorEquipmentCommand
      * @param monitorinstrumenttypeDTO
-     * @param warningTimeDTOs
      * @return
      */
-    public SnDeviceDto buildSnDeviceDto(MonitorEquipmentCommand monitorEquipmentCommand,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO, List<MonitorEquipmentWarningTimeDto> warningTimeDTOs){
+    public SnDeviceDto buildSnDeviceDto(MonitorEquipmentCommand monitorEquipmentCommand,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO){
         return new SnDeviceDto()
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
                 .setRemark(monitorEquipmentCommand.getRemark())
@@ -740,8 +728,7 @@ public class MonitorEquipmentApplication {
                 .setSort(monitorEquipmentCommand.getSort())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
-                .setAddress(monitorEquipmentCommand.getAddress())
-                .setWarningTimeList(warningTimeDTOs);
+                .setAddress(monitorEquipmentCommand.getAddress());
     }
 
     /**
