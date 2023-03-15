@@ -1,5 +1,6 @@
 package com.hc.vo.hospital;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -64,4 +66,31 @@ public class HospitalInfoVo implements Serializable {
     private String soundLightAlarm;
 
     private List<HospitalequimentVo> hospitalequimentVoList;
+
+    private List<LabHosWarningTime> labHosWarningTimes;
+
+    public static class LabHosWarningTime{
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime beginTime;
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime endTime;
+
+        public LocalDateTime getBeginTime() {
+            return beginTime;
+        }
+
+        public void setBeginTime(LocalDateTime beginTime) {
+            this.beginTime = beginTime;
+        }
+
+        public LocalDateTime getEndTime() {
+            return endTime;
+        }
+
+        public void setEndTime(LocalDateTime endTime) {
+            this.endTime = endTime;
+        }
+    }
 }
