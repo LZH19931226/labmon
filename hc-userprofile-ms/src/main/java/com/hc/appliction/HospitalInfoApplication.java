@@ -100,7 +100,8 @@ public class HospitalInfoApplication {
                         .timeoutRedDuration(res.getTimeoutRedDuration())
                         .factor(StringUtils.isEmpty(res.getFactor()) ? "0" : res.getFactor())
                         .soundLightAlarm(StringUtils.isEmpty(res.getSoundLightAlarm())? "0" : res.getSoundLightAlarm())
-                        .labHosWarningTimes(convert)
+                        .alwaysAlarm(StringUtils.isBlank(res.getAlwaysAlarm()) ? "0": res.getAlwaysAlarm())
+                        .labHosWarningTimes(CollectionUtils.isEmpty(convert) ? new ArrayList<>():convert)
                         .build();
                 list.add(build);
             }
