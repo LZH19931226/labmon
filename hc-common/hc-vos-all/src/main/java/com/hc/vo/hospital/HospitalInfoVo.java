@@ -67,7 +67,7 @@ public class HospitalInfoVo implements Serializable {
 
     private List<HospitalequimentVo> hospitalequimentVoList;
 
-    private List<LabHosWarningTime> labHosWarningTimes;
+    private List<LabHosWarningTime> hosWarningTimes;
 
     public static class LabHosWarningTime{
 
