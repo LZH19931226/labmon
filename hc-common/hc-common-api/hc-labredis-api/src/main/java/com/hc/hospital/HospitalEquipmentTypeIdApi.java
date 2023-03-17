@@ -3,8 +3,11 @@ package com.hc.hospital;
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @FeignClient(value = ApplicationName.REDIS)
 public interface HospitalEquipmentTypeIdApi{
@@ -34,4 +37,12 @@ public interface HospitalEquipmentTypeIdApi{
     @DeleteMapping("/hospitalEquipmentType/removeHospitalEquipmentTypeRedisInfo")
     void removeHospitalEquipmentTypeRedisInfo(@RequestParam("hospitalCode")String hospitalCode,
                                                      @RequestParam("hospitalEquipmentTypeId")String hospitalEquipmentTypeId);
+
+    /**
+     * 批量换取设备类型
+     * @return
+     */
+    @GetMapping("/hospitalEquipmentType/bulkAcquisitionEqType")
+    @ApiOperation("批量换取设备类型")
+    ApiResponse<List<HospitalEquipmentTypeInfoDto>> bulkAcquisitionEqType(@RequestParam("hospitalCode") String hospitalCode);
 }

@@ -15,19 +15,22 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
+import com.hc.hospital.HospitalEquipmentTypeIdApi;
 import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
+import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
+import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
 import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.Mt310DCUtils;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.my.common.core.util.date.DateDto;
-import com.hc.my.common.core.util.DateUtils;
 import com.hc.repository.HospitalInfoRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.*;
@@ -1019,7 +1022,8 @@ public class AppEquipmentInfoApplication {
     }
 
     public List<WarningRecordInfo> getWarningInfoList(WarningCommand warningCommand) {
-        List<Warningrecord> warningRecord = warningrecordRepository.getWarningInfoList(warningCommand.getHospitalCode(), warningCommand.getStartTime());
+        String hospitalCode = warningCommand.getHospitalCode();
+        List<Warningrecord> warningRecord = warningrecordRepository.getWarningInfoList(hospitalCode, warningCommand.getStartTime());
         if (CollectionUtils.isEmpty(warningRecord)) {
             return null;
         }
@@ -1032,6 +1036,13 @@ public class AppEquipmentInfoApplication {
         //获取探头信息
         List<InstrumentParamConfigDto> instrumentParamConfigDtoList = instrumentParamConfigService.batchGetProbeInfo(ipcNoList);
         Map<String, List<InstrumentParamConfigDto>> ipcNoAndProbeMap = instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
+        //获取医院设备类型缓存信息，用于设置异常数据的报警规则
+        List<HospitalEquipmentTypeInfoDto> hosEqTypeList = hospitalEquipmentTypeIdApi.bulkAcquisitionEqType(hospitalCode).getResult();
+        //已医院id+eqTypeId分组
+        Map<String, List<HospitalEquipmentTypeInfoDto>> hosMap = null;
+        if(CollectionUtils.isNotEmpty(hosEqTypeList)){
+            hosMap =  hosEqTypeList.stream().collect(Collectors.groupingBy(res -> res.getHospitalcode() + res.getEquipmenttypeid()));
+        }
         List<WarningRecordInfo> list = new ArrayList<>();
         for (String eno : enoList) {
             WarningRecordInfo warningRecordInfo = new WarningRecordInfo();
@@ -1059,10 +1070,60 @@ public class AppEquipmentInfoApplication {
                 warningRecordInfo.setEquipmentTypeId(monitorEquipmentDto.getEquipmenttypeid());
                 warningRecordInfo.setSn(monitorEquipmentDto.getSn());
             }
+            //当全天报警为空时，获取缓存的报警信息，当缓存数据出现既不是全天报警，又没有报警时间段时。将全天报警设置为0
+            if(StringUtils.isBlank(warningRecordInfo.getAlwayalarm()) && hosMap != null){
+                List<HospitalEquipmentTypeInfoDto> hospitalEquipmentTypeInfoDtos = hosMap.get(warningCommand.getHospitalCode() + warningRecordInfo.getEquipmentTypeId());
+                if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeInfoDtos) && hospitalEquipmentTypeInfoDtos.get(0) != null){
+                    HospitalEquipmentTypeInfoDto result = hospitalEquipmentTypeInfoDtos.get(0);
+                    String alwayalarm = result.getAlwayalarm();
+                    if(DictEnum.TURN_ON.getCode().equals(alwayalarm)){
+                        warningRecordInfo.setAlwayalarm(DictEnum.TURN_ON.getCode());
+                    }else {
+                        warningRecordInfo.setAlwayalarm(DictEnum.OFF.getCode());
+                        List<MonitorEquipmentWarningTimeDto> warningTimeList = result.getWarningTimeList();
+                        if(CollectionUtils.isNotEmpty(warningTimeList)){
+                            String str = buildHhSsTimeFormart(warningTimeList);
+                            warningRecordInfo.setAlarmRules(str);
+                        }
+                    }
+                }else {
+                    warningRecordInfo.setAlwayalarm(DictEnum.TURN_ON.getCode());
+                }
+            }
             list.add(warningRecordInfo);
         }
         return list;
     }
+
+
+    /**
+     * 将日期转换为字符串,拼接对应时间格式
+     */
+    public String buildHhSsTimeFormart(List<MonitorEquipmentWarningTimeDto> monitorEquipmentWarningTimes){
+        if (CollectionUtils.isNotEmpty(monitorEquipmentWarningTimes)){
+            StringBuilder timeBuffer = new StringBuilder();
+            for (int i = 0; i < monitorEquipmentWarningTimes.size(); i++) {
+                MonitorEquipmentWarningTimeDto monitorEquipmentWarningTime = monitorEquipmentWarningTimes.get(i);
+                Date endtime = monitorEquipmentWarningTime.getEndtime();
+                Date begintime = monitorEquipmentWarningTime.getBegintime();
+                if (null!=begintime && null!= endtime){
+                    timeBuffer.append(DateUtils.parseDatetime(begintime));
+                    timeBuffer.append("~");
+                    timeBuffer.append(DateUtils.parseDatetime(endtime));
+                    if(i != monitorEquipmentWarningTimes.size()-1){
+                        timeBuffer.append(",");
+                    }
+                }
+            }
+            return timeBuffer.toString();
+        }
+        return  null;
+    }
+
+
+
+    @Autowired
+    private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
 
     /**
      * 获取设备详细信息
