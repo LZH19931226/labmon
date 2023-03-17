@@ -1087,7 +1087,7 @@ public class AppEquipmentInfoApplication {
                         }
                     }
                 }else {
-                    warningRecordInfo.setAlwayalarm(DictEnum.TURN_ON.getCode());
+                    warningRecordInfo.setAlwayalarm(DictEnum.OFF.getCode());
                 }
             }
             list.add(warningRecordInfo);
@@ -1193,7 +1193,7 @@ public class AppEquipmentInfoApplication {
                 detailInfo.setEName(CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName());
             }
             if(StringUtils.isEmpty(detailInfo.getAlwayalarm()) && hosMap != null){
-                List<HospitalEquipmentTypeInfoDto> hospitalEquipmentTypeInfoDtos = hosMap.get(warningCommand.getHospitalCode() +eqTypeId);
+                List<HospitalEquipmentTypeInfoDto> hospitalEquipmentTypeInfoDtos = hosMap.get(hospitalCode +eqTypeId);
                 if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeInfoDtos) && hospitalEquipmentTypeInfoDtos.get(0) != null){
                     HospitalEquipmentTypeInfoDto result = hospitalEquipmentTypeInfoDtos.get(0);
                     String alwayalarm = result.getAlwayalarm();
@@ -1208,7 +1208,7 @@ public class AppEquipmentInfoApplication {
                         }
                     }
                 }else {
-                    detailInfo.setAlwayalarm(DictEnum.TURN_ON.getCode());
+                    detailInfo.setAlwayalarm(DictEnum.OFF.getCode());
                 }
             }
         }
