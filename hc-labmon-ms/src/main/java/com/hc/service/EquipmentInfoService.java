@@ -32,4 +32,6 @@ public interface EquipmentInfoService {
     List<String> getEnoList(String hospitalCode,String equipmentTypeId);
 
     List<MonitorEquipmentDto> getEquipmentInfo(ProbeCommand probeCommand);
+
+    String getEqTypeIdByEno(String equipmentNo);
 }

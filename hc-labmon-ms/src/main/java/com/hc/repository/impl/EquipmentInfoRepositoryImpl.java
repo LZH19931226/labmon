@@ -1,16 +1,11 @@
 package com.hc.repository.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.application.command.ProbeCommand;
-import com.hc.dto.InstrumentParamConfigDto;
-import com.hc.dto.MonitorinstrumentDto;
-import com.hc.infrastructure.dao.EquipmentInfoDao;
 import com.hc.dto.MonitorEquipmentDto;
+import com.hc.infrastructure.dao.EquipmentInfoDao;
 import com.hc.repository.EquipmentInfoRepository;
-import com.hc.vo.labmon.model.MonitorEquipmentLastDataModel;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -63,5 +58,10 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
     @Override
     public List<MonitorEquipmentDto> getEquipmentInfoBySn(ProbeCommand probeCommand) {
         return equipmentInfoDao.getEquipmentInfoBySn(probeCommand);
+    }
+
+    @Override
+    public String getEqTypeIdByEno(String equipmentNo) {
+        return equipmentInfoDao.getEqTypeIdByEno(equipmentNo);
     }
 }

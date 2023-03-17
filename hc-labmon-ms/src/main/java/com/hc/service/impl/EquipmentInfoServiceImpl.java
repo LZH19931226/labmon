@@ -106,4 +106,9 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
         }
 
     }
+
+    @Override
+    public String getEqTypeIdByEno(String equipmentNo) {
+        return equipmentInfoRepository.getEqTypeIdByEno(equipmentNo);
+    }
 }

@@ -1037,8 +1037,8 @@ public class AppEquipmentInfoApplication {
         List<InstrumentParamConfigDto> instrumentParamConfigDtoList = instrumentParamConfigService.batchGetProbeInfo(ipcNoList);
         Map<String, List<InstrumentParamConfigDto>> ipcNoAndProbeMap = instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
         //获取医院设备类型缓存信息，用于设置异常数据的报警规则
-        List<HospitalEquipmentTypeInfoDto> hosEqTypeList = hospitalEquipmentTypeIdApi.bulkAcquisitionEqType(hospitalCode).getResult();
         //已医院id+eqTypeId分组
+        List<HospitalEquipmentTypeInfoDto> hosEqTypeList = hospitalEquipmentTypeIdApi.bulkAcquisitionEqType(hospitalCode).getResult();
         Map<String, List<HospitalEquipmentTypeInfoDto>> hosMap = null;
         if(CollectionUtils.isNotEmpty(hosEqTypeList)){
             hosMap =  hosEqTypeList.stream().collect(Collectors.groupingBy(res -> res.getHospitalcode() + res.getEquipmenttypeid()));
@@ -1141,6 +1141,8 @@ public class AppEquipmentInfoApplication {
             return null;
         }
         String hospitalCode = warningRecordList.get(0).getHospitalcode();
+        //通过设备no查询设备类型id
+        String eqTypeId =  equipmentInfoService.getEqTypeIdByEno(equipmentNo);
         //获取医院所有的人员信息
         List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(hospitalCode);
         Map<String, List<UserRightDto>> userMap = new HashMap<>();
@@ -1154,6 +1156,15 @@ public class AppEquipmentInfoApplication {
         if (CollectionUtils.isNotEmpty(probeInfoList)) {
             stringListMap = probeInfoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
         }
+
+        //获取医院设备类型缓存信息，用于设置异常数据的报警规则
+        //已医院id+eqTypeId分组
+        List<HospitalEquipmentTypeInfoDto> hosEqTypeList = hospitalEquipmentTypeIdApi.bulkAcquisitionEqType(hospitalCode).getResult();
+        Map<String, List<HospitalEquipmentTypeInfoDto>> hosMap = null;
+        if(CollectionUtils.isNotEmpty(hosEqTypeList)){
+            hosMap =  hosEqTypeList.stream().collect(Collectors.groupingBy(res -> res.getHospitalcode() + res.getEquipmenttypeid()));
+        }
+
         for (WarningDetailInfo detailInfo : detailInfos) {
             //将手机号换成用户名
             String mailCallUser = detailInfo.getMailCallUser();
@@ -1180,6 +1191,25 @@ public class AppEquipmentInfoApplication {
                 InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
                 Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
                 detailInfo.setEName(CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName());
+            }
+            if(StringUtils.isEmpty(detailInfo.getAlwayalarm()) && hosMap != null){
+                List<HospitalEquipmentTypeInfoDto> hospitalEquipmentTypeInfoDtos = hosMap.get(warningCommand.getHospitalCode() +eqTypeId);
+                if(CollectionUtils.isNotEmpty(hospitalEquipmentTypeInfoDtos) && hospitalEquipmentTypeInfoDtos.get(0) != null){
+                    HospitalEquipmentTypeInfoDto result = hospitalEquipmentTypeInfoDtos.get(0);
+                    String alwayalarm = result.getAlwayalarm();
+                    if(DictEnum.TURN_ON.getCode().equals(alwayalarm)){
+                        detailInfo.setAlwayalarm(DictEnum.TURN_ON.getCode());
+                    }else {
+                        detailInfo.setAlwayalarm(DictEnum.OFF.getCode());
+                        List<MonitorEquipmentWarningTimeDto> warningTimeList = result.getWarningTimeList();
+                        if(CollectionUtils.isNotEmpty(warningTimeList)){
+                            String str = buildHhSsTimeFormart(warningTimeList);
+                            detailInfo.setAlarmTime(str);
+                        }
+                    }
+                }else {
+                    detailInfo.setAlwayalarm(DictEnum.TURN_ON.getCode());
+                }
             }
         }
         page.setRecords(detailInfos);
