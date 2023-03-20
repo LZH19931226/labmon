@@ -166,6 +166,7 @@ public class AppEquipmentInfoApplication {
                                 probeRedis = inoConfigMap.containsKey(inoConfigId) ? inoConfigMap.get(inoConfigId).get(0) : inoConfigMap.get(inoConfigId2).get(0);
                             }
                             probeInfoDto.setInputTime(probeRedis.getInputTime());
+                            probeInfoDto.setValue(changeString(probeRedis.getValue(),Context.IsCh()));
                             //缓存中没有找到探头状态时默认为正常
                             probeInfoDto.setState(StringUtils.isBlank(probeRedis.getState())?SysConstants.EQ_NORMAL:probeRedis.getState());
                             //当config为11和44时，通过缓存的当前值和最低值比较来计算探头的状态
