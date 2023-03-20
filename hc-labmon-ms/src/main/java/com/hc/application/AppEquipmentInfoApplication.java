@@ -565,7 +565,7 @@ public class AppEquipmentInfoApplication {
                 }
                 if(CollectionUtils.isNotEmpty(probeInfos)){
                     probeInfo.setProbeInfoDtoList(probeInfos);
-                    probeInfo.setInstrumentConfigIdList(probeInfos.stream().map(ProbeInfoDto::getProbeEName).collect(Collectors.toList()));
+                    probeInfo.setInstrumentConfigIdList(probeInfos.stream().map(ProbeInfoDto::getProbeEName).sorted().collect(Collectors.toList()));
                     List<Date> collect = probeInfos.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
                     //获取最新的时间
                     maxDate = Collections.max(collect);
