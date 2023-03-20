@@ -192,6 +192,7 @@ public class InstrumentparamconfigApplication {
             if(StringUtils.isNotBlank(instrumentParamConfigCommand.getWarningphone())){
                 result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
             }
+            result.setCalibration(instrumentParamConfigCommand.getCalibration());
             probeRedisApi.addProbeRedisInfo(result);
         }
 
