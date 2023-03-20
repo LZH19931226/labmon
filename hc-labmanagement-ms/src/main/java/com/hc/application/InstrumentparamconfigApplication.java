@@ -168,35 +168,17 @@ public class InstrumentparamconfigApplication {
                     .setCalibration(instrumentParamConfigCommand.getCalibration());
             probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
         }else {
-            if(instrumentParamConfigCommand.getLowlimit()!=null){
-                result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
-            }
-            if(instrumentParamConfigCommand.getHighlimit()!=null){
-                result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
-            }
-            if(instrumentParamConfigCommand.getSaturation()!=null){
-                result.setSaturation(instrumentParamConfigCommand.getSaturation());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getStyleMin())){
-                result.setStyleMin(instrumentParamConfigCommand.getStyleMin());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getStyleMax())){
-                result.setStyleMax(instrumentParamConfigCommand.getStyleMax());
-            }
-            if(instrumentParamConfigCommand.getAlarmtime()!=null){
-                result.setAlarmTime(instrumentParamConfigCommand.getAlarmtime());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getUnit())){
-                result.setUnit(instrumentParamConfigCommand.getUnit());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getWarningphone())){
-                result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
-            }
+            result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
+            result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
+            result.setSaturation(instrumentParamConfigCommand.getSaturation());
+            result.setStyleMin(instrumentParamConfigCommand.getStyleMin());
+            result.setStyleMax(instrumentParamConfigCommand.getStyleMax());
+            result.setAlarmTime(instrumentParamConfigCommand.getAlarmtime());
+            result.setUnit(instrumentParamConfigCommand.getUnit());
+            result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
             result.setCalibration(instrumentParamConfigCommand.getCalibration());
             probeRedisApi.addProbeRedisInfo(result);
         }
-
-
     }
 
     @Autowired
@@ -400,7 +382,6 @@ public class InstrumentparamconfigApplication {
                         .saturation(configDTO.getSaturation())
                         .warningphone(configDTO.getWarningphone())
                         .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
-                        .saturation(configDTO.getSaturation())
                         .unit(StringUtils.isBlank(configDTO.getUnit()) ? "":configDTO.getUnit())
                         .styleMax(StringUtils.isBlank(configDTO.getStyleMax()) ? "":configDTO.getStyleMax())
                         .styleMin(StringUtils.isBlank(configDTO.getStyleMin()) ? "":configDTO.getStyleMin())
