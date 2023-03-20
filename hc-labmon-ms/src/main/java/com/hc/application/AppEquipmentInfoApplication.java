@@ -42,7 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -80,6 +79,9 @@ public class AppEquipmentInfoApplication {
     private InstrumentMonitorInfoRepository instrumentMonitorInfoRepository;
     @Autowired
     private HospitalInfoRepository hospitalInfoRepository;
+
+    @Autowired
+    private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
 
 
     public List<HospitalEquipmentDto> getEquipmentNum(String hospitalCode, String tags){
@@ -468,27 +470,6 @@ public class AppEquipmentInfoApplication {
         }
     }
 
-    private void buildProbeInfo(ProbeCurrentInfoDto probeInfo, List<ProbeInfoDto> probeRedisInfo, List<InstrumentParamConfigDto> configDtoList) {
-
-        Map<String, List<ProbeInfoDto>> inoConfigMap =
-                probeRedisInfo.stream().collect(Collectors.groupingBy(res -> res.getInstrumentNo() + ":" + res.getInstrumentConfigId()));
-        //遍历数据库探头信息
-        for (InstrumentParamConfigDto configDto : configDtoList) {
-            ProbeInfoDto probeInfoDto = new ProbeInfoDto();
-            String instrumentNo = configDto.getInstrumentno();
-            Integer configId = configDto.getInstrumentconfigid();
-            probeInfoDto.setHighLimit(configDto.getHighLimit());
-            probeInfoDto.setLowLimit(configDto.getLowLimit());
-            probeInfoDto.setUnit(StringUtils.isBlank(configDto.getUnit())?"":configDto.getUnit());
-            String inoConfigId =  instrumentNo+":"+configId;
-            if(null != inoConfigMap.get(inoConfigId)){
-                ProbeInfoDto probeRedis = inoConfigMap.get(instrumentNo + ":" + configId).get(0);
-                probeInfoDto.setValue(probeRedis.getValue());
-                probeInfoDto.setProbeEName(probeRedis.getProbeEName());
-            }
-        }
-
-    }
 
     /***
      * 获取设备UPS信息
@@ -559,160 +540,12 @@ public class AppEquipmentInfoApplication {
     }
 
 
-    /**
-     * 构建探头高低值
-     *
-     * @param equipmentno              设备no
-     * @param probeInfoDtoList         探头信息
-     * @param instrumentParamConfigMap 探头参数map
-     */
-    private void buildProbeHighAndLowValue(String equipmentno, List<ProbeInfoDto> probeInfoDtoList, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap,String timeoutRedDuration) {
-        if (MapUtils.isEmpty(instrumentParamConfigMap)) {
-            return;
-        }
-        List<ProbeInfoDto> remove = new ArrayList<>();
-        for (ProbeInfoDto probeInfoDto : probeInfoDtoList) {
-            Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
-            String instrumentNo = probeInfoDto.getInstrumentNo();
-            switch (instrumentConfigId) {
-                case 7:
-                    setQcProbe(equipmentno,instrumentNo , instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
-                    break;
-                //MT310DC
-                case 101:
-                case 102:
-                case 103:
-                    String probeEName = probeInfoDto.getProbeEName();
-                    instrumentConfigId = getInstrumentConfigId(probeEName, instrumentConfigId);
-                    setProbeHeightAndLowValue(equipmentno, instrumentNo, instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
-                    break;
-                //其他设备
-                default:
-                    setProbeHeightAndLowValue(equipmentno,instrumentNo , instrumentConfigId, instrumentParamConfigMap, probeInfoDto, remove, timeoutRedDuration);
-                    break;
-            }
-        }
-        if (CollectionUtils.isNotEmpty(remove)) {
-            probeInfoDtoList.removeAll(remove);
-        }
-    }
-
-    private void setQcProbe(String equipmentno, String instrumentNo, Integer instrumentConfigId, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> remove, String timeoutRedDuration) {
-        String str = instrumentNo + ":"+instrumentConfigId;
-        String str2 = instrumentNo + ":"+"35";
-        Map<String, List<InstrumentParamConfigDto>> stringListMap = instrumentParamConfigMap.get(equipmentno);
-        if(!instrumentParamConfigMap.containsKey(equipmentno)){
-            remove.add(probeInfoDto);
-        }
-        if(!stringListMap.containsKey(str) && !stringListMap.containsKey(str2)){
-            remove.add(probeInfoDto);
-        }
-        List<InstrumentParamConfigDto> list = stringListMap.containsKey(str) ? stringListMap.get(str) : stringListMap.get(str2);
-        if (CollectionUtils.isNotEmpty(list)) {
-            InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
-            String state = instrumentParamConfigDto.getState();
-            BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
-            probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
-            probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
-            probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
-            probeInfoDto.setInstrumentNo(instrumentNo);
-            if (instrumentConfigId == 11) {
-                setState(probeInfoDto, lowLimit);
-            }
-            //设置值和单位
-            probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
-            if (StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())) {
-                String unit = instrumentParamConfigDto.getUnit();
-                probeInfoDto.setUnit(unit);
-                probeInfoDto.setValue(probeInfoDto.getValue());
-            }else{
-                probeInfoDto.setUnit("");
-            }
-            //设置状态
-            boolean flag = DateUtils.calculateIntervalTime(probeInfoDto.getInputTime(), timeoutRedDuration);
-            if(flag){
-                probeInfoDto.setState("2");
-            }
-        }
-    }
 
 
-    /**
-     * 设置探头高低值
-     *
-     * @param equipmentno              设备no
-     * @param instrumentConfigId       检测类型id
-     * @param instrumentParamConfigMap 探头参数map
-     */
-    private void setProbeHeightAndLowValue(String equipmentno,String instrumentNo, Integer instrumentConfigId, Map<String, Map<String, List<InstrumentParamConfigDto>>> instrumentParamConfigMap, ProbeInfoDto probeInfoDto, List<ProbeInfoDto> removeList,String timeoutRedDuration) {
-        String str = instrumentNo + ":"+instrumentConfigId;
-        if (!instrumentParamConfigMap.containsKey(equipmentno) || !instrumentParamConfigMap.get(equipmentno).containsKey(str)) {
-            removeList.add(probeInfoDto);
-            return;
-        }
-        Map<String, List<InstrumentParamConfigDto>> stringListMap = instrumentParamConfigMap.get(equipmentno);
-        List<InstrumentParamConfigDto> list = stringListMap.get(str);
-        instrumentParamConfigMap.get(equipmentno);
-        if (CollectionUtils.isNotEmpty(list)) {
-            InstrumentParamConfigDto instrumentParamConfigDto = list.get(0);
-            String state = instrumentParamConfigDto.getState();
-            BigDecimal lowLimit = instrumentParamConfigDto.getLowLimit();
-            probeInfoDto.setSaturation(instrumentParamConfigDto.getSaturation());
-            probeInfoDto.setLowLimit(instrumentParamConfigDto.getLowLimit());
-            probeInfoDto.setState(StringUtils.isBlank(state)?"":state);
-            probeInfoDto.setInstrumentNo(instrumentNo);
-            probeInfoDto.setInstrumentConfigId(instrumentConfigId);
-            String eName = probeInfoDto.getProbeEName();
-            if(StringUtils.equalsAny(eName,"1","2","3","4")){
-                switch (eName){
-                    case "1":
-                        probeInfoDto.setProbeEName("currenttemperature");
-                        break;
-                    case "2":
-                        probeInfoDto.setProbeEName("currenthumidity");
-                        break;
-                    case "3":
-                        probeInfoDto.setProbeEName("outerO2");
-                        break;
-                    case "4":
-                        probeInfoDto.setProbeEName("outerCO2");
-                        break;
-                }
-            }
-            if (instrumentConfigId == 11) {
-                setState(probeInfoDto, lowLimit);
-            }
-            //设置值和单位
-            probeInfoDto.setHighLimit(instrumentParamConfigDto.getHighLimit());
-            if (StringUtils.isNotBlank(instrumentParamConfigDto.getUnit()) && RegularUtil.checkContainsNumbers(probeInfoDto.getValue())) {
-                String unit = instrumentParamConfigDto.getUnit();
-                probeInfoDto.setUnit(unit);
-                probeInfoDto.setValue(probeInfoDto.getValue());
-            }else{
-                probeInfoDto.setUnit("");
-            }
-            //设置状态
-            boolean flag = DateUtils.calculateIntervalTime(probeInfoDto.getInputTime(), timeoutRedDuration);
-            if(flag){
-                probeInfoDto.setState("2");
-            }
-        }
-    }
 
-    private void setState(ProbeInfoDto probeInfoDto, BigDecimal lowLimit) {
-        if (StringUtils.isBlank(probeInfoDto.getState())) {
-            probeInfoDto.setState("0");
-        } else {
-            int i = lowLimit.intValue();
-            int integer = Integer.parseInt(probeInfoDto.getValue());
-            if (i == integer) {
-                probeInfoDto.setState("1");
-            } else {
-                probeInfoDto.setState("0");
-            }
-        }
 
-    }
+
+
 
     /**
      * MT310，转换外置探头
@@ -921,8 +754,7 @@ public class AppEquipmentInfoApplication {
 
 
 
-    @Autowired
-    private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
+
 
     /**
      * 获取设备详细信息
