@@ -83,7 +83,6 @@ public class AppEquipmentInfoApplication {
     @Autowired
     private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
 
-
     public List<HospitalEquipmentDto> getEquipmentNum(String hospitalCode, String tags){
         ProbeCommand probeCommand = new ProbeCommand();
         probeCommand.setHospitalCode(hospitalCode);
@@ -270,6 +269,7 @@ public class AppEquipmentInfoApplication {
         List<ProbeCurrentInfoDto> normalList = new ArrayList<>();
         List<ProbeCurrentInfoDto> abnormalList = new ArrayList<>();
         List<ProbeCurrentInfoDto> timeoutList = new ArrayList<>();
+        List<ProbeCurrentInfoDto> totalList = new ArrayList<>();
         //遍历设备信息构建卡片对象
         for (MonitorEquipmentDto monitorEquipmentDto : list) {
             //设置设备信息
@@ -293,6 +293,7 @@ public class AppEquipmentInfoApplication {
             if(CollectionUtils.isEmpty(instrumentParamConfigs) || null == probeInfoMap.get(equipmentNo)){
                 probeInfo.setState(SysConstants.EQ_ABNORMAL);
                 abnormalList.add(probeInfo);
+                totalList.add(probeInfo);
                 probeInfo.setInstrumentConfigIdList(new ArrayList<>());
                 probeInfo.setProbeInfoDtoList(new ArrayList<>());
             }
@@ -376,6 +377,7 @@ public class AppEquipmentInfoApplication {
                         if(b){
                             probeInfo.setState(SysConstants.EQ_TIMEOUT);
                             timeoutList.add(probeInfo);
+                            totalList.add(probeInfo);
                         }
                     }
                     //设备没有超时时，通过探头状态来获取设备状态(有一个探头异常，设备就是异常的，所有探头正常，设备才正常)
@@ -384,15 +386,18 @@ public class AppEquipmentInfoApplication {
                         if(abnormal>0){
                             probeInfo.setState(SysConstants.EQ_ABNORMAL);
                             abnormalList.add(probeInfo);
+                            totalList.add(probeInfo);
                         }else {
                             probeInfo.setState(SysConstants.EQ_NORMAL);
                             normalList.add(probeInfo);
+                            totalList.add(probeInfo);
                         }
                     }
                 }else {
                     //没有探头信息时判断设备时异常设备
                     probeInfo.setState(SysConstants.EQ_ABNORMAL);
                     abnormalList.add(probeInfo);
+                    totalList.add(probeInfo);
                 }
             }
         }
@@ -414,9 +419,7 @@ public class AppEquipmentInfoApplication {
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(timeouts);
                 break;
             default:
-                normalList.addAll(abnormalList);
-                normalList.addAll(timeoutList);
-                List<ProbeCurrentInfoDto> totals = normalList.stream().peek(this::sort).collect(Collectors.toList());
+                List<ProbeCurrentInfoDto> totals = totalList.stream().peek(this::sort).collect(Collectors.toList());
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(totals);
                 break;
         }
@@ -469,7 +472,6 @@ public class AppEquipmentInfoApplication {
             }
         }
     }
-
 
     /***
      * 获取设备UPS信息
@@ -538,14 +540,6 @@ public class AppEquipmentInfoApplication {
 
         return monitorUpsInfoDto;
     }
-
-
-
-
-
-
-
-
 
     /**
      * MT310，转换外置探头
@@ -727,7 +721,6 @@ public class AppEquipmentInfoApplication {
         return list;
     }
 
-
     /**
      * 将日期转换为字符串,拼接对应时间格式
      */
@@ -751,10 +744,6 @@ public class AppEquipmentInfoApplication {
         }
         return  null;
     }
-
-
-
-
 
     /**
      * 获取设备详细信息
@@ -998,7 +987,6 @@ public class AppEquipmentInfoApplication {
         //更新数据库
         equipmentInfoService.bulkUpdate(list);
     }
-
 
     /**
      * 获取报警设置设备的数量
