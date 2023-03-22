@@ -1,11 +1,9 @@
 package com.hc.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
-import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
@@ -18,16 +16,10 @@ import com.hc.hospital.HospitalInfoApi;
 import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.struct.Context;
-import com.hc.po.InstrumentmonitorPo;
-import com.hc.po.MonitorequipmenttypePo;
 import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
-import com.hc.repository.InstrumentmonitorRepository;
-import com.hc.repository.MonitorequipmenttypeRepository;
 import com.hc.repository.OperationlogRepository;
 import com.hc.repository.OperationlogdetailRepository;
-import com.hc.service.HospitalequimentService;
-import com.hc.service.MonitorinstrumentService;
 import com.hc.service.OperationlogService;
 import com.hc.user.UserRightInfoApi;
 import com.hc.vo.backlog.OperationlogVo;
@@ -372,8 +364,8 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetails.add(operationlogdetail);
         }
 
-        String oldAddress = oldEquipmentInfoModel.getAddress();//地址信息
-        String newAddress = nowEquipmentInfoModel.getAddress();//地址信息
+        String oldAddress = StringUtils.isBlank(oldEquipmentInfoModel.getAddress()) ? "" : oldEquipmentInfoModel.getAddress();//地址信息
+        String newAddress = StringUtils.isBlank(nowEquipmentInfoModel.getAddress()) ? "" : nowEquipmentInfoModel.getAddress();//地址信息
         if(!StringUtils.equals(oldAddress,newAddress)){
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
@@ -385,8 +377,8 @@ public class OperationlogServiceImpl implements OperationlogService {
 
         }
 
-        String oldRemark = oldEquipmentInfoModel.getRemark();
-        String nowRemark = nowEquipmentInfoModel.getRemark();
+        String oldRemark = StringUtils.isBlank(oldEquipmentInfoModel.getRemark())?"":oldEquipmentInfoModel.getRemark();
+        String nowRemark = StringUtils.isBlank(nowEquipmentInfoModel.getRemark())?"":nowEquipmentInfoModel.getRemark();
 
         if(!StringUtils.equals(oldRemark,nowRemark)){
             flag = true;
