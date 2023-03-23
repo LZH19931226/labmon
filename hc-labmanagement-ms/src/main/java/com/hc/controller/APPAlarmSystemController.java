@@ -33,4 +33,5 @@ public class APPAlarmSystemController {
     public void batchOperationType(@RequestBody AlarmSystemCommand alarmSystemCommand) {
         monitorEquipmentApplication.batchOperationType(alarmSystemCommand);
     }
+
 }

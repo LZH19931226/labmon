@@ -15,16 +15,14 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.device.ProbeRedisApi;
 import com.hc.dto.*;
+import com.hc.dto.HospitalInfoDto;
 import com.hc.hospital.HospitalEquipmentTypeIdApi;
 import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.redis.command.ProbeRedisCommand;
-import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
-import com.hc.my.common.core.redis.dto.MonitorEquipmentWarningTimeDto;
-import com.hc.my.common.core.redis.dto.ProbeInfoDto;
-import com.hc.my.common.core.redis.dto.SnDeviceDto;
+import com.hc.my.common.core.redis.dto.*;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.DateUtils;
@@ -1057,5 +1055,9 @@ public class AppEquipmentInfoApplication {
         alarmHand.setDisabledNum(disabledNum);
         alarmHand.setEnableNum(enableNum);
         return alarmHand;
+    }
+
+    public EquipmentEnableSetDto getEquipmentEnableSet(ProbeCommand probeCommand) {
+        return equipmentInfoService.getEquipmentEnableSet(probeCommand);
     }
 }

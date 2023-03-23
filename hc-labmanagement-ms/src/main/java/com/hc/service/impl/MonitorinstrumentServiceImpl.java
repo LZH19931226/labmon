@@ -1,12 +1,13 @@
 package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.dto.EquipmentEnableSetDto;
 import com.hc.dto.MonitorinstrumentDTO;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorinstrumentPo;
 import com.hc.repository.MonitorinstrumentRepository;
 import com.hc.service.MonitorinstrumentService;
-import com.sun.crypto.provider.PBEWithMD5AndDESCipher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -127,4 +128,5 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
         List<MonitorinstrumentPo> convert = BeanConverter.convert(miList, MonitorinstrumentPo.class);
         monitorinstrumentRepository.saveBatch(convert);
     }
+
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.ProbeCommand;
 import com.hc.dto.MonitorEquipmentDto;
+import com.hc.my.common.core.redis.dto.EquipmentEnableSetDto;
 import com.hc.repository.EquipmentInfoRepository;
 import com.hc.service.EquipmentInfoService;
 import org.apache.commons.lang3.StringUtils;
@@ -110,5 +111,10 @@ public class EquipmentInfoServiceImpl implements EquipmentInfoService {
     @Override
     public String getEqTypeIdByEno(String equipmentNo) {
         return equipmentInfoRepository.getEqTypeIdByEno(equipmentNo);
+    }
+
+    @Override
+    public EquipmentEnableSetDto getEquipmentEnableSet(ProbeCommand probeCommand) {
+        return null;
     }
 }

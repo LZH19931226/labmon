@@ -76,9 +76,6 @@ public class MonitorEquipmentApplication {
     private HospitalInfoApi hospitalInfoApi;
 
     @Autowired
-    private HospitalequimentService hospitalequimentService;
-
-    @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
     @Autowired
@@ -631,14 +628,14 @@ public class MonitorEquipmentApplication {
 //                monitorequipmentwarningtimeService.insetWarningtimeList(insertList);
 //            }
 //        }
-
-        List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList = monitorEquipmentCommand.getDeleteWarningTimeList();
-        if (CollectionUtils.isNotEmpty(deleteWarningTimeList)) {
-            List<Integer> collect = deleteWarningTimeList.stream().map(MonitorequipmentwarningtimeDTO::getTimeblockid).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(collect)) {
-                monitorequipmentwarningtimeService.bulkRemove(collect);
-            }
-        }
+//
+//        List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList = monitorEquipmentCommand.getDeleteWarningTimeList();
+//        if (CollectionUtils.isNotEmpty(deleteWarningTimeList)) {
+//            List<Integer> collect = deleteWarningTimeList.stream().map(MonitorequipmentwarningtimeDTO::getTimeblockid).collect(Collectors.toList());
+//            if (CollectionUtils.isNotEmpty(collect)) {
+//                monitorequipmentwarningtimeService.bulkRemove(collect);
+//            }
+//        }
 
         //更新探头参数表
         MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
@@ -1357,4 +1354,5 @@ public class MonitorEquipmentApplication {
             redisProbes.forEach(res->probeRedisApi.addProbeRedisInfo(res));
         }
     }
+
 }

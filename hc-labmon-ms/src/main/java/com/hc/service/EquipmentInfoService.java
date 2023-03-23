@@ -3,6 +3,7 @@ package com.hc.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.ProbeCommand;
 import com.hc.dto.MonitorEquipmentDto;
+import com.hc.my.common.core.redis.dto.EquipmentEnableSetDto;
 
 import java.util.List;
 
@@ -34,4 +35,6 @@ public interface EquipmentInfoService {
     List<MonitorEquipmentDto> getEquipmentInfo(ProbeCommand probeCommand);
 
     String getEqTypeIdByEno(String equipmentNo);
+
+    EquipmentEnableSetDto getEquipmentEnableSet(ProbeCommand probeCommand);
 }

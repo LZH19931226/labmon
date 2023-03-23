@@ -11,6 +11,7 @@ import com.hc.application.response.*;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
 import com.hc.my.common.core.jwt.JwtIgnore;
+import com.hc.my.common.core.redis.dto.EquipmentEnableSetDto;
 import com.hc.my.common.core.util.date.DateDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +111,12 @@ public class AppController {
     @ApiOperation("获取报警设置设备数量")
     public AlarmHand getTheNumberOfAlarmSettingDevices(@RequestBody AlarmSystemCommand alarmSystemCommand){
         return equipmentInfoAppApplication.getTheNumberOfAlarmSettingDevices(alarmSystemCommand);
+    }
+
+    @PostMapping("/getEquipmentEnableSet")
+    @ApiOperation("启用设置获取设置设备信息")
+    public EquipmentEnableSetDto getEquipmentEnableSet(@RequestBody ProbeCommand probeCommand){
+        return  equipmentInfoAppApplication.getEquipmentEnableSet(probeCommand);
     }
 
 }
