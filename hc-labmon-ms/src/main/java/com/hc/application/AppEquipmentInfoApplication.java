@@ -42,6 +42,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -283,6 +285,7 @@ public class AppEquipmentInfoApplication {
             probeInfo.setEquipmentNo(equipmentNo);
             probeInfo.setEquipmentName(monitorEquipmentDto.getEquipmentname());
             probeInfo.setEquipmentTypeId(probeCommand.getEquipmentTypeId());
+            //判断是否需要展示产品型号公司
             if(isRole){
                 probeInfo.setCompany(monitorEquipmentDto.getCompany());
                 probeInfo.setBrand(monitorEquipmentDto.getBrand());
@@ -362,6 +365,8 @@ public class AppEquipmentInfoApplication {
                             probeInfoDto.setState(SysConstants.EQ_NORMAL);
                         }
                     }
+                    //设置MT210M单位问题
+                    mt210MData(probeInfo,probeInfoDto);
                     probeInfoDto.setInstrumentConfigId(configId);
                     probeInfos.add(probeInfoDto);
                 }
@@ -424,6 +429,14 @@ public class AppEquipmentInfoApplication {
                 break;
         }
         return currentProbeInfoResult;
+    }
+
+    private void mt210MData(ProbeCurrentInfoDto probeInfo,ProbeInfoDto probeInfoDto){
+        if(probeInfo.getSn().substring(4, 6).equals(SysConstants.MT210M_SN) &&
+                SysConstants.MT210M_UNIT.equals(probeInfoDto.getUnit())&& RegularUtil.checkContainsNumbers(probeInfoDto.getValue())){
+            BigDecimal big =  new BigDecimal(probeInfoDto.getValue());
+            probeInfoDto.setValue(big.divide(BigDecimal.valueOf(2.54),1, RoundingMode.HALF_UP).toString());
+        }
     }
 
     /**
