@@ -192,7 +192,7 @@ public class CurveUtils {
         for (String field : list) {
             Curve curve = new Curve();
             //去除不需要创建容器的字段
-            if(!StringUtils.equalsAnyIgnoreCase(field,DataFieldEnum.voltage.getLastDataField(),
+            if(!StringUtils.equalsAnyIgnoreCase(field,DataFieldEnum.voltage.getLastDataField(),DataFieldEnum.QC.getLastDataField(),
                     DataFieldEnum.DOOR2.getLastDataField(),DataFieldEnum.DOOR.getLastDataField(),DataFieldEnum.UPS.getLastDataField(),
                     DataFieldEnum.QCL.getLastDataField(),DataFieldEnum.CURRENT.getLastDataField(),DataFieldEnum.power.getLastDataField())){
                 map.put(field,curve);
@@ -315,8 +315,8 @@ public class CurveUtils {
                 break;
         }
     }
-    
-    
+
+
     @Data
     @NoArgsConstructor
     public static class Curve{

@@ -69,7 +69,7 @@ public class AppController {
     }
 
     @PostMapping("/getEquipmentCurveInfo")
-    @ApiOperation("查询app设备曲线值")
+    @ApiOperation("查询系统设备曲线值")
     public List<Map<String, CurveDataModel>> getCurveInfo(@RequestBody CurveCommand curveCommand){
         return equipmentInfoAppApplication.getCurveFirst(curveCommand);
     }

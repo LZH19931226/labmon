@@ -604,12 +604,11 @@ public class AppEquipmentInfoApplication {
      * @return
      */
     public List<Map<String, CurveDataModel>> getCurveFirst(CurveCommand curveCommand) {
-        List<String> instrumentConfigIdLists = curveCommand.getInstrumentConfigIdList();
-        if(CollectionUtils.isEmpty(instrumentConfigIdLists)){
+        List<String> instrumentConfigIdList = curveCommand.getInstrumentConfigIdList();
+        if(CollectionUtils.isEmpty(instrumentConfigIdList)){
             return new ArrayList<>();
         }
         //电量不需要曲线数据请求
-        List<String> instrumentConfigIdList = instrumentConfigIdLists.stream().filter(s -> !StringUtils.equals(s, "currentqc")).collect(Collectors.toList());
         String startTime = curveCommand.getStartTime();
         String endTime = curveCommand.getEndTime();
         String sn = curveCommand.getSn();
