@@ -104,12 +104,12 @@ public class WarningInfoApplication {
                         if(StringUtils.isNotBlank(res.getWarningValue()) && RegularUtil.checkContainsNumbers(res.getWarningValue())){
                             int i =  new BigDecimal(res.getWarningValue()).compareTo(new BigDecimal(res.getHighLimit()));
                             if( i > 0 ){
-                                res.setAlertRules(cName + "高于设置的上阀值"+res.getHighLimit());
+                                res.setAlertRules(cName + "高于设置的上阈值"+res.getHighLimit());
                                 if(flag){
                                     res.setAlertRules(eName + "Above the upper threshold"+res.getHighLimit());
                                 }
                             }else {
-                                res.setAlertRules(cName + "低于设置的下阀值"+res.getLowLimit());
+                                res.setAlertRules(cName + "低于设置的下阈值"+res.getLowLimit());
                                 if(flag){
                                     res.setAlertRules(eName + "Below the lower threshold"+res.getHighLimit());
                                 }

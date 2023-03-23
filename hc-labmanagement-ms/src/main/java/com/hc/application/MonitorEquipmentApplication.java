@@ -1257,7 +1257,6 @@ public class MonitorEquipmentApplication {
     public List<String> getHosEqTypeEqInfo(String hospitalCode, String equipmentTypeId) {
         return monitorEquipmentService.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
     }
-
     @GlobalTransactional
     public void addWiredEquipment(WiredEqCommand wiredEqCommand) {
         String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
@@ -1277,84 +1276,85 @@ public class MonitorEquipmentApplication {
                 .setModel(wiredEqCommand.getModel())
                 .setCreateTime(new Date());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
+        //添加设备日志信息
+        MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), wiredEqCommand.getEquipmentName(),new MonitorEquipmentLogCommand(), BeanConverter.convert(monitorEquipmentDto,MonitorEquipmentCommand.class),
+                OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
+        operationlogService.addMonitorEquipmentLogInfo(build);
 
         List<InstrumentparamconfigCommand> probeList = wiredEqCommand.getProbeList();
         if(CollectionUtils.isNotEmpty(probeList)){
+            Map<String, List<InstrumentparamconfigCommand>> snMap = probeList.stream().collect(Collectors.groupingBy(InstrumentparamconfigCommand::getSn));
             List<MonitorinstrumentDTO> miList = new ArrayList<>();
             List<InstrumentparamconfigDTO> configList = new ArrayList<>();
             List<SnDeviceDto> redisEqList = new ArrayList<>();
             List<InstrumentInfoDto> redisProbes = new ArrayList<>();
-            for (InstrumentparamconfigCommand probe : probeList) {
-                if(probe == null || StringUtils.isBlank(probe.getSn()) || probe.getInstrumentconfigid()==null){
-                    continue;
-                }
+            for (String sn : snMap.keySet()) {
                 String instrumentNo = UUID.randomUUID().toString().replaceAll("-", "");
-                String probeNo = UUID.randomUUID().toString().replaceAll("-", "");
-                String sn = probe.getSn();
-                BigDecimal lowlimit = probe.getLowlimit();
-                BigDecimal highlimit = probe.getHighlimit();
+                int i=0;
+                for (InstrumentparamconfigCommand probe : snMap.get(sn)) {
+                    String probeNo = UUID.randomUUID().toString().replaceAll("-", "");
+                    BigDecimal lowlimit = probe.getLowlimit();
+                    BigDecimal highlimit = probe.getHighlimit();
 
-                MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO()
-                        .setEquipmentno(equipmentNo)
-                        .setInstrumentno(instrumentNo)
-                        .setInstrumentname(wiredEqCommand.getEquipmentName())
-                        .setInstrumenttypeid(wiredEqCommand.getInstrumentTypeId())
-                        .setSn(sn)
-                        .setHospitalcode(wiredEqCommand.getHospitalCode());
-                miList.add(monitorinstrumentDTO);
+                    if(i<=0){
+                        MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO()
+                                .setEquipmentno(equipmentNo)
+                                .setInstrumentno(instrumentNo)
+                                .setInstrumentname(wiredEqCommand.getEquipmentName())
+                                .setInstrumenttypeid(wiredEqCommand.getInstrumentTypeId())
+                                .setSn(sn)
+                                .setHospitalcode(wiredEqCommand.getHospitalCode());
+                        miList.add(monitorinstrumentDTO);
 
-                InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
-                        .setInstrumentparamconfigno(probeNo)
-                        .setInstrumentno(instrumentNo)
-                        .setInstrumentconfigid(probe.getInstrumentconfigid())
-                        .setInstrumentname(wiredEqCommand.getEquipmentName())
-                        .setLowlimit(lowlimit)
-                        .setHighlimit(highlimit)
-                        .setInstrumenttypeid(wiredEqCommand.getInstrumentTypeId())
-                        .setWarningphone("0")
-                        .setAlarmtime(3)
-                        .setStyleMin(lowlimit.toString())
-                        .setStyleMax(highlimit.toString());
-                configList.add(instrumentparamconfigDTO);
+                        SnDeviceDto snDeviceDto = new SnDeviceDto()
+                                .setClientVisible(wiredEqCommand.getClientVisible())
+                                .setEquipmentName(wiredEqCommand.getEquipmentName())
+                                .setEquipmentNo(equipmentNo)
+                                .setEquipmentTypeId(wiredEqCommand.getEquipmentTypeId())
+                                .setHospitalCode(wiredEqCommand.getHospitalCode())
+                                .setInstrumentNo(instrumentNo)
+                                .setInstrumentTypeId(wiredEqCommand.getEquipmentTypeId())
+                                .setSn(sn);
+                        redisEqList.add(snDeviceDto);
+                        i++;
+                    }
+                    InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
+                            .setInstrumentparamconfigno(probeNo)
+                            .setInstrumentno(instrumentNo)
+                            .setInstrumentconfigid(probe.getInstrumentconfigid())
+                            .setInstrumentname(wiredEqCommand.getEquipmentName())
+                            .setLowlimit(lowlimit)
+                            .setHighlimit(highlimit)
+                            .setInstrumenttypeid(wiredEqCommand.getInstrumentTypeId())
+                            .setWarningphone("0")
+                            .setAlarmtime(3)
+                            .setStyleMin(lowlimit.toString())
+                            .setStyleMax(highlimit.toString());
+                    configList.add(instrumentparamconfigDTO);
 
-                SnDeviceDto snDeviceDto = new SnDeviceDto()
-                        .setClientVisible(wiredEqCommand.getClientVisible())
-                        .setEquipmentName(wiredEqCommand.getEquipmentName())
-                        .setEquipmentNo(equipmentNo)
-                        .setEquipmentTypeId(wiredEqCommand.getEquipmentTypeId())
-                        .setHospitalCode(wiredEqCommand.getHospitalCode())
-                        .setInstrumentNo(instrumentNo)
-                        .setInstrumentTypeId(wiredEqCommand.getEquipmentTypeId())
-                        .setSn(sn);
-                redisEqList.add(snDeviceDto);
-
-                InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto()
-                        .setAlarmTime(3)
-                        .setEquipmentName(wiredEqCommand.getEquipmentName())
-                        .setEquipmentNo(equipmentNo)
-                        .setHighLimit(highlimit)
-                        .setHospitalCode(wiredEqCommand.getHospitalCode())
-                        .setInstrumentConfigId(probe.getInstrumentconfigid())
-                        .setInstrumentConfigName(probe.getInstrumentconfigname())
-                        .setInstrumentNo(instrumentNo)
-                        .setInstrumentParamConfigNO(probeNo)
-                        .setInstrumentTypeId(wiredEqCommand.getInstrumentTypeId())
-                        .setLowLimit(lowlimit)
-                        .setUnit(probe.getUnit())
-                        .setWarningPhone("0");
-                redisProbes.add(instrumentInfoDto);
-
-                //添加设备日志信息
-                MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), wiredEqCommand.getEquipmentName(),new MonitorEquipmentLogCommand(), BeanConverter.convert(monitorEquipmentDto,MonitorEquipmentCommand.class),
-                        OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
-                operationlogService.addMonitorEquipmentLogInfo(build);
+                    InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto()
+                            .setAlarmTime(3)
+                            .setEquipmentName(wiredEqCommand.getEquipmentName())
+                            .setEquipmentNo(equipmentNo)
+                            .setHighLimit(highlimit)
+                            .setHospitalCode(wiredEqCommand.getHospitalCode())
+                            .setInstrumentConfigId(probe.getInstrumentconfigid())
+                            .setInstrumentConfigName(probe.getInstrumentconfigname())
+                            .setInstrumentNo(instrumentNo)
+                            .setInstrumentParamConfigNO(probeNo)
+                            .setInstrumentTypeId(wiredEqCommand.getInstrumentTypeId())
+                            .setLowLimit(lowlimit)
+                            .setUnit(probe.getUnit())
+                            .setWarningPhone("0");
+                    redisProbes.add(instrumentInfoDto);
+                }
             }
-           monitorinstrumentService.insertBatch(miList);
-           instrumentparamconfigService.insertBatch(configList);
+            monitorinstrumentService.insertBatch(miList);
+            instrumentparamconfigService.insertBatch(configList);
 
-           //更新缓存信息
-           redisEqList.forEach(res->snDeviceRedisApi.updateSnDeviceDtoSync(res));
-           redisProbes.forEach(res->probeRedisApi.addProbeRedisInfo(res));
+            //更新缓存信息
+            redisEqList.forEach(res->snDeviceRedisApi.updateSnDeviceDtoSync(res));
+            redisProbes.forEach(res->probeRedisApi.addProbeRedisInfo(res));
         }
     }
 }

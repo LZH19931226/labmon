@@ -45,4 +45,9 @@ public class SysConstants {
 
     /** 实施人员 */
     public static final String IMPLEMENTERS = "1";
+
+    /**  MT210M */
+    public static final Integer EQ_MT210M = 114;
+    public static final String MT210M_SN = "48";
+    public static final String MT210M_UNIT = "in";
 }
