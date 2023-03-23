@@ -354,7 +354,7 @@ public class AppEquipmentInfoApplication {
                     probeInfoDto.setProbeEName(probeRedis.getProbeEName());
                     probeInfoDto.setInputTime(probeRedis.getInputTime());
                     //缓存中没有找到探头状态时默认为正常
-                    probeInfoDto.setState(StringUtils.isBlank(probeRedis.getState())?SysConstants.EQ_NORMAL:probeRedis.getState());
+                    probeInfoDto.setState(StringUtils.isBlank(configDto.getState())?SysConstants.EQ_NORMAL:configDto.getState());
                     //当config为11和44时，通过缓存的当前值和最低值比较来计算探头的状态
                     if(configId == CurrentProbeInfoEnum.CURRENTDOORSTATE.getInstrumentConfigId() || configId == CurrentProbeInfoEnum.CURRENTDOORSTATE2.getInstrumentConfigId()){
                         int i = configDto.getLowLimit().intValue();
