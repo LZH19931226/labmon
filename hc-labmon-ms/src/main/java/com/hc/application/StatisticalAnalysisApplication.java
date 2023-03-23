@@ -541,6 +541,7 @@ public class StatisticalAnalysisApplication {
      */
     public void exportEquipmentData(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
         List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        String equipmentName = equipmentDataCommand.getEquipmentName();
         if(CollectionUtils.isEmpty(filterList)){
                 throw new IedsException("FILTER_NOT_NULL");
         }
@@ -573,10 +574,12 @@ public class StatisticalAnalysisApplication {
         for (Monitorequipmentlastdata equipmentDatum : equipmentData) {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             ObjectConvertUtils.filterMap(objectToMap,fieldList);
+            objectToMap.put("eqName",equipmentName);
             mapList.add(objectToMap);
         }
         exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.getEquipmentDataModel(),beanList,mapList,response);
+        String fileName = equipmentName+DateUtils.getYMD(equipmentDataCommand.getStartTime())+"--"+DateUtils.getYMD(equipmentDataCommand.getEndTime());
+        FileUtil.exportExcel(fileName,beanList,mapList,response);
     }
 
     /**
@@ -871,6 +874,7 @@ public class StatisticalAnalysisApplication {
         return list.stream().sorted(Comparator.comparing(o -> o.get("date"))).collect(Collectors.toList());
     }
     public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse) {
+        String equipmentName = equipmentDataCommand.getEquipmentName();
         //1.验证参数
         filterCondition(equipmentDataCommand);
         String field = equipmentDataCommand.getField();
@@ -907,6 +911,7 @@ public class StatisticalAnalysisApplication {
         String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
         for (String date : dateMap.keySet()) {
             Map<String,Object> map = new HashMap<>();
+            map.put("eqName",equipmentName);
             map.put("date",date);
             map.put("unit",unit);
             List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
@@ -941,9 +946,9 @@ public class StatisticalAnalysisApplication {
         List<Map<String, Object>> mapList = list.stream().sorted(Comparator.comparing(o -> (String) o.get("date"))).collect(Collectors.toList());
         //获取tittle
         List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,Context.IsCh());
-
         exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataPointInTimeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.getEquipmentDataPointInTimeModel(),beanList,mapList,httpServletResponse);
+        String fileName = equipmentName+DateUtils.getYMD(startTime)+"--"+DateUtils.getYMD(equipmentDataCommand.getEndTime());
+        FileUtil.exportExcel(fileName,beanList,mapList,httpServletResponse);
 
     }
 

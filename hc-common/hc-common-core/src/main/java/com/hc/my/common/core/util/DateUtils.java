@@ -560,6 +560,16 @@ public class DateUtils {
         return dateFormatMMdd.format(date);
     }
 
+
+    /**
+     * 传入string的时间 改为String年月日返回
+     */
+    public static String getYMD(String time) {
+        SimpleDateFormat dateFormatYMD = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = parseDate(time);
+        return dateFormatYMD.format(date);
+    }
+
     /**
      * 获取时间的月份和年
      *

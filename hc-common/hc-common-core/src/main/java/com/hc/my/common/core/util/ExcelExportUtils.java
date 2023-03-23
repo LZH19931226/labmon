@@ -135,6 +135,7 @@ public class ExcelExportUtils {
     public static List<ExcelExportEntity> getEquipmentData(List<String> fieldList,boolean isCh){
         List<ExcelExportEntity> beanList = new ArrayList<>();
         if(isCh){
+            beanList.add(new ExcelExportEntity("设备名称","eqName"));
             beanList.add(new ExcelExportEntity("记录时间","inputdatetime"));
             for (String field : fieldList) {
                 DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
@@ -145,6 +146,7 @@ public class ExcelExportUtils {
                 }
             }
         }else {
+            beanList.add(new ExcelExportEntity("EQ_Name","eqName"));
             beanList.add(new ExcelExportEntity("Time","inputdatetime"));
             for (String field : fieldList) {
                 DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
@@ -177,8 +179,10 @@ public class ExcelExportUtils {
     public static List<ExcelExportEntity> getDatePoint(List<Date> dateList,boolean isCh) {
         List<ExcelExportEntity> beanList = new ArrayList<>();
         if(isCh){
+            beanList.add(new ExcelExportEntity("设备名称","eqName"));
             beanList.add(new ExcelExportEntity("查询日期","date"));
         }else {
+            beanList.add(new ExcelExportEntity("EQ_Name","eqName"));
             beanList.add(new ExcelExportEntity("TIME","date"));
         }
         dateList.forEach(res->{
