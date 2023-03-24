@@ -1355,4 +1355,31 @@ public class MonitorEquipmentApplication {
         }
     }
 
+    @GlobalTransactional
+    public void updateEquipmentEnableSet(MonitorEquipmentCommand monitorEquipmentCommand) {
+        String sn = monitorEquipmentCommand.getSn();
+        String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
+        Long clientVisible = monitorEquipmentCommand.getClientVisible();
+        MonitorEquipmentDto oldMonitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByEno(equipmentNo);
+        MonitorEquipmentCommand monitorEquipmentCommandNew = BeanConverter.convert(oldMonitorEquipmentDto, MonitorEquipmentCommand.class);
+        monitorEquipmentCommandNew.setClientVisible(clientVisible);
+        //更新日志表
+        MonitorEquipmentLogInfoCommand build = build(Context.getUserId(),
+                oldMonitorEquipmentDto.getEquipmentName(),
+                BeanConverter.convert(oldMonitorEquipmentDto,MonitorEquipmentLogCommand.class),
+                monitorEquipmentCommandNew,
+                OperationLogEunm.DEVICE_MANAGEMENT.getCode(),
+                OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addMonitorEquipmentLogInfo(build);
+        //修改监控设备信息（monitorequipment）
+        MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
+                .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
+                .setClientVisible(monitorEquipmentCommand.getClientVisible());
+        monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
+        SnDeviceDto snDeviceInfo = snDeviceRedisApi.getSnDeviceDto(sn, equipmentNo).getResult();
+        snDeviceInfo.setClientVisible(clientVisible);
+        snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceInfo);
+
+
+    }
 }

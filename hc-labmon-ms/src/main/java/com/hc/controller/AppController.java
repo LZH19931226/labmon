@@ -114,7 +114,7 @@ public class AppController {
     }
 
     @PostMapping("/getEquipmentEnableSet")
-    @ApiOperation("启用设置获取设置设备信息")
+    @ApiOperation("获取启用设置获取设置设备信息")
     public EquipmentEnableSetDto getEquipmentEnableSet(@RequestBody ProbeCommand probeCommand){
         return  equipmentInfoAppApplication.getEquipmentEnableSet(probeCommand);
     }

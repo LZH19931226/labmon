@@ -79,4 +79,14 @@
     <select id="getEqTypeIdByEno" resultType="java.lang.String">
         select equipmenttypeid from monitorequipment where equipmentno = #{equipmentNo}
     </select>
+    <select id="getEquipmentStateInfo" resultType="com.hc.dto.MonitorEquipmentDto">
+        SELECT * FROM monitorequipment  where  hospitalcode = #{probeCommand.hospitalCode}  and equipmenttypeid =#{probeCommand.equipmentTypeId}
+        <if test = "probeCommand.equipmentName != null and probeCommand.equipmentName != ''">
+            and equipmentname like concat('%',#{probeCommand.equipmentName},'%')
+        </if>
+        <if test = "probeCommand.state != null and probeCommand.state != ''">
+            and clientvisible = #{probeCommand.state}
+        </if>
+        ORDER BY sort,equipmentname
+    </select>
 </mapper>

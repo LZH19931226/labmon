@@ -64,4 +64,9 @@ public class EquipmentInfoRepositoryImpl extends ServiceImpl<EquipmentInfoDao,Mo
     public String getEqTypeIdByEno(String equipmentNo) {
         return equipmentInfoDao.getEqTypeIdByEno(equipmentNo);
     }
+
+    @Override
+    public List<MonitorEquipmentDto> getEquipmentStateInfo(ProbeCommand probeCommand) {
+        return equipmentInfoDao.getEquipmentStateInfo(probeCommand);
+    }
 }

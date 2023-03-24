@@ -33,4 +33,6 @@ public interface EquipmentInfoRepository extends IService<MonitorEquipmentDto> {
     List<MonitorEquipmentDto> getEquipmentInfoBySn(ProbeCommand probeCommand);
 
     String getEqTypeIdByEno(String equipmentNo);
+
+    List<MonitorEquipmentDto> getEquipmentStateInfo(ProbeCommand probeCommand);
 }

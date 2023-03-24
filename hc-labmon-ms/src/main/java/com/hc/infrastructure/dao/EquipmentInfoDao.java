@@ -23,4 +23,6 @@ public interface EquipmentInfoDao extends BaseMapper<MonitorEquipmentDto> {
     List<MonitorEquipmentDto> getEquipmentInfoBySn(@Param("param") ProbeCommand probeCommand);
 
     String getEqTypeIdByEno(String equipmentNo);
+
+    List<MonitorEquipmentDto> getEquipmentStateInfo(@Param("probeCommand") ProbeCommand probeCommand);
 }

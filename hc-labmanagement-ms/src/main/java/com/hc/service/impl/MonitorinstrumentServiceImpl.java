@@ -1,8 +1,6 @@
 package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.hc.application.command.MonitorEquipmentCommand;
-import com.hc.dto.EquipmentEnableSetDto;
 import com.hc.dto.MonitorinstrumentDTO;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorinstrumentPo;

@@ -119,4 +119,10 @@ public class MonitorEquipmentController {
         monitorEquipmentApplication.addWiredEquipment(wiredEqCommand);
     }
 
+
+    @PostMapping("/updateEquipmentEnableSet")
+    @ApiOperation("编辑设置设备")
+    public void updateEquipmentEnableSet(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
+        monitorEquipmentApplication.updateEquipmentEnableSet(monitorEquipmentCommand);
+    }
 }
