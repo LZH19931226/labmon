@@ -1,7 +1,6 @@
 package com.hc.repository.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.dto.UserSchedulingDto;
 import com.hc.infrastructure.dao.UserSchedulingDao;
@@ -134,10 +133,11 @@ public class UserSchedulingRepositoryImpl extends ServiceImpl<UserSchedulingDao,
      * @param hospitalCode   医院编码
      */
     @Override
-    public List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode) {
-        List<UserSchedulingPo> userSchedulingPos =
-                userSchedulingDao.selectList(Wrappers.lambdaQuery(new UserSchedulingPo()).eq(UserSchedulingPo::getHospitalCode, hospitalCode));
-        return CollectionUtils.isEmpty(userSchedulingPos) ? null :BeanConverter.convert(userSchedulingPos,UserSchedulingDto.class);
+    public List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode,String startTime,String endTime) {
+//        List<UserSchedulingPo> userSchedulingPos =
+//                userSchedulingDao.selectList(Wrappers.lambdaQuery(new UserSchedulingPo()).eq(UserSchedulingPo::getHospitalCode, hospitalCode).);
+//        return CollectionUtils.isEmpty(userSchedulingPos) ? null :BeanConverter.convert(userSchedulingPos,UserSchedulingDto.class);
+        return userSchedulingDao.selectScheduleWeekByCode(hospitalCode,startTime,endTime);
     }
 
     @Override

@@ -47,7 +47,7 @@ public interface UserSchedulingRepository {
      * @param hospitalCode 医院编码
      * @return
      */
-    List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode);
+    List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode,String startTime,String endTime);
 
     List<UserSchedulingDto> getHospitalScheduleInfo(String hospitalCode, String today, String yesterday);
 }
