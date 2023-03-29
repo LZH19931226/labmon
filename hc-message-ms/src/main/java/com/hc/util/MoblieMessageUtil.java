@@ -397,6 +397,7 @@ public class MoblieMessageUtil {
                 case "禁用":
                     request.setTemplateCode("SMS_175070824");
                     request.setTemplateCode("{\"hospitalname\":\"" +  value+ "\", \"equipmentname\":\""  + instrumentname + "\"}");
+                    break;
                 default: {
                     if (isLocalphone)
                         request.setTemplateCode("SMS_141595963");
@@ -409,6 +410,7 @@ public class MoblieMessageUtil {
                     }else {
                         request.setTemplateParam("{\"InstrumentName\":\"" + instrumentname + "\", \"Unit\":\"" + unit + "\", \"AbnormalValue\":\"" + value + "\"}");
                     }
+                    break;
                 }
             }
         }
