@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class CurveUtils {
@@ -156,6 +158,16 @@ public class CurveUtils {
             curveDataModel.setMinNum(probe.getLowLimit()+"");
             curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? probe.getHighLimit()+"":probe.getStyleMin());
             curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? probe.getLowLimit()+"":probe.getStyleMax());
+            /**  当设备是MT210M 并且单位in时修改返回值*/
+            if(SysConstants.EQ_MT210M.equals(probe.getInstrumenttypeid()) && SysConstants.MT210M_UNIT.equals(probe.getUnit())){
+                List<String>  afterList = new ArrayList<>();
+                dataList.forEach(res->{
+                    BigDecimal bigDecimal = new BigDecimal(res);
+                    BigDecimal divide = bigDecimal.divide(SysConstants.MT210M_VALUE, 1, RoundingMode.HALF_UP);
+                    afterList.add(divide.toString());
+                });
+                seriesDataModel.setDate(afterList);
+            }
         }else {
             OptionalDouble max = dataList.stream().mapToDouble(Double::parseDouble).max();
             if (max.isPresent()) {

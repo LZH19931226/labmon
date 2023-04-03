@@ -433,7 +433,7 @@ public class AppEquipmentInfoApplication {
         if(probeInfo.getSn().substring(4, 6).equals(SysConstants.MT210M_SN) &&
                 SysConstants.MT210M_UNIT.equals(probeInfoDto.getUnit())&& RegularUtil.checkContainsNumbers(probeInfoDto.getValue())){
             BigDecimal big =  new BigDecimal(probeInfoDto.getValue());
-            probeInfoDto.setValue(big.divide(BigDecimal.valueOf(25.4),1, RoundingMode.HALF_UP).toString());
+            probeInfoDto.setValue(big.divide(SysConstants.MT210M_VALUE,1, RoundingMode.HALF_UP).toString());
         }
     }
 
