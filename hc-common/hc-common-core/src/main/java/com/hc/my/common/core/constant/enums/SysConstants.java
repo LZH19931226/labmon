@@ -2,6 +2,8 @@ package com.hc.my.common.core.constant.enums;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class SysConstants {
     //设备探头状态 0为正常 1为报警中
@@ -50,4 +52,6 @@ public class SysConstants {
     public static final Integer EQ_MT210M = 114;
     public static final String MT210M_SN = "48";
     public static final String MT210M_UNIT = "in";
+    /** MT210M 转化阈值25.4 */
+    public static final BigDecimal MT210M_VALUE = new BigDecimal("25.4");
 }
