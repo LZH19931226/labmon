@@ -87,8 +87,10 @@
             id IN ( #{param.yearMonth} )
           AND hospitalcode = #{param.hospitalCode}
           AND equipmentno = #{param.equipmentNo}
+          AND  inputdatetime <![CDATA[>=]]> #{param.startTime}
+          AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
           AND cmdid ='88'
-        ORDER BY inputdatetime
+        ORDER BY inputdatetime desc
     </select>
 
     <select id="getPacketLossColumnar" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">

@@ -3,6 +3,7 @@ package com.hc.my.common.core.redis.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,7 +15,7 @@ public class EquipmentEnableSetDto implements Serializable {
     //开启设备
     private int openCount;
     //设备信息
-    private List<SnDeviceDto> snDeviceDtoAll;
-    private List<SnDeviceDto> snDeviceDtoEnable;
-    private List<SnDeviceDto> snDeviceDtoNotEnable;
+    private List<SnDeviceDto> snDeviceDtoAll =new ArrayList<>();
+    private List<SnDeviceDto> snDeviceDtoEnable = new ArrayList<>();
+    private List<SnDeviceDto> snDeviceDtoNotEnable =new ArrayList<>();
 }
