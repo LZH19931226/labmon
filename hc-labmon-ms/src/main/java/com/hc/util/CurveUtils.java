@@ -163,7 +163,7 @@ public class CurveUtils {
                 List<String>  afterList = new ArrayList<>();
                 dataList.forEach(res->{
                     BigDecimal bigDecimal = new BigDecimal(res);
-                    BigDecimal divide = bigDecimal.divide(SysConstants.MT210M_VALUE, 1, RoundingMode.HALF_UP);
+                    BigDecimal divide = bigDecimal.divide(SysConstants.MT210M_VALUE,1, RoundingMode.FLOOR);
                     afterList.add(divide.toString());
                 });
                 seriesDataModel.setDate(afterList);
