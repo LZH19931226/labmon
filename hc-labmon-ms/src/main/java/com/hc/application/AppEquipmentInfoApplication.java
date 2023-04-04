@@ -193,6 +193,7 @@ public class AppEquipmentInfoApplication {
                                 boolean b = DateUtils.calculateIntervalTime(maxDate, timeoutRedDuration);
                                 if(b){
                                     timeoutCount++;
+                                    continue;
                                 }
                             }
                             //设备没有超时时，通过探头状态来获取设备状态(有一个探头异常，设备就是异常的，所有探头正常，设备才正常)
@@ -440,7 +441,7 @@ public class AppEquipmentInfoApplication {
     /**
      * 将不是数字的字符串转化通过中英文改成新的字符串
      * 参数：String，Boolean
-     * 返回：string
+     * 返回：string   气流
      */
     private String changeString(String str, Boolean isChinese) {
         String result = "";
@@ -450,7 +451,12 @@ public class AppEquipmentInfoApplication {
         if (isChinese) {
             result = str;
         } else {
-            result = ProbeOutlier.from(str).name();
+            ProbeOutlier from = ProbeOutlier.from(str);
+            if (null==from){
+                return  str;
+            }else {
+                return from.name();
+            }
         }
         return result;
 
