@@ -41,7 +41,7 @@ public class SocketMessageListener {
                 return;
             }
             paseData.setNowTime(new Date());
-            paseData.setData(messageContent);
+            paseData.setData(data);
             paseData.setLogId(logId);
             //推送mq
             randomPush(paseData);
