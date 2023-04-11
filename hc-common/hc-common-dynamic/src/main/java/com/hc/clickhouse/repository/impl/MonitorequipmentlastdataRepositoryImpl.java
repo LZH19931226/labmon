@@ -65,4 +65,9 @@ public class MonitorequipmentlastdataRepositoryImpl extends ServiceImpl<Monitore
   public List<Monitorequipmentlastdata> getMT310DcLastDataByTime(EquipmentDataParam dataParam) {
     return monitorequipmentlastdataMapper.getMT310DcLastDataByTime(dataParam);
   }
+
+  @Override
+  public List<Monitorequipmentlastdata> getMultiprobeTypePointInTime(EquipmentDataParam dataParam) {
+    return monitorequipmentlastdataMapper.getMultiprobeTypePointInTime(dataParam);
+  }
 }

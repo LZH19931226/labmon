@@ -1087,5 +1087,61 @@ public class StatisticalAnalysisApplication {
         alarmDataCurveResult.setNumList(numList);
         return alarmDataCurveResult;
     }
+
+    public List<MultiprobeTypePointInTimeDto> getMultiprobeTypePointInTime(EquipmentDataCommand equipmentDataCommand) {
+        List<MultiprobeTypePointInTimeDto> multiprobeTypePointInTimeDtos = new ArrayList<>();
+        List<String> timeList = equipmentDataCommand.getTimeList();
+        List<String> fieldList = equipmentDataCommand.getFieldList();
+        if(CollectionUtils.isEmpty(timeList)||CollectionUtils.isEmpty(fieldList)){
+            return multiprobeTypePointInTimeDtos;
+        }
+        List<String> timeLists = DateUtils.filterDate(timeList);
+        //2.查询数据源
+        String startTime = equipmentDataCommand.getStartTime();
+        String ym = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(ym);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata>  lastDataList =  monitorequipmentlastdataRepository.getMultiprobeTypePointInTime(dataParam);
+        if(CollectionUtils.isEmpty(lastDataList)){
+            return  multiprobeTypePointInTimeDtos;
+        }
+        //按日期分组数据
+        Map<String, List<Monitorequipmentlastdata>> dateMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+        Calendar cal  = Calendar.getInstance();
+        for (String date : dateMap.keySet()) {
+            MultiprobeTypePointInTimeDto multiprobeTypePointInTimeDto = new MultiprobeTypePointInTimeDto();
+            multiprobeTypePointInTimeDto.setDate(date);
+            List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
+            for (String timeStr : timeLists) {
+                String hHmmTime = DateUtils.getHHmm(timeStr);
+                //将00:30 改为 00:00 将23:59改为24:00
+                String hhMm = editHhmm(hHmmTime);
+                multiprobeTypePointInTimeDto.setTime(hhMm);
+                Date rTime = DateUtils.parseDate(timeStr);
+                cal.setTime(rTime);
+                cal.add(Calendar.MINUTE,-30);
+                Date lTime = cal.getTime();
+                //数据过滤根据时间信息
+                List<Monitorequipmentlastdata> collect = monitorequipmentlastdata.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(),lTime,rTime)).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(collect)){
+                    continue;
+                }
+                Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
+                Map<String, Object> objectToMap = getObjectToMap(data);
+                List<ProbeInfoDto> probeInfoDtoList = new ArrayList<>();
+                fieldList.forEach(field->{
+                    ProbeInfoDto probeInfoDto = new ProbeInfoDto();
+                    Object o = objectToMap.get(field);
+                    probeInfoDto.setValue((String) o);
+                    probeInfoDto.setProbeEName(field);
+                    probeInfoDto.setUnit(DataFieldEnum.fromByLastDataField(field).getUnit());
+                    probeInfoDtoList.add(probeInfoDto);
+                });
+                multiprobeTypePointInTimeDto.setProbeInfoDtoList(probeInfoDtoList);
+            }
+            multiprobeTypePointInTimeDtos.add(multiprobeTypePointInTimeDto);
+        }
+        return multiprobeTypePointInTimeDtos;
+    }
 }
 

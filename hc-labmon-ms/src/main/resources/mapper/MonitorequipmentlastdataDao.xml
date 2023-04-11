@@ -115,5 +115,21 @@
         and inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
     </select>
+    <select id="getMultiprobeTypePointInTime" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+        equipmentno,
+        <foreach collection="param.fieldList" item="field" separator="," close=",">
+            ${field}
+        </foreach>
+        inputdatetime
+        from
+        lab_mon.monitorequipmentlastdata
+        WHERE
+        id IN ( #{param.yearMonth} )
+        AND inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND inputdatetime <![CDATA[<=]]> #{param.endTime}
+        AND equipmentno = #{param.equipmentNo}
+        ORDER BY inputdatetime desc
+    </select>
 
 </mapper>

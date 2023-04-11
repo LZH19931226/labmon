@@ -7,6 +7,7 @@ import com.hc.application.command.AlarmDataCommand;
 import com.hc.application.command.AlarmNoticeCommand;
 import com.hc.application.command.EquipmentDataCommand;
 import com.hc.application.response.AlarmDataCurveResult;
+import com.hc.application.response.MultiprobeTypePointInTimeDto;
 import com.hc.application.response.SummaryOfAlarmsResult;
 import com.hc.application.response.TimePointCurve;
 import com.hc.my.common.core.jwt.JwtIgnore;
@@ -150,4 +151,16 @@ public class StatisticalAnalysisController {
     public AlarmDataCurveResult getAlarmDataCurve(@RequestBody AlarmDataCommand alarmDataCommand){
         return statisticalAnalysisApplication.getAlarmDataCurve(alarmDataCommand);
     }
+
+
+    /**
+     * 时间点查询 多类型探头类型单点数据
+     */
+    @PostMapping("/getMultiprobeTypePointInTime")
+    @ApiOperation("多类型探头类型单点数据")
+    public  List<MultiprobeTypePointInTimeDto> getMultiprobeTypePointInTime(@RequestBody EquipmentDataCommand equipmentDataCommand){
+        return statisticalAnalysisApplication.getMultiprobeTypePointInTime(equipmentDataCommand);
+    }
+
+
 }
