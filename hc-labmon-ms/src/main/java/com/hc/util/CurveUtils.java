@@ -149,11 +149,13 @@ public class CurveUtils {
     private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list){
         CurveDataModel curveDataModel = new CurveDataModel();
         curveDataModel.setXaxis(timeList);
+        curveDataModel.setUnit("");
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(dataList);
         //数据库不为空时去数据库中的值
         if (CollectionUtils.isNotEmpty(list)) {
             InstrumentParamConfigDto probe = list.get(0);
+            curveDataModel.setUnit(probe.getUnit());
             curveDataModel.setMaxNum(probe.getHighLimit()+"");
             curveDataModel.setMinNum(probe.getLowLimit()+"");
             curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? probe.getHighLimit()+"":probe.getStyleMin());
