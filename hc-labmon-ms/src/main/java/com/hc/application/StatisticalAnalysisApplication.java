@@ -1133,8 +1133,10 @@ public class StatisticalAnalysisApplication {
                     ProbeInfoDto probeInfoDto = new ProbeInfoDto();
                     Object o = objectToMap.get(field);
                     probeInfoDto.setValue((String) o);
+                    DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
                     probeInfoDto.setProbeEName(field);
-                    probeInfoDto.setUnit(DataFieldEnum.fromByLastDataField(field).getUnit());
+                    probeInfoDto.setProbeCName(dataFieldEnum.getCName());
+                    probeInfoDto.setUnit(dataFieldEnum.getUnit());
                     probeInfoDtoList.add(probeInfoDto);
                 });
                 multiprobeTypePointInTimeDto.setMonitorequipmentlastdata(data);
