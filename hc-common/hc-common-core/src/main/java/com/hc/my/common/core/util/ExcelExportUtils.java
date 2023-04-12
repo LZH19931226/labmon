@@ -29,6 +29,9 @@ public class ExcelExportUtils {
     public static final String SYSTEM_LOG_OPERATION = "系统日志操作信息";
     public static final String SYSTEM_LOG_OPERATION_US = "SYSTEM_LOG_OPERATION";
 
+    public static final String EQUIPMENT_DATA_MULTI_POINT_IN_TIME = "设备多类型数据时间点查询";
+    public static final String EQUIPMENT_DATA_MULTI_POINT_IN_TIME_US = "EQUIPMENT_DATA_MULTI_POINT_IN_TIME_US";
+
     /**
      * 获取设备数据自定义查询 返回string
      */
@@ -51,6 +54,19 @@ public class ExcelExportUtils {
             model = EQUIPMENT_DATA_POINT_IN_TIME;
         } else {
             model = EQUIPMENT_DATA_POINT_IN_TIME_US;
+        }
+        return model;
+    }
+
+    /**
+     * 获取设备数据时间点查询 返回string
+     */
+    public static String getEquipmentDataMultiPointInTimeModel() {
+        String model = "";
+        if (Context.IsCh()) {
+            model = EQUIPMENT_DATA_MULTI_POINT_IN_TIME;
+        } else {
+            model = EQUIPMENT_DATA_MULTI_POINT_IN_TIME_US;
         }
         return model;
     }

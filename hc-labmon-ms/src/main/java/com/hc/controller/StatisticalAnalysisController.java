@@ -162,5 +162,15 @@ public class StatisticalAnalysisController {
         return statisticalAnalysisApplication.getMultiprobeTypePointInTime(equipmentDataCommand);
     }
 
+    /**
+     * 时间点查询 多类型探头类型单点数据
+     */
+    @PostMapping("/exportMultiprobeTypePointInTime")
+    @ApiOperation("excel导出多类型探头类型单点数据")
+    @JwtIgnore
+    public  void exportMultiprobeTypePointInTime(@RequestBody EquipmentDataCommand equipmentDataCommand,HttpServletResponse response){
+         statisticalAnalysisApplication.exportMultiprobeTypePointInTime(equipmentDataCommand,response);
+    }
+
 
 }

@@ -1137,11 +1137,35 @@ public class StatisticalAnalysisApplication {
                     probeInfoDto.setUnit(DataFieldEnum.fromByLastDataField(field).getUnit());
                     probeInfoDtoList.add(probeInfoDto);
                 });
+                multiprobeTypePointInTimeDto.setMonitorequipmentlastdata(data);
                 multiprobeTypePointInTimeDto.setProbeInfoDtoList(probeInfoDtoList);
             }
             multiprobeTypePointInTimeDtos.add(multiprobeTypePointInTimeDto);
         }
-        return multiprobeTypePointInTimeDtos;
+        return  multiprobeTypePointInTimeDtos.stream().sorted(Comparator.comparing(MultiprobeTypePointInTimeDto::getDate)).collect(Collectors.toList());
+    }
+
+    public void exportMultiprobeTypePointInTime(EquipmentDataCommand equipmentDataCommand,HttpServletResponse response) {
+        String equipmentName = equipmentDataCommand.getEquipmentName();
+        List<String> fieldList = equipmentDataCommand.getFieldList();
+        List<MultiprobeTypePointInTimeDto> multiprobeTypePointInTime = getMultiprobeTypePointInTime(equipmentDataCommand);
+        if(CollectionUtils.isEmpty(multiprobeTypePointInTime)){
+            return;
+        }
+        //获取标头
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList,Context.IsCh());
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (MultiprobeTypePointInTimeDto multiprobeTypePointInTimeDto : multiprobeTypePointInTime) {
+            Monitorequipmentlastdata monitorequipmentlastdata = multiprobeTypePointInTimeDto.getMonitorequipmentlastdata();
+            Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
+            ObjectConvertUtils.filterMap(objectToMap,fieldList);
+            objectToMap.put("eqName",equipmentName);
+            mapList.add(objectToMap);
+        }
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataMultiPointInTimeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.MULTI_CUSTOM_QUERY.getCode());
+        String fileName = equipmentName+DateUtils.getYMD(equipmentDataCommand.getStartTime());
+        FileUtil.exportExcel(fileName,beanList,mapList,response);
+
     }
 }
 

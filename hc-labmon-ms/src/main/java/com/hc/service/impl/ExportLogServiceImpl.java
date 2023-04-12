@@ -20,6 +20,7 @@ public class ExportLogServiceImpl implements ExportLogService {
     @Autowired
     private OperationlogApi operationlogApi;
 
+    @Override
     public void buildLogInfo(String userId, String fileName,String exportCode,String platform) {
         ExportLogCommand exportLogCommand = new ExportLogCommand();
         UserRightDto userRightDto =  userRightService.getUserRightInfoByUserId(userId);

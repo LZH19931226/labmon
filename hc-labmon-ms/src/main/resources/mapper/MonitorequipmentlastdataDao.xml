@@ -129,7 +129,7 @@
         AND inputdatetime <![CDATA[>=]]> #{param.startTime}
         AND inputdatetime <![CDATA[<=]]> #{param.endTime}
         AND equipmentno = #{param.equipmentNo}
-        ORDER BY inputdatetime desc
+        ORDER BY inputdatetime
     </select>
 
 </mapper>
