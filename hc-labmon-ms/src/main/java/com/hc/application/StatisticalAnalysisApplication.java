@@ -169,22 +169,12 @@ public class StatisticalAnalysisApplication {
      */
     public Page<AlarmNoticeResult> getAlarmNotice(AlarmNoticeCommand alarmNoticeCommand) {
         Page<AlarmNoticeResult> page = new Page<>(alarmNoticeCommand.getPageCurrent(),alarmNoticeCommand.getPageSize());
-        List<UserRightDto> userRightDtoList = new ArrayList<>();
-        //判断是否输入手机号，没有就查询该医院所有的手机号
-        if(StringUtils.isEmpty(alarmNoticeCommand.getPhoneNum())){
-            userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
-        }
-        if(CollectionUtils.isNotEmpty(userRightDtoList)){
-            List<String> collect = userRightDtoList.stream().map(UserRightDto::getPhoneNum).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-            alarmNoticeCommand.setPhones(collect);
-        }else {
-            alarmNoticeCommand.setPhones(Collections.singletonList(alarmNoticeCommand.getPhoneNum()));
-        }
+        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
         List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList =  labMessengerPublishTaskService.getAlarmNoticeInfo(page,alarmNoticeCommand);
         if(CollectionUtils.isEmpty(labMessengerPublishTaskDtoList)){
             return page;
         }
-        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> list = processData(labMessengerPublishTaskDtoList,phoneMap);
         page.setRecords(list);
         return page;
@@ -225,22 +215,13 @@ public class StatisticalAnalysisApplication {
 
     public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response) {
         //判断是否输入手机号，没有就查询该医院所有的手机号
-        List<UserRightDto> userRightDtoList = new ArrayList<>();
-        if(StringUtils.isEmpty(alarmNoticeCommand.getPhoneNum())){
-            userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
-        }
-        if(CollectionUtils.isNotEmpty(userRightDtoList)){
-            List<String> collect = userRightDtoList.stream().map(UserRightDto::getPhoneNum).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-            alarmNoticeCommand.setPhones(collect);
-        }else {
-            alarmNoticeCommand.setPhones(Collections.singletonList(alarmNoticeCommand.getPhoneNum()));
-        }
+        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
         //2.查出数据库信息
         List<LabMessengerPublishTaskDto> alarmNoticeInfo = labMessengerPublishTaskService.getAlarmNoticeInfo(null, alarmNoticeCommand);
         if(CollectionUtils.isEmpty(alarmNoticeInfo)){
             return;
         }
-        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().filter(res->StringUtils.isNotBlank(res.getPhoneNum())).collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
+        Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> alarmNoticeResults = processData(alarmNoticeInfo, phoneMap);
         //获取属性map
         List<Map<String,Object>> mapList = new ArrayList<>();

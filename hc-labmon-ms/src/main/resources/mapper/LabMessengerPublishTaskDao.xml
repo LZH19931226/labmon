@@ -17,10 +17,6 @@
             lab_messengerpublishtask
         WHERE
           publish_time BETWEEN #{res.startTime} AND #{res.endTime}
-          AND publish_key  in
-          <foreach collection="res.phones" item="phone" open="(" close=")" separator=",">
-              #{phone}
-          </foreach>
           <if test="res.noticeState != null and res.noticeState != ''">
               <if test = "res.noticeState == '0'.toString() ">
                   and remark = 'OK'
@@ -29,6 +25,10 @@
                   and remark not in ('OK','')
               </if>
           </if>
+        <if test="res.phoneNum != null and res.phoneNum != ''">
+        and   publish_key= #{res.phoneNum}
+        </if>
+        and  message_bodys = #{res.hospitalCode}
         order by publish_time desc
     </select>
 </mapper>
