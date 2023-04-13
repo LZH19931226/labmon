@@ -209,9 +209,9 @@ public class StatisticalAnalysisApplication {
                 alarmNoticeResult.setFReason("SMS".equals(publishType) ? (isCh ? SmsCode.SmsCodeParse(remark) : remark):(isCh ? MailCode.MailCodePase(remark): remark));
             }
             if(Context.IsCh()){
-                alarmNoticeResult.setMailContent(labMessengerPublishTaskDto.getMessageCover()+"出现异常,请尽快查看");
+                alarmNoticeResult.setMailContent(labMessengerPublishTaskDto.getMessageTitle()+labMessengerPublishTaskDto.getMessageCover()+"出现异常,请尽快查看");
             }else {
-                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageCover()));
+                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageTitle()));
             }
             if (phoneMap.containsKey(labMessengerPublishTaskDto.getPublishKey())) {
                 alarmNoticeResult.setUserName(phoneMap.get(labMessengerPublishTaskDto.getPublishKey()).get(0).getUsername());

@@ -92,7 +92,7 @@ public class SocketMessageListener {
     @StreamListener(SocketMessage.EQUIPMENT_STATE_INFO)
     public void onMessage3(String messageContent) {
         try {
-        log.info("数据处理中心服务接收到数据:" + messageContent);
+        log.info("探头报警状态订阅:" + messageContent);
         process(messageContent);
         }catch (Exception e){
             return;

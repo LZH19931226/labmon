@@ -11,6 +11,7 @@
             publish_type publishType,
             status,
             message_cover messageCover,
+            message_title,
             remark
         FROM
             lab_messengerpublishtask
