@@ -282,6 +282,7 @@ public class WarningServiceImpl implements WarningService {
             String role = userright.getRole();
             String equipmentName = warningModel.getEquipmentname();
             String hospitalName = hospitalInfoDto.getHospitalName();
+            String hospitalCode = hospitalInfoDto.getHospitalCode();
             String unit = warningModel.getUnit();
             String value = warningModel.getValue();
             //1为运维后台人员
@@ -294,16 +295,16 @@ public class WarningServiceImpl implements WarningService {
             }
             if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(), reminders)) {
                 //拨打电话短信
-                buildP2PNotify(phonenum, equipmentName, unit, value, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE));
+                buildP2PNotify(phonenum, equipmentName, unit, value, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),hospitalCode);
                 mailCallUser.append(phonenum).append("/");
                 phoneCallUser.append(phonenum).append("/");
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
             } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
-                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.PHONE));
+                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.PHONE),hospitalCode);
                 phoneCallUser.append(phonenum).append("/");
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
             } else if (StringUtils.equals(reminders, DictEnum.SMS.getCode())) {
-                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.SMS));
+                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.SMS),hospitalCode);
                 mailCallUser.append(phonenum).append("/");
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
             }
@@ -329,7 +330,7 @@ public class WarningServiceImpl implements WarningService {
     }
 
     @Override
-    public void pushTimeOutNotification(List<Userright> userrights, String hospitalName, String eqTypeName, String count) {
+    public void pushTimeOutNotification(List<Userright> userrights, String hospitalName, String eqTypeName, String count,String hospitalcode) {
         for (Userright userright : userrights) {
             String phonenum = userright.getPhonenum();
             if (StringUtils.isEmpty(phonenum)) {
@@ -338,20 +339,20 @@ public class WarningServiceImpl implements WarningService {
             String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
             // 超时报警
             if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),count);
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),count,hospitalcode);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER21.getCode()), JsonUtil.toJson(userright), null);
             } else if (StringUtils.equals(timeoutwarning, "1")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.PHONE),count);
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.PHONE),count,hospitalcode);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER19.getCode()), JsonUtil.toJson(userright), null);
             } else if (StringUtils.equals(timeoutwarning, "2")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.SMS),count);
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.SMS),count,hospitalcode);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER20.getCode()), JsonUtil.toJson(userright), null);
             }
         }
     }
 
 
-    public void buildP2PNotify(String phone, String equipmentname, String unit, String value, List<NotifyChannel> notifyChannels) {
+    public void buildP2PNotify(String phone, String equipmentname, String unit, String value, List<NotifyChannel> notifyChannels,String hospitalCode) {
         P2PNotify p2PNotify = new P2PNotify();
         p2PNotify.setUserId(phone);
         p2PNotify.setMessageTitle(equipmentname);
@@ -361,12 +362,12 @@ public class WarningServiceImpl implements WarningService {
         }
         p2PNotify.setMessageIntro(value);
         p2PNotify.setChannels(notifyChannels);
-        p2PNotify.setMessageBodys(PushType.USUAL_ALARM.name());
+        p2PNotify.setMessageBodys(hospitalCode);
         p2PNotify.setServiceNo("1");
         messageApi.send(p2PNotify);
     }
 
-    public void buildTimeOutP2PNotify(String phone,String equipmentname,String unit,String hospitalName,List<NotifyChannel> notifyChannels,String count) {
+    public void buildTimeOutP2PNotify(String phone,String equipmentname,String unit,String hospitalName,List<NotifyChannel> notifyChannels,String count,String hospitalcode) {
         P2PNotify p2PNotify = new P2PNotify();
         p2PNotify.setUserId(phone);
         p2PNotify.setMessageTitle(equipmentname);
@@ -376,7 +377,7 @@ public class WarningServiceImpl implements WarningService {
         }
         p2PNotify.setMessageIntro(hospitalName);
         p2PNotify.setChannels(notifyChannels);
-        p2PNotify.setMessageBodys(PushType.TIMEOUT_ALARM.name());
+        p2PNotify.setMessageBodys(hospitalcode);
         Map<String, String> paramsMap = new HashMap<String, String>() {
             {
                 put("timeout", count);

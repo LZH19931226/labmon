@@ -145,7 +145,7 @@ public class SocketMessageListener {
             return;
         }
         //通知信息
-        warningService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString());
+        warningService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode);
         //保存到数据库
         sendTimeoutRecordService.saveTimeOutRecord(userrightByHospitalcodeAAndTimeout,hospitalcode,eqTypeName.toString(),count.toString());
     }
