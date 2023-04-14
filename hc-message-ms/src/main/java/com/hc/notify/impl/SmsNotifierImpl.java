@@ -27,20 +27,21 @@ public class SmsNotifierImpl implements Notifier {
         //设备值
         String messageIntro = notification.getMessageIntro();
 
-        String messageBodys = notification.getMessageBodys();
+//        String messageBodys = notification.getMessageBodys();
+//
+//        Map<String, String> param = notification.getParam();
 
-        Map<String, String> param = notification.getParam();
+        SendSmsResponse sendSmsResponse = sendMesService.sendMes(publishKey, messageTitle, messageCover, messageIntro);
+        return sendSmsResponse.getCode();
 
         //通过参数去定义使用短信模板 普通报警短信,超时报警短信
-        if (messageBodys.equals(PushType.USUAL_ALARM.name())){
-            SendSmsResponse sendSmsResponse = sendMesService.sendMes(publishKey, messageTitle, messageCover, messageIntro);
-            return sendSmsResponse.getCode();
-        }
-        if (messageBodys.equals(PushType.TIMEOUT_ALARM.name())){
-            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(publishKey, messageTitle, messageCover, messageIntro,param.get("timeout"));
-            return sendSmsResponse.getCode();
-        }
-
-        return null;
+//        if (messageBodys.equals(PushType.USUAL_ALARM.name())){
+//            SendSmsResponse sendSmsResponse = sendMesService.sendMes(publishKey, messageTitle, messageCover, messageIntro);
+//            return sendSmsResponse.getCode();
+//        }
+//        if (messageBodys.equals(PushType.TIMEOUT_ALARM.name())){
+//            SendSmsResponse sendSmsResponse = sendMesService.sendMes1(publishKey, messageTitle, messageCover, messageIntro,param.get("timeout"));
+//            return sendSmsResponse.getCode();
+//        }
     }
 }
