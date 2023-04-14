@@ -31,6 +31,7 @@ import com.hc.my.common.core.util.*;
 import com.hc.service.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -1107,7 +1108,22 @@ public class StatisticalAnalysisApplication {
                 if(CollectionUtils.isEmpty(collect)){
                     continue;
                 }
+
+                //获取时间点每个属性接近且有值的数据,属性覆盖模式
+                for (Monitorequipmentlastdata monitorequipmentlastdata2 : collect) {
+                    fieldList.forEach(s->{
+
+
+                    });
+
+
+                }
+
+                //获取时间点每个属性接近且有值的数据
                 Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
+
+
+
                 Map<String, Object> objectToMap = getObjectToMap(data);
                 List<ProbeInfoDto> probeInfoDtoList = new ArrayList<>();
                 fieldList.forEach(field->{
