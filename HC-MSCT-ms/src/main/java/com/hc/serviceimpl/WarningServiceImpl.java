@@ -339,13 +339,13 @@ public class WarningServiceImpl implements WarningService {
             String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
             // 超时报警
             if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),count,hospitalcode);
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.TIMEOUTSMS, NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER21.getCode()), JsonUtil.toJson(userright), null);
             } else if (StringUtils.equals(timeoutwarning, "1")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.PHONE),count,hospitalcode);
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER19.getCode()), JsonUtil.toJson(userright), null);
             } else if (StringUtils.equals(timeoutwarning, "2")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.SMS),count,hospitalcode);
+                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.TIMEOUTSMS),count,hospitalcode);
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER20.getCode()), JsonUtil.toJson(userright), null);
             }
         }
