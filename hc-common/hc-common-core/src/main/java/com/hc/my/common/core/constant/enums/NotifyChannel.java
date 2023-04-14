@@ -17,6 +17,8 @@ public enum NotifyChannel {
     MAIL("MAIL", "邮件"),
     PUSH("APP", "APP推送"),
     PHONE("PHONE","电话"),
+    TIMEOUTSMS("TIMEOUTSMS","超时短信"),
+    TIMEOUTPHONE("TIMEOUTPHONE","超时电话"),
     ;
 
     private String code;
