@@ -1148,6 +1148,9 @@ public class StatisticalAnalysisApplication {
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (MultiprobeTypePointInTimeDto multiprobeTypePointInTimeDto : multiprobeTypePointInTime) {
             List<ProbeInfoDto> probeInfoDtoList = multiprobeTypePointInTimeDto.getProbeInfoDtoList();
+            if (CollectionUtils.isEmpty(probeInfoDtoList)){
+                continue;
+            }
             Map<String, Object> objectToMap =new HashMap<>();
             probeInfoDtoList.forEach(s->{
                 objectToMap.put(s.getProbeEName(),s.getValue());
