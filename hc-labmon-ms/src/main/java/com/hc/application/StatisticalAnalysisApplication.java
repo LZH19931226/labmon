@@ -1108,35 +1108,27 @@ public class StatisticalAnalysisApplication {
                 if(CollectionUtils.isEmpty(collect)){
                     continue;
                 }
-
+                Map<String,String> fieldMap  = new HashMap<>();
                 //获取时间点每个属性接近且有值的数据,属性覆盖模式
                 for (Monitorequipmentlastdata monitorequipmentlastdata2 : collect) {
                     fieldList.forEach(s->{
-
-
+                        String fieldByClasss = ClassFieldValueUtil.getFieldValueByFieldNameNoAccess(s, monitorequipmentlastdata2);
+                        if (StringUtils.isNotEmpty(fieldByClasss)){
+                            fieldMap.put(s,fieldByClasss);
+                        }
                     });
-
-
                 }
-
-                //获取时间点每个属性接近且有值的数据
-                Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
-
-
-
-                Map<String, Object> objectToMap = getObjectToMap(data);
                 List<ProbeInfoDto> probeInfoDtoList = new ArrayList<>();
                 fieldList.forEach(field->{
                     ProbeInfoDto probeInfoDto = new ProbeInfoDto();
-                    Object o = objectToMap.get(field);
-                    probeInfoDto.setValue((String) o);
+                    String value = fieldMap.get(field);
+                    probeInfoDto.setValue(value);
                     DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
                     probeInfoDto.setProbeEName(field);
                     probeInfoDto.setProbeCName(dataFieldEnum.getCName());
                     probeInfoDto.setUnit(dataFieldEnum.getUnit());
                     probeInfoDtoList.add(probeInfoDto);
                 });
-                multiprobeTypePointInTimeDto.setMonitorequipmentlastdata(data);
                 multiprobeTypePointInTimeDto.setProbeInfoDtoList(probeInfoDtoList);
             }
             multiprobeTypePointInTimeDtos.add(multiprobeTypePointInTimeDto);
@@ -1155,10 +1147,14 @@ public class StatisticalAnalysisApplication {
         List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList,Context.IsCh());
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (MultiprobeTypePointInTimeDto multiprobeTypePointInTimeDto : multiprobeTypePointInTime) {
-            Monitorequipmentlastdata monitorequipmentlastdata = multiprobeTypePointInTimeDto.getMonitorequipmentlastdata();
-            Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
+            List<ProbeInfoDto> probeInfoDtoList = multiprobeTypePointInTimeDto.getProbeInfoDtoList();
+            Map<String, Object> objectToMap =new HashMap<>();
+            probeInfoDtoList.forEach(s->{
+                objectToMap.put(s.getProbeEName(),s.getValue());
+            });
             ObjectConvertUtils.filterMap(objectToMap,fieldList);
             objectToMap.put("eqName",equipmentName);
+            objectToMap.put("inputdatetime",multiprobeTypePointInTimeDto.getDate()+"  "+multiprobeTypePointInTimeDto.getTime());
             mapList.add(objectToMap);
         }
         exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataMultiPointInTimeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.MULTI_CUSTOM_QUERY.getCode());

@@ -11,7 +11,7 @@ public class ClassFieldValueUtil {
      * @param object
      * @return
      */
-    private String getFieldValueByFieldName(String fieldName, Object object) {
+    public static String getFieldValueByFieldName(String fieldName, Object object) {
         try {
             Field field = object.getClass().getField(fieldName);
             //设置对象的访问权限，保证对private的属性的访问
@@ -29,7 +29,7 @@ public class ClassFieldValueUtil {
      * @param object
      * @return
      */
-    private String getFieldValueByFieldNameNoAccess(String fieldName, Object object) {
+    public  static String getFieldValueByFieldNameNoAccess(String fieldName, Object object) {
         try {
             Field field = object.getClass().getDeclaredField(fieldName);
             //设置对象的访问权限，保证对private的属性的访问
@@ -48,11 +48,11 @@ public class ClassFieldValueUtil {
      * @param object
      * @return
      */
-    private String getFieldByClasss(String fieldName, Object object) {
+    public static String getFieldByClasss(String fieldName, Object object) {
         Field field = null;
         Class<?> clazz = object.getClass();
         //从当前的类开始找，没找到再从父类中找。
-        for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+        for (; clazz != Object.class; ) {
             try {
                 field = clazz.getDeclaredField(fieldName);
                 return  (String)field.get(object);
@@ -66,4 +66,12 @@ public class ClassFieldValueUtil {
 
     }
 
+
+    public static void  main(String[] args){
+
+
+
+
+
+    }
 }
