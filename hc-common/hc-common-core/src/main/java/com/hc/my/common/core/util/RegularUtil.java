@@ -16,7 +16,7 @@ public class RegularUtil {
     }
 
     public static void  main(String[] args){
-     System.out.println(checkContainsNumbers("k"));
+     System.out.println(checkContainsNumbers("15.00"));
 
     }
 }

@@ -18,11 +18,11 @@ public class LowHighVerify {
     /**
      * 判断 date是否在probe中的最高值和最低值之中
      * @param probe
-     * @param date
+     * @param data
      * @return
      */
-    public static boolean verify(InstrumentInfoDto probe, String date) {
-        BigDecimal bigDecimal = new BigDecimal(date);
+    public static boolean verify(InstrumentInfoDto probe, String data) {
+        BigDecimal bigDecimal = new BigDecimal(data);
         BigDecimal low = probe.getLowLimit();
         BigDecimal high = probe.getHighLimit();
         int a = bigDecimal.compareTo(low);

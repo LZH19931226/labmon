@@ -1008,7 +1008,7 @@ public class InstrumentMonitorInfoServiceImpl implements InstrumentMonitorInfoSe
                     list.add(WarningAlarmDo97);
                 }
                 if (StringUtils.isNotEmpty(model.getTEMP6())) {
-                    //气流
+                    //气体
                     monitorequipmentlastdata.setCurrentairflow1(model.getTEMP6());
                     BuildProbeInfoDto(hospitalcode, equipmentno,
                             CurrentProbeInfoEnum.CURRENTAIRFLOW1.getInstrumentConfigId(), model.getTEMP6(),
