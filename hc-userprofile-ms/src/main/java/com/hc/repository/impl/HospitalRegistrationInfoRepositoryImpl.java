@@ -40,7 +40,7 @@ public class HospitalRegistrationInfoRepositoryImpl extends ServiceImpl<Hospital
      */
     @Override
     public List<HospitalRegistrationInfoDto> selectHospitalInfo(Page page, HospitalCommand hospitalCommand) {
-        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand.getHospitalName(),hospitalCommand.getIsEnable());
+        return hospitalRegistrationInfoDao.selectListByHospital(page,hospitalCommand);
     }
 
     /**

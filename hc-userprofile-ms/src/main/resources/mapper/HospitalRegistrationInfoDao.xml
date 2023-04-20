@@ -20,13 +20,15 @@
         factor as factor,
         sound_light_alarm as soundLightAlarm
         FROM hospitalofreginfo where 1=1
-        <if test = "hospitalName != null  and hospitalName != ''">
-            and hospitalname like concat("%", #{hospitalName},"%")
+        <if test = "hospitalCommand.hospitalName != null  and hospitalCommand.hospitalName != ''">
+            and hospitalname like concat("%", #{hospitalCommand.hospitalName},"%")
         </if>
-        <if  test = "isEnable != null and isEnable != '' ">
-            and isenable = #{isEnable}
+        <if  test = "hospitalCommand.isEnable != null and hospitalCommand.isEnable != '' ">
+            and isenable = #{hospitalCommand.isEnable}
         </if>
-
+        <if test = "hospitalCommand.hospitalCode != null  and hospitalCommand.hospitalCode != ''">
+            and hospitalcode = #{hospitalCommand.hospitalCode}
+        </if>
     </select>
 
     <select id="selectHospitalName" resultType="com.hc.po.HospitalEquipmentPo">
