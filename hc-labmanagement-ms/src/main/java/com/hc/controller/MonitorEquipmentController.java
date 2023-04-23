@@ -125,4 +125,10 @@ public class MonitorEquipmentController {
     public void updateEquipmentEnableSet(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
         monitorEquipmentApplication.updateEquipmentEnableSet(monitorEquipmentCommand);
     }
+
+    @PostMapping("/updateEquipmentIns")
+    @ApiOperation("编辑设备的监测类型")
+    public void  updateEquipmentIns(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
+        monitorEquipmentApplication.updateEquipmentIns(monitorEquipmentCommand);
+    }
 }

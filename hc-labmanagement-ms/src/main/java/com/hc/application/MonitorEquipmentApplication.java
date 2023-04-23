@@ -83,6 +83,8 @@ public class MonitorEquipmentApplication {
 
     @Autowired
     private UserRightInfoApi userRightInfoApi;
+
+
     /**
      * 分页获取监控设备信息
      *  (用户新增设备页面选择设备后出现的探头检测信息)
@@ -250,7 +252,6 @@ public class MonitorEquipmentApplication {
      */
     @GlobalTransactional
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
-        String hospitalCode = monitorEquipmentCommand.getHospitalCode();
         //备注长度限值
         String remark = monitorEquipmentCommand.getRemark();
         if(remark.length() > 60){
@@ -343,8 +344,6 @@ public class MonitorEquipmentApplication {
             probeList.add(instrumentparamconfigDTO);
         }
         instrumentparamconfigService.insertBatch(probeList);
-
-
         //更新日志表
         MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), equipmentName,new MonitorEquipmentLogCommand(), monitorEquipmentCommand,
                 OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
@@ -1381,5 +1380,53 @@ public class MonitorEquipmentApplication {
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceInfo);
 
 
+    }
+
+
+    public void updateEquipmentIns(MonitorEquipmentCommand monitorEquipmentCommand) {
+        //选择修改监测类型,必须先清理旧的探头
+        String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
+        String equipmentName = monitorEquipmentCommand.getEquipmentName();
+        MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
+        List<InstrumentConfigDTO> instrumentConfigDTOS = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
+        if (CollectionUtils.isNotEmpty(instrumentConfigDTOS)){
+             throw new IedsException(LabSystemEnum.FAILED_TO_DELETE);
+        }
+        //编辑监测类型
+        //修改监控探头信息（monitorinstrument）
+        List<MonitorinstrumentDTO> monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(monitorEquipmentCommand.getEquipmentNo());
+        if (CollectionUtils.isNotEmpty(monitorinstrumentDTO)) {
+            monitorinstrumentDTO.forEach(res->{
+                res.setInstrumenttypeid(monitorinstrumenttypeDTO.getInstrumenttypeid());
+            });
+        }
+        monitorinstrumentService.bulkUpdate(monitorinstrumentDTO);
+        //新增探头信息
+        //插入探头参数表
+        List<InstrumentparamconfigDTO> probeList = new ArrayList<>();
+        List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
+        for (InstrumentmonitorDTO instrumentmonitorDTO : instrumentmonitorDTOS) {
+            InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
+                    .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""))
+                    .setInstrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
+                    .setInstrumentconfigname(instrumentmonitorDTO.getInstrumentconfigname())
+                    .setInstrumentname(monitorinstrumentDTO.get(0).getInstrumentname())
+                    .setChannel(instrumentmonitorDTO.getChannel())
+                    .setWarningphone("0")
+                    .setFirsttime(new Date())
+                    .setHighlimit(instrumentmonitorDTO.getHighlimit())
+                    .setLowlimit(instrumentmonitorDTO.getLowlimit())
+                    .setInstrumentno(monitorinstrumentDTO.get(0).getInstrumentno())
+                    .setInstrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
+                    .setSaturation(instrumentmonitorDTO.getSaturation())
+                    .setUnit(StringUtils.isBlank(instrumentmonitorDTO.getUnit()) ? "":instrumentmonitorDTO.getUnit())
+                    .setStyleMax(StringUtils.isBlank(instrumentmonitorDTO.getStyleMax())?"":instrumentmonitorDTO.getStyleMax())
+                    .setStyleMin(StringUtils.isBlank(instrumentmonitorDTO.getStyleMin())?"":instrumentmonitorDTO.getStyleMin())
+                    .setAlarmtime(3);
+            probeList.add(instrumentparamconfigDTO);
+        }
+        instrumentparamconfigService.insertBatch(probeList);
+        //探头信息存入redis
+        updateProbeRedisInfo(monitorinstrumentDTO.get(0).getInstrumentno(),monitorinstrumentDTO.get(0).getInstrumentname(),equipmentNo,monitorEquipmentCommand,probeList);
     }
 }
