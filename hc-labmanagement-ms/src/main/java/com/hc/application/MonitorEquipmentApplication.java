@@ -1386,10 +1386,9 @@ public class MonitorEquipmentApplication {
     public void updateEquipmentIns(MonitorEquipmentCommand monitorEquipmentCommand) {
         //选择修改监测类型,必须先清理旧的探头
         String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
-        String equipmentName = monitorEquipmentCommand.getEquipmentName();
         MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
-        List<InstrumentConfigDTO> instrumentConfigDTOS = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
-        if (CollectionUtils.isNotEmpty(instrumentConfigDTOS)){
+        List<InstrumentparamconfigDTO> instrumentParamConfigInfo = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
+        if (CollectionUtils.isNotEmpty(instrumentParamConfigInfo)){
              throw new IedsException(LabSystemEnum.FAILED_TO_DELETE);
         }
         //编辑监测类型
