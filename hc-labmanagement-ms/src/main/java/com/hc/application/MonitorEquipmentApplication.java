@@ -1383,6 +1383,7 @@ public class MonitorEquipmentApplication {
     }
 
 
+    @GlobalTransactional
     public void updateEquipmentIns(MonitorEquipmentCommand monitorEquipmentCommand) {
         //选择修改监测类型,必须先清理旧的探头
         String equipmentNo = monitorEquipmentCommand.getEquipmentNo();

@@ -8,8 +8,10 @@ import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
+import com.hc.my.common.core.util.ObjectConvertUtils;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.MTJudgeService;
+import com.hc.tcp.TcpClientApi;
 import com.hc.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -18,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +35,9 @@ public class MTJudgeServiceImpl implements MTJudgeService {
 
     @Autowired
     private SnDeviceRedisApi snDeviceRedisSync;
+
+    @Autowired
+    private TcpClientApi tcpClientApi;
 
     @Override
     public List<Monitorinstrument> checkProbe(ParamaterModel model) {
@@ -75,6 +77,18 @@ public class MTJudgeServiceImpl implements MTJudgeService {
         return objectConversion(snDevices);
     }
 
+    @Override
+    public boolean filterHosChannel(String channelId, String hospitalcode) {
+        Map<Object, Object> tcpClientMap = tcpClientApi.getAllClientInfo().getResult();
+
+        String clientSn = ObjectConvertUtils.getKey(tcpClientMap, channelId);
+        List<SnDeviceDto> snDevices = snDeviceRedisSync.getSnDeviceDto(clientSn).getResult();
+
+
+
+        return false;
+    }
+
     private List<Monitorinstrument> objectConversion(List<SnDeviceDto> snDevices) {
         List<Monitorinstrument> list = new ArrayList<>();
         for (SnDeviceDto snDeviceDto : snDevices) {
@@ -95,4 +109,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
         }
         return list;
     }
+
+
+
 }

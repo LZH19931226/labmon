@@ -11,6 +11,7 @@ import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
+import com.hc.my.common.core.util.ObjectConvertUtils;
 import com.hc.po.Instrumentparamconfig;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.*;
@@ -27,6 +28,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -114,10 +117,15 @@ public class SocketMessageListener {
         }
 
         //MT500  MT600判断
-        //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
+        //废弃掉自动注册功能,探头未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
         List<Monitorinstrument> monitorinstruments = mtJudgeService.checkProbe(model);
         if (CollectionUtils.isEmpty(monitorinstruments)) {
+            return;
+        }
+        //新增通道对医院设备数据过滤功能,非本通道医院设备数据需要过滤
+        String hospitalcode = monitorinstruments.get(0).getHospitalcode();
+        if (mtJudgeService.filterHosChannel(model.getChannelId(),hospitalcode)){
             return;
         }
         for (Monitorinstrument monitorinstrument : monitorinstruments) {
@@ -150,6 +158,11 @@ public class SocketMessageListener {
             }
         }
     }
+
+
+
+
+
 
     //解决多个一包数据经过多个500重复上传问题,一包数据30秒内是要一条
     public boolean repeatDatafilter(ParamaterModel data) {

@@ -11,4 +11,6 @@ import java.util.List;
 public interface MTJudgeService {
 
     List<Monitorinstrument> checkProbe(ParamaterModel model);
+
+    boolean filterHosChannel(String channelId,String hospitalcode);
 }
