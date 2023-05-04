@@ -34,12 +34,14 @@ public class SocketMessageListener {
             ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
             String data = model.getData();
             String logId = model.getLogId();
+            String channelId = model.getChannelId();
             //获取到的原始数据进行解析
             ParamaterModel paseData = service.paseData(data);
             if (null == paseData) {
                 log.info("无法解析该数据:{}", JsonUtil.toJson(model));
                 return;
             }
+            paseData.setChannelId(channelId);
             paseData.setNowTime(new Date());
             paseData.setData(data);
             paseData.setLogId(logId);
