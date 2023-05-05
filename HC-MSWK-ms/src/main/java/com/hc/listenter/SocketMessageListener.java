@@ -110,12 +110,10 @@ public class SocketMessageListener {
         String logId = model.getLogId();
         //该数据生命周期id
         ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()), messageContent, logId);
-
         //多个500数据重复上传问题,已经注册得设同步缓存
         if (repeatDatafilter(model)) {
             return;
         }
-
         //MT500  MT600判断
         //废弃掉自动注册功能,探头未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
@@ -125,7 +123,7 @@ public class SocketMessageListener {
         }
         //新增通道对医院设备数据过滤功能,非本通道医院设备数据需要过滤
         String hospitalcode = monitorinstruments.get(0).getHospitalcode();
-        if (mtJudgeService.filterHosChannel(model.getChannelId(),hospitalcode)){
+        if (!mtJudgeService.filterHosChannel(model.getChannelId(),hospitalcode)){
             return;
         }
         for (Monitorinstrument monitorinstrument : monitorinstruments) {

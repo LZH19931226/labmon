@@ -44,34 +44,34 @@ public class MTJudgeServiceImpl implements MTJudgeService {
         String sn = model.getSN();
         //先从缓存里面取,缓存里面取不出来再从数据库取,判断设备是否注册此处缓存需要后台管理做数据同步
         List<SnDeviceDto> snDevices = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
-        if (CollectionUtils.isEmpty(snDevices)){
+        if (CollectionUtils.isEmpty(snDevices)) {
             List<MonitorinstrumentModel> monitorinstrumentModel = monitorInstrumentMapper.selectMonitorinstrumentInfoBySn(sn);
-            if(CollectionUtils.isEmpty(monitorinstrumentModel)){
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER02.getCode()),JsonUtil.toJson(model),model.getLogId());
+            if (CollectionUtils.isEmpty(monitorinstrumentModel)) {
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER02.getCode()), JsonUtil.toJson(model), model.getLogId());
                 return null;
             }
-            if(monitorinstrumentModel.size()==1){
+            if (monitorinstrumentModel.size() == 1) {
                 MonitorinstrumentModel monitorinstrument = monitorinstrumentModel.get(0);
                 if (null == monitorinstrument) {
-                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER02.getCode()),JsonUtil.toJson(model),model.getLogId());
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER02.getCode()), JsonUtil.toJson(model), model.getLogId());
                     return null;
                 }
                 Boolean clientvisible = monitorinstrument.getClientvisible();
                 if (!clientvisible) {
                     // 未启用
-                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER03.getCode()),JsonUtil.toJson(model),model.getLogId());
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER03.getCode()), JsonUtil.toJson(model), model.getLogId());
                     return null;
                 }
                 return Collections.singletonList(BeanConverter.convert(monitorinstrument, Monitorinstrument.class));
-            }else {
+            } else {
                 //获取启用的数量
                 List<MonitorinstrumentModel> collect = monitorinstrumentModel.stream().filter(MonitorinstrumentModel::getClientvisible).collect(Collectors.toList());
-                if(CollectionUtils.isEmpty(collect)){
+                if (CollectionUtils.isEmpty(collect)) {
                     // 未启用
-                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER03.getCode()),JsonUtil.toJson(model),model.getLogId());
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER03.getCode()), JsonUtil.toJson(model), model.getLogId());
                     return null;
                 }
-                return BeanConverter.convert(collect,Monitorinstrument.class);
+                return BeanConverter.convert(collect, Monitorinstrument.class);
             }
         }
         return objectConversion(snDevices);
@@ -80,19 +80,30 @@ public class MTJudgeServiceImpl implements MTJudgeService {
     @Override
     public boolean filterHosChannel(String channelId, String hospitalcode) {
         Map<Object, Object> tcpClientMap = tcpClientApi.getAllClientInfo().getResult();
-
+        if (tcpClientMap.isEmpty()) {
+            return false;
+        }
         String clientSn = ObjectConvertUtils.getKey(tcpClientMap, channelId);
+        if (StringUtils.isEmpty(clientSn)) {
+            log.info("无效通道,通道未绑定设备:{}",channelId);
+            return false;
+        }
         List<SnDeviceDto> snDevices = snDeviceRedisSync.getSnDeviceDto(clientSn).getResult();
-
-
-
-        return false;
+        if (CollectionUtils.isEmpty(snDevices)) {
+            return false;
+        }
+        String hospitalCode = snDevices.get(0).getHospitalCode();
+        if (StringUtils.isEmpty(hospitalCode) || !StringUtils.equals(hospitalcode, hospitalCode)) {
+            log.info("设备通道与MT1100上传通道不符");
+            return false;
+        }
+        return true;
     }
 
     private List<Monitorinstrument> objectConversion(List<SnDeviceDto> snDevices) {
         List<Monitorinstrument> list = new ArrayList<>();
         for (SnDeviceDto snDeviceDto : snDevices) {
-            if(ObjectUtils.isEmpty(snDeviceDto)){
+            if (ObjectUtils.isEmpty(snDeviceDto)) {
                 continue;
             }
             String instrumentTypeId = snDeviceDto.getInstrumentTypeId();
@@ -101,7 +112,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
             monitorinstrument.setEquipmentno(snDeviceDto.getEquipmentNo());
             monitorinstrument.setHospitalcode(snDeviceDto.getHospitalCode());
             monitorinstrument.setInstrumentno(snDeviceDto.getInstrumentNo());
-            monitorinstrument.setInstrumenttypeid(StringUtils.isEmpty(instrumentTypeId)?null:Integer.valueOf(instrumentTypeId));
+            monitorinstrument.setInstrumenttypeid(StringUtils.isEmpty(instrumentTypeId) ? null : Integer.valueOf(instrumentTypeId));
             monitorinstrument.setSn(snDeviceDto.getSn());
             monitorinstrument.setInstrumentname(snDeviceDto.getInstrumentName());
             monitorinstrument.setClientvisible(0 != snDeviceDto.getClientVisible());
@@ -109,7 +120,6 @@ public class MTJudgeServiceImpl implements MTJudgeService {
         }
         return list;
     }
-
 
 
 }
