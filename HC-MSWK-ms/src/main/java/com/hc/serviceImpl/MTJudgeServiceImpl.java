@@ -90,11 +90,7 @@ public class MTJudgeServiceImpl implements MTJudgeService {
         }
         List<SnDeviceDto> snDevices = snDeviceRedisSync.getSnDeviceDto(clientSn).getResult();
         if (CollectionUtils.isEmpty(snDevices)) {
-            return false;
-        }
-        String hospitalCode = snDevices.get(0).getHospitalCode();
-        if (StringUtils.isEmpty(hospitalCode) || !StringUtils.equals(hospitalcode, hospitalCode)) {
-            log.info("设备通道与MT1100上传通道不符");
+            log.info("该1100未注册:{}",channelId);
             return false;
         }
         return true;

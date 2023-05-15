@@ -78,7 +78,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
             ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()), JsonUtil.toJson(probe), logId);
             return null;
         } else {
-            if (warningRecord.size() < alarmtime) {
+            if (warningRecord.size() < alarmtime-1) {
                 probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()), JsonUtil.toJson(probe), logId);
                 return null;
