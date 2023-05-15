@@ -74,9 +74,20 @@ public class WarningRuleServiceImpl implements WarningRuleService {
         List<WarningRecordDto> warningRecord = probeRedisApi.getProbeWarnInfo(hospitalcode, instrumentParamConfigNO).getResult();
         //判断是否三次报警
         if (CollectionUtils.isEmpty(warningRecord)) {
-            probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
-            ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()), JsonUtil.toJson(probe), logId);
-            return null;
+            if(alarmtime==1){
+                probeRedisApi.removeProbeWarnInfo(hospitalcode, instrumentParamConfigNO);
+                warningModel.setPkid(pkid);
+                warningModel.setValue(data);
+                warningModel.setEquipmentname(probe.getEquipmentName());
+                warningModel.setUnit(probe.getInstrumentConfigName());
+                warningModel.setHospitalcode(hospitalcode);
+                warningModel.setInstrumentConfigId(String.valueOf(probe.getInstrumentConfigId()));
+                warningModel.setInstrumentparamconfigNO(probe.getInstrumentParamConfigNO());
+            }else {
+                probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER09.getCode()), JsonUtil.toJson(probe), logId);
+                return null;
+            }
         } else {
             if (warningRecord.size() < alarmtime-1) {
                 probeRedisApi.addProbeWarnInfo(buildProbeWarnInfo(hospitalcode, instrumentParamConfigNO, data));
