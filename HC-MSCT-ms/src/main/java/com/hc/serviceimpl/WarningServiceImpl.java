@@ -51,11 +51,11 @@ public class WarningServiceImpl implements WarningService {
             warningphone = "1";
         }
         Integer instrumentConfigId = probe.getInstrumentConfigId();
-        String instrumentparamconfigNO = probe.getInstrumentParamConfigNO();
+        String instrumentParamconfigNO = probe.getInstrumentParamConfigNO();
         String equipmentno = probe.getEquipmentNo();
         Warningrecord warningrecord = new Warningrecord();
         warningrecord.setEquipmentno(equipmentno);
-        warningrecord.setInstrumentparamconfigno(instrumentparamconfigNO);
+        warningrecord.setInstrumentparamconfigno(instrumentParamconfigNO);
         warningrecord.setInputdatetime(new Date());
         warningrecord.setHospitalcode(hospitalcode);
         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -65,39 +65,40 @@ public class WarningServiceImpl implements WarningService {
         //高低值比较探头
         if (ProbeConfigIds.lowHighRuleInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == lowHighRule(warningrecord, warningAlarmDo, probe)) {
-                sendEquimentProbeStatus(probe, warningAlarmDo);
+                sendEquimentProbeStatus(probe, warningAlarmDo,SysConstants.NORMAL);
                 return null;
             }
             //市电比较探头
         } else if (ProbeConfigIds.mainsInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == mainsRule(warningrecord, warningAlarmDo,probe)) {
-                sendEquimentProbeStatus(probe, warningAlarmDo);
+                sendEquimentProbeStatus(probe, warningAlarmDo,SysConstants.NORMAL);
                 return null;
             }
             //报警信号比较探头
         } else if (ProbeConfigIds.alarmSignalInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == alarmSignalRule(warningrecord, warningAlarmDo, probe)) {
-                sendEquimentProbeStatus(probe, warningAlarmDo);
+                sendEquimentProbeStatus(probe, warningAlarmDo,SysConstants.NORMAL);
                 return null;
             }
         }
         //气体比较探头
         else if (ProbeConfigIds.gasInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == gasRule(warningrecord, warningAlarmDo, probe)) {
-                sendEquimentProbeStatus(probe, warningAlarmDo);
+                sendEquimentProbeStatus(probe, warningAlarmDo,SysConstants.NORMAL);
                 return null;
             }
         }
         //气流比较探头
         else if (ProbeConfigIds.airFlowInstrumentConfigIds.contains(instrumentConfigId)) {
             if (null == airFlowRule(warningrecord, warningAlarmDo, probe)) {
-                sendEquimentProbeStatus(probe, warningAlarmDo);
+                sendEquimentProbeStatus(probe, warningAlarmDo,SysConstants.NORMAL);
                 return null;
             }
         } else {
             return null;
         }
-
+        //探头超过阈值,则认为异常
+        sendEquimentProbeStatus(probe,warningAlarmDo,SysConstants.IN_ALARM);
         /*1.判断该设备是否开启报警服务*/
         if (StringUtils.equals("0", warningphone)) {
             //不启用报警，直接过滤信息
@@ -108,7 +109,7 @@ public class WarningServiceImpl implements WarningService {
     }
 
     //需要将报警原因,报警通知到得人员,反写过去
-    public void sendEquimentProbeStatus(InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo) {
+    public void sendEquimentProbeStatus(InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo,String state) {
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         //未产生报警记录，正常值情况，就删除
         probeRedisApi.removeProbeWarnInfo(monitorinstrument.getHospitalcode(), probe.getInstrumentParamConfigNO());
@@ -118,6 +119,7 @@ public class WarningServiceImpl implements WarningService {
         equipmentState.setEquipmentNo(monitorinstrument.getEquipmentno());
         equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
         equipmentState.setState(SysConstants.NORMAL);
+        equipmentState.setState(state);
         equipmentState.setInstrumentConfigId(probe.getInstrumentConfigId() + "");
         equipmentState.setHospitalCode(monitorinstrument.getHospitalcode());
         equipmentState.setSn(monitorinstrument.getSn());
@@ -125,7 +127,6 @@ public class WarningServiceImpl implements WarningService {
         messageSendService.send(json);
         ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()), JsonUtil.toJson(equipmentState), warningAlarmDo.getLogId());
     }
-
 
     private Warningrecord airFlowRule(Warningrecord warningrecord, WarningAlarmDo warningAlarmDo, InstrumentInfoDto probe) {
         String data = warningAlarmDo.getCurrrentData();

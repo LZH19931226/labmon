@@ -170,8 +170,6 @@ public class SocketMessageListener {
         //判断探头是否满足量程范围
         Warningrecord warningrecord = warningService.checkProbeLowLimit(probe, warningAlarmDo);
         if (null!=warningrecord){
-            //将设备状态信息推送到mq,只要认定超出量程范围就是异常
-            sendEquimentProbeStatus(monitorinstrument,probe,hospitalcode,warningAlarmDo.getLogId());
             //判断探头是否满足报警规则
             WarningModel model = warningRuleService.warningRule(hospitalcode, warningrecord, probe, warningAlarmDo);
             if (null!=model) {
@@ -200,21 +198,4 @@ public class SocketMessageListener {
             warningApi.add(convert);
         }
     }
-
-    //推送探头当前报警状态
-    public void sendEquimentProbeStatus( MonitorinstrumentDo monitorinstrument , InstrumentInfoDto probe,String hospitalcode,String logId){
-        EquipmentState equipmentState = new EquipmentState();
-        equipmentState.setState(SysConstants.IN_ALARM);
-        equipmentState.setEquipmentNo(monitorinstrument.getEquipmentno());
-        equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
-        equipmentState.setInstrumentConfigNo(probe.getInstrumentParamConfigNO());
-        equipmentState.setInstrumentConfigId(String.valueOf(probe.getInstrumentConfigId()));
-        equipmentState.setHospitalCode(hospitalcode);
-        equipmentState.setSn(probe.getSn());
-        String json = JsonUtil.toJson(equipmentState);
-        messageSendService.send(json);
-        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()),JsonUtil.toJson(equipmentState),logId);
-    }
-
-
 }
