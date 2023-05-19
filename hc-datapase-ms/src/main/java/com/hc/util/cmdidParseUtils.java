@@ -368,7 +368,7 @@ public class cmdidParseUtils {
             paramaterModel.setRH(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String rh = paramaterModelUtils.gas(substring3);
-            rh = CustomUtils.agreementAll(rh, "0", "99");
+            rh = CustomUtils.agreementAll(rh, "0", "100");
             paramaterModel.setRH(rh);
         }
 
