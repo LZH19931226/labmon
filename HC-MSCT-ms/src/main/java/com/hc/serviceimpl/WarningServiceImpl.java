@@ -112,13 +112,14 @@ public class WarningServiceImpl implements WarningService {
     public void sendEquimentProbeStatus(InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo,String state) {
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         //未产生报警记录，正常值情况，就删除
-        probeRedisApi.removeProbeWarnInfo(monitorinstrument.getHospitalcode(), probe.getInstrumentParamConfigNO());
+        if(StringUtils.equals(state,SysConstants.NORMAL)){
+            probeRedisApi.removeProbeWarnInfo(monitorinstrument.getHospitalcode(), probe.getInstrumentParamConfigNO());
+        }
         //将设备状态信息推送到mq
         EquipmentState equipmentState = new EquipmentState();
         equipmentState.setInstrumentConfigNo(probe.getInstrumentParamConfigNO());
         equipmentState.setEquipmentNo(monitorinstrument.getEquipmentno());
         equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
-        equipmentState.setState(SysConstants.NORMAL);
         equipmentState.setState(state);
         equipmentState.setInstrumentConfigId(probe.getInstrumentConfigId() + "");
         equipmentState.setHospitalCode(monitorinstrument.getHospitalcode());

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/msct")
 public class TestMsct {
 
-//    @Autowired
-//    private SocketMessageListener socketMessageListener;
-//
-//   @GetMapping("/")
-//   public void test(String message){
-//       socketMessageListener.msctMessage(message);
-//   }
+    @Autowired
+    private SocketMessageListener socketMessageListener;
+
+   @GetMapping("/")
+   public void test(String message){
+       socketMessageListener.msctMessage(message);
+   }
 
 
 }
