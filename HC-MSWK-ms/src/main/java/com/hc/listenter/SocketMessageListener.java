@@ -121,11 +121,6 @@ public class SocketMessageListener {
         if (CollectionUtils.isEmpty(monitorinstruments)) {
             return;
         }
-        //新增通道对医院设备数据过滤功能,非本通道医院设备数据需要过滤
-        //String hospitalcode = monitorinstruments.get(0).getHospitalcode();
-        //if (!mtJudgeService.filterHosChannel(model.getChannelId(),hospitalcode)){
-          //  return;
-        //}
         for (Monitorinstrument monitorinstrument : monitorinstruments) {
             //设备未启用数据需要抛弃
             if (!monitorinstrument.getClientvisible()){

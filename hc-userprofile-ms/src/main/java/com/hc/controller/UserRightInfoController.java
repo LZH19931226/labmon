@@ -8,7 +8,6 @@ import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,12 +81,13 @@ public class UserRightInfoController {
      */
     @JwtIgnore
     @GetMapping("/getALLHospitalUserRightInfo")
+    @ApiOperation("通过医院code获取医院用户信息")
     public List<UserRightRedisDto> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode){
         return userRightApplication.findALLUserRightInfo(hospitalCode);
     }
 
     @PostMapping("/getPhoneCode")
-    @ApiOperation("手机验证登录")
+    @ApiOperation("获取手机登录验证码")
     public void selectPhoneCode(@RequestParam("phoneNum") String phoneNum){
          userRightApplication.getPhoneCode(phoneNum);
     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hc.infrastructure.dao.SysMenuEntityDao">
+
+
+    <select id="getUserMenuList" resultType="com.hc.po.SysMenuEntity">
+        SELECT
+            t3.*
+        FROM
+            sys_role t1
+                LEFT JOIN sys_role_menu t2 ON t1.id = t2.role_id
+                LEFT JOIN sys_menu t3 on t2.menu_id =t3.id
+        WHERE
+            t1.`name` = #{roleName}
+        order by t3.sort asc
+    </select>
+</mapper>
+
+
