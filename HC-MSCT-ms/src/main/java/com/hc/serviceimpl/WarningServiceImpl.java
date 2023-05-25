@@ -406,7 +406,7 @@ public class WarningServiceImpl implements WarningService {
             p2PNotify.setMessageIntro("异常");
         }
         if("市电".equals(unit)){
-            p2PNotify.setMessageCover("液位");
+            p2PNotify.setMessageCover("供电");
             p2PNotify.setMessageIntro("异常");
         }
 
