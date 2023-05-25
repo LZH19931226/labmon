@@ -46,7 +46,7 @@ public class CurveUtils {
                 List<String> dataList = curve.getDataList();
                 List<String> dateList = curve.getDateList();
                 String imField = DataFieldEnum.fromByLastDataField(field).getImField();
-                CurveDataModel curveDataModel = generateCurveDataModel(dataList, dateList, map.get(imField));
+                CurveDataModel curveDataModel = generateCurveDataModel(dataList, dateList, map.get(imField),eqSnAbbreviation);
                 resultMap.put(field,curveDataModel);
                 list.add(resultMap);
             }
@@ -146,7 +146,7 @@ public class CurveUtils {
         curve.getDateList().add(DateUtils.getHHmm(timeStr));
     }
 
-    private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list){
+    private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list,String eqSnAbbreviation){
         CurveDataModel curveDataModel = new CurveDataModel();
         curveDataModel.setXaxis(timeList);
         curveDataModel.setUnit("");
@@ -160,8 +160,8 @@ public class CurveUtils {
             curveDataModel.setMinNum(probe.getLowLimit()+"");
             curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? probe.getHighLimit()+"":probe.getStyleMin());
             curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? probe.getLowLimit()+"":probe.getStyleMax());
-            /**  当设备是MT210M 并且单位in时修改返回值*/
-            if(SysConstants.EQ_MT210M.equals(probe.getInstrumenttypeid()) && SysConstants.MT210M_UNIT.equals(probe.getUnit())){
+            /**  当设备是MT210M,211M 并且单位in时修改返回值*/
+            if(SysConstants.MT210M_SN.equals(eqSnAbbreviation) && SysConstants.MT210M_UNIT.equals(probe.getUnit())){
                 List<String>  afterList = new ArrayList<>();
                 dataList.forEach(res->{
                     BigDecimal bigDecimal = new BigDecimal(res);

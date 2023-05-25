@@ -51,6 +51,7 @@ public class SysConstants {
     /**  MT210M */
     public static final Integer EQ_MT210M = 114;
     public static final String MT210M_SN = "48";
+
     public static final String MT210M_UNIT = "in";
     /** MT210M 转化阈值25.4 */
     public static final BigDecimal MT210M_VALUE = new BigDecimal("25.4");

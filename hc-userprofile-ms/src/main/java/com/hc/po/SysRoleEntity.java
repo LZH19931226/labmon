@@ -1,11 +1,3 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
 package com.hc.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -20,7 +12,6 @@ import java.util.Date;
 /**
  * 角色
  *
- * @author Mark sunlightcs@gmail.com
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
