@@ -366,11 +366,7 @@ public class WarningServiceImpl implements WarningService {
         P2PNotify p2PNotify = new P2PNotify();
         p2PNotify.setUserId(phone);
         p2PNotify.setMessageTitle(equipmentname);
-        p2PNotify.setMessageCover(unit);
-        if("LIQUIDLEVEL".equals(unit)){
-            p2PNotify.setMessageCover("液位");
-        }
-        p2PNotify.setMessageIntro(value);
+        conversionUnit(p2PNotify,unit,value);
         p2PNotify.setChannels(notifyChannels);
         p2PNotify.setMessageBodys(hospitalCode);
         p2PNotify.setServiceNo("1");
@@ -396,6 +392,26 @@ public class WarningServiceImpl implements WarningService {
         p2PNotify.setServiceNo("1");
         p2PNotify.setParams(paramsMap);
         messageApi.send(p2PNotify);
+    }
+
+    //需要将适配器状态,市电状态,调整
+    public void conversionUnit(P2PNotify p2PNotify,String unit, String value){
+        p2PNotify.setMessageCover(unit);
+        p2PNotify.setMessageIntro(value);
+        if("LIQUIDLEVEL".equals(unit)){
+            p2PNotify.setMessageCover("液位");
+        }
+        if("适配器供电状态".equals(unit)){
+            p2PNotify.setMessageCover("供电状态");
+            p2PNotify.setMessageIntro("异常");
+        }
+        if("市电".equals(unit)){
+            p2PNotify.setMessageCover("液位");
+            p2PNotify.setMessageIntro("异常");
+        }
+
+
+
     }
 
 }
