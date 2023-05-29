@@ -1,5 +1,6 @@
 package com.hc.controller;
 
+import com.hc.util.AmazonConnectUtil;
 import com.hc.util.MoblieMessageUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class SmsController {
 	@Autowired
 	private MoblieMessageUtil moblieMessageUtil;
 
+	@Autowired
+	private AmazonConnectUtil amazonConnectUtil;
+
 	@GetMapping("/code")
 	@ApiOperation("短信验证码获取接口")
 	public void senMessagecode(@RequestParam("phonenum")String phontnum, @RequestParam("code")String code) {
@@ -28,4 +32,10 @@ public class SmsController {
 		moblieMessageUtil.upsRemind(phontnum,eqname);
 	}
 
+
+	@GetMapping("/phone")
+	@ApiOperation("电话号码")
+	public void testPhone(String phone,String message){
+		amazonConnectUtil.makeCall(phone,message);
+	}
 }
