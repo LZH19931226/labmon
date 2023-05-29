@@ -68,4 +68,25 @@
             and t1.clientvisible = '1'
          order by t1.sort,t1.equipmentname
     </select>
+    <select id="getEquipmentInfoByNo" resultType="com.hc.dto.MonitorEquipmentDto">
+       select t1.*,t2.instrumenttypeid,t2.sn
+       from monitorequipment t1
+           left join monitorinstrument t2
+               on t1.equipmentno = t2.equipmentno
+       where t1.equipmentno = #{equipmentNo}
+    </select>
+
+    <select id="getEqTypeIdByEno" resultType="java.lang.String">
+        select equipmenttypeid from monitorequipment where equipmentno = #{equipmentNo}
+    </select>
+    <select id="getEquipmentStateInfo" resultType="com.hc.dto.MonitorEquipmentDto">
+        SELECT * FROM monitorequipment  where  hospitalcode = #{probeCommand.hospitalCode}  and equipmenttypeid =#{probeCommand.equipmentTypeId}
+        <if test = "probeCommand.equipmentName != null and probeCommand.equipmentName != ''">
+            and equipmentname like concat('%',#{probeCommand.equipmentName},'%')
+        </if>
+        <if test = "probeCommand.state != null and probeCommand.state != ''">
+            and clientvisible = #{probeCommand.state}
+        </if>
+        ORDER BY sort,equipmentname
+    </select>
 </mapper>

@@ -1,6 +1,5 @@
 package com.hc.application.curvemodel;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -44,4 +43,9 @@ public class CurveDataModel {
      * 样式最大值
      */
     private String styleMax;
+
+    /**
+     * 单位
+     */
+    private String unit;
 }

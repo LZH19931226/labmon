@@ -14,4 +14,6 @@ public interface UserRightService {
     List<UserRightDto> getUserRightInfo(AlarmNoticeCommand alarmNoticeCommand);
 
     UserRightDto getUserRightInfoByUserId(String userId);
+
+    List<UserRightDto> getAll();
 }

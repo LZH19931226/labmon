@@ -11,6 +11,7 @@ import com.hc.application.response.*;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.dto.*;
 import com.hc.my.common.core.jwt.JwtIgnore;
+import com.hc.my.common.core.redis.dto.EquipmentEnableSetDto;
 import com.hc.my.common.core.util.date.DateDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class AppController {
     @PostMapping("/getCurrentProbeInfo")
     @ApiOperation("获取探头当前值(卡片)")
     public CurrentProbeInfoResult getTheCurrentValueOfTheProbe(@RequestBody ProbeCommand probeCommand){
-        return  equipmentInfoAppApplication.getTheCurrentValueOfTheProbe(probeCommand);
+        return  equipmentInfoAppApplication.getProbeCurrentV(probeCommand);
     }
 
     /**
@@ -69,7 +70,7 @@ public class AppController {
     }
 
     @PostMapping("/getEquipmentCurveInfo")
-    @ApiOperation("查询app设备曲线值")
+    @ApiOperation("查询系统设备曲线值")
     public List<Map<String, CurveDataModel>> getCurveInfo(@RequestBody CurveCommand curveCommand){
         return equipmentInfoAppApplication.getCurveFirst(curveCommand);
     }
@@ -81,7 +82,7 @@ public class AppController {
         return equipmentInfoAppApplication.getWarningInfoList(warningCommand);
     }
 
-    @PostMapping("getWarningDetailInfo")
+    @PostMapping("/getWarningDetailInfo")
     @ApiOperation("获取设备报警详情信息")
     public Page getWarningDetailInfo(@RequestBody WarningCommand warningCommand){
         return equipmentInfoAppApplication.getWarningDetailInfo(warningCommand);
@@ -110,6 +111,12 @@ public class AppController {
     @ApiOperation("获取报警设置设备数量")
     public AlarmHand getTheNumberOfAlarmSettingDevices(@RequestBody AlarmSystemCommand alarmSystemCommand){
         return equipmentInfoAppApplication.getTheNumberOfAlarmSettingDevices(alarmSystemCommand);
+    }
+
+    @PostMapping("/getEquipmentEnableSet")
+    @ApiOperation("获取启用设置获取设置设备信息")
+    public EquipmentEnableSetDto getEquipmentEnableSet(@RequestBody ProbeCommand probeCommand){
+        return  equipmentInfoAppApplication.getEquipmentEnableSet(probeCommand);
     }
 
 }

@@ -28,6 +28,28 @@ public enum ProbeOutlier {
     GAS_FLOW_IS_UNSTABLE("气体流量不稳定"),
     LOW_INLET_PRESSURE("进气口压力低"),
     AIRFLOW_OUT_OF_RANGE("无气或气流超出范围"),
+    G("有漏气倾向"),
+    H("恢复正常"),
+    I("发生报警事件"),
+    J("手动关闭报警"),
+    K("设备正常运行"),
+    L("设备漏气预警"),
+    M("设备漏气报警"),
+    N("手动关闭报警"),
+    O("设备气压低报警"),
+    P("手动关闭气压低报警"),
+    Q("休眠模式"),
+    HAVE_A_TENDENCY_TO_LEAK_AIR("G"),
+    RETURN_TO_NORMAL("H"),
+    ALARM_EVENT_OCCURRED("I"),
+    MANUAL_SHUTDOWN_ALARM("J"),
+    NORMAL_OPERATION_OF_EQUIPMENT("K"),
+    NORMAL("L"),
+    ANOMALY("M"),
+    EQUIPMENT_LEAKAGE_WARNING("N"),
+    DEVICE_PRESSURE_LOW_ALARM("O"),
+    MANUALLY_TURN_OFF_THE_LOW_PRESSURE_ALARM("P"),
+    SLEEP_MODE("Q"),
     ZERO("0000"),
     F000("f000"),
     FF00("ff00"),
@@ -65,6 +87,6 @@ public enum ProbeOutlier {
                 .stream(ProbeOutlier.values())
                 .filter(c->code.equals(c.getCode()))
                 .findFirst()
-                .orElseThrow(()-> new IedsException("Illegal enum value {}", code));
+                .orElseThrow(()-> new IedsException("没有该类型底下ProbeOutlier的enum {}", code));
     }
 }

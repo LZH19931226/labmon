@@ -1,10 +1,12 @@
 package com.hc.clickhouse.param;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 public class CurveParam {
 
     /** 设备id */

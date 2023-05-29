@@ -11,14 +11,12 @@
             publish_type publishType,
             status,
             message_cover messageCover,
+            message_title,
             remark
         FROM
             lab_messengerpublishtask
         WHERE
           publish_time BETWEEN #{res.startTime} AND #{res.endTime}
-          <if test="res.phoneNum !=null and res.phoneNum != ''">
-              AND publish_key = #{res.phoneNum}
-          </if>
           <if test="res.noticeState != null and res.noticeState != ''">
               <if test = "res.noticeState == '0'.toString() ">
                   and remark = 'OK'
@@ -27,5 +25,10 @@
                   and remark not in ('OK','')
               </if>
           </if>
+        <if test="res.phoneNum != null and res.phoneNum != ''">
+        and   publish_key= #{res.phoneNum}
+        </if>
+        and  message_bodys = #{res.hospitalCode}
+        order by publish_time desc
     </select>
 </mapper>

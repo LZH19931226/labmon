@@ -71,8 +71,10 @@ public class Crc16Utils {
     }
 
     public static void main(String[] args) {
-        String data = "4843B11A3231353034383030303100C803E880C480C4000A00085000EF033623";
-        System.out.println(getCRCCodeIsTrue(data));
+        String data = "4843b31a313632393135393939300ed80ed80ed8032003205050000040a0952348a23";
+        String replace = data.replace(" ", "");
+        System.out.println(replace.toLowerCase());
+        System.out.println(getCRCCodeIsTrue(replace));
 
     }
 }

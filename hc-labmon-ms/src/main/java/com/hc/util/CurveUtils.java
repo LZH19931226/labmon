@@ -6,7 +6,9 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
+import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.util.DateUtils;
+import com.hc.my.common.core.util.Mt310DCUtils;
 import com.hc.my.common.core.util.ObjectConvertUtils;
 import com.hc.my.common.core.util.RegularUtil;
 import lombok.Data;
@@ -14,37 +16,37 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class CurveUtils {
 
-    public static List<Map<String,CurveDataModel>> getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, List<String> instrumentConfigIdList, Map<String, List<InstrumentParamConfigDto>> map) {
-        Map<String, Curve> containerMap = getList(instrumentConfigIdList);
+    public static List<Map<String,CurveDataModel>> getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, List<String> lastDataFieldList, Map<String, List<InstrumentParamConfigDto>> map,String eqSnAbbreviation) {
+        //将传入的list保存到新集合
+        List<String> dcFields = new ArrayList<>(lastDataFieldList);
+        //修改设备过滤字段集合
+        editLastFieldList(lastDataFieldList,eqSnAbbreviation);
+        //根据前端传入的字段创建需要的容器
+        Map<String, Curve> containerMap = getList(dcFields);
+        //遍历数据
         for (Monitorequipmentlastdata monitorequipmentlastdata : lastDataModelList) {
+            //将对象转map并过滤
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(monitorequipmentlastdata);
-            filterMap(objectToMap,instrumentConfigIdList);
-            for (String field : instrumentConfigIdList) {
-                //去除不需要展示的数据，去除对象中没有的字段，去除字段值为空的数据，去除数据不含数字的数据
-                if(!containerMap.containsKey(field) || !objectToMap.containsKey(field) || StringUtils.isBlank((String)objectToMap.get(field)) || !RegularUtil.checkContainsNumbers((String)objectToMap.get(field))){
-                    continue;
-                }
-                String str =  (String)objectToMap.get(field);
-                Curve curve = containerMap.get(field);
-                List<String> dataList = curve.getDataList();
-                dataList.add(str);
-                String timeStr =  (String)objectToMap.get("inputdatetime");
-                curve.getDateList().add(DateUtils.getHHmm(timeStr));
-            }
+            ObjectConvertUtils.filterMap(objectToMap,lastDataFieldList);
+            //给创建的容器赋值
+            containerMapAssignment(containerMap,objectToMap,dcFields,eqSnAbbreviation);
         }
+        //以固定格式返回
         List<Map<String,CurveDataModel>> list = new ArrayList<>();
-        for (String field : instrumentConfigIdList) {
-            if(containerMap.containsKey(field)){
+        for (String field : dcFields) {
+            if(null != containerMap.get(field)){
                 Map<String,CurveDataModel> resultMap = new HashMap<>();
                 Curve curve = containerMap.get(field);
                 List<String> dataList = curve.getDataList();
                 List<String> dateList = curve.getDateList();
                 String imField = DataFieldEnum.fromByLastDataField(field).getImField();
-                CurveDataModel curveDataModel = generateCurveDataModel(dataList, dateList, map.get(imField));
+                CurveDataModel curveDataModel = generateCurveDataModel(dataList, dateList, map.get(imField),eqSnAbbreviation);
                 resultMap.put(field,curveDataModel);
                 list.add(resultMap);
             }
@@ -52,18 +54,122 @@ public class CurveUtils {
         return list;
     }
 
-    private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list){
+    /**
+     * 通过设备sn简称给容器map赋值
+     */
+    private static void containerMapAssignment(Map<String, Curve> containerMap, Map<String, Object> objectToMap, List<String> lastDataFieldList,String eqSnAbbreviation) {
+        //特殊设备MT310DC
+        if (SysConstants.MT310_SN.equals(eqSnAbbreviation)) {
+            setMT310DC(containerMap, objectToMap, lastDataFieldList);
+            return;
+        }
+        setDefault(containerMap, objectToMap, lastDataFieldList);
+    }
+
+    private static void setDefault(Map<String, Curve> containerMap, Map<String, Object> objectToMap, List<String> lastDataFieldList) {
+        for (String field : lastDataFieldList) {
+            if(!conditionCheck2(containerMap,objectToMap,field)){
+                defaultSetValue(containerMap,objectToMap,field);
+            }
+        }
+    }
+
+    private static void setMT310DC(Map<String, Curve> containerMap, Map<String, Object> objectToMap, List<String> lastDataFieldList) {
+        for (String field : lastDataFieldList) {
+            switch (field){
+                case SysConstants.MT310DC_DATA_CO2:
+                case SysConstants.MT310DC_DATA_O2:
+                case SysConstants.MT310DC_DATA_VOC:
+                    if(!conditionCheck(containerMap,objectToMap,field)){
+                        defaultSetValue(containerMap,objectToMap,field);
+                    }
+                    break;
+                case SysConstants.MT310DC_DATA_TEMP:
+                    MT310DCSetValue(containerMap,objectToMap,field,SysConstants.MT310DC_TEMP);
+                    break;
+                case SysConstants.MT310DC_DATA_RH:
+                    MT310DCSetValue(containerMap,objectToMap,field,SysConstants.MT310DC_RH);
+                    break;
+                case SysConstants.MT310DC_DATA_OUTER_O2:
+                    MT310DCSetValue(containerMap,objectToMap,field,SysConstants.MT310DC_O2);
+                    break;
+                case SysConstants.MT310DC_DATA_OUTER_CO2:
+                    MT310DCSetValue(containerMap,objectToMap,field,SysConstants.MT310DC_CO2);
+                    break;
+            }
+        }
+    }
+
+    /**
+     *判断该数据是否有有效数据
+     */
+    private static boolean conditionCheck2(Map<String, Curve> containerMap, Map<String, Object> objectToMap, String field) {
+        //去除不需要展示的数据，去除对象中没有的字段，去除字段值为空的数据，去除数据不含数字的数据
+        return conditionCheck(containerMap,objectToMap,field) || !objectToMap.containsKey(field);
+    }
+
+    /**
+     *判断该数据是否有有效数据
+     */
+    private static boolean conditionCheck(Map<String, Curve> containerMap, Map<String, Object> objectToMap, String field) {
+        //去除不需要展示的数据，去除字段值为空的数据，去除数据不含数字的数据
+        return !containerMap.containsKey(field)  || StringUtils.isBlank((String)objectToMap.get(field)) || !RegularUtil.checkContainsNumbers((String)objectToMap.get(field));
+    }
+
+    private static void MT310DCSetValue(Map<String, Curve> containerMap, Map<String, Object> objectToMap, String field,String model) {
+        String data = null;
+        if(model.equals((String)objectToMap.get("probe1model"))){
+            data = (String)objectToMap.get("probe1data");
+        }
+        if(model.equals((String)objectToMap.get("probe2model"))){
+            data = (String)objectToMap.get("probe2data");
+        }
+        if(model.equals((String)objectToMap.get("probe3model"))){
+            data = (String)objectToMap.get("probe3data");
+        }
+        Curve curve = containerMap.get(field);
+        List<String> dataList = curve.getDataList();
+        //当data不是空并且为数字时设置值
+        if(StringUtils.isNotBlank(data) && RegularUtil.checkContainsNumbers(data)){
+            dataList.add(data);
+            String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
+            curve.getDateList().add(DateUtils.getHHmm(timeStr));
+        }
+    }
+
+    private static void defaultSetValue(Map<String, Curve> containerMap, Map<String, Object> objectToMap, String field) {
+        String str =  (String)objectToMap.get(field);
+        Curve curve = containerMap.get(field);
+        List<String> dataList = curve.getDataList();
+        dataList.add(str);
+        String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
+        curve.getDateList().add(DateUtils.getHHmm(timeStr));
+    }
+
+    private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list,String eqSnAbbreviation){
         CurveDataModel curveDataModel = new CurveDataModel();
         curveDataModel.setXaxis(timeList);
+        curveDataModel.setUnit("");
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(dataList);
         //数据库不为空时去数据库中的值
         if (CollectionUtils.isNotEmpty(list)) {
             InstrumentParamConfigDto probe = list.get(0);
+            curveDataModel.setUnit(probe.getUnit());
             curveDataModel.setMaxNum(probe.getHighLimit()+"");
             curveDataModel.setMinNum(probe.getLowLimit()+"");
-            curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? "":probe.getStyleMin());
-            curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? "":probe.getStyleMax());
+            curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? probe.getHighLimit()+"":probe.getStyleMin());
+            curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? probe.getLowLimit()+"":probe.getStyleMax());
+            /**  当设备是MT210M,211M 并且单位in时修改返回值*/
+            if(SysConstants.MT210M_SN.equals(eqSnAbbreviation) && SysConstants.MT210M_UNIT.equals(probe.getUnit())){
+                List<String>  afterList = new ArrayList<>();
+                dataList.forEach(res->{
+                    BigDecimal bigDecimal = new BigDecimal(res);
+                    BigDecimal divide = bigDecimal.divide(SysConstants.MT210M_VALUE,1, RoundingMode.FLOOR);
+                    afterList.add(divide.toString());
+                });
+                seriesDataModel.setDate(afterList);
+            }
         }else {
             OptionalDouble max = dataList.stream().mapToDouble(Double::parseDouble).max();
             if (max.isPresent()) {
@@ -88,24 +194,21 @@ public class CurveUtils {
         return  curveDataModel;
     }
 
-    private static void filterMap(Map<String, Object> objectMap,List<String> list) {
-        list.add("inputdatetime");
-        Iterator<String> iterator = objectMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            String next = iterator.next();
-            if(!list.contains(next)){
-                iterator.remove();
-                objectMap.remove(next);
-            }
+    //MT310DC过滤方法
+    private static void editLastFieldList(List<String> list,String eqSnAbbreviation){
+        if(Mt310DCUtils.isMT310DC(eqSnAbbreviation)){
+            Mt310DCUtils.get310DCList(list);
         }
-        list.remove("inputdatetime");
     }
 
     public static Map<String,Curve> getList(List<String> list){
         Map<String,Curve> map = new HashMap<>();
         for (String field : list) {
             Curve curve = new Curve();
-            if(!StringUtils.equalsAnyIgnoreCase(field,"voltage","currentdoorstate2","currentdoorstate","currentups","currentqcl","qccurrent","power")){
+            //去除不需要创建容器的字段
+            if(!StringUtils.equalsAnyIgnoreCase(field,DataFieldEnum.voltage.getLastDataField(),DataFieldEnum.QC.getLastDataField(),
+                    DataFieldEnum.DOOR2.getLastDataField(),DataFieldEnum.DOOR.getLastDataField(),DataFieldEnum.UPS.getLastDataField(),
+                    DataFieldEnum.QCL.getLastDataField(),DataFieldEnum.CURRENT.getLastDataField(),DataFieldEnum.power.getLastDataField())){
                 map.put(field,curve);
             }
         }
@@ -226,8 +329,8 @@ public class CurveUtils {
                 break;
         }
     }
-    
-    
+
+
     @Data
     @NoArgsConstructor
     public static class Curve{

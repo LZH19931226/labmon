@@ -1,12 +1,8 @@
 package com.hc.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hc.application.command.AlarmSystemCommand;
-import com.hc.application.command.InstrumentparamconfigCommand;
-import com.hc.application.command.MonitorEquipmentCommand;
-import com.hc.application.command.WorkTimeBlockCommand;
+import com.hc.application.command.*;
 import com.hc.command.labmanagement.model.HospitalMadel;
-import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.model.hospital.MonitorEquipmentLogCommand;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
@@ -28,6 +24,7 @@ import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.equimenttype.InstrumentmonitorVo;
 import com.hc.vo.equimenttype.MonitorEquipmentVo;
 import com.hc.vo.equimenttype.MonitorinstrumenttypeVo;
@@ -79,13 +76,15 @@ public class MonitorEquipmentApplication {
     private HospitalInfoApi hospitalInfoApi;
 
     @Autowired
-    private HospitalequimentService hospitalequimentService;
-
-    @Autowired
     private SnDeviceRedisApi snDeviceRedisApi;
 
     @Autowired
     private ProbeRedisApi probeRedisApi;
+
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
+
+
     /**
      * 分页获取监控设备信息
      *  (用户新增设备页面选择设备后出现的探头检测信息)
@@ -108,16 +107,18 @@ public class MonitorEquipmentApplication {
         //根据mino查询出所有的探头信息,在通过ino分组
         List<String> inoList = monitorInstrumentDTOList.stream().map(MonitorinstrumentDTO::getInstrumentno).collect(Collectors.toList());
         List<InstrumentparamconfigDTO> instrumentParamConfigDTOList =  instrumentparamconfigService.slectInfo(inoList);
-        Map<String, List<InstrumentparamconfigDTO>> inoAndParamConfigMap = instrumentParamConfigDTOList.stream().collect(Collectors.groupingBy(InstrumentparamconfigDTO::getInstrumentno));
-
+        Map<String, List<InstrumentparamconfigDTO>> inoAndParamConfigMap = new HashMap<>();
+        if(CollectionUtils.isNotEmpty(instrumentParamConfigDTOList)){
+            inoAndParamConfigMap = instrumentParamConfigDTOList.stream().collect(Collectors.groupingBy(InstrumentparamconfigDTO::getInstrumentno));
+        }
         //查询所有的探头检测信息，在通过监测confid分组
         List<InstrumentConfigDTO> instrumentConfigList = instrumentconfigService.selectAllInfo();
         Map<Integer, InstrumentConfigDTO> instrumentConfigMap = instrumentConfigList.stream().collect(Collectors.toMap(InstrumentConfigDTO::getInstrumentconfigid, t -> t));
 
         //根据eno查询报警时段信息
-        List<MonitorequipmentwarningtimeDTO> monitorEquipmentWarningTimeDTOList = monitorequipmentwarningtimeService.selectWarningtimeByEnoList(enoList);
-        Map<String, List<MonitorequipmentwarningtimeDTO>> monitorEquipmentWarningTimeMaps =
-                monitorEquipmentWarningTimeDTOList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid));
+//        List<MonitorequipmentwarningtimeDTO> monitorEquipmentWarningTimeDTOList = monitorequipmentwarningtimeService.selectWarningtimeByEnoList(enoList);
+//        Map<String, List<MonitorequipmentwarningtimeDTO>> monitorEquipmentWarningTimeMaps =
+//                monitorEquipmentWarningTimeDTOList.stream().collect(Collectors.groupingBy(MonitorequipmentwarningtimeDTO::getEquipmentid));
 
         //构建返回信息集合
         List<MonitorEquipmentVo> list = new ArrayList<>();
@@ -135,12 +136,12 @@ public class MonitorEquipmentApplication {
 
             }
 
-            //构建warningTimeList
-            List<WarningTimeVo> warningTimeVos = new ArrayList<>();
-            if(monitorEquipmentWarningTimeMaps.containsKey(equipmentNo)){
-                List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOList = monitorEquipmentWarningTimeMaps.get(equipmentNo);
-                warningTimeVos =  bulidWarningTimeVoList(monitorequipmentwarningtimeDTOList);
-            }
+//            //构建warningTimeList
+//            List<WarningTimeVo> warningTimeVos = new ArrayList<>();
+//            if(monitorEquipmentWarningTimeMaps.containsKey(equipmentNo)){
+//                List<MonitorequipmentwarningtimeDTO> monitorequipmentwarningtimeDTOList = monitorEquipmentWarningTimeMaps.get(equipmentNo);
+//                warningTimeVos =  bulidWarningTimeVoList(monitorequipmentwarningtimeDTOList);
+//            }
 
             boolean flag = true;
             String channel = null;
@@ -181,8 +182,11 @@ public class MonitorEquipmentApplication {
                     .saturation(StringUtils.isBlank(monitorEquipmentDto.getSaturation()) ? "": monitorEquipmentDto.getSaturation())
                     .sn(sn==null?"":sn)
                     .monitorinstrumenttypeDTO(monitorinstrumenttypeVo)
-                    .warningTimeList(warningTimeVos)
+//                    .warningTimeList(warningTimeVos)
                     .address(StringUtils.isBlank(monitorEquipmentDto.getAddress())?"":monitorEquipmentDto.getAddress())
+                    .company(monitorEquipmentDto.getCompany())
+                    .brand(monitorEquipmentDto.getBrand())
+                    .model(monitorEquipmentDto.getModel())
                     .build();
             list.add(monitorEquipmentVo);
         }
@@ -248,32 +252,23 @@ public class MonitorEquipmentApplication {
      */
     @GlobalTransactional
     public void addMonitorEquipment(MonitorEquipmentCommand monitorEquipmentCommand) {
-        String sn = monitorEquipmentCommand.getSn().trim();
-        String hospitalCode = monitorEquipmentCommand.getHospitalCode();
-        String equipmentTypeId = monitorEquipmentCommand.getEquipmentTypeId();
         //备注长度限值
         String remark = monitorEquipmentCommand.getRemark();
         if(remark.length() > 60){
             throw new IedsException(LabSystemEnum.REMARK_TOO_LONG);
         }
-        //sn不能重复
-        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn));
-        if (integer > 0) {
-            throw new IedsException(LabSystemEnum.FAILED_TO_ADD_DEVICE);
-        }
+        //允许sn号重复
+//        Integer integer = monitorinstrumentService.selectCount(new MonitorinstrumentDTO().setSn(sn));
+//        if (integer > 0) {
+//            throw new IedsException(LabSystemEnum.FAILED_TO_ADD_DEVICE);
+//        }
 
         //判断同医院设备名称是否有重复
         String equipmentName = monitorEquipmentCommand.getEquipmentName();
-        Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
-        if(integer1>0){
-            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
-        }
-
-        //判断医院是否存在设备类型
-        HospitalequimentDTO hospitalequimentDTO = hospitalequimentService.selectHospitalEquimentInfoByCodeAndTypeId(hospitalCode, equipmentTypeId);
-        if(ObjectUtils.isEmpty(hospitalequimentDTO)){
-            throw new IedsException(LabSystemEnum.HOSPITAL_DEVICE_TYPE_DOES_NOT_EXIST);
-        }
+//        Integer  integer1 = monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+//        if(integer1>0){
+//            throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
+//        }
 
         //插入到monitorequipment表中
         String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
@@ -289,6 +284,9 @@ public class MonitorEquipmentApplication {
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setAddress(monitorEquipmentCommand.getAddress())
                 .setSort(monitorEquipmentCommand.getSort())
+                .setCompany(monitorEquipmentCommand.getCompany())
+                .setBrand(monitorEquipmentCommand.getBrand())
+                .setModel(monitorEquipmentCommand.getModel())
                 .setCreateTime(new Date());
         monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
 
@@ -307,19 +305,19 @@ public class MonitorEquipmentApplication {
                 .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
         monitorinstrumentService.insertMonitorinstrumentInfo(monitorinstrumentDTO);
 
-        //插入报警时段
-        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
-        if (CollectionUtils.isNotEmpty(warningTimeList)) {
-            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
-            //检测时间是否重叠
-            checkWorkTime(workTimeBlockCommandList);
-            warningTimeList.forEach(res -> {
-                res.setHospitalcode(monitorEquipmentCommand.getHospitalCode())
-                        .setEquipmentid(monitorinstrumentDTO.getEquipmentno())
-                        .setEquipmentcategory("EQ");
-            });
-            monitorequipmentwarningtimeService.insetWarningtimeList(warningTimeList);
-        }
+//        //插入报警时段
+//        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
+//        if (CollectionUtils.isNotEmpty(warningTimeList)) {
+//            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
+//            //检测时间是否重叠
+//            checkWorkTime(workTimeBlockCommandList);
+//            warningTimeList.forEach(res -> {
+//                res.setHospitalcode(monitorEquipmentCommand.getHospitalCode())
+//                        .setEquipmentid(monitorinstrumentDTO.getEquipmentno())
+//                        .setEquipmentcategory("EQ");
+//            });
+//            monitorequipmentwarningtimeService.insetWarningtimeList(warningTimeList);
+//        }
 
         //插入探头参数表
         List<InstrumentparamconfigDTO> probeList = new ArrayList<>();
@@ -346,15 +344,13 @@ public class MonitorEquipmentApplication {
             probeList.add(instrumentparamconfigDTO);
         }
         instrumentparamconfigService.insertBatch(probeList);
-
-
         //更新日志表
         MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), equipmentName,new MonitorEquipmentLogCommand(), monitorEquipmentCommand,
                 OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
         operationlogService.addMonitorEquipmentLogInfo(build);
 
         //设备信息存入redis
-        updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO,warningTimeList);
+        updateSnDeviceDtoSync(equipmentNo,monitorEquipmentCommand,equipmentName,instrumentNo,monitorinstrumenttypeDTO);
 
         //探头信息存入redis
         updateProbeRedisInfo(instrumentNo,instrumentName,equipmentNo,monitorEquipmentCommand,probeList);
@@ -410,7 +406,7 @@ public class MonitorEquipmentApplication {
     public Date buildTime(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.set(Calendar.YEAR,1970);
+        cal.set(Calendar.YEAR,2000);
         cal.set(Calendar.MONTH,1);
         cal.set(Calendar.DATE,1);
         return cal.getTime();
@@ -476,8 +472,7 @@ public class MonitorEquipmentApplication {
      * @param instrumentNo
      * @param monitorinstrumenttypeDTO
      */
-    public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO,List<MonitorequipmentwarningtimeDTO> warningTimeList){
-        List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
+    public  void  updateSnDeviceDtoSync(String equipmentNo,MonitorEquipmentCommand monitorEquipmentCommand,String equipmentName,String instrumentNo,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO){
         //存入redis
         SnDeviceDto snDeviceDto = new SnDeviceDto()
                 .setEquipmentNo(equipmentNo)
@@ -495,7 +490,6 @@ public class MonitorEquipmentApplication {
                 .setSort(monitorEquipmentCommand.getSort())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
-                .setWarningTimeList(warningTimeDTOs)
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
                 .setAddress(monitorEquipmentCommand.getAddress())
                 .setRemark(monitorEquipmentCommand.getRemark());
@@ -525,9 +519,9 @@ public class MonitorEquipmentApplication {
         }
 
         //根据useid获取用户信息
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(!ObjectUtils.isEmpty(userInfo)){
-            logInfoCommand.setUsername(userInfo.getUsername());
+        String userName = userRightInfoApi.getUserName(userId).getResult();
+        if(StringUtils.isNotEmpty(userName)){
+            logInfoCommand.setUsername(userName);
         }
 
         //新增是设备no为空 修改时不为空
@@ -566,13 +560,13 @@ public class MonitorEquipmentApplication {
                 monitorEquipmentService.selectMonitorEquipmentInfoByNo(monitorEquipmentCommand.getEquipmentNo());
         MonitorEquipmentDto equipmentDto = equipmentDtoList.get(0);
         //判断设备名称有没有修改
-        if(!equipmentName.equals(equipmentDto.getEquipmentName())){
-            //修改时用判断该医院下设备名称是否已存在
-            Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
-            if(integer>0){
-                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
-            }
-        }
+//        if(!equipmentName.equals(equipmentDto.getEquipmentName())){
+//            //修改时用判断该医院下设备名称是否已存在
+//            Integer integer =  monitorEquipmentService.selectCount(new MonitorEquipmentDto().setEquipmentName(equipmentName).setHospitalCode(hospitalCode));
+//            if(integer>0){
+//                throw new IedsException(LabSystemEnum.DEVICE_NAME_ALREADY_EXISTS);
+//            }
+//        }
         //用于redis判断sn是否修改
         String newSn = monitorEquipmentCommand.getSn();
         String oldSn = equipmentDto.getSn();
@@ -596,6 +590,9 @@ public class MonitorEquipmentApplication {
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
                 .setAddress(monitorEquipmentCommand.getAddress())
                 .setSort(monitorEquipmentCommand.getSort())
+                .setCompany(monitorEquipmentCommand.getCompany())
+                .setBrand(monitorEquipmentCommand.getBrand())
+                .setModel(monitorEquipmentCommand.getModel())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm());
         monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
@@ -610,34 +607,34 @@ public class MonitorEquipmentApplication {
         }
         monitorinstrumentService.bulkUpdate(monitorinstrumentDTO);
 
-        //修改报警时间（monitorequipmentwarningtime）
-        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
-        if (CollectionUtils.isNotEmpty(warningTimeList)) {
-            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
-            //检测时间是否重叠
-            checkWorkTime(workTimeBlockCommandList);
-            List<MonitorequipmentwarningtimeDTO> updateList = warningTimeList.stream().filter(res -> res.getTimeblockid() != null).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(updateList)) {
-                monitorequipmentwarningtimeService.updateList(updateList);
-            }
-            List<MonitorequipmentwarningtimeDTO> insertList = warningTimeList.stream().filter(res -> res.getTimeblockid() == null).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(insertList)) {
-                insertList.forEach(res -> {
-                    res.setEquipmentid(monitorEquipmentCommand.getEquipmentNo())
-                            .setEquipmentcategory("EQ")
-                            .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
-                });
-                monitorequipmentwarningtimeService.insetWarningtimeList(insertList);
-            }
-        }
-
-        List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList = monitorEquipmentCommand.getDeleteWarningTimeList();
-        if (CollectionUtils.isNotEmpty(deleteWarningTimeList)) {
-            List<Integer> collect = deleteWarningTimeList.stream().map(MonitorequipmentwarningtimeDTO::getTimeblockid).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(collect)) {
-                monitorequipmentwarningtimeService.bulkRemove(collect);
-            }
-        }
+//        //修改报警时间（monitorequipmentwarningtime）
+//        List<MonitorequipmentwarningtimeDTO> warningTimeList = monitorEquipmentCommand.getWarningTimeList();
+//        if (CollectionUtils.isNotEmpty(warningTimeList)) {
+//            List<WorkTimeBlockCommand> workTimeBlockCommandList = BeanConverter.convert(warningTimeList, WorkTimeBlockCommand.class);
+//            //检测时间是否重叠
+//            checkWorkTime(workTimeBlockCommandList);
+//            List<MonitorequipmentwarningtimeDTO> updateList = warningTimeList.stream().filter(res -> res.getTimeblockid() != null).collect(Collectors.toList());
+//            if (CollectionUtils.isNotEmpty(updateList)) {
+//                monitorequipmentwarningtimeService.updateList(updateList);
+//            }
+//            List<MonitorequipmentwarningtimeDTO> insertList = warningTimeList.stream().filter(res -> res.getTimeblockid() == null).collect(Collectors.toList());
+//            if (CollectionUtils.isNotEmpty(insertList)) {
+//                insertList.forEach(res -> {
+//                    res.setEquipmentid(monitorEquipmentCommand.getEquipmentNo())
+//                            .setEquipmentcategory("EQ")
+//                            .setHospitalcode(monitorEquipmentCommand.getHospitalCode());
+//                });
+//                monitorequipmentwarningtimeService.insetWarningtimeList(insertList);
+//            }
+//        }
+//
+//        List<MonitorequipmentwarningtimeDTO> deleteWarningTimeList = monitorEquipmentCommand.getDeleteWarningTimeList();
+//        if (CollectionUtils.isNotEmpty(deleteWarningTimeList)) {
+//            List<Integer> collect = deleteWarningTimeList.stream().map(MonitorequipmentwarningtimeDTO::getTimeblockid).collect(Collectors.toList());
+//            if (CollectionUtils.isNotEmpty(collect)) {
+//                monitorequipmentwarningtimeService.bulkRemove(collect);
+//            }
+//        }
 
         //更新探头参数表
         MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
@@ -672,10 +669,9 @@ public class MonitorEquipmentApplication {
         //更新redis缓存
         //判断sn是否被修改，如果是就需要先删除该sn的redis信息，重新put信息
         if(!flag){
-            snDeviceRedisApi.deleteSnDeviceDto(oldSn);
+            snDeviceRedisApi.deleteSnDeviceDto(oldSn,equipmentDto.getEquipmentNo());
         }
-        List<MonitorEquipmentWarningTimeDto> warningTimeDTOs = BeanConverter.convert(warningTimeList, MonitorEquipmentWarningTimeDto.class);
-        SnDeviceDto snDeviceDto =  buildSnDeviceDto(monitorEquipmentCommand,monitorinstrumenttypeDTO,warningTimeDTOs);
+        SnDeviceDto snDeviceDto =  buildSnDeviceDto(monitorEquipmentCommand,monitorinstrumenttypeDTO);
         snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceDto);
 
         //更新探头redis信息
@@ -708,10 +704,9 @@ public class MonitorEquipmentApplication {
      * 构建redis设备对象
      * @param monitorEquipmentCommand
      * @param monitorinstrumenttypeDTO
-     * @param warningTimeDTOs
      * @return
      */
-    public SnDeviceDto buildSnDeviceDto(MonitorEquipmentCommand monitorEquipmentCommand,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO, List<MonitorEquipmentWarningTimeDto> warningTimeDTOs){
+    public SnDeviceDto buildSnDeviceDto(MonitorEquipmentCommand monitorEquipmentCommand,MonitorinstrumenttypeDTO monitorinstrumenttypeDTO){
         return new SnDeviceDto()
                 .setUpsNotice(monitorEquipmentCommand.getUpsNotice())
                 .setRemark(monitorEquipmentCommand.getRemark())
@@ -729,8 +724,7 @@ public class MonitorEquipmentApplication {
                 .setSort(monitorEquipmentCommand.getSort())
                 .setAlwaysAlarm(monitorEquipmentCommand.getAlwaysAlarm())
                 .setChannel(monitorEquipmentCommand.getChannel())
-                .setAddress(monitorEquipmentCommand.getAddress())
-                .setWarningTimeList(warningTimeDTOs);
+                .setAddress(monitorEquipmentCommand.getAddress());
     }
 
     /**
@@ -771,8 +765,7 @@ public class MonitorEquipmentApplication {
         for (MonitorinstrumentDTO dto : monitorinstrumentDTO) {
             //删除redis缓存
             if(!ObjectUtils.isEmpty(dto)){
-                snDeviceRedisApi.deleteSnDeviceDto(dto.getSn());
-                snDeviceRedisApi.deleteCurrentInfo(dto.getHospitalcode(),dto.getEquipmentno());
+                snDeviceRedisApi.deleteSnDeviceDto(dto.getSn(),equipmentNo);
             }
         }
     }
@@ -1061,7 +1054,7 @@ public class MonitorEquipmentApplication {
                 buildProbeInfo(Context.getUserId(),
                         oldProbeInfo,
                         alarmSystemCommand,
-                        OperationLogEunm.APP_ALARM_SET.getCode(),
+                        OperationLogEunm.APP_EDIT_PROBE.getCode(),
                         OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
 
@@ -1086,18 +1079,20 @@ public class MonitorEquipmentApplication {
         //更新设备缓存
         String sn =  instrumentparamconfigService.getSnInfo(instrumentParamConfigNo);
         if(StringUtils.isNotBlank(sn)){
-            SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-            result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
-            snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+            SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn,equipmentNo).getResult();
+            if(result1!=null){
+                result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
+                snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+            }
         }
     }
 
     private InstrumentParamConfigInfoCommand buildProbeInfo(String userId, InstrumentparamconfigDTO old, AlarmSystemCommand alarmSystemCommand, String type, String operationType) {
         InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
         //获取用户名称
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(null!=userInfo){
-            infoCommand.setUsername(userInfo.getUsername());
+        String userName = userRightInfoApi.getUserName(userId).getResult();
+        if(!StringUtils.isBlank(userName)){
+            infoCommand.setUsername(userName);
         }
         //获取医院信息
         String hospitalCode = alarmSystemCommand.getHospitalCode();
@@ -1147,18 +1142,20 @@ public class MonitorEquipmentApplication {
         List<String> sns =  monitorEquipmentService.getSns(equipmentNo);
         if(CollectionUtils.isNotEmpty(sns)){
             for (String sn : sns) {
-                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
-                //更新设备报警状态开关
-                MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
-                monitorEquipmentDto.setEquipmentNo(equipmentNo);
-                monitorEquipmentDto.setWarningSwitch(warningPhone);
-                monitorEquipmentService.updateEquipmentWarningSwitch(monitorEquipmentDto);
-                //更新设备缓存
-                result1.setWarningSwitch(warningPhone);
-                snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn,equipmentNo).getResult();
+                if(result1 != null){
+                    //更新设备报警状态开关
+                    MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto();
+                    monitorEquipmentDto.setEquipmentNo(equipmentNo);
+                    monitorEquipmentDto.setWarningSwitch(warningPhone);
+                    monitorEquipmentService.updateEquipmentWarningSwitch(monitorEquipmentDto);
+                    //更新设备缓存
+                    result1.setWarningSwitch(warningPhone);
+                    snDeviceRedisApi.updateSnDeviceDtoSync(result1);
+                }
             }
         }
-        MonitorEquipmentLogInfoCommand log =  buildAppEquipmentInfo(Context.getUserId(),old,alarmSystemCommand,OperationLogEunm.APP_ALARM_SET.getCode(),
+        MonitorEquipmentLogInfoCommand log =  buildAppEquipmentInfo(Context.getUserId(),old,alarmSystemCommand,OperationLogEunm.APP_EDIT_EQ.getCode(),
                 OperationLogEunmDerailEnum.EDIT.getCode());
         operationlogService.addMonitorEquipmentLogInfo(log);
     }
@@ -1177,12 +1174,13 @@ public class MonitorEquipmentApplication {
         }
 
         //根据useid获取用户信息
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(!ObjectUtils.isEmpty(userInfo)){
-            logInfoCommand.setUsername(userInfo.getUsername());
+        String userName = userRightInfoApi.getUserName(userId).getResult();
+        if(!StringUtils.isEmpty(userName)){
+            logInfoCommand.setUsername(userName);
         }
         MonitorEquipmentLogCommand oldEq = new MonitorEquipmentLogCommand();
         oldEq.setWarningSwitch(old.getWarningSwitch());
+        oldEq.setEquipmentName(old.getEquipmentName());
         MonitorEquipmentLogCommand nowEq = new MonitorEquipmentLogCommand();
         nowEq.setWarningSwitch(alarmSystemCommand.getWarningPhone());
         nowEq.setEquipmentName(old.getEquipmentName());
@@ -1254,5 +1252,181 @@ public class MonitorEquipmentApplication {
 
     public List<String> getHosEqTypeEqInfo(String hospitalCode, String equipmentTypeId) {
         return monitorEquipmentService.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
+    }
+    @GlobalTransactional
+    public void addWiredEquipment(WiredEqCommand wiredEqCommand) {
+        String equipmentNo = UUID.randomUUID().toString().replaceAll("-", "");
+        //插入monitorequipment
+        MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
+                .setEquipmentNo(equipmentNo)
+                .setRemark(wiredEqCommand.getRemark())
+                .setHospitalCode(wiredEqCommand.getHospitalCode())
+                .setEquipmentBrand(wiredEqCommand.getEquipmentBrand())
+                .setClientVisible(wiredEqCommand.getClientVisible())
+                .setEquipmentName(wiredEqCommand.getEquipmentName())
+                .setEquipmentTypeId(wiredEqCommand.getEquipmentTypeId())
+                .setAddress(wiredEqCommand.getAddress())
+                .setSort(wiredEqCommand.getSort())
+                .setCompany(wiredEqCommand.getCompany())
+                .setBrand(wiredEqCommand.getBrand())
+                .setModel(wiredEqCommand.getModel())
+                .setCreateTime(new Date());
+        monitorEquipmentService.insertMonitorEquipment(monitorEquipmentDto);
+        //添加设备日志信息
+        MonitorEquipmentLogInfoCommand build = build(Context.getUserId(), wiredEqCommand.getEquipmentName(),new MonitorEquipmentLogCommand(), BeanConverter.convert(monitorEquipmentDto,MonitorEquipmentCommand.class),
+                OperationLogEunm.DEVICE_MANAGEMENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode());
+        operationlogService.addMonitorEquipmentLogInfo(build);
+
+        List<InstrumentparamconfigCommand> probeList = wiredEqCommand.getProbeList();
+        if(CollectionUtils.isNotEmpty(probeList)){
+            Map<String, List<InstrumentparamconfigCommand>> snMap = probeList.stream().collect(Collectors.groupingBy(InstrumentparamconfigCommand::getSn));
+            List<MonitorinstrumentDTO> miList = new ArrayList<>();
+            List<InstrumentparamconfigDTO> configList = new ArrayList<>();
+            List<SnDeviceDto> redisEqList = new ArrayList<>();
+            List<InstrumentInfoDto> redisProbes = new ArrayList<>();
+            for (String sn : snMap.keySet()) {
+                String instrumentNo = UUID.randomUUID().toString().replaceAll("-", "");
+                int i=0;
+                for (InstrumentparamconfigCommand probe : snMap.get(sn)) {
+                    String probeNo = UUID.randomUUID().toString().replaceAll("-", "");
+                    BigDecimal lowlimit = probe.getLowlimit();
+                    BigDecimal highlimit = probe.getHighlimit();
+
+                    if(i<=0){
+                        MonitorinstrumentDTO monitorinstrumentDTO = new MonitorinstrumentDTO()
+                                .setEquipmentno(equipmentNo)
+                                .setInstrumentno(instrumentNo)
+                                .setInstrumentname(wiredEqCommand.getEquipmentName())
+                                .setInstrumenttypeid(wiredEqCommand.getInstrumentTypeId())
+                                .setSn(sn)
+                                .setHospitalcode(wiredEqCommand.getHospitalCode());
+                        miList.add(monitorinstrumentDTO);
+
+                        SnDeviceDto snDeviceDto = new SnDeviceDto()
+                                .setClientVisible(wiredEqCommand.getClientVisible())
+                                .setEquipmentName(wiredEqCommand.getEquipmentName())
+                                .setEquipmentNo(equipmentNo)
+                                .setEquipmentTypeId(wiredEqCommand.getEquipmentTypeId())
+                                .setHospitalCode(wiredEqCommand.getHospitalCode())
+                                .setInstrumentNo(instrumentNo)
+                                .setInstrumentTypeId(wiredEqCommand.getEquipmentTypeId())
+                                .setSn(sn);
+                        redisEqList.add(snDeviceDto);
+                        i++;
+                    }
+                    InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
+                            .setInstrumentparamconfigno(probeNo)
+                            .setInstrumentno(instrumentNo)
+                            .setInstrumentconfigid(probe.getInstrumentconfigid())
+                            .setInstrumentname(wiredEqCommand.getEquipmentName())
+                            .setLowlimit(lowlimit)
+                            .setHighlimit(highlimit)
+                            .setInstrumenttypeid(wiredEqCommand.getInstrumentTypeId())
+                            .setWarningphone("0")
+                            .setAlarmtime(3)
+                            .setStyleMin(lowlimit.toString())
+                            .setStyleMax(highlimit.toString());
+                    configList.add(instrumentparamconfigDTO);
+
+                    InstrumentInfoDto instrumentInfoDto = new InstrumentInfoDto()
+                            .setAlarmTime(3)
+                            .setEquipmentName(wiredEqCommand.getEquipmentName())
+                            .setEquipmentNo(equipmentNo)
+                            .setHighLimit(highlimit)
+                            .setHospitalCode(wiredEqCommand.getHospitalCode())
+                            .setInstrumentConfigId(probe.getInstrumentconfigid())
+                            .setInstrumentConfigName(probe.getInstrumentconfigname())
+                            .setInstrumentNo(instrumentNo)
+                            .setInstrumentParamConfigNO(probeNo)
+                            .setInstrumentTypeId(wiredEqCommand.getInstrumentTypeId())
+                            .setLowLimit(lowlimit)
+                            .setUnit(probe.getUnit())
+                            .setWarningPhone("0");
+                    redisProbes.add(instrumentInfoDto);
+                }
+            }
+            monitorinstrumentService.insertBatch(miList);
+            instrumentparamconfigService.insertBatch(configList);
+
+            //更新缓存信息
+            redisEqList.forEach(res->snDeviceRedisApi.updateSnDeviceDtoSync(res));
+            redisProbes.forEach(res->probeRedisApi.addProbeRedisInfo(res));
+        }
+    }
+
+    @GlobalTransactional
+    public void updateEquipmentEnableSet(MonitorEquipmentCommand monitorEquipmentCommand) {
+        String sn = monitorEquipmentCommand.getSn();
+        String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
+        Long clientVisible = monitorEquipmentCommand.getClientVisible();
+        MonitorEquipmentDto oldMonitorEquipmentDto = monitorEquipmentService.selectMonitorEquipmentInfoByEno(equipmentNo);
+        MonitorEquipmentCommand monitorEquipmentCommandNew = BeanConverter.convert(oldMonitorEquipmentDto, MonitorEquipmentCommand.class);
+        monitorEquipmentCommandNew.setClientVisible(clientVisible);
+        //更新日志表
+        MonitorEquipmentLogInfoCommand build = build(Context.getUserId(),
+                oldMonitorEquipmentDto.getEquipmentName(),
+                BeanConverter.convert(oldMonitorEquipmentDto,MonitorEquipmentLogCommand.class),
+                monitorEquipmentCommandNew,
+                OperationLogEunm.DEVICE_MANAGEMENT.getCode(),
+                OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addMonitorEquipmentLogInfo(build);
+        //修改监控设备信息（monitorequipment）
+        MonitorEquipmentDto monitorEquipmentDto = new MonitorEquipmentDto()
+                .setEquipmentNo(monitorEquipmentCommand.getEquipmentNo())
+                .setClientVisible(monitorEquipmentCommand.getClientVisible());
+        monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
+        SnDeviceDto snDeviceInfo = snDeviceRedisApi.getSnDeviceDto(sn, equipmentNo).getResult();
+        snDeviceInfo.setClientVisible(clientVisible);
+        snDeviceRedisApi.updateSnDeviceDtoSync(snDeviceInfo);
+
+
+    }
+
+
+    @GlobalTransactional
+    public void updateEquipmentIns(MonitorEquipmentCommand monitorEquipmentCommand) {
+        //选择修改监测类型,必须先清理旧的探头
+        String equipmentNo = monitorEquipmentCommand.getEquipmentNo();
+        MonitorinstrumenttypeDTO monitorinstrumenttypeDTO = monitorEquipmentCommand.getMonitorinstrumenttypeDTO();
+        List<InstrumentparamconfigDTO> instrumentParamConfigInfo = instrumentparamconfigService.getInstrumentParamConfigInfo(equipmentNo);
+        if (CollectionUtils.isNotEmpty(instrumentParamConfigInfo)){
+             throw new IedsException(LabSystemEnum.FAILED_TO_DELETE);
+        }
+        //编辑监测类型
+        //修改监控探头信息（monitorinstrument）
+        List<MonitorinstrumentDTO> monitorinstrumentDTO = monitorinstrumentService.selectMonitorByEno(monitorEquipmentCommand.getEquipmentNo());
+        if (CollectionUtils.isNotEmpty(monitorinstrumentDTO)) {
+            monitorinstrumentDTO.forEach(res->{
+                res.setInstrumenttypeid(monitorinstrumenttypeDTO.getInstrumenttypeid());
+            });
+        }
+        monitorinstrumentService.bulkUpdate(monitorinstrumentDTO);
+        //新增探头信息
+        //插入探头参数表
+        List<InstrumentparamconfigDTO> probeList = new ArrayList<>();
+        List<InstrumentmonitorDTO> instrumentmonitorDTOS = monitorinstrumenttypeDTO.getInstrumentmonitorDTOS();
+        for (InstrumentmonitorDTO instrumentmonitorDTO : instrumentmonitorDTOS) {
+            InstrumentparamconfigDTO instrumentparamconfigDTO = new InstrumentparamconfigDTO()
+                    .setInstrumentparamconfigno(UUID.randomUUID().toString().replaceAll("-", ""))
+                    .setInstrumentconfigid(instrumentmonitorDTO.getInstrumentconfigid())
+                    .setInstrumentconfigname(instrumentmonitorDTO.getInstrumentconfigname())
+                    .setInstrumentname(monitorinstrumentDTO.get(0).getInstrumentname())
+                    .setChannel(instrumentmonitorDTO.getChannel())
+                    .setWarningphone("0")
+                    .setFirsttime(new Date())
+                    .setHighlimit(instrumentmonitorDTO.getHighlimit())
+                    .setLowlimit(instrumentmonitorDTO.getLowlimit())
+                    .setInstrumentno(monitorinstrumentDTO.get(0).getInstrumentno())
+                    .setInstrumenttypeid(instrumentmonitorDTO.getInstrumenttypeid())
+                    .setSaturation(instrumentmonitorDTO.getSaturation())
+                    .setUnit(StringUtils.isBlank(instrumentmonitorDTO.getUnit()) ? "":instrumentmonitorDTO.getUnit())
+                    .setStyleMax(StringUtils.isBlank(instrumentmonitorDTO.getStyleMax())?"":instrumentmonitorDTO.getStyleMax())
+                    .setStyleMin(StringUtils.isBlank(instrumentmonitorDTO.getStyleMin())?"":instrumentmonitorDTO.getStyleMin())
+                    .setAlarmtime(3);
+            probeList.add(instrumentparamconfigDTO);
+        }
+        instrumentparamconfigService.insertBatch(probeList);
+        //探头信息存入redis
+        updateProbeRedisInfo(monitorinstrumentDTO.get(0).getInstrumentno(),monitorinstrumentDTO.get(0).getInstrumentname(),equipmentNo,monitorEquipmentCommand,probeList);
     }
 }

@@ -18,4 +18,9 @@ public class MonitorInstrumentServiceImpl implements MonitorInstrumentService {
     public List<MonitorinstrumentDto> selectMonitorInstrumentByEnoList(List<String> enoList) {
         return monitorInstrumentRepository.selectMonitorInstrumentByEnoList(enoList);
     }
+
+    @Override
+    public String getInstrumentTypeId(String equipmentNo) {
+        return monitorInstrumentRepository.getInstrumentTypeId(equipmentNo);
+    }
 }

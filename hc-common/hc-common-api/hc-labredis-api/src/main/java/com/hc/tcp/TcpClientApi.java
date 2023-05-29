@@ -2,6 +2,7 @@ package com.hc.tcp;
 
 import com.hc.my.common.core.bean.ApiResponse;
 import com.hc.my.common.core.bean.ApplicationName;
+import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
 
 @FeignClient(value = ApplicationName.REDIS)
 public interface TcpClientApi {
@@ -34,4 +37,8 @@ public interface TcpClientApi {
     @GetMapping("/tcpclient/getChannelId")
     @ApiOperation("获取通道信息")
     ApiResponse<String> getChannelId(@RequestParam("sn")String channelId);
+
+    @GetMapping("/tcpclient/getAllClientInfo")
+    @ApiOperation("获取通道缓存最新sn信息")
+    ApiResponse<Map<Object,Object>> getAllClientInfo();
 }

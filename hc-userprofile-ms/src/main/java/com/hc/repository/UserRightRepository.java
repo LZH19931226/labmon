@@ -84,4 +84,6 @@ public interface UserRightRepository extends IService<UserRightPo> {
      * @return
      */
     Boolean checkPhoneNum(UserRightCommand userRightCommand);
+
+    String getUserName(String userId);
 }

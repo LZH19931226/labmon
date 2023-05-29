@@ -22,7 +22,6 @@ public class MailCode {
 		case "InvalidFromALias.Malformed":
 			 return "发信人昵称不正确，请检查发信人昵称是否正确，长度应小于 15 个字符";
 		}
-		
 		return "未知错误码";
 	}
 }

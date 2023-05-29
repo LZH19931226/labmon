@@ -13,19 +13,25 @@ import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
-import com.hc.command.labmanagement.operation.ExportLogCommand;
-import com.hc.dto.*;
-import com.hc.labmanagent.OperationlogApi;
+import com.hc.device.ProbeRedisApi;
+import com.hc.dto.HospitalInfoDto;
+import com.hc.dto.LabMessengerPublishTaskDto;
+import com.hc.dto.MonitorEquipmentDto;
+import com.hc.dto.UserRightDto;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.constant.enums.SysConstants;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.message.MailCode;
 import com.hc.my.common.core.message.SmsCode;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.service.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -38,6 +44,9 @@ import static com.hc.my.common.core.util.ObjectConvertUtils.getObjectToMap;
 
 @Component
 public class StatisticalAnalysisApplication {
+
+    @Autowired
+    private ProbeRedisApi probeRedisApi;
 
     @Autowired
     private WarningrecordRepository warningrecordRepository;
@@ -58,10 +67,11 @@ public class StatisticalAnalysisApplication {
     private MonitorequipmentlastdataRepository monitorequipmentlastdataRepository;
 
     @Autowired
-    private InstrumentParamConfigService instrumentParamConfigService;
+    private ExportLogService exportLogService;
 
     @Autowired
-    private OperationlogApi operationlogApi;
+    private MonitorInstrumentService monitorInstrumentService;
+
 
     /**
      * 查询医院设备报警数量
@@ -160,15 +170,10 @@ public class StatisticalAnalysisApplication {
      */
     public Page<AlarmNoticeResult> getAlarmNotice(AlarmNoticeCommand alarmNoticeCommand) {
         Page<AlarmNoticeResult> page = new Page<>(alarmNoticeCommand.getPageCurrent(),alarmNoticeCommand.getPageSize());
+        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
         List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList =  labMessengerPublishTaskService.getAlarmNoticeInfo(page,alarmNoticeCommand);
         if(CollectionUtils.isEmpty(labMessengerPublishTaskDtoList)){
-            return null;
-        }
-        List<UserRightDto> userRightDtoList = new ArrayList<>();
-        if(StringUtils.isEmpty(alarmNoticeCommand.getPhoneNum())){
-            userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
-        }else {
-            userRightDtoList = userRightService. getUserRightInfo(alarmNoticeCommand);
+            return page;
         }
         Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> list = processData(labMessengerPublishTaskDtoList,phoneMap);
@@ -178,7 +183,7 @@ public class StatisticalAnalysisApplication {
 
     private List<AlarmNoticeResult> processData(List<LabMessengerPublishTaskDto> labMessengerPublishTaskDtoList, Map<String, List<UserRightDto>> phoneMap) {
         List<AlarmNoticeResult> list = new ArrayList<>();
-        String lang = Context.getLang();
+        boolean isCh = Context.IsCh();
         for (LabMessengerPublishTaskDto labMessengerPublishTaskDto : labMessengerPublishTaskDtoList) {
             AlarmNoticeResult alarmNoticeResult = new AlarmNoticeResult();
             alarmNoticeResult.setDataLoggingTime(labMessengerPublishTaskDto.getPublishTime());
@@ -192,13 +197,13 @@ public class StatisticalAnalysisApplication {
             }else {
                 String remark = labMessengerPublishTaskDto.getRemark();
                 String publishType = labMessengerPublishTaskDto.getPublishType();
-                alarmNoticeResult.setFReason("SMS".equals(publishType) ? SmsCode.SmsCodeParse(remark) : MailCode.MailCodePase(remark));
+                alarmNoticeResult.setFReason("SMS".equals(publishType) ? (isCh ? SmsCode.SmsCodeParse(remark) : remark):(isCh ? MailCode.MailCodePase(remark): remark));
             }
-//            if("zh".equals(lang)){
-                alarmNoticeResult.setMailContent(labMessengerPublishTaskDto.getMessageCover()+"出现异常,请尽快查看");
-//            }else {
-//                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageCover()));
-//            }
+            if(Context.IsCh()){
+                alarmNoticeResult.setMailContent(labMessengerPublishTaskDto.getMessageTitle()+labMessengerPublishTaskDto.getMessageCover()+"出现异常,请尽快查看");
+            }else {
+                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageTitle()));
+            }
             if (phoneMap.containsKey(labMessengerPublishTaskDto.getPublishKey())) {
                 alarmNoticeResult.setUserName(phoneMap.get(labMessengerPublishTaskDto.getPublishKey()).get(0).getUsername());
             }else {
@@ -210,14 +215,13 @@ public class StatisticalAnalysisApplication {
     }
 
     public void exportAlarmNotice(AlarmNoticeCommand alarmNoticeCommand, HttpServletResponse response) {
-        //1.获取报警通知模板
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmNoticeModel();
+        //判断是否输入手机号，没有就查询该医院所有的手机号
+        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
         //2.查出数据库信息
         List<LabMessengerPublishTaskDto> alarmNoticeInfo = labMessengerPublishTaskService.getAlarmNoticeInfo(null, alarmNoticeCommand);
         if(CollectionUtils.isEmpty(alarmNoticeInfo)){
             return;
         }
-        List<UserRightDto> userRightDtoList = userRightService.getallByHospitalCode(alarmNoticeCommand.getHospitalCode());
         Map<String, List<UserRightDto>> phoneMap = userRightDtoList.stream().collect(Collectors.groupingBy(UserRightDto::getPhoneNum));
         List<AlarmNoticeResult> alarmNoticeResults = processData(alarmNoticeInfo, phoneMap);
         //获取属性map
@@ -226,8 +230,10 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(alarmNoticeResult);
             mapList.add(objectToMap);
         }
-        buildLogInfo(alarmNoticeCommand.getUserId(),ExcelExportUtils.ALARM_DATA_NOTICE, OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.ALARM_DATA_NOTICE,beanList,mapList,response);
+        //获取报警通知模板
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getAlarmNoticeModel(Context.IsCh());
+        exportLogService.buildLogInfo(alarmNoticeCommand.getUserId(),ExcelExportUtils.getAlarmDataNoticeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.ALARM_NOTIFICATION_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getAlarmDataNoticeModel(),beanList,mapList,response);
     }
 
     /**
@@ -235,16 +241,28 @@ public class StatisticalAnalysisApplication {
      * @param equipmentDataCommand
      */
     public Page getEquipmentData(EquipmentDataCommand equipmentDataCommand) {
-        Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
+        //过滤filter为空的信息
         List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
-        if(CollectionUtils.isEmpty(filterList)){
-            throw new IedsException("筛选条件不能为空");
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
+
+        //获取设备信息
+        String equipmentNo = equipmentDataCommand.getEquipmentNo();
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String instrumenttypeid = equipmentInfoByNo.getInstrumenttypeid();
+        Page page = new Page<>(equipmentDataCommand.getPageCurrent(),equipmentDataCommand.getPageSize());
+        switch (instrumenttypeid){
+            case "112":
+                return getEquipmentMt310DcData(equipmentDataCommand,page);
+            default:
+                return getEquipmentDefultData(equipmentDataCommand,page);
         }
+    }
+
+    private Page getEquipmentDefultData(EquipmentDataCommand equipmentDataCommand,Page page) {
         List<String> fieldList = equipmentDataCommand.getFieldList();
         if(CollectionUtils.isEmpty(fieldList)){
             return page;
         }
-        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         //分页查询
         String startTime = equipmentDataCommand.getStartTime();
         String yearMonth = DateUtils.parseDateYm(startTime);
@@ -270,6 +288,202 @@ public class StatisticalAnalysisApplication {
         }
         page.setRecords(resultList);
         return page;
+    }
+
+    /**
+     * 培养箱310DC
+     * @param equipmentDataCommand
+     * @return
+     */
+    public Page getEquipmentMt310DcData(EquipmentDataCommand equipmentDataCommand,Page page){
+        //获取设备信息
+        String equipmentNo = equipmentDataCommand.getEquipmentNo();
+        MonitorEquipmentDto equipmentInfoByNo = equipmentInfoService.getEquipmentInfoByNo(equipmentNo);
+        String hospitalCode = equipmentInfoByNo.getHospitalcode();
+
+        List<String> fieldList = equipmentDataCommand.getFieldList();
+        //过滤filter为空的信息
+        List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
+        String instrumenttypeid = equipmentInfoByNo.getInstrumenttypeid();
+        Map<String,String> map = new HashMap<>();
+        if(StringUtils.equals("112",instrumenttypeid)){
+            map.put("outerO2",null);
+            map.put("outerCO2",null);
+            map.put("currenttemperature",null);
+            map.put("currenthumidity",null);
+            //如果是112为310Dc特殊设备
+            //获取设备当前值来确认外置探头的位置
+            List<ProbeInfoDto> result = probeRedisApi.getCurrentProbeValueInfo(hospitalCode, equipmentNo).getResult();
+            for (ProbeInfoDto probeInfoDto : result) {
+                if(probeInfoDto.getInstrumentConfigId()==101){
+                    String eName = probeInfoDto.getProbeEName();
+                    setMap(eName,map,"1",fieldList);
+                    fieldList.add("probe1model");
+                    fieldList.add("probe1data");
+                }
+                if(probeInfoDto.getInstrumentConfigId()==102){
+                    String eName = probeInfoDto.getProbeEName();
+                    setMap(eName,map,"2",fieldList);
+                    fieldList.add("probe2model");
+                    fieldList.add("probe2data");
+                }
+                if(probeInfoDto.getInstrumentConfigId()==103){
+                    String eName = probeInfoDto.getProbeEName();
+                    setMap(eName,map,"3",fieldList);
+                    fieldList.add("probe3model");
+                    fieldList.add("probe3data");
+                }
+            }
+        }
+        //分页查询
+        String startTime = equipmentDataCommand.getStartTime();
+        String yearMonth = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(yearMonth);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getEquipmentData(page,dataParam);
+        List<LastDataResult> resultList = new ArrayList<>();
+        for (Monitorequipmentlastdata lastData : lastDataList) {
+            Map<String, Object> objectToMap = getObjectToMap(lastData);
+            Map<String,Object> resultMap = new HashMap<>();
+            ObjectConvertUtils.filterMap(objectToMap,fieldList);
+            boolean flag1 = false;
+            boolean flag2 = false;
+            for (String field : objectToMap.keySet()) {
+                //记录时间
+                if(StringUtils.equals(field,"inputdatetime")){
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put("inputdatetime",value);
+                }
+
+                //内置探头
+                if(StringUtils.equals(field,"currentcarbondioxide") && fieldList.contains(field)){
+                    String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put(field,StringUtils.isEmpty(value) ? "":RegularUtil.checkContainsNumbers(value) ? value+"("+unit+")":"");
+                }
+                if(StringUtils.equals(field,"currento2") && fieldList.contains(field)){
+                    String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put(field,StringUtils.isEmpty(value) ? "":value+"("+unit+")");
+                }
+                if(StringUtils.equals(field,"currentvoc") && fieldList.contains(field)){
+                    String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+                    String value = (String) objectToMap.get(field);
+                    resultMap.put(field,StringUtils.isEmpty(value) ? "":value+"("+unit+")");
+                }
+
+                //外置Co2探头
+                if( map.containsKey("outerCO2") && !flag1){
+                    String model = map.get("outerCO2");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("outerCO2","");
+                    }else{
+                        if(StringUtils.equals(model,"1")){
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("outerCO2",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currentcarbondioxide").getUnit()+")");
+                            flag1 = true;
+                        }
+                        if(StringUtils.equals(model,"2")){
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("outerCO2",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currentcarbondioxide").getUnit()+")");
+                            flag1 = true;
+                        }
+                        if(StringUtils.equals(model,"3")){
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("outerCO2",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currentcarbondioxide").getUnit()+")");
+                            flag1 = true;
+                        }
+                    }
+                }
+                //外置O2探头
+                if( map.containsKey("outerO2") && !flag2){
+                    String model = map.get("outerO2");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("outerO2","");
+                    }else {
+                        if (StringUtils.equals(model, "1")) {
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("outerO2", StringUtils.isEmpty(value) ? "" : value + "(" + DataFieldEnum.fromByLastDataField("currento2").getUnit() + ")");
+                            flag2 = true;
+                        }
+                        if (StringUtils.equals(model, "2")) {
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("outerO2", StringUtils.isEmpty(value) ? "" : value + "(" + DataFieldEnum.fromByLastDataField("currento2").getUnit() + ")");
+                            flag2 = true;
+                        }
+                        if (StringUtils.equals(model, "3")) {
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("outerO2", StringUtils.isEmpty(value) ? "" : value + "(" + DataFieldEnum.fromByLastDataField("currento2").getUnit() + ")");
+                            flag2 = true;
+                        }
+                    }
+                }
+                //外置温度探头
+                if(StringUtils.equals(field,"currenttemperature") && map.containsKey("currenttemperature")){
+                    String model = map.get("currenttemperature");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("currenttemperature","");
+                    }else {
+                        if(StringUtils.equals(model,"1")){
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("currenttemperature",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenttemperature").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"2")){
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("currenttemperature",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenttemperature").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"3")){
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("currenttemperature",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenttemperature").getUnit()+")");
+                        }
+                    }
+                }
+                //外置湿度探头
+                if(StringUtils.equals(field,"currenthumidity") && map.containsKey("currenthumidity")){
+                    String model = map.get("currenthumidity");
+                    if(StringUtils.isBlank(model)){
+                        resultMap.put("currenthumidity","");
+                    }else {
+                        if(StringUtils.equals(model,"1")){
+                            String value = (String) objectToMap.get("probe1data");
+                            resultMap.put("currenthumidity",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenthumidity").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"2")){
+                            String value = (String) objectToMap.get("probe2data");
+                            resultMap.put("currenthumidity",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenthumidity").getUnit()+")");
+                        }
+                        if(StringUtils.equals(model,"3")){
+                            String value = (String) objectToMap.get("probe3data");
+                            resultMap.put("currenthumidity",StringUtils.isEmpty(value) ? "":value+"("+DataFieldEnum.fromByLastDataField("currenthumidity").getUnit()+")");
+                        }
+                    }
+                }
+            }
+            LastDataResult result = JSON.parseObject(JSON.toJSONString(resultMap), LastDataResult.class);
+            resultList.add(result);
+        }
+        page.setRecords(resultList);
+        return page;
+    }
+
+    private void setMap(String eName, Map<String, String> map,String str,List<String> fieldList) {
+        switch (eName){
+            case "1":
+                map.put("currenttemperature",str);
+                break;
+            case "2":
+                map.put("currenthumidity",str);
+                break;
+            case "3":
+                map.put("outerCO2",str);
+                fieldList.remove("outerCO2");
+                break;
+            case "4":
+                map.put("outerO2",str);
+                fieldList.remove("outerO2");
+                break;
+        }
     }
 
     /**
@@ -309,39 +523,134 @@ public class StatisticalAnalysisApplication {
      */
     public void exportEquipmentData(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
         List<EquipmentDataCommand.Filter> filterList = equipmentDataCommand.getFilterList();
+        String equipmentName = equipmentDataCommand.getEquipmentName();
         if(CollectionUtils.isEmpty(filterList)){
-            throw new IedsException("筛选条件不能为空");
+                throw new IedsException("FILTER_NOT_NULL");
         }
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
         String startTime = equipmentDataCommand.getStartTime();
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
         List<String> fieldList = equipmentDataCommand.getFieldList();
+        String instrumentTypeId =  monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
+        if(SysConstants.EQ_MT310DC.equals(instrumentTypeId)){
+            EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+            Mt310DCUtils.get310DCFields(dataParam.getFieldList());
+            List<Monitorequipmentlastdata> equipmentData = monitorequipmentlastdataRepository.getEquipmentData(null, dataParam);
+            List<Map<String,Object>> resultList = new ArrayList<>();
+            for (Monitorequipmentlastdata equipmentDatum : equipmentData) {
+                Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
+                mt310cFilter(objectToMap,fieldList);
+                resultList.add(objectToMap);
+            }
+            List<ExcelExportEntity> mt310DCEqData = ExcelExportUtils.getMT310DCEqData(Context.IsCh(),fieldList);
+            exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
+            FileUtil.exportExcel(ExcelExportUtils.getEquipmentDataModel(),mt310DCEqData,resultList,response);
+            return;
+        }
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> equipmentData = monitorequipmentlastdataRepository.getEquipmentData(null, dataParam);
         //设置tittle
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList);
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList,Context.IsCh());
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata equipmentDatum : equipmentData) {
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             ObjectConvertUtils.filterMap(objectToMap,fieldList);
+            objectToMap.put("eqName",equipmentName);
             mapList.add(objectToMap);
         }
-        buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_CUSTOM, OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_CUSTOM,beanList,mapList,response);
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.CUSTOM_QUERY.getCode());
+        String fileName = equipmentName+DateUtils.getYMD(equipmentDataCommand.getStartTime())+"--"+DateUtils.getYMD(equipmentDataCommand.getEndTime());
+        FileUtil.exportExcel(fileName,beanList,mapList,response);
     }
+
+    /**
+     * 过滤objMap 将以mt310的格式返回 值带单位
+     * map："key":"value(单位)"
+     */
+    private void mt310cFilter(Map<String, Object> objectToMap,List<String> fieldList) {
+        editObjMap(objectToMap,(String)objectToMap.get("probe1model"),(String)objectToMap.get("probe1data"));
+        editObjMap(objectToMap,(String)objectToMap.get("probe2model"),(String)objectToMap.get("probe2data"));
+        editObjMap(objectToMap,(String)objectToMap.get("probe3model"),(String)objectToMap.get("probe3data"));
+        ObjectConvertUtils.filterMap(objectToMap,fieldList);
+    }
+
+    /**
+     * 过滤objMap 将以mt310的格式返回 值不带单位
+     * map："key":"value"
+     *
+     */
+    private void mt310DcFilter(Map<String, Object> objectToMap,List<String> fieldList) {
+        editObjectMap(objectToMap,(String)objectToMap.get("probe1model"),(String)objectToMap.get("probe1data"));
+        editObjectMap(objectToMap,(String)objectToMap.get("probe2model"),(String)objectToMap.get("probe2data"));
+        editObjectMap(objectToMap,(String)objectToMap.get("probe3model"),(String)objectToMap.get("probe3data"));
+        ObjectConvertUtils.filterMap(objectToMap,fieldList);
+    }
+
+    /**
+     * map 中value是有单位的
+     * @param objectToMap
+     * @param model
+     * @param data
+     */
+    private  void editObjMap(Map<String, Object> objectToMap,String model,String data){
+        switch (model){
+            case SysConstants.MT310DC_TEMP:
+                DataFieldEnum dataFieldEnum1 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_TEMP);
+                objectToMap.put(SysConstants.MT310DC_DATA_TEMP,data+"("+dataFieldEnum1.getUnit()+")");
+                break;
+            case SysConstants.MT310DC_RH:
+                DataFieldEnum dataFieldEnum2 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_RH);
+                objectToMap.put(SysConstants.MT310DC_DATA_RH,data+"("+dataFieldEnum2.getUnit()+")");
+                break;
+            case SysConstants.MT310DC_O2:
+                DataFieldEnum dataFieldEnum3 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_OUTER_O2);
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_O2,data+"("+dataFieldEnum3.getUnit()+")");
+                break;
+            case SysConstants.MT310DC_CO2:
+                DataFieldEnum dataFieldEnum4 = DataFieldEnum.fromByLastDataField(SysConstants.MT310DC_DATA_OUTER_CO2);
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_CO2,data+"("+dataFieldEnum4.getUnit()+")");
+                break;
+        }
+    }
+
+    /**
+     * map 中value是无单位的
+     * @param objectToMap
+     * @param model
+     * @param data
+     */
+    private  void editObjectMap(Map<String, Object> objectToMap,String model,String data){
+        switch (model){
+            case SysConstants.MT310DC_TEMP:
+                objectToMap.put(SysConstants.MT310DC_DATA_TEMP,data);
+                break;
+            case SysConstants.MT310DC_RH:
+                objectToMap.put(SysConstants.MT310DC_DATA_RH,data);
+                break;
+            case SysConstants.MT310DC_O2:
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_O2,data);
+                break;
+            case SysConstants.MT310DC_CO2:
+                objectToMap.put(SysConstants.MT310DC_DATA_OUTER_CO2,data);
+                break;
+        }
+    }
+
 
     /**
      * 时间点查询
      * @param equipmentDataCommand
      */
     public  List<TimePointCurve>  getThePointInTimeDataCurve(EquipmentDataCommand equipmentDataCommand) {
+        //校验筛选条件不能为空
         filterCondition(equipmentDataCommand);
         String field = equipmentDataCommand.getField();
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
+        String instrumentTypeId = monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
         //校验日期格式数据
         List<String> timeLists = DateUtils.filterDate(timeList);
         //排列
@@ -350,17 +659,25 @@ public class StatisticalAnalysisApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
-        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        boolean flag = SysConstants.EQ_MT310DC.equals(instrumentTypeId);
+        List<Monitorequipmentlastdata> lastDataList = null;
+        if(flag){
+            dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
+            lastDataList =  monitorequipmentlastdataRepository.getMT310DcLastDataByTime(dataParam);
+        }else {
+            lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        }
 
         if(CollectionUtils.isEmpty(lastDataList)){
             return new ArrayList<>();
         }
-
+        //根据天分组
         Map<String, List<Monitorequipmentlastdata>> stringListMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDateMMdd(res.getInputdatetime())));
 
         Map<String, List<Monitorequipmentlastdata>> dataMap = sortMapByKey(stringListMap);
         Map<String,TimePointCurve> map = new HashMap<>();
         for (String inputTime : dataMap.keySet()) {
+            //获取当天的数据
             List<Monitorequipmentlastdata> dataList = dataMap.get(inputTime);
             //遍历时间点
             for (Date date : dateList) {
@@ -369,8 +686,12 @@ public class StatisticalAnalysisApplication {
                 cal.add(Calendar.MINUTE,-30);
                 Date start = cal.getTime();
                 List<Monitorequipmentlastdata> list = dataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
+                //取字段数据都是最新的对象
                 Monitorequipmentlastdata lastObject = listToObject(list);
                 Map<String, Object> objectToMap = getObjectToMap(lastObject);
+                if(flag){
+                    mt310DcFilter(objectToMap,new ArrayList<>(Collections.singletonList(field)));
+                }
                 String value =  (String)objectToMap.get(field);
                 String hHmm = DateUtils.dateReduceHHmm(date);
                 if(map.containsKey(hHmm)){
@@ -378,14 +699,14 @@ public class StatisticalAnalysisApplication {
                     List<String> xaxis = timePointCurve.getXaxis();
                     List<String> series = timePointCurve.getSeries();
                     xaxis.add(inputTime);
-                    series.add(StringUtils.isEmpty(value) ? "0":value);
+                    series.add(StringUtils.isEmpty(value)?"0":RegularUtil.checkContainsNumbers(value) ? value:"0");
                     map.put(hHmm,timePointCurve);
                 }else {
                     TimePointCurve curve = new TimePointCurve();
                     List<String> xaxis = new ArrayList<>();
                     List<String> series = new ArrayList<>();
                     xaxis.add(inputTime);
-                    series.add(StringUtils.isEmpty(value) ? "0":value);
+                    series.add(StringUtils.isEmpty(value)?"0":RegularUtil.checkContainsNumbers(value) ? value:"0");
                     curve.setXaxis(xaxis);
                     curve.setSeries(series);
                     curve.setName(hHmm);
@@ -401,70 +722,18 @@ public class StatisticalAnalysisApplication {
         return list.stream().sorted(Comparator.comparing(TimePointCurve::getName)).collect(Collectors.toList());
     }
 
-
     public static Map<String, List<Monitorequipmentlastdata>> sortMapByKey(Map<String, List<Monitorequipmentlastdata>> map) {
         if (map == null || map.isEmpty()) {
             return null;
         }
         TreeMap<String, List<Monitorequipmentlastdata>> sortMap = new TreeMap<>(new Comparator<String>() {
+            @Override
             public int compare(String obj1, String obj2) {
                 return obj1.compareTo(obj2);//升序排序
             }
         });
         sortMap.putAll(map);
         return sortMap;
-    }
-
-    private List<Monitorequipmentlastdata> filterData(List<Monitorequipmentlastdata> lastDataList, String field) {
-        //先以时间（MM-dd）分组
-        Map<String,List<Monitorequipmentlastdata>>  map = new HashMap<>();
-        for (Monitorequipmentlastdata lastData : lastDataList) {
-            Date inputdatetime = lastData.getInputdatetime();
-            String time = DateUtils.paseDateMMdd(inputdatetime);
-            List<Monitorequipmentlastdata> list;
-            if (map.containsKey(time)) {
-                list = map.get(time);
-            }else {
-                list = new ArrayList<>();
-            }
-            list.add(lastData);
-            map.put(time,list);
-        }
-        List<Monitorequipmentlastdata> list = new ArrayList<>();
-        for (String time : map.keySet()) {
-            Monitorequipmentlastdata monitorequipmentlastdata = listToObject(map.get(time), field);
-            list.add(monitorequipmentlastdata);
-        }
-        return list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-    }
-
-    /**
-     * list转化为对象
-     * @param monitorequipmentlastdataList
-     * @return
-     */
-    private Monitorequipmentlastdata listToObject(List<Monitorequipmentlastdata> monitorequipmentlastdataList,String field) {
-        //将list排序以时间递增
-        List<Monitorequipmentlastdata> lastDataList =
-                monitorequipmentlastdataList.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-        Map<String,Object> map = new HashMap<>();
-        //随着数组的遍历该设备的探头监测信息都会被替换成为最新的(也就是离当前时间点最近的有效值)
-        for (Monitorequipmentlastdata monitorequipmentlastdata : lastDataList) {
-            Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
-            filterMap(objectToMap,field);
-            for (String fieldName : objectToMap.keySet()) {
-                if (map.containsKey(fieldName)) {
-                    Object object = map.get(fieldName);
-                    if (!ObjectUtils.isEmpty(objectToMap.get(fieldName))) {
-                        object = objectToMap.get(fieldName);
-                    }
-                    map.put(fieldName,object);
-                }else {
-                    map.put(fieldName,objectToMap.get(fieldName));
-                }
-            }
-        }
-        return JSON.parseObject(JSON.toJSONString(map),Monitorequipmentlastdata.class);
     }
 
     /**
@@ -527,13 +796,24 @@ public class StatisticalAnalysisApplication {
         if(CollectionUtils.isEmpty(timeList)){
             return new ArrayList<>();
         }
+        String instrumentTypeId  = monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
+        boolean flag = SysConstants.EQ_MT310DC.equals(instrumentTypeId);
         List<String> timeLists = DateUtils.filterDate(timeList);
         //2.查询数据源
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
-        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        List<Monitorequipmentlastdata> lastDataList;
+        if(flag){
+            dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
+            lastDataList = monitorequipmentlastdataRepository.getMT310DcLastDataByTime(dataParam);
+        }else {
+            lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        }
+        if(CollectionUtils.isEmpty(lastDataList)){
+            return  new ArrayList<>();
+        }
         //3.加工数据
         //思路：将数据源按照天分组拿到一天的所有数据1，再通过时间点拿到一个时间点前半个小时到这个时间点的数据2，再获取数据2中最靠近时间点的一条数据(有就设置没有就设置为0)
         Map<String, List<Monitorequipmentlastdata>> dateMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
@@ -561,6 +841,9 @@ public class StatisticalAnalysisApplication {
                 }
                 Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
                 Map<String, Object> objectToMap = getObjectToMap(data);
+                if(flag){
+                    mt310DcFilter(objectToMap,new ArrayList<>(Collections.singletonList(field)));
+                }
                 if(objectToMap.containsKey(field)){
                     String str = (String) objectToMap.get(field);
                     map.put(hhMm,str);
@@ -572,72 +855,83 @@ public class StatisticalAnalysisApplication {
         }
         return list.stream().sorted(Comparator.comparing(o -> o.get("date"))).collect(Collectors.toList());
     }
-
-    /**
-     * 导出时间点数据
-     * @param equipmentDataCommand
-     * @param httpServletResponse
-     */
     public void exportDatePoint(EquipmentDataCommand equipmentDataCommand,HttpServletResponse httpServletResponse) {
+        String equipmentName = equipmentDataCommand.getEquipmentName();
+        //1.验证参数
         filterCondition(equipmentDataCommand);
+        String field = equipmentDataCommand.getField();
         List<String> timeList = equipmentDataCommand.getTimeList();
         if(CollectionUtils.isEmpty(timeList)){
             return;
         }
+        String instrumentTypeId  = monitorInstrumentService.getInstrumentTypeId(equipmentDataCommand.getEquipmentNo());
+        boolean flag = SysConstants.EQ_MT310DC.equals(instrumentTypeId);
         List<String> timeLists = DateUtils.filterDate(timeList);
         //排列
         List<Date> dateList = timeLists.stream().filter(res->!StringUtils.isEmpty(res)).map(DateUtils::parseDate).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        //2.查询数据源
         String startTime = equipmentDataCommand.getStartTime();
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
-        List<Monitorequipmentlastdata> lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        List<Monitorequipmentlastdata> lastDataList;
+        if(flag){
+            dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
+            lastDataList = monitorequipmentlastdataRepository.getMT310DcLastDataByTime(dataParam);
+        }else {
+            lastDataList =  monitorequipmentlastdataRepository.getLastDataByTime(dataParam);
+        }
         if(CollectionUtils.isEmpty(lastDataList)){
             return;
         }
-        List<Monitorequipmentlastdata> list = new ArrayList<>();
-        for (Date date : dateList) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.MINUTE,-30);
-            Date start = cal.getTime();
-            lastDataList.forEach(res->res.setRemark1(DateUtils.dateReduceHHmm(date)));
-            List<Monitorequipmentlastdata> collect = lastDataList.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(), start, date)).collect(Collectors.toList());
-            if(CollectionUtils.isEmpty(collect)){
-                continue;
-            }
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = filterData(collect,equipmentDataCommand.getField());
-            list.addAll(monitorEquipmentLastDataList);
-        }
-        List<Monitorequipmentlastdata> collect1 = list.stream().sorted(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).collect(Collectors.toList());
-        Map<String, List<Monitorequipmentlastdata>> collect = collect1.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
-       List<Map<String,Object>> mapList = new ArrayList<>();
-        for (String date : collect.keySet()) {
+        //3.加工数据
+        //思路：将数据源按照天分组拿到一天的所有数据1，再通过时间点拿到一个时间点前半个小时到这个时间点的数据2，再获取数据2中最靠近时间点的一条数据(有就设置没有就设置为0)
+        Map<String, List<Monitorequipmentlastdata>> dateMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+
+        List<Map<String,Object>> list = new ArrayList<>();
+        Calendar cal  = Calendar.getInstance();
+        String unit = DataFieldEnum.fromByLastDataField(field).getUnit();
+        for (String date : dateMap.keySet()) {
             Map<String,Object> map = new HashMap<>();
+            map.put("eqName",equipmentName);
             map.put("date",date);
-            List<Monitorequipmentlastdata> monitorEquipmentLastDataList = collect.get(date);
-            Map<String, List<Monitorequipmentlastdata>> listMap = monitorEquipmentLastDataList.stream().collect(Collectors.groupingBy(Monitorequipmentlastdata::getRemark1));
-            for (Date time : dateList) {
-                String hHmm = DateUtils.dateReduceHHmm(time);
-                String value = "";
-                if(listMap.containsKey(hHmm)){
-                    Monitorequipmentlastdata monitorequipmentlastdata = listMap.get(hHmm).get(0);
-                    Map<String, Object> objectToMap = getObjectToMap(monitorequipmentlastdata);
-                    value =(String) objectToMap.get(equipmentDataCommand.getField());
-
+            map.put("unit",unit);
+            List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
+            for (String timeStr : timeLists) {
+                String hHmmTime = DateUtils.getHHmm(timeStr);
+                //将00:30 改为 00:00 将23:59改为24:00
+                String hhMm = editHhmm(hHmmTime);
+                Date rTime = DateUtils.parseDate(timeStr);
+                cal.setTime(rTime);
+                cal.add(Calendar.MINUTE,-30);
+                Date lTime = cal.getTime();
+                List<Monitorequipmentlastdata> collect = monitorequipmentlastdata.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(),lTime,rTime)).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(collect)){
+                    map.put(hhMm,"");
+                    continue;
                 }
-                String str =  editHhmm(hHmm);
-                map.put(str,value);
+                Monitorequipmentlastdata data = collect.stream().max(Comparator.comparing(Monitorequipmentlastdata::getInputdatetime)).get();
+                Map<String, Object> objectToMap = getObjectToMap(data);
+                if(flag){
+                    mt310DcFilter(objectToMap,new ArrayList<>(Collections.singletonList(field)));
+                }
+                if(objectToMap.containsKey(field)){
+                    String str = (String) objectToMap.get(field);
+                    DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+                    map.put(hhMm,str+"("+dataFieldEnum.getUnit()+")");
+                }else {
+                    map.put(hhMm,"");
+                }
             }
-            mapList.add(map);
+            list.add(map);
         }
-        mapList.sort(Comparator.comparing(res->res.get("date").toString()));
-        boolean flag = Context.IsCh();
+        List<Map<String, Object>> mapList = list.stream().sorted(Comparator.comparing(o -> (String) o.get("date"))).collect(Collectors.toList());
         //获取tittle
-        List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,flag);
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getDatePoint(dateList,Context.IsCh());
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataPointInTimeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.TIMEOUT_POINT_QUERY.getCode());
+        String fileName = equipmentName+DateUtils.getYMD(startTime)+"--"+DateUtils.getYMD(equipmentDataCommand.getEndTime());
+        FileUtil.exportExcel(fileName,beanList,mapList,httpServletResponse);
 
-        buildLogInfo(Context.getUserId(),ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME, OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.EQUIPMENT_DATA_POINT_IN_TIME,beanList,mapList,httpServletResponse);
     }
 
     private String editHhmm(String hHmm) {
@@ -656,23 +950,6 @@ public class StatisticalAnalysisApplication {
             throw new IedsException("筛选条件不能为空");
         }
         filterList.removeIf(res->StringUtils.isEmpty(res.getField()) || StringUtils.isEmpty(res.getValue()) || StringUtils.isEmpty(res.getCondition()));
-    }
-
-    private  void buildLogInfo(String userId, String fileName,String exportCode) {
-        ExportLogCommand exportLogCommand = new ExportLogCommand();
-        UserRightDto userRightDto =  userRightService.getUserRightInfoByUserId(userId);
-        if(null != userRightDto){
-            String hospitalCode = userRightDto.getHospitalCode();
-            HospitalInfoDto hospitalInfoDto = hospitalInfoService.selectOne(hospitalCode);
-            String username = userRightDto.getUsername();
-            exportLogCommand.setHospitalCode(hospitalCode);
-            exportLogCommand.setUsername(username);
-            exportLogCommand.setHospitalName(hospitalInfoDto.getHospitalName());
-        }
-        exportLogCommand.setOperationType(exportCode);
-        exportLogCommand.setMenuName(fileName);
-        exportLogCommand.setFunctionName(fileName);
-        operationlogApi.addExportLog(exportLogCommand);
     }
 
     /**
@@ -695,7 +972,7 @@ public class StatisticalAnalysisApplication {
     }
 
     /**
-     * 导出查询报警数据
+     * 导出查询报警汇总数据
      * @param alarmDataCommand
      * @param response
      */
@@ -715,8 +992,8 @@ public class StatisticalAnalysisApplication {
             Map<String, Object> objectToMap = getObjectToMap(res);
             mapList.add(objectToMap);
         });
-        buildLogInfo(alarmDataCommand.getUserId(),ExcelExportUtils.ALARM_DATA_SUMMARY,OperationLogEunmDerailEnum.EXPORT.getCode());
-        FileUtil.exportExcel(ExcelExportUtils.ALARM_DATA_SUMMARY,beanList,mapList,response);
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getAlarmDataSummaryModel(),OperationLogEunmDerailEnum.EXPORT.getCode(),OperationLogEunm.ALARM_SUMMARY_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getAlarmDataSummaryModel(),beanList,mapList,response);
     }
 
     private  List<Warningrecord> transformData(List<Warningrecord> list) {
@@ -742,6 +1019,7 @@ public class StatisticalAnalysisApplication {
         //情况1：
         if (StringUtils.isEmpty(equipmentTypeId) && StringUtils.isEmpty(equipmentNo)) {
             alarmDataCommand.setEquipmentNo("");
+            return;
         }
         //情况2：
         if(!StringUtils.isEmpty(equipmentTypeId) && StringUtils.isEmpty(equipmentNo)){
@@ -753,10 +1031,16 @@ public class StatisticalAnalysisApplication {
                 });
                 String substring = stringBuilder.substring(0, stringBuilder.length() - 1);
                 alarmDataCommand.setEquipmentNo(substring);
+                return;
             }
             if(enoList.size() == 1){
                 String eno = enoList.get(0);
                 alarmDataCommand.setEquipmentNo("'"+eno+"'");
+                return;
+            }
+            if(enoList.size()==0){
+                alarmDataCommand.setEquipmentNo("'NO_DATA'");
+                return;
             }
         }
         //情况3:
@@ -784,6 +1068,102 @@ public class StatisticalAnalysisApplication {
         alarmDataCurveResult.setEquipmentNameList(equipmentNameList);
         alarmDataCurveResult.setNumList(numList);
         return alarmDataCurveResult;
+    }
+
+    public List<MultiprobeTypePointInTimeDto> getMultiprobeTypePointInTime(EquipmentDataCommand equipmentDataCommand) {
+        List<MultiprobeTypePointInTimeDto> multiprobeTypePointInTimeDtos = new ArrayList<>();
+        List<String> timeList = equipmentDataCommand.getTimeList();
+        List<String> fieldList = equipmentDataCommand.getFieldList();
+        if(CollectionUtils.isEmpty(timeList)||CollectionUtils.isEmpty(fieldList)){
+            return multiprobeTypePointInTimeDtos;
+        }
+        List<String> timeLists = DateUtils.filterDate(timeList);
+        //2.查询数据源
+        String startTime = equipmentDataCommand.getStartTime();
+        String ym = DateUtils.parseDateYm(startTime);
+        equipmentDataCommand.setYearMonth(ym);
+        EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        List<Monitorequipmentlastdata>  lastDataList =  monitorequipmentlastdataRepository.getMultiprobeTypePointInTime(dataParam);
+        if(CollectionUtils.isEmpty(lastDataList)){
+            return  multiprobeTypePointInTimeDtos;
+        }
+        //按日期分组数据
+        Map<String, List<Monitorequipmentlastdata>> dateMap = lastDataList.stream().collect(Collectors.groupingBy(res -> DateUtils.paseDate(res.getInputdatetime())));
+        Calendar cal  = Calendar.getInstance();
+        for (String date : dateMap.keySet()) {
+            MultiprobeTypePointInTimeDto multiprobeTypePointInTimeDto = new MultiprobeTypePointInTimeDto();
+            multiprobeTypePointInTimeDto.setDate(date);
+            List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
+            for (String timeStr : timeLists) {
+                String hHmmTime = DateUtils.getHHmm(timeStr);
+                //将00:30 改为 00:00 将23:59改为24:00
+                String hhMm = editHhmm(hHmmTime);
+                multiprobeTypePointInTimeDto.setTime(hhMm);
+                Date rTime = DateUtils.parseDate(timeStr);
+                cal.setTime(rTime);
+                cal.add(Calendar.MINUTE,-30);
+                Date lTime = cal.getTime();
+                //数据过滤根据时间信息
+                List<Monitorequipmentlastdata> collect = monitorequipmentlastdata.stream().filter(res -> DateUtils.whetherItIsIn(res.getInputdatetime(),lTime,rTime)).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(collect)){
+                    continue;
+                }
+                Map<String,String> fieldMap  = new HashMap<>();
+                //获取时间点每个属性接近且有值的数据,属性覆盖模式
+                for (Monitorequipmentlastdata monitorequipmentlastdata2 : collect) {
+                    fieldList.forEach(s->{
+                        String fieldByClasss = ClassFieldValueUtil.getFieldValueByFieldNameNoAccess(s, monitorequipmentlastdata2);
+                        if (StringUtils.isNotEmpty(fieldByClasss)){
+                            fieldMap.put(s,fieldByClasss);
+                        }
+                    });
+                }
+                List<ProbeInfoDto> probeInfoDtoList = new ArrayList<>();
+                fieldList.forEach(field->{
+                    ProbeInfoDto probeInfoDto = new ProbeInfoDto();
+                    String value = fieldMap.get(field);
+                    probeInfoDto.setValue(value);
+                    DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(field);
+                    probeInfoDto.setProbeEName(field);
+                    probeInfoDto.setProbeCName(dataFieldEnum.getCName());
+                    probeInfoDto.setUnit(dataFieldEnum.getUnit());
+                    probeInfoDtoList.add(probeInfoDto);
+                });
+                multiprobeTypePointInTimeDto.setProbeInfoDtoList(probeInfoDtoList);
+            }
+            multiprobeTypePointInTimeDtos.add(multiprobeTypePointInTimeDto);
+        }
+        return  multiprobeTypePointInTimeDtos.stream().sorted(Comparator.comparing(MultiprobeTypePointInTimeDto::getDate)).collect(Collectors.toList());
+    }
+
+    public void exportMultiprobeTypePointInTime(EquipmentDataCommand equipmentDataCommand,HttpServletResponse response) {
+        String equipmentName = equipmentDataCommand.getEquipmentName();
+        List<String> fieldList = equipmentDataCommand.getFieldList();
+        List<MultiprobeTypePointInTimeDto> multiprobeTypePointInTime = getMultiprobeTypePointInTime(equipmentDataCommand);
+        if(CollectionUtils.isEmpty(multiprobeTypePointInTime)){
+            return;
+        }
+        //获取标头
+        List<ExcelExportEntity> beanList = ExcelExportUtils.getEquipmentData(fieldList,Context.IsCh());
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (MultiprobeTypePointInTimeDto multiprobeTypePointInTimeDto : multiprobeTypePointInTime) {
+            List<ProbeInfoDto> probeInfoDtoList = multiprobeTypePointInTimeDto.getProbeInfoDtoList();
+            if (CollectionUtils.isEmpty(probeInfoDtoList)){
+                continue;
+            }
+            Map<String, Object> objectToMap =new HashMap<>();
+            probeInfoDtoList.forEach(s->{
+                objectToMap.put(s.getProbeEName(),s.getValue());
+            });
+            ObjectConvertUtils.filterMap(objectToMap,fieldList);
+            objectToMap.put("eqName",equipmentName);
+            objectToMap.put("inputdatetime",multiprobeTypePointInTimeDto.getDate()+"  "+multiprobeTypePointInTimeDto.getTime());
+            mapList.add(objectToMap);
+        }
+        exportLogService.buildLogInfo(Context.getUserId(),ExcelExportUtils.getEquipmentDataMultiPointInTimeModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.MULTI_CUSTOM_QUERY.getCode());
+        String fileName = equipmentName+DateUtils.getYMD(equipmentDataCommand.getStartTime());
+        FileUtil.exportExcel(fileName,beanList,mapList,response);
+
     }
 }
 

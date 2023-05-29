@@ -6,6 +6,7 @@
         SELECT
             t3.equipmentno,
             t3.equipmenttypeid,
+            t2.channel iChannel,
             t1.*
         FROM
             instrumentparamconfig t1
@@ -66,7 +67,9 @@
             t1.lowlimit,
             t1.highlimit,
             t1.style_min styleMin,
-            t1.style_max styleMax
+            t1.style_max styleMax,
+            t1.unit,
+            t1.instrumenttypeid
         FROM
             instrumentparamconfig t1
                 LEFT JOIN monitorinstrument t2 ON t1.instrumentno = t2.instrumentno

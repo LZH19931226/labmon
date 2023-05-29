@@ -12,6 +12,7 @@ import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.InstrumentparamconfigPo;
 import com.hc.repository.InstrumentparamconfigRepository;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -44,10 +45,11 @@ public class InstrumentparamconfigRepositoryImpl extends ServiceImpl<Instrumentp
      */
     @Override
     public List<InstrumentparamconfigDTO> slectinfo(List<String> instrumentNos) {
-
-        List<InstrumentparamconfigPo> instrumentparamconfigPoList = instrumentparamconfigDao.selectList(Wrappers.lambdaQuery(new InstrumentparamconfigPo()).in(InstrumentparamconfigPo::getInstrumentno, instrumentNos));
-
-        return BeanConverter.convert(instrumentparamconfigPoList,InstrumentparamconfigDTO.class);
+        if(CollectionUtils.isNotEmpty(instrumentNos)){
+            List<InstrumentparamconfigPo> instrumentparamconfigPoList = instrumentparamconfigDao.selectList(Wrappers.lambdaQuery(new InstrumentparamconfigPo()).in(InstrumentparamconfigPo::getInstrumentno, instrumentNos));
+            return BeanConverter.convert(instrumentparamconfigPoList,InstrumentparamconfigDTO.class);
+        }
+       return null;
     }
 
     /**

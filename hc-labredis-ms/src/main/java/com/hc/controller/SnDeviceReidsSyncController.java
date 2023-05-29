@@ -6,6 +6,7 @@ import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,19 @@ public class SnDeviceReidsSyncController {
      */
     @GetMapping("/getSnDeviceDto")
     @ApiOperation("获取设备缓存信息")
-    public SnDeviceDto getSnDeviceDto(@RequestParam("sn") String sn){
+    public List<SnDeviceDto> getSnDeviceDto(@RequestParam("sn") String sn){
         return snDeviceReidsSyncApplocation.getSnDeviceDto(sn);
+    }
+
+    /**
+     * 获取设备缓存信息
+     * @param sn sn
+     * @return sn涉笔缓存对象
+     */
+    @GetMapping("/getSnDevice")
+    @ApiOperation("获取设备缓存信息")
+    public SnDeviceDto getSnDeviceDto(@RequestParam("sn") String sn,@RequestParam("equipmentNo") String equipmentNo){
+        return  snDeviceReidsSyncApplocation.getSnDeviceDto(sn,equipmentNo);
     }
 
     /**
@@ -45,8 +57,8 @@ public class SnDeviceReidsSyncController {
      */
     @GetMapping("/deleteSnDeviceDto")
     @ApiOperation("删除设备缓存信息")
-    public void deleteSnDeviceDto(@RequestParam("sn")String sn){
-        snDeviceReidsSyncApplocation.deleteSnDeviceDto(sn);
+    public void deleteSnDeviceDto(@RequestParam("sn")String sn,@RequestParam("equipmentNo") String equipmentNo){
+        snDeviceReidsSyncApplocation.deleteSnDeviceDto(sn,equipmentNo);
     }
 
     /**
@@ -57,29 +69,6 @@ public class SnDeviceReidsSyncController {
     @ApiOperation("新增更新设备当前值信息")
     public void  updateSnCurrentInfo(@RequestBody MonitorequipmentlastdataDto monitorequipmentlastdataDto){
         snDeviceReidsSyncApplocation.updateSnCurrentInfo(monitorequipmentlastdataDto);
-    }
-
-    /**
-     * 获取设备当前值
-     * @param hospitalCode 医院id
-     * @param equipmentNo 设备id
-     * @return
-     */
-    @GetMapping("/getCurrentDataInfo")
-    @ApiOperation("获取设备当前值")
-    public List<MonitorequipmentlastdataDto> getCurrentDataInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo){
-        return snDeviceReidsSyncApplocation.getCurrentInfo(hospitalCode,equipmentNo);
-    }
-
-    /**
-     * 删除设备当前值
-     * @param hospitalCode 医院id
-     * @param equipmentNo 设备id
-     */
-    @DeleteMapping("/deleteCurrentDataInfo")
-    @ApiOperation("删除设备当前值")
-    public void deleteCurrentInfo(@RequestParam("hospitalCode")String hospitalCode,@RequestParam("equipmentNo")String equipmentNo){
-        snDeviceReidsSyncApplocation.remove(hospitalCode,equipmentNo);
     }
 
     /**

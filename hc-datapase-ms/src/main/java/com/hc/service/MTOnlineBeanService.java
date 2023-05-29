@@ -11,6 +11,6 @@ public interface MTOnlineBeanService {
     /*
        * 解析硬件上传数据
      */
-    List<ParamaterModel> paseData(String data);
+   ParamaterModel paseData(String data);
 
 }

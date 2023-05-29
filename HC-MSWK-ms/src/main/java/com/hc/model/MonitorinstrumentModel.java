@@ -6,9 +6,5 @@ import lombok.Data;
 @Data
 public class MonitorinstrumentModel extends Monitorinstrument {
 
-    /**
-     * 是否显示
-     */
-    private Boolean clientvisible;
 
 }

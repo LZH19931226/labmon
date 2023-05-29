@@ -9,4 +9,6 @@ import java.util.List;
 public interface MonitorInstrumentDao extends BaseMapper {
 
     List<MonitorinstrumentDto> selectMonitorInstrumentByEnoList(@Param("enoList") List<String> enoList);
+
+    String getInstrumentTypeId(String equipmentNo);
 }

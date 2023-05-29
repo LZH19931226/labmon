@@ -87,8 +87,10 @@
             id IN ( #{param.yearMonth} )
           AND hospitalcode = #{param.hospitalCode}
           AND equipmentno = #{param.equipmentNo}
+          AND  inputdatetime <![CDATA[>=]]> #{param.startTime}
+          AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
           AND cmdid ='88'
-        ORDER BY inputdatetime
+        ORDER BY inputdatetime desc
     </select>
 
     <select id="getPacketLossColumnar" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
@@ -99,6 +101,35 @@
         AND  inputdatetime <![CDATA[<=]]>  #{param.endTime}
         group by toStartOfMinute(inputdatetime)
         order by toStartOfMinute(inputdatetime)
+    </select>
+
+    <select id="getMT310DcLastDataByTime" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+        equipmentno,
+        ${param.field},
+        inputdatetime
+        FROM
+        lab_mon.monitorequipmentlastdata
+        WHERE id IN ( #{param.yearMonth} )
+        and inputdatetime <![CDATA[>=]]> #{param.startTime}
+        and inputdatetime <![CDATA[<=]]> #{param.endTime}
+        AND equipmentno = #{param.equipmentNo}
+    </select>
+    <select id="getMultiprobeTypePointInTime" resultType="com.hc.clickhouse.po.Monitorequipmentlastdata">
+        SELECT
+        equipmentno,
+        <foreach collection="param.fieldList" item="field" separator="," close=",">
+            ${field}
+        </foreach>
+        inputdatetime
+        from
+        lab_mon.monitorequipmentlastdata
+        WHERE
+        id IN ( #{param.yearMonth} )
+        AND inputdatetime <![CDATA[>=]]> #{param.startTime}
+        AND inputdatetime <![CDATA[<=]]> #{param.endTime}
+        AND equipmentno = #{param.equipmentNo}
+        ORDER BY inputdatetime
     </select>
 
 </mapper>

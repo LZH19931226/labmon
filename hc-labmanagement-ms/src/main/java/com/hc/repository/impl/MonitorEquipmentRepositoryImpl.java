@@ -7,6 +7,7 @@ import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.dto.MonitorEquipmentDto;
 import com.hc.infrastructure.dao.MonitorEquipmentDao;
 import com.hc.infrastructure.dao.MonitorEquipmentWarningTimeDao;
+import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.MonitorEquipmentPo;
 import com.hc.repository.MonitorEquipmentRepository;
@@ -163,7 +164,7 @@ public class MonitorEquipmentRepositoryImpl extends ServiceImpl<MonitorEquipment
                 .eq(MonitorEquipmentPo::getEquipmentTypeId, equipmentTypeId)
                 .eq(MonitorEquipmentPo::getHospitalCode, hospitalCode));
         List<String> address = new ArrayList<>();
-        address.add("全部房间");
+        address.add(Context.IsCh()?"全部房间":"Full room");
         if (CollectionUtils.isEmpty(monitorEquipmentPos)) {
             return address;
         }

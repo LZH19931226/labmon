@@ -23,7 +23,7 @@ public enum CurrentProbeInfoEnum {
     //当前市电是否异常
     CURRENTUPS(10,"currentups","适配器供电",""),
     //当前开门记录
-    CURRENTDOORSTATE(11,"currentdoorstate","报警信号",null),
+    CURRENTDOORSTATE(11,"currentdoorstate","报警信号",""),
     //当前空气质量
     CURRENTVOC(3,"currentvoc","VOC","PPM"),
     //当前甲醛
@@ -93,16 +93,16 @@ public enum CurrentProbeInfoEnum {
     //右底板温度
     CURRENTRIGHTENDTEMPERATURE(33,"currentrightendtemperature","右底板温度","℃"),
     //
-    PROBE1(101,null,"监测探头1",null),
+    PROBE1(101,"","监测探头1",""),
     //
-    PROBE2(102,null,"监测探头2",null),
+    PROBE2(102,"","监测探头2",""),
     //
-    PROBE3(103,null,"监测探头3",null),
+    PROBE3(103,"","监测探头3",""),
     //
-    OUTERCO2(42,"outerCO2","外置CO2探头",null),
-    OUTERO2(43,"outerO2","外置O2探头",null),
+    OUTERCO2(42,"outerCO2","外置CO2探头",""),
+    OUTERO2(43,"outerO2","外置O2探头",""),
     //二路开关量
-    CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2",null),
+    CURRENTDOORSTATE2(44,"currentdoorstate2","报警信号2",""),
     LIQUIDLEVEL(45,"liquidLevel","液位","mm"),
     QCL(35,"QCL","锁电量","");
 

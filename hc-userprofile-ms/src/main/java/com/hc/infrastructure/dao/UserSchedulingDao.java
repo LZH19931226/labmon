@@ -67,11 +67,15 @@ public interface UserSchedulingDao extends RootMapper<UserSchedulingPo> {
             "userscheduling " +
             "WHERE " +
             "hospitalcode = #{hospitalCode} " +
+            "and starttime > #{startTime} " +
+            "and endTime < #{endTime}" +
             "GROUP BY " +
             " username," +
             " reminders, " +
             " userphone")
-    List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode);
+    List<UserSchedulingDto> selectScheduleWeekByCode(@Param("hospitalCode") String hospitalCode,
+                                                     @Param("startTime")String startTime,
+                                                     @Param("endTime")String endTime);
 
     @Select("SELECT " +
             "usid usid, " +

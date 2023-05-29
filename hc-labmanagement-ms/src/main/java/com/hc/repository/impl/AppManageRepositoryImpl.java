@@ -47,4 +47,9 @@ public class AppManageRepositoryImpl extends ServiceImpl<AppVersionManageDao, Ap
         }
         return null;
     }
+
+    @Override
+    public String getLatest() {
+        return appVersionManageDao.getLatest();
+    }
 }

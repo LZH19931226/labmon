@@ -110,7 +110,10 @@ public class AlmMsgServiceImpl implements AlmMsgService {
     public boolean warningTimeBlockRule(MonitorinstrumentDo monitorinstrument, Warningrecord warningrecord) {
         String sn = monitorinstrument.getSn();
         String hospitalcode = monitorinstrument.getHospitalcode();
-        SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn).getResult();
+        SnDeviceDto snDeviceDto = snDeviceRedisSync.getSnDeviceDto(sn,monitorinstrument.getEquipmentno()).getResult();
+        if(null == snDeviceDto){
+            return false;
+        }
 //        if (null!=snDeviceDto) {
 //            Monitorinstrument monitorinstrumentObj = objectConversion(snDeviceDto);
 //            String eqipmentAlwayalarm = monitorinstrumentObj.getAlwayalarm();

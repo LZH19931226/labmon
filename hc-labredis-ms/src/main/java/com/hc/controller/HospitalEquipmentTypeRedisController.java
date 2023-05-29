@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 医院设备缓存控制层
  */
@@ -60,5 +62,15 @@ public class HospitalEquipmentTypeRedisController {
     @ApiOperation("同步所有的设备类型信息")
     public void hospitalEquipmentTypeRedisInfoCache(){
         hospitalEquipmentTypeRedisApplication.hospitalEquipmentTypeRedisInfoCache();
+    }
+
+    /**
+     * 批量换取设备类型
+     * @return
+     */
+    @GetMapping("/bulkAcquisitionEqType")
+    @ApiOperation("批量换取设备类型")
+    public List<HospitalEquipmentTypeInfoDto> bulkAcquisitionEqType(@RequestParam("hospitalCode") String hospitalCode){
+        return hospitalEquipmentTypeRedisApplication.bulkAcquisitionEqType(hospitalCode);
     }
 }

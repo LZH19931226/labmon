@@ -1,9 +1,7 @@
 package com.hc.application.command;
 
 import lombok.Data;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
-import java.util.Date;
 import java.util.List;
 
 @Data

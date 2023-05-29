@@ -1,5 +1,6 @@
 package com.hc.web.handler;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -89,6 +90,7 @@ public class RestResultWrapper implements ResponseBodyAdvice<Object> {
         supportedMediaTypes.add(MediaType.TEXT_PLAIN);
         supportedMediaTypes.add(MediaType.TEXT_XML);
         fastConverter.setSupportedMediaTypes(supportedMediaTypes);
+        fastConverter.setFeatures(SerializerFeature.DisableCircularReferenceDetect);
         return new HttpMessageConverters(fastConverter);
     }
 

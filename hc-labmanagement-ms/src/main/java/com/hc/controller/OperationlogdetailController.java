@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.hc.application.OperationlogdetailApplication;
 import com.hc.vo.backlog.OperationlogdetailVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class OperationlogdetailController {
     private OperationlogdetailApplication operationlogdetailApplication;
 
     @GetMapping("/getlogDeatil")
+    @ApiOperation("获取日志详情")
     public List<OperationlogdetailVo> getDetailedLog(@RequestParam String logId){
         return operationlogdetailApplication.getDetailedLogById(logId);
     }

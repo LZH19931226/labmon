@@ -11,6 +11,7 @@ import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
+import com.hc.my.common.core.util.ObjectConvertUtils;
 import com.hc.po.Instrumentparamconfig;
 import com.hc.po.Monitorinstrument;
 import com.hc.service.*;
@@ -27,6 +28,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -92,7 +95,7 @@ public class SocketMessageListener {
     @StreamListener(SocketMessage.EQUIPMENT_STATE_INFO)
     public void onMessage3(String messageContent) {
         try {
-        log.info("数据处理中心服务接收到数据:" + messageContent);
+        log.info("探头报警状态订阅:" + messageContent);
         process(messageContent);
         }catch (Exception e){
             return;
@@ -107,44 +110,52 @@ public class SocketMessageListener {
         String logId = model.getLogId();
         //该数据生命周期id
         ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER01.getCode()), messageContent, logId);
-
         //多个500数据重复上传问题,已经注册得设同步缓存
         if (repeatDatafilter(model)) {
             return;
         }
-
         //MT500  MT600判断
-        //废弃掉自动注册功能,探头未未注册或者探头禁用则过滤数据
+        //废弃掉自动注册功能,探头未注册或者探头禁用则过滤数据
         //废弃掉通道600抵对应关联关系查询,若通道对用600未注册处理逻辑
-        Monitorinstrument monitorinstrument = mtJudgeService.checkProbe(model);
-        if (monitorinstrument == null) {
+        List<Monitorinstrument> monitorinstruments = mtJudgeService.checkProbe(model);
+        if (CollectionUtils.isEmpty(monitorinstruments)) {
             return;
         }
-
-        //执行数据写入 、 报警推送
-        List<WarningAlarmDo> warningAlarmDos = instrumentMonitorInfoService.save(model, monitorinstrument);
-        //报警消息处理
-        if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
-            for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
-                warningAlarmDo.setLogId(logId);
-                String waringAlarmDo = JsonUtil.toJson(warningAlarmDo);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
-                switch (topic) {
-                    case "1":
-                        service.pushMessage1(waringAlarmDo);
-                        break;
-                    case "2":
-                        service.pushMessage2(waringAlarmDo);
-                        break;
-                    case "3":
-                        service.pushMessage3(waringAlarmDo);
-                        break;
-                    default:
-                        break;
+        for (Monitorinstrument monitorinstrument : monitorinstruments) {
+            //设备未启用数据需要抛弃
+            if (!monitorinstrument.getClientvisible()){
+                continue;
+            }
+            //执行数据写入 、 报警推送
+            List<WarningAlarmDo> warningAlarmDos = instrumentMonitorInfoService.save(model, monitorinstrument);
+            //报警消息处理
+            if (CollectionUtils.isNotEmpty(warningAlarmDos)) {
+                for (WarningAlarmDo warningAlarmDo : warningAlarmDos) {
+                    warningAlarmDo.setLogId(logId);
+                    String waringAlarmDo = JsonUtil.toJson(warningAlarmDo);
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSWK_SERIAL_NUMBER22.getCode()), waringAlarmDo, logId);
+                    switch (topic) {
+                        case "1":
+                            service.pushMessage1(waringAlarmDo);
+                            break;
+                        case "2":
+                            service.pushMessage2(waringAlarmDo);
+                            break;
+                        case "3":
+                            service.pushMessage3(waringAlarmDo);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
     }
+
+
+
+
+
 
     //解决多个一包数据经过多个500重复上传问题,一包数据30秒内是要一条
     public boolean repeatDatafilter(ParamaterModel data) {

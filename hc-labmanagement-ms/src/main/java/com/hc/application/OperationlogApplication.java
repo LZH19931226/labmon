@@ -1,7 +1,6 @@
 package com.hc.application;
 
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
-import cn.hutool.poi.excel.ExcelFileUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.operation.ExportLogCommand;
@@ -24,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class OperationlogApplication {
             operationlogDTO.forEach(res->{
                 OperationlogVo build = OperationlogVo.builder()
                         .opeartiontype(editOperateType(res.getOpeartiontype()))
-                        .functionname(editFunctionName(res.getFunctionname()))
+                        .functionname(editFunctionName(res.getPlatform()))
                         .hospitalname(res.getHospitalname())
                         .equipmentname(res.getEquipmentname())
                         .username(res.getUsername())
@@ -94,16 +94,22 @@ public class OperationlogApplication {
     }
 
     public String editOperateType(String code){
+        if(StringUtils.isEmpty(code)){
+            return null;
+        }
         OperationLogEunmDerailEnum from = OperationLogEunmDerailEnum.from(code);
         return Context.IsCh() ? from.getMessage() : from.name();
     }
 
-    public String editFunctionName(String message){
+    public String editFunctionName(String code){
+        if(StringUtils.isEmpty(code)){
+            return null;
+        }
+        OperationLogEunm operationLogEunm = OperationLogEunm.fromCode(code);
         if(!Context.IsCh()){
-            OperationLogEunm operationLogEunm = OperationLogEunm.from(message);
             return operationLogEunm.name();
         }
-        return message;
+        return operationLogEunm.getMessage();
     }
 
 
@@ -121,12 +127,11 @@ public class OperationlogApplication {
         //获取给标头赋值的list
         List<Map<String, Object>> mapList = new ArrayList<>();
         for (OperationlogDTO res : operationLogDTO) {
-            res.setFunctionname(editFunctionName(res.getFunctionname()));
+            res.setFunctionname(editFunctionName(res.getPlatform()));
             res.setOpeartiontype(editOperateType(res.getOpeartiontype()));
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(res);
             mapList.add(objectToMap);
         }
-        FileUtil.exportExcel(ExcelExportUtils.SYSTEM_LOG_OPERATION,beanList,mapList,response);
+        FileUtil.exportExcel(ExcelExportUtils.getSystemLogOperationModel(),beanList,mapList,response);
     }
-
 }

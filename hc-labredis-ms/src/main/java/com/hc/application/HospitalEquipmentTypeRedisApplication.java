@@ -1,6 +1,7 @@
 package com.hc.application;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.hc.application.config.RedisUtils;
 import com.hc.labmanagent.HospitalEquipmentTypeApi;
 import com.hc.my.common.core.redis.dto.HospitalEquipmentTypeInfoDto;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -84,5 +86,22 @@ public class HospitalEquipmentTypeRedisApplication {
             String equipmentTypeId = hospitalEquipmentTypeInfoDto.getEquipmenttypeid();
             redisUtils.hset(LabManageMentServiceEnum.E.getCode()+hospitalCode,equipmentTypeId,JSONUtil.toJsonStr(hospitalEquipmentTypeInfoDto));
         }
+    }
+
+    /**
+     * 批量换取设备类型
+     * @param hospitalCode
+     * @return
+     */
+    public List<HospitalEquipmentTypeInfoDto> bulkAcquisitionEqType(String hospitalCode){
+        List<HospitalEquipmentTypeInfoDto> list = new ArrayList<>();
+        for (int i = 1; i < 7; i++) {
+            Object obj = redisUtils.hget(LabManageMentServiceEnum.E.getCode() + hospitalCode, String.valueOf(i));
+            if(obj!=null){
+                HospitalEquipmentTypeInfoDto parseObject = JSON.parseObject(obj.toString(), HospitalEquipmentTypeInfoDto.class);
+                list.add(parseObject);
+            }
+        }
+        return list;
     }
 }

@@ -2,6 +2,7 @@ package com.hc.utils;
 
 
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.util.RegularUtil;
 
 import java.math.BigDecimal;
 
@@ -17,11 +18,11 @@ public class LowHighVerify {
     /**
      * 判断 date是否在probe中的最高值和最低值之中
      * @param probe
-     * @param date
+     * @param data
      * @return
      */
-    public static boolean verify(InstrumentInfoDto probe, String date) {
-        BigDecimal bigDecimal = new BigDecimal(date);
+    public static boolean verify(InstrumentInfoDto probe, String data) {
+        BigDecimal bigDecimal = new BigDecimal(data);
         BigDecimal low = probe.getLowLimit();
         BigDecimal high = probe.getHighLimit();
         int a = bigDecimal.compareTo(low);
@@ -43,9 +44,11 @@ public class LowHighVerify {
     }
 
     public static void main(String[] args){
-
-
-
+        InstrumentInfoDto probe = new InstrumentInfoDto();
+        probe.setLowLimit(new BigDecimal(-190));
+        probe.setHighLimit(new BigDecimal(-200));
+        System.out.println( !verify(probe, "-185.24"));
+        System.out.println(!RegularUtil.checkContainsNumbers("-185.24"));
     }
 
 

@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
     @Select("SELECT " +
-            "t2.equipmenttypename, " +
-            "t1.* " +
+            "t2.equipmenttypename,t2.equipmenttypename_us as  equipmenttypenameUs" +
+            ",t1.* " +
             "FROM " +
             "hospitalequiment t1 " +
             "LEFT JOIN monitorequipmenttype t2 ON t1.equipmenttypeid = t2.equipmenttypeid " +
@@ -36,12 +36,12 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
 
     List<EquipmentTypeNumDto> getEquipmentTypeNum(@Param("param") EquipmentDataCommand equipmentDataCommand);
 
-    @Select("SELECT\n" +
-            "\tt2.equipmenttypename,\n" +
-            "\tt1.* \n" +
-            "FROM\n" +
-            "\tmonitorequipmenttype t2\n" +
-            "\tLEFT JOIN hospitalequiment t1 ON t1.equipmenttypeid = t2.equipmenttypeid \n" +
-            "\tAND t1.hospitalcode = #{hospitalCode}")
+    @Select("SELECT " +
+            "t2.equipmenttypename,t2.equipmenttypename_us as equipmenttypenameUs" +
+            ",t1.*  " +
+            "FROM " +
+            "monitorequipmenttype t2 " +
+            "LEFT JOIN hospitalequiment t1 ON t1.equipmenttypeid = t2.equipmenttypeid  " +
+            "AND t1.hospitalcode = #{hospitalCode}")
     List<HospitalEquipmentDto> selectHospitalEquipmentInfoByPc(@Param("hospitalCode")String hospitalCode);
 }

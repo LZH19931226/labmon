@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
-import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
@@ -21,9 +20,8 @@ import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
 import com.hc.repository.OperationlogRepository;
 import com.hc.repository.OperationlogdetailRepository;
-import com.hc.service.HospitalequimentService;
-import com.hc.service.MonitorinstrumentService;
 import com.hc.service.OperationlogService;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.backlog.OperationlogVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +43,9 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Autowired
     private HospitalInfoApi hospitalInfoApi;
+
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
 
     /**
      * 添加用户日志信息
@@ -363,8 +364,8 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetails.add(operationlogdetail);
         }
 
-        String oldAddress = oldEquipmentInfoModel.getAddress();//地址信息
-        String newAddress = nowEquipmentInfoModel.getAddress();//地址信息
+        String oldAddress = StringUtils.isBlank(oldEquipmentInfoModel.getAddress()) ? "" : oldEquipmentInfoModel.getAddress();//地址信息
+        String newAddress = StringUtils.isBlank(nowEquipmentInfoModel.getAddress()) ? "" : nowEquipmentInfoModel.getAddress();//地址信息
         if(!StringUtils.equals(oldAddress,newAddress)){
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
@@ -376,8 +377,8 @@ public class OperationlogServiceImpl implements OperationlogService {
 
         }
 
-        String oldRemark = oldEquipmentInfoModel.getRemark();
-        String nowRemark = nowEquipmentInfoModel.getRemark();
+        String oldRemark = StringUtils.isBlank(oldEquipmentInfoModel.getRemark())?"":oldEquipmentInfoModel.getRemark();
+        String nowRemark = StringUtils.isBlank(nowEquipmentInfoModel.getRemark())?"":nowEquipmentInfoModel.getRemark();
 
         if(!StringUtils.equals(oldRemark,nowRemark)){
             flag = true;
@@ -599,6 +600,7 @@ public class OperationlogServiceImpl implements OperationlogService {
     public void addExportLog(ExportLogCommand exportLogCommand) {
         OperationlogPo operationlogPo = new OperationlogPo();
         operationlogPo.setLogid(UUID.randomUUID().toString().replaceAll("-", ""));
+        operationlogPo.setPlatform(exportLogCommand.getPlatform());
         operationlogPo.setFunctionname(exportLogCommand.getFunctionName());
         operationlogPo.setOpeartiontype(exportLogCommand.getOperationType());
         operationlogPo.setUsername(exportLogCommand.getUsername());
@@ -629,13 +631,15 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogPo.setHospitalname(hospitalInfo.getHospitalName());
         }
         //根据useid获取用户信息
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(Context.getUserId()).getResult();
-        if(!ObjectUtils.isEmpty(userInfo)){
-            operationlogPo.setUsername(userInfo.getUsername());
+        String username = userRightInfoApi.getUserName(Context.getUserId()).getResult();
+        if(!StringUtils.isEmpty(username)){
+            operationlogPo.setUsername(username);
         }
-        operationlogPo.setFunctionname(OperationLogEunm.APP_ALARM_SET.getCode());
+        operationlogPo.setFunctionname(OperationLogEunm.APP_EDIT_EQ_TYPE.getMessage());
         operationlogPo.setOpeartiontype(OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogPo.setEquipmentname(alarmSystemCommand.getEquipmentTypeId());
         operationlogPo.setOperationtime(new Date());
+        operationlogPo.setPlatform(OperationLogEunm.APP_EDIT_EQ_TYPE.getCode());
         operationlogRepository.save(operationlogPo);
     }
 }

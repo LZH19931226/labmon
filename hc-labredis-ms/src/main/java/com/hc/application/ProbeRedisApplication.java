@@ -215,6 +215,7 @@ public class ProbeRedisApplication {
         String hospitalCode = probeInfoDto.getHospitalCode();
         String equipmentNo = probeInfoDto.getEquipmentNo();
         Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
+        String ino = probeInfoDto.getInstrumentNo();
         if(redisUtils.hHasKey(hospitalCode,equipmentNo)){
             Object object = redisUtils.hget(hospitalCode, equipmentNo);
             List<ProbeInfoDto> probeInfoDTO = JSON.parseObject((String) JSONObject.toJSON(object), new TypeReference<List<ProbeInfoDto>>(){});
@@ -222,7 +223,13 @@ public class ProbeRedisApplication {
                 List<ProbeInfoDto> removeList = new ArrayList<>();
                 for (ProbeInfoDto infoDto : probeInfoDTO) {
                     Integer configId = infoDto.getInstrumentConfigId();
-                    if(Objects.equals(configId, instrumentConfigId)){
+                    String instrumentNo = infoDto.getInstrumentNo();
+                    if(StringUtils.isEmpty(instrumentNo)){
+                        removeList.add(infoDto);
+                        continue;
+                    }
+                    //当config和ino相同时删除
+                    if(Objects.equals(configId, instrumentConfigId) && Objects.equals(instrumentNo,ino)){
                         removeList.add(infoDto);
                     }
                 }

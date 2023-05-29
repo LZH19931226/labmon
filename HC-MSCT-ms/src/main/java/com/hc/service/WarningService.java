@@ -19,6 +19,6 @@ public interface WarningService {
 
     Warningrecord pushNotification(List<Userright> list, WarningModel warningModel, HospitalInfoDto hospitalInfoDto);
 
-    void  pushTimeOutNotification(List<Userright> userrights, String hospitalName, String eqTypeName,String count);
+    void  pushTimeOutNotification(List<Userright> userrights, String hospitalName, String eqTypeName,String count,String hospitalcode);
 
 }

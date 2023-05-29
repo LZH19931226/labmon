@@ -120,4 +120,11 @@ public class MonitorinstrumentServiceImpl implements MonitorinstrumentService {
                 Wrappers.lambdaQuery(new MonitorinstrumentPo()).in(MonitorinstrumentPo::getInstrumentno, inoList));
         return BeanConverter.convert(list,MonitorinstrumentDTO.class);
     }
+
+    @Override
+    public void insertBatch(List<MonitorinstrumentDTO> miList) {
+        List<MonitorinstrumentPo> convert = BeanConverter.convert(miList, MonitorinstrumentPo.class);
+        monitorinstrumentRepository.saveBatch(convert);
+    }
+
 }

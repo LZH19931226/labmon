@@ -5,7 +5,6 @@ import com.hc.application.command.HospitalEquimentTypeCommand;
 import com.hc.application.command.WorkTimeBlockCommand;
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.command.labmanagement.model.HospitalMadel;
-import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.operation.HospitalEquipmentOperationLogCommand;
 import com.hc.dto.HospitalequimentDTO;
@@ -23,6 +22,7 @@ import com.hc.service.HospitalequimentService;
 import com.hc.service.MonitorequipmenttypeService;
 import com.hc.service.MonitorequipmentwarningtimeService;
 import com.hc.service.OperationlogService;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.equimenttype.HospitalequimentVo;
 import com.hc.vo.equimenttype.MonitorEquipmentTypeVo;
 import com.hc.vo.equimenttype.MonitorequipmentwarningtimeVo;
@@ -108,6 +108,9 @@ public class HospitalequimentApplication {
         return result;
     }
 
+
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
     /**
      * 构建医院设备操作日志
      * @param userId 用户id
@@ -124,9 +127,9 @@ public class HospitalequimentApplication {
         logCommand.setOperationType(operationType);
         logCommand.setType(type);
         //获取用户信息
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(!ObjectUtils.isEmpty(userInfo)){
-            logCommand.setUsername(userInfo.getUsername());
+        String username  = userRightInfoApi.getUserName(userId).getResult();
+        if(StringUtils.isNotBlank(username)){
+            logCommand.setUsername(username);
         }
         //获取医院信息
         String hospitalCode = oldHospitalEquipmentTypeCommand.getHospitalcode() != null ? oldHospitalEquipmentTypeCommand.getHospitalcode() : newHospitalEquipmentTypeCommand.getHospitalcode();

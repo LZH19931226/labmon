@@ -19,10 +19,12 @@ import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.phone.PhoneCodeApi;
 import com.hc.service.HospitalRegistrationInfoService;
+import com.hc.service.SysMenuEntityService;
 import com.hc.service.UserBackService;
 import com.hc.service.UserRightService;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserRightVo;
+import com.hc.vo.user.dto.SysMenuDTO;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -61,6 +63,9 @@ public class UserRightApplication {
 
     @Autowired
     private Audience audience;
+
+    @Autowired
+    private SysMenuEntityService sysMenuEntityService;
 
     /**
      * 根据分页信息查询用户权限信息
@@ -220,7 +225,13 @@ public class UserRightApplication {
                 .hospitalInfoVo(hospitalInfoVo)
                 .nickname(StringUtils.isEmpty(userRightDto.getNickname())?userRightDto.getUsername():userRightDto.getNickname())
                 .token(token)
+                .sysMenuDTOS(buildMenu(userRightDto.getUserType()))
                 .build();
+    }
+
+
+    private List<SysMenuDTO> buildMenu(String userType) {
+        return sysMenuEntityService.getUserMenuList(userType);
     }
 
     /**
@@ -258,6 +269,7 @@ public class UserRightApplication {
                 .phoneNum(userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .token(token)
+                .sysMenuDTOS(buildMenu(userRightDto.getUserType()))
                 .hospitalInfoVo(hospitalInfoVo).build();
     }
 
@@ -325,6 +337,7 @@ public class UserRightApplication {
                 .token(userRightCommand.getToken())
                 .nickname(StringUtils.isEmpty(userRightCommand.getNickname())?userRightCommand.getUsername():userRightCommand.getNickname())
                 .lang(userRightCommand.getLang())
+                .sysMenuDTOS(buildMenu(userRightCommand.getUserType()))
                 .build();
     }
 
@@ -352,5 +365,9 @@ public class UserRightApplication {
      */
     public Boolean checkPhoneNum(UserRightCommand userRightCommand) {
         return userRightService.checkPhoneNum(userRightCommand);
+    }
+
+    public String getUserName(String userId) {
+        return userRightService.getUserName(userId);
     }
 }

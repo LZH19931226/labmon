@@ -53,7 +53,7 @@ public interface MonitorInstrumentMapper extends BaseMapper<Monitorinstrument> {
      * 根据设备sn号设备信息
      */
     @Select("SELECT t2.*,t1.clientvisible FROM monitorequipment t1,monitorinstrument t2 WHERE t1.equipmentno =t2.equipmentno  AND t2.sn = #{sn}")
-    MonitorinstrumentModel selectMonitorinstrumentInfoBySn(@Param("sn") String sn);
+    List<MonitorinstrumentModel> selectMonitorinstrumentInfoBySn(@Param("sn") String sn);
 
 
 }

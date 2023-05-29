@@ -23,12 +23,12 @@ public class SwaggerConfig {
 				.paths(PathSelectors.any())
 				.build();
 	}
-	
+
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("互创联合接口平台")
 				.description("标准restful api")
-				.termsOfServiceUrl("www.baidu.com")
+				.termsOfServiceUrl("http://www.huchuang.com/")
 				.version("1.0")
 				.build();
 	}

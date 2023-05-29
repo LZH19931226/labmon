@@ -8,6 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,7 @@ public class UserSchedulingServiceImpl implements UserSchedulingService {
      */
     @Override
     public List<UserSchedulingDto> selectScheduleWeekByCode(String hospitalCode) {
-        List<UserSchedulingDto> userSchedulingDtoList = userSchedulingRepository.selectScheduleWeekByCode(hospitalCode);
+        List<UserSchedulingDto> userSchedulingDtoList = userSchedulingRepository.selectScheduleWeekByCode(hospitalCode,getWeekStart(),getWeekEnd());
         if(CollectionUtils.isNotEmpty(userSchedulingDtoList)){
             //获取本周的日期集合
             Map<String, Integer> theWeekDateList = getTheWeekDateList();
@@ -79,6 +80,32 @@ public class UserSchedulingServiceImpl implements UserSchedulingService {
             userSchedulingDtoList.removeAll(collect);
         }
         return userSchedulingDtoList;
+    }
+
+    /**
+     * 获取本周的第一天
+     * @return String
+     * **/
+    public static String getWeekStart(){
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.WEEK_OF_MONTH, 0);
+        cal.set(Calendar.DAY_OF_WEEK, 2);
+        cal.add(Calendar.DATE,-1);
+        Date time=cal.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(time)+" 00:00:00";
+    }
+
+    /**
+     * 获取本周的最后一天
+     * @return String
+     * **/
+    public static String getWeekEnd(){
+        Calendar cal=Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, cal.getActualMaximum(Calendar.DAY_OF_WEEK));
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        cal.add(Calendar.DATE,1);
+        Date time=cal.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(time)+" 23:59:59";
     }
 
     @Override
