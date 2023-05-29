@@ -79,6 +79,9 @@ public class HospitalEquipmentDto {
     private String equipmenttypename;
 
     @TableField(exist = false)
+    private String equipmenttypenameUs;
+
+    @TableField(exist = false)
     private String hospitalname;
 
 }

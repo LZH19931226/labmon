@@ -36,6 +36,6 @@ public interface OperationlogApi {
     @GetMapping("/hospitalequimentType/findHospitalEuipmentTypeInfo")
     ApiResponse<List<HospitalEquipmentTypeModel>> findHospitalEquipmentTypeByCode(@RequestParam("hospitalCode")String hospitalCode);
 
-    @PostMapping("operationlog/addExportLog")
+    @PostMapping("/operationlog/addExportLog")
      void addExportLog(@RequestBody ExportLogCommand exportLogCommand);
 }

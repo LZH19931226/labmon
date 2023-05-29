@@ -1,5 +1,6 @@
 package com.hc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.MonitorEquipmentCommand;
 import com.hc.dto.MonitorEquipmentDto;
@@ -144,5 +145,11 @@ public class MonitorEquipmentServiceImpl implements MonitorEquipmentService {
     @Override
     public List<String> getSns(String equipmentNo) {
         return monitorEquipmentRepository.getSns(equipmentNo);
+    }
+
+    @Override
+    public MonitorEquipmentDto getMonitorEquipmentById(String equipmentNo) {
+        MonitorEquipmentPo one = monitorEquipmentRepository.getOne(Wrappers.lambdaQuery(new MonitorEquipmentPo()).eq(MonitorEquipmentPo::getEquipmentNo, equipmentNo));
+        return BeanConverter.convert(one,MonitorEquipmentDto.class);
     }
 }

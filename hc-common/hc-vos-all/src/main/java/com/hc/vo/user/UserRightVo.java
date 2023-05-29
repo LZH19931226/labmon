@@ -2,6 +2,7 @@ package com.hc.vo.user;
 
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
 import com.hc.vo.hospital.HospitalInfoVo;
+import com.hc.vo.user.dto.SysMenuDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -82,4 +83,7 @@ public class UserRightVo {
 
     /** 语种 zh表示中文 en表示英文 */
     private String lang;
+
+    /**角色关联的菜单 */
+    private List<SysMenuDTO> sysMenuDTOS;
 }

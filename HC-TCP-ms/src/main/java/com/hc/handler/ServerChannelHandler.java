@@ -94,7 +94,6 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
             //解析数据
             List<ParamaterModel> paseData = service.paseData(dataStr);
             if (CollectionUtils.isEmpty(paseData)) {
-                log.info("数据解析错误:{}", dataStr);
                 return;
             }
             paseData.forEach(snData -> {
@@ -102,18 +101,14 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 String cmdid = snData.getCmdid();
                 snData.setChannelId(asShortText);
                 snData.setNowTime(new Date());
-                snData.setData(dataStr);
                 //是否是心跳需要应答
                 checkIsHeartbeat(sn, asShortText, cmdid, ctx);
                 //判断sn是否是mt600/mt1100,需要缓存通道与sn的关联
                 saveChannelIdSn(snData);
+                snData.setLogId(UniqueHash.Id());
+                messagePushService.pushMessage(JsonUtil.toJson(snData));
+                log.info("通道:{},推送给消息队列的模型为:{}", asShortText, JsonUtil.toJson(snData));
             });
-            ParamaterModel paramaterModel =  new ParamaterModel();
-            paramaterModel.setData(dataStr);
-            paramaterModel.setChannelId(asShortText);
-            paramaterModel.setLogId(UniqueHash.Id());
-            messagePushService.pushMessage(JsonUtil.toJson(paramaterModel));
-            log.info("通道:{},原始数据:{},推送给消息队列的模型为:{}", asShortText, dataStr, JsonUtil.toJson(paramaterModel));
         } catch (Exception e) {
             log.error("通道:{},数据接收异常:{}", ctx.channel().id().asShortText(), Hex.encodeHexString(receiveMsgBytes));
         } finally {

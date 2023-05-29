@@ -3,7 +3,6 @@ package com.hc.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.InstrumentparamconfigCommand;
 import com.hc.command.labmanagement.model.HospitalMadel;
-import com.hc.command.labmanagement.model.UserBackModel;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
 import com.hc.command.labmanagement.operation.InstrumentParamConfigInfoCommand;
 import com.hc.device.ProbeRedisApi;
@@ -23,6 +22,7 @@ import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.service.*;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.collections.CollectionUtils;
@@ -168,35 +168,22 @@ public class InstrumentparamconfigApplication {
                     .setCalibration(instrumentParamConfigCommand.getCalibration());
             probeRedisApi.addProbeRedisInfo(instrumentInfoDto);
         }else {
-            if(instrumentParamConfigCommand.getLowlimit()!=null){
-                result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
-            }
-            if(instrumentParamConfigCommand.getHighlimit()!=null){
-                result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
-            }
-            if(instrumentParamConfigCommand.getSaturation()!=null){
-                result.setSaturation(instrumentParamConfigCommand.getSaturation());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getStyleMin())){
-                result.setStyleMin(instrumentParamConfigCommand.getStyleMin());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getStyleMax())){
-                result.setStyleMax(instrumentParamConfigCommand.getStyleMax());
-            }
-            if(instrumentParamConfigCommand.getAlarmtime()!=null){
-                result.setAlarmTime(instrumentParamConfigCommand.getAlarmtime());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getUnit())){
-                result.setUnit(instrumentParamConfigCommand.getUnit());
-            }
-            if(StringUtils.isNotBlank(instrumentParamConfigCommand.getWarningphone())){
-                result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
-            }
+            result.setLowLimit(instrumentParamConfigCommand.getLowlimit());
+            result.setHighLimit(instrumentParamConfigCommand.getHighlimit());
+            result.setSaturation(instrumentParamConfigCommand.getSaturation());
+            result.setStyleMin(instrumentParamConfigCommand.getStyleMin());
+            result.setStyleMax(instrumentParamConfigCommand.getStyleMax());
+            result.setAlarmTime(instrumentParamConfigCommand.getAlarmtime());
+            result.setUnit(instrumentParamConfigCommand.getUnit());
+            result.setWarningPhone(instrumentParamConfigCommand.getWarningphone());
+            result.setCalibration(instrumentParamConfigCommand.getCalibration());
             probeRedisApi.addProbeRedisInfo(result);
         }
-
-
     }
+
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
+
 
     /**
      * 构建InstrumentParamConfigInfoCommand对象
@@ -210,9 +197,9 @@ public class InstrumentparamconfigApplication {
     private InstrumentParamConfigInfoCommand build(String userId, InstrumentparamconfigCommand old, InstrumentparamconfigCommand newInfo, String type, String operationType) {
         InstrumentParamConfigInfoCommand infoCommand = new InstrumentParamConfigInfoCommand();
         //获取用户名称
-        UserBackModel userInfo = hospitalInfoApi.findUserInfo(userId).getResult();
-        if(null!=userInfo){
-            infoCommand.setUsername(userInfo.getUsername());
+        String username = userRightInfoApi.getUserName(userId).getResult();
+        if(StringUtils.isNotBlank(username)){
+            infoCommand.setUsername(username);
         }
         //获取医院信息
         String instrumentNo =  old.getInstrumentNo() != null ? old.getInstrumentNo() : newInfo.getInstrumentNo();
@@ -282,7 +269,7 @@ public class InstrumentparamconfigApplication {
                 monitorEquipmentService.updateMonitorEquipment(monitorEquipmentDto);
 
                 //更新设备缓存(当报警状态发生改变时修改)
-                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn).getResult();
+                SnDeviceDto result1 = snDeviceRedisApi.getSnDeviceDto(sn,equipmentNo).getResult();
                 if(!ObjectUtils.isEmpty(result1) && ! newWarningPhone.equals(result1.getWarningSwitch())){
                     result1.setWarningSwitch(monitorEquipmentDto.getWarningSwitch());
                     snDeviceRedisApi.updateSnDeviceDtoSync(result1);
@@ -395,7 +382,6 @@ public class InstrumentparamconfigApplication {
                         .saturation(configDTO.getSaturation())
                         .warningphone(configDTO.getWarningphone())
                         .calibration(configDTO.getCalibration() == null ? "" : configDTO.getCalibration())
-                        .saturation(configDTO.getSaturation())
                         .unit(StringUtils.isBlank(configDTO.getUnit()) ? "":configDTO.getUnit())
                         .styleMax(StringUtils.isBlank(configDTO.getStyleMax()) ? "":configDTO.getStyleMax())
                         .styleMin(StringUtils.isBlank(configDTO.getStyleMin()) ? "":configDTO.getStyleMin())
@@ -440,8 +426,8 @@ public class InstrumentparamconfigApplication {
     public List<InstrumentparamconfigVo> getEquipmentUnAddMonitorTypeByNo(String equipmentNo) {
         //获取设备的探头的监测类型
         List<InstrumentConfigDTO> instrumentConfigList = instrumentparamconfigService.selectInstrumentparamconfigByEqNo(equipmentNo);
-        if(CollectionUtils.isEmpty(instrumentConfigList)){
-            return null;
+        if(CollectionUtils.isEmpty(instrumentConfigList) || instrumentConfigList.get(0) == null){
+            return new ArrayList<>();
         }
         //获取设备已添加的探头监测类型
         List<String> instrumentConfigIdList  = instrumentparamconfigService.getEquipmentAddProbeInfo(equipmentNo);
@@ -449,9 +435,12 @@ public class InstrumentparamconfigApplication {
         if(CollectionUtils.isNotEmpty(instrumentConfigIdList)){
             List<InstrumentConfigDTO> removeList = new ArrayList<>();
             instrumentConfigList.forEach(res->{
-                if (instrumentConfigIdList.contains(String.valueOf(res.getInstrumentconfigid()))) {
-                    removeList.add(res);
+                if(!ObjectUtils.isEmpty(res)){
+                    if (instrumentConfigIdList.contains(String.valueOf(res.getInstrumentconfigid()))) {
+                        removeList.add(res);
+                    }
                 }
+
             });
             if(CollectionUtils.isNotEmpty(removeList)){
                 instrumentConfigList.removeAll(removeList);
@@ -533,6 +522,8 @@ public class InstrumentparamconfigApplication {
 
     @GlobalTransactional
     public void editHighLowLimit(InstrumentparamconfigCommand instrumentparamconfigCommand) {
+        String instrumentparamconfigno = instrumentparamconfigCommand.getInstrumentparamconfigno();
+        InstrumentparamconfigDTO instrumentparamconfigDTO = instrumentparamconfigService.selectInstrumentparamconfigInfo(instrumentparamconfigno);
         instrumentparamconfigService.editHighLowLimit(instrumentparamconfigCommand);
         //更新探头缓存
         String instrumentNo = instrumentparamconfigCommand.getInstrumentNo();
@@ -545,5 +536,12 @@ public class InstrumentparamconfigApplication {
             probeRedisApi.addProbeRedisInfo(result);
         }
 
+        InstrumentParamConfigInfoCommand instrumentParamConfigInfoCommand =
+                build(Context.getUserId(),
+                        BeanConverter.convert(instrumentparamconfigDTO,InstrumentparamconfigCommand.class),
+                        instrumentparamconfigCommand,
+                        OperationLogEunm.PROBE_MANAGEMENT.getCode(),
+                        OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogService.addInstrumentparamconfig(instrumentParamConfigInfoCommand);
     }
 }

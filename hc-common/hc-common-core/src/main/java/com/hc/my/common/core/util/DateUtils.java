@@ -17,14 +17,6 @@ import java.util.*;
  * 描述:
  **/
 public class DateUtils {
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static SimpleDateFormat dateFormatHHmm = new SimpleDateFormat("HH:mm");
-    private static SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
-
-
-
     /**
      * 过滤数组元素,是否满足对应日期格式
      *
@@ -42,8 +34,9 @@ public class DateUtils {
     }
 
     public static boolean paseDatetimeFormat(String time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date parse = datetimeFormat.parse(time);
+             simpleDateFormat.parse(time);
         } catch (ParseException e) {
             return false;
         }
@@ -57,7 +50,7 @@ public class DateUtils {
      * @param nowTime
      * @param startTime
      * @param endTime
-     * @return
+     * @return 不再工作时间内返回true,在工作时间内返回false
      */
     public static boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
         if (nowTime.getTime() == startTime.getTime()
@@ -80,6 +73,47 @@ public class DateUtils {
             return true;
         }
     }
+
+
+    /**
+     * 当前时间是否在此时间区间内
+     *
+     * @param nowTime1
+     * @param startTime2
+     * @param endTime3
+     * @return 不再工作时间内返回true,在工作时间内返回false
+     */
+    public static boolean isEffectiveHhMm(Date nowTime1, Date startTime2, Date endTime3){
+        List<Date> nowTime = sameDate(nowTime1);
+        List<Date> dateInterval = sameDate(startTime2, endTime3);
+        return DateUtils.isEffectiveDate(nowTime.get(0), dateInterval.get(0), dateInterval.get(1));
+    }
+
+    /**
+     * 修改时间的年月日
+     */
+    private static List<Date> sameDate(Date... dates) {
+        if (dates != null) {
+            Calendar nowCalendar = Calendar.getInstance();
+            List<Date> dateList = new ArrayList<Date>();
+            for (int i = 0; i < dates.length; i++) {
+                Date date = dates[i];
+                if (date == null) {
+                    continue;
+                }
+                nowCalendar.setTime(date);
+                nowCalendar.set(Calendar.YEAR, 1970);
+                nowCalendar.set(Calendar.MONTH, 12);
+                nowCalendar.set(Calendar.DAY_OF_MONTH, 12);
+                Date nowTime = nowCalendar.getTime();
+                dateList.add(i, nowTime);
+            }
+            return dateList;
+        }
+        return null;
+    }
+
+
 
     /**
      * 当前时间是否在此时间区间时分内
@@ -133,7 +167,8 @@ public class DateUtils {
      * @author liu
      */
     public static String paseDate(Date nowTime) {
-        return dateFormat.format(nowTime);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(nowTime);
 
     }
 
@@ -144,7 +179,8 @@ public class DateUtils {
      * @author liu
      */
     public static String paseDatetime(Date nowTime) {
-        return datetimeFormat.format(nowTime);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(nowTime);
 
     }
 
@@ -155,18 +191,10 @@ public class DateUtils {
      * @author liu
      */
     public static String parseDatetime(Date nowTime) {
-        return dateFormatHHmm.format(nowTime);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        return simpleDateFormat.format(nowTime);
     }
 
-    /**
-     * 解析时间
-     *
-     * @param date
-     * @return "HH:mm:ss"
-     */
-    public static String paseDateHHmmss(Date date) {
-        return simpleDateFormat.format(date);
-    }
 
     /**
      * 解析时间
@@ -175,6 +203,7 @@ public class DateUtils {
      * @return "MM-dd"
      */
     public static String paseDateMMdd(Date date) {
+        SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
         return dateFormatMMdd.format(date);
     }
 
@@ -184,7 +213,8 @@ public class DateUtils {
      * @return
      */
     public static String getNowDate() {
-        return datetimeFormat.format(new Date());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(new Date());
     }
 
     /**
@@ -195,6 +225,7 @@ public class DateUtils {
      * @return 01-06 01-07
      */
     public static List<String> getTimePeriod(String startTime, String endTime) {
+        SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
         List<String> list = new ArrayList<>();
         Date start = DateUtils.parseDate(startTime);
         Date end = DateUtils.parseDate(endTime);
@@ -210,26 +241,16 @@ public class DateUtils {
     }
 
     /**
-     * @return 一个月以前的当前日期
-     */
-    public String getCurrentDateTimeBeforeOneMonth() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        c.add(Calendar.MONTH, -1);
-        Date m = c.getTime();
-        return datetimeFormat.format(m);
-    }
-
-    /**
      * 获取指定时间前一天
      *
      * @param day 指定时间
      * @author liu
      */
     public static String getYesterday(Date day) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         long ms = day.getTime() - 1 * 24 * 3600 * 1000L;
         Date prevDay = new Date(ms);
-        return dateFormat.format(prevDay);
+        return simpleDateFormat.format(prevDay);
     }
 
     //根据输入秒数,计算时间差
@@ -251,7 +272,13 @@ public class DateUtils {
         return timeInterval > i;
     }
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, InterruptedException {
+        Date date1 = new Date();
+        Thread.sleep(2000);
+        Date date2 = new Date();
+        Thread.sleep(3000);
+        Date date3 = new Date();
+        System.out.println(isEffectiveHhMm(date1,date2,date3));
     }
 
     /**
@@ -261,9 +288,10 @@ public class DateUtils {
      * @return
      */
     public static Date parseDate(String str) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date;
         try {
-            date = datetimeFormat.parse(str);
+            date = simpleDateFormat.parse(str);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -286,45 +314,19 @@ public class DateUtils {
     }
 
     /**
-     * 获取前一个小时的时间
+     * 获取前一周得时间
      *
      * @param date
      * @return "HH-mm"
      */
-    public static String getPreviousHourHHmm(Date date) {
+    public static String getPreviousHour(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY, -1);
+        cal.add(Calendar.HOUR_OF_DAY, -(24*7));
         Date time = cal.getTime();
-        return parseDatetime(time);
+        return paseDatetime(time);
     }
 
-    /**
-     * 获取前一个小时的时间
-     *
-     * @param date
-     * @return "HH:mm:ss"
-     */
-    public static String getPreviousHourHHmmss(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY, -1);
-        Date time = cal.getTime();
-        return simpleDateFormat.format(time);
-    }
-
-    /**
-     * 获取前一个小时的时间
-     *
-     * @param date
-     * @return "yyyy-MM-dd HH:mm:ss"
-     */
-    public static Date getPreviousHour(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY, -1);
-        return cal.getTime();
-    }
 
     /**
      * 获得当天零时零分零秒
@@ -390,22 +392,6 @@ public class DateUtils {
         return month > 9 ? year + "-" + month : year + "-0" + month;
     }
 
-    /**
-     * 将时间转化为 yyyy-MM-dd 类型
-     *
-     * @param time
-     * @return
-     */
-    public static Date getYearMonthDate(Date time) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(time);
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-        int date = cal.get(Calendar.HOUR_OF_DAY);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, date);
-        return calendar.getTime();
-    }
 
     /**
      * 获取两个时间相隔的时间
@@ -425,16 +411,6 @@ public class DateUtils {
         return getDateDto(time);
     }
 
-    /**
-     * 获取时间对象
-     *
-     * @param obj Date或long类型
-     * @return 时间对象{年，月，日，时，分，秒}
-     */
-    public static DateDto getDateDto(Object obj) {
-        return obj instanceof Long ? getDateDto(((Long) obj)) :
-                obj instanceof Date ? getDateDto(((Date) obj).getTime() / 1000) : null;
-    }
 
     /**
      * 获取时间对象
@@ -579,8 +555,19 @@ public class DateUtils {
      * @return MM-dd
      */
     public static String getMMdd(String time) {
+        SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
         Date date = parseDate(time);
         return dateFormatMMdd.format(date);
+    }
+
+
+    /**
+     * 传入string的时间 改为String年月日返回
+     */
+    public static String getYMD(String time) {
+        SimpleDateFormat dateFormatYMD = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = parseDate(time);
+        return dateFormatYMD.format(date);
     }
 
     /**
@@ -590,18 +577,20 @@ public class DateUtils {
      * @return HH:mm
      */
     public static String getHHmm(String time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         Date date = parseDate(time);
-        return dateFormatHHmm.format(date);
+        return simpleDateFormat.format(date);
     }
 
 
     public static List<String> getBetweenDate(String beginDate, String endDate) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<String> dates = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         try {
-            cal.setTime(datetimeFormat.parse(beginDate));
-            for (long d = cal.getTimeInMillis(); d <= datetimeFormat.parse(endDate).getTime(); d = get_D_Plaus_1(cal)) {
-                String format = datetimeFormat.format(d);
+            cal.setTime(simpleDateFormat.parse(beginDate));
+            for (long d = cal.getTimeInMillis(); d <= simpleDateFormat.parse(endDate).getTime(); d = get_D_Plaus_1(cal)) {
+                String format = simpleDateFormat.format(d);
                 dates.add(format);
             }
         } catch (ParseException e) {

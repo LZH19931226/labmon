@@ -94,11 +94,12 @@
 
     <select id="getWarningEquuipmentInfos" resultType="com.hc.clickhouse.po.Warningrecord">
         select
-            hospitalcode,equipmentno,inputdatetime
+            *
         from lab_mon.warningrecord
         where hospitalcode = #{hospitalCode}
           and inputdatetime <![CDATA[>=]]> #{startTime}
           and inputdatetime <![CDATA[<=]]> #{endTime}
+        ORDER by inputdatetime desc
     </select>
 
     <select id="getWarningRecord" resultType="com.hc.clickhouse.po.Warningrecord">

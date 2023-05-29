@@ -29,4 +29,6 @@ public class MonitorinstrumentDto implements Serializable {
     private CurrentInfoDto currentInfoDto;
 
     private Map<String,Object> map;
+
+    private String channel;
 }

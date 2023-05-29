@@ -11,6 +11,7 @@
         username,
         operationtime,
         equipmentname,
+        platform,
         logid
         FROM
         operationlog t1

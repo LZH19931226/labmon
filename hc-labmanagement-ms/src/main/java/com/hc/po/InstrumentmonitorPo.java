@@ -1,5 +1,6 @@
 package com.hc.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -46,6 +47,7 @@ public class InstrumentmonitorPo  implements Serializable {
 	/**
 	* 饱和值
 	*/
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private BigDecimal saturation;
 
 	/** 通道 */

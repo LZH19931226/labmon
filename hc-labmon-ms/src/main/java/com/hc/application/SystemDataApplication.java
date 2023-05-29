@@ -12,10 +12,16 @@ import com.hc.clickhouse.repository.MonitorequipmentlastdataRepository;
 import com.hc.clickhouse.repository.WarningrecordRepository;
 import com.hc.dto.*;
 import com.hc.my.common.core.constant.enums.CurrentProbeInfoEnum;
+import com.hc.my.common.core.constant.enums.DataFieldEnum;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
+import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.*;
 import com.hc.repository.HospitalEquipmentRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.EquipmentInfoService;
+import com.hc.service.ExportLogService;
+import com.hc.service.HospitalInfoService;
 import com.hc.service.InstrumentParamConfigService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -41,18 +47,18 @@ public class SystemDataApplication {
     @Autowired
     private WarningrecordRepository warningrecordRepository;
     @Autowired
-    private HospitalEquipmentRepository  hospitalEquipmentRepository;
-
+    private HospitalEquipmentRepository hospitalEquipmentRepository;
     @Autowired
     private InstrumentMonitorInfoRepository instrumentMonitorInfoRepository;
-
     @Autowired
     private EquipmentInfoService equipmentInfoService;
-
     @Autowired
     private InstrumentParamConfigService instrumentParamConfigService;
+    @Autowired
+    private ExportLogService exportLogService;
+    @Autowired
+    private HospitalInfoService hospitalInfoService;
 
-    //hospitalCode,startTime,equipmentNo,pageSize,pageCurrent
     public Page findPacketLossLog(EquipmentDataCommand equipmentDataCommand) {
         Page<Monitorequipmentlastdata> page = new Page<>(equipmentDataCommand.getPageCurrent(), equipmentDataCommand.getPageSize());
         String startTime = equipmentDataCommand.getStartTime();
@@ -63,7 +69,7 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
         }
-        lastDataList.forEach(s->s.setEquipmentName(equipmentDataCommand.getEquipmentName()));
+        lastDataList.forEach(s -> s.setEquipmentName(equipmentDataCommand.getEquipmentName()));
         page.setRecords(lastDataList);
         return page;
     }
@@ -81,21 +87,21 @@ public class SystemDataApplication {
             return null;
         }
         List<String> betweenDate = DateUtils.getBetweenDate(startTime, endTime);
-        SummaryOfAlarmsResult summaryOfAlarmsResult  = new SummaryOfAlarmsResult();
-        List<String>  timeList  =  new ArrayList<>();
-        List<String>  numList  =  new ArrayList<>();
+        SummaryOfAlarmsResult summaryOfAlarmsResult = new SummaryOfAlarmsResult();
+        List<String> timeList = new ArrayList<>();
+        List<String> numList = new ArrayList<>();
         for (String yearMonth : betweenDate) {
             int count = 0;
             Iterator<Monitorequipmentlastdata> iterator = lastDataList.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Monitorequipmentlastdata next = iterator.next();
                 String remark1 = next.getRemark1();
-                if (yearMonth.substring(0,10).equals(remark1.substring(0,10))){
+                if (yearMonth.substring(0, 10).equals(remark1.substring(0, 10))) {
                     count++;
                     iterator.remove();
                 }
             }
-            timeList.add(yearMonth.substring(0,10));
+            timeList.add(yearMonth.substring(0, 10));
             //计算丢包率
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setMaximumFractionDigits(0);
@@ -106,6 +112,7 @@ public class SystemDataApplication {
         summaryOfAlarmsResult.setTimeList(timeList);
         return summaryOfAlarmsResult;
     }
+
     //hospitalCode,startTime,equipmentNo
     public void exportPacketLossLog(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response) {
         String startTime = equipmentDataCommand.getStartTime();
@@ -113,65 +120,106 @@ public class SystemDataApplication {
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
         List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getPacketLoss(dataParam);
-        if (CollectionUtils.isEmpty(lastDataList)){
+        if (CollectionUtils.isEmpty(lastDataList)) {
             return;
         }
         String lang = equipmentDataCommand.getLang();
-        boolean isCh = StringUtils.equals(lang,"zh");
+        boolean isCh = StringUtils.equals(lang, "zh");
         List<ExcelExportEntity> beanList = ExcelExportUtils.getPacketLossLog(isCh);
-        List<Map<String,Object>> mapList = new ArrayList<>();
+        List<Map<String, Object>> mapList = new ArrayList<>();
         for (Monitorequipmentlastdata equipmentDatum : lastDataList) {
-            if (isCh){
+            if (isCh) {
                 equipmentDatum.setRemark1("成功接收心跳包数据");
-            }else {
+            } else {
                 equipmentDatum.setRemark1("Heartbeat packet data was successfully received");
             }
             Map<String, Object> objectToMap = ObjectConvertUtils.getObjectToMap(equipmentDatum);
             mapList.add(objectToMap);
         }
-        FileUtil.exportExcel(ExcelExportUtils.SYSTEM_DATA_HEARTBEAT,beanList,mapList,response);
+        exportLogService.buildLogInfo(Context.getUserId(), ExcelExportUtils.getSystemDataHeartbeatModel(), OperationLogEunmDerailEnum.EXPORT.getCode(), OperationLogEunm.PACKET_LOSS_QUERY.getCode());
+        FileUtil.exportExcel(ExcelExportUtils.getSystemDataHeartbeatModel(), beanList, mapList, response);
     }
 
     //hospitalCode startTime  endTime
     public List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCount(EquipmentDataCommand equipmentDataCommand) {
         String hospitalCode = equipmentDataCommand.getHospitalCode();
         //获取报警设备
-        List<Warningrecord> warningInfos = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
-        //获取该医院底下设备类型数量
-        List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos  = hospitalEquipmentRepository.findEquipmentByHosCode(hospitalCode);
-        if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)){
-            return null;
-        }
-        Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().filter(s->StringUtils.isNotEmpty(s.getEquipmenttypeid())).collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
-        List<eqTypeAlarmNumCountDto>  eqTypeAlarmNumCountDtos1 =new ArrayList<>();
-            eqTypeMap.forEach((k,v)->{
-                eqTypeAlarmNumCountDto  eqTypeAlarmNumCountDto  = new eqTypeAlarmNumCountDto();
-                eqTypeAlarmNumCountDto.setEquipmenttypeid(k);
-                eqTypeAlarmNumCountDto.setEquipmenttypename(v.get(0).getEquipmenttypename());
-                eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
-                int count = 0;
-                List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
-                if(CollectionUtils.isNotEmpty(warningInfos)){
-                    Iterator<Warningrecord> iterator = warningInfos.iterator();
-                    while (iterator.hasNext()){
-                        Warningrecord next = iterator.next();
-                        String equipmentno = next.getEquipmentno();
-                        if (eqNos.contains(equipmentno)){
-                            count++;
-                            iterator.remove();
-                        }
+        List<Warningrecord> warningInfos1 = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
+        //数据筛选只需要非工作时间段得数据
+        List<LabHosWarningTimeDto> hospitalWarningTime = hospitalInfoService.getHospitalWarningTime(hospitalCode);
+        List<Warningrecord> warningInfos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(hospitalWarningTime)) {
+            for (Warningrecord warningInfo : warningInfos1) {
+                Date inputdatetime = warningInfo.getInputdatetime();
+                for (LabHosWarningTimeDto labHosWarningTimeDto : hospitalWarningTime) {
+                    Date beginTime = labHosWarningTimeDto.getBeginTime();
+                    Date endTime = labHosWarningTimeDto.getEndTime();
+                    if (DateUtils.isEffectiveHhMm(inputdatetime, beginTime, endTime)) {
+                        warningInfos.add(warningInfo);
+                        break;
                     }
                 }
-                eqTypeAlarmNumCountDto.setAlarmCount(count);
-                eqTypeAlarmNumCountDtos1.add(eqTypeAlarmNumCountDto);
-            });
+
+            }
+        }
+        //获取该医院底下设备类型数量
+        List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos = hospitalEquipmentRepository.findEquipmentByHosCode(hospitalCode);
+        if (CollectionUtils.isEmpty(eqTypeAlarmNumCountDtos)) {
+            return eqTypeAlarmNumCountDtos;
+        }
+        Map<String, List<eqTypeAlarmNumCountDto>> eqTypeMap = eqTypeAlarmNumCountDtos.stream().filter(s -> StringUtils.isNotEmpty(s.getEquipmenttypeid())).collect(Collectors.groupingBy(eqTypeAlarmNumCountDto::getEquipmenttypeid));
+        List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos1 = new ArrayList<>();
+        eqTypeMap.forEach((k, v) -> {
+            eqTypeAlarmNumCountDto eqTypeAlarmNumCountDto = new eqTypeAlarmNumCountDto();
+            eqTypeAlarmNumCountDto.setEquipmenttypeid(k);
+            eqTypeAlarmNumCountDto.setEquipmenttypename(v.get(0).getEquipmenttypename());
+            eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
+            int count = 0;
+            List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(warningInfos)) {
+                Iterator<Warningrecord> iterator = warningInfos.iterator();
+                while (iterator.hasNext()) {
+                    Warningrecord next = iterator.next();
+                    String equipmentno = next.getEquipmentno();
+                    if (eqNos.contains(equipmentno)) {
+                        count++;
+                        iterator.remove();
+                    }
+                }
+            }
+            eqTypeAlarmNumCountDto.setAlarmCount(count);
+            eqTypeAlarmNumCountDtos1.add(eqTypeAlarmNumCountDto);
+        });
 
         return eqTypeAlarmNumCountDtos1;
     }
 
     public List<Warningrecord> getWarningRecordInfo(String hospitalCode, Integer count) {
-        List<Warningrecord> warningRecordList = warningrecordRepository.getWarningInfoByCode(hospitalCode,count);
-        if(CollectionUtils.isEmpty(warningRecordList)){
+        Date date = new Date();
+        //获取报警设备  查询一周得时间
+        List<Warningrecord> warningInfos1 = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, DateUtils.getPreviousHour(date), DateUtils.paseDatetime(date));
+        if (CollectionUtils.isEmpty(warningInfos1)) {
+            return null;
+        }
+        //数据筛选只需要非工作时间段得数据
+        List<LabHosWarningTimeDto> hospitalWarningTime = hospitalInfoService.getHospitalWarningTime(hospitalCode);
+        List<Warningrecord> warningRecordList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(hospitalWarningTime)) {
+            for (Warningrecord warningInfo : warningInfos1) {
+                Date inputdatetime = warningInfo.getInputdatetime();
+                for (LabHosWarningTimeDto labHosWarningTimeDto : hospitalWarningTime) {
+                    Date beginTime = labHosWarningTimeDto.getBeginTime();
+                    Date endTime = labHosWarningTimeDto.getEndTime();
+                    if (DateUtils.isEffectiveHhMm(inputdatetime, beginTime, endTime)) {
+                        warningRecordList.add(warningInfo);
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        if (CollectionUtils.isEmpty(warningRecordList)){
             return null;
         }
         List<String> ipcNoList = warningRecordList.stream().map(Warningrecord::getInstrumentparamconfigno).distinct().collect(Collectors.toList());
@@ -180,21 +228,29 @@ public class SystemDataApplication {
         Map<String, List<InstrumentParamConfigDto>> ipcNoMap =
                 instrumentParamConfigDtoList.stream().collect(Collectors.groupingBy(InstrumentParamConfigDto::getInstrumentparamconfigno));
 
-        warningRecordList.forEach(res->{
+        warningRecordList.forEach(res -> {
             String instrumentparamconfigno = res.getInstrumentparamconfigno();
-            if(ipcNoMap.containsKey(instrumentparamconfigno)){
+            if (ipcNoMap.containsKey(instrumentparamconfigno)) {
                 InstrumentParamConfigDto instrumentParamConfigDto = ipcNoMap.get(instrumentparamconfigno).get(0);
                 Integer instrumentconfigid = instrumentParamConfigDto.getInstrumentconfigid();
                 String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
+                DataFieldEnum dataFieldEnum = DataFieldEnum.fromByLastDataField(probeEName);
                 res.setEName(probeEName);
+                if (!Context.IsCh()) {
+                    //The temperature of the device name is abnormal  Abnormal data is
+                    String eRemark = AlarmInfoUtils.setTypeName(res.getWarningremark(), dataFieldEnum.getEName());
+                    res.setWarningremark(eRemark);
+                }
             }
-
         });
+
         return warningRecordList;
+
     }
 
     /**
      * 获取设备数量占比
+     *
      * @param equipmentDataCommand
      */
     public List<EquipmentTypeNumDto> getEquipmentNumProportion(EquipmentDataCommand equipmentDataCommand) {
@@ -212,7 +268,7 @@ public class SystemDataApplication {
 
     public InstrumentTypeNumResult getInstrumentNum(EquipmentDataCommand equipmentDataCommand) {
         List<InstrumentTypeNumDto> equipmentTypeNumList = instrumentMonitorInfoRepository.getEquipmentTypeNum(equipmentDataCommand);
-        if(CollectionUtils.isEmpty(equipmentTypeNumList)){
+        if (CollectionUtils.isEmpty(equipmentTypeNumList)) {
             return null;
         }
         InstrumentTypeNumResult instrumentTypeNumResult = new InstrumentTypeNumResult();
@@ -227,12 +283,12 @@ public class SystemDataApplication {
         return instrumentTypeNumResult;
     }
 
-     public String divide(Long totalNum,Long num){
-         BigDecimal num100 = new BigDecimal(num + "");
-         BigDecimal sun100 = new BigDecimal(totalNum + "");
-         BigDecimal divide = num100.divide(sun100, 4, RoundingMode.HALF_UP);
-         String str = divide.multiply(new BigDecimal(100)).toString();
-         return str.substring(0,str.length()-2);
+    public String divide(Long totalNum, Long num) {
+        BigDecimal num100 = new BigDecimal(num + "");
+        BigDecimal sun100 = new BigDecimal(totalNum + "");
+        BigDecimal divide = num100.divide(sun100, 4, RoundingMode.HALF_UP);
+        String str = divide.multiply(new BigDecimal(100)).toString();
+        return str.substring(0, str.length() - 2);
     }
 
 
@@ -240,29 +296,43 @@ public class SystemDataApplication {
     public List<eqTypeAlarmNumCountDto> getEqAlarmPeriod(EquipmentDataCommand equipmentDataCommand) {
         String hospitalCode = equipmentDataCommand.getHospitalCode();
         //获取报警设备
-        List<Warningrecord> warningInfos = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
-//        if (CollectionUtils.isEmpty(warningInfos)) {
-//            return null;
-//        }
+        List<Warningrecord> warningInfos1 = warningrecordRepository.getWarningEquuipmentInfos(hospitalCode, equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
+        //数据筛选只需要非工作时间段得数据
+        List<LabHosWarningTimeDto> hospitalWarningTime = hospitalInfoService.getHospitalWarningTime(hospitalCode);
+        List<Warningrecord> warningInfos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(hospitalWarningTime)) {
+            for (Warningrecord warningInfo : warningInfos1) {
+                Date inputdatetime = warningInfo.getInputdatetime();
+                for (LabHosWarningTimeDto labHosWarningTimeDto : hospitalWarningTime) {
+                    Date beginTime = labHosWarningTimeDto.getBeginTime();
+                    Date endTime = labHosWarningTimeDto.getEndTime();
+                    if (DateUtils.isEffectiveHhMm(inputdatetime, beginTime, endTime)) {
+                        warningInfos.add(warningInfo);
+                        break;
+                    }
+                }
+
+            }
+        }
         List<eqTypeAlarmNumCountDto> eqTypeAlarmNumCountDtos = new ArrayList<>();
         Date date = DateUtils.initDateByDay();
         for (int i = 1; i <= 12; i++) {
             eqTypeAlarmNumCountDto eqTypeAlarmNumCountDto = new eqTypeAlarmNumCountDto();
             Iterator<Warningrecord> iterator = warningInfos.iterator();
             Date startTime = DateUtils.getAddHour(date, 2 * (i - 1));
-            Date endTime ;
-            if (i==12){
-                endTime =DateUtils.getEndOfDay();
-            }else {
-                endTime =DateUtils.getAddHour(date, i*2);
+            Date endTime;
+            if (i == 12) {
+                endTime = DateUtils.getEndOfDay();
+            } else {
+                endTime = DateUtils.getAddHour(date, i * 2);
             }
             int count = 0;
-            if (CollectionUtils.isNotEmpty(warningInfos)){
+            if (CollectionUtils.isNotEmpty(warningInfos)) {
                 while (iterator.hasNext()) {
                     Warningrecord warningrecord = iterator.next();
                     Date inputdatetime = warningrecord.getInputdatetime();
                     boolean isNowTime = DateUtils.whetherItIsIn(inputdatetime, startTime, endTime);
-                    if (isNowTime){
+                    if (isNowTime) {
                         count++;
                         iterator.remove();
                     }
@@ -277,30 +347,46 @@ public class SystemDataApplication {
 
 
     public List<AlarmEquipmentNumDto> getAlarmDeviceNum(EquipmentDataCommand equipmentDataCommand) {
-        EquipmentDataParam convert = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
-        List<Warningrecord> list =  warningrecordRepository.getAlarmDeviceNum(convert);
-        if(CollectionUtils.isEmpty(list)){
+        List<Warningrecord> warningInfos1 = warningrecordRepository.getWarningEquuipmentInfos(equipmentDataCommand.getHospitalCode(), equipmentDataCommand.getStartTime(), equipmentDataCommand.getEndTime());
+        if (CollectionUtils.isEmpty(warningInfos1)) {
+            return null;
+        }
+        List<LabHosWarningTimeDto> hospitalWarningTime = hospitalInfoService.getHospitalWarningTime(equipmentDataCommand.getHospitalCode());
+        List<Warningrecord> list = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(hospitalWarningTime)) {
+            for (Warningrecord warningInfo : warningInfos1) {
+                Date inputdatetime = warningInfo.getInputdatetime();
+                for (LabHosWarningTimeDto labHosWarningTimeDto : hospitalWarningTime) {
+                    Date beginTime = labHosWarningTimeDto.getBeginTime();
+                    Date endTime = labHosWarningTimeDto.getEndTime();
+                    if (DateUtils.isEffectiveHhMm(inputdatetime, beginTime, endTime)) {
+                        list.add(warningInfo);
+                        break;
+                    }
+                }
+
+            }
+        }
+        if (CollectionUtils.isEmpty(list)) {
             return null;
         }
         List<String> eNoList = list.stream().map(Warningrecord::getEquipmentno).collect(Collectors.toList());
-        Map<String, List<Warningrecord>> eNoWMap = list.stream().collect(Collectors.groupingBy(Warningrecord::getEquipmentno));
         List<MonitorEquipmentDto> monitorEquipmentList = equipmentInfoService.batchGetEquipmentInfo(eNoList);
         Map<String, List<MonitorEquipmentDto>> eNoMap = monitorEquipmentList.stream().collect(Collectors.groupingBy(MonitorEquipmentDto::getEquipmentno));
-
         List<AlarmEquipmentNumDto> equipmentDtoList = new ArrayList<>();
-        for (Warningrecord warningrecord : list) {
+        Map<String, List<Warningrecord>> collect = list.stream().collect(Collectors.groupingBy(Warningrecord::getEquipmentno));
+        collect.forEach((k,v)->{
             AlarmEquipmentNumDto alarmEquipmentNumDto = new AlarmEquipmentNumDto();
-            String equipmentNo = warningrecord.getEquipmentno();
-            alarmEquipmentNumDto.setEquipmentNo(equipmentNo);
-            MonitorEquipmentDto monitorEquipmentDto = eNoMap.get(equipmentNo).get(0);
-            Warningrecord warningRecord = eNoWMap.get(equipmentNo).get(0);
+            alarmEquipmentNumDto.setEquipmentNo(k);
+            MonitorEquipmentDto monitorEquipmentDto = eNoMap.get(k).get(0);
             String equipmentName = monitorEquipmentDto.getEquipmentname();
             String sn = monitorEquipmentDto.getSn();
             alarmEquipmentNumDto.setEquipmentName(equipmentName);
             alarmEquipmentNumDto.setSn(sn);
-            alarmEquipmentNumDto.setNum(warningRecord.getNum());
+            alarmEquipmentNumDto.setNum((long) v.size());
             equipmentDtoList.add(alarmEquipmentNumDto);
-        }
-        return equipmentDtoList;
+
+        });
+        return equipmentDtoList.stream().sorted(Comparator.comparing(AlarmEquipmentNumDto::getNum).reversed()).collect(Collectors.toList());
     }
 }

@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -15,6 +17,8 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @TableName(value = "monitorequipment")
+@AllArgsConstructor
+@NoArgsConstructor
 public class MonitorEquipmentDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,7 +63,7 @@ public class MonitorEquipmentDto implements Serializable {
      * 设备地址
      */
     @TableField(value = "address")
-    private Boolean address;
+    private String address;
 
     /**
      * 排序字段
@@ -102,6 +106,15 @@ public class MonitorEquipmentDto implements Serializable {
     /**设备报警开关0为关闭1为开启*/
     @TableField(value = "warning_switch")
     private String warningSwitch;
+
+    /** 公司 */
+    private String company;
+
+    /** 品牌*/
+    private String brand;
+
+    /** 型号 */
+    private String model;
 
     @TableField(exist = false)
     private String instrumentNo;

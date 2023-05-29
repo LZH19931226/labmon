@@ -3,6 +3,7 @@ package com.hc.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.MonitorEquipmentApplication;
 import com.hc.application.command.MonitorEquipmentCommand;
+import com.hc.application.command.WiredEqCommand;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.vo.equimenttype.InstrumentmonitorVo;
@@ -34,9 +35,10 @@ public class MonitorEquipmentController {
     }
 
     /**
-     *
+     *获取设备配置信息
      * */
     @GetMapping("/getInstrumentMonitorInfo")
+    @ApiOperation("获取设备配置信息")
     private List<InstrumentmonitorVo> getProbeInfoByITypeId(@RequestParam("instrumentTypeId") String instrumentTypeId){
         return monitorEquipmentApplication.getProbeInfoByITypeId(instrumentTypeId);
     }
@@ -111,4 +113,22 @@ public class MonitorEquipmentController {
         return  monitorEquipmentApplication.getHosEqTypeEqInfo(hospitalCode,equipmentTypeId);
     }
 
+    @PostMapping("/addWiredEquipment")
+    @ApiOperation("/新增有线设备")
+    public void addWiredEquipment(@RequestBody WiredEqCommand wiredEqCommand){
+        monitorEquipmentApplication.addWiredEquipment(wiredEqCommand);
+    }
+
+
+    @PostMapping("/updateEquipmentEnableSet")
+    @ApiOperation("编辑设置设备")
+    public void updateEquipmentEnableSet(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
+        monitorEquipmentApplication.updateEquipmentEnableSet(monitorEquipmentCommand);
+    }
+
+    @PostMapping("/updateEquipmentIns")
+    @ApiOperation("编辑设备的监测类型")
+    public void  updateEquipmentIns(@RequestBody MonitorEquipmentCommand monitorEquipmentCommand){
+        monitorEquipmentApplication.updateEquipmentIns(monitorEquipmentCommand);
+    }
 }

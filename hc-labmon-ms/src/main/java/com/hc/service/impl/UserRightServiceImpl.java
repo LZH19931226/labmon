@@ -45,4 +45,9 @@ public class UserRightServiceImpl implements UserRightService {
     public UserRightDto getUserRightInfoByUserId(String userId) {
         return userRightRepository.getOne(Wrappers.lambdaQuery(new UserRightDto()).eq(UserRightDto::getUserid,userId));
     }
+
+    @Override
+    public List<UserRightDto> getAll() {
+        return userRightRepository.list();
+    }
 }

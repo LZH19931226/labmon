@@ -29,26 +29,26 @@ public class SocketMessageListener {
 
     @StreamListener(SocketInputMessage.EXCHANGE_NAME)
     public void onMessage(String messageContent) {
-        log.info("数据解析服务订阅到的报文:{}",messageContent);
+        log.info("数据解析服务订阅到的报文:{}", messageContent);
         try {
             ParamaterModel model = JsonUtil.toBean(messageContent, ParamaterModel.class);
             String data = model.getData();
             String logId = model.getLogId();
+            String channelId = model.getChannelId();
             //获取到的原始数据进行解析
-            List<ParamaterModel> paseData = service.paseData(data);
-            if (CollectionUtils.isEmpty(paseData)) {
-                log.info("数据解析错误:{}", data);
+            ParamaterModel paseData = service.paseData(data);
+            if (null == paseData) {
+                log.info("无法解析该数据:{}", JsonUtil.toJson(model));
                 return;
             }
-            paseData.forEach(snData -> {
-                snData.setNowTime(new Date());
-                snData.setData(messageContent);
-                snData.setLogId(logId);
-                //推送mq
-                randomPush(snData);
-                log.info("数据解析服务解析完成推送到队列:{}",JsonUtil.toJson(snData));
-            });
-        }catch (Exception e){
+            paseData.setChannelId(channelId);
+            paseData.setNowTime(new Date());
+            paseData.setData(data);
+            paseData.setLogId(logId);
+            //推送mq
+            randomPush(paseData);
+            log.info("数据解析服务解析完成推送到队列:{}", JsonUtil.toJson(paseData));
+        } catch (Exception e) {
             return;
         }
     }

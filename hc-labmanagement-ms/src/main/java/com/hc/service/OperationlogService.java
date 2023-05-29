@@ -2,6 +2,7 @@ package com.hc.service;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.OperationLogCommand;
 import com.hc.command.labmanagement.operation.*;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
@@ -36,5 +37,7 @@ public interface OperationlogService{
     List<OperationlogDTO> findAllLogInfo(Page<OperationlogVo> page, OperationLogCommand operationLogCommand);
 
     void addExportLog(ExportLogCommand exportLogCommand);
+
+    void addAppLog(AlarmSystemCommand alarmSystemCommand);
 }
 

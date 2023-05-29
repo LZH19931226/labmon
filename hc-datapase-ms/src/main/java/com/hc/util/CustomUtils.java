@@ -80,7 +80,7 @@ public class CustomUtils {
         if (!RegularUtil.checkContainsNumbers(data)){
             return data;
         }
-        boolean comparison = comparison(data, "-200", "20");
+        boolean comparison = comparison(data, "-200", "50");
         if(comparison){
             return ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode();
         }

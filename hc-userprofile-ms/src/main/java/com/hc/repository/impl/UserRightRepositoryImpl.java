@@ -197,4 +197,9 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
                 .eq(UserRightPo::getPhoneNum, phoneNum));
         return integer>0;
     }
+
+    @Override
+    public String getUserName(String userId) {
+        return userRightDao.getUserName(userId);
+    }
 }

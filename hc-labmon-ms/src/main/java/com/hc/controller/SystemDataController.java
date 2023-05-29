@@ -37,10 +37,9 @@ public class SystemDataController {
         return systemDataApplication.getPacketLossColumnar(equipmentDataCommand);
     }
 
-    @GetMapping("/exportPacketLossLog")
+    @PostMapping("/exportPacketLossLog")
     @ApiOperation("excel导出心跳详情数据")
-    @JwtIgnore
-    public void exportPacketLossLog(EquipmentDataCommand equipmentDataCommand, HttpServletResponse response){
+    public void exportPacketLossLog(@RequestBody EquipmentDataCommand equipmentDataCommand, HttpServletResponse response){
         systemDataApplication.exportPacketLossLog(equipmentDataCommand,response);
     }
 

@@ -1,7 +1,9 @@
 package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hc.application.command.AlarmSystemCommand;
 import com.hc.application.command.OperationLogCommand;
+import com.hc.command.labmanagement.model.HospitalMadel;
 import com.hc.command.labmanagement.model.hospital.HospitalCommand;
 import com.hc.command.labmanagement.model.hospital.HospitalEquimentTypeInfoCommand;
 import com.hc.command.labmanagement.model.hospital.InstrumentparamconfigLogCommand;
@@ -10,19 +12,22 @@ import com.hc.command.labmanagement.operation.*;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
 import com.hc.dto.OperationlogDTO;
+import com.hc.hospital.HospitalInfoApi;
+import com.hc.my.common.core.constant.enums.OperationLogEunm;
 import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
+import com.hc.my.common.core.struct.Context;
 import com.hc.po.OperationlogPo;
 import com.hc.po.OperationlogdetailPo;
 import com.hc.repository.OperationlogRepository;
 import com.hc.repository.OperationlogdetailRepository;
-import com.hc.service.HospitalequimentService;
-import com.hc.service.MonitorinstrumentService;
 import com.hc.service.OperationlogService;
+import com.hc.user.UserRightInfoApi;
 import com.hc.vo.backlog.OperationlogVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -35,6 +40,12 @@ public class OperationlogServiceImpl implements OperationlogService {
 
     @Autowired
     private OperationlogdetailRepository operationlogdetailRepository;
+
+    @Autowired
+    private HospitalInfoApi hospitalInfoApi;
+
+    @Autowired
+    private UserRightInfoApi userRightInfoApi;
 
     /**
      * 添加用户日志信息
@@ -353,8 +364,8 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetails.add(operationlogdetail);
         }
 
-        String oldAddress = oldEquipmentInfoModel.getAddress();//地址信息
-        String newAddress = nowEquipmentInfoModel.getAddress();//地址信息
+        String oldAddress = StringUtils.isBlank(oldEquipmentInfoModel.getAddress()) ? "" : oldEquipmentInfoModel.getAddress();//地址信息
+        String newAddress = StringUtils.isBlank(nowEquipmentInfoModel.getAddress()) ? "" : nowEquipmentInfoModel.getAddress();//地址信息
         if(!StringUtils.equals(oldAddress,newAddress)){
             flag = true;
             OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
@@ -366,8 +377,8 @@ public class OperationlogServiceImpl implements OperationlogService {
 
         }
 
-        String oldRemark = oldEquipmentInfoModel.getRemark();
-        String nowRemark = nowEquipmentInfoModel.getRemark();
+        String oldRemark = StringUtils.isBlank(oldEquipmentInfoModel.getRemark())?"":oldEquipmentInfoModel.getRemark();
+        String nowRemark = StringUtils.isBlank(nowEquipmentInfoModel.getRemark())?"":nowEquipmentInfoModel.getRemark();
 
         if(!StringUtils.equals(oldRemark,nowRemark)){
             flag = true;
@@ -376,6 +387,19 @@ public class OperationlogServiceImpl implements OperationlogService {
             operationlogdetail.setFiledcaption("备注");
             operationlogdetail.setFiledvalue(StringUtils.isBlank(nowRemark) ? "":nowRemark);//当前值
             operationlogdetail.setFiledvalueprev(StringUtils.isBlank(oldRemark) ? "":oldRemark);//历史值
+            operationlogdetails.add(operationlogdetail);
+        }
+
+        String oldWarningSwitch = oldEquipmentInfoModel.getWarningSwitch();//报警开关
+        String nowWarningSwitch = nowEquipmentInfoModel.getWarningSwitch();//报警开关
+
+        if(!StringUtils.equals(oldWarningSwitch,nowWarningSwitch)){
+            flag = true;
+            OperationlogdetailPo operationlogdetail = new OperationlogdetailPo();
+            operationlogdetail.setFiledname("warningSwitch");
+            operationlogdetail.setFiledcaption("报警开关");
+            operationlogdetail.setFiledvalue(StringUtils.isBlank(nowWarningSwitch) ? "":nowWarningSwitch);//当前值
+            operationlogdetail.setFiledvalueprev(StringUtils.isBlank(oldWarningSwitch) ? "":oldWarningSwitch);//历史值
             operationlogdetails.add(operationlogdetail);
         }
 
@@ -449,6 +473,7 @@ public class OperationlogServiceImpl implements OperationlogService {
                 operationlogdetail.setFiledvalueprev(lowlimit.toString());//历史值
             }
             operationlogdetails.add(operationlogdetail);
+
         }
         //最高限值
         BigDecimal highlimit = oldInstrumentInfoModel.getHighlimit();
@@ -575,6 +600,7 @@ public class OperationlogServiceImpl implements OperationlogService {
     public void addExportLog(ExportLogCommand exportLogCommand) {
         OperationlogPo operationlogPo = new OperationlogPo();
         operationlogPo.setLogid(UUID.randomUUID().toString().replaceAll("-", ""));
+        operationlogPo.setPlatform(exportLogCommand.getPlatform());
         operationlogPo.setFunctionname(exportLogCommand.getFunctionName());
         operationlogPo.setOpeartiontype(exportLogCommand.getOperationType());
         operationlogPo.setUsername(exportLogCommand.getUsername());
@@ -592,5 +618,28 @@ public class OperationlogServiceImpl implements OperationlogService {
     @Override
     public List<OperationlogDTO> findAllLogInfo(Page<OperationlogVo> page, OperationLogCommand operationLogCommand) {
         return operationlogRepository.findAllLogInfo(page,operationLogCommand);
+    }
+
+    @Override
+    public void addAppLog(AlarmSystemCommand alarmSystemCommand) {
+        OperationlogPo operationlogPo = new OperationlogPo();
+        operationlogPo.setLogid(UUID.randomUUID().toString().replaceAll("-", ""));
+        //根据医院code获取医院名称
+        String hospitalCode = alarmSystemCommand.getHospitalCode();
+        HospitalMadel hospitalInfo = hospitalInfoApi.findHospitalInfo(hospitalCode).getResult();
+        if(!ObjectUtils.isEmpty(hospitalInfo)){
+            operationlogPo.setHospitalname(hospitalInfo.getHospitalName());
+        }
+        //根据useid获取用户信息
+        String username = userRightInfoApi.getUserName(Context.getUserId()).getResult();
+        if(!StringUtils.isEmpty(username)){
+            operationlogPo.setUsername(username);
+        }
+        operationlogPo.setFunctionname(OperationLogEunm.APP_EDIT_EQ_TYPE.getMessage());
+        operationlogPo.setOpeartiontype(OperationLogEunmDerailEnum.EDIT.getCode());
+        operationlogPo.setEquipmentname(alarmSystemCommand.getEquipmentTypeId());
+        operationlogPo.setOperationtime(new Date());
+        operationlogPo.setPlatform(OperationLogEunm.APP_EDIT_EQ_TYPE.getCode());
+        operationlogRepository.save(operationlogPo);
     }
 }

@@ -59,9 +59,6 @@ public class SocketMessageListener {
     @Autowired
     private WarningRuleService warningRuleService;
     @Autowired
-    private WarningrecordRepository warningrecordRepository;
-
-    @Autowired
     private SendTimeoutRecordService sendTimeoutRecordService;
 
     @Autowired
@@ -148,7 +145,7 @@ public class SocketMessageListener {
             return;
         }
         //通知信息
-        warningService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString());
+        warningService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode);
         //保存到数据库
         sendTimeoutRecordService.saveTimeOutRecord(userrightByHospitalcodeAAndTimeout,hospitalcode,eqTypeName.toString(),count.toString());
     }
@@ -178,8 +175,6 @@ public class SocketMessageListener {
             if (null!=model) {
                 model.setLogId(logId);
                 HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
-                //将设备状态信息推送到mq
-                sendEquimentProbeStatus(monitorinstrument,model,hospitalcode,warningAlarmDo.getLogId());
                 //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
                 List<Userright> userList =almMsgService.addUserScheduLing(hospitalcode);
                 if (CollectionUtils.isEmpty(userList)){
@@ -189,9 +184,13 @@ public class SocketMessageListener {
                 //异步推送报警短信
                 warningrecord = warningService.pushNotification(userList, model, hospitalInfoDto);
                 //如果该医院开启了声光报警则需要推送声光报警指令
-                if(StringUtils.isBlank(hospitalInfoDto.getSoundLightAlarm()) || !StringUtils.equals(hospitalInfoDto.getSoundLightAlarm(), DictEnum.TURN_ON.getCode())){
-                    soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
+                String soundLightAlarm = hospitalInfoDto.getSoundLightAlarm();
+                if(StringUtils.isNotEmpty(soundLightAlarm)){
+                    if (StringUtils.equals(soundLightAlarm, DictEnum.TURN_ON.getCode())){
+                        soundLightApi.sendMsg(sn,SoundLightUtils.TURN_ON_ROUND_LIGHT_COMMAND);
+                    }
                 }
+
             }
             //不满足报警规则,但是超量程的数据也需要记录
             //将信息推送到redis,再批量插入
@@ -199,21 +198,4 @@ public class SocketMessageListener {
             warningApi.add(convert);
         }
     }
-
-    //推送探头当前报警状态
-    public void sendEquimentProbeStatus( MonitorinstrumentDo monitorinstrument , WarningModel model,String hospitalcode,String logId){
-        EquipmentState equipmentState = new EquipmentState();
-        equipmentState.setState(SysConstants.IN_ALARM);
-        equipmentState.setEquipmentNo(monitorinstrument.getEquipmentno());
-        equipmentState.setInstrumentNo(monitorinstrument.getInstrumentno());
-        equipmentState.setInstrumentConfigNo(model.getInstrumentparamconfigNO());
-        equipmentState.setInstrumentConfigId(model.getInstrumentConfigId());
-        equipmentState.setHospitalCode(hospitalcode);
-        equipmentState.setSn(model.getSn());
-        String json = JsonUtil.toJson(equipmentState);
-        messageSendService.send(json);
-        ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER18.getCode()),JsonUtil.toJson(equipmentState),logId);
-    }
-
-
 }

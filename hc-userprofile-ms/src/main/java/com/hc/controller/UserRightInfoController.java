@@ -81,12 +81,13 @@ public class UserRightInfoController {
      */
     @JwtIgnore
     @GetMapping("/getALLHospitalUserRightInfo")
+    @ApiOperation("通过医院code获取医院用户信息")
     public List<UserRightRedisDto> findALLUserRightInfoByHC(@RequestParam("hospitalCode")String hospitalCode){
         return userRightApplication.findALLUserRightInfo(hospitalCode);
     }
 
     @PostMapping("/getPhoneCode")
-    @ApiOperation("手机验证登录")
+    @ApiOperation("获取手机登录验证码")
     public void selectPhoneCode(@RequestParam("phoneNum") String phoneNum){
          userRightApplication.getPhoneCode(phoneNum);
     }
@@ -101,5 +102,12 @@ public class UserRightInfoController {
     @ApiOperation("检验手机号是否重复")
     public Boolean checkPhoneNum(@RequestBody UserRightCommand userRightCommand){
         return  userRightApplication.checkPhoneNum(userRightCommand);
+    }
+
+    @JwtIgnore
+    @GetMapping("/getUserName")
+    @ApiOperation("获取用户信息")
+    public String getUserName(@RequestParam("userId") String userId){
+        return  userRightApplication.getUserName(userId);
     }
 }
