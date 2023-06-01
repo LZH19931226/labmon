@@ -34,7 +34,6 @@ import java.io.IOException;
 @MapperScan("com.hc.mapper*")
 public class MybatisPlusDataConfig {
 
-    public static ThreadLocal<String> TABLE_NAME = new ThreadLocal<>();
 
     @Value("${spring.datasource.url}")
     private String dataSourceUrl;
@@ -51,7 +50,7 @@ public class MybatisPlusDataConfig {
     public DataSource dataSourcee() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        config.setJdbcUrl(dataSourceUrl + "?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true");
+        config.setJdbcUrl(dataSourceUrl + "?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=America/Phoenix&allowPublicKeyRetrieval=true");
         config.setUsername(user);
         config.setPassword(password);
         config.setConnectionTimeout(10000);
