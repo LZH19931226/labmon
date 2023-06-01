@@ -1,6 +1,0 @@
-#此配置缺省使用 local profile便于于本地调试。
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  profiles:
-    active: test

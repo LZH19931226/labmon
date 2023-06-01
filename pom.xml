@@ -34,7 +34,6 @@
         <module>hc-labredis-ms</module>
         <module>hc-message-ms</module>
         <module>hc-datapase-ms</module>
-        <module>HC-MQTT-ms</module>
     </modules>
 
     <dependencyManagement>

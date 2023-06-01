@@ -2,12 +2,12 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 172.17.165.26:8848
+        server-addr: 172.31.85.148:8848
         file-extension: yaml
         prefix: hc-labmon-ms
         group: DEFAULT_GROUP
         namespace: dev
       discovery:
-        server-addr: 172.17.165.26:8848
+        server-addr: 172.31.85.148:8848
         namespace: dev
-        ip: 172.17.165.26
+        ip: 172.31.85.148
