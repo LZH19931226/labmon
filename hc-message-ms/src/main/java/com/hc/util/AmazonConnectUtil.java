@@ -1,5 +1,6 @@
 package com.hc.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -15,21 +16,31 @@ import java.util.Map;
 
 @Component
 public class AmazonConnectUtil {
-    static String contactFlowId = "63c72727-8db6-4e0d-b1cb-d1b4d36d98f9";
-    static  String instanceId = "07d6eae2-6962-48cf-979d-1b46cd92c957";
-    static String sourcePhoneNumber = "+12524864515";
 
-    public static void makeCall(String phoneNumber,String message) {
+
+    @Value("amaon:contactFlowId")
+    private String contactFlowId;
+    @Value("amaon:instanceId")
+    private String instanceId;
+    @Value("amaon:sourcePhoneNumber")
+    private String sourcePhoneNumber;
+    @Value("amaon:accessKeyId")
+    private String accessKeyId;
+    @Value("amaon:secretAccessKey")
+    private String secretAccessKey;
+
+
+    public void makeCall(String phoneNumber,String message) {
 
         AwsCredentialsProvider awsCredentialsProvider  = () -> new AwsCredentials() {
             @Override
             public String accessKeyId() {
-                return "AKIAT5ILFNYECNWNL3X6";
+                return accessKeyId;
             }
 
             @Override
             public String secretAccessKey() {
-                return "Dt+GM5FyawSbWV1WUsfb/Zs8cf0YEXkP/U9WYDNE";
+                return secretAccessKey;
             }
         };
         ConnectClient connectClient = ConnectClient.builder()
@@ -53,7 +64,7 @@ public class AmazonConnectUtil {
 
     public static void main(String[] agrs){
 
-       makeCall("+8613164197389","ok");
+       //makeCall("+8613164197389","ok");
 
 
 //        Region region = Region.US_EAST_1;
