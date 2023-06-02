@@ -2,7 +2,7 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hc.entity.MessengerPublishTask;
-import com.hc.mapper.MessengerPublishTaskMapper;
+import com.hc.infrastructure.dao.MessengerPublishTaskMapper;
 import com.hc.service.MessengerPublishTaskService;
 import org.springframework.stereotype.Service;
 

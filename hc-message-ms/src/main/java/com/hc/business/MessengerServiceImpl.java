@@ -2,7 +2,7 @@ package com.hc.business;
 
 import com.hc.entity.MessengerPublishTask;
 import com.hc.entity.MessengerServiceDefine;
-import com.hc.mapper.MessengerServiceDefineMapper;
+import com.hc.infrastructure.dao.MessengerServiceDefineMapper;
 import com.hc.model.NotifyMessage;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.struct.Maps;

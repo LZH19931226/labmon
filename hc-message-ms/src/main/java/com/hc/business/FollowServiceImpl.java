@@ -6,7 +6,7 @@ package com.hc.business;
  * 描述:
  **/
 import com.hc.entity.MessengerFollowRelation;
-import com.hc.mapper.MessengerFollowRelationMapper;
+import com.hc.infrastructure.dao.MessengerFollowRelationMapper;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.struct.Maps;
 import org.springframework.stereotype.Service;
