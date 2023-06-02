@@ -2,12 +2,12 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 172.31.85.148:8848
+        server-addr: ec2-54-159-234-241.compute-1.amazonaws.com:8848
         file-extension: yaml
         prefix: hc-message-ms
         group: DEFAULT_GROUP
         namespace: dev
       discovery:
-        server-addr: 172.31.85.148:8848
+        server-addr: ec2-54-159-234-241.compute-1.amazonaws.com:8848
         namespace: dev
         ip: 172.31.6.51
