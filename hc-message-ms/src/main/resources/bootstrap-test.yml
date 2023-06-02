@@ -9,7 +9,7 @@ spring:
     name: HC-MESSAGE-ms
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://3.232.100.26:3306/laboratory
+    url: jdbc:mysql://172.31.85.148/laboratory
     username: root
     password: 83754648
 server:
