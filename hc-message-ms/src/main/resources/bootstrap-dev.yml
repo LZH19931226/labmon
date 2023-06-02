@@ -2,12 +2,12 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 47.251.6.8:8848
+        server-addr: ec2-54-159-234-241.compute-1.amazonaws.com:8848
         file-extension: yaml
         prefix: hc-message-ms
         group: DEFAULT_GROUP
-        namespace: liuzhihao
+        namespace: dev
       discovery:
-        server-addr: 47.251.6.8:8848
-        namespace: liuzhihao
+        server-addr: ec2-54-159-234-241.compute-1.amazonaws.com:8848
+        namespace: dev
 
