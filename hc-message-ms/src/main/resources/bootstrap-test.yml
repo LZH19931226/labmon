@@ -1,28 +1,13 @@
 spring:
   cloud:
     nacos:
+      config:
+        server-addr: 172.31.85.148:8848
+        file-extension: yaml
+        prefix: message
+        group: DEFAULT_GROUP
+        namespace: dev
       discovery:
         server-addr: 172.31.85.148:8848
         namespace: dev
         ip: 172.31.6.51
-  application:
-    name: HC-MESSAGE-ms
-  datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.31.85.148/laboratory
-    username: root
-    password: 83754648
-server:
-  port: 10609
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 60000
-        readTimeout: 60000
-amaon:
-  contactflowid: 63c72727-8db6-4e0d-b1cb-d1b4d36d98f9
-  instanceid: 07d6eae2-6962-48cf-979d-1b46cd92c957
-  sourcephonenumber: +12524864515
-  accesskeyid: AKIAT5ILFNYECNWNL3X6
-  secretaccesskey: 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
