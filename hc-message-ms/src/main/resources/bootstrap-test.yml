@@ -10,4 +10,4 @@ spring:
       discovery:
         server-addr: 172.31.85.148:8848
         namespace: dev
-        ip: 172.31.85.148
+        ip: 172.31.6.51
