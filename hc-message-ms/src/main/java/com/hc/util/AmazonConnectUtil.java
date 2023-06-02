@@ -18,15 +18,15 @@ import java.util.Map;
 public class AmazonConnectUtil {
 
 
-    @Value("amaon:contactFlowId")
+    @Value("${amaon:contactflowid}")
     private String contactFlowId;
-    @Value("amaon:instanceId")
+    @Value("${amaon:instanceid}")
     private String instanceId;
-    @Value("amaon:sourcePhoneNumber")
+    @Value("${amaon:sourcephonenumber}")
     private String sourcePhoneNumber;
-    @Value("amaon:accessKeyId")
+    @Value("${amaon:accesskeyid}")
     private String accessKeyId;
-    @Value("amaon:secretAccessKey")
+    @Value("${amaon:secretaccesskey}")
     private String secretAccessKey;
 
 
