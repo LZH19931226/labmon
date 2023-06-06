@@ -292,29 +292,32 @@ public class WarningServiceImpl implements WarningService {
             String phonenum = userright.getPhonenum();
             String hospitalCode = hospitalInfoDto.getHospitalCode();
             //不报警
-            if (StringUtils.equals(reminders, DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
+            if (StringUtils.isEmpty(reminders)) {
                 continue;
             }
-            if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(), reminders)) {
-                //拨打电话短信
-                buildP2PNotify(phonenum, warningremark, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),hospitalCode);
-                mailCallUser.append(phonenum).append("/");
-                phoneCallUser.append(phonenum).append("/");
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
-            } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
-                buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode);
-                phoneCallUser.append(phonenum).append("/");
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
-            } else if (StringUtils.equals(reminders, DictEnum.SMS.getCode())) {
-                buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode);
-                mailCallUser.append(phonenum).append("/");
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
+            //根据设置的报警方式调整报警
+            String[] reminder = reminders.split(",");
+            for (String rem : reminder) {
+                if (StringUtils.equals(rem,DictEnum.PHONE.getCode())){
+                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode);
+                    phoneCallUser.append(phonenum).append("/");
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
+                }
+                if (StringUtils.equals(rem,DictEnum.SMS.getCode())){
+                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode);
+                    mailCallUser.append(phonenum).append("/");
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
+                }
+                if (StringUtils.equals(rem,DictEnum.MAILBOX.getCode())){
+                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.MAIL),hospitalCode);
+                    mailCallUser.append(phonenum).append("/");
+                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
+                }
             }
         }
         //修改报警通知人
         Warningrecord warningrecord = warningModel.getWarningrecord();
         warningrecord.setPkid(warningrecord.getPkid());
-
         if(mailCallUser.length()>0
                 && !"null".equals(mailCallUser.toString())
                 && !"".equals(mailCallUser.toString())){

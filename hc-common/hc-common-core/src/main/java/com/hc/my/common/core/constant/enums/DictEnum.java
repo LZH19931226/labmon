@@ -17,10 +17,9 @@ public enum DictEnum {
     CONSOLE("5","操作台"),
     MAINS("6","市电"),
     //默认联系方式
-    PHONE_SMS("0","电话+短信"),
     PHONE("1","电话"),
     SMS("2","短信"),
-    UNOPENED_CONTACT_DETAILS("3","未开启联系方式");
+    MAILBOX("3","邮箱");
     private String code;
     private String message;
 }
