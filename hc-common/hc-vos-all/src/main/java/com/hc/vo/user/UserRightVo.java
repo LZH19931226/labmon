@@ -86,4 +86,7 @@ public class UserRightVo {
 
     /**角色关联的菜单 */
     private List<SysMenuDTO> sysMenuDTOS;
+
+    /** 邮箱 */
+    private String mailbox;
 }

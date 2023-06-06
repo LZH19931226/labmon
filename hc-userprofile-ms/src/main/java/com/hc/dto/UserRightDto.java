@@ -89,6 +89,12 @@ public class UserRightDto extends UserRightPo {
      */
     private String userType;
 
+
+    /**
+     * 邮箱
+     */
+    private String mailbox;
+
     /**
      * 报警方式(空和0为电话+短信，1为电话，2为短信，3为不报警)
      */

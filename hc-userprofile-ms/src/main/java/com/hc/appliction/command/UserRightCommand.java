@@ -62,7 +62,7 @@ public class UserRightCommand {
     private String timeoutWarning;
 
     /** 报警方式 */
-    @ApiModelProperty(value = "报警方式(空和0为电话+短信，1为电话，2为短信，3为不报警)")
+    @ApiModelProperty(value = "报警方式(空和0为电话+短信，1为电话，2为短信，3为不报警,4邮箱)")
     private String reminders;
 
     /** 分页大小 */
@@ -96,4 +96,7 @@ public class UserRightCommand {
      */
     @ApiModelProperty(value = "语种")
     private String lang;
+
+    @ApiModelProperty(value = "邮箱")
+    private String mailbox;
 }

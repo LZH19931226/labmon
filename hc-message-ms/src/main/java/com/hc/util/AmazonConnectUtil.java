@@ -10,7 +10,6 @@ import software.amazon.awssdk.services.connect.ConnectClient;
 import software.amazon.awssdk.services.connect.model.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -28,7 +27,6 @@ public class AmazonConnectUtil {
     private String accessKeyId;
     @Value("${amaon:secretaccesskey}")
     private String secretAccessKey;
-
 
     public void makeCall(String phoneNumber,String message) {
 
@@ -63,35 +61,7 @@ public class AmazonConnectUtil {
     }
 
     public static void main(String[] agrs){
-
        //makeCall("+8613164197389","ok");
-
-
-//        Region region = Region.US_EAST_1;
-//        ConnectClient connectClient = ConnectClient.builder()
-//                .region(region)
-//                .build();
-//        getUsers(connectClient, instanceId);
-    }
-
-    public static void getUsers( ConnectClient connectClient, String instanceId) {
-        try {
-            ListUsersRequest usersRequest = ListUsersRequest.builder()
-                    .instanceId(instanceId)
-                    .maxResults(10)
-                    .build();
-
-            ListUsersResponse response = connectClient.listUsers(usersRequest);
-            List<UserSummary> users = response.userSummaryList();
-            for (UserSummary user: users) {
-                System.out.println("The user name of the user is "+user.username());
-                System.out.println("The user id is  "+user.id());
-            }
-
-        } catch (ConnectException e) {
-            System.out.println(e.getLocalizedMessage());
-            System.exit(1);
-        }
     }
 
 }

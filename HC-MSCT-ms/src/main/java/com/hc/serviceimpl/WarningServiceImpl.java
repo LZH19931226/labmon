@@ -137,34 +137,34 @@ public class WarningServiceImpl implements WarningService {
             if (!LowHighVerify.verify(probe, data)) {
                 return null;
             }
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+            warningrecord.setWarningremark(equipmentname + ":" +"Abnormal  "+unit+",abnormal data:" + data);
             return warningrecord;
         }else {
             if ("A".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:未获取到数据");
+                warningrecord.setWarningremark(equipmentname + ":"+"Abnormal  "+  unit + "abnormal data:No data was obtained");
                 return null;
             } else if ("B".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:流量控制关闭");
+                warningrecord.setWarningremark(equipmentname + ":" +"Abnormal  "+ unit  + "abnormal data:Flow control off");
                 return null;
             } else if ("C".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:气体流量不稳定");
+                warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit  + "abnormal data:The gas flow is unstable");
                 return null;
             } else if ("D".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:气口压力低");
+                warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit  + "abnormal data:Low air port pressure");
                 return null;
             } else if ("E".equals(data)) {
                 //产生报警
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:未获取到数据");
+                warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit +  "abnormal data:No data was obtained");
             } else if ("F".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:总开关关闭，但未断电");
+                warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit + "abnormal data:Main switch off, but not power off");
                 return null;
                 //I M O为98协议上传的气流状态 需要报警的模型
             } else if ("I".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:发生漏气报警事件");
+                warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit +  "abnormal data:An air leakage alarm occurred");
             } else if ("M".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:设备漏气报警");
+                warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit +  "abnormal data:Equipment leakage alarm");
             } else if ("O".equals(data)) {
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:设备气压低报警");
+                warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit + "abnormal data:Device pressure low alarm");
             } else {
                 return null;
             }
@@ -182,7 +182,7 @@ public class WarningServiceImpl implements WarningService {
         if (!LowHighVerify.verify(probe, data)) {
             return null;
         }
-        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+        warningrecord.setWarningremark(equipmentname + ":" +"Abnormal  "+ unit +  "abnormal data:" + data);
         return warningrecord;
     }
 
@@ -198,7 +198,7 @@ public class WarningServiceImpl implements WarningService {
         if (probe.getLowLimit().compareTo(new BigDecimal(data)) != 0) {
             return null;
         }
-        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + (data.equals("1.00")?"常开":"常闭"));
+        warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit +  "abnormal data:" + (data.equals("1.00")?"Normally open":"Normally closed"));
         return warningrecord;
     }
 
@@ -209,7 +209,7 @@ public class WarningServiceImpl implements WarningService {
         if (!StringUtils.equals("1", data)) {
             return null;
         }
-        warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + "市电异常");
+        warningrecord.setWarningremark(equipmentname + ":" +"Abnormal  "+ unit +  "abnormal data:" + "Mains abnormal");
         return warningrecord;
     }
 
@@ -224,7 +224,7 @@ public class WarningServiceImpl implements WarningService {
         //表示CO2  、氧气、温度  、 培养箱湿度
         if (!RegularUtil.checkContainsNumbers(data)) {
             //未接传感器
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常原因为:" + data);
+            warningrecord.setWarningremark(equipmentname + ":" +"Abnormal  "+ unit +  "abnormal data:" + data);
             return null;
         }
         if (StringUtils.isNotEmpty(data1)) {
@@ -238,7 +238,7 @@ public class WarningServiceImpl implements WarningService {
                 if (!checkProbeValue(warningAlarmDo, probe)) {
                     return null;
                 }
-                warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+                warningrecord.setWarningremark(equipmentname + ":" +"Abnormal  "+ unit +  "abnormal data:" + data);
                 return warningrecord;
             } else {
                 if (StringUtils.equals(sns, "17")){
@@ -246,7 +246,7 @@ public class WarningServiceImpl implements WarningService {
                     if(null!=mt200mHighLimit){
                         //大于最大值
                         if (LowHighVerify.verifyMt200m(probe.getHighLimit(), data) && LowHighVerify.verifyMt200m(mt200mHighLimit.getHighLimit(), data1)) {
-                            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+                            warningrecord.setWarningremark(equipmentname + ":" +"Abnormal  "+ unit + "abnormal data:" + data);
                             return warningrecord;
                         } else {
                             return null;
@@ -256,14 +256,14 @@ public class WarningServiceImpl implements WarningService {
                     if (!checkProbeValue(warningAlarmDo, probe)) {
                         return null;
                     }
-                    warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+                    warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit +  "abnormal data:" + data);
                     return warningrecord;
                 }
             }
         }
         //高低值判断
         if (LowHighVerify.verify(probe, data)) {
-            warningrecord.setWarningremark(equipmentname + ":" + unit + "异常," + "异常数据为:" + data);
+            warningrecord.setWarningremark(equipmentname + ":" + "Abnormal  "+unit +  "abnormal data:" + data);
         } else {
             return null;
         }
@@ -286,35 +286,27 @@ public class WarningServiceImpl implements WarningService {
         //获取电话.
         StringBuilder phoneCallUser = new StringBuilder();
         StringBuilder mailCallUser = new StringBuilder();
+        String warningremark = warningModel.getWarningrecord().getWarningremark();
         for (Userright userright : list) {
             String reminders = userright.getReminders();
             String phonenum = userright.getPhonenum();
-            String role = userright.getRole();
-            String equipmentName = warningModel.getEquipmentname();
-            String hospitalName = hospitalInfoDto.getHospitalName();
             String hospitalCode = hospitalInfoDto.getHospitalCode();
-            String unit = warningModel.getUnit();
-            String value = warningModel.getValue();
-            //1为运维后台人员
-            if (StringUtils.isNotEmpty(role) && StringUtils.equals(role, "1")) {
-                equipmentName = hospitalName + equipmentName;
-            }
             //不报警
             if (StringUtils.equals(reminders, DictEnum.UNOPENED_CONTACT_DETAILS.getCode()) || StringUtils.isEmpty(phonenum)) {
                 continue;
             }
             if (StringUtils.isEmpty(reminders) || StringUtils.equals(DictEnum.PHONE_SMS.getCode(), reminders)) {
                 //拨打电话短信
-                buildP2PNotify(phonenum, equipmentName, unit, value, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),hospitalCode);
+                buildP2PNotify(phonenum, warningremark, Arrays.asList(NotifyChannel.SMS, NotifyChannel.PHONE),hospitalCode);
                 mailCallUser.append(phonenum).append("/");
                 phoneCallUser.append(phonenum).append("/");
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
             } else if (StringUtils.equals(reminders, DictEnum.PHONE.getCode())) {
-                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.PHONE),hospitalCode);
+                buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode);
                 phoneCallUser.append(phonenum).append("/");
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
             } else if (StringUtils.equals(reminders, DictEnum.SMS.getCode())) {
-                buildP2PNotify(phonenum, equipmentName, unit, value, Collections.singletonList(NotifyChannel.SMS),hospitalCode);
+                buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode);
                 mailCallUser.append(phonenum).append("/");
                 ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
             }
@@ -347,71 +339,48 @@ public class WarningServiceImpl implements WarningService {
                 continue;
             }
             String timeoutwarning = userright.getTimeoutwarning();//超时报警方式
+            //超时报警需要额外设计
             // 超时报警
-            if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.TIMEOUTSMS, NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER21.getCode()), JsonUtil.toJson(userright), null);
-            } else if (StringUtils.equals(timeoutwarning, "1")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER19.getCode()), JsonUtil.toJson(userright), null);
-            } else if (StringUtils.equals(timeoutwarning, "2")) {
-                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.TIMEOUTSMS),count,hospitalcode);
-                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER20.getCode()), JsonUtil.toJson(userright), null);
-            }
+//            if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")) {
+//                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Arrays.asList(NotifyChannel.TIMEOUTSMS, NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
+//                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER21.getCode()), JsonUtil.toJson(userright), null);
+//            } else if (StringUtils.equals(timeoutwarning, "1")) {
+//                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
+//                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER19.getCode()), JsonUtil.toJson(userright), null);
+//            } else if (StringUtils.equals(timeoutwarning, "2")) {
+//                buildTimeOutP2PNotify(phonenum, eqTypeName, "超时", hospitalName,Collections.singletonList(NotifyChannel.TIMEOUTSMS),count,hospitalcode);
+//                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER20.getCode()), JsonUtil.toJson(userright), null);
+//            }
         }
     }
 
 
-    public void buildP2PNotify(String phone, String equipmentname, String unit, String value, List<NotifyChannel> notifyChannels,String hospitalCode) {
+    //海外短信将整个message内容都放到信息体里面去
+    public void buildP2PNotify(String phone,String message, List<NotifyChannel> notifyChannels,String hospitalCode) {
         P2PNotify p2PNotify = new P2PNotify();
         p2PNotify.setUserId(phone);
-        p2PNotify.setMessageTitle(equipmentname);
-        conversionUnit(p2PNotify,unit,value);
+        p2PNotify.setMessageTitle(null);
+        p2PNotify.setMessageCover(message);
+        p2PNotify.setMessageIntro(null);
         p2PNotify.setChannels(notifyChannels);
         p2PNotify.setMessageBodys(hospitalCode);
         p2PNotify.setServiceNo("1");
         messageApi.send(p2PNotify);
     }
 
-    public void buildTimeOutP2PNotify(String phone,String equipmentname,String unit,String hospitalName,List<NotifyChannel> notifyChannels,String count,String hospitalcode) {
+    public void buildTimeOutP2PNotify(String phone,String message,List<NotifyChannel> notifyChannels,String hospitalcode) {
         P2PNotify p2PNotify = new P2PNotify();
         p2PNotify.setUserId(phone);
-        p2PNotify.setMessageTitle(equipmentname);
-        p2PNotify.setMessageCover(unit);
-        if("LIQUIDLEVEL".equals(unit)){
-            p2PNotify.setMessageCover("液位");
-        }
-        p2PNotify.setMessageIntro(hospitalName);
+        p2PNotify.setMessageTitle(null);
+        p2PNotify.setMessageCover(message);
+        p2PNotify.setMessageIntro(null);
         p2PNotify.setChannels(notifyChannels);
         p2PNotify.setMessageBodys(hospitalcode);
-        Map<String, String> paramsMap = new HashMap<String, String>() {
-            {
-                put("timeout", count);
-            }
-        };
         p2PNotify.setServiceNo("1");
-        p2PNotify.setParams(paramsMap);
+        p2PNotify.setParams(null);
         messageApi.send(p2PNotify);
     }
 
-    //需要将适配器状态,市电状态,调整
-    public void conversionUnit(P2PNotify p2PNotify,String unit, String value){
-        p2PNotify.setMessageCover(unit);
-        p2PNotify.setMessageIntro(value);
-        if("LIQUIDLEVEL".equals(unit)){
-            p2PNotify.setMessageCover("液位");
-        }
-        if("适配器供电状态".equals(unit)){
-            p2PNotify.setMessageCover("供电状态");
-            p2PNotify.setMessageIntro("异常");
-        }
-        if("市电".equals(unit)){
-            p2PNotify.setMessageCover("供电");
-            p2PNotify.setMessageIntro("异常");
-        }
 
-
-
-    }
 
 }

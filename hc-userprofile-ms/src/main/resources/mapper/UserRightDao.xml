@@ -31,6 +31,7 @@
         ,u.timeout timeout
         ,u.timeoutwarning timeoutWarning
         ,u.reminders reminders
+        ,u.mailbox mailbox
         ,u.role role
         FROM userright u
         LEFT JOIN hospitalofreginfo h ON u.hospitalcode = h.hospitalcode

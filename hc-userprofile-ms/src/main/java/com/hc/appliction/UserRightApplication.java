@@ -95,6 +95,7 @@ public class UserRightApplication {
                         .timeoutWarning(res.getTimeoutWarning()==null?"":res.getTimeoutWarning())
                         .reminders(res.getReminders()==null?"":res.getReminders())
                         .role(res.getRole() == null?"":res.getRole())
+                        .mailbox(res.getMailbox() == null?"":res.getMailbox())
                         .build();
                 list.add(result);
             });
