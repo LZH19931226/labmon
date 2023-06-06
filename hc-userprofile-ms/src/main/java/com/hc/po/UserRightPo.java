@@ -121,4 +121,10 @@ public class UserRightPo {
      */
     @TableField(value = "role")
     private String role;
+
+    /**
+     * 邮箱
+     */
+    @TableField(value = "mailbox")
+    private String mailbox;
 }
