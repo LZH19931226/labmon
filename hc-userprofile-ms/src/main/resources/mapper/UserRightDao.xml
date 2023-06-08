@@ -33,6 +33,7 @@
         ,u.reminders reminders
         ,u.mailbox mailbox
         ,u.role role
+        ,u.national_id nationalId
         FROM userright u
         LEFT JOIN hospitalofreginfo h ON u.hospitalcode = h.hospitalcode
         where 1=1

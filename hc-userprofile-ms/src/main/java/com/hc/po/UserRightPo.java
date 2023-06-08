@@ -127,4 +127,10 @@ public class UserRightPo {
      */
     @TableField(value = "mailbox")
     private String mailbox;
+
+    /**
+     * 国家信息id
+     */
+    @TableField(value = "national_id")
+    private int nationalId;
 }

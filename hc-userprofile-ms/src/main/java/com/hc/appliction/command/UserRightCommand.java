@@ -1,5 +1,6 @@
 package com.hc.appliction.command;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -99,4 +100,10 @@ public class UserRightCommand {
 
     @ApiModelProperty(value = "邮箱")
     private String mailbox;
+
+    /**
+     * 国家信息id
+     */
+    @TableField(value = "national_id")
+    private int nationalId;
 }
