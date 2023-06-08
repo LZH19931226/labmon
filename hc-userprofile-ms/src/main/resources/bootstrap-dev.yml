@@ -2,13 +2,12 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: ec2-54-159-234-241.compute-1.amazonaws.com:8848
+        server-addr: 172.31.85.148:8848
         file-extension: yaml
         prefix: hc-userprofile-ms
         group: DEFAULT_GROUP
-        namespace: ycw
+        namespace: liuzhihao
       discovery:
-        server-addr: ec2-54-159-234-241.compute-1.amazonaws.com:8848
-        namespace: ycw
-
-
+        server-addr: 172.31.85.148:8848
+        namespace: liuzhihao
+        ip: 172.31.85.148

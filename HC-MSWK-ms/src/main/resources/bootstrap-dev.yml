@@ -2,12 +2,12 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: cdh02:8848
+        server-addr: 172.31.85.148:8848
         file-extension: yaml
         prefix: hc-mswk-ms
         group: DEFAULT_GROUP
-        namespace: chengkai
+        namespace: liuzhihao
       discovery:
-        server-addr: cdh02:8848
-        namespace: chengkai
-#        ip: 172.24.58.152
+        server-addr: 172.31.85.148:8848
+        namespace: liuzhihao
+        ip: 172.31.6.51

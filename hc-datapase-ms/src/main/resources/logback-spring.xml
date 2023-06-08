@@ -26,7 +26,7 @@
                 <pattern>
                     <pattern>
                         {
-                        "service": "hc-labmanagement-ms",
+                        "service": "hc-datapase-ms",
                         "msg": "%message"
                         }
                     </pattern>
