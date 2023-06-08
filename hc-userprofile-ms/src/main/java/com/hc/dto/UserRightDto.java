@@ -109,4 +109,9 @@ public class UserRightDto extends UserRightPo {
      * 用户权限 1为后台用户 其他为普通用户
      */
     private String role;
+
+    /**
+     * 国家信息id
+     */
+    private int nationalId;
 }

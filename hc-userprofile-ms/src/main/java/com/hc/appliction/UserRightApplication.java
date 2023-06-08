@@ -22,6 +22,7 @@ import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.SysMenuEntityService;
 import com.hc.service.UserBackService;
 import com.hc.service.UserRightService;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserRightVo;
 import com.hc.vo.user.dto.SysMenuDTO;
@@ -35,6 +36,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户权限申请
@@ -75,11 +77,15 @@ public class UserRightApplication {
      * @return
      */
     public Page<UserRightVo> findUserRightList(UserRightCommand userRightCommand, Long pageSize, Long pageCurrent) {
+        // 此处拿到所有国家信息
+        List<SysNationalVo> nationalVoList = userRightService.getNational();
         Page<UserRightVo> page = new Page<>(pageCurrent,pageSize);
         List<UserRightDto> userRightList = userRightService.findUserRightList(page, userRightCommand);
         List<UserRightVo> list = new ArrayList<>();
         if(userRightList!=null && userRightList.size()!=0){
             userRightList.forEach(res ->{
+                // 去除当前national_id对应的国家信息
+                List<SysNationalVo> curNationalVoList = nationalVoList.stream().filter(item -> item.getNationalId() == res.getNationalId()).collect(Collectors.toList());
                 UserRightVo result = UserRightVo.builder()
                         .hospitalCode(res.getHospitalCode())
                         .userid(res.getUserid())
@@ -87,7 +93,7 @@ public class UserRightApplication {
                         .nickname(StringUtils.isEmpty(res.getNickname())?res.getUsername():res.getNickname())
                         .pwd(res.getPwd())
                         .hospitalName(res.getHospitalName())
-                        .phoneNum(res.getPhoneNum())
+                        .phoneNum(res.getPhoneNum()==null?"":res.getPhoneNum())
                         .isUse(res.getIsUse())
                         .userType(res.getUserType())
                         .deviceType(res.getDeviceType())
@@ -96,6 +102,7 @@ public class UserRightApplication {
                         .reminders(res.getReminders()==null?"":res.getReminders())
                         .role(res.getRole() == null?"":res.getRole())
                         .mailbox(res.getMailbox() == null?"":res.getMailbox())
+                        .nationalVo(CollectionUtils.isEmpty(curNationalVoList) ? null : curNationalVoList.get(0))
                         .build();
                 list.add(result);
             });
@@ -371,4 +378,9 @@ public class UserRightApplication {
     public String getUserName(String userId) {
         return userRightService.getUserName(userId);
     }
+
+    public List<SysNationalVo> getNational() {
+        return userRightService.getNational();
+    }
+
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.dto.UserRightDto;
 import com.hc.po.UserRightPo;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.user.UserRightVo;
 
 import java.util.List;
@@ -86,4 +87,7 @@ public interface UserRightRepository extends IService<UserRightPo> {
     Boolean checkPhoneNum(UserRightCommand userRightCommand);
 
     String getUserName(String userId);
+
+    List<SysNationalVo> getNational();
+
 }

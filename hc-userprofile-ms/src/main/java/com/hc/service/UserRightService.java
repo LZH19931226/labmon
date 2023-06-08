@@ -3,6 +3,7 @@ package com.hc.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.dto.UserRightDto;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.user.UserRightVo;
 
 import java.util.List;
@@ -81,4 +82,7 @@ public interface UserRightService {
     Boolean checkPhoneNum(UserRightCommand userRightCommand);
 
     String getUserName(String userId);
+
+    List<SysNationalVo> getNational();
+
 }

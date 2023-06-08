@@ -1,6 +1,7 @@
 package com.hc.vo.user;
 
 import com.hc.command.labmanagement.model.HospitalEquipmentTypeModel;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.dto.SysMenuDTO;
 import lombok.AllArgsConstructor;
@@ -89,4 +90,8 @@ public class UserRightVo {
 
     /** 邮箱 */
     private String mailbox;
+
+    /** 国家信息 */
+    private SysNationalVo nationalVo;
+
 }

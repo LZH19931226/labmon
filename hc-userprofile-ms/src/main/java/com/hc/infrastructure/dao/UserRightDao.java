@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.dto.UserRightDto;
 import com.hc.po.UserRightPo;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.user.UserRightVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -61,5 +62,7 @@ public interface UserRightDao extends BaseMapper<UserRightPo>  {
     Integer checkUsername(String userName);
 
     String getUserName(@Param("userId") String userId);
+
+    List<SysNationalVo> getNational();
 
 }
