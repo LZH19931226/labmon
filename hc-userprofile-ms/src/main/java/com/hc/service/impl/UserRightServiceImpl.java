@@ -7,6 +7,7 @@ import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.repository.UserRightRepository;
 import com.hc.service.UserRightService;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.user.UserRightVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,4 +198,10 @@ public class UserRightServiceImpl implements UserRightService {
     public String getUserName(String userId) {
         return userRightRepository.getUserName(userId);
     }
+
+    @Override
+    public List<SysNationalVo> getNational() {
+        return userRightRepository.getNational();
+    }
+
 }

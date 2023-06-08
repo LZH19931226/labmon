@@ -22,6 +22,7 @@ import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.SysMenuEntityService;
 import com.hc.service.UserBackService;
 import com.hc.service.UserRightService;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.hospital.HospitalInfoVo;
 import com.hc.vo.user.UserRightVo;
 import com.hc.vo.user.dto.SysMenuDTO;
@@ -371,4 +372,9 @@ public class UserRightApplication {
     public String getUserName(String userId) {
         return userRightService.getUserName(userId);
     }
+
+    public List<SysNationalVo> getNational() {
+        return userRightService.getNational();
+    }
+
 }

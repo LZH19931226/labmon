@@ -5,6 +5,7 @@ import com.hc.appliction.UserRightApplication;
 import com.hc.appliction.command.UserRightCommand;
 import com.hc.my.common.core.jwt.JwtIgnore;
 import com.hc.my.common.core.redis.dto.UserRightRedisDto;
+import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.user.UserRightVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -110,4 +111,11 @@ public class UserRightInfoController {
     public String getUserName(@RequestParam("userId") String userId){
         return  userRightApplication.getUserName(userId);
     }
+
+    @GetMapping("/getNational")
+    @ApiOperation("获取国家信息")
+    public List<SysNationalVo> getNational(){
+        return userRightApplication.getNational();
+    }
+
 }

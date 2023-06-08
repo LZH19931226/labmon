@@ -47,6 +47,26 @@
         </if>
 
     </select>
+
+
+    <resultMap type="com.hc.vo.country.SysNationalVo" id="SysNationalResult">
+        <result property="nationalId" column="national_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="svgIcon" column="svg_icon"/>
+        <result property="orderId" column="order_id"/>
+    </resultMap>
+
+    <select id="getNational" resultMap="SysNationalResult">
+        SELECT
+            national_id,
+            name,
+            code,
+            svg_icon,
+            order_id
+         FROM sys_national
+    </select>
+
 </mapper>
 
 
