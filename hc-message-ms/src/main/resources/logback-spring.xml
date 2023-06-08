@@ -20,6 +20,26 @@
 <!--        <encoder charset="UTF-8"-->
 <!--                 class="net.logstash.logback.encoder.LogstashEncoder" />-->
 <!--    </appender>-->
+
+    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "service": "hc-message-ms",
+                        "msg": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <topic>message</topic>
+        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+        <producerConfig>bootstrap.servers=172.31.85.148:9092</producerConfig>
+    </appender>
+
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
     <!-- addtivity:是否向上级loger传递打印信息。默认是true。-->
     <!-- <loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。-->
@@ -40,7 +60,7 @@
         <appender-ref ref="STDOUT"/>
         <!--        <appender-ref ref="FILE"/>-->
         <!--        <appender-ref ref="ASYNC"/>-->
-<!--        <appender-ref ref="kafkaAppender"/>-->
+        <appender-ref ref="kafkaAppender"/>
     </root>
 
 </configuration>
