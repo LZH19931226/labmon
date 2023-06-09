@@ -35,6 +35,6 @@ public class SysNationalPo {
 
     /** 排序编号 */
     @TableField("order_id")
-    private int orderId;
+    private Integer orderId;
 
 }

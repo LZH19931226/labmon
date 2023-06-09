@@ -382,8 +382,21 @@ public class UserRightApplication {
 
     public List<SysNationalVo> getNational() {
         List<SysNationalDto> sysNationalDtoList = userRightService.getNational();
-        List<SysNationalVo> sysNationalVoList = BeanConverter.convert(sysNationalDtoList, SysNationalVo.class);
-        return sysNationalVoList;
+        List<SysNationalVo> list = new ArrayList<>();
+        if(sysNationalDtoList!=null && sysNationalDtoList.size()!=0){
+            sysNationalDtoList.forEach(res ->{
+                // 去除当前national_id对应的国家信息
+                SysNationalVo result = SysNationalVo.builder()
+                        .nationalId(res.getNationalId())
+                        .name(res.getName())
+                        .code(res.getCode())
+                        .svgIcon(res.getSvgIcon())
+                        .orderId(res.getOrderId())
+                        .build();
+                list.add(result);
+            });
+        }
+        return list;
     }
 
 }

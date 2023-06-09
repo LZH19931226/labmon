@@ -20,6 +20,6 @@ public class SysNationalDto {
     private String svgIcon;
 
     /** 排序编号 */
-    private int orderId;
+    private Integer orderId;
 
 }
