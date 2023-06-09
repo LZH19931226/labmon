@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class SysNationalVo implements Serializable {
 
     /** 主键id */
-    private int nationalId;
+    private Integer nationalId;
 
     /** 国家名称 */
     private String name;

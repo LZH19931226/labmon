@@ -113,5 +113,5 @@ public class UserRightDto extends UserRightPo {
     /**
      * 国家信息id
      */
-    private int nationalId;
+    private Integer nationalId;
 }
