@@ -59,7 +59,7 @@ public class UserRightInfoController {
     @PostMapping("/userLogin")
     @ApiOperation("用户账号登录")
     @JwtIgnore
-    public UserRightVo UserRightLogin(@RequestBody UserRightCommand userRightCommand){
+    public UserRightVo userRightLogin(@RequestBody UserRightCommand userRightCommand){
         return userRightApplication.Login(userRightCommand);
     }
 

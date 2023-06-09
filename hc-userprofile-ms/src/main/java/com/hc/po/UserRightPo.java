@@ -132,5 +132,5 @@ public class UserRightPo {
      * 国家信息id
      */
     @TableField(value = "national_id")
-    private int nationalId;
+    private Integer nationalId;
 }
