@@ -56,11 +56,13 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         if(integer>0){
             throw new IedsException(LabSystemEnum.LOGIN_ACCOUNT_ALREADY_EXISTS);
         }
-        Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
-                .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
-                .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
-        if(num>0){
-            throw new IedsException(LabSystemEnum.PHONE_NUM_EXISTS);
+        if (StringUtils.isNotEmpty(userRightCommand.getPhoneNum())) {
+            Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
+                    .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
+                    .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
+            if(num>0){
+                throw new IedsException(LabSystemEnum.PHONE_NUM_EXISTS);
+            }
         }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
