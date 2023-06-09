@@ -88,6 +88,4 @@ public interface UserRightRepository extends IService<UserRightPo> {
 
     String getUserName(String userId);
 
-    List<SysNationalVo> getNational();
-
 }

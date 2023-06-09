@@ -13,7 +13,6 @@ import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.po.UserRightPo;
 import com.hc.repository.UserRightRepository;
-import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.user.UserRightVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +56,13 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
         if(integer>0){
             throw new IedsException(LabSystemEnum.LOGIN_ACCOUNT_ALREADY_EXISTS);
         }
-        Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
-                .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
-                .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
-        if(num>0){
-            throw new IedsException(LabSystemEnum.PHONE_NUM_EXISTS);
+        if (StringUtils.isNotEmpty(userRightCommand.getPhoneNum())) {
+            Integer num = userRightDao.selectCount(Wrappers.lambdaQuery(new UserRightPo())
+                    .eq(UserRightPo::getHospitalCode,userRightCommand.getHospitalCode())
+                    .eq(UserRightPo::getPhoneNum,userRightCommand.getPhoneNum()));
+            if(num>0){
+                throw new IedsException(LabSystemEnum.PHONE_NUM_EXISTS);
+            }
         }
         userRightPo.setUserid(UUID.randomUUID().toString().replaceAll("-", ""));
         userRightDao.insert(userRightPo);
@@ -202,11 +203,6 @@ public class UserRightRepositoryImpl extends ServiceImpl<UserRightDao, UserRight
     @Override
     public String getUserName(String userId) {
         return userRightDao.getUserName(userId);
-    }
-
-    @Override
-    public List<SysNationalVo> getNational() {
-        return userRightDao.getNational();
     }
 
 }

@@ -2,9 +2,11 @@ package com.hc.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
+import com.hc.dto.SysNationalDto;
 import com.hc.dto.UserRightDto;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
+import com.hc.repository.SysNationalRepository;
 import com.hc.repository.UserRightRepository;
 import com.hc.service.UserRightService;
 import com.hc.vo.country.SysNationalVo;
@@ -26,7 +28,8 @@ public class UserRightServiceImpl implements UserRightService {
     @Autowired
     private UserRightRepository userRightRepository;
 
-
+    @Autowired
+    private SysNationalRepository sysNationalRepository;
 
     /**
      * 分页查询用户信息
@@ -200,8 +203,9 @@ public class UserRightServiceImpl implements UserRightService {
     }
 
     @Override
-    public List<SysNationalVo> getNational() {
-        return userRightRepository.getNational();
+    public List<SysNationalDto> getNational() {
+        List<SysNationalDto> sysNationalDtoList = sysNationalRepository.getNational();
+        return sysNationalDtoList;
     }
 
 }
