@@ -51,8 +51,6 @@ public class SocketMessageListener {
     @Autowired
     private HospitalRedisApi hospitalRedisApi;
     @Autowired
-    private MessageSendService messageSendService;
-    @Autowired
     private AlmMsgService almMsgService;
     @Autowired
     private ProbeRedisApi probeRedisApi;
@@ -140,14 +138,14 @@ public class SocketMessageListener {
         if(StringUtils.isBlank(hospitalName) || StringUtils.isBlank(eqTypeName.toString()) || StringUtils.isBlank(count.toString())){
             return;
         }
-        List<Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
-        if (CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
+        List<Userright> userrights = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
+        if (CollectionUtils.isEmpty(userrights)) {
             return;
         }
         //通知信息
-        warningService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode);
+        warningService.pushTimeOutNotification(userrights,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode);
         //保存到数据库
-        sendTimeoutRecordService.saveTimeOutRecord(userrightByHospitalcodeAAndTimeout,hospitalcode,eqTypeName.toString(),count.toString());
+        sendTimeoutRecordService.saveTimeOutRecord(userrights,hospitalcode,eqTypeName.toString(),count.toString());
     }
 
     public void msctMessage(String message) {

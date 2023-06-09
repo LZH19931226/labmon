@@ -63,7 +63,7 @@ public class TimerConfig {
 
     //每30分钟执行一次
     @Scheduled(cron = "0 0/30 * * * ?")
-    public void Time() {
+    public void timeOutEquiment() {
         // 查询所有需要超时报警的设备
         List<TimeoutEquipment> timeoutEquipments = hospitalInfoMapper.getTimeoutEquipment();
         if (CollectionUtils.isEmpty(timeoutEquipments)) {

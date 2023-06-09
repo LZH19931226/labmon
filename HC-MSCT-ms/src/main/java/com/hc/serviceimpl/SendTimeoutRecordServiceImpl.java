@@ -18,9 +18,9 @@ public class SendTimeoutRecordServiceImpl implements SendTimeoutRecordService {
     private SendTimeoutRecordDao sendTimeoutRecordDao;
 
     @Override
-    public void saveTimeOutRecord(List<Userright> userrightByHospitalcodeAAndTimeout, String hospitalcode, String eqTypeName, String count) {
+    public void saveTimeOutRecord(List<Userright> userrights, String hospitalcode, String eqTypeName, String count) {
         List<SendTimeoutRecord> list = new ArrayList<>();
-        for (Userright userright : userrightByHospitalcodeAAndTimeout) {
+        for (Userright userright : userrights) {
             SendTimeoutRecord sendTimeoutRecord = new SendTimeoutRecord();
             sendTimeoutRecord.setSendType(userright.getReminders());
             sendTimeoutRecord.setCount(count);
