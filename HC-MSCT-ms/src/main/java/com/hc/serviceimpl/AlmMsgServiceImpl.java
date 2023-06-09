@@ -37,62 +37,62 @@ public class AlmMsgServiceImpl implements AlmMsgService {
     @Autowired
     private HospitalEquipmentTypeIdApi hospitalEquipmentTypeIdApi;
 
-    @Autowired
-    private UserScheduLingService userScheduLingService;
+//    @Autowired
+//    private UserScheduLingService userScheduLingService;
 
     @Autowired
     private UserrightService userrightService;
 
     @Override
     public List<Userright> addUserScheduLing(String hospitalcode) {
-        List<Userright> list = new ArrayList<>();
-        List<String> phones = new ArrayList<>();
-        Date date = new Date();
-        List<UserScheduLing> userScByHosSt1 = userScheduLingService.getHospitalScheduleInfo(hospitalcode);
-        if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
-            List<UserScheduLing> lings = new ArrayList<>();
-            UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);
-            Date starttime = userScheduLing.getStarttime();
-            Date endtime = userScheduLing.getEndtime();
-            UserScheduLing userScheduLing1 = userScByHosSt1.get(0);
-            Date endtime1 = userScheduLing1.getEndtime();
-            //大于今天最晚时间不处理
-            //处于今天
-            if (date.compareTo(starttime) >= 0 && date.compareTo(endtime) <= 0) {
-                lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
-                //位于昨天
-            } else if (date.compareTo(starttime) < 0) {
-                lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(endtime1) == 0).collect(Collectors.toList());
-            }
-            if (CollectionUtils.isNotEmpty(lings)) {
-                for (UserScheduLing s : lings) {
-                    Userright userright = new Userright();
-                    //排班的人默认都是电话+短信
-                    userright.setReminders(null);
-                    String userphone = s.getUserphone();
-                    if (StringUtils.isNotEmpty(userphone)) {
-                        userright.setPhonenum(userphone);
-                        phones.add(userphone);
-                    }
-                    list.add(userright);
-                }
-            }
-        }
+//        List<Userright> list = new ArrayList<>();
+//        List<String> phones = new ArrayList<>();
+//        Date date = new Date();
+//        List<UserScheduLing> userScByHosSt1 = userScheduLingService.getHospitalScheduleInfo(hospitalcode);
+//        if (CollectionUtils.isNotEmpty(userScByHosSt1)) {
+//            List<UserScheduLing> lings = new ArrayList<>();
+//            UserScheduLing userScheduLing = userScByHosSt1.get(userScByHosSt1.size() - 1);
+//            Date starttime = userScheduLing.getStarttime();
+//            Date endtime = userScheduLing.getEndtime();
+//            UserScheduLing userScheduLing1 = userScByHosSt1.get(0);
+//            Date endtime1 = userScheduLing1.getEndtime();
+//            //大于今天最晚时间不处理
+//            //处于今天
+//            if (date.compareTo(starttime) >= 0 && date.compareTo(endtime) <= 0) {
+//                lings = userScByHosSt1.stream().filter(s -> s.getStarttime().compareTo(starttime) == 0 && s.getEndtime().compareTo(endtime) == 0).collect(Collectors.toList());
+//                //位于昨天
+//            } else if (date.compareTo(starttime) < 0) {
+//                lings = userScByHosSt1.stream().filter(s -> s.getEndtime().compareTo(endtime1) == 0).collect(Collectors.toList());
+//            }
+//            if (CollectionUtils.isNotEmpty(lings)) {
+//                for (UserScheduLing s : lings) {
+//                    Userright userright = new Userright();
+//                    //排班的人默认都是电话+短信
+//                    userright.setReminders(null);
+//                    String userphone = s.getUserphone();
+//                    if (StringUtils.isNotEmpty(userphone)) {
+//                        userright.setPhonenum(userphone);
+//                        phones.add(userphone);
+//                    }
+//                    list.add(userright);
+//                }
+//            }
+//        }
         List<Userright> users =  userrightService.findALLUserRightInfoByHC(hospitalcode);
         if (CollectionUtils.isEmpty(users)) {
             return null;
         }
         //未排班的人
-        if (CollectionUtils.isEmpty(list)) {
-            list.addAll(users);
-        } else {
-            //有排班的人和未排班的人
-            if (CollectionUtils.isNotEmpty(phones)) {
-                List<Userright> userRights = users.stream().filter(s -> !phones.contains(s.getPhonenum())).collect(Collectors.toList());
-                list.addAll(userRights);
-            }
-        }
-        return list;
+//        if (CollectionUtils.isEmpty(list)) {
+//            list.addAll(users);
+//        } else {
+//            //有排班的人和未排班的人
+//            if (CollectionUtils.isNotEmpty(phones)) {
+//                List<Userright> userRights = users.stream().filter(s -> !phones.contains(s.getPhonenum())).collect(Collectors.toList());
+//                list.addAll(userRights);
+//            }
+//        }
+        return users;
     }
 
     /**
