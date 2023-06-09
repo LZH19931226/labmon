@@ -2,8 +2,8 @@ package com.hc.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.appliction.command.UserRightCommand;
+import com.hc.dto.SysNationalDto;
 import com.hc.dto.UserRightDto;
-import com.hc.vo.country.SysNationalVo;
 import com.hc.vo.user.UserRightVo;
 
 import java.util.List;
@@ -83,6 +83,6 @@ public interface UserRightService {
 
     String getUserName(String userId);
 
-    List<SysNationalVo> getNational();
+    List<SysNationalDto> getNational();
 
 }

@@ -6,6 +6,7 @@ import com.hc.appliction.command.UserRightCommand;
 import com.hc.command.labmanagement.user.UserRightInfoCommand;
 import com.hc.command.labmanagement.user.UserRightLogCommand;
 import com.hc.dto.HospitalRegistrationInfoDto;
+import com.hc.dto.SysNationalDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserRightDto;
 import com.hc.labmanagent.OperationlogApi;
@@ -78,14 +79,14 @@ public class UserRightApplication {
      */
     public Page<UserRightVo> findUserRightList(UserRightCommand userRightCommand, Long pageSize, Long pageCurrent) {
         // 此处拿到所有国家信息
-        List<SysNationalVo> nationalVoList = userRightService.getNational();
+        List<SysNationalDto> nationalDtoList = userRightService.getNational();
         Page<UserRightVo> page = new Page<>(pageCurrent,pageSize);
         List<UserRightDto> userRightList = userRightService.findUserRightList(page, userRightCommand);
         List<UserRightVo> list = new ArrayList<>();
         if(userRightList!=null && userRightList.size()!=0){
             userRightList.forEach(res ->{
                 // 去除当前national_id对应的国家信息
-                List<SysNationalVo> curNationalVoList = nationalVoList.stream().filter(item -> item.getNationalId() .equals( res.getNationalId())).collect(Collectors.toList());
+                List<SysNationalDto> curNationalDtoList = nationalDtoList.stream().filter(item -> item.getNationalId() .equals( res.getNationalId())).collect(Collectors.toList());
                 UserRightVo result = UserRightVo.builder()
                         .hospitalCode(res.getHospitalCode())
                         .userid(res.getUserid())
@@ -102,7 +103,7 @@ public class UserRightApplication {
                         .reminders(res.getReminders()==null?"":res.getReminders())
                         .role(res.getRole() == null?"":res.getRole())
                         .mailbox(res.getMailbox() == null?"":res.getMailbox())
-                        .nationalVo(CollectionUtils.isEmpty(curNationalVoList) ? null : curNationalVoList.get(0))
+                        .nationalVo(CollectionUtils.isEmpty(curNationalDtoList) ? null : BeanConverter.convert(curNationalDtoList.get(0), SysNationalVo.class))
                         .build();
                 list.add(result);
             });
@@ -380,7 +381,9 @@ public class UserRightApplication {
     }
 
     public List<SysNationalVo> getNational() {
-        return userRightService.getNational();
+        List<SysNationalDto> sysNationalDtoList = userRightService.getNational();
+        List<SysNationalVo> sysNationalVoList = BeanConverter.convert(sysNationalDtoList, SysNationalVo.class);
+        return sysNationalVoList;
     }
 
 }
