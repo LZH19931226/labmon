@@ -86,7 +86,18 @@ public class UserRightApplication {
         if(userRightList!=null && userRightList.size()!=0){
             userRightList.forEach(res ->{
                 // 去除当前national_id对应的国家信息
-                List<SysNationalDto> curNationalDtoList = nationalDtoList.stream().filter(item -> item.getNationalId() .equals( res.getNationalId())).collect(Collectors.toList());
+                List<SysNationalDto> curNationalDtoList = nationalDtoList.stream().filter(item -> item.getNationalId().equals(res.getNationalId())).collect(Collectors.toList());
+                SysNationalVo sysNationalVo = new SysNationalVo();
+                if (curNationalDtoList!=null && curNationalDtoList.size()!=0) {
+                    SysNationalDto sysNationalDto = curNationalDtoList.get(0);
+                    sysNationalVo = SysNationalVo.builder()
+                            .nationalId(sysNationalDto.getNationalId())
+                            .name(sysNationalDto.getName())
+                            .code(sysNationalDto.getCode())
+                            .svgIcon(sysNationalDto.getSvgIcon())
+                            .orderId(sysNationalDto.getOrderId())
+                            .build();
+                }
                 UserRightVo result = UserRightVo.builder()
                         .hospitalCode(res.getHospitalCode())
                         .userid(res.getUserid())
@@ -103,7 +114,7 @@ public class UserRightApplication {
                         .reminders(res.getReminders()==null?"":res.getReminders())
                         .role(res.getRole() == null?"":res.getRole())
                         .mailbox(res.getMailbox() == null?"":res.getMailbox())
-                        .nationalVo(CollectionUtils.isEmpty(curNationalDtoList) ? null : BeanConverter.convert(curNationalDtoList.get(0), SysNationalVo.class))
+                        .nationalVo(sysNationalVo)
                         .build();
                 list.add(result);
             });
