@@ -26,7 +26,7 @@ public class SendTimeoutRecordServiceImpl implements SendTimeoutRecordService {
             sendTimeoutRecord.setCount(count);
             sendTimeoutRecord.setEquipmentType(eqTypeName);
             sendTimeoutRecord.setHospitalCode(hospitalcode);
-            sendTimeoutRecord.setPhoneNum(userright.getPhonenum());
+            sendTimeoutRecord.setPhoneNum(userright.getCode()+userright.getPhoneNum());
             sendTimeoutRecord.setCreateTime(DateUtils.getNowDate());
             list.add(sendTimeoutRecord);
         }
