@@ -1,5 +1,6 @@
 package com.hc.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -26,16 +27,17 @@ import java.util.Map;
  * https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html
  */
 @Component
+@Slf4j
 public class SendEmailMessage {
 
 
-    @Value("${amaon:accesskeyid}")
+    @Value("${amaon.accesskeyid}")
     private String accessKeyId;
-    @Value("${amaon:secretaccesskey}")
+    @Value("${amaon.secretaccesskey}")
     private String secretAccessKey;
-    @Value("${amaon:appid}")
+    @Value("${amaon.appid}")
     private String appId;
-    @Value("${amaon:senderaddress}")
+    @Value("${amaon.senderaddress}")
     private String senderAddress;
 
     // The character encoding the you want to use for the subject line and
@@ -60,6 +62,8 @@ public class SendEmailMessage {
                 return secretAccessKey;
             }
         };
+        log.info("accessKeyId:{}",accessKeyId);
+        log.info("secretAccessKey:{}",secretAccessKey);
         PinpointClient pinpoint = PinpointClient.builder()
                 .region(Region.US_EAST_1)
                 .credentialsProvider(awsCredentialsProvider)

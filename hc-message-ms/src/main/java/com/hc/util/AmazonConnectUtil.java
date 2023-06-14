@@ -1,5 +1,6 @@
 package com.hc.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,18 +15,19 @@ import java.util.Map;
 
 
 @Component
+@Slf4j
 public class AmazonConnectUtil {
 
 
-    @Value("${amaon:contactflowid}")
+    @Value("${amaon.contactflowid}")
     private String contactFlowId;
-    @Value("${amaon:instanceid}")
+    @Value("${amaon.instanceid}")
     private String instanceId;
-    @Value("${amaon:sourcephonenumber}")
+    @Value("${amaon.sourcephonenumber}")
     private String sourcePhoneNumber;
-    @Value("${amaon:accesskeyid}")
+    @Value("${amaon.accesskeyid}")
     private String accessKeyId;
-    @Value("${amaon:secretaccesskey}")
+    @Value("${amaon.secretaccesskey}")
     private String secretAccessKey;
 
     public void makeCall(String phoneNumber,String message) {
@@ -41,6 +43,8 @@ public class AmazonConnectUtil {
                 return secretAccessKey;
             }
         };
+        log.info("accessKeyId:{}",accessKeyId);
+        log.info("secretAccessKey:{}",secretAccessKey);
         ConnectClient connectClient = ConnectClient.builder()
                 .region(Region.US_EAST_1)
                 .credentialsProvider(awsCredentialsProvider)
