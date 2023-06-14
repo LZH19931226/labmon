@@ -45,6 +45,11 @@ public class AmazonConnectUtil {
         };
         log.info("accessKeyId:{}",accessKeyId);
         log.info("secretAccessKey:{}",secretAccessKey);
+        log.info("contactflowid:{}",contactFlowId);
+        log.info("instanceId:{}",instanceId);
+        log.info("sourcephonenumber:{}",sourcePhoneNumber);
+
+
         ConnectClient connectClient = ConnectClient.builder()
                 .region(Region.US_EAST_1)
                 .credentialsProvider(awsCredentialsProvider)
@@ -57,7 +62,7 @@ public class AmazonConnectUtil {
                         .contactFlowId(contactFlowId)
                         .attributes(messageMap)
                         .instanceId(instanceId)
-                        .sourcePhoneNumber(sourcePhoneNumber)
+                        .sourcePhoneNumber("+"+sourcePhoneNumber)
                         .build()
         );
 

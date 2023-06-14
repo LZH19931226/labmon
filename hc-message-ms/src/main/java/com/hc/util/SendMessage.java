@@ -70,7 +70,7 @@ public class SendMessage {
                 .credentialsProvider(awsCredentialsProvider)
                 .build();
 
-        sendSMSMessage(pinpoint,message,appId,originationNumber,phone);
+        sendSMSMessage(pinpoint,message,appId,"+"+originationNumber,phone);
     }
 
 
