@@ -1,6 +1,5 @@
 package com.hc.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -130,5 +129,5 @@ public class Userright implements Serializable {
      * 国家区号
      */
     @TableField(value = "code",exist = false)
-    private Integer code;
+    private String code;
 }
