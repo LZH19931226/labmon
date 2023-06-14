@@ -14,10 +14,10 @@ import java.util.List;
 @Mapper
 public interface UserrightDao extends BaseMapper<Userright> {
 
-    @Select("SELECT t1.*,t2.`code` FROM userright t1 ,sys_national t2 WHERE t1.national_id = t2.national_id  WHERE t1.hospitalcode = #{hospitalcode} and t1.timeout = '1' ")
+    @Select("SELECT t1.*,t2.`code` FROM userright t1 ,sys_national t2 WHERE t1.national_id = t2.national_id  AND t1.hospitalcode = #{hospitalcode} and t1.timeout = '1' ")
     List<Userright> getUserrightByHospitalcodeAAndTimeout (@Param("hospitalcode") String hospitalcode);
 
 
-    @Select("SELECT t1.*,t2.`code` FROM userright t1 ,sys_national t2 WHERE t1.national_id = t2.national_id  WHERE t1.hospitalcode = #{hospitalcode}")
+    @Select("SELECT t1.*,t2.`code` FROM userright t1 ,sys_national t2 WHERE t1.national_id = t2.national_id  AND t1.hospitalcode = #{hospitalcode}")
     List<Userright> findALLUserRightInfoByHC(@Param("hospitalcode") String hospitalcode);
 }
