@@ -61,7 +61,34 @@ public class AmazonConnectUtil {
     }
 
     public static void main(String[] agrs){
-       //makeCall("+8613164197389","ok");
+        AwsCredentialsProvider awsCredentialsProvider  = () -> new AwsCredentials() {
+            @Override
+            public String accessKeyId() {
+                return "AKIAT5ILFNYED5JYHHF6";
+            }
+
+            @Override
+            public String secretAccessKey() {
+                return "QlsOyaS5VTBakXk7zTHoSpw/t0pvm3FQjYuOBBxv";
+            }
+        };
+        ConnectClient connectClient = ConnectClient.builder()
+                .region(Region.US_EAST_1)
+                .credentialsProvider(awsCredentialsProvider)
+                .build();
+        Map<String,String> messageMap =  new HashMap<>();
+        messageMap.put("Message","1213");
+        StartOutboundVoiceContactResponse response = connectClient.startOutboundVoiceContact(
+                StartOutboundVoiceContactRequest.builder()
+                        .destinationPhoneNumber("+8613164197389")
+                        .contactFlowId("63c72727-8db6-4e0d-b1cb-d1b4d36d98f9")
+                        .attributes(messageMap)
+                        .instanceId("07d6eae2-6962-48cf-979d-1b46cd92c957")
+                        .sourcePhoneNumber("+12524864515")
+                        .build()
+        );
+
+
     }
 
 }

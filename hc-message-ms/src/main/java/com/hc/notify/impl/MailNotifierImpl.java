@@ -19,7 +19,7 @@ public class MailNotifierImpl implements Notifier {
     public String exec(Notification notification)  {
         String publishKey = notification.getPublishKey();
         String messageCover = notification.getMessageCover();
-        sendEmailMessage.sendShortMessage("Mutual innovation United technology,Alarm notification",publishKey,messageCover);
+        sendEmailMessage.emailMessage("Mutual innovation United technology,Alarm notification",publishKey,messageCover);
         return  "ok";
 
     }

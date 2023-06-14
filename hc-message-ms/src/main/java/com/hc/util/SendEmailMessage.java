@@ -48,7 +48,7 @@ public class SendEmailMessage {
         //sendShortMessage("HELLO","THIS WORD","null");
     }
 
-    public  void sendShortMessage(String subject,String htmlBody,String Address){
+    public  void emailMessage(String subject,String htmlBody,String Address){
         AwsCredentialsProvider awsCredentialsProvider  = () -> new AwsCredentials() {
             @Override
             public String accessKeyId() {

@@ -1,6 +1,7 @@
 package com.hc.controller;
 
 import com.hc.util.AmazonConnectUtil;
+import com.hc.util.SendEmailMessage;
 import com.hc.util.SendMessage;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class SmsController {
     @Autowired
 	private SendMessage shortMessage;
 
+    @Autowired
+	private SendEmailMessage sendEmailMessage;
+
 	@GetMapping("/phone")
 	@ApiOperation("电话号码")
 	public void testPhone(String phone,String message){
@@ -28,16 +32,16 @@ public class SmsController {
 
 	@GetMapping("/mailbox")
 	@ApiOperation("邮件")
-	public void testMailbox(String phone,String message){
-		shortMessage.sendShortMessage(phone,message);
+	public void testMailbox(String email,String message){
+		sendEmailMessage.emailMessage("",message,email);
 	}
 
 
-//	@GetMapping("/shortMessage")
-//	@ApiOperation("短信")
-//	public void testShortMessage(String phone,String message){
-//		amazonConnectUtil.shortMessage(phone,message);
-//	}
+	@GetMapping("/shortMessage")
+	@ApiOperation("短信")
+	public void testShortMessage(String phone,String message){
+		shortMessage.sendShortMessage(message,phone);
+	}
 
 
 
