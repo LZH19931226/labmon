@@ -37,8 +37,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 @Monitor
-public class NotifyScheduledExecutor implements NotifyExecutor,
-        InitializingBean {
+public class NotifyScheduledExecutor implements NotifyExecutor{
     private final ExecutorService executors = ThreadPool.create(100);
     private final ScheduledExecutorService scheduled = ThreadPool.scheduled(1);
     @Resource
@@ -112,24 +111,24 @@ public class NotifyScheduledExecutor implements NotifyExecutor,
         }
     }
 
-    @Override
-    public void afterPropertiesSet() {
-        scheduled.scheduleAtFixedRate(() -> {
-            try {
-                LambdaQueryWrapper<MessengerPublishTask> wrapper = Wrappers
-                        .lambdaQuery(new MessengerPublishTask())
-                        .eq(MessengerPublishTask::getStatus, 4)
-                        .and(r -> r.le(MessengerPublishTask::getFailureTimes, 3));
-                List<MessengerPublishTask> tasks = publishTaskDao.selectList(wrapper);
-                if (CollectionUtils.isEmpty(tasks)) {
-                    return;
-                }
-                String serviceNo = tasks.stream().findFirst().map(MessengerPublishTask::getServiceNo).orElse("");
-                MessengerServiceDefine define = getServiceDefine(serviceNo);
-                tasks.parallelStream().forEach(task -> notify(define, task));
-            } catch (Throwable e) {
-                log.error("Notify retry failed", e);
-            }
-        }, 120, 60, TimeUnit.SECONDS);
-    }
+//    @Override
+//    public void afterPropertiesSet() {
+//        scheduled.scheduleAtFixedRate(() -> {
+//            try {
+//                LambdaQueryWrapper<MessengerPublishTask> wrapper = Wrappers
+//                        .lambdaQuery(new MessengerPublishTask())
+//                        .eq(MessengerPublishTask::getStatus, 4)
+//                        .and(r -> r.le(MessengerPublishTask::getFailureTimes, 3));
+//                List<MessengerPublishTask> tasks = publishTaskDao.selectList(wrapper);
+//                if (CollectionUtils.isEmpty(tasks)) {
+//                    return;
+//                }
+//                String serviceNo = tasks.stream().findFirst().map(MessengerPublishTask::getServiceNo).orElse("");
+//                MessengerServiceDefine define = getServiceDefine(serviceNo);
+//                tasks.parallelStream().forEach(task -> notify(define, task));
+//            } catch (Throwable e) {
+//                log.error("Notify retry failed", e);
+//            }
+//        }, 120, 60, TimeUnit.SECONDS);
+//    }
 }
