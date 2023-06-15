@@ -289,7 +289,8 @@ public class WarningServiceImpl implements WarningService {
         String warningremark = warningModel.getWarningrecord().getWarningremark();
         for (Userright userright : list) {
             String reminders = userright.getReminders();
-            String phonenum = userright.getCode()+userright.getPhoneNum();
+            String phone = userright.getPhoneNum();
+            String code = userright.getPhoneNum();
             String mailbox = userright.getMailbox();
             String hospitalCode = hospitalInfoDto.getHospitalCode();
             //不报警
@@ -299,14 +300,14 @@ public class WarningServiceImpl implements WarningService {
             //根据设置的报警方式调整报警
             String[] reminder = reminders.split(",");
             for (String rem : reminder) {
-                if (StringUtils.equals(rem,DictEnum.PHONE.getCode())&&StringUtils.isNotEmpty(phonenum)){
-                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode);
-                    phoneCallUser.append(phonenum).append("/");
+                if (StringUtils.equals(rem,DictEnum.PHONE.getCode())&&StringUtils.isNotEmpty(phone)){
+                    buildP2PNotify(code+phone, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode);
+                    phoneCallUser.append(code).append(phone).append("/");
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
                 }
-                if (StringUtils.equals(rem,DictEnum.SMS.getCode())&&StringUtils.isNotEmpty(phonenum)){
-                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode);
-                    mailCallUser.append(phonenum).append("/");
+                if (StringUtils.equals(rem,DictEnum.SMS.getCode())&&StringUtils.isNotEmpty(phone)){
+                    buildP2PNotify(code+phone, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode);
+                    mailCallUser.append(code).append(phone).append("/");
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
                 }
                 if (StringUtils.equals(rem,DictEnum.MAILBOX.getCode())&&StringUtils.isNotEmpty(mailbox)){
