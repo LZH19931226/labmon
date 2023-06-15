@@ -22,7 +22,7 @@ public class MailNotifierImpl implements Notifier {
     public String exec(Notification notification)  {
         String publishKey = notification.getPublishKey();
         String messageCover = notification.getMessageCover();
-        sendEmailMessage.emailMessage("hc-ivf",publishKey,messageCover);
+        sendEmailMessage.emailMessage("hc-ivf",messageCover,publishKey);
         log.info("发送邮件成功:{}", JSONUtil.toJsonStr(notification));
         return  "ok";
 
