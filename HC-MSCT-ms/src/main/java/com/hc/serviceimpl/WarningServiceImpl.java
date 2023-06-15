@@ -290,7 +290,7 @@ public class WarningServiceImpl implements WarningService {
         for (Userright userright : list) {
             String reminders = userright.getReminders();
             String phone = userright.getPhoneNum();
-            String code = userright.getPhoneNum();
+            String code = userright.getCode();
             String mailbox = userright.getMailbox();
             String hospitalCode = hospitalInfoDto.getHospitalCode();
             //不报警
