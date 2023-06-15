@@ -77,7 +77,7 @@ public class NotifyScheduledExecutor implements NotifyExecutor{
     private void notify(MessengerServiceDefine define, MessengerPublishTask task) {
         Notification notification = new Notification();
             //用户id作为推送核心
-        if (StringUtils.equalsAny(task.getPublishType(),NotifyChannel.SMS.getCode(),NotifyChannel.PHONE.getCode())) {
+        if (StringUtils.equalsAny(task.getPublishType(),NotifyChannel.SMS.getCode(),NotifyChannel.PHONE.getCode(),NotifyChannel.MAIL.getCode())) {
             notification.setParam(Collections.emptyMap());
             notification.setMessageBodys(task.getMessageBodys());
             notification.setPublishKey(task.getPublishKey());
