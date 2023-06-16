@@ -9,6 +9,7 @@ import com.hc.dto.HospitalRegistrationInfoDto;
 import com.hc.dto.SysNationalDto;
 import com.hc.dto.UserBackDto;
 import com.hc.dto.UserRightDto;
+import com.hc.infrastructure.dao.SysNationalDao;
 import com.hc.labmanagent.OperationlogApi;
 import com.hc.my.common.core.bean.Audience;
 import com.hc.my.common.core.constant.enums.*;
@@ -19,6 +20,7 @@ import com.hc.my.common.core.redis.dto.UserRightRedisDto;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
 import com.hc.phone.PhoneCodeApi;
+import com.hc.po.SysNationalPo;
 import com.hc.service.HospitalRegistrationInfoService;
 import com.hc.service.SysMenuEntityService;
 import com.hc.service.UserBackService;
@@ -69,6 +71,9 @@ public class UserRightApplication {
 
     @Autowired
     private SysMenuEntityService sysMenuEntityService;
+    
+    @Autowired
+    private SysNationalDao sysNationalDao;
 
     /**
      * 根据分页信息查询用户权限信息
@@ -207,6 +212,9 @@ public class UserRightApplication {
         //2.手机号是否注册
         //3.判断登录端是否安卓 3.1不是安卓 返回用户信息 3.2是安卓 go  3.2.1未设置双因子 go 3.2.1设置双因子 是否一次登录 是校验 不是 go
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
+        //获取用户区号信息
+        SysNationalPo sysNationalPo = sysNationalDao.selectById(userRightDto.getNationalId());
+
         String phoneNum = userRightDto.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
             if (userRightCommand.getLang().equals("zh")) {
@@ -222,17 +230,14 @@ public class UserRightApplication {
         //查询医院信息
         HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         HospitalInfoVo  hospitalInfoVo = builderHospitalInfo(hospitalInfo);
-
         String token = JwtTokenUtil.createJWT(userRightDto.getUserid(), userRightDto.getUsername(),lang, audience);
-
-
         //未设置双因子的医院直接放行 设置了的医院在非app上登录直接放行
         if (!HospitalInfoEnum.ONE.getCode().equals(hospitalInfo.getFactor()) || LoginTypeEnum.H5.getCode().equals(loginType)) {
-            return builder(userRightDto,hospitalInfoVo,token);
+            return builder(userRightDto,hospitalInfoVo,token,);
         }
         //是在app上登录并且是非第一次登录 LoginStatus：0为第一次登录
         if(LoginTypeEnum.ANDROID.getCode().equals(loginType) && LoginStatusEnum.ONE.getCode().equals(loginStatus)){
-            return builder(userRightDto,hospitalInfoVo,token);
+            return builder(userRightDto,hospitalInfoVo,token,);
         }
         return UserRightVo.builder()
                 .twoFactorLogin(TwoFactorLoginEnum.ONE.getCode())
@@ -240,7 +245,8 @@ public class UserRightApplication {
                 .pwd(userRightDto.getPwd())
                 .isUse(userRightDto.getIsUse())
                 .userid(userRightDto.getUserid())
-                .phoneNum(userRightDto.getPhoneNum())
+                .phoneNum(sysNationalPo.getCode()+userRightDto.getPhoneNum())
+                .nationalId(sysNationalPo.getNationalId())
                 .userType(userRightDto.getUserType())
                 .hospitalInfoVo(hospitalInfoVo)
                 .nickname(StringUtils.isEmpty(userRightDto.getNickname())?userRightDto.getUsername():userRightDto.getNickname())
@@ -279,14 +285,15 @@ public class UserRightApplication {
      * @param userRightDto
      * @return
      */
-    private UserRightVo builder(UserRightDto userRightDto, HospitalInfoVo  hospitalInfoVo,String token) {
+    private UserRightVo builder(UserRightDto userRightDto, HospitalInfoVo  hospitalInfoVo,String token, SysNationalPo sysNationalPo) {
         return UserRightVo.builder()
                 .username(userRightDto.getUsername())
                 .pwd(userRightDto.getPwd())
                 .isUse(userRightDto.getIsUse())
                 .userid(userRightDto.getUserid())
+                .nationalId(sysNationalPo.getNationalId())
                 .nickname(StringUtils.isEmpty(userRightDto.getNickname())?userRightDto.getUsername():userRightDto.getNickname())
-                .phoneNum(userRightDto.getPhoneNum())
+                .phoneNum(sysNationalPo.getCode()+userRightDto.getPhoneNum())
                 .userType(userRightDto.getUserType())
                 .token(token)
                 .sysMenuDTOS(buildMenu(userRightDto.getUserType()))
@@ -329,6 +336,7 @@ public class UserRightApplication {
      */
     @GlobalTransactional
     public UserRightVo userRightLoginByPhone(UserRightCommand userRightCommand) {
+        int nationalId = userRightCommand.getNationalId();
         String phoneNum = userRightCommand.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
             throw new IedsException(LabSystemEnum.MOBILE_NUMBER_CANNOT_BE_EMPTY);

@@ -94,4 +94,11 @@ public class UserRightVo {
     /** 国家信息 */
     private SysNationalVo nationalVo;
 
+    /** 主键id */
+    private Integer nationalId;
+
+    /** 电话编号 */
+    private String code;
+
+
 }
