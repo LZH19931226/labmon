@@ -71,7 +71,7 @@ public class UserRightApplication {
 
     @Autowired
     private SysMenuEntityService sysMenuEntityService;
-    
+
     @Autowired
     private SysNationalDao sysNationalDao;
 
@@ -233,11 +233,11 @@ public class UserRightApplication {
         String token = JwtTokenUtil.createJWT(userRightDto.getUserid(), userRightDto.getUsername(),lang, audience);
         //未设置双因子的医院直接放行 设置了的医院在非app上登录直接放行
         if (!HospitalInfoEnum.ONE.getCode().equals(hospitalInfo.getFactor()) || LoginTypeEnum.H5.getCode().equals(loginType)) {
-            return builder(userRightDto,hospitalInfoVo,token,);
+            return builder(userRightDto,hospitalInfoVo,token,sysNationalPo);
         }
         //是在app上登录并且是非第一次登录 LoginStatus：0为第一次登录
         if(LoginTypeEnum.ANDROID.getCode().equals(loginType) && LoginStatusEnum.ONE.getCode().equals(loginStatus)){
-            return builder(userRightDto,hospitalInfoVo,token,);
+            return builder(userRightDto,hospitalInfoVo,token,sysNationalPo);
         }
         return UserRightVo.builder()
                 .twoFactorLogin(TwoFactorLoginEnum.ONE.getCode())
