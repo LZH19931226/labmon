@@ -63,8 +63,6 @@ public class SendMessage {
                 return secretAccessKey;
             }
         };
-        log.info("accessKeyId:{}",accessKeyId);
-        log.info("secretAccessKey:{}",secretAccessKey);
         PinpointClient pinpoint = PinpointClient.builder()
                 .region(Region.US_EAST_1)
                 .credentialsProvider(awsCredentialsProvider)

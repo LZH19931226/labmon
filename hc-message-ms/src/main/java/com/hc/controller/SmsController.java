@@ -52,7 +52,7 @@ public class SmsController {
 	public void senMessagecode(@RequestParam("phonenum")String phontnum, @RequestParam("code")String code) {
 		String message = "Your code is "+code+", It is only valid for 15 mins. If you did not make this request, please ignore this message";
 		log.info(message);
-		shortMessage.sendShortMessage(phontnum, message);
+		shortMessage.sendShortMessage(message, phontnum);
 	}
 
 	@GetMapping("/upsRemind")
@@ -60,7 +60,7 @@ public class SmsController {
 	public void upsRemind(@RequestParam("phonenum")String phontnum, @RequestParam("eqname")String eqname){
 		String message = eqname+" The mains has been restored";
 		log.info(message);
-		shortMessage.sendShortMessage(phontnum,message);
+		shortMessage.sendShortMessage(message,phontnum);
 	}
 
 
