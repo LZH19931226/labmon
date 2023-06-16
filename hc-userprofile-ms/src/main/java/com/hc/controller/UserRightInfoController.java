@@ -93,6 +93,7 @@ public class UserRightInfoController {
          userRightApplication.getPhoneCode(phoneNum);
     }
 
+
     @PostMapping("/appUpdateUser")
     @ApiOperation("app修改用户信息")
     public void appUpdateUser(@RequestBody UserRightCommand userRightCommand){
