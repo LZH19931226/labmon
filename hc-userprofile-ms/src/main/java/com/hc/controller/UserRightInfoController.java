@@ -89,8 +89,8 @@ public class UserRightInfoController {
 
     @PostMapping("/getPhoneCode")
     @ApiOperation("获取手机登录验证码")
-    public void selectPhoneCode(@RequestParam("phoneNum") String phoneNum){
-         userRightApplication.getPhoneCode(phoneNum);
+    public void selectPhoneCode(@RequestParam("phoneNum") String phoneNum,@RequestParam("code") String code){
+         userRightApplication.getPhoneCode(phoneNum,code);
     }
 
 
