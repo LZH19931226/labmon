@@ -4,14 +4,17 @@ import com.hc.util.AmazonConnectUtil;
 import com.hc.util.SendEmailMessage;
 import com.hc.util.SendMessage;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 @RequestMapping("/sms")
+@Slf4j
 public class SmsController {
 
 
@@ -44,6 +47,21 @@ public class SmsController {
 	}
 
 
+	@GetMapping("/code")
+	@ApiOperation("短信验证码获取接口")
+	public void senMessagecode(@RequestParam("phonenum")String phontnum, @RequestParam("code")String code) {
+		String message = "Your code is "+code+", It is only valid for 15 mins. If you did not make this request, please ignore this message";
+		log.info(message);
+		shortMessage.sendShortMessage(phontnum, message);
+	}
+
+	@GetMapping("/upsRemind")
+	@ApiOperation("恢复市电提醒")
+	public void upsRemind(@RequestParam("phonenum")String phontnum, @RequestParam("eqname")String eqname){
+		String message = eqname+" The mains has been restored";
+		log.info(message);
+		shortMessage.sendShortMessage(phontnum,message);
+	}
 
 
 
