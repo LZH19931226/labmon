@@ -10,4 +10,3 @@ spring:
       discovery:
         server-addr: 172.31.85.148:8848
         namespace: liuzhihao
-        ip: 172.31.6.51

@@ -2,6 +2,7 @@ package com.hc.controller;
 
 import com.hc.application.UserPhoneVerificationApplication;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/phone")
+@Slf4j
 public class UserPhoneVerificationController {
 
     @Autowired
@@ -26,9 +28,10 @@ public class UserPhoneVerificationController {
         return userPhoneVerificationApplication.getPhoneCode(phoneNum);
     }
 
-    @GetMapping("/addPhoneCode")
+    @GetMapping("/addCode")
     @ApiOperation("生成手机验证码")
     public void addPhoneCode(@RequestParam("phoneNum")String phoneNum ,@RequestParam("code")String code){
+        log.info("生成短信验证码:{}",phoneNum+code);
          userPhoneVerificationApplication.addPhoneCode(phoneNum,code);
     }
 }

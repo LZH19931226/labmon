@@ -17,7 +17,6 @@ public interface PhoneCodeApi {
     @ApiOperation("获取手机验证码")
     ApiResponse<String> getPhoneCode(@RequestParam("phoneNum") String phoneNum);
 
-    @GetMapping("/phone/addPhoneCode")
-    @ApiOperation("生成手机验证码")
-    void addPhoneCode(@RequestParam("phoneNum")String phoneNum ,@RequestParam("code")String code);
+    @GetMapping("/phone/addCode")
+    ApiResponse<String> addPhoneCode(@RequestParam("phoneNum")String phoneNum ,@RequestParam("code")String code);
 }

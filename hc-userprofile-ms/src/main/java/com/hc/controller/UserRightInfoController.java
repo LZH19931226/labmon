@@ -71,8 +71,8 @@ public class UserRightInfoController {
 
     @GetMapping("/getPhoneCode")
     @ApiOperation("获取手机验证码")
-    public void  getPhoneCode(@RequestParam("phoneNum")String phoneNum){
-        userRightApplication.getPhoneCode(phoneNum);
+    public void  getPhoneCode(@RequestParam("phoneNum")String phoneNum,String code){
+        userRightApplication.getPhoneCode(phoneNum,code);
     }
 
     /**

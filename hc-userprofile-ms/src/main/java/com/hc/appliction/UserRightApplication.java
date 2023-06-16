@@ -318,11 +318,10 @@ public class UserRightApplication {
      * @param phoneNum
      * @return
      */
-    @GlobalTransactional
-    public void getPhoneCode(String phoneNum) {
-        String code = builderCode();
-        phoneCodeApi.addPhoneCode(phoneNum,code);
-        smsApi.senMessagecode(phoneNum,code);
+    public void getPhoneCode(String phoneNum,String code) {
+        String vcode = builderCode();
+        phoneCodeApi.addPhoneCode(phoneNum,vcode);
+        smsApi.senMessagecode(code+phoneNum,vcode);
     }
 
     public String builderCode(){
@@ -334,7 +333,6 @@ public class UserRightApplication {
      * @param userRightCommand
      * @return
      */
-    @GlobalTransactional
     public UserRightVo userRightLoginByPhone(UserRightCommand userRightCommand) {
         int nationalId = userRightCommand.getNationalId();
         String phoneNum = userRightCommand.getPhoneNum();
