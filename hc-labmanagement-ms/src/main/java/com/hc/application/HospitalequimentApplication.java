@@ -258,14 +258,14 @@ public class HospitalequimentApplication {
     public List<HospitalEquipmentTypeModel> findHospitalEquipmentTypeByCode(String hospitalCode) {
         List<HospitalequimentDTO> dtoList =  hospitalequimentService.findHospitalEquipmentTypeByCode(hospitalCode);
         List<HospitalEquipmentTypeModel> list = new ArrayList<>();
-        if(!ObjectUtils.isEmpty(dtoList)){
-            dtoList.forEach(res->{
+        if (!ObjectUtils.isEmpty(dtoList)) {
+            dtoList.forEach(res -> {
                 HospitalEquipmentTypeModel model = new HospitalEquipmentTypeModel();
                 model.setEquipmentTypeId(res.getEquipmenttypeid())
-                .setOrderno(res.getOrderno()+"")
-                .setHospitalName(res.getHospitalname())
-                     .setEquipmentTypeName(res.getEquipmenttypename())
-                             .setEquipmentTypeNameUS(res.getEquipmenttypename_us());
+                        .setOrderno(res.getOrderno() + "")
+                        .setHospitalName(res.getHospitalname())
+                        .setEquipmentTypeName(Context.isChFt() ? res.getEquipmenttypename_ft() : res.getEquipmenttypename())
+                        .setEquipmentTypeNameUS(res.getEquipmenttypename_us());
                 list.add(model);
             });
         }

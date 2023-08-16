@@ -62,6 +62,8 @@ public class HospitalequimentDTO implements Serializable {
     @ApiModelProperty(value = "设备英文名称")
     private String equipmenttypename_us;
 
+    @ApiModelProperty(value = "设备繁体名称")
+    private String equipmenttypename_ft;
 }
 
 

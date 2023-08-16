@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Context {
 
- 
+
     private Context() {
     }
 
@@ -48,6 +48,15 @@ public class Context {
         return StringUtils.equalsIgnoreCase(lang,"zh");
     }
 
+    public static boolean isChFt(){
+        String lang = getLang();
+        return StringUtils.equalsIgnoreCase(lang,"zhft");
+    }
+
+    public static boolean isEn(){
+        String lang = getLang();
+        return StringUtils.equalsIgnoreCase(lang,"en");
+    }
 
     /**
      * 获取Request

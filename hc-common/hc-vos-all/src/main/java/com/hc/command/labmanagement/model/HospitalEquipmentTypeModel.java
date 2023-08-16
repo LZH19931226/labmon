@@ -30,5 +30,5 @@ public class HospitalEquipmentTypeModel {
 
     private String equipmentTypeNameUS;
 
-
+    private String equipmentTypeNameFt;
 }

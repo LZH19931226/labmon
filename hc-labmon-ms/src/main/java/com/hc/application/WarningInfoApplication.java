@@ -86,7 +86,6 @@ public class WarningInfoApplication {
             if(!CollectionUtils.isEmpty(warningRecordInfoList)){
                 pkIdMap = warningRecordInfoList.stream().collect(Collectors.groupingBy(WarningRecordInfoDto::getWarningrecordid));
             }
-            boolean flag = !Context.IsCh();
             for (Warningrecord res : records) {
                 String instrumentparamconfigno = res.getInstrumentparamconfigno();
                 if(ipcNoMap.containsKey(instrumentparamconfigno)){
@@ -96,28 +95,28 @@ public class WarningInfoApplication {
                     String cName = DataFieldEnum.fromByLastDataField(probeEName).getCName();
                     String eName = DataFieldEnum.fromByLastDataField(probeEName).getEName();
                     if(StringUtils.equalsAnyIgnoreCase(probeEName,"currentdoorstate","currentdoorstate2","currentups")){
-                        res.setAlertRules(cName+"异常");
-                        if (flag) {
+                        res.setAlertRules(cName+(Context.isChFt()?"異常":"异常"));
+                        if (Context.isEn()) {
                             res.setAlertRules(eName+" abnormal");
                         }
                     }else {
                         if(StringUtils.isNotBlank(res.getWarningValue()) && RegularUtil.checkContainsNumbers(res.getWarningValue())){
                             int i =  new BigDecimal(res.getWarningValue()).compareTo(new BigDecimal(res.getHighLimit()));
                             if( i > 0 ){
-                                res.setAlertRules(cName + "高于设置的上阈值"+res.getHighLimit());
-                                if(flag){
+                                res.setAlertRules(cName + (Context.isChFt()?"高於設置的上閾值":"高于设置的上阈值")+res.getHighLimit());
+                                if(Context.isEn()){
                                     res.setAlertRules(eName + "Above the upper threshold"+res.getHighLimit());
                                 }
                             }else {
-                                res.setAlertRules(cName + "低于设置的下阈值"+res.getLowLimit());
-                                if(flag){
+                                res.setAlertRules(cName + (Context.isChFt()?"低於設置的下閾值":"低于设置的下阈值")+res.getLowLimit());
+                                if(Context.isEn()){
                                     res.setAlertRules(eName + "Below the lower threshold"+res.getHighLimit());
                                 }
                             }
                         }
                     }
                     res.setEName(probeEName);
-                    if (flag) {
+                    if (Context.isEn()) {
                         //The temperature of the device name is abnormal  Abnormal data is
                         String eRemark = AlarmInfoUtils.setTypeName(res.getWarningremark(),eName);
                         res.setWarningremark(eRemark);

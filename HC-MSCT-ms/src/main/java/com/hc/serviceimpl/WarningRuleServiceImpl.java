@@ -60,7 +60,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
             warningModel.setPkid(warningrecord.getPkid());
             warningModel.setValue(data);
             warningModel.setEquipmentname(probe.getEquipmentName());
-            warningModel.setUnit(probe.getInstrumentName());
+            warningModel.setUnit(probe.getInstrumentConfigName());
             warningModel.setHospitalcode(hospitalcode);
             return warningModel;
         }
