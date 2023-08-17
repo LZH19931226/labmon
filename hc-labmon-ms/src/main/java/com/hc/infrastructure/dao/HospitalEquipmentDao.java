@@ -25,7 +25,7 @@ public interface HospitalEquipmentDao extends BaseMapper<HospitalEquipmentDto> {
             "t1.equipmentno," +
             "t2.equipmenttypeid," +
             "t2.equipmenttypename," +
-            "t2.equipmenttypename_us " +
+            "t2.equipmenttypename_us," +
             "t2.equipmenttypename_ft as equipmenttypenameFt " +
             "FROM " +
             "monitorequipment t1 " +
