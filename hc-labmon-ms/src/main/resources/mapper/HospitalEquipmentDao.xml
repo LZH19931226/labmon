@@ -8,6 +8,7 @@
             t2.equipmenttypeid equipmentTypeId,
             t2.equipmenttypename equipmentTypeName,
             t2.equipmenttypename_us equipmentTypeNameUs,
+            t2.equipmenttypename_ft equipmentTypeNameFt,
             count(t1.equipmentno) equipmentNum
         FROM
             monitorequipment t1

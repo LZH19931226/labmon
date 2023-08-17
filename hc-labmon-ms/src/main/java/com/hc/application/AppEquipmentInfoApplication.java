@@ -212,7 +212,14 @@ public class AppEquipmentInfoApplication {
                     }
                 }
             }
-            hospitalEquipmentDto1.setEquipmenttypename(Context.IsCh()?value.getEquipmenttypename():value.getEquipmenttypenameUs());
+            String lang = Context.getLang();
+            if (StringUtils.equals(lang,"zh")){
+                hospitalEquipmentDto1.setEquipmenttypename(value.getEquipmenttypename());
+            }else if(StringUtils.equals(lang,"zhft")){
+                hospitalEquipmentDto1.setEquipmenttypename(value.getEquipmenttypenameFt());
+            }else{
+                hospitalEquipmentDto1.setEquipmenttypename(value.getEquipmenttypenameUs());
+            }
             hospitalEquipmentDto1.setEquipmentTypeId(eqTypeId);
             hospitalEquipmentDto1.setNormalNum(String.valueOf(normalCount));
             hospitalEquipmentDto1.setTotalNum(String.valueOf(totalNum));

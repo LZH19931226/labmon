@@ -172,7 +172,7 @@ public class SystemDataApplication {
         eqTypeMap.forEach((k, v) -> {
             eqTypeAlarmNumCountDto eqTypeAlarmNumCountDto = new eqTypeAlarmNumCountDto();
             eqTypeAlarmNumCountDto.setEquipmenttypeid(k);
-            eqTypeAlarmNumCountDto.setEquipmenttypename(v.get(0).getEquipmenttypename());
+            eqTypeAlarmNumCountDto.setEquipmenttypename(Context.isChFt()?v.get(0).getEquipmenttypenameFt():v.get(0).getEquipmenttypename());
             eqTypeAlarmNumCountDto.setEquipmenttypenameUs(v.get(0).getEquipmenttypenameUs());
             int count = 0;
             List<String> eqNos = v.stream().map(com.hc.dto.eqTypeAlarmNumCountDto::getEquipmentno).collect(Collectors.toList());
@@ -261,6 +261,7 @@ public class SystemDataApplication {
             Long num = equipmentTypeNumDto.getEquipmentNum();
             String str = divide(sum, num);
             equipmentTypeNumDto.setPercentage(str);
+            equipmentTypeNumDto.setEquipmentTypeName(Context.isChFt()?equipmentTypeNumDto.getEquipmentTypeNameFt():equipmentTypeNumDto.getEquipmentTypeName());
         }
         return equipmentTypeNum;
 

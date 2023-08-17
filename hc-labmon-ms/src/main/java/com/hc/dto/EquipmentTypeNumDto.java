@@ -17,6 +17,9 @@ public class EquipmentTypeNumDto implements Serializable {
     /** 设备类型英文名称 */
     private String equipmentTypeNameUs;
 
+    /** 设备类型繁体名称 */
+    private String equipmentTypeNameFt;
+
     /** 设备数量 */
     private Long equipmentNum;
 
