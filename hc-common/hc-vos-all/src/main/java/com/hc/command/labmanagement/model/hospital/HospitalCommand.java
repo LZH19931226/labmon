@@ -83,6 +83,8 @@ public class HospitalCommand {
     /** 是否设置因子登录1为设置空为未设置 */
     private String factor;
 
+    private String languageTemplate;
+
     /** 医院 */
     private List<LabHosWarningTime> hosWarningTimes;
 

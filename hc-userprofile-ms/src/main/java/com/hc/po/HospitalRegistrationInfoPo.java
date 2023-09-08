@@ -81,4 +81,10 @@ public class HospitalRegistrationInfoPo implements Serializable {
      */
     @TableField(value = "sound_light_alarm")
     private String soundLightAlarm;
+
+    /**
+     * 语言模板
+     */
+    @TableField(value = "language_template")
+    private String languageTemplate;
 }

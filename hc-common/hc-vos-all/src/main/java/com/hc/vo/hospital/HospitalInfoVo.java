@@ -60,6 +60,8 @@ public class HospitalInfoVo implements Serializable {
      */
     private String factor;
 
+    private String languageTemplate;
+
     /**
      * 是否开启声光报警是1否0
      */

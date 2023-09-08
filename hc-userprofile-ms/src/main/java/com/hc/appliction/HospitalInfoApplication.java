@@ -91,6 +91,7 @@ public class HospitalInfoApplication {
                     convert = BeanConverter.convert(labHosWarningTimeDtos, HospitalInfoVo.LabHosWarningTime.class);
                 }
                 HospitalInfoVo build = HospitalInfoVo.builder()
+                        .languageTemplate(res.getLanguageTemplate())
                         .hospitalCode(res.getHospitalCode())
                         .hospitalFullName(res.getHospitalFullName())
                         .hospitalName(res.getHospitalName())

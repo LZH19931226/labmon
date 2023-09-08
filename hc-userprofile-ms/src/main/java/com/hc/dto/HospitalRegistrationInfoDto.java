@@ -60,4 +60,6 @@ public class HospitalRegistrationInfoDto {
      * 是否开启声光报警是1否0
      */
     private String soundLightAlarm;
+
+    private String languageTemplate;
 }

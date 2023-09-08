@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface WarningService {
     //检查探头设备是否超出量程
-    Warningrecord checkProbeLowLimit( InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo);
+    Warningrecord checkProbeLowLimit( InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo,HospitalInfoDto hospitalInfoDto);
 
     Warningrecord pushNotification(List<Userright> list, WarningModel warningModel, HospitalInfoDto hospitalInfoDto);
 

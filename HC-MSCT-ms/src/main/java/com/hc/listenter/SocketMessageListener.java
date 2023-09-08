@@ -165,14 +165,15 @@ public class SocketMessageListener {
             ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER06.getCode()), JsonUtil.toJson(monitorinstrument), warningAlarmDo.getLogId());
             return;
         }
+        //获取医院信息
+        HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
         //判断探头是否满足量程范围
-        Warningrecord warningrecord = warningService.checkProbeLowLimit(probe, warningAlarmDo);
+        Warningrecord warningrecord = warningService.checkProbeLowLimit(probe, warningAlarmDo,hospitalInfoDto);
         if (null!=warningrecord){
             //判断探头是否满足报警规则
             WarningModel model = warningRuleService.warningRule(hospitalcode, warningrecord, probe, warningAlarmDo);
             if (null!=model) {
                 model.setLogId(logId);
-                HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
                 //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值
                 List<Userright> userList =almMsgService.addUserScheduLing(hospitalcode);
                 if (CollectionUtils.isEmpty(userList)){

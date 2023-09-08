@@ -56,4 +56,7 @@ public class HospitalInfoDto {
      */
     private String soundLightAlarm;
 
+
+    private String alarmTemplate;
+
 }

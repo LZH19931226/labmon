@@ -6,6 +6,7 @@
 
     <select id="selectListByHospital" resultType="com.hc.dto.HospitalRegistrationInfoDto">
         SELECT
+        language_template languageTemplate,
         hospitalcode hospitalCode,
         hospitalname hospitalName,
         isenable  isEnable,
