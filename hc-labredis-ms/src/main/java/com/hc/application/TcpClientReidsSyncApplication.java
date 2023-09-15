@@ -5,10 +5,15 @@ import cn.hutool.json.JSONUtil;
 import com.hc.application.config.RedisUtils;
 import com.hc.my.common.core.redis.dto.ParamaterModel;
 import com.hc.my.common.core.redis.namespace.TcpServiceEnum;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class TcpClientReidsSyncApplication {
@@ -40,7 +45,18 @@ public class TcpClientReidsSyncApplication {
     }
 
     public void deleteChannelIdSn(String channelId) {
-        redisUtils.hdel(TcpServiceEnum.CHANNELCLIENT.getCode(),channelId);
+        Map<Object, Object> channelMap = redisUtils.hmget(TcpServiceEnum.CHANNELCLIENT.getCode());
+        List<Object> sn = new ArrayList<>();
+        channelMap.forEach((k,v)->{
+            if (StringUtils.equals((String)v,channelId)){
+                sn.add(k);
+            }
+        });
+        if (CollectionUtils.isNotEmpty(sn)){
+            sn.forEach(s->{
+                redisUtils.hdel(TcpServiceEnum.CHANNELCLIENT.getCode(),s);
+            });
+        }
     }
 
     public Map<Object, Object> getAllClientInfo() {

@@ -38,37 +38,39 @@ public class ProbeRedisApplication {
 
     /**
      * 获取医院探头缓存信息
+     *
      * @param hospitalCode 医院id
      * @param instrumentNo 探头信息
      * @return
      */
     public InstrumentInfoDto getProbeRedisInfo(String hospitalCode, String instrumentNo) {
         Object instrumentInfoDto = redisUtils.hget(LabManageMentServiceEnum.P.getCode() + hospitalCode, instrumentNo);
-        if(ObjectUtils.isEmpty(instrumentInfoDto)){
+        if (ObjectUtils.isEmpty(instrumentInfoDto)) {
             return null;
         }
-       return JSONUtil.toBean((String) instrumentInfoDto, InstrumentInfoDto.class);
+        return JSONUtil.toBean((String) instrumentInfoDto, InstrumentInfoDto.class);
     }
 
     /**
      * 添加和修改医院设备探头的redis信息
+     *
      * @param instrumentInfoDto
      */
     public void addProbeRedisInfo(InstrumentInfoDto instrumentInfoDto) {
-        redisUtils.hset(LabManageMentServiceEnum.P.getCode()+instrumentInfoDto.getHospitalCode(),instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
+        redisUtils.hset(LabManageMentServiceEnum.P.getCode() + instrumentInfoDto.getHospitalCode(), instrumentInfoDto.getInstrumentNo() + ":" + instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
     }
 
     /**
      * 批量更新探头缓存信息
-     * */
+     */
     public void bulkUpdateProbeRedisInfo(ProbeCommand probeCommand) {
         String hospitalCode = probeCommand.getHospitalCode();
         List<InstrumentInfoDto> instrumentInfoDtoList = probeCommand.getInstrumentInfoDtoList();
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         for (InstrumentInfoDto instrumentInfoDto : instrumentInfoDtoList) {
-            map.put(instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(),JSONUtil.toJsonStr(instrumentInfoDto));
+            map.put(instrumentInfoDto.getInstrumentNo() + ":" + instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
         }
-        redisUtils.hmset(LabManageMentServiceEnum.P.getCode()+hospitalCode,map);
+        redisUtils.hmset(LabManageMentServiceEnum.P.getCode() + hospitalCode, map);
 
     }
 
@@ -84,10 +86,11 @@ public class ProbeRedisApplication {
         if (CollectionUtils.isEmpty(objects)) {
             return null;
         }
-        List<InstrumentInfoDto> list =  new ArrayList<>();
+        List<InstrumentInfoDto> list = new ArrayList<>();
         for (int i = 0; i < objects.size(); i++) {
-            if(!StringUtils.isEmpty(objects.get(i))){
-                InstrumentInfoDto instrumentInfoDto = JSON.parseObject((String) JSON.toJSON(objects.get(i)), new TypeReference<InstrumentInfoDto>() { });
+            if (!StringUtils.isEmpty(objects.get(i))) {
+                InstrumentInfoDto instrumentInfoDto = JSON.parseObject((String) JSON.toJSON(objects.get(i)), new TypeReference<InstrumentInfoDto>() {
+                });
                 list.add(instrumentInfoDto);
             }
         }
@@ -96,11 +99,12 @@ public class ProbeRedisApplication {
 
     /**
      * 移除医院redis信息
+     *
      * @param hospitalCode
      * @param instrumentNo
      */
     public void removeProbeRedisInfo(String hospitalCode, String instrumentNo) {
-        redisUtils.hdel(hospitalCode,instrumentNo);
+        redisUtils.hdel(hospitalCode, instrumentNo);
     }
 
     /**
@@ -110,102 +114,111 @@ public class ProbeRedisApplication {
     public void probeRedisInfoCache() {
         List<String> hospitalCodeList = hospitalInfoApi.findHospitalCodeList().getResult();
         for (String hospitalCode : hospitalCodeList) {
-            if(redisUtils.hasKey(LabManageMentServiceEnum.P.getCode()+hospitalCode)){
-                redisUtils.hDel(LabManageMentServiceEnum.P.getCode()+hospitalCode);
+            if (redisUtils.hasKey(LabManageMentServiceEnum.P.getCode() + hospitalCode)) {
+                redisUtils.hDel(LabManageMentServiceEnum.P.getCode() + hospitalCode);
             }
             List<InstrumentmonitorDto> instrumentmonitorDtos = probeInfoApi.selectInstrumentMonitorInfo(hospitalCode).getResult();
-            if(CollectionUtils.isEmpty(instrumentmonitorDtos)){
+            if (CollectionUtils.isEmpty(instrumentmonitorDtos)) {
                 continue;
             }
             List<InstrumentInfoDto> convert = BeanConverter.convert(instrumentmonitorDtos, InstrumentInfoDto.class);
-            Map<String,Object> hashMap = new HashMap<>();
+            Map<String, Object> hashMap = new HashMap<>();
             for (InstrumentInfoDto instrumentInfoDto : convert) {
                 //addProbeRedisInfo(instrumentInfoDto);
-                hashMap.put( instrumentInfoDto.getInstrumentNo()+":"+instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
+                hashMap.put(instrumentInfoDto.getInstrumentNo() + ":" + instrumentInfoDto.getInstrumentConfigId(), JSONUtil.toJsonStr(instrumentInfoDto));
             }
-            redisUtils.hmset(LabManageMentServiceEnum.P.getCode()+hospitalCode,hashMap);
+            redisUtils.hmset(LabManageMentServiceEnum.P.getCode() + hospitalCode, hashMap);
         }
     }
 
     /**
      * 获取探头报警信息
-     * @param hospitalCode 医院id
+     *
+     * @param hospitalCode            医院id
      * @param instrumentParamConfigNo 探头
      * @return 报警记录集合
      */
     public List<WarningRecordDto> getProbeWarnInfo(String hospitalCode, String instrumentParamConfigNo) {
         Object object = redisUtils.hget(LabManageMentServiceEnum.W.getCode() + hospitalCode, instrumentParamConfigNo);
-        if(StringUtils.isEmpty(object)){
+        if (StringUtils.isEmpty(object)) {
             return null;
         }
-        return JSON.parseObject((String) JSONObject.toJSON(object), new TypeReference<List<WarningRecordDto>>(){});
+        return JSON.parseObject((String) JSONObject.toJSON(object), new TypeReference<List<WarningRecordDto>>() {
+        });
     }
 
     /**
      * 添加探头报警记录
+     *
      * @param warningRecordDto 报警记录
      */
     public void addProbeWarnInfo(WarningRecordDto warningRecordDto) {
         String hospitalCode = warningRecordDto.getHospitalcode();
         String instrumentParamConfigNo = warningRecordDto.getInstrumentparamconfigNO();
-        if(redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode()+ hospitalCode, instrumentParamConfigNo)){
-            List<WarningRecordDto> probeWarnInfo = getProbeWarnInfo( hospitalCode, instrumentParamConfigNo);
+        if (redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode() + hospitalCode, instrumentParamConfigNo)) {
+            List<WarningRecordDto> probeWarnInfo = getProbeWarnInfo(hospitalCode, instrumentParamConfigNo);
             probeWarnInfo.add(warningRecordDto);
-            redisUtils.hset(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo,JSONUtil.toJsonStr(probeWarnInfo));
-        }else {
+            redisUtils.hset(LabManageMentServiceEnum.W.getCode() + hospitalCode, instrumentParamConfigNo, JSONUtil.toJsonStr(probeWarnInfo));
+        } else {
             List<WarningRecordDto> warningRecordDtoList = Collections.singletonList(warningRecordDto);
-            redisUtils.hset(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo,JSONUtil.toJsonStr(warningRecordDtoList));
+            redisUtils.hset(LabManageMentServiceEnum.W.getCode() + hospitalCode, instrumentParamConfigNo, JSONUtil.toJsonStr(warningRecordDtoList));
         }
-     }
+    }
 
     /**
      * 移除指定的探头信息
-     * @param hospitalCode 医院id
+     *
+     * @param hospitalCode            医院id
      * @param instrumentParamConfigNo 探头监控信息id
      */
-     public void removeProbeWarnInfo(String hospitalCode, String instrumentParamConfigNo){
-         if(redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode()+hospitalCode,instrumentParamConfigNo)){
-             redisUtils.hdel(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo);
-         }
-     }
+    public void removeProbeWarnInfo(String hospitalCode, String instrumentParamConfigNo) {
+        if (redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode() + hospitalCode, instrumentParamConfigNo)) {
+            redisUtils.hdel(LabManageMentServiceEnum.W.getCode() + hospitalCode, instrumentParamConfigNo);
+        }
+    }
 
     /**
      * 判断报警记录是否存在
+     *
      * @param hospitalCode
      * @param instrumentParamConfigNo
      * @return
      */
     public boolean hasKey(String hospitalCode, String instrumentParamConfigNo) {
-        return redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode()+ hospitalCode,instrumentParamConfigNo);
+        return redisUtils.hHasKey(LabManageMentServiceEnum.W.getCode() + hospitalCode, instrumentParamConfigNo);
     }
 
     /**
      * 获取探头当前值信息
+     *
      * @param hospitalCode 医院id
-     * @param equipmentNo 设备id
+     * @param equipmentNo  设备id
      * @return
      */
     public List<ProbeInfoDto> getCurrentProbeValueInfo(String hospitalCode, String equipmentNo) {
         Object obj = redisUtils.hget(hospitalCode, equipmentNo);
-        if(ObjectUtils.isEmpty(obj)){
+        if (ObjectUtils.isEmpty(obj)) {
             return null;
         }
-        return JSON.parseObject((String) JSONObject.toJSON(obj), new TypeReference<List<ProbeInfoDto>>(){});
+        return JSON.parseObject((String) JSONObject.toJSON(obj), new TypeReference<List<ProbeInfoDto>>() {
+        });
     }
 
     /**
      * 获取设备监测信息id(用于查询导出做标题)
+     *
      * @param hospitalCode
      * @param equipmentNo
      * @return
      */
-    public List<Integer> getEquipmentMonitoringInfo(String hospitalCode,String equipmentNo){
+    public List<Integer> getEquipmentMonitoringInfo(String hospitalCode, String equipmentNo) {
         List<ProbeInfoDto> currentProbeValueInfo = getCurrentProbeValueInfo(hospitalCode, equipmentNo);
-        return  currentProbeValueInfo.stream().map(ProbeInfoDto::getInstrumentConfigId).collect(Collectors.toList());
+        return currentProbeValueInfo.stream().map(ProbeInfoDto::getInstrumentConfigId).collect(Collectors.toList());
     }
 
     /**
      * 新增或更新探头当前值信息
+     *
      * @param probeInfoDto
      */
     public void addCurrentProbeValueInfo(ProbeInfoDto probeInfoDto) {
@@ -216,50 +229,52 @@ public class ProbeRedisApplication {
         String equipmentNo = probeInfoDto.getEquipmentNo();
         Integer instrumentConfigId = probeInfoDto.getInstrumentConfigId();
         String ino = probeInfoDto.getInstrumentNo();
-        if(redisUtils.hHasKey(hospitalCode,equipmentNo)){
+        if (redisUtils.hHasKey(hospitalCode, equipmentNo)) {
             Object object = redisUtils.hget(hospitalCode, equipmentNo);
-            List<ProbeInfoDto> probeInfoDTO = JSON.parseObject((String) JSONObject.toJSON(object), new TypeReference<List<ProbeInfoDto>>(){});
+            List<ProbeInfoDto> probeInfoDTO = JSON.parseObject((String) JSONObject.toJSON(object), new TypeReference<List<ProbeInfoDto>>() {
+            });
             if (!CollectionUtils.isEmpty(probeInfoDTO)) {
                 List<ProbeInfoDto> removeList = new ArrayList<>();
                 for (ProbeInfoDto infoDto : probeInfoDTO) {
                     Integer configId = infoDto.getInstrumentConfigId();
                     String instrumentNo = infoDto.getInstrumentNo();
-                    if(StringUtils.isEmpty(instrumentNo)){
+                    if (StringUtils.isEmpty(instrumentNo)) {
                         removeList.add(infoDto);
                         continue;
                     }
                     //当config和ino相同时删除
-                    if(Objects.equals(configId, instrumentConfigId) && Objects.equals(instrumentNo,ino)){
+                    if (Objects.equals(configId, instrumentConfigId) && Objects.equals(instrumentNo, ino)) {
                         removeList.add(infoDto);
                     }
                 }
-                if(!CollectionUtils.isEmpty(removeList)){
+                if (!CollectionUtils.isEmpty(removeList)) {
                     probeInfoDTO.removeAll(removeList);
                 }
                 probeInfoDTO.add(probeInfoDto);
-                redisUtils.hset(hospitalCode,equipmentNo,JSONUtil.toJsonStr(probeInfoDTO));
+                redisUtils.hset(hospitalCode, equipmentNo, JSONUtil.toJsonStr(probeInfoDTO));
             }
-        }else {
+        } else {
             List<ProbeInfoDto> probeInfoDTO = new ArrayList<>();
             probeInfoDTO.add(probeInfoDto);
-            redisUtils.hset(hospitalCode,equipmentNo,JSONUtil.toJsonStr(probeInfoDTO));
+            redisUtils.hset(hospitalCode, equipmentNo, JSONUtil.toJsonStr(probeInfoDTO));
         }
     }
 
-    public Map<String,List<ProbeInfoDto>> getTheCurrentValueOfTheProbeInBatches(ProbeRedisCommand probeRedisCommand) {
+    public Map<String, List<ProbeInfoDto>> getTheCurrentValueOfTheProbeInBatches(ProbeRedisCommand probeRedisCommand) {
         String hospitalCode = probeRedisCommand.getHospitalCode();
         List<String> eNoList = probeRedisCommand.getENoList();
         List<Object> objects = redisUtils.multiGet(hospitalCode, eNoList);
         if (CollectionUtils.isEmpty(objects)) {
             return null;
         }
-        Map<String,List<ProbeInfoDto>> map = new HashMap<>();
+        Map<String, List<ProbeInfoDto>> map = new HashMap<>();
         for (int i = 0; i < objects.size(); i++) {
-            if(!StringUtils.isEmpty(objects.get(i))){
-                List<ProbeInfoDto> list = JSON.parseObject((String) JSON.toJSON(objects.get(i)), new TypeReference<List<ProbeInfoDto>>() {});
-                if(!CollectionUtils.isEmpty(list)){
+            if (!StringUtils.isEmpty(objects.get(i))) {
+                List<ProbeInfoDto> list = JSON.parseObject((String) JSON.toJSON(objects.get(i)), new TypeReference<List<ProbeInfoDto>>() {
+                });
+                if (!CollectionUtils.isEmpty(list)) {
                     String equipmentNo = list.get(0).getEquipmentNo();
-                    map.put(equipmentNo,list);
+                    map.put(equipmentNo, list);
                 }
             }
         }
@@ -267,4 +282,7 @@ public class ProbeRedisApplication {
     }
 
 
+    public void deleteCurrentProbeValueInfo(String hospitalCode, String equipmentNo) {
+        redisUtils.hdel(hospitalCode, equipmentNo);
+    }
 }

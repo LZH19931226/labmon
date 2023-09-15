@@ -11,6 +11,7 @@ import com.hc.my.common.core.domain.MonitorinstrumentDo;
 import com.hc.my.common.core.domain.WarningAlarmDo;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.WarningRecordDto;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.service.AlmMsgService;
@@ -115,6 +116,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
         }
         return warningModel;
     }
+
 
     public boolean alarmRuleHosInterval(InstrumentInfoDto probe, String hospitalcode, String logId) {
         Date warningtime = probe.getWarningtime();

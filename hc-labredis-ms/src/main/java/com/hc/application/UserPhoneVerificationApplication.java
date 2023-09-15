@@ -1,12 +1,10 @@
 package com.hc.application;
 
 import com.hc.application.config.RedisUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 public class UserPhoneVerificationApplication {
 
     @Autowired
@@ -19,7 +17,6 @@ public class UserPhoneVerificationApplication {
      */
     public String getPhoneCode(String phoneNum){
         Object o = redisUtils.get(phoneNum);
-        log.info("获取短信验证码:{}",phoneNum);
         return (String)o;
     }
 
@@ -30,7 +27,6 @@ public class UserPhoneVerificationApplication {
      */
     public void addPhoneCode(String phoneNum ,String code){
         redisUtils.set(phoneNum,code,120);
-        log.info("生成短信验证码:{}",phoneNum+code);
     }
 
 }

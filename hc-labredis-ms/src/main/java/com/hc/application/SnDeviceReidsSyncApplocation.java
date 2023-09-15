@@ -6,7 +6,9 @@ import com.alibaba.fastjson.TypeReference;
 import com.hc.application.config.RedisUtils;
 import com.hc.labmanagent.MonitorEquipmentApi;
 import com.hc.my.common.core.redis.command.EquipmentInfoCommand;
+import com.hc.my.common.core.redis.command.ProbeRedisCommand;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
+import com.hc.my.common.core.redis.dto.ProbeInfoDto;
 import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.redis.namespace.MswkServiceEnum;
@@ -14,7 +16,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,6 +29,11 @@ public class SnDeviceReidsSyncApplocation {
 
     @Autowired
     private MonitorEquipmentApi monitorEquipmentApi;
+
+    @Autowired
+    private ProbeRedisApplication probeRedisApplication;
+
+
     /**
      * 添加或更新设备缓存信息
      * @param snDeviceDto
@@ -116,47 +122,25 @@ public class SnDeviceReidsSyncApplocation {
     public  List<MonitorequipmentlastdataDto> getTheCurrentValue(EquipmentInfoCommand equipmentInfoCommand) {
         String hospitalCode = equipmentInfoCommand.getHospitalCode();
         List<String> equipmentNoList = equipmentInfoCommand.getEquipmentNoList();
-        if(equipmentNoList == null || equipmentNoList.size() == 0){
-            return null;
-        }
-        List<Object> objects = redisUtils.multiGet(MswkServiceEnum.L.getCode()+hospitalCode, equipmentNoList);
-        List<Object> collect = objects.stream().filter(ObjectUtils::isEmpty).collect(Collectors.toList());
-        objects.removeAll(collect);
-        if(CollectionUtils.isEmpty(objects)){
-            return null;
-        }
-        return parseList(objects);
+        ProbeRedisCommand probeRedisCommand = new ProbeRedisCommand();
+        probeRedisCommand.setHospitalCode(hospitalCode);
+        probeRedisCommand.setENoList(equipmentNoList);
+        //批量获取设备对应探头当前值信息
+        List<MonitorequipmentlastdataDto> monitorequipmentlastdataDtos = new ArrayList<>();
+        Map<String, List<ProbeInfoDto>> probeInfoMap = probeRedisApplication.getTheCurrentValueOfTheProbeInBatches(probeRedisCommand);
+        probeInfoMap.forEach((k,v)->{
+            MonitorequipmentlastdataDto   monitorequipmentlastdataDto  = new MonitorequipmentlastdataDto();
+            monitorequipmentlastdataDto.setEquipmentno(k);
+            List<Date> collect = v.stream().map(ProbeInfoDto::getInputTime).collect(Collectors.toList());
+            //获取最新的时间
+            monitorequipmentlastdataDto.setInputdatetime(Collections.max(collect));
+            monitorequipmentlastdataDtos.add(monitorequipmentlastdataDto);
+
+        });
+        return monitorequipmentlastdataDtos;
     }
 
-    public List<MonitorequipmentlastdataDto>  parseList(List<Object> objectList){
-        if(CollectionUtils.isEmpty(objectList)){
-            return null;
-        }
-        List<MonitorequipmentlastdataDto> list = new ArrayList<>();
-        for (Object object : objectList) {
-            List<MonitorequipmentlastdataDto> list1 = JSON.parseArray((String) object, MonitorequipmentlastdataDto.class);
-            MonitorequipmentlastdataDto monitorequipmentlastdataDto = buildCurrentData(list1);
-            list.add(monitorequipmentlastdataDto);
-        }
-        return list;
-    }
 
-    /**
-     * 构建监控设备最新的数据信息
-     * @param currentDataInfo
-     * @return
-     */
-    public MonitorequipmentlastdataDto buildCurrentData(List<MonitorequipmentlastdataDto> currentDataInfo){
-        if(org.apache.commons.collections.CollectionUtils.isEmpty(currentDataInfo)){
-            return null;
-        }
-        Map<String,Object> map = new HashMap<>();
-        for (MonitorequipmentlastdataDto monitorequipmentlastdataDto : currentDataInfo) {
-            Map<String,Object> map1 = JSON.parseObject(JSON.toJSONString(monitorequipmentlastdataDto),new TypeReference<Map<String,Object>>(){});
-            map.putAll(map1);
-        }
-        return JSON.parseObject(JSON.toJSONString(map), new TypeReference<MonitorequipmentlastdataDto>(){});
-    }
 
     /**
      *  同步监控设备信息
