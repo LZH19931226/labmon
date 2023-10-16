@@ -18,7 +18,8 @@ public class PhoneNotifierImpl implements Notifier {
     public String exec(Notification notification)  {
         String publishKey = notification.getPublishKey();
         String messageCover = notification.getMessageCover();
-        amazonConnectUtil.makeCall(publishKey,messageCover);
+        String messageTitle = notification.getMessageTitle();
+        amazonConnectUtil.makeCall(publishKey,messageCover,messageTitle);
         return  "ok";
 
     }

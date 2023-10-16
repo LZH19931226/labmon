@@ -29,8 +29,8 @@ public class SmsController {
 
 	@GetMapping("/phone")
 	@ApiOperation("电话号码")
-	public void testPhone(String phone,String message){
-		amazonConnectUtil.makeCall(phone,message);
+	public void testPhone(String phone,String message,String messageTitle){
+		amazonConnectUtil.makeCall(phone,message,messageTitle);
 	}
 
 	@GetMapping("/mailbox")

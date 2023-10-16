@@ -382,12 +382,13 @@ public class WarningServiceImpl implements WarningService {
         StringBuilder phoneCallUser = new StringBuilder();
         StringBuilder mailCallUser = new StringBuilder();
         String warningremark = warningModel.getWarningrecord().getWarningremark();
+        String hospitalCode = hospitalInfoDto.getHospitalCode();
+        String alarmTemplate = hospitalInfoDto.getAlarmTemplate();
         for (Userright userright : list) {
             String reminders = userright.getReminders();
             String phone = userright.getPhoneNum();
             String code = userright.getCode();
             String mailbox = userright.getMailbox();
-            String hospitalCode = hospitalInfoDto.getHospitalCode();
             //不报警
             if (StringUtils.isEmpty(reminders)) {
                 continue;
@@ -396,17 +397,17 @@ public class WarningServiceImpl implements WarningService {
             String[] reminder = reminders.split(",");
             for (String rem : reminder) {
                 if (StringUtils.equals(rem,DictEnum.PHONE.getCode())&&StringUtils.isNotEmpty(phone)){
-                    buildP2PNotify(code+phone, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode,"1");
+                    buildP2PNotify(code+phone, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode,"1",alarmTemplate);
                     phoneCallUser.append(code).append(phone).append("/");
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), logId);
                 }
                 if (StringUtils.equals(rem,DictEnum.SMS.getCode())&&StringUtils.isNotEmpty(phone)){
-                    buildP2PNotify(code+phone, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode,"2");
+                    buildP2PNotify(code+phone, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode,"2",alarmTemplate);
                     mailCallUser.append(code).append(phone).append("/");
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), logId);
                 }
                 if (StringUtils.equals(rem,DictEnum.MAILBOX.getCode())&&StringUtils.isNotEmpty(mailbox)){
-                    buildP2PNotify(mailbox, warningremark, Collections.singletonList(NotifyChannel.MAIL),hospitalCode,"4");
+                    buildP2PNotify(mailbox, warningremark, Collections.singletonList(NotifyChannel.MAIL),hospitalCode,"4",alarmTemplate);
                     mailCallUser.append(mailbox).append("/");
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), logId);
                 }
@@ -432,7 +433,7 @@ public class WarningServiceImpl implements WarningService {
     }
 
     @Override
-    public void pushTimeOutNotification(List<Userright> userrights, String hosName,String eqTypeName, String count,String hospitalCode) {
+    public void pushTimeOutNotification(List<Userright> userrights, String hosName,String eqTypeName, String count,String hospitalCode,String alarmTemplate) {
         for (Userright userright : userrights) {
             String phonenum = userright.getCode()+userright.getPhoneNum();
             String mailbox = userright.getMailbox();
@@ -445,15 +446,15 @@ public class WarningServiceImpl implements WarningService {
             String[] reminder = timeoutwarning.split(",");
             for (String rem : reminder) {
                 if (StringUtils.equals(rem,DictEnum.PHONE.getCode())&&StringUtils.isNotEmpty(phonenum)){
-                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode,"1");
+                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode,"1",alarmTemplate);
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), null);
                 }
                 if (StringUtils.equals(rem,DictEnum.SMS.getCode())&&StringUtils.isNotEmpty(phonenum)){
-                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode,"2");
+                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode,"2",alarmTemplate);
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), null);
                 }
                 if (StringUtils.equals(rem,DictEnum.MAILBOX.getCode())&&StringUtils.isNotEmpty(mailbox)){
-                    buildP2PNotify(mailbox, warningremark, Collections.singletonList(NotifyChannel.MAIL),hospitalCode,"4");
+                    buildP2PNotify(mailbox, warningremark, Collections.singletonList(NotifyChannel.MAIL),hospitalCode,"4",alarmTemplate);
                     ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), null);
                 }
             }
@@ -462,11 +463,11 @@ public class WarningServiceImpl implements WarningService {
 
 
     //海外短信将整个message内容都放到信息体里面去
-    public void buildP2PNotify(String phone,String message, List<NotifyChannel> notifyChannels,String hospitalCode,String servoceNo) {
+    public void buildP2PNotify(String phone,String message, List<NotifyChannel> notifyChannels,String hospitalCode,String servoceNo,String alarmTemplate) {
         P2PNotify pNotify = new P2PNotify();
         pNotify.setServiceNo(servoceNo);
         pNotify.setUserId(phone);
-        pNotify.setMessageTitle(null);
+        pNotify.setMessageTitle(alarmTemplate);
         pNotify.setMessageCover(message);
         pNotify.setMessageIntro(null);
         pNotify.setChannels(notifyChannels);

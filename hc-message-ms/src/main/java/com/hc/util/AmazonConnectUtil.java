@@ -1,6 +1,7 @@
 package com.hc.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +30,11 @@ public class AmazonConnectUtil {
     private String accessKeyId;
     @Value("${amaon.secretaccesskey}")
     private String secretAccessKey;
+    @Value("${amaon.contactflowidft}")
+    private String contactFlowIdFt;
 
-    public void makeCall(String phoneNumber,String message) {
+
+    public void makeCall(String phoneNumber,String message,String messageTitle) {
 
         AwsCredentialsProvider awsCredentialsProvider  = () -> new AwsCredentials() {
             @Override
@@ -43,12 +47,18 @@ public class AmazonConnectUtil {
                 return secretAccessKey;
             }
         };
+        String flowId = null;
         log.info("accessKeyId:{}",accessKeyId);
         log.info("secretAccessKey:{}",secretAccessKey);
         log.info("contactflowid:{}",contactFlowId);
         log.info("instanceId:{}",instanceId);
         log.info("sourcephonenumber:{}",sourcePhoneNumber);
-
+        log.info("contactflowidft:{}",contactFlowIdFt);
+        if (!StringUtils.equals(messageTitle,"en")){
+            flowId=contactFlowIdFt;
+        }else {
+            flowId=contactFlowId;
+        }
 
         ConnectClient connectClient = ConnectClient.builder()
                 .region(Region.US_EAST_1)
@@ -59,7 +69,7 @@ public class AmazonConnectUtil {
         StartOutboundVoiceContactResponse response = connectClient.startOutboundVoiceContact(
                 StartOutboundVoiceContactRequest.builder()
                         .destinationPhoneNumber(phoneNumber)
-                        .contactFlowId(contactFlowId)
+                        .contactFlowId(flowId)
                         .attributes(messageMap)
                         .instanceId(instanceId)
                         .sourcePhoneNumber("+"+sourcePhoneNumber)
@@ -70,6 +80,7 @@ public class AmazonConnectUtil {
     }
 
     public static void main(String[] agrs){
+
     }
 
 }

@@ -143,7 +143,7 @@ public class SocketMessageListener {
             return;
         }
         //通知信息
-        warningService.pushTimeOutNotification(userrights,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode);
+        warningService.pushTimeOutNotification(userrights,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode,null);
         //保存到数据库
         sendTimeoutRecordService.saveTimeOutRecord(userrights,hospitalcode,eqTypeName.toString(),count.toString());
     }
