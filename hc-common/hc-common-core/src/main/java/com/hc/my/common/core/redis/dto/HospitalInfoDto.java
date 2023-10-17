@@ -59,4 +59,6 @@ public class HospitalInfoDto {
 
     private String alarmTemplate;
 
+    private String languageTemplate;;
+
 }

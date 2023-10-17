@@ -140,6 +140,7 @@ public class HospitalInfoApplication {
                 OperationLogEunm.HOSPITAL_MANAGENT.getCode(), OperationLogEunmDerailEnum.ADD.getCode()));
         //添加缓存信息
         HospitalInfoDto hospitalInfoDto =  BeanConverter.convert(hospitalCommand, HospitalInfoDto.class);
+        hospitalInfoDto.setAlarmTemplate(hospitalCommand.getLanguageTemplate());
         hospitalRedisApi.addHospitalRedisInfo(hospitalInfoDto);
     }
 
@@ -240,6 +241,7 @@ public class HospitalInfoApplication {
 
         //更新缓存信息
         HospitalInfoDto hospitalInfoDto =  BeanConverter.convert(hospitalCommand,HospitalInfoDto.class);
+        hospitalInfoDto.setAlwaysAlarm(hospitalCommand.getLanguageTemplate());
         hospitalRedisApi.addHospitalRedisInfo(hospitalInfoDto);
     }
 
