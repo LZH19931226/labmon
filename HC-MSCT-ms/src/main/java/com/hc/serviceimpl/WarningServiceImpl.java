@@ -43,7 +43,7 @@ public class WarningServiceImpl implements WarningService {
 
     @Override
     public Warningrecord checkProbeLowLimit(InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo,HospitalInfoDto hospitalInfoDto) {
-        String alarmTemplate = hospitalInfoDto.getAlarmTemplate();
+        String alarmTemplate = hospitalInfoDto.getLanguageTemplate();
         String data = warningAlarmDo.getCurrrentData();
         MonitorinstrumentDo monitorinstrument = warningAlarmDo.getMonitorinstrument();
         String hospitalcode = monitorinstrument.getHospitalcode();
@@ -383,7 +383,7 @@ public class WarningServiceImpl implements WarningService {
         StringBuilder mailCallUser = new StringBuilder();
         String warningremark = warningModel.getWarningrecord().getWarningremark();
         String hospitalCode = hospitalInfoDto.getHospitalCode();
-        String alarmTemplate = hospitalInfoDto.getAlarmTemplate();
+        String alarmTemplate = hospitalInfoDto.getLanguageTemplate();
         for (Userright userright : list) {
             String reminders = userright.getReminders();
             String phone = userright.getPhoneNum();
