@@ -67,7 +67,7 @@ public class SendMessage {
                 .region(Region.US_EAST_1)
                 .credentialsProvider(awsCredentialsProvider)
                 .build();
-
+        log.info("发送短信:{},手机:{}",message,phone);
         sendSMSMessage(pinpoint,message,appId,"+"+originationNumber,phone);
     }
 
@@ -106,6 +106,7 @@ public class SendMessage {
                     .build();
 
             SendMessagesResponse response= pinpoint.sendMessages(request);
+            log.info("发送短信成功:{}",response);
             MessageResponse msg1 = response.messageResponse();
             Map map1 = msg1.result();
 

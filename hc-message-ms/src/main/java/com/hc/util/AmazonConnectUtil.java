@@ -48,11 +48,6 @@ public class AmazonConnectUtil {
             }
         };
         String flowId = null;
-        log.info("accessKeyId:{}",accessKeyId);
-        log.info("secretAccessKey:{}",secretAccessKey);
-        log.info("contactflowid:{}",contactFlowId);
-        log.info("instanceId:{}",instanceId);
-        log.info("sourcephonenumber:{}",sourcePhoneNumber);
         log.info("contactflowidft:{}",contactFlowIdFt);
         if (!StringUtils.equals(messageTitle,"en")){
             flowId=contactFlowIdFt;
@@ -66,6 +61,7 @@ public class AmazonConnectUtil {
                 .build();
         Map<String,String> messageMap =  new HashMap<>();
         messageMap.put("Message",message);
+        log.info("拨打电话:{},手机:{}",message,phoneNumber);
         StartOutboundVoiceContactResponse response = connectClient.startOutboundVoiceContact(
                 StartOutboundVoiceContactRequest.builder()
                         .destinationPhoneNumber(phoneNumber)
@@ -75,8 +71,7 @@ public class AmazonConnectUtil {
                         .sourcePhoneNumber("+"+sourcePhoneNumber)
                         .build()
         );
-
-        System.out.println(response);
+        log.info("拨打电话成功:{}",response);
     }
 
     public static void main(String[] agrs){
