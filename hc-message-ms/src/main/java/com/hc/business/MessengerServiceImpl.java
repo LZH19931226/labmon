@@ -36,8 +36,6 @@ public class MessengerServiceImpl implements MessengerService {
 
     @Override
     public String send(NotifyMessage notify) {
-        //1、获取消息服务类型
-        MessengerServiceDefine define = getServiceDefine(notify.getServiceNo());
         //2、生成并保存消息发布任务
         String batchNo = UniqueHash.Id();
         List<MessengerPublishTask> tasks = notify
@@ -52,13 +50,6 @@ public class MessengerServiceImpl implements MessengerService {
                     task.setCreateTime(LocalDateTime.now());
                     task.setDelFlag(false);
                     task.setFailureTimes(0);
-//                    if (NotifyChannel.SMS == channel) {
-//                        task.setPublishKey(entry.getValue().toString());
-//                        task.setMessageBodys(JSON.toJSONString(new Maps("tpl",
-//                                define.getBusinessTpl(),
-//                                "args",
-//                                notify.getParams())));
-//                    } else {
                     task.setPublishKey(entry.getKey());
                     task.setMessageBodys(notify.getMessageBodys());
                     task.setMessageCover(notify.getMessageCover());

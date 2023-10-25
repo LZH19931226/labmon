@@ -3,6 +3,7 @@ package com.hc.serviceimpl;
 import com.hc.MessageApi;
 import com.hc.clickhouse.po.Warningrecord;
 import com.hc.device.ProbeRedisApi;
+import com.hc.hospital.HospitalRedisApi;
 import com.hc.model.WarningModel;
 import com.hc.my.common.core.constant.enums.*;
 import com.hc.my.common.core.domain.MonitorinstrumentDo;
@@ -37,9 +38,11 @@ public class WarningServiceImpl implements WarningService {
     private ProbeRedisApi probeRedisApi;
     @Autowired
     private MessageSendService messageSendService;
-
     @Autowired
     private MessageApi messageApi;
+    @Autowired
+    private HospitalRedisApi hospitalRedisApi;
+
 
     @Override
     public Warningrecord checkProbeLowLimit(InstrumentInfoDto probe, WarningAlarmDo warningAlarmDo,HospitalInfoDto hospitalInfoDto) {
@@ -433,30 +436,26 @@ public class WarningServiceImpl implements WarningService {
     }
 
     @Override
-    public void pushTimeOutNotification(List<Userright> userrights, String hosName,String eqTypeName, String count,String hospitalCode,String alarmTemplate) {
+    public void pushTimeOutNotification(List<Userright> userrights, String hospitalName, String eqTypeName, String count,String hospitalcode) {
+        HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+        String alarmTemplate = hospitalInfoDto.getLanguageTemplate();
+
         for (Userright userright : userrights) {
-            String phonenum = userright.getCode()+userright.getPhoneNum();
-            String mailbox = userright.getMailbox();
-            String timeoutwarning = userright.getTimeoutWarning();
-            String warningremark = hosName+"Hospital has experienced "+eqTypeName+" device timeouts, with a total of "+count+" devices affected. Please log in to the system to view details";
-            //根据设置的报警方式调整报警
-            if (StringUtils.isEmpty(timeoutwarning)) {
+            String phonenum = userright.getPhoneNum();
+            if (StringUtils.isEmpty(phonenum)) {
                 continue;
             }
-            String[] reminder = timeoutwarning.split(",");
-            for (String rem : reminder) {
-                if (StringUtils.equals(rem,DictEnum.PHONE.getCode())&&StringUtils.isNotEmpty(phonenum)){
-                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.PHONE),hospitalCode,"1",alarmTemplate);
-                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER15.getCode()), JsonUtil.toJson(userright), null);
-                }
-                if (StringUtils.equals(rem,DictEnum.SMS.getCode())&&StringUtils.isNotEmpty(phonenum)){
-                    buildP2PNotify(phonenum, warningremark, Collections.singletonList(NotifyChannel.SMS),hospitalCode,"2",alarmTemplate);
-                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER16.getCode()), JsonUtil.toJson(userright), null);
-                }
-                if (StringUtils.equals(rem,DictEnum.MAILBOX.getCode())&&StringUtils.isNotEmpty(mailbox)){
-                    buildP2PNotify(mailbox, warningremark, Collections.singletonList(NotifyChannel.MAIL),hospitalCode,"4",alarmTemplate);
-                    ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER17.getCode()), JsonUtil.toJson(userright), null);
-                }
+            String timeoutwarning = userright.getTimeoutWarning();//超时报警方式
+            // 超时报警
+            if (StringUtils.isBlank(timeoutwarning) || StringUtils.equals(timeoutwarning, "0")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, alarmTemplate,Arrays.asList(NotifyChannel.TIMEOUTSMS, NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER21.getCode()), JsonUtil.toJson(userright), null);
+            } else if (StringUtils.equals(timeoutwarning, "1")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName,  alarmTemplate,Collections.singletonList(NotifyChannel.TIMEOUTPHONE),count,hospitalcode);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER19.getCode()), JsonUtil.toJson(userright), null);
+            } else if (StringUtils.equals(timeoutwarning, "2")) {
+                buildTimeOutP2PNotify(phonenum, eqTypeName, alarmTemplate,Collections.singletonList(NotifyChannel.TIMEOUTSMS),count,hospitalcode);
+                ElkLogDetailUtil.buildElkLogDetail(ElkLogDetail.from(ElkLogDetail.MSCT_SERIAL_NUMBER20.getCode()), JsonUtil.toJson(userright), null);
             }
         }
     }
@@ -475,6 +474,25 @@ public class WarningServiceImpl implements WarningService {
         messageApi.send(pNotify);
     }
 
+    public void buildTimeOutP2PNotify(String phone,String equipmentname,String alarmTemplate,List<NotifyChannel> notifyChannels,String count,String hospitalcode) {
+        P2PNotify p2PNotify = new P2PNotify();
+        p2PNotify.setUserId(phone);
+        String warningRemark = null;
+        //根据语言模板编写短信信息
+        if (StringUtils.isEmpty(alarmTemplate)||StringUtils.equals(alarmTemplate,"en")){
+            warningRemark=equipmentname +"device timed out"+ count+",please log in to the system to check";
+        }else if (StringUtils.equals(alarmTemplate,"zh")){
+            warningRemark=equipmentname +"设备超时"+ count+"台,请登录系统查看";
+        }else if (StringUtils.equals(alarmTemplate,"zhft")){
+            warningRemark=equipmentname +"設備超時"+ count+"臺,請登錄系統查看";
+        }
+        p2PNotify.setMessageCover(warningRemark);
+        p2PNotify.setMessageIntro(alarmTemplate);
+        p2PNotify.setChannels(notifyChannels);
+        p2PNotify.setMessageBodys(hospitalcode);
+        p2PNotify.setServiceNo("1");
+        messageApi.send(p2PNotify);
+    }
 
 
 

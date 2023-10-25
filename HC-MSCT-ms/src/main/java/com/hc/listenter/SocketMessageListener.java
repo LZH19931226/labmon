@@ -103,7 +103,6 @@ public class SocketMessageListener {
             return;
         }
     }
-
     /**
      * 监听超时报警信息
      *
@@ -119,8 +118,8 @@ public class SocketMessageListener {
         StringBuilder eqTypeName = new StringBuilder();
         StringBuilder count = new StringBuilder();
         String hospitalName = timeoutEquipmentList.get(0).getHospitalname();
-         String hospitalcode = timeoutEquipmentList.get(0).getHospitalcode();
-         int size = timeoutEquipmentList.size();
+        String hospitalcode = timeoutEquipmentList.get(0).getHospitalcode();
+        int size = timeoutEquipmentList.size();
         for (int i = 0; i < size; i++) {
             String equipmentTypeName = timeoutEquipmentList.get(i).getEquipmenttypename();
             String count1 = timeoutEquipmentList.get(i).getCount();
@@ -138,14 +137,14 @@ public class SocketMessageListener {
         if(StringUtils.isBlank(hospitalName) || StringUtils.isBlank(eqTypeName.toString()) || StringUtils.isBlank(count.toString())){
             return;
         }
-        List<Userright> userrights = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
-        if (CollectionUtils.isEmpty(userrights)) {
+        List<Userright> userrightByHospitalcodeAAndTimeout = userrightDao.getUserrightByHospitalcodeAAndTimeout(hospitalcode);
+        if (CollectionUtils.isEmpty(userrightByHospitalcodeAAndTimeout)) {
             return;
         }
         //通知信息
-        warningService.pushTimeOutNotification(userrights,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode,null);
+        warningService.pushTimeOutNotification(userrightByHospitalcodeAAndTimeout,hospitalName,eqTypeName.toString(),count.toString(),hospitalcode);
         //保存到数据库
-        sendTimeoutRecordService.saveTimeOutRecord(userrights,hospitalcode,eqTypeName.toString(),count.toString());
+        sendTimeoutRecordService.saveTimeOutRecord(userrightByHospitalcodeAAndTimeout,hospitalcode,eqTypeName.toString(),count.toString());
     }
 
     public void msctMessage(String message) {

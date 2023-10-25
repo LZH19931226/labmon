@@ -76,12 +76,7 @@ public class NotifyScheduledExecutor implements NotifyExecutor{
 
     private void notify(MessengerServiceDefine define, MessengerPublishTask task) {
         Notification notification = new Notification();
-            //用户id作为推送核心
-        if (StringUtils.equalsAny(task.getPublishType(),NotifyChannel.SMS.getCode(),NotifyChannel.PHONE.getCode(),NotifyChannel.MAIL.getCode())) {
-            notification.setParam(Collections.emptyMap());
-            notification.setMessageBodys(task.getMessageBodys());
-            notification.setPublishKey(task.getPublishKey());
-        }
+        notification.setPublishKey(task.getPublishKey());
         notification.setBatchNo(task.getBatchNo());
         notification.setBusinessNo(define.getBusinessNo());
         notification.setConsumerId(task.getConsumerId());
@@ -93,7 +88,6 @@ public class NotifyScheduledExecutor implements NotifyExecutor{
         notification.setServiceNo(task.getServiceNo());
         notification.setSupplierId(task.getSupplierId());
         notification.setTaskNo(task.getTaskNo());
-
         MessengerPublishTask ts = new MessengerPublishTask();
         ts.setId(task.getId());
         ts.setUpdateTime(LocalDateTime.now());
