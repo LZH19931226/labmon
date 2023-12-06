@@ -2,13 +2,11 @@ package com.hc.my.common.core.util;
 
 import com.hc.my.common.core.util.date.DateConstant;
 import com.hc.my.common.core.util.date.DateDto;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.*;
 
 /**
@@ -17,6 +15,38 @@ import java.util.*;
  * 描述:
  **/
 public class DateUtils {
+
+
+    //将date类型转换指定时区的日期数据
+    public static Date designatedAreaDate(Date date,String zone){
+        if (StringUtils.isEmpty(zone)){
+            zone= "America/Phoenix";
+        }
+        ZoneId of = ZoneId.of(zone);
+        TimeZone timeZone = TimeZone.getTimeZone(of);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(timeZone);
+        String format = sdf.format(date);
+        return parseDate(format);
+    }
+
+    public static String designatedAreaDateString(String date,String zone){
+        if (StringUtils.isEmpty(zone)){
+            zone= "America/Phoenix";
+        }
+        ZoneId of = ZoneId.of(zone);
+        TimeZone timeZone = TimeZone.getTimeZone(of);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(timeZone);
+        Date parse = null;
+        try {
+            parse = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return paseDatetime(parse);
+    }
+
     /**
      * 过滤数组元素,是否满足对应日期格式
      *
@@ -273,12 +303,10 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        Date date1 = new Date();
-        Thread.sleep(2000);
-        Date date2 = new Date();
-        Thread.sleep(3000);
-        Date date3 = new Date();
-        System.out.println(isEffectiveHhMm(date1,date2,date3));
+        Date date = designatedAreaDate(new Date(), "America/Phoenix");
+        System.out.println(date);
+
+
     }
 
     /**

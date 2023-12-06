@@ -87,4 +87,11 @@ public class HospitalRegistrationInfoPo implements Serializable {
      */
     @TableField(value = "language_template")
     private String languageTemplate;
+
+
+    /**
+     * 时区
+     */
+    @TableField(value = "zone")
+    private String zone;
 }

@@ -21,6 +21,7 @@ import com.hc.my.common.core.redis.dto.SnDeviceDto;
 import com.hc.my.common.core.redis.namespace.LabManageMentServiceEnum;
 import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.*;
 import com.hc.user.UserRightInfoApi;
 import com.hc.vo.equimenttype.InstrumentparamconfigVo;
@@ -370,7 +371,8 @@ public class InstrumentparamconfigApplication {
                         .instrumentname(configDTO.getInstrumentname())
                         .instrumentno(configDTO.getInstrumentno())
                         .sn(configDTO.getSn())
-                        .firsttime(configDTO.getFirsttime())
+                         //时区处理
+                        .firsttime(DateUtils.designatedAreaDate(configDTO.getFirsttime(),Context.getZone()))
                         .channel(configDTO.getChannel())
                         .instrumentconfigid(configDTO.getInstrumentconfigid())
                         .instrumentconfigname(configDTO.getInstrumentconfigname())

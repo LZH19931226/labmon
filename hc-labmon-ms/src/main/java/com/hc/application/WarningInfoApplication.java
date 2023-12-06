@@ -127,6 +127,8 @@ public class WarningInfoApplication {
                     WarningRecordInfoDto warningRecordInfoDto = pkIdMap.get(res.getPkid()).get(0);
                     res.setRemark(StringUtils.isBlank(warningRecordInfoDto.getInfo()) ? "" :warningRecordInfoDto.getInfo());
                 }
+                //处理时间
+                res.setInputdatetime(DateUtils.designatedAreaDate(res.getInputdatetime(),Context.getZone()));
             }
         }
         page.setRecords(records);

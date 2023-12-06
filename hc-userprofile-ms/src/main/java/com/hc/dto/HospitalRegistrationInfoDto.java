@@ -62,4 +62,6 @@ public class HospitalRegistrationInfoDto {
     private String soundLightAlarm;
 
     private String languageTemplate;
+
+    private String zone;
 }

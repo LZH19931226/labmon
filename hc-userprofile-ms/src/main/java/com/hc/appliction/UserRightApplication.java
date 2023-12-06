@@ -230,7 +230,7 @@ public class UserRightApplication {
         //查询医院信息
         HospitalRegistrationInfoDto hospitalInfo = hospitalRegistrationInfoService.findHospitalInfoByCode(hospitalCode);
         HospitalInfoVo  hospitalInfoVo = builderHospitalInfo(hospitalInfo);
-        String token = JwtTokenUtil.createJWT(userRightDto.getUserid(), userRightDto.getUsername(),lang, audience);
+        String token = JwtTokenUtil.createJWT(userRightDto.getUserid(), userRightDto.getUsername(),lang,hospitalInfo.getZone(), audience);
         //未设置双因子的医院直接放行 设置了的医院在非app上登录直接放行
         if (!HospitalInfoEnum.ONE.getCode().equals(hospitalInfo.getFactor()) || LoginTypeEnum.H5.getCode().equals(loginType)) {
             return builder(userRightDto,hospitalInfoVo,token,sysNationalPo);

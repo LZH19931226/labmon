@@ -69,7 +69,11 @@ public class SystemDataApplication {
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
         }
-        lastDataList.forEach(s -> s.setEquipmentName(equipmentDataCommand.getEquipmentName()));
+        lastDataList.forEach(s->{
+            s.setEquipmentName(equipmentDataCommand.getEquipmentName());
+            s.setInputdatetime(DateUtils.designatedAreaDate(s.getInputdatetime(),Context.getZone()));
+        });
+
         page.setRecords(lastDataList);
         return page;
     }

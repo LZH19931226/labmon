@@ -186,7 +186,8 @@ public class StatisticalAnalysisApplication {
         boolean isCh = Context.IsCh();
         for (LabMessengerPublishTaskDto labMessengerPublishTaskDto : labMessengerPublishTaskDtoList) {
             AlarmNoticeResult alarmNoticeResult = new AlarmNoticeResult();
-            alarmNoticeResult.setDataLoggingTime(labMessengerPublishTaskDto.getPublishTime());
+            String publishTime = labMessengerPublishTaskDto.getPublishTime();
+            alarmNoticeResult.setDataLoggingTime(DateUtils.designatedAreaDateString(publishTime,Context.getZone()));
             alarmNoticeResult.setPublishType(labMessengerPublishTaskDto.getPublishType());
             alarmNoticeResult.setPhoneNum(labMessengerPublishTaskDto.getPublishKey());
             Integer status = labMessengerPublishTaskDto.getStatus();
@@ -274,6 +275,9 @@ public class StatisticalAnalysisApplication {
         }
         List<LastDataResult> resultList = new ArrayList<>();
         for (Monitorequipmentlastdata lastData : lastDataList) {
+            //处理时区时间
+            lastData.setInputdatetime(DateUtils.designatedAreaDate(lastData.getInputdatetime(),Context.getZone()));
+
             Map<String, Object> objectToMap = getObjectToMap(lastData);
             ObjectConvertUtils.filterMap(objectToMap,fieldList);
             for (String field : objectToMap.keySet()) {

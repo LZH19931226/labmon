@@ -434,6 +434,14 @@ public class AppEquipmentInfoApplication {
                 currentProbeInfoResult.setProbeCurrentInfoDtoList(totals);
                 break;
         }
+        //处理时区时间问题
+        List<ProbeCurrentInfoDto> probeCurrentInfoDtoList = currentProbeInfoResult.getProbeCurrentInfoDtoList();
+        probeCurrentInfoDtoList.forEach(eq->{
+            Date inputTime = eq.getInputTime();
+            if (null!=inputTime){
+                DateUtils.designatedAreaDate(inputTime, Context.getZone());
+            }
+        });
         return currentProbeInfoResult;
     }
 

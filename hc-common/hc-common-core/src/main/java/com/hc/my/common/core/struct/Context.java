@@ -43,6 +43,20 @@ public class Context {
         return lang;
     }
 
+    public static String getZone(){
+        HttpServletRequest request = getRequest();
+        String userIdToken = request.getHeader("Authorization");
+        if(StringUtils.isBlank(userIdToken) || "Bearer undefined".equals(userIdToken)){
+            return null;
+        }
+        String token = userIdToken.substring(7);
+        String zone = JwtTokenUtil.getZone(token,new Audience().getBase64Secret());
+        if(StringUtils.isBlank(zone)){
+            return null;
+        }
+        return zone;
+    }
+
     public static boolean IsCh(){
         String lang = getLang();
         return StringUtils.equalsIgnoreCase(lang,"zh");

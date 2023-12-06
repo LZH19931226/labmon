@@ -37,7 +37,7 @@ public class UserInfoApplication {
     public UserInfoVo userLogin(UserCommand userCommand) {
         UserBackDto userBackDto = userBackService.userLogin(userCommand);
         //创建token返回token
-        String token = JwtTokenUtil.createJWT(userBackDto.getUserid(), userBackDto.getUsername(),userCommand.getLang(), audience);
+        String token = JwtTokenUtil.createJWT(userBackDto.getUserid(), userBackDto.getUsername(),userCommand.getLang(),null, audience);
         return UserInfoVo.builder()
                 .username(userBackDto.getUsername())
                 .userid(userBackDto.getUserid())

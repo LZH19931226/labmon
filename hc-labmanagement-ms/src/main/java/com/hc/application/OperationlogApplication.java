@@ -13,6 +13,7 @@ import com.hc.my.common.core.constant.enums.OperationLogEunmDerailEnum;
 import com.hc.my.common.core.exception.IedsException;
 import com.hc.my.common.core.exception.LabSystemEnum;
 import com.hc.my.common.core.struct.Context;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ExcelExportUtils;
 import com.hc.my.common.core.util.FileUtil;
 import com.hc.my.common.core.util.ObjectConvertUtils;
@@ -83,7 +84,7 @@ public class OperationlogApplication {
                         .hospitalname(res.getHospitalname())
                         .equipmentname(res.getEquipmentname())
                         .username(res.getUsername())
-                        .operationtime(res.getOperationtime())
+                        .operationtime(DateUtils.designatedAreaDate(res.getOperationtime(),Context.getZone()))
                         .logid(res.getLogid())
                         .build();
                 list.add(build);
