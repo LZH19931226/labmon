@@ -2,13 +2,15 @@ package com.hc.application.response;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class AlarmNoticeResult {
 
     /**
      * 数据记录时间
      */
-    private String dataLoggingTime;
+    private Date dataLoggingTime;
 
     /**
      * 用户名

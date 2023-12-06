@@ -2,11 +2,11 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 172.31.85.148:8848
+        server-addr: cdh02:8848
         file-extension: yaml
         prefix: hc-labredis-ms
         group: DEFAULT_GROUP
-        namespace: liuzhihao
+        namespace: chengkai
       discovery:
-        server-addr: 172.31.85.148:8848
-        namespace: liuzhihao
+        server-addr: cdh02:8848
+        namespace: chengkai

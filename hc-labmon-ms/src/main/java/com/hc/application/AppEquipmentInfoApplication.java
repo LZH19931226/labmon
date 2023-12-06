@@ -439,7 +439,8 @@ public class AppEquipmentInfoApplication {
         probeCurrentInfoDtoList.forEach(eq->{
             Date inputTime = eq.getInputTime();
             if (null!=inputTime){
-                DateUtils.designatedAreaDate(inputTime, Context.getZone());
+                Date date = DateUtils.designatedAreaDate(inputTime, Context.getZone());
+                eq.setInputTime(date);
             }
         });
         return currentProbeInfoResult;

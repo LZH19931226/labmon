@@ -30,23 +30,6 @@ public class DateUtils {
         return parseDate(format);
     }
 
-    public static String designatedAreaDateString(String date,String zone){
-        if (StringUtils.isEmpty(zone)){
-            zone= "America/Phoenix";
-        }
-        ZoneId of = ZoneId.of(zone);
-        TimeZone timeZone = TimeZone.getTimeZone(of);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(timeZone);
-        Date parse = null;
-        try {
-            parse = sdf.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return paseDatetime(parse);
-    }
-
     /**
      * 过滤数组元素,是否满足对应日期格式
      *
@@ -303,7 +286,7 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        Date date = designatedAreaDate( parseDate("2023-12-06 11:19:33"), "America/Phoenix");
+        Date date = designatedAreaDate( parseDate("2023-12-06 12:56:07"), "America/Phoenix");
         System.out.println(date);
 
 

@@ -187,7 +187,7 @@ public class StatisticalAnalysisApplication {
         for (LabMessengerPublishTaskDto labMessengerPublishTaskDto : labMessengerPublishTaskDtoList) {
             AlarmNoticeResult alarmNoticeResult = new AlarmNoticeResult();
             String publishTime = labMessengerPublishTaskDto.getPublishTime();
-            alarmNoticeResult.setDataLoggingTime(DateUtils.designatedAreaDateString(publishTime,Context.getZone()));
+            alarmNoticeResult.setDataLoggingTime(DateUtils.designatedAreaDate(DateUtils.parseDate(publishTime),Context.getZone()));
             alarmNoticeResult.setPublishType(labMessengerPublishTaskDto.getPublishType());
             alarmNoticeResult.setPhoneNum(labMessengerPublishTaskDto.getPublishKey());
             Integer status = labMessengerPublishTaskDto.getStatus();
