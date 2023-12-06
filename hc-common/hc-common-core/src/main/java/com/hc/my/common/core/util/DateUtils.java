@@ -303,7 +303,7 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        Date date = designatedAreaDate(new Date(), "America/Phoenix");
+        Date date = designatedAreaDate( parseDate("2023-12-06 11:19:33"), "America/Phoenix");
         System.out.println(date);
 
 

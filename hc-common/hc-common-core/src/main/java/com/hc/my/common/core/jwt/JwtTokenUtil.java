@@ -70,13 +70,13 @@ public class JwtTokenUtil {
             //userId是重要信息，进行加密下
             String encryId = Base64Util.encode(userId);
             String lange = Base64Util.encode(lang);
-
+            String zones = Base64Util.encode(zone);
             //添加构成JWT的参数
             JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
                     // 可以将基本不重要的对象信息放到claims
                     .claim("userId", encryId)
                     .claim("lang",lange)
-                    .claim("zone",zone)
+                    .claim("zone",zones)
                     //.claim("userPermissions",Base64Util.encode(userPermissions))
                     // 代表这个JWT的主体，即它的所有人
                     .setSubject(username)
