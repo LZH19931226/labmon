@@ -30,6 +30,18 @@ public class DateUtils {
         return parseDate(format);
     }
 
+    //将date类型转换指定时区的日期数据
+    public static String designatedAreaDateString(String date,String zone){
+        if (StringUtils.isEmpty(zone)){
+            zone= "America/Phoenix";
+        }
+        ZoneId of = ZoneId.of(zone);
+        TimeZone timeZone = TimeZone.getTimeZone(of);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(timeZone);
+        return sdf.format(date);
+    }
+
     /**
      * 过滤数组元素,是否满足对应日期格式
      *
@@ -286,7 +298,7 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        Date date = designatedAreaDate( parseDate("2023-12-06 12:56:07"), "America/Phoenix");
+        Date date = designatedAreaDate( parseDate("2023-12-07 09:20:07"), "America/New_York");
         System.out.println(date);
 
 

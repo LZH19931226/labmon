@@ -7,6 +7,7 @@ import com.hc.dto.CurveInfoDto;
 import com.hc.dto.InstrumentParamConfigDto;
 import com.hc.my.common.core.constant.enums.DataFieldEnum;
 import com.hc.my.common.core.constant.enums.SysConstants;
+import com.hc.my.common.core.struct.Context;
 import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.Mt310DCUtils;
 import com.hc.my.common.core.util.ObjectConvertUtils;
@@ -143,7 +144,9 @@ public class CurveUtils {
         List<String> dataList = curve.getDataList();
         dataList.add(str);
         String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
-        curve.getDateList().add(DateUtils.getHHmm(timeStr));
+        //需要对时间进行时区转换
+        String time = DateUtils.designatedAreaDateString(timeStr, Context.getZone());
+        curve.getDateList().add(DateUtils.getHHmm(time));
     }
 
     private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list,String eqSnAbbreviation){
@@ -152,13 +155,13 @@ public class CurveUtils {
         curveDataModel.setUnit("");
         SeriesDataModel seriesDataModel = new SeriesDataModel();
         seriesDataModel.setDate(dataList);
-        //数据库不为空时去数据库中的值
-        if (CollectionUtils.isNotEmpty(list)) {
-            InstrumentParamConfigDto probe = list.get(0);
-            curveDataModel.setUnit(probe.getUnit());
-            curveDataModel.setMaxNum(probe.getHighLimit()+"");
-            curveDataModel.setMinNum(probe.getLowLimit()+"");
-            curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? probe.getHighLimit()+"":probe.getStyleMin());
+            //数据库不为空时去数据库中的值
+            if (CollectionUtils.isNotEmpty(list)) {
+                InstrumentParamConfigDto probe = list.get(0);
+                curveDataModel.setUnit(probe.getUnit());
+                curveDataModel.setMaxNum(probe.getHighLimit()+"");
+                curveDataModel.setMinNum(probe.getLowLimit()+"");
+                curveDataModel.setStyleMin(StringUtils.isBlank(probe.getStyleMin()) ? probe.getHighLimit()+"":probe.getStyleMin());
             curveDataModel.setStyleMax(StringUtils.isBlank(probe.getStyleMax()) ? probe.getLowLimit()+"":probe.getStyleMax());
             /**  当设备是MT210M,211M 并且单位in时修改返回值*/
             if(SysConstants.MT210M_SN.equals(eqSnAbbreviation) && SysConstants.MT210M_UNIT.equals(probe.getUnit())){
