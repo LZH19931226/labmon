@@ -145,8 +145,8 @@ public class CurveUtils {
         dataList.add(str);
         String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
         //需要对时间进行时区转换
-        String time = DateUtils.designatedAreaDateString(timeStr, Context.getZone());
-        curve.getDateList().add(DateUtils.getHHmm(time));
+        Date date = DateUtils.designatedAreaDate(DateUtils.parseDate(timeStr), Context.getZone());
+        curve.getDateList().add(DateUtils.getHHmm(date));
     }
 
     private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list,String eqSnAbbreviation){

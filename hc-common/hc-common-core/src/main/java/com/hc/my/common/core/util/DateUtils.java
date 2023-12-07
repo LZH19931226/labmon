@@ -30,17 +30,6 @@ public class DateUtils {
         return parseDate(format);
     }
 
-    //将date类型转换指定时区的日期数据
-    public static String designatedAreaDateString(String date,String zone){
-        if (StringUtils.isEmpty(zone)){
-            zone= "America/Phoenix";
-        }
-        ZoneId of = ZoneId.of(zone);
-        TimeZone timeZone = TimeZone.getTimeZone(of);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(timeZone);
-        return sdf.format(date);
-    }
 
     /**
      * 过滤数组元素,是否满足对应日期格式
@@ -604,7 +593,10 @@ public class DateUtils {
         Date date = parseDate(time);
         return simpleDateFormat.format(date);
     }
-
+    public static String getHHmm(Date time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        return  simpleDateFormat.format(time);
+    }
 
     public static List<String> getBetweenDate(String beginDate, String endDate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
