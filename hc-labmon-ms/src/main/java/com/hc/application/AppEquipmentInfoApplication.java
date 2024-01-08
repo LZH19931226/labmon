@@ -647,6 +647,8 @@ public class AppEquipmentInfoApplication {
             curveCommand.setInstrumentConfigIdList(Mt310DCUtils.get310DCFields(curveParam.getInstrumentConfigIdList()));
         }
         curveParam.setYearMonth(ym);
+        curveParam.setStartTime(startTime);
+        curveParam.setEndTime(endTime);
         List<Monitorequipmentlastdata> lastDataModelList = monitorequipmentlastdataRepository.getMonitorEquuipmentLastList(curveParam);
         if (org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
