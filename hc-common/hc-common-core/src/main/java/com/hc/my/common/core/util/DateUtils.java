@@ -298,7 +298,7 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        Date date = designatedAreaDate( parseDate("2024-01-08 10:41:07"), "America/New_York");
+        Date date = designatedAreaDate( parseDate("2024-01-08 00:00:07"), null);
         System.out.println(date);
 
 
