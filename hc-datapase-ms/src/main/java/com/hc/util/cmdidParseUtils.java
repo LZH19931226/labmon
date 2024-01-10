@@ -23,15 +23,15 @@ public class cmdidParseUtils {
                 return ProbeOutlier.OUT_OF_TEST_RANGE.getCode();
             } else
                 // 若已接传感器且已校准，但值无效，该值为 0xFFF0;
-                if (StringUtils.equalsAnyIgnoreCase(co2, ProbeOutlier.FFF0.getCode(),"028C","9C00")) {
-                    return ProbeOutlier.VALUE_IS_INVALID.getCode();
-                } else
-                    // 若已接传感器，但未校准，该值为 0xFFFF；
-                    if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FFFF.getCode())) {
-                        return ProbeOutlier.NO_CALIBRATION.getCode();
-                    } else {
-                        return paramaterModelUtils.gas(co2);
-                    }
+                if (StringUtils.equalsAnyIgnoreCase(co2, ProbeOutlier.FFF0.getCode())) {
+            return ProbeOutlier.VALUE_IS_INVALID.getCode();
+        } else
+        // 若已接传感器，但未校准，该值为 0xFFFF；
+        if (StringUtils.equalsIgnoreCase(co2, ProbeOutlier.FFFF.getCode())) {
+            return ProbeOutlier.NO_CALIBRATION.getCode();
+        } else {
+            return paramaterModelUtils.gas(co2);
+        }
     }
 
     public static String paseAir91(String co2) {
@@ -88,7 +88,7 @@ public class cmdidParseUtils {
 
     }
 
-    public static String paseCmdIdB1(String data){
+    public static String paseCmdIdB1(String data) {
         //值无效
         if (StringUtils.equalsIgnoreCase(data, ProbeOutlier.FFF0.getCode())) {
             return ProbeOutlier.VALUE_IS_INVALID.getCode();
@@ -217,14 +217,9 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         // 二氧化碳
         String co2 = cmd.substring(28, 32);
-        //二氧化碳超出量程值无效
-        if (StringUtils.equalsIgnoreCase(co2,"028C")){
-            paramaterModel.setCO2(ProbeOutlier.THE_RANGE_FILTER_VALUE_IS_INVALID.getCode());
-        }else {
-            String s = paseAir(co2);
-            s = CustomUtils.agreementAll(s, "0", "0.5");
-            paramaterModel.setCO2(s);
-        }
+        String s = paseAir(co2);
+        s = CustomUtils.agreementAll(s, "0", "0.5");
+        paramaterModel.setCO2(s);
         // 氧气
         String o2 = cmd.substring(32, 36);
         // 若未接 O2 传感器，该值为 0xF000
@@ -258,19 +253,19 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         String tem = cmd.substring(28, 32);
         String s2 = pasetemperature1(tem);
-        if(RegularUtil.checkContainsNumbers(s2)){
+        if (RegularUtil.checkContainsNumbers(s2)) {
             s2 = CustomUtils.agreementAll(s2, "-100", "50");
         }
         paramaterModel.setTEMP(s2);
         String yangqi = cmd.substring(32, 36);
         String s = paseAir91(yangqi);
-        if(RegularUtil.checkContainsNumbers(s)){
+        if (RegularUtil.checkContainsNumbers(s)) {
             s = CustomUtils.agreementAll(s, "0", "30");
         }
         paramaterModel.setO2(s);
         String eryanghuatan = cmd.substring(36, 40);
         String s1 = paseAir91(eryanghuatan);
-        if(RegularUtil.checkContainsNumbers(s1)){
+        if (RegularUtil.checkContainsNumbers(s1)) {
             s1 = CustomUtils.agreementAll(s1, "0", "20");
         }
         paramaterModel.setCO2(s1);
@@ -522,20 +517,20 @@ public class cmdidParseUtils {
 
         String temp2 = cmd.substring(32, 36);// 用于校验温度
         String pasetemperature2 = paseCmdId9B9C(temp2);
-        paramaterModel.setTEMP(CustomUtils.agreementAll(pasetemperature,"-200","40"));
-        paramaterModel.setTEMP4(CustomUtils.agreementAll(pasetemperature2,"-200","40"));
+        paramaterModel.setTEMP(CustomUtils.agreementAll(pasetemperature, "-200", "40"));
+        paramaterModel.setTEMP4(CustomUtils.agreementAll(pasetemperature2, "-200", "40"));
         String temp3 = cmd.substring(36, 40);//室温
         String pasetemperature3 = paseCmdId9B9C(temp3);
-        paramaterModel.setTEMP2(CustomUtils.agreementAll(pasetemperature3,"0","50"));
+        paramaterModel.setTEMP2(CustomUtils.agreementAll(pasetemperature3, "0", "50"));
         String temp4 = cmd.substring(40, 44);//壁温
         String pasetemperature4 = paseCmdId9B9C(temp4);
         String substring = cmd.substring(44, 46);//电量
         int parseInt1 = Integer.parseInt(substring, 16);
         String s = String.valueOf(parseInt1);
-        paramaterModel.setTEMP3(CustomUtils.agreementAll(pasetemperature4,"0","50"));
+        paramaterModel.setTEMP3(CustomUtils.agreementAll(pasetemperature4, "0", "50"));
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
-        paramaterModel.setQC(CustomUtils.agreementAll(s,"0","100"));
+        paramaterModel.setQC(CustomUtils.agreementAll(s, "0", "100"));
         return paramaterModel;
 
     }
@@ -554,7 +549,7 @@ public class cmdidParseUtils {
         if (!StringUtils.equalsIgnoreCase(substring1, ProbeOutlier.FFF0.getCode())) {
             String temp1 = paramaterModelUtils.temperature(substring1);//左舱室顶部温度
             // temp1 = CustomUtils.tem85(temp1, sn);//验证数据
-            paramaterModel.setTEMP(CustomUtils.agreementAll(temp1,"0","50"));
+            paramaterModel.setTEMP(CustomUtils.agreementAll(temp1, "0", "50"));
         } else {
             paramaterModel.setTEMP(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         }
@@ -562,7 +557,7 @@ public class cmdidParseUtils {
         if (!StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.FFF0.getCode())) {
             String temp2 = paramaterModelUtils.temperature(substring2);//右舱室顶部温度
             //  temp2 = CustomUtils.tem85(temp2, sn);//验证数据
-            paramaterModel.setTEMP2(CustomUtils.agreementAll(temp2,"0","50"));
+            paramaterModel.setTEMP2(CustomUtils.agreementAll(temp2, "0", "50"));
         } else {
             paramaterModel.setTEMP2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         }
@@ -570,7 +565,7 @@ public class cmdidParseUtils {
         if (!StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.FFF0.getCode())) {
             String temp3 = paramaterModelUtils.temperature(substring3);//左舱室底部温度
             //    temp3 = CustomUtils.tem85(temp3, sn);//验证数据
-            paramaterModel.setTEMP3(CustomUtils.agreementAll(temp3,"0","50"));
+            paramaterModel.setTEMP3(CustomUtils.agreementAll(temp3, "0", "50"));
         } else {
             paramaterModel.setTEMP3(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         }
@@ -578,7 +573,7 @@ public class cmdidParseUtils {
         if (!StringUtils.equalsIgnoreCase(substring4, ProbeOutlier.FFF0.getCode())) {
             String temp4 = paramaterModelUtils.temperature(cmd.substring(40, 44));//右舱室底部温度
             //   temp4 = CustomUtils.tem85(temp4, sn);//验证数据
-            paramaterModel.setTEMP4(CustomUtils.agreementAll(temp4,"0","50"));
+            paramaterModel.setTEMP4(CustomUtils.agreementAll(temp4, "0", "50"));
         } else {
             paramaterModel.setTEMP4(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         }
@@ -586,7 +581,7 @@ public class cmdidParseUtils {
         if (!StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF0.getCode())) {
             String temp5 = paramaterModelUtils.temperature(cmd.substring(44, 48));//加湿器温度
             //    temp5 = CustomUtils.tem85(temp5, sn);//验证数据
-            paramaterModel.setTEMP5(CustomUtils.agreementAll(temp5,"0","50"));
+            paramaterModel.setTEMP5(CustomUtils.agreementAll(temp5, "0", "50"));
         } else {
             paramaterModel.setTEMP5(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         }
@@ -596,7 +591,7 @@ public class cmdidParseUtils {
             String airflow = paramaterModelUtils.electricity(substring);
             Integer integer = new Integer(airflow);
             String chu = chu(integer, "10");
-            paramaterModel.setTEMP6(CustomUtils.agreementAll(chu,"0","60000"));
+            paramaterModel.setTEMP6(CustomUtils.agreementAll(chu, "0", "60000"));
         } else {
             paramaterModel.setTEMP6(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         }
@@ -614,7 +609,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring1);
-            paramaterModel.setTEMP(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring2 = cmd.substring(32, 36);//舱室二温度
         if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.FFF0.getCode())) {
@@ -622,7 +617,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring2);
-            paramaterModel.setTEMP2(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP2(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring3 = cmd.substring(36, 40);//舱室三温度
         if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.FFF0.getCode())) {
@@ -630,7 +625,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP3(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring3);
-            paramaterModel.setTEMP3(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP3(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring4 = cmd.substring(40, 44);//舱室四温度
         if (StringUtils.equalsIgnoreCase(substring4, ProbeOutlier.FFF0.getCode())) {
@@ -638,7 +633,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP4(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring4);
-            paramaterModel.setTEMP4(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP4(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring5 = cmd.substring(44, 48);//舱室五温度
         if (StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF0.getCode())) {
@@ -646,7 +641,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP5(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring5);
-            paramaterModel.setTEMP5(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP5(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring6 = cmd.substring(48, 52);//舱室六温度
         if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF0.getCode())) {
@@ -654,7 +649,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP6(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring6);
-            paramaterModel.setTEMP6(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP6(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring7 = cmd.substring(52, 56);//舱室七温度
         if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF0.getCode())) {
@@ -662,7 +657,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP7(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring7);
-            paramaterModel.setTEMP7(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP7(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring8 = cmd.substring(56, 60);//舱室八温度
         if (StringUtils.equalsIgnoreCase(substring8, ProbeOutlier.FFF0.getCode())) {
@@ -670,7 +665,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP8(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring8);
-            paramaterModel.setTEMP8(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP8(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
@@ -686,7 +681,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP9(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring1);
-            paramaterModel.setTEMP9(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP9(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring2 = cmd.substring(32, 36);//舱室十温度
         if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.FFF0.getCode())) {
@@ -694,7 +689,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP10(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring2);
-            paramaterModel.setTEMP10(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP10(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring3 = cmd.substring(36, 40);//O2浓度
         if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.FFF0.getCode())) {
@@ -702,7 +697,7 @@ public class cmdidParseUtils {
             paramaterModel.setO2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String o2 = paramaterModelUtils.gas(substring3);
-            paramaterModel.setO2(CustomUtils.agreementAll(o2,"0","30"));
+            paramaterModel.setO2(CustomUtils.agreementAll(o2, "0", "30"));
         }
 
         String substring4 = cmd.substring(40, 44);//CO2浓度
@@ -711,7 +706,7 @@ public class cmdidParseUtils {
             paramaterModel.setCO2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String co2 = paramaterModelUtils.gas(substring4);
-            paramaterModel.setCO2(CustomUtils.agreementAll(co2,"0","20"));
+            paramaterModel.setCO2(CustomUtils.agreementAll(co2, "0", "20"));
         }
         String substring5 = cmd.substring(44, 48);//N2
         if (StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF0.getCode())) {
@@ -719,7 +714,7 @@ public class cmdidParseUtils {
             paramaterModel.setN2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String n2 = paramaterModelUtils.electricity2(substring5);
-            paramaterModel.setN2(CustomUtils.agreementAll(n2,"0","1"));
+            paramaterModel.setN2(CustomUtils.agreementAll(n2, "0", "1"));
         }
         String substring6 = cmd.substring(48, 52);//CO2压力
         if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF0.getCode())) {
@@ -727,7 +722,7 @@ public class cmdidParseUtils {
             paramaterModel.setPRESS(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String press = paramaterModelUtils.electricity2(substring6);
-            paramaterModel.setPRESS(CustomUtils.agreementAll(press,"0","1"));
+            paramaterModel.setPRESS(CustomUtils.agreementAll(press, "0", "1"));
         }
         String substring7 = cmd.substring(52, 56);//气流
         if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF0.getCode())) {
@@ -736,7 +731,7 @@ public class cmdidParseUtils {
         } else {
             String airFolw = paramaterModelUtils.electricity(substring7);
             //扩大1000倍，转化为ML
-            paramaterModel.setAirflow(CustomUtils.agreementAll(airFolw,"0","3000"));
+            paramaterModel.setAirflow(CustomUtils.agreementAll(airFolw, "0", "3000"));
         }
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
@@ -1196,7 +1191,7 @@ public class cmdidParseUtils {
             paramaterModel.setLeftCompartmentTemp(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring1);
-            paramaterModel.setLeftCompartmentTemp(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setLeftCompartmentTemp(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         //左舱室流量
         String substring2 = cmd.substring(32, 36);
@@ -1205,7 +1200,7 @@ public class cmdidParseUtils {
             paramaterModel.setLeftCompartmentFlow(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.gas(substring2);
-            paramaterModel.setLeftCompartmentFlow(CustomUtils.agreementAll(temperature,"0","600"));
+            paramaterModel.setLeftCompartmentFlow(CustomUtils.agreementAll(temperature, "0", "600"));
         }
         //左舱室湿度
         String substring3 = cmd.substring(36, 40);
@@ -1214,7 +1209,7 @@ public class cmdidParseUtils {
             paramaterModel.setLeftCompartmentHumidity(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.electricity(substring3);
-            paramaterModel.setLeftCompartmentHumidity(CustomUtils.agreementAll(temperature,"0","100"));
+            paramaterModel.setLeftCompartmentHumidity(CustomUtils.agreementAll(temperature, "0", "100"));
         }
         //右舱室温度
         String substring4 = cmd.substring(40, 44);
@@ -1223,7 +1218,7 @@ public class cmdidParseUtils {
             paramaterModel.setRightCompartmentTemp(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring4);
-            paramaterModel.setRightCompartmentTemp(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setRightCompartmentTemp(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring5 = cmd.substring(44, 48);
         //右舱室流量
@@ -1232,7 +1227,7 @@ public class cmdidParseUtils {
             paramaterModel.setRightCompartmentFlow(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.gas(substring5);
-            paramaterModel.setRightCompartmentFlow(CustomUtils.agreementAll(temperature,"0","600"));
+            paramaterModel.setRightCompartmentFlow(CustomUtils.agreementAll(temperature, "0", "600"));
         }
         //右舱室湿度
         String substring6 = cmd.substring(48, 52);
@@ -1241,7 +1236,7 @@ public class cmdidParseUtils {
             paramaterModel.setRightCompartmentHumidity(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.electricity(substring6);
-            paramaterModel.setRightCompartmentHumidity(CustomUtils.agreementAll(temperature,"0","100"));
+            paramaterModel.setRightCompartmentHumidity(CustomUtils.agreementAll(temperature, "0", "100"));
         }
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
@@ -1256,7 +1251,7 @@ public class cmdidParseUtils {
         paramaterModel.setUPS(electricity);
         String substring2 = cmd.substring(30, 34);
         String electricity1 = paramaterModelUtils.electricity(substring2);
-        paramaterModel.setVoltage(CustomUtils.agreementAll(electricity1,"0","4200"));
+        paramaterModel.setVoltage(CustomUtils.agreementAll(electricity1, "0", "4200"));
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
@@ -1266,16 +1261,16 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         String substring1 = cmd.substring(28, 32);
         String temp = paseCmdIdA5(substring1);
-        paramaterModel.setTEMP(CustomUtils.agreementAll(temp,"0","50"));
+        paramaterModel.setTEMP(CustomUtils.agreementAll(temp, "0", "50"));
         String substring2 = cmd.substring(32, 36);
         String o2 = paseAir(substring2);
-        paramaterModel.setO2(CustomUtils.agreementAll(o2,"0","30"));
+        paramaterModel.setO2(CustomUtils.agreementAll(o2, "0", "30"));
         String substring3 = cmd.substring(36, 40);
         String co2 = paseAir(substring3);
-        paramaterModel.setCO2(CustomUtils.agreementAll(co2,"0","20"));
+        paramaterModel.setCO2(CustomUtils.agreementAll(co2, "0", "20"));
         String substring4 = cmd.substring(40, 44);
         String rh = paseAir(substring4);
-        paramaterModel.setRH(CustomUtils.agreementAll(rh,"10","100"));
+        paramaterModel.setRH(CustomUtils.agreementAll(rh, "10", "100"));
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
@@ -1286,35 +1281,35 @@ public class cmdidParseUtils {
         //舱室温度1
         String substring1 = cmd.substring(28, 32);
         String temp = pasetemperature2(substring1);
-        paramaterModel.setTEMP(CustomUtils.agreementAll(temp,"0","50"));
+        paramaterModel.setTEMP(CustomUtils.agreementAll(temp, "0", "50"));
         //舱室温度2
         String substring2 = cmd.substring(32, 36);
         String temp2 = pasetemperature2(substring2);
-        paramaterModel.setTEMP2(CustomUtils.agreementAll(temp2,"0","50"));
+        paramaterModel.setTEMP2(CustomUtils.agreementAll(temp2, "0", "50"));
         //舱室温度3
         String substring3 = cmd.substring(36, 40);
         String temp3 = pasetemperature2(substring3);
-        paramaterModel.setTEMP3(CustomUtils.agreementAll(temp3,"0","50"));
+        paramaterModel.setTEMP3(CustomUtils.agreementAll(temp3, "0", "50"));
         //舱室温度4
         String substring4 = cmd.substring(40, 44);
         String temp4 = pasetemperature2(substring4);
-        paramaterModel.setTEMP4(CustomUtils.agreementAll(temp4,"0","50"));
+        paramaterModel.setTEMP4(CustomUtils.agreementAll(temp4, "0", "50"));
         //舱室温度5
         String substring5 = cmd.substring(44, 48);
         String temp5 = pasetemperature2(substring5);
-        paramaterModel.setTEMP5(CustomUtils.agreementAll(temp5,"0","50"));
+        paramaterModel.setTEMP5(CustomUtils.agreementAll(temp5, "0", "50"));
         //舱室温度6
         String substring6 = cmd.substring(48, 52);
         String temp6 = pasetemperature2(substring6);
-        paramaterModel.setTEMP6(CustomUtils.agreementAll(temp6,"0","50"));
+        paramaterModel.setTEMP6(CustomUtils.agreementAll(temp6, "0", "50"));
         //氧气
         String substring7 = cmd.substring(52, 56);
         String o2 = paseAir10(substring7);
-        paramaterModel.setO2(CustomUtils.agreementAll(o2,"0","30"));
+        paramaterModel.setO2(CustomUtils.agreementAll(o2, "0", "30"));
         //二氧化碳
         String substring8 = cmd.substring(56, 60);
         String co2 = paseAir10(substring8);
-        paramaterModel.setCO2(CustomUtils.agreementAll(co2,"0","20"));
+        paramaterModel.setCO2(CustomUtils.agreementAll(co2, "0", "20"));
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
         return paramaterModel;
@@ -1324,7 +1319,7 @@ public class cmdidParseUtils {
         ParamaterModel paramaterModel = new ParamaterModel();
         String substring1 = cmd.substring(28, 32);
         String temp = pasetemperature3(substring1);
-        paramaterModel.setTEMP(CustomUtils.agreementAll(temp,"0","50"));
+        paramaterModel.setTEMP(CustomUtils.agreementAll(temp, "0", "50"));
         String substring2 = cmd.substring(32, 34);
         if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.F0.getCode())) {
             paramaterModel.setRH(ProbeOutlier.VALUE_IS_INVALID.getCode());
@@ -1332,7 +1327,7 @@ public class cmdidParseUtils {
             paramaterModel.setRH(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
         } else {
             String rh = paramaterModelUtils.electricity(substring2);
-            paramaterModel.setRH(CustomUtils.agreementAll(rh,"0","99"));
+            paramaterModel.setRH(CustomUtils.agreementAll(rh, "0", "99"));
         }
         String substring3 = cmd.substring(34, 36);
         if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.F0.getCode())) {
@@ -1341,10 +1336,10 @@ public class cmdidParseUtils {
             paramaterModel.setCO2(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else {
             String co2 = paramaterModelUtils.gas(substring3);
-            paramaterModel.setCO2(CustomUtils.agreementAll(co2,"0","0.5"));
+            paramaterModel.setCO2(CustomUtils.agreementAll(co2, "0", "0.5"));
         }
         String substring4 = cmd.substring(36, 40);
-        if (StringUtils.equalsIgnoreCase(substring4, ProbeOutlier.FFF0.getCode()) || StringUtils.equalsIgnoreCase(substring2,"1998")) {
+        if (StringUtils.equalsIgnoreCase(substring4, ProbeOutlier.FFF0.getCode()) || StringUtils.equalsIgnoreCase(substring2, "1998")) {
             paramaterModel.setO2(ProbeOutlier.VALUE_IS_INVALID.getCode());
         } else if (StringUtils.equalsIgnoreCase(substring4, ProbeOutlier.FFF1.getCode())) {
             paramaterModel.setO2(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
@@ -1352,7 +1347,7 @@ public class cmdidParseUtils {
             paramaterModel.setO2(ProbeOutlier.NO_CALIBRATION.getCode());
         } else {
             String o2 = paramaterModelUtils.gas10(substring4);
-            paramaterModel.setO2(CustomUtils.agreementAll(o2,"0","30"));
+            paramaterModel.setO2(CustomUtils.agreementAll(o2, "0", "30"));
         }
         String substring5 = cmd.substring(40, 44);
         if (StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF0.getCode())) {
@@ -1361,7 +1356,7 @@ public class cmdidParseUtils {
             paramaterModel.setPRESS(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
         } else {
             String press = paramaterModelUtils.electricity(substring5);
-            paramaterModel.setPRESS(CustomUtils.agreementAll(press,"300","1250"));
+            paramaterModel.setPRESS(CustomUtils.agreementAll(press, "300", "1250"));
         }
         String substring6 = cmd.substring(44, 48);
         if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF0.getCode())) {
@@ -1370,7 +1365,7 @@ public class cmdidParseUtils {
             paramaterModel.setPM25(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
         } else {
             String pm25 = paramaterModelUtils.electricity(substring6);
-            paramaterModel.setPM25(CustomUtils.agreementAll(pm25,"0","500"));
+            paramaterModel.setPM25(CustomUtils.agreementAll(pm25, "0", "500"));
         }
         String substring7 = cmd.substring(48, 52);
         if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF0.getCode())) {
@@ -1379,7 +1374,7 @@ public class cmdidParseUtils {
             paramaterModel.setPM10(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
         } else {
             String pm10 = paramaterModelUtils.electricity(substring7);
-            paramaterModel.setPM10(CustomUtils.agreementAll(pm10,"0","500"));
+            paramaterModel.setPM10(CustomUtils.agreementAll(pm10, "0", "500"));
         }
         String substring8 = cmd.substring(52, 56);
         if (StringUtils.equalsIgnoreCase(substring8, ProbeOutlier.FFF0.getCode())) {
@@ -1388,7 +1383,7 @@ public class cmdidParseUtils {
             paramaterModel.setOX(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
         } else {
             String ox = paramaterModelUtils.electricity2(substring8);
-            paramaterModel.setOX(CustomUtils.agreementAll(ox,"0","2"));
+            paramaterModel.setOX(CustomUtils.agreementAll(ox, "0", "2"));
         }
         String substring9 = cmd.substring(56, 60);
         if (StringUtils.equalsIgnoreCase(substring9, ProbeOutlier.FFF0.getCode())) {
@@ -1397,7 +1392,7 @@ public class cmdidParseUtils {
             paramaterModel.setVOC(ProbeOutlier.OUT_OF_TEST_RANGE.getCode());
         } else {
             String voc = paramaterModelUtils.electricity2(substring9);
-            paramaterModel.setVOC(CustomUtils.agreementAll(voc,"0","2"));
+            paramaterModel.setVOC(CustomUtils.agreementAll(voc, "0", "2"));
         }
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
@@ -1535,7 +1530,7 @@ public class cmdidParseUtils {
         pasetemperature1 = CustomUtils.tem85(pasetemperature1, sn);
         paramaterModel.setTEMP2(pasetemperature1);
         //1路2路温度不一致则抛弃数据
-        if (!StringUtils.equalsIgnoreCase(pasetemperature,pasetemperature1)){
+        if (!StringUtils.equalsIgnoreCase(pasetemperature, pasetemperature1)) {
             return null;
         }
         // 电量
@@ -1559,12 +1554,12 @@ public class cmdidParseUtils {
         //温度
         String substring2 = cmd.substring(36, 40);
         String substring3 = cmd.substring(40, 44);
-        if(substring2.equals(substring3)){
+        if (substring2.equals(substring3)) {
             String pasetemperature = paseCmdIdB1(substring2);
             pasetemperature = CustomUtils.tempB1(pasetemperature);
             paramaterModel.setTEMP(pasetemperature);
             paramaterModel.setTEMP2(pasetemperature);
-        }else {
+        } else {
             //一路温度
             String pasetemperature = paseCmdIdB1(substring2);
             pasetemperature = CustomUtils.tempB1(pasetemperature);
@@ -1613,7 +1608,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring1);
-            paramaterModel.setTEMP(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring2 = cmd.substring(32, 36);//舱室二温度
         if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.FFF0.getCode())) {
@@ -1621,7 +1616,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring2);
-            paramaterModel.setTEMP2(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP2(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring3 = cmd.substring(36, 40);//舱室三温度
         if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.FFF0.getCode())) {
@@ -1629,7 +1624,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP3(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring3);
-            paramaterModel.setTEMP3(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP3(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring4 = cmd.substring(40, 44);//舱室四温度
         if (StringUtils.equalsIgnoreCase(substring4, ProbeOutlier.FFF0.getCode())) {
@@ -1637,7 +1632,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP4(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring4);
-            paramaterModel.setTEMP4(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP4(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring5 = cmd.substring(44, 48);//舱室五温度
         if (StringUtils.equalsIgnoreCase(substring5, ProbeOutlier.FFF0.getCode())) {
@@ -1645,7 +1640,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP5(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring5);
-            paramaterModel.setTEMP5(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP5(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring6 = cmd.substring(48, 52);//舱室六温度
         if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.FFF0.getCode())) {
@@ -1653,7 +1648,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP6(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring6);
-            paramaterModel.setTEMP6(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP6(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring7 = cmd.substring(52, 56);//舱室七温度
         if (StringUtils.equalsIgnoreCase(substring7, ProbeOutlier.FFF0.getCode())) {
@@ -1661,7 +1656,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP7(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring7);
-            paramaterModel.setTEMP7(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP7(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         paramaterModel.setSN(sn);
         paramaterModel.setCmdid(cmdid);
@@ -1677,7 +1672,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP8(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring8);
-            paramaterModel.setTEMP8(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP8(CustomUtils.agreementAll(temperature, "0", "50"));
         }
 
         String substring1 = cmd.substring(32, 36);//舱室九温度
@@ -1686,7 +1681,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP9(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring1);
-            paramaterModel.setTEMP9(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP9(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring2 = cmd.substring(36, 40);//舱室十温度
         if (StringUtils.equalsIgnoreCase(substring2, ProbeOutlier.FFF0.getCode())) {
@@ -1694,7 +1689,7 @@ public class cmdidParseUtils {
             paramaterModel.setTEMP10(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String temperature = paramaterModelUtils.temperature(substring2);
-            paramaterModel.setTEMP10(CustomUtils.agreementAll(temperature,"0","50"));
+            paramaterModel.setTEMP10(CustomUtils.agreementAll(temperature, "0", "50"));
         }
         String substring3 = cmd.substring(40, 44);//O2浓度
         if (StringUtils.equalsIgnoreCase(substring3, ProbeOutlier.FFF0.getCode())) {
@@ -1702,7 +1697,7 @@ public class cmdidParseUtils {
             paramaterModel.setO2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String o2 = paramaterModelUtils.gas(substring3);
-            paramaterModel.setO2(CustomUtils.agreementAll(o2,"0","30"));
+            paramaterModel.setO2(CustomUtils.agreementAll(o2, "0", "30"));
         }
 
         String substring4 = cmd.substring(44, 48);//CO2浓度
@@ -1711,7 +1706,7 @@ public class cmdidParseUtils {
             paramaterModel.setCO2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String co2 = paramaterModelUtils.gas(substring4);
-            paramaterModel.setCO2(CustomUtils.agreementAll(co2,"0","20"));
+            paramaterModel.setCO2(CustomUtils.agreementAll(co2, "0", "20"));
         }
 
         String substring5 = cmd.substring(48, 50);//N2
@@ -1720,7 +1715,7 @@ public class cmdidParseUtils {
             paramaterModel.setN2(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String n2 = paramaterModelUtils.electricity2(substring5);
-            paramaterModel.setN2(CustomUtils.agreementAll(n2,"0","0.103"));
+            paramaterModel.setN2(CustomUtils.agreementAll(n2, "0", "0.103"));
         }
         String substring6 = cmd.substring(50, 52);//CO2压力
         if (StringUtils.equalsIgnoreCase(substring6, ProbeOutlier.F0.getCode())) {
@@ -1728,7 +1723,7 @@ public class cmdidParseUtils {
             paramaterModel.setPRESS(ProbeOutlier.NO_DATA_WAS_OBTAINED.getCode());
         } else {
             String press = paramaterModelUtils.electricity2(substring6);
-            paramaterModel.setPRESS(CustomUtils.agreementAll(press,"0","0.103"));
+            paramaterModel.setPRESS(CustomUtils.agreementAll(press, "0", "0.103"));
         }
 
         paramaterModel.setSN(sn);
