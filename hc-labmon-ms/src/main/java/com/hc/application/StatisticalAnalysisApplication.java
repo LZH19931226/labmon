@@ -200,7 +200,7 @@ public class StatisticalAnalysisApplication {
             }
             alarmNoticeResult.setState(bool ? "success" : "fail");
             if (bool) {
-                alarmNoticeResult.setFReason("");
+                alarmNoticeResult.setFReason("OK");
             } else {
                 String remark = labMessengerPublishTaskDto.getRemark();
                 String publishType = labMessengerPublishTaskDto.getPublishType();

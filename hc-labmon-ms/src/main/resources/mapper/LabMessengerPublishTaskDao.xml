@@ -26,7 +26,7 @@
               </if>
           </if>
         <if test="res.phoneNum != null and res.phoneNum != ''">
-        and   publish_key= #{res.phoneNum}
+        and  publish_key  like concat('%',#{res.phoneNum},'%')
         </if>
         and  message_bodys = #{res.hospitalCode}
         order by publish_time desc
