@@ -187,7 +187,7 @@ public class StatisticalAnalysisApplication {
         for (LabMessengerPublishTaskDto labMessengerPublishTaskDto : labMessengerPublishTaskDtoList) {
             AlarmNoticeResult alarmNoticeResult = new AlarmNoticeResult();
             String publishTime = labMessengerPublishTaskDto.getPublishTime();
-            alarmNoticeResult.setDataLoggingTime(DateUtils.designatedAreaDate(DateUtils.parseDate(publishTime),Context.getZone()));
+            alarmNoticeResult.setDataLoggingTime(DateUtils.parseDate(publishTime));
             alarmNoticeResult.setPublishType(labMessengerPublishTaskDto.getPublishType());
             alarmNoticeResult.setPhoneNum(labMessengerPublishTaskDto.getPublishKey());
             Integer status = labMessengerPublishTaskDto.getStatus();
@@ -203,7 +203,7 @@ public class StatisticalAnalysisApplication {
             if(Context.IsCh()){
                 alarmNoticeResult.setMailContent(labMessengerPublishTaskDto.getMessageTitle()+labMessengerPublishTaskDto.getMessageCover()+"出现异常,请尽快查看");
             }else {
-                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageTitle()));
+                alarmNoticeResult.setMailContent(String.format("There is an exception in %s, please check",labMessengerPublishTaskDto.getMessageCover()));
             }
             if (phoneMap.containsKey(labMessengerPublishTaskDto.getPublishKey())) {
                 alarmNoticeResult.setUserName(phoneMap.get(labMessengerPublishTaskDto.getPublishKey()).get(0).getUsername());
