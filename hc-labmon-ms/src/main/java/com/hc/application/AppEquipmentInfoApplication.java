@@ -130,8 +130,8 @@ public class AppEquipmentInfoApplication {
             int abnormalCount = 0;
             int timeoutCount = 0;
             if(CollectionUtils.isNotEmpty(eq)){
-               totalNum = eq.size();
-               //遍历设备设备
+                totalNum = eq.size();
+                //遍历设备设备
                 for (MonitorEquipmentDto monitorEquipmentDto : eq) {
                     String equipmentNo = monitorEquipmentDto.getEquipmentno();
                     ProbeCurrentInfoDto probeInfo = new ProbeCurrentInfoDto();
@@ -656,8 +656,14 @@ public class AppEquipmentInfoApplication {
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
         //过滤数据
-        List<Monitorequipmentlastdata> datas = lastDataModelList.stream().filter(s -> DateUtils.paseDate(s.getInputdatetime()).equals(ymd)).collect(Collectors.toList());
-        return CurveUtils.getCurveFirst(datas, instrumentConfigIdList, map,eqSnAbbreviation);
+        List<Monitorequipmentlastdata> monitorequipmentlastdata  = new ArrayList<>();
+        lastDataModelList.forEach(s->{
+            Date date = DateUtils.designatedAreaDate(s.getInputdatetime(), Context.getZone());
+            if (StringUtils.equals(DateUtils.paseDate(date),ymd)){
+                monitorequipmentlastdata.add(s);
+            }
+        });
+        return CurveUtils.getCurveFirst(monitorequipmentlastdata, instrumentConfigIdList, map,eqSnAbbreviation);
     }
 
     /**

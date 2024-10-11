@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CurveUtils {
 
@@ -134,7 +135,7 @@ public class CurveUtils {
         if(StringUtils.isNotBlank(data) && RegularUtil.checkContainsNumbers(data)){
             dataList.add(data);
             String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
-            curve.getDateList().add(DateUtils.getHHmm(timeStr));
+            curve.getDateList().add(DateUtils.getHHmm(timeStr,Context.getZone()));
         }
     }
 
@@ -145,8 +146,7 @@ public class CurveUtils {
         dataList.add(str);
         String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
         //需要对时间进行时区转换
-        Date date = DateUtils.parseDate(timeStr);
-        curve.getDateList().add(DateUtils.getHHmm(date));
+        curve.getDateList().add(DateUtils.getHHmm(timeStr,Context.getZone()));
     }
 
     private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list,String eqSnAbbreviation){

@@ -63,7 +63,7 @@ public class WarningServiceImpl implements WarningService {
         warningrecord.setEquipmentno(equipmentno);
         warningrecord.setInstrumentparamconfigno(instrumentParamconfigNO);
         //存储时间转换
-        warningrecord.setInputdatetime(DateUtils.designatedAreaDate(new Date(),hospitalInfoDto.getZone()));
+        warningrecord.setInputdatetime(new Date());
         warningrecord.setHospitalcode(hospitalcode);
         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
         warningrecord.setWarningValue(data);

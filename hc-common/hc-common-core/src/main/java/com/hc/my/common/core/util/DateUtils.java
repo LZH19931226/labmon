@@ -209,6 +209,18 @@ public class DateUtils {
 
     }
 
+    public static String paseDate(Date nowTime,String zone) {
+        if (StringUtils.isEmpty(zone)){
+            zone= "America/Phoenix";
+        }
+        ZoneId of = ZoneId.of(zone);
+        TimeZone timeZone = TimeZone.getTimeZone(of);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(timeZone);
+        return sdf.format(nowTime);
+
+    }
+
     /**
      * 解析时间
      *
@@ -619,15 +631,32 @@ public class DateUtils {
      * @param time YYYY-MM-dd HH:mm:ss
      * @return HH:mm
      */
-    public static String getHHmm(String time) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        Date date = parseDate(time);
-        return simpleDateFormat.format(date);
+    public static String getHHmm(String time,String zone) {
+        if (StringUtils.isEmpty(zone)){
+            zone= "America/Phoenix";
+        }
+        ZoneId of = ZoneId.of(zone);
+        TimeZone timeZone = TimeZone.getTimeZone(of);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        sdf.setTimeZone(timeZone);
+        Date parse = null;
+        try {
+            parse = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdf.format(parse);
     }
-    public static String getHHmm(Date time) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        return  simpleDateFormat.format(time);
-    }
+//    public static String getHHmm(Date time,String zone) {
+//        if (StringUtils.isEmpty(zone)){
+//            zone= "America/Phoenix";
+//        }
+//        ZoneId of = ZoneId.of(zone);
+//        TimeZone timeZone = TimeZone.getTimeZone(of);
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//        sdf.setTimeZone(timeZone);
+//        return  sdf.format(time);
+//    }
 
     public static List<String> getBetweenDate(String beginDate, String endDate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
