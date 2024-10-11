@@ -661,11 +661,12 @@ public class AppEquipmentInfoApplication {
         //过滤数据
         List<Monitorequipmentlastdata> monitorequipmentlastdata  = new ArrayList<>();
         lastDataModelList.forEach(s->{
-            if (StringUtils.equals(DateUtils.paseDate(s.getInputdatetime()),ymd)){
+            String s1 = DateUtils.paseDate(s.getInputdatetime());
+            if (StringUtils.equals(s1,ymd)){
+                log.info("对象比较:{}",s1+ymd);
                 monitorequipmentlastdata.add(s);
             }
         });
-        log.info("过滤之后得时间数据:{}", JSONUtil.toJsonStr(monitorequipmentlastdata));
         if (CollectionUtils.isEmpty(monitorequipmentlastdata)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
