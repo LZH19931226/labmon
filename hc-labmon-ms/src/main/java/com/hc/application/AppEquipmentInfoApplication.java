@@ -635,9 +635,10 @@ public class AppEquipmentInfoApplication {
         if(CollectionUtils.isEmpty(instrumentConfigIdList)){
             return new ArrayList<>();
         }
+        String ymd = DateUtils.getYMD(curveCommand.getEndTime());
         //电量不需要曲线数据请求
-        String startTime =curveCommand.getStartTime();
-        String endTime =curveCommand.getEndTime();
+        String startTime = DateUtils.designatedAreaString(DateUtils.parseDate(curveCommand.getStartTime()),Context.getZone());
+        String endTime =DateUtils.designatedAreaString(DateUtils.parseDate(curveCommand.getEndTime()),Context.getZone());
         String sn = curveCommand.getSn();
         String eqSnAbbreviation = sn.substring(4, 6);
         String equipmentNo = curveCommand.getEquipmentNo();
@@ -654,7 +655,9 @@ public class AppEquipmentInfoApplication {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
-        return CurveUtils.getCurveFirst(lastDataModelList, instrumentConfigIdList, map,eqSnAbbreviation);
+        //过滤数据
+        List<Monitorequipmentlastdata> datas = lastDataModelList.stream().filter(s -> DateUtils.paseDate(s.getInputdatetime()).equals(ymd)).collect(Collectors.toList());
+        return CurveUtils.getCurveFirst(datas, instrumentConfigIdList, map,eqSnAbbreviation);
     }
 
     /**
