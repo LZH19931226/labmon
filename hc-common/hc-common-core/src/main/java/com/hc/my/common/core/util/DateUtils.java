@@ -19,7 +19,18 @@ public class DateUtils {
 
 
     //将date类型转换指定时区的日期数据
-    public static Date designatedAreaDate(Date date,String zone){
+    public static String designatedAreaDate(Date date,String zone){
+        if (StringUtils.isEmpty(zone)){
+            zone= "America/Phoenix";
+        }
+        ZoneId of = ZoneId.of(zone);
+        TimeZone timeZone = TimeZone.getTimeZone(of);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(timeZone);
+        return sdf.format(date);
+    }
+
+    public static Date designatedAreaDateLog(Date date,String zone){
         if (StringUtils.isEmpty(zone)){
             zone= "America/Phoenix";
         }
@@ -29,17 +40,6 @@ public class DateUtils {
         sdf.setTimeZone(timeZone);
         String format = sdf.format(date);
         return parseDate(format);
-    }
-
-    public static String designatedAreaDateLog(Date date,String zone){
-        if (StringUtils.isEmpty(zone)){
-            zone= "America/Phoenix";
-        }
-        ZoneId of = ZoneId.of(zone);
-        TimeZone timeZone = TimeZone.getTimeZone(of);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(timeZone);
-        return sdf.format(date);
     }
 
     //将date类型转换指定时区的日期数据
@@ -322,8 +322,11 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        Date date = designatedAreaDate(new Date(), "America/Chicago");
-        System.out.println(date);
+//        Date date = designatedAreaDate(new Date(), "America/Chicago");
+//        String hHmm = getHHmm("2024-10-11 20:04:00", "America/Chicago");
+//        System.out.println(hHmm);
+        String time ="2024-10-11 20:04:00";
+        System.out.println(time.substring(11,16));
     }
 
     public static Date getChinaTime(){
@@ -631,21 +634,8 @@ public class DateUtils {
      * @param time YYYY-MM-dd HH:mm:ss
      * @return HH:mm
      */
-    public static String getHHmm(String time,String zone) {
-        if (StringUtils.isEmpty(zone)){
-            zone= "America/Phoenix";
-        }
-        ZoneId of = ZoneId.of(zone);
-        TimeZone timeZone = TimeZone.getTimeZone(of);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        sdf.setTimeZone(timeZone);
-        Date parse = null;
-        try {
-            parse = sdf.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return sdf.format(parse);
+    public static String getHHmm(String time) {
+        return time.substring(11,16);
     }
 //    public static String getHHmm(Date time,String zone) {
 //        if (StringUtils.isEmpty(zone)){

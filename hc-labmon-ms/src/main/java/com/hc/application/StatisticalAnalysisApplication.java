@@ -283,7 +283,7 @@ public class StatisticalAnalysisApplication {
         List<LastDataResult> resultList = new ArrayList<>();
         for (Monitorequipmentlastdata lastData : lastDataList) {
             //处理时区时间
-            lastData.setInputdatetime(DateUtils.designatedAreaDate(lastData.getInputdatetime(), Context.getZone()));
+            lastData.setInputdatetime(DateUtils.designatedAreaDateLog(lastData.getInputdatetime(), Context.getZone()));
 
             Map<String, Object> objectToMap = getObjectToMap(lastData);
             ObjectConvertUtils.filterMap(objectToMap, fieldList);
@@ -846,7 +846,7 @@ public class StatisticalAnalysisApplication {
             map.put("unit", unit);
             List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
             for (String timeStr : timeLists) {
-                String hHmmTime = DateUtils.getHHmm(timeStr,Context.getZone());
+                String hHmmTime = DateUtils.getHHmm(timeStr);
                 //将00:30 改为 00:00 将23:59改为24:00
                 String hhMm = editHhmm(hHmmTime);
                 Date rTime = DateUtils.parseDate(timeStr);
@@ -918,7 +918,7 @@ public class StatisticalAnalysisApplication {
             map.put("unit", unit);
             List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
             for (String timeStr : timeLists) {
-                String hHmmTime = DateUtils.getHHmm(timeStr,Context.getZone());
+                String hHmmTime = DateUtils.getHHmm(timeStr);
                 //将00:30 改为 00:00 将23:59改为24:00
                 String hhMm = editHhmm(hHmmTime);
                 Date rTime = DateUtils.parseDate(timeStr);
@@ -1115,7 +1115,7 @@ public class StatisticalAnalysisApplication {
             multiprobeTypePointInTimeDto.setDate(date);
             List<Monitorequipmentlastdata> monitorequipmentlastdata = dateMap.get(date);
             for (String timeStr : timeLists) {
-                String hHmmTime = DateUtils.getHHmm(timeStr,Context.getZone());
+                String hHmmTime = DateUtils.getHHmm(timeStr);
                 //将00:30 改为 00:00 将23:59改为24:00
                 String hhMm = editHhmm(hHmmTime);
                 multiprobeTypePointInTimeDto.setTime(hhMm);

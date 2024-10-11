@@ -84,7 +84,7 @@ public class OperationlogApplication {
                         .hospitalname(res.getHospitalname())
                         .equipmentname(res.getEquipmentname())
                         .username(res.getUsername())
-                        .operationtime(DateUtils.designatedAreaDate(res.getOperationtime(),Context.getZone()))
+                        .operationtime(DateUtils.designatedAreaDateLog(res.getOperationtime(),Context.getZone()))
                         .logid(res.getLogid())
                         .build();
                 list.add(build);

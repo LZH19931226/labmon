@@ -439,7 +439,7 @@ public class AppEquipmentInfoApplication {
         probeCurrentInfoDtoList.forEach(eq->{
             Date inputTime = eq.getInputTime();
             if (null!=inputTime){
-                Date date = DateUtils.designatedAreaDate(inputTime, Context.getZone());
+                Date date = DateUtils.designatedAreaDateLog(inputTime, Context.getZone());
                 eq.setInputTime(date);
             }
         });
@@ -651,19 +651,18 @@ public class AppEquipmentInfoApplication {
         curveParam.setStartTime(startTime);
         curveParam.setEndTime(endTime);
         List<Monitorequipmentlastdata> lastDataModelList = monitorequipmentlastdataRepository.getMonitorEquuipmentLastList(curveParam);
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(lastDataModelList)) {
+        if (CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
         //过滤数据
         List<Monitorequipmentlastdata> monitorequipmentlastdata  = new ArrayList<>();
         lastDataModelList.forEach(s->{
-            Date date = DateUtils.designatedAreaDate(s.getInputdatetime(), Context.getZone());
-            if (StringUtils.equals(DateUtils.paseDate(date),ymd)){
+            if (StringUtils.equals(DateUtils.paseDate(s.getInputdatetime()),ymd)){
                 monitorequipmentlastdata.add(s);
             }
         });
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(monitorequipmentlastdata)) {
+        if (CollectionUtils.isEmpty(monitorequipmentlastdata)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
         return CurveUtils.getCurveFirst(monitorequipmentlastdata, instrumentConfigIdList, map,eqSnAbbreviation);

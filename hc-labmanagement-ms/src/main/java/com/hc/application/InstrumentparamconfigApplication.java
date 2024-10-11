@@ -372,7 +372,7 @@ public class InstrumentparamconfigApplication {
                         .instrumentno(configDTO.getInstrumentno())
                         .sn(configDTO.getSn())
                          //时区处理
-                        .firsttime(DateUtils.designatedAreaDate(configDTO.getFirsttime(),Context.getZone()))
+                        .firsttime(DateUtils.designatedAreaDateLog(configDTO.getFirsttime(),Context.getZone()))
                         .channel(configDTO.getChannel())
                         .instrumentconfigid(configDTO.getInstrumentconfigid())
                         .instrumentconfigname(configDTO.getInstrumentconfigname())

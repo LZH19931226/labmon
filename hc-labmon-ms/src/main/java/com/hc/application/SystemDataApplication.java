@@ -71,7 +71,7 @@ public class SystemDataApplication {
         }
         lastDataList.forEach(s->{
             s.setEquipmentName(equipmentDataCommand.getEquipmentName());
-            s.setInputdatetime(DateUtils.designatedAreaDate(s.getInputdatetime(),Context.getZone()));
+            s.setInputdatetime(DateUtils.designatedAreaDateLog(s.getInputdatetime(),Context.getZone()));
         });
 
         page.setRecords(lastDataList);
