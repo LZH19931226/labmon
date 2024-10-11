@@ -13,6 +13,8 @@ import com.hc.my.common.core.esm.EquipmentState;
 import com.hc.my.common.core.probe.ProbeConfigIds;
 import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.InstrumentInfoDto;
+import com.hc.my.common.core.redis.dto.WarningRecordDto;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.my.common.core.util.ElkLogDetailUtil;
 import com.hc.my.common.core.util.RegularUtil;
 import com.hc.po.Userright;
@@ -60,7 +62,8 @@ public class WarningServiceImpl implements WarningService {
         Warningrecord warningrecord = new Warningrecord();
         warningrecord.setEquipmentno(equipmentno);
         warningrecord.setInstrumentparamconfigno(instrumentParamconfigNO);
-        warningrecord.setInputdatetime(new Date());
+        //存储时间转换
+        warningrecord.setInputdatetime(DateUtils.designatedAreaDate(new Date(),hospitalInfoDto.getZone()));
         warningrecord.setHospitalcode(hospitalcode);
         warningrecord.setPkid(UUID.randomUUID().toString().replaceAll("-", ""));
         warningrecord.setWarningValue(data);

@@ -636,8 +636,8 @@ public class AppEquipmentInfoApplication {
             return new ArrayList<>();
         }
         //电量不需要曲线数据请求
-        String startTime = DateUtils.designatedAreaString(DateUtils.parseDate(curveCommand.getStartTime()),null);
-        String endTime =DateUtils.designatedAreaString(DateUtils.parseDate(curveCommand.getEndTime()),null);
+        String startTime =curveCommand.getStartTime();
+        String endTime =curveCommand.getEndTime();
         String sn = curveCommand.getSn();
         String eqSnAbbreviation = sn.substring(4, 6);
         String equipmentNo = curveCommand.getEquipmentNo();

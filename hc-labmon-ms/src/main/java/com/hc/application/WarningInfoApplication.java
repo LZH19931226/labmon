@@ -128,7 +128,7 @@ public class WarningInfoApplication {
                     res.setRemark(StringUtils.isBlank(warningRecordInfoDto.getInfo()) ? "" :warningRecordInfoDto.getInfo());
                 }
                 //处理时间
-                res.setInputdatetime(DateUtils.designatedAreaDate(res.getInputdatetime(),Context.getZone()));
+                res.setInputdatetime(res.getInputdatetime());
             }
         }
         page.setRecords(records);

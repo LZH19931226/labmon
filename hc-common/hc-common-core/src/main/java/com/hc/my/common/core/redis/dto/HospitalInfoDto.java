@@ -61,4 +61,6 @@ public class HospitalInfoDto {
 
     private String languageTemplate;;
 
+    private String zone;
+
 }

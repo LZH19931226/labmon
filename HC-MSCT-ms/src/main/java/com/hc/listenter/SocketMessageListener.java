@@ -170,7 +170,7 @@ public class SocketMessageListener {
         Warningrecord warningrecord = warningService.checkProbeLowLimit(probe, warningAlarmDo,hospitalInfoDto);
         if (null!=warningrecord){
             //判断探头是否满足报警规则
-            WarningModel model = warningRuleService.warningRule(hospitalcode, warningrecord, probe, warningAlarmDo);
+            WarningModel model = warningRuleService.warningRule(hospitalInfoDto, warningrecord, probe, warningAlarmDo);
             if (null!=model) {
                 model.setLogId(logId);
                 //判断该医院当天是否有人员排班,给判断和未排班的人员集合赋值

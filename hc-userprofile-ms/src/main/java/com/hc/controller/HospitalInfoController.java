@@ -29,6 +29,9 @@ public class HospitalInfoController {
     @Autowired
     private HospitalInfoApplication hospitalInfoApplication;
 
+
+
+
     @PostMapping("/findHospitalInfoList")
     @ApiOperation(value = "获取医院信息列表")
     public Page<HospitalInfoVo> list(@RequestBody HospitalCommand hospitalCommand){

@@ -5,9 +5,12 @@ import com.hc.clickhouse.po.Harvester;
 import com.hc.clickhouse.po.Monitorequipmentlastdata;
 import com.hc.clickhouse.repository.HarvesterRepository;
 import com.hc.device.SnDeviceRedisApi;
+import com.hc.hospital.HospitalRedisApi;
 import com.hc.my.common.core.redis.dto.HarvesterDto;
+import com.hc.my.common.core.redis.dto.HospitalInfoDto;
 import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import com.hc.my.common.core.util.BeanConverter;
+import com.hc.my.common.core.util.DateUtils;
 import com.hc.service.LastDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +30,17 @@ public class LastDataServiceImpl implements LastDataService {
     private SnDeviceRedisApi snDeviceRedisApi;
     @Autowired
     private HarvesterRepository harvesterRepository;
+    @Autowired
+    private HospitalRedisApi hospitalRedisApi;
 
     @Override
     public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, String hospitalcode,String cmdId,String sn) {
         monitorequipmentlastdata.setSn(sn);
         monitorequipmentlastdata.setCmdid(cmdId);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
-        monitorequipmentlastdata.setInputdatetime(new Date());
+        HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
+        //存储时间转换
+        monitorequipmentlastdata.setInputdatetime(DateUtils.designatedAreaDate(new Date(),hospitalInfoDto.getZone()));
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
         //数据存储队列
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
