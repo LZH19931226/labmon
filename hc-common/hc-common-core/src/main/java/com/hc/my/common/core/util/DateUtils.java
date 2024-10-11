@@ -30,6 +30,17 @@ public class DateUtils {
         return parseDate(format);
     }
 
+    public static String designatedAreaDateLog(Date date,String zone){
+        if (StringUtils.isEmpty(zone)){
+            zone= "America/Phoenix";
+        }
+        ZoneId of = ZoneId.of(zone);
+        TimeZone timeZone = TimeZone.getTimeZone(of);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(timeZone);
+        return sdf.format(date);
+    }
+
     //将date类型转换指定时区的日期数据
     public static String designatedAreaString(Date date,String zone){
         if (StringUtils.isEmpty(zone)){
@@ -298,11 +309,26 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        Date date = designatedAreaDate( parseDate("2024-10-11 10:54:07"), "America/Chicago");
+        // 获取中国时区
+        TimeZone chinaTimeZone = TimeZone.getTimeZone("GMT+8");
+        // 使用中国时区的Calendar实例
+        Calendar calendar = Calendar.getInstance(chinaTimeZone);
+        // 获取当前时间的Date对象
+        Date date1 = calendar.getTime();
+        // 输出当前时间
+        Date date = designatedAreaDate(date1, "America/Chicago");
         System.out.println(date);
-
-
     }
+
+    public static Date getChinaTime(){
+        // 获取中国时区
+        TimeZone chinaTimeZone = TimeZone.getTimeZone("GMT+8");
+        // 使用中国时区的Calendar实例
+        Calendar calendar = Calendar.getInstance(chinaTimeZone);
+        // 获取当前时间的Date对象
+        return calendar.getTime();
+    }
+
 
     /**
      * 以 yyyy-MM-dd HH:mm:ss 的格式解析String
