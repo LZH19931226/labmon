@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -309,14 +310,7 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws ParseException, InterruptedException {
-        // 获取中国时区
-        TimeZone chinaTimeZone = TimeZone.getTimeZone("GMT+8");
-        // 使用中国时区的Calendar实例
-        Calendar calendar = Calendar.getInstance(chinaTimeZone);
-        // 获取当前时间的Date对象
-        Date date1 = calendar.getTime();
-        // 输出当前时间
-        Date date = designatedAreaDate(date1, "America/Chicago");
+        Date date = designatedAreaDate(new Date(), "America/Chicago");
         System.out.println(date);
     }
 

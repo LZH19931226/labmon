@@ -155,7 +155,7 @@ public class WarningRuleServiceImpl implements WarningRuleService {
     private WarningRecordDto buildProbeWarnInfo(HospitalInfoDto hospitalInfoDto, String instrumentParamConfigNO, String value) {
         //存储时间转换
         WarningRecordDto warningRecordDto = new WarningRecordDto();
-        warningRecordDto.setInputdatetime(DateUtils.designatedAreaDate(DateUtils.getChinaTime(),hospitalInfoDto.getZone()));
+        warningRecordDto.setInputdatetime(DateUtils.designatedAreaDate(new Date(),hospitalInfoDto.getZone()));
         warningRecordDto.setHospitalcode(hospitalInfoDto.getHospitalCode());
         warningRecordDto.setInstrumentparamconfigNO(instrumentParamConfigNO);
         warningRecordDto.setWarningvalue(value);
