@@ -1,5 +1,6 @@
 package com.hc.application;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hc.application.command.AlarmSystemCommand;
@@ -33,6 +34,7 @@ import com.hc.repository.HospitalInfoRepository;
 import com.hc.repository.InstrumentMonitorInfoRepository;
 import com.hc.service.*;
 import com.hc.util.CurveUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +48,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class AppEquipmentInfoApplication {
 
     @Autowired
@@ -662,6 +665,7 @@ public class AppEquipmentInfoApplication {
                 monitorequipmentlastdata.add(s);
             }
         });
+        log.info("过滤之后得时间数据:{}", JSONUtil.toJsonStr(monitorequipmentlastdata));
         if (CollectionUtils.isEmpty(monitorequipmentlastdata)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
