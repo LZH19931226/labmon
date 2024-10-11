@@ -661,7 +661,7 @@ public class AppEquipmentInfoApplication {
         //过滤数据
         List<Monitorequipmentlastdata> monitorequipmentlastdata  = new ArrayList<>();
         lastDataModelList.forEach(s->{
-            String s1 = DateUtils.paseDate(s.getInputdatetime());
+            String s1 = DateUtils.paseDate(s.getInputdatetime(),Context.getZone());
             if (StringUtils.equals(s1,ymd)){
                 log.info("对象比较:{}",s1+ymd);
                 monitorequipmentlastdata.add(s);

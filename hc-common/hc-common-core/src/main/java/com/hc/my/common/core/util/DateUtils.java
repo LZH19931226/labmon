@@ -205,6 +205,7 @@ public class DateUtils {
      */
     public static String paseDate(Date nowTime) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         return simpleDateFormat.format(nowTime);
 
     }
