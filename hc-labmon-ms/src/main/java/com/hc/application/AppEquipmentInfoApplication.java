@@ -663,6 +663,9 @@ public class AppEquipmentInfoApplication {
                 monitorequipmentlastdata.add(s);
             }
         });
+        if (org.apache.commons.collections.CollectionUtils.isEmpty(monitorequipmentlastdata)) {
+            throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
+        }
         return CurveUtils.getCurveFirst(monitorequipmentlastdata, instrumentConfigIdList, map,eqSnAbbreviation);
     }
 
