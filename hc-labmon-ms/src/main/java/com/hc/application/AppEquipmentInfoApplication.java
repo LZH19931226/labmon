@@ -660,8 +660,6 @@ public class AppEquipmentInfoApplication {
         //过滤数据
         List<Monitorequipmentlastdata> monitorequipmentlastdata  = new ArrayList<>();
         lastDataModelList.forEach(s->{
-            String s1 = DateUtils.designatedAreaDate(s.getInputdatetime(),Context.getZone());
-            log.info("时间处理后:{}",s1);
             s.setInputdatetime(DateUtils.designatedAreaDateLog(s.getInputdatetime(),Context.getZone()));
             monitorequipmentlastdata.add(s);
         });

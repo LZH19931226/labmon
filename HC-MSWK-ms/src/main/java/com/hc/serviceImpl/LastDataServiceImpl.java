@@ -30,22 +30,18 @@ public class LastDataServiceImpl implements LastDataService {
     private SnDeviceRedisApi snDeviceRedisApi;
     @Autowired
     private HarvesterRepository harvesterRepository;
-    @Autowired
-    private HospitalRedisApi hospitalRedisApi;
+
 
     @Override
     public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, String hospitalcode,String cmdId,String sn) {
         monitorequipmentlastdata.setSn(sn);
         monitorequipmentlastdata.setCmdid(cmdId);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
-        HospitalInfoDto hospitalInfoDto = hospitalRedisApi.findHospitalRedisInfo(hospitalcode).getResult();
         //存储时间转换
         monitorequipmentlastdata.setInputdatetime(new Date());
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
         //数据存储队列
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
-        log.info("缓存数据入队列得时间:{},数据信息:{}",
-                DateUtils.designatedAreaDateLog(DateUtils.getChinaTime(),hospitalInfoDto.getZone()),JSONUtil.toJsonStr(convert));
         snDeviceRedisApi.updateSnCurrentInfo(convert);
     }
 

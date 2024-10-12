@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -42,17 +41,6 @@ public class DateUtils {
         return parseDate(format);
     }
 
-    //将date类型转换指定时区的日期数据
-    public static String designatedAreaString(Date date,String zone){
-        if (StringUtils.isEmpty(zone)){
-            zone= "America/Phoenix";
-        }
-        ZoneId of = ZoneId.of(zone);
-        TimeZone timeZone = TimeZone.getTimeZone(of);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(timeZone);
-        return sdf.format(date);
-    }
 
     /**
      * 过滤数组元素,是否满足对应日期格式

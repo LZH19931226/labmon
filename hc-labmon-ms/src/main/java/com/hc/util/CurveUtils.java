@@ -135,8 +135,7 @@ public class CurveUtils {
         if(StringUtils.isNotBlank(data) && RegularUtil.checkContainsNumbers(data)){
             dataList.add(data);
             String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
-            String s = DateUtils.designatedAreaString(DateUtils.parseDate(timeStr), Context.getZone());
-            curve.getDateList().add(DateUtils.getHHmm(s));
+            curve.getDateList().add(DateUtils.getHHmm(timeStr));
         }
     }
 
