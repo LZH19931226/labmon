@@ -638,9 +638,8 @@ public class AppEquipmentInfoApplication {
         if(CollectionUtils.isEmpty(instrumentConfigIdList)){
             return new ArrayList<>();
         }
-        String ymd = DateUtils.getYMD(curveCommand.getStartTime());
         //电量不需要曲线数据请求
-        String startTime = DateUtils.designatedAreaString(DateUtils.parseDate(curveCommand.getStartTime()),Context.getZone());
+        String startTime =curveCommand.getStartTime();
         String endTime =curveCommand.getEndTime();
         String sn = curveCommand.getSn();
         String eqSnAbbreviation = sn.substring(4, 6);
@@ -661,13 +660,10 @@ public class AppEquipmentInfoApplication {
         //过滤数据
         List<Monitorequipmentlastdata> monitorequipmentlastdata  = new ArrayList<>();
         lastDataModelList.forEach(s->{
-            String s1 = DateUtils.paseDate(s.getInputdatetime(),Context.getZone());
-            log.info("过滤时间点:{}",ymd);
-            log.info("时间处理前:{}", DateUtils.paseDate(s.getInputdatetime()));
-            log.info("时间处理后:{}", DateUtils.paseDate(s.getInputdatetime(),Context.getZone()));
-            if (!StringUtils.equals(s1,ymd)){
-                monitorequipmentlastdata.add(s);
-            }
+            String s1 = DateUtils.designatedAreaDate(s.getInputdatetime(),Context.getZone());
+            log.info("时间处理后:{}",s1);
+            s.setInputdatetime(DateUtils.designatedAreaDateLog(s.getInputdatetime(),Context.getZone()));
+            monitorequipmentlastdata.add(s);
         });
         if (CollectionUtils.isEmpty(monitorequipmentlastdata)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);

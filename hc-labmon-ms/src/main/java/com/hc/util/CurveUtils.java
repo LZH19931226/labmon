@@ -146,8 +146,7 @@ public class CurveUtils {
         List<String> dataList = curve.getDataList();
         dataList.add(str);
         String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
-        String date = DateUtils.designatedAreaDate(DateUtils.parseDate(timeStr), Context.getZone());
-        curve.getDateList().add(DateUtils.getHHmm(date));
+        curve.getDateList().add(DateUtils.getHHmm(timeStr));
     }
 
     private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list,String eqSnAbbreviation){
