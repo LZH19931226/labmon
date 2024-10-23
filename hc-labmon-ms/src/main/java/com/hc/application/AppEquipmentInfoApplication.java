@@ -440,6 +440,13 @@ public class AppEquipmentInfoApplication {
         //处理时区时间问题
         List<ProbeCurrentInfoDto> probeCurrentInfoDtoList = currentProbeInfoResult.getProbeCurrentInfoDtoList();
         probeCurrentInfoDtoList.forEach(eq->{
+            List<ProbeInfoDto> probeInfoDtoList = eq.getProbeInfoDtoList();
+            if (CollectionUtils.isNotEmpty(probeInfoDtoList)){
+                probeInfoDtoList.forEach(probe->{
+                    //探头时间转换
+                    probe.setInputTime(DateUtils.designatedAreaDateLog(probe.getInputTime(), Context.getZone()));
+                });
+            }
             Date inputTime = eq.getInputTime();
             if (null!=inputTime){
                 Date date = DateUtils.designatedAreaDateLog(inputTime, Context.getZone());
