@@ -62,18 +62,18 @@ public class HospitalEquipmentDto {
 
     /** 设备报警中的数量 */
     @TableField(select = false)
-    private String alarmNum;
+    private String alarmNum = "0";
 
     /** 设备正常的数量 */
     @TableField(select = false)
-    private String normalNum;
+    private String normalNum = "0";
 
     @TableField(select = false)
-    private String timeoutNum;
+    private String timeoutNum = "0";
 
 
     @TableField(exist = false)
-    private String totalNum;
+    private String totalNum = "0";
 
     @TableField(exist = false)
     private String equipmenttypename;

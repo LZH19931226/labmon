@@ -93,7 +93,13 @@ public class AppEquipmentInfoApplication {
         //分页查询设备信息 获取设备 未禁用的设备
         List<MonitorEquipmentDto> list = equipmentInfoService.getEquipmentInfoByPage(page,probeCommand);
         if (CollectionUtils.isEmpty(list)) {
-            return null;
+            List<HospitalEquipmentDto> hospitalEquipmentDto = new ArrayList<>();
+            if (StringUtils.equals(tags, "PC")) {
+                hospitalEquipmentDto = hospitalEquipmentService.selectHospitalEquipmentInfoByPc(hospitalCode);
+            } else {
+                hospitalEquipmentDto = hospitalEquipmentService.selectHospitalEquipmentInfo(hospitalCode);
+            }
+            return hospitalEquipmentDto;
         }
         //在查出monitorinstrument信息
         List<String> enoList = list.stream().map(MonitorEquipmentDto::getEquipmentno).distinct().collect(Collectors.toList());
