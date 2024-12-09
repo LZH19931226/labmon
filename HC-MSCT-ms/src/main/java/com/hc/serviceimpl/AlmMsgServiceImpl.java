@@ -233,12 +233,12 @@ public class AlmMsgServiceImpl implements AlmMsgService {
     /**
      * 修改时间的年月日
      */
-    private List<Date> sameDate(Date... dates) {
+    private static List<Date> sameDate(Date... dates) {
         if (dates != null) {
             Calendar nowCalendar = Calendar.getInstance();
             List<Date> dateList = new ArrayList<Date>();
             for (int i = 0; i < dates.length; i++) {
-                Date date = dates[i];
+                Date date =  DateUtils.designatedAreaDateLog( dates[i],"America/Chicago");
                 if (date == null) {
                     continue;
                 }
@@ -252,6 +252,11 @@ public class AlmMsgServiceImpl implements AlmMsgService {
             return dateList;
         }
         return null;
+    }
+
+    public static void main(String[] args){
+        List<Date> dates = sameDate(new Date());
+        System.out.println(dates);
     }
 
 
