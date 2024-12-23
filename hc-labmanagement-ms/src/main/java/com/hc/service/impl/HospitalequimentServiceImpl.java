@@ -80,9 +80,9 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         for (WorkTimeBlockCommand workTimeBlockCommand : singletonList) {
             Date startTime = workTimeBlockCommand.getBegintime();
             Date endTime = workTimeBlockCommand.getEndtime();
-            if(endTime.compareTo(startTime)<=0){
-                throw new IedsException(LabSystemEnum.START_TIME_AND_END_TIME_ARE_ABNORMAL);
-            }
+//            if(endTime.compareTo(startTime)<=0){
+//                throw new IedsException(LabSystemEnum.START_TIME_AND_END_TIME_ARE_ABNORMAL);
+//            }
             list.add(buildTime(startTime));
             list.add(buildTime(endTime));
         }
