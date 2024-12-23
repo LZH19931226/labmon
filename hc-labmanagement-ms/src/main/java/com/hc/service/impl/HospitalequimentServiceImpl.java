@@ -147,7 +147,7 @@ public class HospitalequimentServiceImpl implements HospitalequimentService {
         //带时段id的更新,不带时段id的新增,处于移除时段里面的id删除
         if (null!=workTimeBlock && workTimeBlock.length>0){
             //校验时间
-            checkWorkTime(Arrays.asList(workTimeBlock));
+            //checkWorkTime(Arrays.asList(workTimeBlock));
             List<MonitorequipmentwarningtimeDTO> addMonitorequipmentwarningtimeDTO =  new ArrayList<>();
             List<MonitorequipmentwarningtimeDTO> updateMonitorequipmentwarningtimeDTO =  new ArrayList<>();
             for (WorkTimeBlockCommand workTimeBlockCommand : workTimeBlock) {
