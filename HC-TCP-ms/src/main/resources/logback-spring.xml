@@ -38,7 +38,7 @@
         <topic>tcp</topic>
         <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
         <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
-        <producerConfig>bootstrap.servers=172.31.85.148:9092</producerConfig>
+        <producerConfig>bootstrap.servers=172.31.6.51:9092</producerConfig>
     </appender>
 
     <!-- 指定某一个包或者某一个类的打印级别以及是否传入root进行打印 -->
