@@ -214,7 +214,9 @@ public class UserRightApplication {
         UserRightDto userRightDto = userRightService.selectUserRight(userRightCommand);
         //获取用户区号信息
         SysNationalPo sysNationalPo = sysNationalDao.selectById(userRightDto.getNationalId());
-
+        if(null== sysNationalPo){
+            throw new IedsException("Contact the administrator to add an area id");
+        }
         String phoneNum = userRightDto.getPhoneNum();
         if (StringUtils.isEmpty(phoneNum)) {
             if (userRightCommand.getLang().equals("zh")) {
