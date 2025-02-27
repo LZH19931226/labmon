@@ -19,6 +19,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,8 +146,10 @@ public class CurveUtils {
         Curve curve = containerMap.get(field);
         List<String> dataList = curve.getDataList();
         dataList.add(str);
-        String timeStr =  (String)objectToMap.get(SysConstants.INPUT_DATETIME);
-        curve.getDateList().add(DateUtils.getHHmm(timeStr));
+        LocalDateTime localDateTime = (LocalDateTime) objectToMap.get(SysConstants.INPUT_DATETIME);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String customFormatString = localDateTime.format(formatter);
+        curve.getDateList().add(customFormatString);
     }
 
     private static  CurveDataModel generateCurveDataModel(List<String> dataList, List<String> timeList,List<InstrumentParamConfigDto> list,String eqSnAbbreviation){
