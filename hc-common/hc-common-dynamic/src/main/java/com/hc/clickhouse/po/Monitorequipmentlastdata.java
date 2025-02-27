@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @TableName(value = "monitorequipmentlastdata")
 @Data
@@ -28,7 +28,7 @@ public class Monitorequipmentlastdata implements Serializable {
     /**
      * 记录时间
      */
-    private Date inputdatetime;
+    private LocalDateTime inputdatetime;
 
     /**
      * 医院编号

@@ -44,6 +44,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -665,21 +667,13 @@ public class AppEquipmentInfoApplication {
         curveParam.setYearMonth(ym);
         curveParam.setStartTime(startTime);
         curveParam.setEndTime(endTime);
+        curveParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataModelList = monitorequipmentlastdataRepository.getMonitorEquuipmentLastList(curveParam);
         if (CollectionUtils.isEmpty(lastDataModelList)) {
             throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigService.getInstrumentParamConfigByENo(equipmentNo);
-        //过滤数据
-        List<Monitorequipmentlastdata> monitorequipmentlastdata  = new ArrayList<>();
-        lastDataModelList.forEach(s->{
-            s.setInputdatetime(DateUtils.designatedAreaDateLog(s.getInputdatetime(),Context.getZone()));
-            monitorequipmentlastdata.add(s);
-        });
-        if (CollectionUtils.isEmpty(monitorequipmentlastdata)) {
-            throw new IedsException(LabSystemEnum.NO_DATA_FOR_CURRENT_TIME);
-        }
-        return CurveUtils.getCurveFirst(monitorequipmentlastdata, instrumentConfigIdList, map,eqSnAbbreviation);
+        return CurveUtils.getCurveFirst(lastDataModelList, instrumentConfigIdList, map,eqSnAbbreviation);
     }
 
     /**

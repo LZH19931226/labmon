@@ -50,6 +50,9 @@ public class EquipmentDataParam {
     private String maxTime;
 
 
+    /** 服务器时区 */
+    private String clientTimeZone;
+
     @Data
     public static class Filter{
         /** 筛选字段 */

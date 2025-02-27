@@ -15,7 +15,8 @@ public interface MonitorequipmentlastdataRepository extends IService<Monitorequi
     void batchInsert(List<Monitorequipmentlastdata> convert);
 
 
-    List<MonitorequipmentlastdataDto> getWarningCurveData(String equipmentNo, String startTime, String endTime, String instrumentConfigName,String ym);
+    List<Monitorequipmentlastdata> getWarningCurveData(String equipmentNo, String startTime, String endTime,
+                                                          String instrumentConfigName,String ym,String clientTimeZone);
 
 
     List<Monitorequipmentlastdata> getEquipmentData(Page page,EquipmentDataParam dataParam);

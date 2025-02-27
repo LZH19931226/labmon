@@ -23,4 +23,7 @@ public class CurveParam {
 
     /** 字段表 */
     private List<String> instrumentConfigIdList;
+
+    /** 服务器时区 */
+    private String clientTimeZone;
 }

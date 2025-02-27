@@ -4,9 +4,11 @@ import com.hc.my.common.core.util.date.DateConstant;
 import com.hc.my.common.core.util.date.DateDto;
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -184,6 +186,39 @@ public class DateUtils {
         }
     }
 
+    public static boolean whetherItIsIn(LocalDateTime nowTime, Date startTime, Date endTime) {
+        // 将LocalDateTime转换为Timestamp
+        Timestamp timestamp = Timestamp.valueOf(nowTime);
+        // 再将Timestamp转换为Date
+        Date dateNow = new Date(timestamp.getTime());
+        Calendar date = Calendar.getInstance();
+        date.setTime(dateNow);
+        date.set(Calendar.YEAR, 2022);
+        date.set(Calendar.MONTH, 1);
+        date.set(Calendar.DATE, 1);
+        Date time1 = date.getTime();
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+        begin.set(Calendar.YEAR, 2022);
+        begin.set(Calendar.MONTH, 1);
+        begin.set(Calendar.DATE, 1);
+        Date time2 = begin.getTime();
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+        end.set(Calendar.YEAR, 2022);
+        end.set(Calendar.MONTH, 1);
+        end.set(Calendar.DATE, 1);
+        Date time3 = end.getTime();
+        //统一年月日后对比
+        if (time1.after(time2) && time1.before(time3)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * 解析时间
@@ -193,10 +228,22 @@ public class DateUtils {
      */
     public static String paseDate(Date nowTime) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
         return simpleDateFormat.format(nowTime);
 
     }
+
+    /**
+     * 解析时间
+     *
+     * @param nowTime 当前时间 yyyy-mm-dd
+     * @author liu
+     */
+    public static String paseDate(LocalDateTime nowTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return nowTime.format(formatter);
+
+    }
+
 
     public static String paseDate(Date nowTime,String zone) {
         if (StringUtils.isEmpty(zone)){
@@ -233,6 +280,10 @@ public class DateUtils {
         return simpleDateFormat.format(nowTime);
     }
 
+    public static String parseDatetime(LocalDateTime nowTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return nowTime.format(formatter);
+    }
 
     /**
      * 解析时间
@@ -244,6 +295,13 @@ public class DateUtils {
         SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
         return dateFormatMMdd.format(date);
     }
+
+    public static String paseDateMMdd(LocalDateTime date) {
+        SimpleDateFormat dateFormatMMdd = new SimpleDateFormat("MM-dd");
+        return dateFormatMMdd.format(date);
+    }
+
+
 
     /**
      * 获取当前时间

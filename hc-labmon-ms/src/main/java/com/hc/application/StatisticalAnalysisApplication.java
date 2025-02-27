@@ -276,15 +276,13 @@ public class StatisticalAnalysisApplication {
         String yearMonth = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(yearMonth);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getEquipmentData(page, dataParam);
         if (CollectionUtils.isEmpty(lastDataList)) {
             return page;
         }
         List<LastDataResult> resultList = new ArrayList<>();
         for (Monitorequipmentlastdata lastData : lastDataList) {
-            //处理时区时间
-            lastData.setInputdatetime(DateUtils.designatedAreaDateLog(lastData.getInputdatetime(), Context.getZone()));
-
             Map<String, Object> objectToMap = getObjectToMap(lastData);
             ObjectConvertUtils.filterMap(objectToMap, fieldList);
             for (String field : objectToMap.keySet()) {
@@ -675,6 +673,7 @@ public class StatisticalAnalysisApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         boolean flag = SysConstants.EQ_MT310DC.equals(instrumentTypeId);
         List<Monitorequipmentlastdata> lastDataList = null;
         if (flag) {
@@ -823,6 +822,7 @@ public class StatisticalAnalysisApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataList;
         if (flag) {
             dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
@@ -894,6 +894,7 @@ public class StatisticalAnalysisApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataList;
         if (flag) {
             dataParam.setField(Mt310DCUtils.get310DCList(dataParam.getField()));
@@ -1103,6 +1104,7 @@ public class StatisticalAnalysisApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getMultiprobeTypePointInTime(dataParam);
         if (CollectionUtils.isEmpty(lastDataList)) {
             return multiprobeTypePointInTimeDtos;

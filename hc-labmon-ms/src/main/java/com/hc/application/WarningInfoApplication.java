@@ -202,7 +202,8 @@ public class WarningInfoApplication {
         }
         Map<String, List<InstrumentParamConfigDto>> map = instrumentParamConfigRepository.getInstrumentParamConfigByENo(equipmentNo);
         String probeEName = CurrentProbeInfoEnum.from(instrumentconfigid).getProbeEName();
-        List<MonitorequipmentlastdataDto> lastDataList = monitorequipmentlastdataRepository.getWarningCurveData(equipmentNo,startTime,endTime,probeEName,ym);
+        List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getWarningCurveData(equipmentNo,startTime,endTime,probeEName,ym,Context.getZone());
+
         List<Monitorequipmentlastdata> monitorEquipmentLastDataList = BeanConverter.convert(lastDataList, Monitorequipmentlastdata.class);
         return EquipmentInfoServiceHelp.getCurveFirst(monitorEquipmentLastDataList, map, false);
     }

@@ -65,15 +65,11 @@ public class SystemDataApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getEquipmentPacketData(page, dataParam);
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
         }
-        lastDataList.forEach(s->{
-            s.setEquipmentName(equipmentDataCommand.getEquipmentName());
-            s.setInputdatetime(DateUtils.designatedAreaDateLog(s.getInputdatetime(),Context.getZone()));
-        });
-
         page.setRecords(lastDataList);
         return page;
     }
@@ -86,6 +82,7 @@ public class SystemDataApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getPacketLossColumnar(dataParam);
         if (CollectionUtils.isEmpty(lastDataList)) {
             return null;
@@ -123,6 +120,7 @@ public class SystemDataApplication {
         String ym = DateUtils.parseDateYm(startTime);
         equipmentDataCommand.setYearMonth(ym);
         EquipmentDataParam dataParam = BeanConverter.convert(equipmentDataCommand, EquipmentDataParam.class);
+        dataParam.setClientTimeZone(Context.getZone());
         List<Monitorequipmentlastdata> lastDataList = monitorequipmentlastdataRepository.getPacketLoss(dataParam);
         if (CollectionUtils.isEmpty(lastDataList)) {
             return;

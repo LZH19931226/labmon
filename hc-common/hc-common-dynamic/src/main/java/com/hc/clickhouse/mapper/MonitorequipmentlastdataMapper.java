@@ -15,7 +15,7 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
 
 
 
-    List<MonitorequipmentlastdataDto> getWarningCurveData(@Param("equipmentNo") String equipmentNo,
+    List<Monitorequipmentlastdata> getWarningCurveData(@Param("equipmentNo") String equipmentNo,
                                                           @Param("startTime") String startTime,
                                                           @Param("endTime") String endTime,
                                                           @Param("instrumentConfigName") String instrumentConfigName,
