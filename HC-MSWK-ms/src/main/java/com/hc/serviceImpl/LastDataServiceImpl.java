@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 /**
  * Created by 16956 on 2018-09-04.
@@ -30,6 +28,7 @@ public class LastDataServiceImpl implements LastDataService {
     @Autowired
     private HarvesterRepository harvesterRepository;
 
+    private static final ZoneId CLICKHOUSE_ZONE = ZoneId.of("America/Phoenix");
 
     @Override
     public void saveLastData(Monitorequipmentlastdata monitorequipmentlastdata, String equipmentno, String hospitalcode,String cmdId,String sn) {
@@ -38,10 +37,14 @@ public class LastDataServiceImpl implements LastDataService {
         monitorequipmentlastdata.setEquipmentno(equipmentno);
         // 如果传入的 LocalDateTime 没有指定时区，需要先确定其所在时区
         // 假设传入的是系统默认时区的 LocalDateTime
-        ZoneId clickHouseZone = ZoneId.of("America/Phoenix");
-        LocalDateTime inputdatetime = LocalDateTime.now();
-        ZonedDateTime zonedDateTime = inputdatetime.atZone(clickHouseZone);
-        LocalDateTime clickhouseLocalDateTime = zonedDateTime.toLocalDateTime();
+        // 获取服务器的当前时间
+        LocalDateTime serverTime = LocalDateTime.now();
+        // 将服务器时间转换为系统默认时区的 ZonedDateTime
+        ZonedDateTime serverZonedDateTime = serverTime.atZone(ZoneId.systemDefault());
+        // 将其转换为 ClickHouse 时区的 ZonedDateTime
+        ZonedDateTime clickhouseZonedDateTime = serverZonedDateTime.withZoneSameInstant(CLICKHOUSE_ZONE);
+        // 转换为 ClickHouse 时区的 LocalDateTime
+        LocalDateTime clickhouseLocalDateTime = clickhouseZonedDateTime.toLocalDateTime();
         monitorequipmentlastdata.setInputdatetime(clickhouseLocalDateTime);
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
         //数据存储队列
