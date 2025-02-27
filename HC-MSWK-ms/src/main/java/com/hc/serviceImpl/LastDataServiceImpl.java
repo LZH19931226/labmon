@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * Created by 16956 on 2018-09-04.
@@ -34,7 +36,13 @@ public class LastDataServiceImpl implements LastDataService {
         monitorequipmentlastdata.setSn(sn);
         monitorequipmentlastdata.setCmdid(cmdId);
         monitorequipmentlastdata.setEquipmentno(equipmentno);
-        monitorequipmentlastdata.setInputdatetime(LocalDateTime.now());
+        // 如果传入的 LocalDateTime 没有指定时区，需要先确定其所在时区
+        // 假设传入的是系统默认时区的 LocalDateTime
+        ZoneId clickHouseZone = ZoneId.of("America/Phoenix");
+        LocalDateTime inputdatetime = LocalDateTime.now();
+        ZonedDateTime zonedDateTime = inputdatetime.atZone(clickHouseZone);
+        LocalDateTime clickhouseLocalDateTime = zonedDateTime.toLocalDateTime();
+        monitorequipmentlastdata.setInputdatetime(clickhouseLocalDateTime);
         monitorequipmentlastdata.setHospitalcode(hospitalcode);
         //数据存储队列
         MonitorequipmentlastdataDto convert = BeanConverter.convert(monitorequipmentlastdata, MonitorequipmentlastdataDto.class);
