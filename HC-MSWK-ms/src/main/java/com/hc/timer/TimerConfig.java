@@ -29,6 +29,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,7 +105,7 @@ public class TimerConfig {
                 TimeoutEquipment timeoutEquipment = null;
                 //遍历当前医院设备类型下的所有设备
                 for (MonitorequipmentlastdataDto monitorequipmentlastdataDto : lastDataResult) {
-                    Date inputDateTime = monitorequipmentlastdataDto.getInputdatetime();
+                    LocalDateTime inputDateTime = monitorequipmentlastdataDto.getInputdatetime();
                     String equipmentNo = monitorequipmentlastdataDto.getEquipmentno();
                     if (MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode)) || MapUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId)) || CollectionUtils.isEmpty(timeoutEquipmentMap.get(hospitalCode).get(equipmentTypeId).get(equipmentNo))) {
                         continue;
@@ -162,29 +163,50 @@ public class TimerConfig {
         return "2";
     }
 
+    private String compareTime(LocalDateTime date, Integer timeoutTime) {
+        //如果开启超时未设置超时时长则默认为60分钟
+        if (ObjectUtils.isEmpty(timeoutTime)) {
+            timeoutTime = 60;
+        }
+        Date currentTime = new Date();
+        long difference = currentTime.getTime() - date.toEpochSecond(null);
+        long minute = difference / 1000 / 60;
+        // 不超时报警
+        if (minute <= timeoutTime) {
+            return "1";
+        }
+        return "2";
+    }
+
+
     //每分钟执行一次
     @Scheduled(cron = "0 0/1 * * * ?")
     public void Timing() {
-        ApiResponse<Long> lastDataListSize = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode());
-        if (null == lastDataListSize) {
-            return;
-        }
-        Long size = lastDataListSize.getResult();
-        if (size == 0) {
-            return;
-        }
-        List<MonitorequipmentlastdataDto> list = new ArrayList<>();
-        for (long i = 0; i < size; i++) {
-            MonitorequipmentlastdataDto monitorequipmentlastdataDto = snDeviceRedisApi.getLeftPopLastData(MswkServiceEnum.LAST_DATA.getCode()).getResult();
-            if (null != monitorequipmentlastdataDto) {
-                list.add(monitorequipmentlastdataDto);
+        try {
+            ApiResponse<Long> lastDataListSize = snDeviceRedisApi.getLastDataListSize(MswkServiceEnum.LAST_DATA.getCode());
+            if (null == lastDataListSize) {
+                return;
             }
+            Long size = lastDataListSize.getResult();
+            if (size == 0) {
+                return;
+            }
+            List<MonitorequipmentlastdataDto> list = new ArrayList<>();
+            for (long i = 0; i < size; i++) {
+                MonitorequipmentlastdataDto monitorequipmentlastdataDto = snDeviceRedisApi.getLeftPopLastData(MswkServiceEnum.LAST_DATA.getCode()).getResult();
+                if (null != monitorequipmentlastdataDto) {
+                    list.add(monitorequipmentlastdataDto);
+                }
+            }
+            List<Monitorequipmentlastdata> convert = BeanConverter.convert(list, Monitorequipmentlastdata.class);
+            convert.forEach(monitorequipmentlastdata -> {
+                monitorequipmentlastdata.setId(DateUtils.getCurrentYYMM());
+            });
+            monitorequipmentlastdataRepository.batchInsert(convert);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("转换数据报错:{}",e);
         }
-        List<Monitorequipmentlastdata> convert = BeanConverter.convert(list, Monitorequipmentlastdata.class);
-        convert.forEach(monitorequipmentlastdata -> {
-            monitorequipmentlastdata.setId(DateUtils.getCurrentYYMM());
-        });
-        monitorequipmentlastdataRepository.batchInsert(convert);
     }
 
     @Scheduled(cron = "0 0/1 * * * ?")

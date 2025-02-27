@@ -3,6 +3,7 @@ package com.hc.my.common.core.redis.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -25,7 +26,7 @@ public class MonitorequipmentlastdataDto implements Serializable {
     /**
      * 记录时间
      */
-    private Date inputdatetime;
+    private LocalDateTime inputdatetime;
     /**
      * 医院编号
      */
