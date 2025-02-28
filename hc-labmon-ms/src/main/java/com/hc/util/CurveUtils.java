@@ -26,6 +26,12 @@ import java.util.stream.Collectors;
 
 public class CurveUtils {
 
+    // 响应时间格式：HH:mm
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("HH:mm");
+
+
+
     public static List<Map<String,CurveDataModel>> getCurveFirst(List<Monitorequipmentlastdata> lastDataModelList, List<String> lastDataFieldList, Map<String, List<InstrumentParamConfigDto>> map,String eqSnAbbreviation) {
         //将传入的list保存到新集合
         List<String> dcFields = new ArrayList<>(lastDataFieldList);
@@ -147,8 +153,7 @@ public class CurveUtils {
         List<String> dataList = curve.getDataList();
         dataList.add(str);
         LocalDateTime localDateTime = (LocalDateTime) objectToMap.get(SysConstants.INPUT_DATETIME);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String customFormatString = localDateTime.format(formatter);
+        String customFormatString = localDateTime.format(RESPONSE_TIME_FORMATTER);
         curve.getDateList().add(customFormatString);
     }
 

@@ -2,6 +2,7 @@ package com.hc.clickhouse.param;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,17 @@ public class EquipmentDataParam {
      * 结束时间
      */
     private String endTime;
+
+
+    /**
+     * 开始时间
+     */
+    private LocalDateTime localStartTime;
+
+    /**
+     * 结束时间
+     */
+    private LocalDateTime localEndTime;
 
     /**
      * 筛选条件

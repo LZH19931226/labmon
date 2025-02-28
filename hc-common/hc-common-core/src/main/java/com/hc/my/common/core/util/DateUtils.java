@@ -18,6 +18,7 @@ import java.util.*;
  **/
 public class DateUtils {
 
+    private static final ZoneId PHOENIX_ZONE = ZoneId.of("America/Phoenix");
 
     //将date类型转换指定时区的日期数据
     public static String designatedAreaDate(Date date,String zone){
@@ -372,9 +373,24 @@ public class DateUtils {
 //        Date date = designatedAreaDate(new Date(), "America/Chicago");
 //        String hHmm = getHHmm("2024-10-11 20:04:00", "America/Chicago");
 //        System.out.println(hHmm);
-        String time ="2024-10-11 20:04:00";
-        System.out.println(time.substring(11,16));
+
+        String dateTimeStr = "2025-02-28 00:00:00";
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        ZoneId zoneId = ZoneId.of("America/Phoenix"); // 例如：纽约时区
+        ZonedDateTime zonedDateTime = dateTime.atZone(zoneId);
+        String formattedDateTime = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"));
+        System.out.println(formattedDateTime); // 输出将会是带有时区信息的日期时间字符串，例如：2023-04-01 12:30:45 EDT
     }
+
+    public static LocalDateTime toPhoenixTime(String timeStr, String clientZone) {
+        // 解析客户端时间字符串
+        LocalDateTime clientTime = LocalDateTime.parse(timeStr);
+        // 将客户端时间转换为ZonedDateTime
+        ZonedDateTime zonedClientTime = clientTime.atZone(ZoneId.of(clientZone));
+        // 转换为America/Phoenix时区
+        return zonedClientTime.withZoneSameInstant(PHOENIX_ZONE).toLocalDateTime();
+    }
+
 
     public static Date getChinaTime(){
         // 获取中国时区

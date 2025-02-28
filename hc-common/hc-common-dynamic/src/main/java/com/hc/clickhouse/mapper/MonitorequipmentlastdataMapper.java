@@ -8,6 +8,7 @@ import com.hc.my.common.core.redis.dto.MonitorequipmentlastdataDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -16,8 +17,8 @@ public interface MonitorequipmentlastdataMapper extends RootMapper<Monitorequipm
 
 
     List<Monitorequipmentlastdata> getWarningCurveData(@Param("equipmentNo") String equipmentNo,
-                                                          @Param("startTime") String startTime,
-                                                          @Param("endTime") String endTime,
+                                                          @Param("startTime") LocalDateTime startTime,
+                                                          @Param("endTime") LocalDateTime endTime,
                                                           @Param("instrumentConfigName") String instrumentConfigName,
                                                           @Param("ym")String ym);
 
